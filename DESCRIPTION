@@ -1,0 +1,67 @@
+Package: sl3
+Type: Package
+Title: Super Learner Prediction
+Version: 2.0-22
+Date: 2016-12-10
+Authors@R: c(person("Eric", "Polley", email = "polley.eric@mayo.edu", role = c("aut", "cre")), person("Erin", "LeDell", role = c("aut")), person("Chris", "Kennedy", role = c("aut")), person("Sam", "Lendle", role = c("ctb")), person("Mark", "van der Laan", role = c("aut", "ths")))
+Maintainer: Eric Polley <polley.eric@mayo.edu>
+Description: Implements the super learner prediction method and contains a
+    library of prediction algorithms to be used in the super learner.
+License: GPL-3
+URL: https://github.com/ecpolley/SuperLearner
+Depends:
+    R (>= 2.14.0),
+    nnls
+Imports:
+    assertthat,
+    cvAUC,
+    origami,
+    future,
+    R6
+Suggests:
+    arm,
+    bartMachine,
+    biglasso,
+    bigmemory,
+    caret,
+    class,
+    dbarts,
+    e1071,
+    earth,
+    gam,
+    gbm,
+    genefilter,
+    ggplot2,
+    glmnet,
+    Hmisc,
+    ipred,
+    KernelKnn,
+    kernlab,
+    knitr,
+    lattice,
+    LogicReg,
+    MASS,
+    mda,
+    mlbench,
+    nloptr,
+    nnet,
+    party,
+    polspline,
+    prettydoc,
+    quadprog,
+    randomForest,
+    ranger,
+    RhpcBLASctl,
+    ROCR,
+    rmarkdown,
+    rpart,
+    SIS,
+    speedglm,
+    spls,
+    stepPlr,
+    sva,
+    testthat,
+    xgboost (>= 0.6)
+LazyLoad: yes
+VignetteBuilder: knitr
+RoxygenNote: 6.0.1
