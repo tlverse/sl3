@@ -66,13 +66,6 @@ Learner_Task <- R6Class(classname = "Learner_Task",
                          X = function(){
                            private$.data[,private$.nodes$covariates, with=FALSE, drop=FALSE]
                          },
-                         Xmat = function(){
-                           if(is.null(private$.Xmat)){
-                             private$generate_Xmat()
-                           }
-
-                           return(private$.Xmat)
-                         },
                          Y = function(){
                            private$.data[,private$.nodes$outcome, with = FALSE]
                          },
@@ -99,17 +92,12 @@ Learner_Task <- R6Class(classname = "Learner_Task",
                        private = list(
                          .data = NULL,
                          .nodes = NULL,
-                         .X = NULL,
-                         .Xmat = NULL,
-                         generate_Xmat=function(){
-                           private$.Xmat=model.matrix(~.,data = self$X)
-                         }
+                         .X = NULL
                        )
 )
 
 #' @export
 `[.Learner_Task` <- function(x,i=NULL,j=NULL,...) {
-  #todo: if we decide to keep using xmat, also subset here rather than regenerating for subset
   Learner_Task$new(x$data[i,],nodes=x$nodes)
 }
 
