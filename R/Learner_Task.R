@@ -1,6 +1,9 @@
+#' @import data.table
+
 # a dataset with metadata about which columns serve which roles, and helper functions to munge the data as needed for ML
 
 #' @importFrom assertthat assert_that is.count is.flag
+#' @export
 Learner_Task <- R6Class(classname = "Learner_Task",
                        portable = TRUE,
                        class = TRUE,
@@ -27,7 +30,6 @@ Learner_Task <- R6Class(classname = "Learner_Task",
                            # maybe set keys based on fold object if it exists
                            #setkeyv(self$data)
                            #guess outcome type by count unique
-
 
                            invisible(self)
                          },
@@ -67,14 +69,14 @@ Learner_Task <- R6Class(classname = "Learner_Task",
                            private$.data[,private$.nodes$covariates, with=FALSE, drop=FALSE]
                          },
                          Y = function(){
-                           private$.data[,private$.nodes$outcome, with = FALSE]
+                           private$.data[[private$.nodes$outcome]]
                          },
                          weights = function(){
                            weight_node=private$.nodes$weights
                            if(is.null(weight_node)){
                              weights=rep(1,nrow(private$.data))
                            } else {
-                             weights=private$.data[,weight_node, with=FALSE]
+                             weights=private$.data[[weight_node]]
                            }
 
                            return(weights)
@@ -84,7 +86,7 @@ Learner_Task <- R6Class(classname = "Learner_Task",
                            if(is.null(id_node)){
                              ids=seq_len(nrow(private$.data))
                            } else {
-                             ids=private$.data[,id_node, with=FALSE]
+                             ids=private$.data[[id_node]]
                            }
 
                            return(ids)

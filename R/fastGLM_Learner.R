@@ -32,13 +32,6 @@ GetWarningsToSuppress <- function(update.step=FALSE) {
 ## The function purposefully returns nothing (NULL), since the input data.table is being modified by REFERENCE.
 ## -----------------------------------------------------------------------------
 add_interactions_toDT <- function(XmatDT, interactions) {
-  prod.matrix <- function(x) {
-    y <- x[,1]
-    for(i in 2:dim(x)[2])
-      y <- y*x[,i]
-    return(y)
-  }
-
   prod.DT <- function(x) {
     y <- x[[1]]
     for(i in 2:ncol(x))
@@ -50,8 +43,10 @@ add_interactions_toDT <- function(XmatDT, interactions) {
     interact <- interactions[[i]]
     name <- names(interactions)[i]
     if (is.null(name)) name <- paste0(interact, collapse = "_")
-    if (all(interact %in% names(XmatDT)))
+    if (all(interact %in% names(XmatDT))){
       XmatDT[, (name) := prod.DT(.SD), .SD = interact]
+      # XmatDT[, `:=`(name, prod.DT(.SD)), .SD = interact]
+    }
   }
 
   return(invisible(NULL))
@@ -67,8 +62,8 @@ defineX <- function(task, params) {
   }
   X <- cbind(Intercept = 1L, task$X[,covariates, with=FALSE, drop=FALSE])
   if (!is.null(params[["interactions"]])) {
-    print("adding interactions in GLM:")
-    str(params[["interactions"]])
+    # print("adding interactions in GLM:")
+    # str(params[["interactions"]])
     ## this is a hack to fix pointer allocation problem (so that X can be modified by reference inside add_interactions_toDT())
     ## see this for more: http://stackoverflow.com/questions/28078640/adding-new-columns-to-a-data-table-by-reference-within-a-function-not-always-wor
     ## and this: http://stackoverflow.com/questions/36434717/adding-column-to-nested-r-data-table-by-reference

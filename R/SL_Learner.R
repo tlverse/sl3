@@ -14,17 +14,17 @@ SL_Learner <- R6Class(classname = "SL_Learner",
                      private = list(
                        .train = function(task) {
                          wrapper=self$params$wrapper_fun
-                         
+
                          #to minimize prediction costs (since we throw out preds from here anyways), newX is just a single row
                          newX=task$X[1,]
-                         
+
                          fit_object <- wrapper(task$Y, task$X, newX, family=gaussian(), obsWeights=task$weights, id= task$id)$fit
-                         
+
                          return(fit_object)
-                         
+
                        }
                        # generic learner predict suffices
                        )
-                     
+
 )
 
