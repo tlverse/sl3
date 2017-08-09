@@ -1,6 +1,7 @@
 #support for converting data frame with raw columns into a model matrix with things like interaction terms and factor indicators. todo: reimplement this without using model.matrix.
 #' @importFrom assertthat assert_that is.count is.flag
 #' @export
+#' @rdname undocumented_learner
 Model_Matrix <- R6Class(classname = "Model_Matrix",
                        inherit= Learner,
                        portable = TRUE,

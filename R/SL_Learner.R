@@ -1,6 +1,7 @@
 #support for SuperLearner wrappers, obviously not the most efficient approach, we should reimplement as many as possible
 #' @importFrom assertthat assert_that is.count is.flag
 #' @export
+#' @rdname undocumented_learner
 SL_Learner <- R6Class(classname = "SL_Learner",
                      inherit= Learner,
                      portable = TRUE,

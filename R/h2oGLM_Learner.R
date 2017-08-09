@@ -34,6 +34,7 @@ define_h2o_X = function(task, covariates, params) {
 
 #' @importFrom assertthat assert_that is.count is.flag
 #' @export
+#' @rdname undocumented_learner
 h2oGLM_Learner <- R6Class(classname = "h2oGLM_Learner", inherit = Learner, portable = TRUE, class = TRUE, private = list(
 
   .covariates = NULL,

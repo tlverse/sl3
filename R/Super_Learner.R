@@ -2,6 +2,7 @@
 #' @importFrom assertthat assert_that is.count is.flag
 #' @import origami
 #' @export
+#' @rdname undocumented_learner
 Super_Learner <- R6Class(classname = "Super_Learner",
                      inherit= Learner,
                      portable = TRUE,

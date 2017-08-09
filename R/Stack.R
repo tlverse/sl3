@@ -1,10 +1,18 @@
-#stack of learners
-#for things like SL
-#also grids
-#this might not want to end up as a learner, but it works for now
-#need to think carefully about how this interplays with multidimensonal predictions (e.g. multinomial)
-#' @importFrom assertthat assert_that is.count is.flag
+#' Learner Stacking
+#' A Stack is a special Learner that combines multiple other learners, "stacking" their predictions in columns. Currently, train fits the learners one-at-a-time, but this will be parallelized with \link{future} going forward.
+#' @docType class
+#' @importFrom R6 R6Class
 #' @export
+#' @keywords data
+#' @return \code{\link{Learner}} object with methods for training and prediction
+#' @format \code{\link{R6Class}} object.
+#' @field params A list of learners to stack
+#' @section Methods:
+#' \describe{
+#'   \item{\code{new(...)}}{This method is used to create a stack of learners. Arguments should be indiviual \code{Learner}s.}
+#'   }
+#' @importFrom assertthat assert_that is.count is.flag
+#' @family Learners
 Stack <- R6Class(classname = "Stack",
                      inherit= Learner,
                      portable = TRUE,

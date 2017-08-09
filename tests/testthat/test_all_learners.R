@@ -23,7 +23,7 @@ test_learner=function(learner, task){
   test_that("Learner can generate holdout set predictions",expect_equal(train_preds,holdout_preds))
   
   #test learner chaining
-  chained_task=fit_object$chain()
+  chained_task=fit_obj$chain()
   test_that("Chaining returns a task",expect_true(is(chained_task,"Learner_Task")))
   test_that("Chaining returns the correct number of rows",expect_equal(nrow(chained_task$X),nrow(task$X)))
   
