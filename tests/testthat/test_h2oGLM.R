@@ -7,7 +7,9 @@ if(FALSE) {
   load_all("./") # load all R files in /R and datasets in /data. Ignores NAMESPACE:
   setwd("..");
   install("sl3", build_vignettes = FALSE, dependencies = FALSE) # INSTALL W/ devtools:
+  Sys.setenv(JAVA_HOME="/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/")
 }
+
 # 
 # library(testthat)
 # # library(sl3)
