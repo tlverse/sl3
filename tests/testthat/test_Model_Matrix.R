@@ -14,7 +14,7 @@ if (FALSE) {
 library(testthat)
 library(sl3)
 library(data.table)
-# library(origami) library(SuperLearner) library(gridisl)
+# library(origami) library(SuperLearner)
 set.seed(1)
 
 data(cpp)

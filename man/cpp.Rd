@@ -16,6 +16,7 @@ cpp
 Subset of growth data from the collaborative perinatal project (CPP).
 }
 \examples{
+data(cpp)
 head(cpp)
 }
 \keyword{data}
