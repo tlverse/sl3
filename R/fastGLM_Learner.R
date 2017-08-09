@@ -76,76 +76,91 @@ defineX <- function(task, params) {
 
 #' @importFrom assertthat assert_that is.count is.flag
 #' @export
-fastGLM_Learner <- R6Class(classname = "fastGLM_Learner", inherit = Learner, portable = TRUE, class = TRUE, private = list(
+fastGLM_Learner <- R6Class(classname = "fastGLM_Learner", inherit = Learner, portable = TRUE, class = TRUE,
+  public = list(
+    initialize = function(family=gaussian(), use_offset=FALSE, use_weights=FALSE,
+                          sparse=NULL,method = c('eigen','Cholesky','qr'),
+                          trace=FALSE, ...) {
 
-  .train = function(task) {
-    params <- self$params
-    if ("family" %in% names(params)) {
-      family <- params[["family"]]
-      if (is.character(family)) {
-        family <- get(family, mode = "function", envir = parent.frame())
-        family <- family()
+      params=list(
+                          family=gaussian(), start=NULL, etastart=NULL,
+                          mustart=NULL, offset=NULL, acc=1e-08, maxit=25, k=2,
+                          sparselim=.9,camp=.01, eigendec=TRUE, tol.values=1e-7,
+                          tol.vectors=1e-7, tol.solve=.Machine$double.eps,
+                          sparse=NULL,method = c('eigen','Cholesky','qr'),
+                          trace=FALSE, ...)
+      super$initialize(params=params)
+    },
+  ),
+  private = list(
+    .train = function(task) {
+      params <- self$params
+      if ("family" %in% names(params)) {
+        family <- params[["family"]]
+        if (is.character(family)) {
+          family <- get(family, mode = "function", envir = parent.frame())
+          family <- family()
+        }
+        if (!class(family) %in% "family") stop("family arg must be of an object of class 'family'")
+      } else {
+        family <- stats::gaussian()
       }
-      if (!class(family) %in% "family") stop("family arg must be of an object of class 'family'")
-    } else {
-      family <- stats::gaussian()
-    }
-    family_name <- family[["family"]]
-    linkinv_fun <- family[["linkinv"]]
+      family_name <- family[["family"]]
+      linkinv_fun <- family[["linkinv"]]
 
-    if ("method" %in% names(params)) {
-      method <- params[["method"]]
-    } else {
-      method <- 'Cholesky'
-    }
+      if ("method" %in% names(params)) {
+        method <- params[["method"]]
+      } else {
+        method <- 'Cholesky'
+      }
 
-    X <- defineX(task, params)
+      X <- defineX(task, params)
 
-    SuppressGivenWarnings({
-      fit_object <- try(speedglm::speedglm.wfit(X = as.matrix(X),
-                                               y = task$Y,
-                                               method = method,
-                                               family = family,
-                                               trace = FALSE,
-                                               weights = task$weights),
-                      silent = TRUE)
-      }, GetWarningsToSuppress())
-
-    if (inherits(fit_object, "try-error")) { # if failed, fall back on stats::glm
-        # if (gvars$verbose)
-        message("speedglm::speedglm.wfit failed, falling back on stats:glm.fit; ", fit_object)
-        ctrl <- glm.control(trace = FALSE)
-        SuppressGivenWarnings({
-          fit_object <- stats::glm.fit(x = X,
-                                      y = task$Y,
-                                      family = family,
-                                      control = ctrl,
-                                      weights = task$weights)
+      SuppressGivenWarnings({
+        fit_object <- try(speedglm::speedglm.wfit(X = as.matrix(X),
+                                                 y = task$Y,
+                                                 method = method,
+                                                 family = family,
+                                                 trace = FALSE,
+                                                 weights = task$weights),
+                        silent = TRUE)
         }, GetWarningsToSuppress())
-        fit_object$linear.predictors <- NULL
-        fit_object$weights <- NULL
-        fit_object$prior.weights <- NULL
-        fit_object$y <- NULL
-        fit_object$residuals <- NULL
-        fit_object$fitted.values <- NULL
-        fit_object$effects <- NULL
-        fit_object$qr <- NULL
-    }
 
-    fit_object[["linkinv_fun"]] <- linkinv_fun
-    return(fit_object)
-  },
-
-  .predict = function(task = NULL) {
-    X <- defineX(task, self$params)
-    predictions <- rep.int(NA, nrow(X))
-    if (nrow(X) > 0) {
-      coef <- private$.fit_object$coef
-      if (!all(is.na(coef))) {
-        eta <- as.matrix(X[, which(!is.na(coef)), drop = FALSE, with = FALSE]) %*% coef[!is.na(coef)]
-        predictions <- as.vector(private$.fit_object$linkinv_fun(eta))
+      if (inherits(fit_object, "try-error")) { # if failed, fall back on stats::glm
+          # if (gvars$verbose)
+          message("speedglm::speedglm.wfit failed, falling back on stats:glm.fit; ", fit_object)
+          ctrl <- glm.control(trace = FALSE)
+          SuppressGivenWarnings({
+            fit_object <- stats::glm.fit(x = X,
+                                        y = task$Y,
+                                        family = family,
+                                        control = ctrl,
+                                        weights = task$weights)
+          }, GetWarningsToSuppress())
+          fit_object$linear.predictors <- NULL
+          fit_object$weights <- NULL
+          fit_object$prior.weights <- NULL
+          fit_object$y <- NULL
+          fit_object$residuals <- NULL
+          fit_object$fitted.values <- NULL
+          fit_object$effects <- NULL
+          fit_object$qr <- NULL
       }
+
+      fit_object[["linkinv_fun"]] <- linkinv_fun
+      return(fit_object)
+    },
+
+    .predict = function(task = NULL) {
+      X <- defineX(task, self$params)
+      predictions <- rep.int(NA, nrow(X))
+      if (nrow(X) > 0) {
+        coef <- private$.fit_object$coef
+        if (!all(is.na(coef))) {
+          eta <- as.matrix(X[, which(!is.na(coef)), drop = FALSE, with = FALSE]) %*% coef[!is.na(coef)]
+          predictions <- as.vector(private$.fit_object$linkinv_fun(eta))
+        }
+      }
+      return(predictions)
     }
-    return(predictions)
-  }
 ), )
