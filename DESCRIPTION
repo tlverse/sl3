@@ -13,6 +13,7 @@ Depends:
     R (>= 2.14.0),
     nnls
 Imports:
+    data.table,
     assertthat,
     cvAUC,
     origami,

@@ -5,20 +5,20 @@ safe_dim <- function(x) {
   if (is.null(d)) {
     d <- length(x)
   }
-  
+
   return(d)
 }
 
 
 # sort n-dimensional array (for multinomial/multivariate SL support)
 aorder <- function(mat, index, along = 1) {
-  
+
   dims <- safe_dim(mat)
   args <- ifelse(along == seq_along(dims), "index", "")
   indexer <- paste(c(args, "drop=F"), collapse = ",")
   call <- sprintf("mat[%s]", indexer)
   result <- eval(parse(text = call))
-  
+
   return(result)
 }
 
@@ -51,20 +51,20 @@ CV_Learner <- R6Class(classname = "CV_Learner",
                          #should get folds from task if available
                          folds=make_folds(task$X)
                          learner=self$params$learner
-                         
+
                          cv_train=function(fold,learner,task){
                            training_task=training(task)
                            fit_object=learner$train(training_task)
                            return(list(fold_fit=fit_object))
                          }
-                         
+
                         fold_fits=cross_validate(cv_train,folds,learner,task,.combine=F, future.globals=F)$fold_fit
-                        
+
                         fit_object=list(folds=folds, fold_fits=fold_fits)
-                        
+
                         return(fit_object)
                        },
-                       
+
                        .predict = function(task){
                          if(!identical(task,private$.training_task)){
                            stop("task must match training task for CVLearner")
@@ -72,7 +72,7 @@ CV_Learner <- R6Class(classname = "CV_Learner",
                          #doing train and predict like this is stupid, but that's the paradigm (for now!)
                          folds=private$.fit_object$folds
                          fold_fits = private$.fit_object$fold_fits
-                         
+
                          cv_predict=function(fold,fold_fits,task){
                            validation_task=validation(task)
                            index=validation()
@@ -80,25 +80,25 @@ CV_Learner <- R6Class(classname = "CV_Learner",
                            predictions=fit$predict(validation_task)
                            list(index=index,predictions=predictions)
                          }
-                         
+
                          fold_predictions=cross_validate(cv_predict,folds,fold_fits,task, future.globals=F)
                          predictions=aorder(fold_predictions$predictions,order(fold_predictions$index))
-                         
+
                          return(predictions)
                        },
-                       
+
                        .chain = function(task){
                          predictions = self$predict(task)
                          predictions = as.data.table(predictions)
-                         
+
                          #now make a new task where these are the covariates
-                         
+
                          return(task$next_in_chain(predictions))
                        }
-                       
-                       
-                       
+
+
+
                        )
-                     
+
 )
 

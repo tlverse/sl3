@@ -2,6 +2,7 @@
 #this object is cloned and .fit_object is populated when train is called
 #todo: I think in general we want to wrap the train in prediction methods for subclasses with consistent sanity checks and error handling
 #' @importFrom assertthat assert_that is.count is.flag
+#' @export
 Learner <- R6Class(classname = "Learner",
                    portable = TRUE,
                    class = TRUE,
@@ -12,44 +13,53 @@ Learner <- R6Class(classname = "Learner",
                        if(length(params)==1 && names(params)=="params"){
                          params=params$params
                        }
-                       
+
                        self$params=params
-                       
+
                        invisible(self)
                      },
                      train = function(task) {
-                       #trains learner to data
-                       assert_that(is(task,"Learner_Task"))
-                       
-                       #todo: add error handling
-                       fit_object = private$.train(task)
-                       
-                       new_object=self$clone() # copy parameters, and whatever else
-                       new_object$set_train(fit_object, task)
-                       
-                       return(new_object)
+                        #trains learner to data
+                        assert_that(is(task,"Learner_Task"))
+
+                        ##OS 08/08/17: Over-write task covariates (if specified for this learner as part of 'params'). Otherwise copy covariates from task.
+                        ##todo: add checks for errors, params$covariates must be alway a subset of task$nodes$covariates
+                        # covariates <- task$nodes$covariates
+                        # if ("covariates" %in% names(self$params)) {
+                        #   self$params$covariates <- intersect(covariates, self$params$covariates)
+                        # } else {
+                        #   self$params$covariates <- covariates
+                        # }
+
+                        #todo: add error handling
+                        fit_object = private$.train(task)
+
+                        new_object=self$clone() # copy parameters, and whatever else
+                        new_object$set_train(fit_object, task)
+
+                        return(new_object)
                      },
-                     
+
                      set_train = function(fit_object, training_task){
                        #todo: figure out how to do this without a public method that is mutuating private variables.
                        private$.fit_object = fit_object
                        private$.training_task = training_task
-                       
-                       
+
+
                      },
-                     
+
                      predict = function(task = NULL){
                        if(!self$is_trained){
                          stop("Learner has not yet been train to data. Call learner$train(task) first.")
                        }
-                       
+
                        if(is.null(task)){
                          task <- private$.training_task
                        }
                        assert_that(is(task,"Learner_Task"))
-                       
+
                        predictions = private$.predict(task)
-                       
+
                        return(predictions)
                      },
 
@@ -57,18 +67,18 @@ Learner <- R6Class(classname = "Learner",
                       if(!self$is_trained){
                         stop("Learner has not yet been train to data. Call learner$train(task) first.")
                       }
-                      
+
                       if(is.null(task)){
                         task <- private$.training_task
                       }
                       assert_that(is(task,"Learner_Task"))
-                      
+
                       next_task = private$.chain(task)
-                      
+
                       return(next_task)
-                      
-                       
-                     }, 
+
+
+                     },
                     print = function(){
                       print(self$name)
                       #print(self$params)
@@ -83,7 +93,7 @@ Learner <- R6Class(classname = "Learner",
                      name=function(){
                        #todo: allow custom names
                        if(is.null(private$.name)){
-                         
+
                          params=self$params
                          if(length(params)>0){
                            #todo: sanitize further
@@ -94,7 +104,7 @@ Learner <- R6Class(classname = "Learner",
                          name = paste(props,collapse="_")
                          private$.name = name
                        }
-                       
+
                        return(private$.name)
                      }
                    ),
@@ -113,9 +123,9 @@ Learner <- R6Class(classname = "Learner",
                        predictions = self$predict(task)
                        predictions = as.data.table(predictions)
                        colnames(predictions)= paste(self$name,colnames(predictions), sep="_")
-                       
+
                        #now make a new task where these are the covariates
-                       
+
                        return(task$next_in_chain(predictions))
                      }
                    )
