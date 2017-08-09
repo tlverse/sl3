@@ -9,15 +9,12 @@ init:
 install:
   ps: Bootstrap
 
-# Adapt as necessary starting from here
+cache:
+  - C:\RLibrary
 
+# Adapt as necessary starting from here
 build_script:
-  - git config --global user.name "travis"
-  - git config --global user.email "travis@example.org"
-  - Rscript -e "install.packages('xgboost', repos=c('http://dmlc.ml/drat/', 'https://cran.cnr.berkeley.edu/'), type='source')"
-  - Rscript -e "source('http://bioconductor.org/biocLite.R'); biocLite(c('sva', 'genefilter'))"
   - travis-tool.sh install_deps
-  - travis-tool.sh github_package jimhester/covr
 
 test_script:
   - travis-tool.sh run_tests
@@ -25,19 +22,6 @@ test_script:
 on_failure:
   - 7z a failure.zip *.Rcheck\*
   - appveyor PushArtifact failure.zip
-
-on_success:
-  - Rscript -e 'covr::codecov()'
-
-environment:
-  global:
-    WARNINGS_ARE_ERRORS: 1
-    _R_CHECK_FORCE_SUGGESTS_: 0
-    R_ARCH: x64
-    USE_RTOOLS: true ## to be able to use Remotes (i.e. packages from non-CRAN sources)
-
-  matrix:
-    - R_VERSION: release
 
 artifacts:
   - path: '*.Rcheck\**\*.log'
@@ -58,5 +42,13 @@ artifacts:
   - path: '\*_*.zip'
     name: Bits
 
-cache:
-  - C:\RLibrary
+notifications:
+ - provider: Email
+   to:
+     - jeremyrcoyle@gmail.com
+     - nh@nimahejazi.org
+   subject: 'r-appveyor build {{status}}'
+   message: "https://ci.appveyor.com/project/jeremyrcoyle/sl3"
+   on_build_success: false
+   on_build_failure: true
+   on_build_status_changed: true
