@@ -31,7 +31,8 @@ Imports:
     SuperLearner
 Suggests:
     testthat,
-    knitr
+    knitr,
+    glmnet
 Remotes: 
   github::osofr/gridisl
 LazyLoad: yes

@@ -1,0 +1,25 @@
+---
+title: "Defining New Learners"
+author: "Jeremy Coyle & Nima Hejazi"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Defining New Learners}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+## Introduction
+
+* learner should have defaults for all parameter values (within reason)
+## Learner Template Here
+
+### Explain methods that can/should be overridden
+
+### Registering your learner
+we need some method of enumerating learners
+
+## Testing Your Learner
+
+* should pass the general test
+* should not decrease overall code coverage
