@@ -103,6 +103,8 @@ prior to submitting a pull request.
 
 ---
 
+## License
+
 &copy; 2017 [Jeremy R. Coyle](https://github.com/jeremyrcoyle), [Nima S.
 Hejazi](https://github.com/nhejazi), [Oleg Sofrygin](https://github.com/osofr),
 [Ivana Malenica](https://github.com/podTockom)

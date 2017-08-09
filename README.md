@@ -77,6 +77,9 @@ It is our hope that `sl3` will grow to be widely used for... To that end, contri
 
 ------------------------------------------------------------------------
 
+License
+-------
+
 © 2017 [Jeremy R. Coyle](https://github.com/jeremyrcoyle), [Nima S. Hejazi](https://github.com/nhejazi), [Oleg Sofrygin](https://github.com/osofr), [Ivana Malenica](https://github.com/podTockom)
 
 The contents of this repository are distributed under the GPL-3 license. See file `LICENSE` for details.

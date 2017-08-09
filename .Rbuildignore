@@ -24,3 +24,4 @@ xgboost.model
 ^CONTRIBUTING\.md$
 ^refs.bib$
 ^Makefile$
+^LICENSE$
