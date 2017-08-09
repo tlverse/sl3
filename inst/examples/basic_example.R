@@ -14,7 +14,7 @@ library(data.table)
 library(origami)
 library(SuperLearner)
 context("Overall Test")
-library(gridisl)
+# library(gridisl)
 set.seed(1)
 
 data(cpp)
@@ -63,7 +63,7 @@ sl_fit <- sl$train(task)
 sl_fit
 
 # now lets cross_validate that against its candidates
-learners <- list(SL.glmnet_learner = SL.glmnet_learner, glm_learner = glm_learner, screen_and_glm = screen_and_glm, 
+learners <- list(SL.glmnet_learner = SL.glmnet_learner, glm_learner = glm_learner, screen_and_glm = screen_and_glm,
     sl = sl)
 sapply(learners, estimate_risk, task)
 
