@@ -10,11 +10,11 @@ if(FALSE) {
 }
 
 library(testthat)
-library(sl3)
-library(data.table)
+# library(sl3)
+# library(data.table)
 # library(origami)
-# library(SuperLearner)
-# library(gridisl)
+library(SuperLearner)
+library(gridisl)
 set.seed(1)
 
 data(cpp)
@@ -35,14 +35,14 @@ test_that("GLM_Learner and fastGLM_Learner learners give the same predictions", 
   fglm_preds <- fGLM_fit$predict()
   expect_true(is.vector(fglm_preds))
   expect_true(all.equal(as.vector(glm_preds), as.vector(fglm_preds)))
-}
+})
 
 test_that("fastGLM_Learner trains based on a subset of covariates (predictors)", {
   fglm_learner <- fastGLM_Learner$new(covariates = c("apgar1", "apgar5"))
 
   fGLM_fit <- fglm_learner$train(task)
-  print(fGLM_fit)
-  str(fGLM_fit$params)
+  # print(fGLM_fit)
+  # str(fGLM_fit$params)
   fglm_preds_2 <- fGLM_fit$predict()
   expect_true(is.vector(fglm_preds_2))
 
@@ -51,27 +51,24 @@ test_that("fastGLM_Learner trains based on a subset of covariates (predictors)",
 
   expect_true(sum(fglm_preds_2 - glm_preds_2) < 10^(-10), )
   expect_true(all.equal(as.vector(glm_preds_2), as.vector(fglm_preds_2)))
-}
-
+})
 
 test_that("fastGLM_Learner defines interactions", {
   fglm_learner <- fastGLM_Learner$new(covariates = c("apgar1", "apgar5"),
                                       interactions = list(c("apgar1", "apgar5")))
-
   fGLM_fit <- fglm_learner$train(task)
-  print(fGLM_fit)
-  str(fGLM_fit$params)
+  # print(fGLM_fit)
+  # str(fGLM_fit$params)
   fglm_preds_3 <- fGLM_fit$predict()
   expect_true(is.vector(fglm_preds_3))
 
   glm.fit <- glm(haz ~ apgar1 + apgar5 + apgar1:apgar5, data = cpp, family = stats::gaussian())
-  print(glm.fit)
+  # print(glm.fit)
   glm_preds_3 <- as.vector(predict(glm.fit))
 
   expect_true(sum(fglm_preds_3 - glm_preds_3) < 10^(-10))
   expect_true(all.equal(as.vector(glm_preds_3), as.vector(fglm_preds_3)))
-}
-
+})
 
 test_that("fastGLM_Learner works with screener", {
   # example of learner chaining
@@ -83,8 +80,8 @@ test_that("fastGLM_Learner works with screener", {
   fglm_learner <- fastGLM_Learner$new()
   screen_and_glm <- Pipeline$new(slscreener, fglm_learner)
   sg_fit <- screen_and_glm$train(task)
-  print(sg_fit)
-}
+  # print(sg_fit)
+})
 
 test_that("fastGLM_Learner works with stacking", {
   glm_learner <- GLM_Learner$new()
@@ -95,10 +92,10 @@ test_that("fastGLM_Learner works with stacking", {
   # now lets stack some learners
   learner_stack <- Stack$new(glm_learner, fglm_learner, screen_and_glm, SL.glmnet_learner)
   stack_fit <- learner_stack$train(task)
-  print(stack_fit)
+  # print(stack_fit)
   preds <- stack_fit$predict()
-  print(head(preds))
-}
+  # print(head(preds))
+})
 
 test_that("fastGLM_Learner works with quasibinomial and continuous outcomes in (0,1)", {
   cpp_haz_01range <- cpp
@@ -107,12 +104,12 @@ test_that("fastGLM_Learner works with quasibinomial and continuous outcomes in (
 
   fglm_learner <- fastGLM_Learner$new(family = "quasibinomial")
   fGLM_fit <- fglm_learner$train(task_01range)
-  print(fGLM_fit)
+  # print(fGLM_fit)
 
   fglm_learner <- fastGLM_Learner$new(family = "binomial")
   fGLM_fit <- fglm_learner$train(task_01range)
-  print(fGLM_fit)
-}
+  # print(fGLM_fit)
+})
 
 test_that("fastGLM_Learner works with different families ('family = ...') and solvers ('method = ...')", {
   cpp_hazbin <- cpp
@@ -121,21 +118,21 @@ test_that("fastGLM_Learner works with different families ('family = ...') and so
 
   fglm_learner <- fastGLM_Learner$new(family = "quasibinomial")
   fGLM_fit <- fglm_learner$train(task_bin)
-  print(fGLM_fit)
+  # print(fGLM_fit)
 
   fglm_learner <- fastGLM_Learner$new(family = "binomial")
   fGLM_fit <- fglm_learner$train(task_bin)
-  print(fGLM_fit)
+  # print(fGLM_fit)
 
   fglm_learner <- fastGLM_Learner$new(family = "binomial", method = 'eigen')
   fGLM_fit <- fglm_learner$train(task_bin)
-  print(fGLM_fit)
+  # print(fGLM_fit)
 
   fglm_learner <- fastGLM_Learner$new(family = "binomial", method = 'Cholesky')
   fGLM_fit <- fglm_learner$train(task_bin)
-  print(fGLM_fit)
+  # print(fGLM_fit)
 
   fglm_learner <- fastGLM_Learner$new(family = "binomial", method = 'qr')
   fGLM_fit <- fglm_learner$train(task_bin)
-  print(fGLM_fit)
-}
+  # print(fGLM_fit)
+})
