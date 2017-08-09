@@ -31,6 +31,8 @@ Imports:
 Suggests:
     testthat,
     knitr
+Remotes: 
+  github::osofr/gridisl
 LazyLoad: yes
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
