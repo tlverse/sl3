@@ -1,5 +1,4 @@
 Package: sl3
-Type: Package
 Title: Machine Learning Pipelines
 Version: 0.2
 Date: 2017-08-01
@@ -12,29 +11,30 @@ Authors@R:  c(
   )
 Maintainer: Jeremy Coyle <jeremyrcoyle@gmail.com>
 Description: Implements the super learner prediction method and contains a
-    library of prediction algorithms to be used in the super learner.
+  library of prediction algorithms to be used in the super learner.
 License: GPL-3
 URL: https://github.com/jeremyrcoyle/sl3
+BugReports: https://github.com/jeremyrcoyle/sl3/issues
 Depends:
-    R (>= 2.14.0)
+  R (>= 2.14.0)
 Imports:
-    data.table,
-    assertthat,
-    cvAUC,
-    origami,
-    future,
-    R6,
-    h2o,
-    stats,
-    nnls,
-    gridisl,
-    SuperLearner
+  data.table,
+  assertthat,
+  cvAUC,
+  origami,
+  future,
+  R6,
+  h2o,
+  stats,
+  nnls,
+  gridisl,
+  SuperLearner
 Suggests:
-    testthat,
-    knitr,
-    glmnet
+  testthat,
+  knitr,
+  glmnet
 Remotes:
-  github::osofr/gridisl
+  osofr/gridisl
 LazyLoad: yes
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1

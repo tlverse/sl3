@@ -16,6 +16,7 @@ r:
 
 r_github_packages:
   - jimhester/covr
+  - osofr/gridisl
 
 after_success:
   - Rscript -e 'covr::codecov()'
