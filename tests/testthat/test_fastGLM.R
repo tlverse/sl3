@@ -1,12 +1,14 @@
 context("Test Fast GLM")
 
-if(FALSE) {
-  setwd(".."); setwd(".."); getwd()
-  library("devtools")
-  document()
-  load_all("./") # load all R files in /R and datasets in /data. Ignores NAMESPACE:
-  setwd("..");
-  install("sl3", build_vignettes = FALSE, dependencies = FALSE) # INSTALL W/ devtools:
+if (FALSE) {
+    setwd("..")
+    setwd("..")
+    getwd()
+    library("devtools")
+    document()
+    load_all("./")  # load all R files in /R and datasets in /data. Ignores NAMESPACE:
+    setwd("..")
+    install("sl3", build_vignettes = FALSE, dependencies = FALSE)  # INSTALL W/ devtools:
 }
 
 library(testthat)

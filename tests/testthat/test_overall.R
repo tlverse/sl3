@@ -1,10 +1,12 @@
-if(FALSE) {
-  setwd(".."); setwd(".."); getwd()
-  library("devtools")
-  document()
-  load_all("./") # load all R files in /R and datasets in /data. Ignores NAMESPACE:
-  setwd("..");
-  install("sl3", build_vignettes = FALSE, dependencies = FALSE) # INSTALL W/ devtools:
+if (FALSE) {
+    setwd("..")
+    setwd("..")
+    getwd()
+    library("devtools")
+    document()
+    load_all("./")  # load all R files in /R and datasets in /data. Ignores NAMESPACE:
+    setwd("..")
+    install("sl3", build_vignettes = FALSE, dependencies = FALSE)  # INSTALL W/ devtools:
 }
 
 library(sl3)
@@ -61,7 +63,7 @@ sl_fit <- sl$train(task)
 sl_fit
 
 # now lets cross_validate that against its candidates
-learners <- list(SL.glmnet_learner = SL.glmnet_learner, glm_learner = glm_learner, screen_and_glm = screen_and_glm,
+learners <- list(SL.glmnet_learner = SL.glmnet_learner, glm_learner = glm_learner, screen_and_glm = screen_and_glm, 
     sl = sl)
 sapply(learners, estimate_risk, task)
 

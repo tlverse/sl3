@@ -4,20 +4,18 @@
 # and outcome type
 #' @importFrom assertthat assert_that is.count is.flag
 #' @export
-GLM_Learner <- R6Class(classname = "GLM_Learner", inherit = Learner, portable = TRUE, class = TRUE, private = list(
-  .train = function(task) {
+GLM_Learner <- R6Class(classname = "GLM_Learner", inherit = Learner, portable = TRUE, class = TRUE, private = list(.train = function(task) {
     # todo: if possible have this use task$Xmat with glm.fit or speedglm
     Y <- task$Y
     fit_object <- glm(Y ~ ., data = task$X, family = gaussian(), weights = task$weights)
-
+    
     return(fit_object)
-
-},
-  .predict = function(task = NULL) {
+    
+}, .predict = function(task = NULL) {
     predictions <- predict(private$.fit_object, newdata = task$X, type = "response")
-
+    
     return(predictions)
-
+    
 }), )
 
 

@@ -3,6 +3,7 @@
 S3method("[",Learner_Task)
 export(CV_Learner)
 export(GLM_Learner)
+export(Model_Matrix)
 export(Learner)
 export(Learner_Task)
 export(Pipeline)
