@@ -17,9 +17,10 @@
 # other miscellaneous non-CRAN files
 xgboost.model
 ^docs$
-^Makefile$
-^CONTRIBUTING\.md$
 ^README\.Rmd$
 ^README\.html$
 ^README-.*\.png$
 ^cran-comments.md$
+^CONTRIBUTING\.md$
+^refs.bib$
+^Makefile$
