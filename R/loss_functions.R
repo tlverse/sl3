@@ -3,6 +3,7 @@ loss_squared_error <- function(truth, pred) {
     (pred - truth)^2
 }
 
+#' @importFrom stats weighted.mean
 #' @export
 risk <- function(truth, pred, loss = loss_squared_error, weights = NULL) {
     if (is.null(weights)) {

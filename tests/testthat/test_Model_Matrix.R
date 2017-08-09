@@ -14,6 +14,7 @@ if (FALSE) {
 library(testthat)
 library(sl3)
 library(data.table)
+library(gridisl)
 # library(origami) library(SuperLearner) library(gridisl)
 set.seed(1)
 
@@ -49,7 +50,7 @@ test_that("model matrix can be used to subset of covariates (predictors)", {
     two_cov <- Model_Matrix$new(~apgar1 + apgar5 - 1)
     glm_learner <- GLM_Learner$new()
     glm_subset <- Pipeline$new(two_cov, glm_learner)
-    glm_fit <- glm_subset$train(mm_task)
+    glm_fit <- glm_subset$train(task)
     glm_preds <- glm_fit$predict()
     
     
@@ -66,7 +67,7 @@ test_that("model matrix defines interactions", {
     interactions <- Model_Matrix$new(~apgar1 * apgar5 - 1)
     glm_learner <- GLM_Learner$new()
     glm_interactions <- Pipeline$new(interactions, glm_learner)
-    glm_fit <- glm_interactions$train(mm_task)
+    glm_fit <- glm_interactions$train(task)
     glm_preds <- glm_fit$predict()
     
     
