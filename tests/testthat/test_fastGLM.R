@@ -12,11 +12,10 @@ if (FALSE) {
 }
 
 library(testthat)
-# library(sl3)
+library(sl3)
 # library(data.table)
 # library(origami)
 library(SuperLearner)
-library(gridisl)
 set.seed(1)
 
 data(cpp)

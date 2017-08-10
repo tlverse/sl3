@@ -62,8 +62,7 @@ defineX <- function(task, params) {
   }
   X <- cbind(Intercept = 1L, task$X[,covariates, with=FALSE, drop=FALSE])
   if (!is.null(params[["interactions"]])) {
-    # print("adding interactions in GLM:")
-    # str(params[["interactions"]])
+    # print("adding interactions in GLM:"); str(params[["interactions"]])
     ## this is a hack to fix pointer allocation problem (so that X can be modified by reference inside add_interactions_toDT())
     ## see this for more: http://stackoverflow.com/questions/28078640/adding-new-columns-to-a-data-table-by-reference-within-a-function-not-always-wor
     ## and this: http://stackoverflow.com/questions/36434717/adding-column-to-nested-r-data-table-by-reference
@@ -77,76 +76,74 @@ defineX <- function(task, params) {
 #' @importFrom assertthat assert_that is.count is.flag
 #' @export
 #' @rdname undocumented_learner
-fastGLM_Learner <- R6Class(classname = "fastGLM_Learner", inherit = Learner, portable = TRUE, class = TRUE, private = list(
-
-  .train = function(task) {
-    params <- self$params
-    if ("family" %in% names(params)) {
+fastGLM_Learner <- R6Class(classname = "fastGLM_Learner", inherit = Learner, portable = TRUE, class = TRUE,
+  public = list(
+    initialize = function(family = gaussian(),
+                          method = c('Cholesky', 'eigen','qr'),
+                          ...) {
+      params <- list(family = family, method = method[1L], ...)
+      super$initialize(params = params)
+    }
+  ),
+  private = list(
+    .train = function(task) {
+      params <- self$params
       family <- params[["family"]]
       if (is.character(family)) {
         family <- get(family, mode = "function", envir = parent.frame())
         family <- family()
       }
-      if (!class(family) %in% "family") stop("family arg must be of an object of class 'family'")
-    } else {
-      family <- stats::gaussian()
-    }
-    family_name <- family[["family"]]
-    linkinv_fun <- family[["linkinv"]]
-
-    if ("method" %in% names(params)) {
+      family_name <- family[["family"]]
+      linkinv_fun <- family[["linkinv"]]
       method <- params[["method"]]
-    } else {
-      method <- 'Cholesky'
-    }
+      X <- defineX(task, params)
 
-    X <- defineX(task, params)
-
-    SuppressGivenWarnings({
-      fit_object <- try(speedglm::speedglm.wfit(X = as.matrix(X),
-                                               y = task$Y,
-                                               method = method,
-                                               family = family,
-                                               trace = FALSE,
-                                               weights = task$weights),
-                      silent = TRUE)
-      }, GetWarningsToSuppress())
-
-    if (inherits(fit_object, "try-error")) { # if failed, fall back on stats::glm
-        # if (gvars$verbose)
-        message("speedglm::speedglm.wfit failed, falling back on stats:glm.fit; ", fit_object)
-        ctrl <- glm.control(trace = FALSE)
-        SuppressGivenWarnings({
-          fit_object <- stats::glm.fit(x = X,
-                                      y = task$Y,
-                                      family = family,
-                                      control = ctrl,
-                                      weights = task$weights)
+      SuppressGivenWarnings({
+        fit_object <- try(speedglm::speedglm.wfit(X = as.matrix(X),
+                                                 y = task$Y,
+                                                 method = method,
+                                                 family = family,
+                                                 trace = FALSE,
+                                                 weights = task$weights),
+                        silent = TRUE)
         }, GetWarningsToSuppress())
-        fit_object$linear.predictors <- NULL
-        fit_object$weights <- NULL
-        fit_object$prior.weights <- NULL
-        fit_object$y <- NULL
-        fit_object$residuals <- NULL
-        fit_object$fitted.values <- NULL
-        fit_object$effects <- NULL
-        fit_object$qr <- NULL
-    }
 
-    fit_object[["linkinv_fun"]] <- linkinv_fun
-    return(fit_object)
-  },
-
-  .predict = function(task = NULL) {
-    X <- defineX(task, self$params)
-    predictions <- rep.int(NA, nrow(X))
-    if (nrow(X) > 0) {
-      coef <- private$.fit_object$coef
-      if (!all(is.na(coef))) {
-        eta <- as.matrix(X[, which(!is.na(coef)), drop = FALSE, with = FALSE]) %*% coef[!is.na(coef)]
-        predictions <- as.vector(private$.fit_object$linkinv_fun(eta))
+      if (inherits(fit_object, "try-error")) { # if failed, fall back on stats::glm
+          ## todo: enable message below once verbose mode works
+          ## todo: find example where speedglm fails, and this code runs, add to tests
+          # if (gvars$verbose) message("speedglm::speedglm.wfit failed, falling back on stats:glm.fit; ", fit_object)
+          ctrl <- glm.control(trace = FALSE)
+          SuppressGivenWarnings({
+            fit_object <- stats::glm.fit(x = X,
+                                        y = task$Y,
+                                        family = family,
+                                        control = ctrl,
+                                        weights = task$weights)
+          }, GetWarningsToSuppress())
+          fit_object$linear.predictors <- NULL
+          fit_object$weights <- NULL
+          fit_object$prior.weights <- NULL
+          fit_object$y <- NULL
+          fit_object$residuals <- NULL
+          fit_object$fitted.values <- NULL
+          fit_object$effects <- NULL
+          fit_object$qr <- NULL
       }
+
+      fit_object[["linkinv_fun"]] <- linkinv_fun
+      return(fit_object)
+    },
+
+    .predict = function(task = NULL) {
+      X <- defineX(task, self$params)
+      predictions <- rep.int(NA, nrow(X))
+      if (nrow(X) > 0) {
+        coef <- private$.fit_object$coef
+        if (!all(is.na(coef))) {
+          eta <- as.matrix(X[, which(!is.na(coef)), drop = FALSE, with = FALSE]) %*% coef[!is.na(coef)]
+          predictions <- as.vector(private$.fit_object$linkinv_fun(eta))
+        }
+      }
+      return(predictions)
     }
-    return(predictions)
-  }
 ), )

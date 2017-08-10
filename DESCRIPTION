@@ -6,7 +6,7 @@ Authors@R:  c(
   person("Jeremy", "Coyle", email = "jeremyrcoyle@gmail.com",
          role = c("aut", "cre", "cph")),
   person("Nima", "Hejazi", email = "nh@nimahejazi.org", role = "aut"),
-  person("Oleg", "Sofrygin", role="aut", email="oleg.sofrygin@gmail.com"),
+  person("Oleg", "Sofrygin", email="oleg.sofrygin@gmail.com", role = "aut"),
   person("Ivana", "Malenica", email = "imalenica@berkeley.edu", role = "aut")
   )
 Maintainer: Jeremy Coyle <jeremyrcoyle@gmail.com>
@@ -27,14 +27,11 @@ Imports:
   h2o,
   stats,
   nnls,
-  gridisl,
   SuperLearner
 Suggests:
   testthat,
   knitr,
   glmnet
-Remotes:
-  osofr/gridisl
 LazyLoad: yes
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1

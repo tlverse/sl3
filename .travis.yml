@@ -1,5 +1,5 @@
 language: r
-sudo: required
+sudo: false
 cache: packages
 warnings_are_errors: true
 
@@ -16,10 +16,13 @@ r:
 
 r_github_packages:
   - jimhester/covr
-  - osofr/gridisl
+  - schloerke/travisDrat
 
 after_success:
   - Rscript -e 'covr::codecov()'
+
+on_failure:
+  - ./travis-tool.sh dump_logs
 
 notifications:
   email:
