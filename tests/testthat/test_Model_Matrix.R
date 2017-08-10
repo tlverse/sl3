@@ -4,6 +4,7 @@ if (FALSE) {
     library("devtools")
     document()
     load_all("./")  # load all R files in /R and datasets in /data. Ignores NAMESPACE:
+    build()
     install(, build_vignettes = FALSE, dependencies = FALSE)  # INSTALL W/ devtools:
 }
 
@@ -70,10 +71,13 @@ test_that("model matrix defines interactions", {
 
     fGLM_fit <- fglm_learner$train(task)
     fglm_preds <- fGLM_fit$predict()
-    
+    print("mm pipeline fit")
     print(glm_fit)
+    print("fGLM fit")
     print(fGLM_fit)
+    print("mm pipeline preds")
     print(head(glm_preds))
+    print("fGLM preds")
     print(head(fglm_preds))
     expect_true(all.equal(as.vector(glm_preds), as.vector(fglm_preds)))
 })
