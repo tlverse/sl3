@@ -11,34 +11,36 @@
 # }
 
 
-# library(testthat)
-# library(sl3)
-# # library(data.table)
-# # library(origami)
-# library(SuperLearner)
-# set.seed(1)
+library(testthat)
+library(sl3)
+library(h2o)
+h2o.init(nthread = 1)
+# library(data.table)
+# library(origami)
+library(SuperLearner)
+set.seed(1)
 
-# data(cpp)
-# cpp <- cpp[!is.na(cpp[, "haz"]), ]
-# covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")
-# cpp[is.na(cpp)] <- 0
-# outcome <- "haz"
+data(cpp)
+cpp <- cpp[!is.na(cpp[, "haz"]), ]
+covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")
+cpp[is.na(cpp)] <- 0
+outcome <- "haz"
 
-# task <- Learner_Task$new(cpp, covariates = covars, outcome = outcome)
-# task$nodes$covariates
+task <- Learner_Task$new(cpp, covariates = covars, outcome = outcome)
+task$nodes$covariates
 
-# test_that("GLM_Learner and h2o_GLM_Learner learners give the same predictions", {
-#   h2o::h2o.no_progress()
-#   glm_learner <- GLM_Learner$new()
-#   h2o_glm <- h2o_GLM_Learner$new()
-#   GLM_fit <- glm_learner$train(task)
-#   glm_preds <- GLM_fit$predict()
-#   h2oGLM_fit <- h2o_glm$train(task)
-#   h2oGLM_preds <- h2oGLM_fit$predict()
-#   expect_true(is.vector(h2oGLM_preds))
-#   # print(sum(glm_preds-h2oGLM_preds))
-#   expect_true(all.equal(as.vector(glm_preds), as.vector(h2oGLM_preds)))
-# })
+test_that("GLM_Learner and h2o_GLM_Learner learners give the same predictions", {
+  h2o::h2o.no_progress()
+  glm_learner <- GLM_Learner$new()
+  h2o_glm <- h2o_GLM_Learner$new()
+  GLM_fit <- glm_learner$train(task)
+  glm_preds <- GLM_fit$predict()
+  h2oGLM_fit <- h2o_glm$train(task)
+  h2oGLM_preds <- h2oGLM_fit$predict()
+  expect_true(is.vector(h2oGLM_preds))
+  # print(sum(glm_preds-h2oGLM_preds))
+  expect_true(all.equal(as.vector(glm_preds), as.vector(h2oGLM_preds)))
+})
 
 # test_that("h2o_GLM_Learner trains based on a subset of covariates (predictors)", {
 #   h2o::h2o.no_progress()
@@ -191,4 +193,4 @@
 #   # print(h2oGLM_fit)
 # })
 
-# h2o::h2o.shutdown(prompt = FALSE)
+h2o::h2o.shutdown(prompt = FALSE)
