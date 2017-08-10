@@ -1,14 +1,11 @@
 context("Test Model Matrix")
 
 if (FALSE) {
-    setwd("..")
-    setwd("..")
-    getwd()
     library("devtools")
     document()
     load_all("./")  # load all R files in /R and datasets in /data. Ignores NAMESPACE:
-    setwd("..")
-    install("sl3", build_vignettes = FALSE, dependencies = FALSE)  # INSTALL W/ devtools:
+    build()
+    install(, build_vignettes = FALSE, dependencies = FALSE)  # INSTALL W/ devtools:
 }
 
 library(testthat)
@@ -73,8 +70,17 @@ test_that("model matrix defines interactions", {
     fglm_learner <- fastGLM_Learner$new(covariates = c("apgar1", "apgar5"), interactions = list(c("apgar1", "apgar5")))
 
     fGLM_fit <- fglm_learner$train(task)
-    print(fGLM_fit)
-    str(fGLM_fit$params)
     fglm_preds <- fGLM_fit$predict()
+    print("mm pipeline fit")
+    print(glm_fit)
+    print("fGLM fit")
+    print(fGLM_fit)
+    print("mm pipeline preds")
+    print(head(glm_preds))
+    print("fGLM preds")
+    print(head(fglm_preds))
+    print("max diff")
+    print(max(abs(as.vector(glm_preds)- as.vector(fglm_preds))))
+    print(all.equal(as.vector(glm_preds), as.vector(fglm_preds)))
     expect_true(all.equal(as.vector(glm_preds), as.vector(fglm_preds)))
 })
