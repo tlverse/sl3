@@ -79,5 +79,8 @@ test_that("model matrix defines interactions", {
     print(head(glm_preds))
     print("fGLM preds")
     print(head(fglm_preds))
+    print("max diff")
+    print(max(abs(as.vector(glm_preds)- as.vector(fglm_preds))))
+    print(all.equal(as.vector(glm_preds), as.vector(fglm_preds)))
     expect_true(all.equal(as.vector(glm_preds), as.vector(fglm_preds)))
 })
