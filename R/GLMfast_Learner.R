@@ -76,7 +76,7 @@ defineX <- function(task, params) {
 #' @importFrom assertthat assert_that is.count is.flag
 #' @export
 #' @rdname undocumented_learner
-fastGLM_Learner <- R6Class(classname = "fastGLM_Learner", inherit = Learner, portable = TRUE, class = TRUE,
+GLMfast_Learner <- R6Class(classname = "GLMfast_Learner", inherit = Learner, portable = TRUE, class = TRUE,
   public = list(
     initialize = function(family = gaussian(),
                           method = c('Cholesky', 'eigen','qr'),
