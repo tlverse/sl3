@@ -7,6 +7,7 @@ if (FALSE) {
     library("devtools")
     document()
     load_all("./")  # load all R files in /R and datasets in /data. Ignores NAMESPACE:
+    devtools::check() # runs full check
     setwd("..")
     install("sl3", build_vignettes = FALSE, dependencies = FALSE)  # INSTALL W/ devtools:
 }
@@ -38,9 +39,8 @@ test_that("GLM_Learner and fastGLM_Learner learners give the same predictions", 
   expect_true(all.equal(as.vector(glm_preds), as.vector(fglm_preds)))
 })
 
-test_that("fastGLM_Learner trains based on a subset of covariates (predictors)", {
+test_that("fastGLM_Learner trains on a subset of covariates (predictors)", {
   fglm_learner <- fastGLM_Learner$new(covariates = c("apgar1", "apgar5"))
-
   fGLM_fit <- fglm_learner$train(task)
   # print(fGLM_fit)
   # str(fGLM_fit$params)
