@@ -1,14 +1,14 @@
-# context("Test Fast GLM")
+context("Test h2o GLM")
 
-# if(FALSE) {
-#   setwd(".."); setwd(".."); getwd()
-#   library("devtools")
-#   document()
-#   load_all("./") # load all R files in /R and datasets in /data. Ignores NAMESPACE:
-#   setwd("..");
-#   install("sl3", build_vignettes = FALSE, dependencies = FALSE) # INSTALL W/ devtools:
-#   Sys.setenv(JAVA_HOME="/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/")
-# }
+if(FALSE) {
+  setwd(".."); setwd(".."); getwd()
+  library("devtools")
+  document()
+  load_all("./") # load all R files in /R and datasets in /data. Ignores NAMESPACE:
+  setwd("..");
+  install("sl3", build_vignettes = FALSE, dependencies = FALSE) # INSTALL W/ devtools:
+  Sys.setenv(JAVA_HOME="/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/")
+}
 
 
 library(testthat)
@@ -29,18 +29,18 @@ outcome <- "haz"
 task <- Learner_Task$new(cpp, covariates = covars, outcome = outcome)
 task$nodes$covariates
 
-# test_that("GLM_Learner and h2o_GLM_Learner learners give the same predictions", {
-#   h2o::h2o.no_progress()
-#   glm_learner <- GLM_Learner$new()
-#   h2o_glm <- h2o_GLM_Learner$new()
-#   GLM_fit <- glm_learner$train(task)
-#   glm_preds <- GLM_fit$predict()
-#   h2oGLM_fit <- h2o_glm$train(task)
-#   h2oGLM_preds <- h2oGLM_fit$predict()
-#   expect_true(is.vector(h2oGLM_preds))
-#   # print(sum(glm_preds-h2oGLM_preds))
-#   expect_true(all.equal(as.vector(glm_preds), as.vector(h2oGLM_preds)))
-# })
+test_that("GLM_Learner and h2o_GLM_Learner learners give the same predictions", {
+  h2o::h2o.no_progress()
+  glm_learner <- GLM_Learner$new()
+  h2o_glm <- h2o_GLM_Learner$new()
+  GLM_fit <- glm_learner$train(task)
+  glm_preds <- GLM_fit$predict()
+  h2oGLM_fit <- h2o_glm$train(task)
+  h2oGLM_preds <- h2oGLM_fit$predict()
+  expect_true(is.vector(h2oGLM_preds))
+  # print(sum(glm_preds-h2oGLM_preds))
+  expect_true(all.equal(as.vector(glm_preds), as.vector(h2oGLM_preds)))
+})
 
 # test_that("h2o_GLM_Learner trains based on a subset of covariates (predictors)", {
 #   h2o::h2o.no_progress()
