@@ -27,7 +27,6 @@ Imports:
   h2o,
   stats,
   nnls,
-  gridisl,
   SuperLearner
 Suggests:
   testthat,

@@ -14,7 +14,6 @@ library(data.table)
 library(origami)
 library(SuperLearner)
 context("Overall Test")
-# library(gridisl)
 set.seed(1)
 
 data(cpp)
