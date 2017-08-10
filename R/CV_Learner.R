@@ -22,11 +22,21 @@ aorder <- function(mat, index, along = 1) {
   return(result)
 }
 
-# fit/predict a learner with CV
-# again, it's not clear this is properly a learner, but it works for now
-#' @importFrom assertthat assert_that is.count is.flag
-#' @import origami
+#' Fit/Predict a learner with CV
+#' A wrapper around any learner that generates cross-validate predictions
+#' @docType class
+#' @importFrom R6 R6Class
 #' @export
+#' @keywords data
+#' @return \code{\link{Learner}} object with methods for training and prediction
+#' @format \code{\link{R6Class}} object.
+#' @field params A learner to be wrapped
+#' @section Methods:
+#' \describe{
+#'   \item{\code{new(learner)}}{Wraps the \code{learner} in a cross-validation layer.}
+#'   }
+#' @importFrom assertthat assert_that is.count is.flag
+#' @family Learners
 CV_Learner <- R6Class(classname = "CV_Learner",
                      inherit= Learner,
                      portable = TRUE,

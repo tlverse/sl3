@@ -1,9 +1,27 @@
-#' @import data.table
 
-# a dataset with metadata about which columns serve which roles, and helper functions to munge the data as needed for ML
 
-#' @importFrom assertthat assert_that is.count is.flag
+#' Class for Task Data
+#'
+#' A thin wrapper around a \code{data.table} containing the data. Contains metadata about the particular machine learning problem, including which variables are to be used as covariates and outcomes.
+#' @docType class
+#' @importFrom R6 R6Class
 #' @export
+#' @keywords data
+#' @return \code{Learner_Task} object
+#' @format \code{\link{R6Class}} object.
+#' @field data Underlying representation of the data
+#' @field nodes A list indicating which columns of \code{data} have which purpose
+#' @field X a data.table containing the covariates
+#' @field Y a vector containing the outcomes
+#' @field weights a vector containing the observation weights. If weights aren't specified on construction, weights will default to 1
+#' @field id a vector containing the observation units. 
+#' @section Methods:
+#' \describe{
+#'   \item{\code{new(data, covariates, outcome, outcome_type, id, weights, folds, nodes)}}{This method is used to create an object of this class. todo: describe inputs and behavior}
+#'   \item{\code{next_in_chain(new_X)}}{Generates a copy of this task with the set of covariates redefined. This is mostly to be used internally for \code{\link{Pipeline}}s}
+#'   }
+#' @importFrom assertthat assert_that is.count is.flag
+#' @import data.table
 Learner_Task <- R6Class(classname = "Learner_Task",
                        portable = TRUE,
                        class = TRUE,

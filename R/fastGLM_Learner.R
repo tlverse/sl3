@@ -62,8 +62,7 @@ defineX <- function(task, params) {
   }
   X <- cbind(Intercept = 1L, task$X[,covariates, with=FALSE, drop=FALSE])
   if (!is.null(params[["interactions"]])) {
-    # print("adding interactions in GLM:")
-    # str(params[["interactions"]])
+    # print("adding interactions in GLM:"); str(params[["interactions"]])
     ## this is a hack to fix pointer allocation problem (so that X can be modified by reference inside add_interactions_toDT())
     ## see this for more: http://stackoverflow.com/questions/28078640/adding-new-columns-to-a-data-table-by-reference-within-a-function-not-always-wor
     ## and this: http://stackoverflow.com/questions/36434717/adding-column-to-nested-r-data-table-by-reference
@@ -76,44 +75,27 @@ defineX <- function(task, params) {
 
 #' @importFrom assertthat assert_that is.count is.flag
 #' @export
+#' @rdname undocumented_learner
 fastGLM_Learner <- R6Class(classname = "fastGLM_Learner", inherit = Learner, portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(family=gaussian(), use_offset=FALSE, use_weights=FALSE,
-                          sparse=NULL,method = c('eigen','Cholesky','qr'),
-                          trace=FALSE, ...) {
-
-      params=list(
-                          family=gaussian(), start=NULL, etastart=NULL,
-                          mustart=NULL, offset=NULL, acc=1e-08, maxit=25, k=2,
-                          sparselim=.9,camp=.01, eigendec=TRUE, tol.values=1e-7,
-                          tol.vectors=1e-7, tol.solve=.Machine$double.eps,
-                          sparse=NULL,method = c('eigen','Cholesky','qr'),
-                          trace=FALSE, ...)
-      super$initialize(params=params)
-    },
+    initialize = function(family = gaussian(),
+                          method = c('Cholesky', 'eigen','qr'),
+                          ...) {
+      params <- list(family = family, method = method[1L], ...)
+      super$initialize(params = params)
+    }
   ),
   private = list(
     .train = function(task) {
       params <- self$params
-      if ("family" %in% names(params)) {
-        family <- params[["family"]]
-        if (is.character(family)) {
-          family <- get(family, mode = "function", envir = parent.frame())
-          family <- family()
-        }
-        if (!class(family) %in% "family") stop("family arg must be of an object of class 'family'")
-      } else {
-        family <- stats::gaussian()
+      family <- params[["family"]]
+      if (is.character(family)) {
+        family <- get(family, mode = "function", envir = parent.frame())
+        family <- family()
       }
       family_name <- family[["family"]]
       linkinv_fun <- family[["linkinv"]]
-
-      if ("method" %in% names(params)) {
-        method <- params[["method"]]
-      } else {
-        method <- 'Cholesky'
-      }
-
+      method <- params[["method"]]
       X <- defineX(task, params)
 
       SuppressGivenWarnings({
@@ -127,8 +109,9 @@ fastGLM_Learner <- R6Class(classname = "fastGLM_Learner", inherit = Learner, por
         }, GetWarningsToSuppress())
 
       if (inherits(fit_object, "try-error")) { # if failed, fall back on stats::glm
-          # if (gvars$verbose)
-          message("speedglm::speedglm.wfit failed, falling back on stats:glm.fit; ", fit_object)
+          ## todo: enable message below once verbose mode works
+          ## todo: find example where speedglm fails, and this code runs, add to tests
+          # if (gvars$verbose) message("speedglm::speedglm.wfit failed, falling back on stats:glm.fit; ", fit_object)
           ctrl <- glm.control(trace = FALSE)
           SuppressGivenWarnings({
             fit_object <- stats::glm.fit(x = X,

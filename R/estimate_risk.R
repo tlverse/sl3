@@ -1,4 +1,3 @@
-#' @export
 cv_predict <- function(fold, learner, task) {
     training_task <- training(task)
     validation_task <- validation(task)
@@ -9,7 +8,6 @@ cv_predict <- function(fold, learner, task) {
     return(list(cv_preds = cv_preds))
 }
 
-#' @export
 estimate_risk <- function(learner, task) {
     # todo: this obviously is very minimal
     folds <- make_folds(task$data)

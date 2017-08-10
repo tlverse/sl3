@@ -1,8 +1,9 @@
-^README\.md
 ^\.git
 ^\.git/*
+^\.gitignore$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^README\.md
 
 # Automated testing files.
 ^\.travis\.yml$
@@ -12,4 +13,15 @@
 # Files from building the Guide-to-SuperLearner.rmd vignette.
 ^SuperLearner.png$
 ^vignettes/[^/]*_cache
+
+# other miscellaneous non-CRAN files
 xgboost.model
+^docs$
+^README\.Rmd$
+^README\.html$
+^README-.*\.png$
+^cran-comments.md$
+^CONTRIBUTING\.md$
+^refs.bib$
+^Makefile$
+^LICENSE$

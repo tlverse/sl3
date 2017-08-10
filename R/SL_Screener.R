@@ -1,6 +1,7 @@
 #support for SuperLearner screeners, obviously not the most efficient approach, we should reimplement as many as possible
 #' @importFrom assertthat assert_that is.count is.flag
 #' @export
+#' @rdname undocumented_learner
 SL_Screener <- R6Class(classname = "SL_Screener",
                      inherit= Learner,
                      portable = TRUE,

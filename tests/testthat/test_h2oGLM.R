@@ -190,3 +190,5 @@ test_that("h2oGLM_Learner works with regularized regression and internal CV for 
   preds_1 <- h2oGLM_fit$predict()
   # print(h2oGLM_fit)
 })
+
+h2o::h2o.shutdown(prompt = FALSE)

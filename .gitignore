@@ -2,6 +2,8 @@
 .Rhistory
 .RData
 .Ruserdata
+README.html
+vignettes/*.html
 
 # macOS files
 .DS_Store
