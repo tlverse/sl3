@@ -32,10 +32,9 @@ test_learner=function(learner, task, ...){
   test_that("Chaining returns the correct number of rows",expect_equal(nrow(chained_task$X),nrow(task$X)))
 }
 
-<<<<<<< HEAD:tests/testthat/test_zzz1_learners.R
 test_learner(Lrnr_glm, task)
-test_learner(GLMfast_Learner, task)
-test_learner(h2o_GLM_Learner, task)
+test_learner(Lrnr_glm_fast, task)
+test_learner(Lrnr_h2o_glm, task)
 test_learner(Lrnr_h2o_grid, task, algorithm = "glm")
 test_learner(Lrnr_h2o_grid, task, algorithm = "gbm")
 test_learner(Lrnr_h2o_grid, task, algorithm = "randomForest")
