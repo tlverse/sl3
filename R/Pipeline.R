@@ -4,7 +4,7 @@
 #' @importFrom R6 R6Class
 #' @export
 #' @keywords data
-#' @return \code{\link{Learner}} object with methods for training and prediction
+#' @return \code{\link{Lrnr_base}} object with methods for training and prediction
 #' @format \code{\link{R6Class}} object.
 #' @field params A list of learners to chain.
 #' @section Methods:
@@ -14,7 +14,7 @@
 #' @importFrom assertthat assert_that is.count is.flag
 #' @family Learners
 Pipeline <- R6Class(classname = "Pipeline",
-                    inherit= Learner,
+                    inherit= Lrnr_base,
                     portable = TRUE,
                     class = TRUE,
                     public = list(

@@ -7,7 +7,7 @@
 #' @importFrom R6 R6Class
 #' @export
 #' @keywords data
-#' @return \code{Learner_Task} object
+#' @return \code{sl3_Task} object
 #' @format \code{\link{R6Class}} object.
 #' @field data Underlying representation of the data
 #' @field nodes A list indicating which columns of \code{data} have which purpose
@@ -22,7 +22,7 @@
 #'   }
 #' @importFrom assertthat assert_that is.count is.flag
 #' @import data.table
-Learner_Task <- R6Class(classname = "Learner_Task",
+sl3_Task <- R6Class(classname = "sl3_Task",
                        portable = TRUE,
                        class = TRUE,
                        public = list(
@@ -117,7 +117,7 @@ Learner_Task <- R6Class(classname = "Learner_Task",
 )
 
 #' @export
-`[.Learner_Task` <- function(x,i=NULL,j=NULL,...) {
-  Learner_Task$new(x$data[i,],nodes=x$nodes)
+`[.sl3_Task` <- function(x,i=NULL,j=NULL,...) {
+  sl3_Task$new(x$data[i,],nodes=x$nodes)
 }
 

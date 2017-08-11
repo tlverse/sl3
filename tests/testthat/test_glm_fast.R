@@ -25,12 +25,12 @@ covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn"
 cpp[is.na(cpp)] <- 0
 outcome <- "haz"
 
-task <- Learner_Task$new(cpp, covariates = covars, outcome = outcome)
+task <- sl3_Task$new(cpp, covariates = covars, outcome = outcome)
 task$nodes$covariates
 
-test_that("GLM_Learner and GLMfast_Learner learners give the same predictions", {
-  glm_learner <- GLM_Learner$new()
-  fglm_learner <- GLMfast_Learner$new()
+test_that("Lrnr_glm and Learenr_GLMfast learners give the same predictions", {
+  glm_learner <- Lrnr_glm$new()
+  fglm_learner <- Lrnr_glm_fast$new()
   GLM_fit <- glm_learner$train(task)
   glm_preds <- GLM_fit$predict()
   fGLM_fit <- fglm_learner$train(task)
@@ -39,8 +39,8 @@ test_that("GLM_Learner and GLMfast_Learner learners give the same predictions", 
   expect_true(all.equal(as.vector(glm_preds), as.vector(fglm_preds)))
 })
 
-test_that("GLMfast_Learner trains on a subset of covariates (predictors)", {
-  fglm_learner <- GLMfast_Learner$new(covariates = c("apgar1", "apgar5"))
+test_that("Lrnr_glm_fast trains on a subset of covariates (predictors)", {
+  fglm_learner <- Lrnr_glm_fast$new(covariates = c("apgar1", "apgar5"))
   fGLM_fit <- fglm_learner$train(task)
   # print(fGLM_fit)
   # str(fGLM_fit$params)
@@ -54,8 +54,8 @@ test_that("GLMfast_Learner trains on a subset of covariates (predictors)", {
   expect_true(all.equal(as.vector(glm_preds_2), as.vector(fglm_preds_2)))
 })
 
-test_that("GLMfast_Learner defines interactions", {
-  fglm_learner <- GLMfast_Learner$new(covariates = c("apgar1", "apgar5"),
+test_that("Lrnr_glm_fast defines interactions", {
+  fglm_learner <- Lrnr_glm_fast$new(covariates = c("apgar1", "apgar5"),
                                       interactions = list(c("apgar1", "apgar5")))
   fGLM_fit <- fglm_learner$train(task)
   # print(fGLM_fit)
@@ -71,24 +71,24 @@ test_that("GLMfast_Learner defines interactions", {
   expect_true(all.equal(as.vector(glm_preds_3), as.vector(fglm_preds_3)))
 })
 
-test_that("GLMfast_Learner works with screener", {
+test_that("Lrnr_glm_fast works with screener", {
   # example of learner chaining
-  slscreener <- SL_Screener$new("screen.glmnet")
+  slscreener <- Lrnr_pkg_SuperLearner_screener$new("screen.glmnet")
 
   ## FAILS, because screener currently renames the covariates
-  # fglm_learner <- GLMfast_Learner$new(covariates = c("apgar1", "meducyrs"),
+  # fglm_learner <- Lrnr_glm_fast$new(covariates = c("apgar1", "meducyrs"),
   #                                     interactions = list(c("apgar1", "meducyrs")))
-  fglm_learner <- GLMfast_Learner$new()
+  fglm_learner <- Lrnr_glm_fast$new()
   screen_and_glm <- Pipeline$new(slscreener, fglm_learner)
   sg_fit <- screen_and_glm$train(task)
   # print(sg_fit)
 })
 
-test_that("GLMfast_Learner works with stacking", {
-  glm_learner <- GLM_Learner$new()
-  fglm_learner <- GLMfast_Learner$new()
-  screen_and_glm <- Pipeline$new(SL_Screener$new("screen.glmnet"), fglm_learner)
-  SL.glmnet_learner <- SL_Learner$new(SL_wrapper = "SL.glmnet")
+test_that("Lrnr_glm_fast works with stacking", {
+  glm_learner <- Lrnr_glm$new()
+  fglm_learner <- Lrnr_glm_fast$new()
+  screen_and_glm <- Pipeline$new(Lrnr_pkg_SuperLearner_screener$new("screen.glmnet"), fglm_learner)
+  SL.glmnet_learner <- Lrnr_pkg_SuperLearner$new(SL_wrapper = "SL.glmnet")
 
   # now lets stack some learners
   learner_stack <- Stack$new(glm_learner, fglm_learner, screen_and_glm, SL.glmnet_learner)
@@ -98,42 +98,42 @@ test_that("GLMfast_Learner works with stacking", {
   # print(head(preds))
 })
 
-test_that("GLMfast_Learner works with quasibinomial and continuous outcomes in (0,1)", {
+test_that("Lrnr_glm_fast works with quasibinomial and continuous outcomes in (0,1)", {
   cpp_haz_01range <- cpp
   cpp_haz_01range[["haz_01range"]] <- rep_len(c(0.1,0.9), nrow(cpp))
-  task_01range <- Learner_Task$new(cpp_haz_01range, covariates = covars, outcome = "haz_01range")
+  task_01range <- sl3_Task$new(cpp_haz_01range, covariates = covars, outcome = "haz_01range")
 
-  fglm_learner <- GLMfast_Learner$new(family = "quasibinomial")
+  fglm_learner <- Lrnr_glm_fast$new(family = "quasibinomial")
   fGLM_fit <- fglm_learner$train(task_01range)
   # print(fGLM_fit)
 
-  fglm_learner <- GLMfast_Learner$new(family = "binomial")
+  fglm_learner <- Lrnr_glm_fast$new(family = "binomial")
   fGLM_fit <- fglm_learner$train(task_01range)
   # print(fGLM_fit)
 })
 
-test_that("GLMfast_Learner works with different families ('family = ...') and solvers ('method = ...')", {
+test_that("Lrnr_glm_fast works with different families ('family = ...') and solvers ('method = ...')", {
   cpp_hazbin <- cpp
   cpp_hazbin[["haz_bin"]] <- rep_len(c(0L,1L), nrow(cpp))
-  task_bin <- Learner_Task$new(cpp_hazbin, covariates = covars, outcome = "haz_bin")
+  task_bin <- sl3_Task$new(cpp_hazbin, covariates = covars, outcome = "haz_bin")
 
-  fglm_learner <- GLMfast_Learner$new(family = "quasibinomial")
+  fglm_learner <- Lrnr_glm_fast$new(family = "quasibinomial")
   fGLM_fit <- fglm_learner$train(task_bin)
   # print(fGLM_fit)
 
-  fglm_learner <- GLMfast_Learner$new(family = "binomial")
+  fglm_learner <- Lrnr_glm_fast$new(family = "binomial")
   fGLM_fit <- fglm_learner$train(task_bin)
   # print(fGLM_fit)
 
-  fglm_learner <- GLMfast_Learner$new(family = "binomial", method = 'eigen')
+  fglm_learner <- Lrnr_glm_fast$new(family = "binomial", method = 'eigen')
   fGLM_fit <- fglm_learner$train(task_bin)
   # print(fGLM_fit)
 
-  fglm_learner <- GLMfast_Learner$new(family = "binomial", method = 'Cholesky')
+  fglm_learner <- Lrnr_glm_fast$new(family = "binomial", method = 'Cholesky')
   fGLM_fit <- fglm_learner$train(task_bin)
   # print(fGLM_fit)
 
-  fglm_learner <- GLMfast_Learner$new(family = "binomial", method = 'qr')
+  fglm_learner <- Lrnr_glm_fast$new(family = "binomial", method = 'qr')
   fGLM_fit <- fglm_learner$train(task_bin)
   # print(fGLM_fit)
 })
