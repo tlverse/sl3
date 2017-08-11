@@ -54,8 +54,8 @@ test_that("Lrnr_h2o_grid learner works with a grid of regularized GLMs", {
 
 test_that("Lrnr_h2o_grid learner works with a grid of GBMs", {
   h2o::h2o.no_progress()
-  glm_fit <- GLM_Learner$new()$train(task)
-  glm_preds <- glm_fit$predict()
+  glm_preds <- Lrnr_glm$new()$train(task)$predict()
+  glm_preds2 <- Lrnr_glm_fast$new()$train(task)$predict()
 
   h2o_gbm_grid <- Lrnr_h2o_grid$new(algorithm = "gbm",
                                        hyper_params =
@@ -66,16 +66,16 @@ test_that("Lrnr_h2o_grid learner works with a grid of GBMs", {
 
 test_that("stack$predict plays nicely when Learner$predict() is a grid of predictions from several models", {
   h2o::h2o.no_progress()
-  glm_learner <- GLM_Learner$new()
-  fglm_learner <- GLMfast_Learner$new()
+  glm_learner <- Lrnr_glm$new()
+  fglm_learner <- Lrnr_glm_fast$new()
 
-  screen_and_glm <- Pipeline$new(SL_Screener$new("screen.glmnet"), fglm_learner)
+  screen_and_glm <- Pipeline$new(Lrnr_pkg_SuperLearner_screener$new("screen.glmnet"), fglm_learner)
 
   h2o_gbm_grid <- Lrnr_h2o_grid$new(algorithm = "gbm",
                                        hyper_params =
                                         list(ntrees = c(10, 20)))
 
-  SL.glmnet_learner <- SL_Learner$new(SL_wrapper = "SL.glmnet")
+  SL.glmnet_learner <- Lrnr_pkg_SuperLearner$new(SL_wrapper = "SL.glmnet")
 
   # now lets stack some learners:
   learner_stack <- Stack$new(glm_learner, fglm_learner, screen_and_glm, h2o_gbm_grid, SL.glmnet_learner)
@@ -90,15 +90,15 @@ test_that("h2o.pca works with pipelines (not checking results)", {
   h2o::h2o.no_progress()
 
   ## regular GLM
-  fglm_learner <- GLMfast_Learner$new()
+  fglm_learner <- Lrnr_glm_fast$new()
 
   ## screen covars in X, then fit GLM on modified (subset of) X:
-  screen_and_glm <- Pipeline$new(SL_Screener$new("screen.glmnet"), fglm_learner)
+  screen_and_glm <- Pipeline$new(Lrnr_pkg_SuperLearner_screener$new("screen.glmnet"), fglm_learner)
 
   ## apply PCA to X, then fit GLM on results of PCA
   pca_to_glm <- Pipeline$new(
                   Lrnr_h2o_grid$new(algorithm = "pca", k = 2, impute_missing = TRUE),
-                  GLMfast_Learner$new())
+                  Lrnr_glm_fast$new())
 
   # stack above learners and fit them all:
   learner_stack <- Stack$new(fglm_learner, screen_and_glm, pca_to_glm)
