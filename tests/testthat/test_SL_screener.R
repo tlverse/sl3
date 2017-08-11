@@ -10,7 +10,7 @@ if (FALSE) {
 }
 
 library(sl3)
-library(data.table)
+# library(data.table)
 library(origami)
 library(SuperLearner)
 context("Overall Test")
@@ -37,4 +37,4 @@ glm_learner <- GLM_Learner$new()
 screen_and_glm <- Pipeline$new(slscreener, glm_learner)
 SL.glmnet_learner <- SL_Learner$new(SL_wrapper = "SL.glmnet")
 sg_fit <- screen_and_glm$train(task)
-print(sg_fit)
+# print(sg_fit)
