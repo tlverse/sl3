@@ -14,7 +14,7 @@ if(FALSE) {
 library(testthat)
 library(sl3)
 # library(h2o)
-h2o.init(nthread = 1)
+h2o::h2o.init(nthread = 1)
 # library(data.table)
 # library(origami)
 library(SuperLearner)
@@ -29,170 +29,39 @@ outcome <- "haz"
 task <- Learner_Task$new(cpp, covariates = covars, outcome = outcome)
 task$nodes$covariates
 
-test_that("GLM_Learner and h2o_GLM_Learner learners give the same predictions", {
-  h2o::h2o.no_progress()
-  glm_learner <- GLM_Learner$new()
-  GLM_fit <- glm_learner$train(task)
-  glm_preds <- GLM_fit$predict()
+options(sl3.verbose = TRUE)
 
-  h2o_glm_grid <- h2o_grid_Learner$new(algorithm = "glm")
+test_that("h2o_grid_Learner learner works with GLM", {
+  h2o::h2o.no_progress()
+  glm_fit <- GLM_Learner$new()$train(task)
+  glm_preds <- glm_fit$predict()
+
+  h2o_glm_grid <- h2o_grid_Learner$new(algorithm = "glm",
+                                       hyper_params =
+                                        list(alpha = c(0, 0.5, 1)))
   h2o_glm_grid <- h2o_glm_grid$train(task)
-  h2oGLM_preds <- h2oGLM_grid_fit$predict()
+  h2oGLM_preds <- h2o_glm_grid$predict()
 
-  expect_true(is.vector(h2oGLM_preds))
-  # print(sum(glm_preds-h2oGLM_preds))
-  expect_true(all.equal(as.vector(glm_preds), as.vector(h2oGLM_preds)))
+  # expect_true(is.vector(h2oGLM_preds))
+  # # print(sum(glm_preds-h2oGLM_preds))
+  # expect_true(all.equal(as.vector(glm_preds), as.vector(h2oGLM_preds)))
 })
 
-test_that("h2o_GLM_Learner trains based on a subset of covariates (predictors)", {
+test_that("h2o_grid_Learner learner works with GBM", {
   h2o::h2o.no_progress()
-  h2o_glm <- h2o_GLM_Learner$new(covariates = c("apgar1", "apgar5"))
-  h2oGLM_fit <- h2o_glm$train(task)
-  # print(h2oGLM_fit)
-  # str(h2oGLM_fit$params)
-  h2oGLM_preds_2 <- h2oGLM_fit$predict()
-  expect_true(is.vector(h2oGLM_preds_2))
+  glm_fit <- GLM_Learner$new()$train(task)
+  glm_preds <- glm_fit$predict()
 
-  glm.fit <- glm(haz ~ apgar1 + apgar5, data = cpp, family = stats::gaussian())
-  glm_preds_2 <- as.vector(predict(glm.fit))
+  h2o_gbm_grid <- h2o_grid_Learner$new(algorithm = "gbm",
+                                       hyper_params =
+                                        list(ntrees = c(10, 20, 50)))
+  h2o_gbm_grid <- h2o_gbm_grid$train(task)
+  h2ogbm_preds <- h2o_gbm_grid$predict()
 
-  # print(sum(glm_preds_2-h2oGLM_preds_2))
-  expect_true(sum(h2oGLM_preds_2 - glm_preds_2) < 10^(-10), )
-  expect_true(all.equal(as.vector(glm_preds_2), as.vector(h2oGLM_preds_2)))
+  # expect_true(is.vector(h2oGLM_preds))
+  # # print(sum(glm_preds-h2oGLM_preds))
+  # expect_true(all.equal(as.vector(glm_preds), as.vector(h2oGLM_preds)))
 })
 
-test_that("h2o_GLM_Learner defines interactions", {
-  h2o::h2o.no_progress()
-  h2o_glm <- h2o_GLM_Learner$new(covariates = c("apgar1", "apgar5", "parity"),
-                                      interactions = c("apgar1", "apgar5"))
-
-  h2oGLM_fit <- h2o_glm$train(task)
-  # print(h2oGLM_fit)
-  # str(h2oGLM_fit$params)
-  h2oGLM_preds_3 <- h2oGLM_fit$predict()
-  expect_true(is.vector(h2oGLM_preds_3))
-
-  glm.fit <- glm(haz ~ apgar1 + apgar5 + parity + apgar1:apgar5, data = cpp, family = stats::gaussian())
-  # print(glm.fit)
-  glm_preds_3 <- as.vector(predict(glm.fit))
-
-  expect_true(sum(h2oGLM_preds_3 - glm_preds_3) < 10^(-10))
-  expect_true(all.equal(as.vector(glm_preds_3), as.vector(h2oGLM_preds_3)))
-})
-
-test_that("h2o_GLM_Learner works with screener", {
-  h2o::h2o.no_progress()
-  # example of learner chaining
-  slscreener <- SL_Screener$new("screen.glmnet")
-
-  ## FAILS, because screener currently renames the covariates
-  # h2o_glm <- h2o_GLM_Learner$new(covariates = c("apgar1", "meducyrs"),
-  #                                     interactions = list(c("apgar1", "meducyrs")))
-  h2o_glm <- h2o_GLM_Learner$new()
-  screen_and_glm <- Pipeline$new(slscreener, h2o_glm)
-  sg_fit <- screen_and_glm$train(task)
-  # print(sg_fit)
-})
-
-test_that("h2o_GLM_Learner works with stacking", {
-  h2o::h2o.no_progress()
-  glm_learner <- GLM_Learner$new()
-  h2o_glm <- h2o_GLM_Learner$new()
-  screen_and_glm <- Pipeline$new(SL_Screener$new("screen.glmnet"), h2o_glm)
-  SL.glmnet_learner <- SL_Learner$new(SL_wrapper = "SL.glmnet")
-
-  # now lets stack some learners
-  learner_stack <- Stack$new(glm_learner, h2o_glm, screen_and_glm, SL.glmnet_learner)
-  stack_fit <- learner_stack$train(task)
-  # print(stack_fit)
-  preds <- stack_fit$predict()
-  # print(head(preds))
-})
-
-## quasibinomial is broken is all recent releases of h2o
-# test_that("h2o_GLM_Learner works with quasibinomial and continuous outcomes in (0,1)", {
-#   h2o::h2o.no_progress()
-#   cpp_haz_01range <- cpp
-#   cpp_haz_01range[["haz_01range"]] <- rep_len(c(.1,.2,.3,.4,.5,.6,.7,.8,.9), nrow(cpp))
-#   task_01range <- Learner_Task$new(cpp_haz_01range, covariates = covars, outcome = "haz_01range")
-
-#   h2o_glm <- h2o_GLM_Learner$new(family = "quasibinomial")
-#   h2oGLM_fit <- h2o_glm$train(task_01range)
-#   preds_1 <- h2oGLM_fit$predict()
-#   # print(h2oGLM_fit)
-
-#   fglm_learner <- GLMfast_Learner$new(family = "quasibinomial")
-#   fglm_fit <- fglm_learner$train(task_01range)
-#   fglm_preds_2 <- fglm_fit$predict()
-
-#   h2o_glm <- h2o_GLM_Learner$new(family = "binomial")
-#   expect_error(
-#     h2oGLM_fit <- h2o_glm$train(task_01range)
-#   )
-# })
-
-## quasibinomial is broken is all recent releases of h2o
-test_that("h2o_GLM_Learner works with binomial families for binary outcome and gives the same result as speedglm", {
-  h2o::h2o.no_progress()
-  cpp_hazbin <- cpp
-  cpp_hazbin[["haz_bin"]] <- rep_len(c(0L,1L), nrow(cpp))
-  task_bin <- Learner_Task$new(cpp_hazbin, covariates = covars, outcome = "haz_bin")
-
-  # h2o_glm <- h2o_GLM_Learner$new(family = "quasibinomial")
-  # h2oGLM_fit <- h2o_glm$train(task_bin)
-  # preds_1 <- h2oGLM_fit$predict()
-  # # print(h2oGLM_fit)
-
-  fglm_learner <- GLMfast_Learner$new(family = "quasibinomial")
-  fglm_fit <- fglm_learner$train(task_bin)
-  fglm_preds_2 <- fglm_fit$predict()
-
-  h2o_glm <- h2o_GLM_Learner$new(family = "binomial")
-  h2oGLM_fit <- h2o_glm$train(task_bin)
-  preds_2 <- h2oGLM_fit$predict()
-
-  expect_true(all.equal(fglm_preds_2, preds_2))
-  # print(h2oGLM_fit)
-  # expect_true(all.equal(preds_1, preds_2))
-})
-
-test_that("h2o_GLM_Learner works with different solvers", {
-  h2o::h2o.no_progress()
-  cpp_hazbin <- cpp
-  cpp_hazbin[["haz_bin"]] <- rep_len(c(0L,1L), nrow(cpp))
-  task_bin <- Learner_Task$new(cpp_hazbin, covariates = covars, outcome = "haz_bin")
-
-  h2o_glm <- h2o_GLM_Learner$new(family = "binomial", solver = "L_BFGS")
-  h2oGLM_fit <- h2o_glm$train(task_bin)
-  preds_1 <- h2oGLM_fit$predict()
-  # print(h2oGLM_fit)
-
-  h2o_glm <- h2o_GLM_Learner$new(family = "binomial", solver = "IRLSM")
-  h2oGLM_fit <- h2o_glm$train(task_bin)
-  preds_1 <- h2oGLM_fit$predict()
-  # print(h2oGLM_fit)
-
-  h2o_glm <- h2o_GLM_Learner$new(family = "binomial", solver = "COORDINATE_DESCENT")
-  h2oGLM_fit <- h2o_glm$train(task_bin)
-  preds_1 <- h2oGLM_fit$predict()
-  # print(h2oGLM_fit)
-
-  h2o_glm <- h2o_GLM_Learner$new(family = "binomial", solver = "COORDINATE_DESCENT_NAIVE")
-  h2oGLM_fit <- h2o_glm$train(task_bin)
-  preds_1 <- h2oGLM_fit$predict()
-  # print(h2oGLM_fit)
-})
-
-
-test_that("h2o_GLM_Learner works with regularized regression and internal CV for lambda", {
-  h2o::h2o.no_progress()
-  cpp_hazbin <- cpp
-  cpp_hazbin[["haz_bin"]] <- rep_len(c(0L,1L), nrow(cpp))
-  task_bin <- Learner_Task$new(cpp_hazbin, covariates = covars, outcome = "haz_bin")
-  h2o_glm <- h2o_GLM_Learner$new(family = "binomial", alpha = 0.5, lambda_search = TRUE, nlambdas = 20,  nfolds = 5)
-  h2oGLM_fit <- h2o_glm$train(task_bin)
-  preds_1 <- h2oGLM_fit$predict()
-  # print(h2oGLM_fit)
-})
 
 h2o::h2o.shutdown(prompt = FALSE)

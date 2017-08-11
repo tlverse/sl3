@@ -1,3 +1,21 @@
+predict_h2o_new <- function(model_id, frame_id) {
+  url <- paste0('Predictions/models/', model_id, '/frames/',  frame_id)
+  res <- h2o:::.h2o.__remoteSend(url, method = "POST", h2oRestApiVersion = 4)
+  job_key <- res$key$name
+  dest_key <- res$dest$name
+
+  h2o:::.h2o.__waitOnJob(job_key, pollInterval = 0.01)
+
+  newpreds <- h2o::h2o.getFrame(dest_key)
+  if (ncol(newpreds) > 1) newpreds <- newpreds[["p1"]]
+
+  if ("p1" %in% colnames(newpreds)) {
+    return(newpreds[,"p1"])
+  } else {
+    return(newpreds[,"predict"])
+  }
+}
+
 #' @importFrom assertthat assert_that is.count is.flag
 #' @export
 #' @rdname undocumented_learner
@@ -89,21 +107,37 @@ h2o_grid_Learner <- R6Class(classname = "h2o_grid_Learner", inherit = Learner, p
     }
     fit_object <- h2o::h2o.getGrid(fit_object@grid_id)
 
+    if (verbose) {
+      print(paste0("h2o grid object ID: ", fit_object@grid_id))
+      print("h2o grid models: "); print(fit_object)
+    }
+
     return(fit_object)
   },
 
+  ##TODO: write S3 predict method for object "H2OGrid" or just write a new custom (not S3 method)
   .predict = function(task = NULL) {
     verbose <- getOption("sl3.verbose")
+    if (verbose) h2o::h2o.show_progress() else h2o::h2o.no_progress()
+
     X <- define_h2o_X(task, private$.covariates, self$params)
-    browser()
-    ##TODO: write S3 predict method for object "H2OGrid" or just write a new custom (not S3 method)
-    predictions <- h2o::h2o.predict(private$.fit_object, X)
-    if ("p1" %in% colnames(predictions)) {
-      predictions <- as.vector(predictions[,"p1"])
-    } else {
-      predictions <- as.vector(predictions[,"predict"])
+
+    ## Put all model fits from the grid into a single list for easier access:
+    modelfits_all <- lapply(private$.fit_object@model_ids, function(model_id) h2o::h2o.getModel(model_id))
+    modelfits_all[[1]]@model_id
+
+    pAout_h2o <- NULL
+    for (idx in seq_along(modelfits_all)) {
+      pAout_h2o <- h2o::h2o.cbind(
+                    pAout_h2o,
+                    predict_h2o_new(modelfits_all[[idx]]@model_id, frame_id = h2o::h2o.getId(X))
+                    )
     }
-    # predictions <- as.data.table(predictions)
+    names(pAout_h2o) <- paste0(names(pAout_h2o), "_", seq_along(modelfits_all))
+
+    predictions <- as.data.table(pAout_h2o)
+    h2o::h2o.show_progress()
     return(predictions)
-}
+  }
+
 ), )
