@@ -42,41 +42,41 @@ test_that("GLM_Learner and h2o_GLM_Learner learners give the same predictions", 
   expect_true(all.equal(as.vector(glm_preds), as.vector(h2oGLM_preds)))
 })
 
-# test_that("h2o_GLM_Learner trains based on a subset of covariates (predictors)", {
-#   h2o::h2o.no_progress()
-#   h2o_glm <- h2o_GLM_Learner$new(covariates = c("apgar1", "apgar5"))
-#   h2oGLM_fit <- h2o_glm$train(task)
-#   # print(h2oGLM_fit)
-#   # str(h2oGLM_fit$params)
-#   h2oGLM_preds_2 <- h2oGLM_fit$predict()
-#   expect_true(is.vector(h2oGLM_preds_2))
+test_that("h2o_GLM_Learner trains based on a subset of covariates (predictors)", {
+  h2o::h2o.no_progress()
+  h2o_glm <- h2o_GLM_Learner$new(covariates = c("apgar1", "apgar5"))
+  h2oGLM_fit <- h2o_glm$train(task)
+  # print(h2oGLM_fit)
+  # str(h2oGLM_fit$params)
+  h2oGLM_preds_2 <- h2oGLM_fit$predict()
+  expect_true(is.vector(h2oGLM_preds_2))
 
-#   glm.fit <- glm(haz ~ apgar1 + apgar5, data = cpp, family = stats::gaussian())
-#   glm_preds_2 <- as.vector(predict(glm.fit))
+  glm.fit <- glm(haz ~ apgar1 + apgar5, data = cpp, family = stats::gaussian())
+  glm_preds_2 <- as.vector(predict(glm.fit))
 
-#   # print(sum(glm_preds_2-h2oGLM_preds_2))
-#   expect_true(sum(h2oGLM_preds_2 - glm_preds_2) < 10^(-10), )
-#   expect_true(all.equal(as.vector(glm_preds_2), as.vector(h2oGLM_preds_2)))
-# })
+  # print(sum(glm_preds_2-h2oGLM_preds_2))
+  expect_true(sum(h2oGLM_preds_2 - glm_preds_2) < 10^(-10), )
+  expect_true(all.equal(as.vector(glm_preds_2), as.vector(h2oGLM_preds_2)))
+})
 
-# test_that("h2o_GLM_Learner defines interactions", {
-#   h2o::h2o.no_progress()
-#   h2o_glm <- h2o_GLM_Learner$new(covariates = c("apgar1", "apgar5", "parity"),
-#                                       interactions = c("apgar1", "apgar5"))
+test_that("h2o_GLM_Learner defines interactions", {
+  h2o::h2o.no_progress()
+  h2o_glm <- h2o_GLM_Learner$new(covariates = c("apgar1", "apgar5", "parity"),
+                                      interactions = c("apgar1", "apgar5"))
 
-#   h2oGLM_fit <- h2o_glm$train(task)
-#   # print(h2oGLM_fit)
-#   # str(h2oGLM_fit$params)
-#   h2oGLM_preds_3 <- h2oGLM_fit$predict()
-#   expect_true(is.vector(h2oGLM_preds_3))
+  h2oGLM_fit <- h2o_glm$train(task)
+  # print(h2oGLM_fit)
+  # str(h2oGLM_fit$params)
+  h2oGLM_preds_3 <- h2oGLM_fit$predict()
+  expect_true(is.vector(h2oGLM_preds_3))
 
-#   glm.fit <- glm(haz ~ apgar1 + apgar5 + parity + apgar1:apgar5, data = cpp, family = stats::gaussian())
-#   # print(glm.fit)
-#   glm_preds_3 <- as.vector(predict(glm.fit))
+  glm.fit <- glm(haz ~ apgar1 + apgar5 + parity + apgar1:apgar5, data = cpp, family = stats::gaussian())
+  # print(glm.fit)
+  glm_preds_3 <- as.vector(predict(glm.fit))
 
-#   expect_true(sum(h2oGLM_preds_3 - glm_preds_3) < 10^(-10))
-#   expect_true(all.equal(as.vector(glm_preds_3), as.vector(h2oGLM_preds_3)))
-# })
+  expect_true(sum(h2oGLM_preds_3 - glm_preds_3) < 10^(-10))
+  expect_true(all.equal(as.vector(glm_preds_3), as.vector(h2oGLM_preds_3)))
+})
 
 # test_that("h2o_GLM_Learner works with screener", {
 #   h2o::h2o.no_progress()
