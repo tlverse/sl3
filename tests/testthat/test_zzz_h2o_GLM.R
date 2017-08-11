@@ -182,15 +182,15 @@ test_that("h2o_GLM_Learner works with different solvers", {
 })
 
 
-# test_that("h2o_GLM_Learner works with regularized regression and internal CV for lambda", {
-#   h2o::h2o.no_progress()
-#   cpp_hazbin <- cpp
-#   cpp_hazbin[["haz_bin"]] <- rep_len(c(0L,1L), nrow(cpp))
-#   task_bin <- Learner_Task$new(cpp_hazbin, covariates = covars, outcome = "haz_bin")
-#   h2o_glm <- h2o_GLM_Learner$new(family = "binomial", alpha = 0.5, lambda_search = TRUE, nlambdas = 20,  nfolds = 5)
-#   h2oGLM_fit <- h2o_glm$train(task_bin)
-#   preds_1 <- h2oGLM_fit$predict()
-#   # print(h2oGLM_fit)
-# })
+test_that("h2o_GLM_Learner works with regularized regression and internal CV for lambda", {
+  h2o::h2o.no_progress()
+  cpp_hazbin <- cpp
+  cpp_hazbin[["haz_bin"]] <- rep_len(c(0L,1L), nrow(cpp))
+  task_bin <- Learner_Task$new(cpp_hazbin, covariates = covars, outcome = "haz_bin")
+  h2o_glm <- h2o_GLM_Learner$new(family = "binomial", alpha = 0.5, lambda_search = TRUE, nlambdas = 20,  nfolds = 5)
+  h2oGLM_fit <- h2o_glm$train(task_bin)
+  preds_1 <- h2oGLM_fit$predict()
+  # print(h2oGLM_fit)
+})
 
 h2o::h2o.shutdown(prompt = FALSE)
