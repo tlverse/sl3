@@ -92,42 +92,42 @@ test_that("h2o_GLM_Learner works with screener", {
   # print(sg_fit)
 })
 
-# test_that("h2o_GLM_Learner works with stacking", {
+test_that("h2o_GLM_Learner works with stacking", {
+  h2o::h2o.no_progress()
+  glm_learner <- GLM_Learner$new()
+  h2o_glm <- h2o_GLM_Learner$new()
+  screen_and_glm <- Pipeline$new(SL_Screener$new("screen.glmnet"), h2o_glm)
+  SL.glmnet_learner <- SL_Learner$new(SL_wrapper = "SL.glmnet")
+
+  # now lets stack some learners
+  learner_stack <- Stack$new(glm_learner, h2o_glm, screen_and_glm, SL.glmnet_learner)
+  stack_fit <- learner_stack$train(task)
+  # print(stack_fit)
+  preds <- stack_fit$predict()
+  # print(head(preds))
+})
+
+## quasibinomial is broken is all recent releases of h2o
+# test_that("h2o_GLM_Learner works with quasibinomial and continuous outcomes in (0,1)", {
 #   h2o::h2o.no_progress()
-#   glm_learner <- GLM_Learner$new()
-#   h2o_glm <- h2o_GLM_Learner$new()
-#   screen_and_glm <- Pipeline$new(SL_Screener$new("screen.glmnet"), h2o_glm)
-#   SL.glmnet_learner <- SL_Learner$new(SL_wrapper = "SL.glmnet")
+#   cpp_haz_01range <- cpp
+#   cpp_haz_01range[["haz_01range"]] <- rep_len(c(.1,.2,.3,.4,.5,.6,.7,.8,.9), nrow(cpp))
+#   task_01range <- Learner_Task$new(cpp_haz_01range, covariates = covars, outcome = "haz_01range")
 
-#   # now lets stack some learners
-#   learner_stack <- Stack$new(glm_learner, h2o_glm, screen_and_glm, SL.glmnet_learner)
-#   stack_fit <- learner_stack$train(task)
-#   # print(stack_fit)
-#   preds <- stack_fit$predict()
-#   # print(head(preds))
+#   h2o_glm <- h2o_GLM_Learner$new(family = "quasibinomial")
+#   h2oGLM_fit <- h2o_glm$train(task_01range)
+#   preds_1 <- h2oGLM_fit$predict()
+#   # print(h2oGLM_fit)
+
+#   fglm_learner <- GLMfast_Learner$new(family = "quasibinomial")
+#   fglm_fit <- fglm_learner$train(task_01range)
+#   fglm_preds_2 <- fglm_fit$predict()
+
+#   h2o_glm <- h2o_GLM_Learner$new(family = "binomial")
+#   expect_error(
+#     h2oGLM_fit <- h2o_glm$train(task_01range)
+#   )
 # })
-
-# ## quasibinomial is broken is all recent releases of h2o
-# # test_that("h2o_GLM_Learner works with quasibinomial and continuous outcomes in (0,1)", {
-# #   h2o::h2o.no_progress()
-# #   cpp_haz_01range <- cpp
-# #   cpp_haz_01range[["haz_01range"]] <- rep_len(c(.1,.2,.3,.4,.5,.6,.7,.8,.9), nrow(cpp))
-# #   task_01range <- Learner_Task$new(cpp_haz_01range, covariates = covars, outcome = "haz_01range")
-
-# #   h2o_glm <- h2o_GLM_Learner$new(family = "quasibinomial")
-# #   h2oGLM_fit <- h2o_glm$train(task_01range)
-# #   preds_1 <- h2oGLM_fit$predict()
-# #   # print(h2oGLM_fit)
-
-# #   fglm_learner <- GLMfast_Learner$new(family = "quasibinomial")
-# #   fglm_fit <- fglm_learner$train(task_01range)
-# #   fglm_preds_2 <- fglm_fit$predict()
-
-# #   h2o_glm <- h2o_GLM_Learner$new(family = "binomial")
-# #   expect_error(
-# #     h2oGLM_fit <- h2o_glm$train(task_01range)
-# #   )
-# # })
 
 # ## quasibinomial is broken is all recent releases of h2o
 # test_that("h2o_GLM_Learner works with binomial families for binary outcome and gives the same result as speedglm", {
