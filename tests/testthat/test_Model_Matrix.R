@@ -34,13 +34,13 @@ test_that("GLMfast_Learner trains based on a subset of covariates (predictors)",
     # print(fGLM_fit)
     # str(fGLM_fit$params)
     fglm_preds_2 <- fGLM_fit$predict()
-    expect_true(is.vector(fglm_preds_2))
+    expect_true(data.table::is.data.table(fglm_preds_2))
 
     glm.fit <- glm(haz ~ apgar1 + apgar5, data = cpp, family = stats::gaussian())
     glm_preds_2 <- as.vector(predict(glm.fit))
 
     expect_true(sum(fglm_preds_2 - glm_preds_2) < 10^(-10), )
-    expect_true(all.equal(as.vector(glm_preds_2), as.vector(fglm_preds_2)))
+    expect_true(all.equal(as.vector(glm_preds_2), as.vector(fglm_preds_2[[1]])))
 })
 
 test_that("use chaining to subset predictors (Model_Matrix as first learner)", {
@@ -56,10 +56,7 @@ test_that("use chaining to subset predictors (Model_Matrix as first learner)", {
     fglm_learner <- GLMfast_Learner$new(covariates = c("apgar1", "apgar5"))
     fglm_preds <- fGLM_fit$predict()
 
-    print(fglm_preds - glm_preds)
-    print("all equal:")
-    print(all.equal(as.vector(glm_preds), as.vector(fglm_preds)))
-    expect_true(all.equal(as.vector(glm_preds), as.vector(fglm_preds)))
+    expect_true(all.equal(as.vector(glm_preds), as.vector(fglm_preds[[1]])))
 })
 
 test_that("model matrix defines interactions", {
@@ -72,5 +69,5 @@ test_that("model matrix defines interactions", {
     fglm_learner <- GLMfast_Learner$new(covariates = c("apgar1", "apgar5"), interactions = list(c("apgar1", "apgar5")))
     fGLM_fit <- fglm_learner$train(task)
     fglm_preds <- fGLM_fit$predict()
-    expect_true(all.equal(as.vector(glm_preds), as.vector(fglm_preds)))
+    expect_true(all.equal(as.vector(glm_preds), as.vector(fglm_preds[[1]])))
 })
