@@ -78,19 +78,19 @@ test_that("h2o_GLM_Learner defines interactions", {
   expect_true(all.equal(as.vector(glm_preds_3), as.vector(h2oGLM_preds_3)))
 })
 
-# test_that("h2o_GLM_Learner works with screener", {
-#   h2o::h2o.no_progress()
-#   # example of learner chaining
-#   slscreener <- SL_Screener$new("screen.glmnet")
+test_that("h2o_GLM_Learner works with screener", {
+  h2o::h2o.no_progress()
+  # example of learner chaining
+  slscreener <- SL_Screener$new("screen.glmnet")
 
-#   ## FAILS, because screener currently renames the covariates
-#   # h2o_glm <- h2o_GLM_Learner$new(covariates = c("apgar1", "meducyrs"),
-#   #                                     interactions = list(c("apgar1", "meducyrs")))
-#   h2o_glm <- h2o_GLM_Learner$new()
-#   screen_and_glm <- Pipeline$new(slscreener, h2o_glm)
-#   sg_fit <- screen_and_glm$train(task)
-#   # print(sg_fit)
-# })
+  ## FAILS, because screener currently renames the covariates
+  # h2o_glm <- h2o_GLM_Learner$new(covariates = c("apgar1", "meducyrs"),
+  #                                     interactions = list(c("apgar1", "meducyrs")))
+  h2o_glm <- h2o_GLM_Learner$new()
+  screen_and_glm <- Pipeline$new(slscreener, h2o_glm)
+  sg_fit <- screen_and_glm$train(task)
+  # print(sg_fit)
+})
 
 # test_that("h2o_GLM_Learner works with stacking", {
 #   h2o::h2o.no_progress()
