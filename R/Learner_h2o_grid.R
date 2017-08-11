@@ -1,20 +1,24 @@
-predict_h2o_new <- function(model_id, frame_id) {
-  url <- paste0('Predictions/models/', model_id, '/frames/',  frame_id)
-  res <- h2o:::.h2o.__remoteSend(url, method = "POST", h2oRestApiVersion = 4)
-  job_key <- res$key$name
-  dest_key <- res$dest$name
+# predict_h2o_new <- function(model_id, frame_id) {
+#   url <- paste0('Predictions/models/', model_id, '/frames/',  frame_id)
+#   browser()
+#   # res <- h2o:::.h2o.__remoteSend(url, method = "POST", h2oRestApiVersion = 4)
+#   res <- h2o:::.h2o.doRawPOST(h2oRestApiVersion = 4, urlSuffix = url)
 
-  h2o:::.h2o.__waitOnJob(job_key, pollInterval = 0.01)
+#   job_key <- res$key$name
+#   dest_key <- res$dest$name
 
-  newpreds <- h2o::h2o.getFrame(dest_key)
-  if (ncol(newpreds) > 1) newpreds <- newpreds[["p1"]]
+#   h2o:::.h2o.__waitOnJob(job_key, pollInterval = 0.01)
 
-  if ("p1" %in% colnames(newpreds)) {
-    return(newpreds[,"p1"])
-  } else {
-    return(newpreds[,"predict"])
-  }
-}
+#   newpreds <- h2o::h2o.getFrame(dest_key)
+
+#   if (ncol(newpreds) > 1) newpreds <- newpreds[["p1"]]
+
+#   if ("p1" %in% colnames(newpreds)) {
+#     return(newpreds[,"p1"])
+#   } else {
+#     return(newpreds[,"predict"])
+#   }
+# }
 
 #' @importFrom assertthat assert_that is.count is.flag
 #' @export
@@ -130,7 +134,8 @@ h2o_grid_Learner <- R6Class(classname = "h2o_grid_Learner", inherit = Learner, p
     for (idx in seq_along(modelfits_all)) {
       pAout_h2o <- h2o::h2o.cbind(
                     pAout_h2o,
-                    predict_h2o_new(modelfits_all[[idx]]@model_id, frame_id = h2o::h2o.getId(X))
+                    # predict_h2o_new(modelfits_all[[idx]]@model_id, frame_id = h2o::h2o.getId(X))
+                    h2o::h2o.predict(modelfits_all[[idx]], X)
                     )
     }
     names(pAout_h2o) <- paste0(names(pAout_h2o), "_", seq_along(modelfits_all))

@@ -14,7 +14,7 @@ if(FALSE) {
 library(testthat)
 library(sl3)
 library(h2o)
-h2o.init(nthread = 1)
+h2o.init(nthread = 1); sleep(2)
 # library(data.table)
 # library(origami)
 library(SuperLearner)

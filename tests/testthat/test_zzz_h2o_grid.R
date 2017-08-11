@@ -1,4 +1,4 @@
-context("Test h2o GLM")
+context("Test h2o grid")
 
 if(FALSE) {
   setwd(".."); setwd(".."); getwd()
@@ -13,8 +13,8 @@ if(FALSE) {
 
 library(testthat)
 library(sl3)
-# library(h2o)
-h2o::h2o.init(nthread = 1)
+library(h2o)
+h2o.init(nthread = 1); sleep(2)
 # library(data.table)
 # library(origami)
 library(SuperLearner)
@@ -29,7 +29,7 @@ outcome <- "haz"
 task <- Learner_Task$new(cpp, covariates = covars, outcome = outcome)
 task$nodes$covariates
 
-options(sl3.verbose = TRUE)
+options(sl3.verbose = FALSE)
 
 test_that("h2o_grid_Learner learner works with GLM", {
   h2o::h2o.no_progress()

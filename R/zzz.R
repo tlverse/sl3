@@ -1,3 +1,6 @@
+#' @importFrom utils packageVersion
+NULL
+
 #' Querying/setting a single \code{sl3} option
 #'
 #' To list all \code{sl3} options, just run this function without any parameters provided. To query only one value, pass the first parameter.
@@ -22,7 +25,7 @@ sl3Options <- function (o, value)  {
         return(res[[o]])
     print("Possible `sl3` options:")
     print(names(res))
-    stop(o %+% ": this options does not exist")
+    stop(paste0(o, ": this options does not exist"))
   } else {
     if (!o %in% names(res))
       stop(paste("Invalid option name:", o))
