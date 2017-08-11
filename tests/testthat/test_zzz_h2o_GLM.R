@@ -154,32 +154,32 @@ test_that("h2o_GLM_Learner works with binomial families for binary outcome and g
   # expect_true(all.equal(preds_1, preds_2))
 })
 
-# test_that("h2o_GLM_Learner works with different solvers", {
-#   h2o::h2o.no_progress()
-#   cpp_hazbin <- cpp
-#   cpp_hazbin[["haz_bin"]] <- rep_len(c(0L,1L), nrow(cpp))
-#   task_bin <- Learner_Task$new(cpp_hazbin, covariates = covars, outcome = "haz_bin")
+test_that("h2o_GLM_Learner works with different solvers", {
+  h2o::h2o.no_progress()
+  cpp_hazbin <- cpp
+  cpp_hazbin[["haz_bin"]] <- rep_len(c(0L,1L), nrow(cpp))
+  task_bin <- Learner_Task$new(cpp_hazbin, covariates = covars, outcome = "haz_bin")
 
-#   h2o_glm <- h2o_GLM_Learner$new(family = "binomial", solver = "L_BFGS")
-#   h2oGLM_fit <- h2o_glm$train(task_bin)
-#   preds_1 <- h2oGLM_fit$predict()
-#   # print(h2oGLM_fit)
+  h2o_glm <- h2o_GLM_Learner$new(family = "binomial", solver = "L_BFGS")
+  h2oGLM_fit <- h2o_glm$train(task_bin)
+  preds_1 <- h2oGLM_fit$predict()
+  # print(h2oGLM_fit)
 
-#   h2o_glm <- h2o_GLM_Learner$new(family = "binomial", solver = "IRLSM")
-#   h2oGLM_fit <- h2o_glm$train(task_bin)
-#   preds_1 <- h2oGLM_fit$predict()
-#   # print(h2oGLM_fit)
+  h2o_glm <- h2o_GLM_Learner$new(family = "binomial", solver = "IRLSM")
+  h2oGLM_fit <- h2o_glm$train(task_bin)
+  preds_1 <- h2oGLM_fit$predict()
+  # print(h2oGLM_fit)
 
-#   h2o_glm <- h2o_GLM_Learner$new(family = "binomial", solver = "COORDINATE_DESCENT")
-#   h2oGLM_fit <- h2o_glm$train(task_bin)
-#   preds_1 <- h2oGLM_fit$predict()
-#   # print(h2oGLM_fit)
+  h2o_glm <- h2o_GLM_Learner$new(family = "binomial", solver = "COORDINATE_DESCENT")
+  h2oGLM_fit <- h2o_glm$train(task_bin)
+  preds_1 <- h2oGLM_fit$predict()
+  # print(h2oGLM_fit)
 
-#   h2o_glm <- h2o_GLM_Learner$new(family = "binomial", solver = "COORDINATE_DESCENT_NAIVE")
-#   h2oGLM_fit <- h2o_glm$train(task_bin)
-#   preds_1 <- h2oGLM_fit$predict()
-#   # print(h2oGLM_fit)
-# })
+  h2o_glm <- h2o_GLM_Learner$new(family = "binomial", solver = "COORDINATE_DESCENT_NAIVE")
+  h2oGLM_fit <- h2o_glm$train(task_bin)
+  preds_1 <- h2oGLM_fit$predict()
+  # print(h2oGLM_fit)
+})
 
 
 # test_that("h2o_GLM_Learner works with regularized regression and internal CV for lambda", {
