@@ -1,4 +1,4 @@
-#' Base Class for all sl3 learners. 
+#' Base Class for all sl3 learners.
 #'
 #' Generally this base Learner class shouldn't be instantiated. It's intended to be an abstract class, although abstract classes aren't explicitly supported by R6.
 #' @docType class
@@ -37,15 +37,6 @@ Learner <- R6Class(classname = "Learner",
                      train = function(task) {
                         #trains learner to data
                         assert_that(is(task,"Learner_Task"))
-
-                        ##OS 08/08/17: Over-write task covariates (if specified for this learner as part of 'params'). Otherwise copy covariates from task.
-                        ##todo: add checks for errors, params$covariates must be alway a subset of task$nodes$covariates
-                        # covariates <- task$nodes$covariates
-                        # if ("covariates" %in% names(self$params)) {
-                        #   self$params$covariates <- intersect(covariates, self$params$covariates)
-                        # } else {
-                        #   self$params$covariates <- covariates
-                        # }
 
                         #todo: add error handling
                         fit_object = private$.train(task)
