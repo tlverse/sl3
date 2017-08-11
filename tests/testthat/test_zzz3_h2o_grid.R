@@ -14,7 +14,7 @@ if(FALSE) {
 library(testthat)
 library(sl3)
 library(h2o)
-h2o::h2o.init(nthread = 1); Sys.sleep(1)
+h2o::h2o.init(nthread = 1);
 # library(data.table)
 # library(origami)
 library(SuperLearner)
@@ -106,4 +106,4 @@ test_that("h2o.pca works with pipelines (not checking results)", {
   preds <- stack_fit$predict()
 })
 
-h2o::h2o.shutdown(prompt = FALSE)
+h2o::h2o.shutdown(prompt = FALSE); Sys.sleep(3)

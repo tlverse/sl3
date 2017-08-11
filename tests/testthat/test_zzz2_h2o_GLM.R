@@ -14,7 +14,7 @@ if(FALSE) {
 library(testthat)
 library(sl3)
 library(h2o)
-h2o::h2o.init(nthread = 1); Sys.sleep(1)
+h2o::h2o.init(nthread = 1);
 # library(data.table)
 # library(origami)
 library(SuperLearner)
@@ -182,7 +182,6 @@ test_that("h2o_GLM_Learner works with different solvers", {
   # print(h2oGLM_fit)
 })
 
-
 test_that("h2o_GLM_Learner works with regularized regression and internal CV for lambda", {
   h2o::h2o.no_progress()
   cpp_hazbin <- cpp
@@ -194,4 +193,4 @@ test_that("h2o_GLM_Learner works with regularized regression and internal CV for
   # print(h2oGLM_fit)
 })
 
-h2o::h2o.shutdown(prompt = FALSE)
+h2o::h2o.shutdown(prompt = FALSE); Sys.sleep(3)
