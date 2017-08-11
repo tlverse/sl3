@@ -17,9 +17,9 @@ Lrnr_model.matrix <- R6Class(classname = "Lrnr_model.matrix",
                            mm_X=model.matrix(self$params$formula,data = task$X)
                            mm_task=task$next_in_chain(mm_X)
                            fit_object=list(mm_task=mm_task)
-                           
+
                            return(fit_object)
-                           
+
                          },
                          .predict = function(task = NULL) {
                            if(identical(task,private$.training_task)){
@@ -38,10 +38,10 @@ Lrnr_model.matrix <- R6Class(classname = "Lrnr_model.matrix",
                              return(mm_task)
                            }
                          }
-                         
+
                        )
-                       
+
 )
 
 
-  
+
