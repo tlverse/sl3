@@ -7,7 +7,7 @@ if (FALSE) {
     library("devtools")
     document()
     load_all("./")  # load all R files in /R and datasets in /data. Ignores NAMESPACE:
-    # devtools::check() # runs full check
+    devtools::check() # runs full check
     setwd("..")
     install("sl3", build_vignettes = FALSE, dependencies = FALSE)  # INSTALL W/ devtools:
 }
@@ -35,8 +35,8 @@ test_that("GLM_Learner and GLMfast_Learner learners give the same predictions", 
   glm_preds <- GLM_fit$predict()
   fGLM_fit <- fglm_learner$train(task)
   fglm_preds <- fGLM_fit$predict()
-  expect_true(is.vector(fglm_preds))
-  expect_true(all.equal(as.vector(glm_preds), as.vector(fglm_preds)))
+  expect_true(data.table::is.data.table(fglm_preds))
+  expect_true(all.equal(as.vector(glm_preds), as.vector(fglm_preds[["predictions"]])))
 })
 
 test_that("GLMfast_Learner trains on a subset of covariates (predictors)", {
@@ -45,13 +45,13 @@ test_that("GLMfast_Learner trains on a subset of covariates (predictors)", {
   # print(fGLM_fit)
   # str(fGLM_fit$params)
   fglm_preds_2 <- fGLM_fit$predict()
-  expect_true(is.vector(fglm_preds_2))
+  expect_true(data.table::is.data.table(fglm_preds_2))
 
   glm.fit <- glm(haz ~ apgar1 + apgar5, data = cpp, family = stats::gaussian())
   glm_preds_2 <- as.vector(predict(glm.fit))
 
   expect_true(sum(fglm_preds_2 - glm_preds_2) < 10^(-10), )
-  expect_true(all.equal(as.vector(glm_preds_2), as.vector(fglm_preds_2)))
+  expect_true(all.equal(as.vector(glm_preds_2), as.vector(fglm_preds_2[["predictions"]])))
 })
 
 test_that("GLMfast_Learner defines interactions", {
@@ -61,14 +61,14 @@ test_that("GLMfast_Learner defines interactions", {
   # print(fGLM_fit)
   # str(fGLM_fit$params)
   fglm_preds_3 <- fGLM_fit$predict()
-  expect_true(is.vector(fglm_preds_3))
+  expect_true(data.table::is.data.table(fglm_preds_3))
 
   glm.fit <- glm(haz ~ apgar1 + apgar5 + apgar1:apgar5, data = cpp, family = stats::gaussian())
   # print(glm.fit)
   glm_preds_3 <- as.vector(predict(glm.fit))
 
   expect_true(sum(fglm_preds_3 - glm_preds_3) < 10^(-10))
-  expect_true(all.equal(as.vector(glm_preds_3), as.vector(fglm_preds_3)))
+  expect_true(all.equal(as.vector(glm_preds_3), as.vector(fglm_preds_3[["predictions"]])))
 })
 
 test_that("GLMfast_Learner works with screener", {
@@ -81,6 +81,7 @@ test_that("GLMfast_Learner works with screener", {
   fglm_learner <- GLMfast_Learner$new()
   screen_and_glm <- Pipeline$new(slscreener, fglm_learner)
   sg_fit <- screen_and_glm$train(task)
+  preds <- sg_fit$predict()
   # print(sg_fit)
 })
 
