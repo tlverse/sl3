@@ -31,33 +31,33 @@ task$nodes$covariates
 
 options(sl3.verbose = TRUE)
 
-test_that("h2o_grid_Learner works with naiveBays for categorical outcome", {
+test_that("Lrnr_h2o_grid works with naiveBays for categorical outcome", {
   h2o::h2o.no_progress()
   cpp_hazbin <- cpp
   cpp_hazbin[["haz_cat"]] <- as.factor(rep_len(c(0L,1L,2L), nrow(cpp)))
   task_bin <- Learner_Task$new(cpp_hazbin, covariates = covars, outcome = "haz_cat")
 
-  bays_lrn <- h2o_grid_Learner$new(algorithm = "naivebayes")$train(task_bin)
+  bays_lrn <- Lrnr_h2o_grid$new(algorithm = "naivebayes")$train(task_bin)
   print(bays_lrn)
   bays_lrn_preds <- bays_lrn$predict()
   expect_true(ncol(bays_lrn_preds)==4)
 })
 
-test_that("h2o_grid_Learner learner works with a grid of regularized GLMs", {
+test_that("Lrnr_h2o_grid learner works with a grid of regularized GLMs", {
   h2o::h2o.no_progress()
-  h2o_glm_grid <- h2o_grid_Learner$new(algorithm = "glm",
+  h2o_glm_grid <- Lrnr_h2o_grid$new(algorithm = "glm",
                                        hyper_params =
                                         list(alpha = c(0, 0.5, 1)))
   h2o_glm_grid <- h2o_glm_grid$train(task)
   h2oGLM_preds <- h2o_glm_grid$predict()
 })
 
-test_that("h2o_grid_Learner learner works with a grid of GBMs", {
+test_that("Lrnr_h2o_grid learner works with a grid of GBMs", {
   h2o::h2o.no_progress()
   glm_fit <- GLM_Learner$new()$train(task)
   glm_preds <- glm_fit$predict()
 
-  h2o_gbm_grid <- h2o_grid_Learner$new(algorithm = "gbm",
+  h2o_gbm_grid <- Lrnr_h2o_grid$new(algorithm = "gbm",
                                        hyper_params =
                                         list(ntrees = c(10, 20, 50)))
   h2o_gbm_grid <- h2o_gbm_grid$train(task)
@@ -71,7 +71,7 @@ test_that("stack$predict plays nicely when Learner$predict() is a grid of predic
 
   screen_and_glm <- Pipeline$new(SL_Screener$new("screen.glmnet"), fglm_learner)
 
-  h2o_gbm_grid <- h2o_grid_Learner$new(algorithm = "gbm",
+  h2o_gbm_grid <- Lrnr_h2o_grid$new(algorithm = "gbm",
                                        hyper_params =
                                         list(ntrees = c(10, 20)))
 
@@ -97,7 +97,7 @@ test_that("h2o.pca works with pipelines (not checking results)", {
 
   ## apply PCA to X, then fit GLM on results of PCA
   pca_to_glm <- Pipeline$new(
-                  h2o_grid_Learner$new(algorithm = "pca", k = 2, impute_missing = TRUE),
+                  Lrnr_h2o_grid$new(algorithm = "pca", k = 2, impute_missing = TRUE),
                   GLMfast_Learner$new())
 
   # stack above learners and fit them all:

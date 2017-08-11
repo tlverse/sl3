@@ -10,7 +10,7 @@ A Pipeline of learners is a way to "chain" Learners together, where the output o
 Pipeline
 }
 \value{
-\code{\link{Learner}} object with methods for training and prediction
+\code{\link{Lrnr_base}} object with methods for training and prediction
 }
 \description{
 Pipeline (chain) of learners. 
@@ -30,8 +30,8 @@ A Pipeline of learners is a way to "chain" Learners together, where the output o
 }
 
 \seealso{
-Other Learners: \code{\link{CV_Learner}},
-  \code{\link{GLM_Learner}}, \code{\link{Learner}},
+Other Learners: \code{\link{Lrnr_base}},
+  \code{\link{Lrnr_cv}}, \code{\link{Lrnr_glm}},
   \code{\link{Stack}}
 }
 \keyword{data}

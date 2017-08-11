@@ -28,7 +28,7 @@ aorder <- function(mat, index, along = 1) {
 #' @importFrom R6 R6Class
 #' @export
 #' @keywords data
-#' @return \code{\link{Learner}} object with methods for training and prediction
+#' @return \code{\link{Lrnr_base}} object with methods for training and prediction
 #' @format \code{\link{R6Class}} object.
 #' @field params A learner to be wrapped
 #' @section Methods:
@@ -37,8 +37,8 @@ aorder <- function(mat, index, along = 1) {
 #'   }
 #' @importFrom assertthat assert_that is.count is.flag
 #' @family Learners
-CV_Learner <- R6Class(classname = "CV_Learner",
-                     inherit= Learner,
+Lrnr_cv <- R6Class(classname = "Lrnr_cv",
+                     inherit= Lrnr_base,
                      portable = TRUE,
                      class = TRUE,
                      public = list(
@@ -47,7 +47,7 @@ CV_Learner <- R6Class(classname = "CV_Learner",
                          super$initialize(params=params)
                        },
                        print = function(){
-                         print("CVLearner")
+                         print("Lrnr_cv")
                          print(self$params$learner)
                          #todo: check if fit
                        }),
@@ -77,7 +77,7 @@ CV_Learner <- R6Class(classname = "CV_Learner",
 
                        .predict = function(task){
                          if(!identical(task,private$.training_task)){
-                           stop("task must match training task for CVLearner")
+                           stop("task must match training task for Lrnr_cv")
                          }
                          #doing train and predict like this is stupid, but that's the paradigm (for now!)
                          folds=private$.fit_object$folds

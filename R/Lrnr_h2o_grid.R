@@ -1,7 +1,7 @@
 #' @importFrom assertthat assert_that is.count is.flag
 #' @export
 #' @rdname undocumented_learner
-h2o_grid_Learner <- R6Class(classname = "h2o_grid_Learner", inherit = Learner, portable = TRUE, class = TRUE, private = list(
+Lrnr_h2o_grid <- R6Class(classname = "Lrnr_h2o_grid", inherit = Learner, portable = TRUE, class = TRUE, private = list(
   .covariates = NULL,
 
   .train = function(task) {

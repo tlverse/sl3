@@ -41,7 +41,7 @@ define_h2o_X = function(task, covariates, params) {
 #' @importFrom assertthat assert_that is.count is.flag
 #' @export
 #' @rdname undocumented_learner
-h2o_GLM_Learner <- R6Class(classname = "h2o_GLM_Learner", inherit = Learner, portable = TRUE, class = TRUE,
+Lrnr_h2o_glm <- R6Class(classname = "Lrnr_h2o_glm", inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
     initialize = function(family = "gaussian", ...) {
       if (is.function(family)) family <- family()[["family"]]

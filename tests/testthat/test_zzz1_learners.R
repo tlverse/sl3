@@ -5,8 +5,8 @@ h2o::h2o.init(nthread = 1);
 
 #define test dataset
 data(mtcars)
-task=Learner_Task$new(mtcars,covariates=c("cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "am", "gear", "carb"),outcome="mpg")
-task2=Learner_Task$new(mtcars,covariates=c("cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "am", "gear", "carb"),outcome="mpg")
+task=sl3_Task$new(mtcars,covariates=c("cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "am", "gear", "carb"),outcome="mpg")
+task2=sl3_Task$new(mtcars,covariates=c("cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "am", "gear", "carb"),outcome="mpg")
 
 test_learner=function(learner, task, ...){
 
@@ -28,20 +28,21 @@ test_learner=function(learner, task, ...){
 
   #test learner chaining
   chained_task=fit_obj$chain()
-  test_that("Chaining returns a task",expect_true(is(chained_task,"Learner_Task")))
+  test_that("Chaining returns a task",expect_true(is(chained_task,"sl3_Task")))
   test_that("Chaining returns the correct number of rows",expect_equal(nrow(chained_task$X),nrow(task$X)))
 }
 
-test_learner(GLM_Learner, task)
+<<<<<<< HEAD:tests/testthat/test_zzz1_learners.R
+test_learner(Lrnr_glm, task)
 test_learner(GLMfast_Learner, task)
 test_learner(h2o_GLM_Learner, task)
-test_learner(h2o_grid_Learner, task, algorithm = "glm")
-test_learner(h2o_grid_Learner, task, algorithm = "gbm")
-test_learner(h2o_grid_Learner, task, algorithm = "randomForest")
-test_learner(h2o_grid_Learner, task, algorithm = "kmeans")
-test_learner(h2o_grid_Learner, task, algorithm = "deeplearning")
+test_learner(Lrnr_h2o_grid, task, algorithm = "glm")
+test_learner(Lrnr_h2o_grid, task, algorithm = "gbm")
+test_learner(Lrnr_h2o_grid, task, algorithm = "randomForest")
+test_learner(Lrnr_h2o_grid, task, algorithm = "kmeans")
+test_learner(Lrnr_h2o_grid, task, algorithm = "deeplearning")
 ## todo: works only with categorical (factor) outcomes, need separate host of tests for classification
-# test_learner(h2o_grid_Learner, task, algorithm = "naivebayes")
-test_learner(h2o_grid_Learner, task, algorithm = "pca", k = 2, impute_missing = TRUE)
+# test_learner(Lrnr_h2o_grid, task, algorithm = "naivebayes")
+test_learner(Lrnr_h2o_grid, task, algorithm = "pca", k = 2, impute_missing = TRUE)
 
 h2o::h2o.shutdown(prompt = FALSE); Sys.sleep(3)

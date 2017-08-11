@@ -2,8 +2,8 @@
 #' @importFrom assertthat assert_that is.count is.flag
 #' @export
 #' @rdname undocumented_learner
-SL_Learner <- R6Class(classname = "SL_Learner",
-                     inherit= Learner,
+Lrnr_pkg_SuperLearner <- R6Class(classname = "Lrnr_pkg_SuperLearner",
+                     inherit= Lrnr_base,
                      portable = TRUE,
                      class = TRUE,
                      public = list(
