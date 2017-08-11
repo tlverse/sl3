@@ -5,14 +5,13 @@ h2o_grid_Learner <- R6Class(classname = "h2o_grid_Learner", inherit = Learner, p
   .covariates = NULL,
 
   .train = function(task) {
+    verbose <- getOption("sl3.verbose")
     params <- self$params
-
     if (inherits(connectH2O <- try(h2o::h2o.getConnection(), silent = TRUE), "try-error")) {
-        # if (gvars$verbose)
-        message("No active connection to an H2O cluster has been detected.
-Will now attempt to initialize a local h2o cluster.
-In the future, please run `h2o::h2o.init()` prior to model training with h2o.")
-        h2o::h2o.init()
+      if (verbose) {
+        message("No active connection to an H2O cluster has been detected. Will now attempt to initialize a local h2o cluster. In the future, please run `h2o::h2o.init()` prior to model training with h2o.")
+      }
+      h2o::h2o.init()
     }
 
     private$.covariates <- task$nodes$covariates
@@ -27,8 +26,6 @@ In the future, please run `h2o::h2o.init()` prior to model training with h2o.")
                      y = task$nodes$outcome,
                      training_frame = X,
                      seed = 1,
-                     # keep_cross_validation_predictions = TRUE,
-                     # keep_cross_validation_fold_assignment = TRUE,
                      family = "gaussian",
                      intercept = TRUE,
                      standardize = TRUE,
@@ -37,6 +34,7 @@ In the future, please run `h2o::h2o.init()` prior to model training with h2o.")
                      ignore_const_cols = FALSE,
                      missing_values_handling = "Skip"
                     )
+    # keep_cross_validation_predictions = TRUE, keep_cross_validation_fold_assignment = TRUE,
 
     algorithm <- params[["algorithm"]]
 
@@ -79,20 +77,23 @@ In the future, please run `h2o::h2o.init()` prior to model training with h2o.")
     common_hyper_args <- intersect(names(mainArgs), names(mainArgs$hyper_params))
     if(length(common_hyper_args) > 0) mainArgs <- mainArgs[!(names(mainArgs) %in% common_hyper_args)]
 
-    if (("lambda_search" %in% names(mainArgs)))
-      if (mainArgs[["lambda_search"]])
-        mainArgs[["lambda"]] <- NULL
+    if (("lambda_search" %in% names(mainArgs))) {
+      if (mainArgs[["lambda_search"]]) mainArgs[["lambda"]] <- NULL
+    }
 
-    # if (gvars$verbose)
-    print(paste("running h2o.grid with algorithm: ", algorithm))
+    if (verbose) print(paste("running h2o.grid with algorithm: ", algorithm))
     fit_object <- try(do.call(h2o::h2o.grid, mainArgs), silent = FALSE)
-    if (inherits(fit_object, "try-error")) {message("h2o.grid failed"); return(fit_object)}
+    if (inherits(fit_object, "try-error")) {
+      if (verbose) {message("h2o.grid failed")}
+      return(fit_object)
+    }
     fit_object <- h2o::h2o.getGrid(fit_object@grid_id)
 
     return(fit_object)
   },
 
   .predict = function(task = NULL) {
+    verbose <- getOption("sl3.verbose")
     X <- define_h2o_X(task, private$.covariates, self$params)
     browser()
     ##TODO: write S3 predict method for object "H2OGrid" or just write a new custom (not S3 method)
