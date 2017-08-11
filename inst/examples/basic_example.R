@@ -29,14 +29,14 @@ cpp[is.na(cpp)] <- 0
 outcome <- "haz"
 
 load_all()  # for debug
-task <- Learner_Task$new(cpp, covariates = covars, outcome = outcome)
+task <- sl3_Task$new(cpp, covariates = covars, outcome = outcome)
 task$nodes$covariates
 
 # example of learner chaining
-slscreener <- SL_Screener$new("screen.glmnet")
-glm_learner <- GLM_Learner$new()
+slscreener <- Lrnr_pkg_SuperLearner_screener$new("screen.glmnet")
+glm_learner <- Lrnr_glm$new()
 screen_and_glm <- Pipeline$new(slscreener, glm_learner)
-SL.glmnet_learner <- SL_Learner$new(SL_wrapper = "SL.glmnet")
+SL.glmnet_learner <- Lrnr_pkg_SuperLearner$new(SL_wrapper = "SL.glmnet")
 sg_fit <- screen_and_glm$train(task)
 print(sg_fit)
 
@@ -47,7 +47,7 @@ stack_fit$predict()
 # stack_fit$predict()
 
 # okay but what if we want CV fits/predictions (this part is still really rough)
-cv_stack <- CV_Learner$new(learner_stack)
+cv_stack <- Lrnr_cv$new(learner_stack)
 cv_fit <- cv_stack$train(task)
 # cv_fit$predict()
 
@@ -58,7 +58,7 @@ ml_fit$predict()
 print(ml_fit)
 
 # convenience learner combining all this
-sl <- Super_Learner$new(learners = list(SL.glmnet_learner, glm_learner, screen_and_glm), metalearner = glm_learner)
+sl <- Lrnr_sl$new(learners = list(SL.glmnet_learner, glm_learner, screen_and_glm), metalearner = glm_learner)
 sl_fit <- sl$train(task)
 sl_fit
 

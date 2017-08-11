@@ -1,7 +1,7 @@
 #define test dataset
 data(mtcars)
-task=Learner_Task$new(mtcars,covariates=c("cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "am", "gear", "carb"),outcome="mpg")
-task2=Learner_Task$new(mtcars,covariates=c("cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "am", "gear", "carb"),outcome="mpg")
+task=sl3_Task$new(mtcars,covariates=c("cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "am", "gear", "carb"),outcome="mpg")
+task2=sl3_Task$new(mtcars,covariates=c("cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "am", "gear", "carb"),outcome="mpg")
 
 
 test_learner=function(learner, task){
@@ -24,8 +24,8 @@ test_learner=function(learner, task){
 
   #test learner chaining
   chained_task=fit_obj$chain()
-  test_that("Chaining returns a task",expect_true(is(chained_task,"Learner_Task")))
+  test_that("Chaining returns a task",expect_true(is(chained_task,"sl3_Task")))
   test_that("Chaining returns the correct number of rows",expect_equal(nrow(chained_task$X),nrow(task$X)))
 }
 
-test_learner(GLM_Learner, task)
+test_learner(Lrnr_glm, task)

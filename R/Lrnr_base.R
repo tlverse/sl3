@@ -5,7 +5,7 @@
 #' @importFrom R6 R6Class
 #' @export
 #' @keywords data
-#' @return \code{\link{Learner}} object with methods for training and prediction
+#' @return \code{\link{Lrnr_base}} object with methods for training and prediction
 #' @format \code{\link{R6Class}} object.
 #' @field params A list of parameters needed to fully specify the learner. This includes things like model hyperparameters.
 #' @field is_trained A boolean indicating that the learner has been already trained.
@@ -19,7 +19,7 @@
 #'   }
 #' @importFrom assertthat assert_that is.count is.flag
 #' @family Learners
-Learner <- R6Class(classname = "Learner",
+Lrnr_base <- R6Class(classname = "Lrnr_base",
                    portable = TRUE,
                    class = TRUE,
                    public = list(
@@ -36,7 +36,7 @@ Learner <- R6Class(classname = "Learner",
                      },
                      train = function(task) {
                         #trains learner to data
-                        assert_that(is(task,"Learner_Task"))
+                        assert_that(is(task,"sl3_Task"))
 
                         ##OS 08/08/17: Over-write task covariates (if specified for this learner as part of 'params'). Otherwise copy covariates from task.
                         ##todo: add checks for errors, params$covariates must be alway a subset of task$nodes$covariates
@@ -72,7 +72,7 @@ Learner <- R6Class(classname = "Learner",
                        if(is.null(task)){
                          task <- private$.training_task
                        }
-                       assert_that(is(task,"Learner_Task"))
+                       assert_that(is(task,"sl3_Task"))
 
                        predictions = private$.predict(task)
 
@@ -87,7 +87,7 @@ Learner <- R6Class(classname = "Learner",
                       if(is.null(task)){
                         task <- private$.training_task
                       }
-                      assert_that(is(task,"Learner_Task"))
+                      assert_that(is(task,"sl3_Task"))
 
                       next_task = private$.chain(task)
 

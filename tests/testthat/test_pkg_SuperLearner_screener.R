@@ -28,13 +28,13 @@ cpp[is.na(cpp)] <- 0
 outcome <- "haz"
 
 
-task <- Learner_Task$new(cpp, covariates = covars, outcome = outcome)
+task <- sl3_Task$new(cpp, covariates = covars, outcome = outcome)
 task$nodes$covariates
 
 # example of learner chaining
-slscreener <- SL_Screener$new("screen.glmnet")
-glm_learner <- GLM_Learner$new()
+slscreener <- Lrnr_pkg_SuperLearner_screener$new("screen.glmnet")
+glm_learner <- Lrnr_glm$new()
 screen_and_glm <- Pipeline$new(slscreener, glm_learner)
-SL.glmnet_learner <- SL_Learner$new(SL_wrapper = "SL.glmnet")
+SL.glmnet_learner <- Lrnr_pkg_SuperLearner$new(SL_wrapper = "SL.glmnet")
 sg_fit <- screen_and_glm$train(task)
 # print(sg_fit)

@@ -3,8 +3,8 @@
 #' @import origami
 #' @export
 #' @rdname undocumented_learner
-Super_Learner <- R6Class(classname = "Super_Learner",
-                     inherit= Learner,
+Lrnr_sl <- R6Class(classname = "Lrnr_sl",
+                     inherit= Lrnr_base,
                      portable = TRUE,
                      class = TRUE,
                      public = list(
@@ -13,7 +13,7 @@ Super_Learner <- R6Class(classname = "Super_Learner",
                          super$initialize(params=params)
                        },
                        print = function(){
-                         print("Super_Learner")
+                         print("SuperLearner")
                          print(self$params$learners)
                          
                          if(self$is_trained){
@@ -30,7 +30,7 @@ Super_Learner <- R6Class(classname = "Super_Learner",
                          #make stack and cv learner objects
                          learners=self$params$learners
                          learner_stack=do.call(Stack$new,learners)
-                         cv_stack=CV_Learner$new(learner_stack)
+                         cv_stack=Lrnr_cv$new(learner_stack)
                          
                          #fit stack on cv data
                          cv_fit=cv_stack$train(task)

@@ -23,37 +23,20 @@ covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn"
 cpp[is.na(cpp)] <- 0
 outcome <- "haz"
 
-task <- Learner_Task$new(cpp, covariates = covars, outcome = outcome)
+task <- sl3_Task$new(cpp, covariates = covars, outcome = outcome)
 task$nodes$covariates
 
-test_that("GLMfast_Learner trains based on a subset of covariates (predictors)", {
-
-    fglm_learner <- GLMfast_Learner$new(covariates = c("apgar1", "apgar5"))
-
-    fGLM_fit <- fglm_learner$train(task)
-    # print(fGLM_fit)
-    # str(fGLM_fit$params)
-    fglm_preds_2 <- fGLM_fit$predict()
-    expect_true(is.vector(fglm_preds_2))
-
-    glm.fit <- glm(haz ~ apgar1 + apgar5, data = cpp, family = stats::gaussian())
-    glm_preds_2 <- as.vector(predict(glm.fit))
-
-    expect_true(sum(fglm_preds_2 - glm_preds_2) < 10^(-10), )
-    expect_true(all.equal(as.vector(glm_preds_2), as.vector(fglm_preds_2)))
-})
-
 test_that("use chaining to subset predictors (Model_Matrix as first learner)", {
-    ## suppress intercept here because we're calling model.matrix again in GLM_Learner
-    two_cov <- Model_Matrix$new(~apgar1 + apgar5 - 1)
-    glm_learner <- GLM_Learner$new()
+    ## suppress intercept here because we're calling model.matrix again in Lrnr_glm
+    two_cov <- Lrnr_model.matrix$new(~apgar1 + apgar5 - 1)
+    glm_learner <- Lrnr_glm$new()
     glm_subset <- Pipeline$new(two_cov, glm_learner)
     glm_fit <- glm_subset$train(task)
     glm_preds <- glm_fit$predict()
 
-    fglm_learner <- GLMfast_Learner$new(covariates = c("apgar1", "apgar5"))
+    fglm_learner <- Lrnr_glm_fast$new(covariates = c("apgar1", "apgar5"))
     fGLM_fit <- fglm_learner$train(task)
-    fglm_learner <- GLMfast_Learner$new(covariates = c("apgar1", "apgar5"))
+    fglm_learner <- Lrnr_glm_fast$new(covariates = c("apgar1", "apgar5"))
     fglm_preds <- fGLM_fit$predict()
 
     print(fglm_preds - glm_preds)
@@ -63,13 +46,13 @@ test_that("use chaining to subset predictors (Model_Matrix as first learner)", {
 })
 
 test_that("model matrix defines interactions", {
-    # suppress intercept here because we're calling model.matrix again in GLM_Learner
-    interactions <- Model_Matrix$new(~apgar1 * apgar5 - 1)
-    glm_learner <- GLM_Learner$new()
+    # suppress intercept here because we're calling model.matrix again in Lrnr_glm
+    interactions <- Lrnr_model.matrix$new(~apgar1 * apgar5 - 1)
+    glm_learner <- Lrnr_glm$new()
     glm_interactions <- Pipeline$new(interactions, glm_learner)
     glm_fit <- glm_interactions$train(task)
     glm_preds <- glm_fit$predict()
-    fglm_learner <- GLMfast_Learner$new(covariates = c("apgar1", "apgar5"), interactions = list(c("apgar1", "apgar5")))
+    fglm_learner <- Lrnr_glm_fast$new(covariates = c("apgar1", "apgar5"), interactions = list(c("apgar1", "apgar5")))
     fGLM_fit <- fglm_learner$train(task)
     fglm_preds <- fGLM_fit$predict()
     expect_true(all.equal(as.vector(glm_preds), as.vector(fglm_preds)))
