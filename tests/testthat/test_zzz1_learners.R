@@ -1,7 +1,7 @@
 library(sl3)
 library(testthat)
-library(h2o)
-h2o.init(nthread = 1); Sys.sleep(1)
+# library(h2o)
+# h2o.init(nthread = 1); Sys.sleep(1)
 
 #define test dataset
 data(mtcars)
@@ -34,14 +34,14 @@ test_learner=function(learner, task, ...){
 
 test_learner(GLM_Learner, task)
 test_learner(GLMfast_Learner, task)
-test_learner(h2o_GLM_Learner, task)
-test_learner(h2o_grid_Learner, task, algorithm = "glm")
-test_learner(h2o_grid_Learner, task, algorithm = "gbm")
-test_learner(h2o_grid_Learner, task, algorithm = "randomForest")
-test_learner(h2o_grid_Learner, task, algorithm = "kmeans")
-test_learner(h2o_grid_Learner, task, algorithm = "deeplearning")
-## todo: works only with categorical (factor) outcomes, need separate host of tests for classification
-# test_learner(h2o_grid_Learner, task, algorithm = "naivebayes")
-test_learner(h2o_grid_Learner, task, algorithm = "pca", k = 2, impute_missing = TRUE)
+# test_learner(h2o_GLM_Learner, task)
+# test_learner(h2o_grid_Learner, task, algorithm = "glm")
+# test_learner(h2o_grid_Learner, task, algorithm = "gbm")
+# test_learner(h2o_grid_Learner, task, algorithm = "randomForest")
+# test_learner(h2o_grid_Learner, task, algorithm = "kmeans")
+# test_learner(h2o_grid_Learner, task, algorithm = "deeplearning")
+# ## todo: works only with categorical (factor) outcomes, need separate host of tests for classification
+# # test_learner(h2o_grid_Learner, task, algorithm = "naivebayes")
+# test_learner(h2o_grid_Learner, task, algorithm = "pca", k = 2, impute_missing = TRUE)
 
-h2o::h2o.shutdown(prompt = FALSE)
+# h2o::h2o.shutdown(prompt = FALSE)
