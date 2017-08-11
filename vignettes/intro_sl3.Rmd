@@ -1,0 +1,104 @@
+---
+title: "Super Learning Done Right (working title)"
+author: "Jeremy Coyle & Nima Hejazi"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Super Learning Done Right}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Introduction
+
+Words, words, words...
+
+---
+
+## Whirlwind Tour
+
+```{r install_pkg}
+if (!("sl3" %in% installed.packages())) {
+  devtools::install_github("jeremyrcoyle/sl3")
+}
+```
+
+```{r prelims}
+library(dplyr)
+library(data.table)
+set.seed(49753)
+
+# packages we'll be using
+library(sl3)
+library(origami)
+library(SuperLearner)
+
+# load example data set
+data(cpp)
+cpp <- cpp %>%
+  dplyr::filter(!is.na(haz)) %>%
+  mutate_all(funs(replace(., is.na(.), 0)))
+
+# here are the covariates we're interested in, and the outcome of course
+covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
+            "sexn")
+outcome <- "haz"
+```
+
+```{r sl1}
+# TODO: make learner that preprocesses data, including factorizing 'discretish'
+#       variables and making missingness indicators
+load_all()  # for debug
+
+#
+task <- sl3_Task$new(cpp, covariates = covars, outcome = outcome)
+task$nodes$covariates
+```
+
+```{r}
+# example of learner chaining
+slscreener <- Lrnr_pkg_SuperLearner_screener$new("screen.glmnet")
+glm_learner <- Lrnr_glm$new()
+screen_and_glm <- Pipeline$new(slscreener, glm_learner)
+SL.glmnet_learner <- Lrnr_pkg_SuperLearner$new(SL_wrapper = "SL.glmnet")
+sg_fit <- screen_and_glm$train(task)
+print(sg_fit)
+```
+
+```{r}
+# now lets stack some learners
+learner_stack <- Stack$new(SL.glmnet_learner, glm_learner, screen_and_glm)
+stack_fit <- learner_stack$train(task)
+stack_fit$predict()
+# stack_fit$predict()
+```
+
+```{r}
+# okay but what if we want CV fits/predictions (this part is still really rough)
+cv_stack <- Lrnr_cv$new(learner_stack)
+cv_fit <- cv_stack$train(task)
+# cv_fit$predict()
+```
+
+```{r}
+# we can now fit a metalearner on the CV preds
+glm_stack <- Pipeline$new(cv_stack, glm_learner)
+ml_fit <- glm_stack$train(task)
+ml_fit$predict()
+print(ml_fit)
+```
+
+```{r}
+# convenience learner combining all this
+sl <- Lrnr_sl$new(learners = list(SL.glmnet_learner, glm_learner, screen_and_glm), metalearner = glm_learner)
+sl_fit <- sl$train(task)
+sl_fit
+```
+
+```{r}
+# now lets cross_validate that against its candidates
+learners <- list(SL.glmnet_learner = SL.glmnet_learner, glm_learner = glm_learner, screen_and_glm = screen_and_glm,
+    sl = sl)
+sapply(learners, estimate_risk, task)
+```
+
