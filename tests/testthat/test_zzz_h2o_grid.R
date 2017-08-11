@@ -14,7 +14,7 @@ if(FALSE) {
 library(testthat)
 library(sl3)
 library(h2o)
-h2o.init(nthread = 1); sleep(2)
+h2o.init(nthread = 1); Sys.sleep(1)
 # library(data.table)
 # library(origami)
 library(SuperLearner)
@@ -61,6 +61,18 @@ test_that("h2o_grid_Learner learner works with GBM", {
   # expect_true(is.vector(h2oGLM_preds))
   # # print(sum(glm_preds-h2oGLM_preds))
   # expect_true(all.equal(as.vector(glm_preds), as.vector(h2oGLM_preds)))
+})
+
+test_that("h2o_grid_Learner works with naiveBays for categorical outcome", {
+  h2o::h2o.no_progress()
+  cpp_hazbin <- cpp
+  cpp_hazbin[["haz_cat"]] <- as.factor(rep_len(c(0L,1L,2L), nrow(cpp)))
+  task_bin <- Learner_Task$new(cpp_hazbin, covariates = covars, outcome = "haz_cat")
+
+  bays_lrn <- h2o_grid_Learner$new(algorithm = "naivebayes")$train(task_bin)
+  print(bays_lrn)
+  bays_lrn_preds <- bays_lrn$predict()
+  expect_true(ncol(bays_lrn_preds)==4)
 })
 
 

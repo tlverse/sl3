@@ -142,6 +142,6 @@ GLMfast_Learner <- R6Class(classname = "GLMfast_Learner", inherit = Learner, por
           predictions <- as.vector(private$.fit_object$linkinv_fun(eta))
         }
       }
-      return(predictions)
+      return(data.table::data.table(predictions))
     }
 ), )

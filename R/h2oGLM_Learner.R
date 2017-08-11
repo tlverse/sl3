@@ -89,7 +89,6 @@ h2o_GLM_Learner <- R6Class(classname = "h2o_GLM_Learner", inherit = Learner, por
       # out_coef[] <- NA
       # names(out_coef) <- c("Intercept", x)
       # out_coef[names(fit_object@model$coefficients)] <- fit_object@model$coefficients
-
       return(fit_object)
     },
 
@@ -99,11 +98,11 @@ h2o_GLM_Learner <- R6Class(classname = "h2o_GLM_Learner", inherit = Learner, por
       X <- define_h2o_X(task, private$.covariates, self$params)
       predictions <- h2o::h2o.predict(private$.fit_object, X)
       if ("p1" %in% colnames(predictions)) {
-        predictions <- as.vector(predictions[,"p1"])
+        predictions <- predictions[,"p1"]
       } else {
-        predictions <- as.vector(predictions[,"predict"])
+        predictions <- predictions[,"predict"]
       }
-      # predictions <- as.data.table(predictions)
+      predictions <- data.table::as.data.table(predictions)
       h2o::h2o.show_progress()
       return(predictions)
     }

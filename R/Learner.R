@@ -52,7 +52,6 @@ Learner <- R6Class(classname = "Learner",
                        private$.fit_object = fit_object
                        private$.training_task = training_task
 
-
                      },
 
                      predict = function(task = NULL){
@@ -84,7 +83,6 @@ Learner <- R6Class(classname = "Learner",
 
                       return(next_task)
 
-
                      },
                     print = function(){
                       print(self$name)
@@ -93,6 +91,7 @@ Learner <- R6Class(classname = "Learner",
                       if(!is.null(fit_object))
                       print(fit_object)
                     }),
+
                    active = list(
                      is_trained=function(){
                        return(!is.null(private$.fit_object))

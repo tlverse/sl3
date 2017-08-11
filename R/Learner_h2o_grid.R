@@ -1,25 +1,3 @@
-# predict_h2o_new <- function(model_id, frame_id) {
-#   url <- paste0('Predictions/models/', model_id, '/frames/',  frame_id)
-#   browser()
-#   # res <- h2o:::.h2o.__remoteSend(url, method = "POST", h2oRestApiVersion = 4)
-#   res <- h2o:::.h2o.doRawPOST(h2oRestApiVersion = 4, urlSuffix = url)
-
-#   job_key <- res$key$name
-#   dest_key <- res$dest$name
-
-#   h2o:::.h2o.__waitOnJob(job_key, pollInterval = 0.01)
-
-#   newpreds <- h2o::h2o.getFrame(dest_key)
-
-#   if (ncol(newpreds) > 1) newpreds <- newpreds[["p1"]]
-
-#   if ("p1" %in% colnames(newpreds)) {
-#     return(newpreds[,"p1"])
-#   } else {
-#     return(newpreds[,"predict"])
-#   }
-# }
-
 #' @importFrom assertthat assert_that is.count is.flag
 #' @export
 #' @rdname undocumented_learner
@@ -29,6 +7,8 @@ h2o_grid_Learner <- R6Class(classname = "h2o_grid_Learner", inherit = Learner, p
   .train = function(task) {
     verbose <- getOption("sl3.verbose")
     params <- self$params
+    if (verbose) h2o::h2o.show_progress() else h2o::h2o.no_progress()
+
     if (inherits(connectH2O <- try(h2o::h2o.getConnection(), silent = TRUE), "try-error")) {
       if (verbose) {
         message("No active connection to an H2O cluster has been detected. Will now attempt to initialize a local h2o cluster. In the future, please run `h2o::h2o.init()` prior to model training with h2o.")
@@ -43,7 +23,6 @@ h2o_grid_Learner <- R6Class(classname = "h2o_grid_Learner", inherit = Learner, p
 
     X <- define_h2o_X(task, private$.covariates, params)
 
-    # if (gvars$verbose) h2o::h2o.show_progress() else h2o::h2o.no_progress()
     mainArgs <- list(x = private$.covariates,
                      y = task$nodes$outcome,
                      training_frame = X,
@@ -62,29 +41,14 @@ h2o_grid_Learner <- R6Class(classname = "h2o_grid_Learner", inherit = Learner, p
 
     if (is.null(algorithm)) stop("must specify the 'algorithm' name when running 'h2o.grid'")
     if (!is.character(algorithm)) stop("'algorithm' must be a string naming the 'algorithm' for 'h2o.grid'")
-    algo_fun_name <- paste0("h2o.", algorithm)
 
-    # if (!'package:h2o' %in% search()) stop("Could not locate h2o among loaded packages. Please run: 'library('h2o')'")
-    # if (!exists(algo_fun_name, where='package:h2o', mode='function')) stop("Could not locate the function " %+% algorithm)
-
-    # Is there a fold_column for cross-validation based model scoring?
-    # if (!missing(fold_column)) {
-    #   if (!is.null(fold_column) && is.character(fold_column) && (fold_column != "")) {
-    #     mainArgs[["fold_column"]] <- fold_column
-    #     validation_frame <- NULL
-    #     mainArgs[["validation_frame"]] <- NULL
-    #   }
-    # }
-
-    # Is there a validation frame for model scoring?
-    # if (!is.null(validation_frame)) mainArgs[["validation_frame"]] <- validation_frame
-    # if ("distribution" %in% names(model_contrl) && ("bernoulli" %in% model_contrl[["distribution"]])) {
-    #   mainArgs[["training_frame"]][[y]] <- h2o::as.factor(mainArgs[["training_frame"]][[y]])
-    #   if (!is.null(mainArgs[["validation_frame"]])) mainArgs[["validation_frame"]][[y]] <- h2o::as.factor(mainArgs[["validation_frame"]][[y]])
-    # }
-
-    ## doesn't work if h2o namespace is not loaded:
-    # algo_fun <- get0(algo_fun_name, mode = "function", inherits = TRUE)
+    if (algorithm %in% "pca") {
+      algo_fun_name <- "h2o.prcomp"
+    } else if (algorithm %in% "naivebayes") {
+      algo_fun_name <- "h2o.naiveBayes"
+    } else {
+      algo_fun_name <- paste0("h2o.", algorithm)
+    }
 
     algo_fun <- utils::getFromNamespace(algo_fun_name, ns='h2o')
     # Keep only the relevant args in mainArgs list:
@@ -116,10 +80,11 @@ h2o_grid_Learner <- R6Class(classname = "h2o_grid_Learner", inherit = Learner, p
       print("h2o grid models: "); print(fit_object)
     }
 
+    h2o::h2o.show_progress()
     return(fit_object)
   },
 
-  ##TODO: write S3 predict method for object "H2OGrid" or just write a new custom (not S3 method)
+  ##todo: write S3 predict method for object "H2OGrid" or just write a new custom (not S3 method)
   .predict = function(task = NULL) {
     verbose <- getOption("sl3.verbose")
     if (verbose) h2o::h2o.show_progress() else h2o::h2o.no_progress()
@@ -134,13 +99,12 @@ h2o_grid_Learner <- R6Class(classname = "h2o_grid_Learner", inherit = Learner, p
     for (idx in seq_along(modelfits_all)) {
       pAout_h2o <- h2o::h2o.cbind(
                     pAout_h2o,
-                    # predict_h2o_new(modelfits_all[[idx]]@model_id, frame_id = h2o::h2o.getId(X))
                     h2o::h2o.predict(modelfits_all[[idx]], X)
                     )
     }
     names(pAout_h2o) <- paste0(names(pAout_h2o), "_", seq_along(modelfits_all))
-
     predictions <- as.data.table(pAout_h2o)
+
     h2o::h2o.show_progress()
     return(predictions)
   }
