@@ -26,7 +26,7 @@ covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn"
 cpp[is.na(cpp)] <- 0
 outcome <- "haz"
 
-task <- Learner_Task$new(cpp, covariates = covars, outcome = outcome)
+task <- sl3_Task$new(cpp, covariates = covars, outcome = outcome)
 task$nodes$covariates
 
 options(sl3.verbose = TRUE)
@@ -35,7 +35,7 @@ test_that("Lrnr_h2o_grid works with naiveBays for categorical outcome", {
   h2o::h2o.no_progress()
   cpp_hazbin <- cpp
   cpp_hazbin[["haz_cat"]] <- as.factor(rep_len(c(0L,1L,2L), nrow(cpp)))
-  task_bin <- Learner_Task$new(cpp_hazbin, covariates = covars, outcome = "haz_cat")
+  task_bin <- sl3_Task$new(cpp_hazbin, covariates = covars, outcome = "haz_cat")
 
   bays_lrn <- Lrnr_h2o_grid$new(algorithm = "naivebayes")$train(task_bin)
   print(bays_lrn)
