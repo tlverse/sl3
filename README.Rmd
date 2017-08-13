@@ -15,9 +15,9 @@ knitr::opts_chunk$set(
 
 # R/`sl3`: new and improved Super Learning
 
-[![Travis-CI Build Status](https://travis-ci.org/jeremyrcoyle/sl3.svg?branch=master)](https://travis-ci.org/jeremyrcoyle/sl3) 
+[![Travis-CI Build Status](https://travis-ci.org/jeremyrcoyle/sl3.svg?branch=master)](https://travis-ci.org/jeremyrcoyle/sl3)
 [![Build status](https://ci.appveyor.com/api/projects/status/25reu5wdhrwj9qgy?svg=true)](https://ci.appveyor.com/project/jeremyrcoyle/sl3)
-[![Coverage Status](https://img.shields.io/codecov/c/github/jeremyrcoyle/sl3/master.svg)](https://codecov.io/github/jeremyrcoyle/sl3?branch=master) 
+[![Coverage Status](https://img.shields.io/codecov/c/github/jeremyrcoyle/sl3/master.svg)](https://codecov.io/github/jeremyrcoyle/sl3?branch=master)
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](http://www.repostatus.org/badges/latest/wip.svg)](http://www.repostatus.org/#wip)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
 
@@ -84,20 +84,52 @@ issue](https://github.com/jeremyrcoyle/sl3/issues).
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+`sl3` makes the process of applying screening algorithms, learning algorithms,
+combining both types of algorithms into a stacked regression model, and
+cross-validating this whole process essentially trivial. The best way to
+understand this is to see the `sl3` package in action:
 
-```{r example}
-## basic example code
-#library(sl3)
+```{r sl3-simple-example}
+set.seed(49753)
+suppressMessages(library(data.table))
+library(dplyr)
+library(SuperLearner)
+library(origami)
+library(sl3)
+
+# load example data set
+data(cpp)
+cpp <- cpp %>%
+  dplyr::filter(!is.na(haz)) %>%
+  mutate_all(funs(replace(., is.na(.), 0)))
+
+# use covariates of intest and the outcome to build a task object
+covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
+            "sexn")
+task <- sl3_Task$new(cpp, covariates = covars, outcome = "haz")
+
+# set up screeners and learners via built-in functions and pipelines
+slscreener <- Lrnr_pkg_SuperLearner_screener$new("screen.glmnet")
+glm_learner <- Lrnr_glm$new()
+screen_and_glm <- Pipeline$new(slscreener, glm_learner)
+SL.glmnet_learner <- Lrnr_pkg_SuperLearner$new(SL_wrapper = "SL.glmnet")
+
+# stack learners into a model (including screeners and pipelines)
+learner_stack <- Stack$new(SL.glmnet_learner, glm_learner, screen_and_glm)
+stack_fit <- learner_stack$train(task)
+preds <- stack_fit$predict()
+head(preds)
 ```
 
 ---
 
 ## Contributions
 
-It is our hope that `sl3` will grow to be widely used for... To that end,
-contributions are very welcome, though we ask that
-interested contributors consult our [`contribution
+It is our hope that `sl3` will grow to be widely used for creating stacked
+regression models and the cross-validation of pipelines that make up such
+models, as well as the variety of other applications in which the Super Learner
+algorithm plays a role. To that end, contributions are very welcome, though we
+ask that interested contributors consult our [`contribution
 guidelines`](https://github.com/jeremyrcoyle/sl3/blob/master/CONTRIBUTING.md)
 prior to submitting a pull request.
 
@@ -115,3 +147,4 @@ file `LICENSE` for details.
 ---
 
 ## References
+
