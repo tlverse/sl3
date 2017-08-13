@@ -3,7 +3,7 @@ Version: 0.2
 Depends: R (>= 2.14.0)
 Imports: data.table, assertthat, cvAUC, origami, future, R6, h2o,
         stats, nnls, SuperLearner
-Suggests: testthat, knitr, glmnet
+Suggests: testthat, knitr, rmarkdown, glmnet, devtools, dplyr
 License: GPL-3
-MD5sum: 8c0b7c330686871022d3724602fdfbc9
+MD5sum: 9c4b440c3beecec038ace62f36148528
 NeedsCompilation: no
