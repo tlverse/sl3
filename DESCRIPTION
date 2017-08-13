@@ -31,7 +31,10 @@ Imports:
 Suggests:
   testthat,
   knitr,
-  glmnet
+  rmarkdown,
+  glmnet,
+  devtools,
+  dplyr
 LazyLoad: yes
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
