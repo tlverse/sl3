@@ -51,6 +51,13 @@ devtools::install_github("jeremyrcoyle/sl3", ref = "develop")
 
 ------------------------------------------------------------------------
 
+Project Status
+--------------
+
+[![](https://graphs.waffle.io/jeremyrcoyle/sl3/throughput.svg)](https://waffle.io/jeremyrcoyle/sl3/metrics/throughput)
+
+------------------------------------------------------------------------
+
 Issues
 ------
 
