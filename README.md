@@ -7,12 +7,12 @@ R/`sl3`: new and improved Super Learning
 
 > A modern implementation of the Super Learner ensemble learning / stacking algorithm
 
-**Authors:** Jeremy Coyle, Nima Hejazi, Oleg Sofrygin, Ivana Malenica
+**Authors:** [Jeremy Coyle](https://github.com/jeremyrcoyle), [Nima Hejazi](https://github.com/nhejazi), [Ivana Malenica](https://github.com/podTockom), [Oleg Sofrygin](https://github.com/osofr)
 
 ------------------------------------------------------------------------
 
-Description
------------
+What's `sl3`?
+-------------
 
 `sl3` is a modern implementation of the Super Learner algorithm of van der Laan, Polley, and Hubbard (2007). The Super Learner algorithm performs ensemble learning in one of two fashions:
 
@@ -51,22 +51,19 @@ devtools::install_github("jeremyrcoyle/sl3", ref = "develop")
 
 ------------------------------------------------------------------------
 
-Project Status
---------------
+Contributions and Issues
+------------------------
+
+It is our hope that `sl3` will grow to be widely used for creating stacked regression models and the cross-validation of pipelines that make up such models, as well as the variety of other applications in which the Super Learner algorithm plays a role. To that end, contributions are very welcome, though we ask that interested contributors consult our [`contribution guidelines`](https://github.com/jeremyrcoyle/sl3/blob/master/CONTRIBUTING.md) prior to submitting a pull request.
+
+If you encounter any bugs or have any specific feature requests, please [file an issue](https://github.com/jeremyrcoyle/sl3/issues).
 
 [![](https://graphs.waffle.io/jeremyrcoyle/sl3/throughput.svg)](https://waffle.io/jeremyrcoyle/sl3/metrics/throughput)
 
 ------------------------------------------------------------------------
 
-Issues
-------
-
-If you encounter any bugs or have any specific feature requests, please [file an issue](https://github.com/jeremyrcoyle/sl3/issues).
-
-------------------------------------------------------------------------
-
-Example
--------
+Examples
+--------
 
 `sl3` makes the process of applying screening algorithms, learning algorithms, combining both types of algorithms into a stacked regression model, and cross-validating this whole process essentially trivial. The best way to understand this is to see the `sl3` package in action:
 
@@ -138,17 +135,10 @@ head(preds)
 
 ------------------------------------------------------------------------
 
-Contributions
--------------
-
-It is our hope that `sl3` will grow to be widely used for creating stacked regression models and the cross-validation of pipelines that make up such models, as well as the variety of other applications in which the Super Learner algorithm plays a role. To that end, contributions are very welcome, though we ask that interested contributors consult our [`contribution guidelines`](https://github.com/jeremyrcoyle/sl3/blob/master/CONTRIBUTING.md) prior to submitting a pull request.
-
-------------------------------------------------------------------------
-
 License
 -------
 
-© 2017 [Jeremy R. Coyle](https://github.com/jeremyrcoyle), [Nima S. Hejazi](https://github.com/nhejazi), [Oleg Sofrygin](https://github.com/osofr), [Ivana Malenica](https://github.com/podTockom)
+© 2017 [Jeremy R. Coyle](https://github.com/jeremyrcoyle), [Nima S. Hejazi](https://github.com/nhejazi), [Ivana Malenica](https://github.com/podTockom), [Oleg Sofrygin](https://github.com/osofr)
 
 The contents of this repository are distributed under the GPL-3 license. See file `LICENSE` for details.
 
