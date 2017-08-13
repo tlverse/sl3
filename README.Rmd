@@ -24,7 +24,10 @@ knitr::opts_chunk$set(
 > A modern implementation of the Super Learner ensemble learning / stacking
 > algorithm
 
-__Authors:__ Jeremy Coyle, Nima Hejazi, Oleg Sofrygin, Ivana Malenica
+__Authors:__ [Jeremy Coyle](https://github.com/jeremyrcoyle), [Nima
+Hejazi](https://github.com/nhejazi), [Ivana
+Malenica](https://github.com/podTockom), [Oleg
+Sofrygin](https://github.com/osofr)
 
 ---
 
@@ -144,8 +147,9 @@ prior to submitting a pull request.
 ## License
 
 &copy; 2017 [Jeremy R. Coyle](https://github.com/jeremyrcoyle), [Nima S.
-Hejazi](https://github.com/nhejazi), [Oleg Sofrygin](https://github.com/osofr),
-[Ivana Malenica](https://github.com/podTockom)
+Hejazi](https://github.com/nhejazi), [Ivana
+Malenica](https://github.com/podTockom), [Oleg
+Sofrygin](https://github.com/osofr)
 
 The contents of this repository are distributed under the GPL-3 license. See
 file `LICENSE` for details.
