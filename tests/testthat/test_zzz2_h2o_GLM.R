@@ -14,7 +14,7 @@ if(FALSE) {
 library(testthat)
 library(sl3)
 library(h2o)
-h2o.init(nthread = 1)
+h2o::h2o.init(nthread = 1);
 # library(data.table)
 # library(origami)
 library(SuperLearner)
@@ -37,9 +37,9 @@ test_that("Lrnr_glm and Lrnr_h2o_glm learners give the same predictions", {
   glm_preds <- GLM_fit$predict()
   h2oGLM_fit <- h2o_glm$train(task)
   h2oGLM_preds <- h2oGLM_fit$predict()
-  expect_true(is.vector(h2oGLM_preds))
+  expect_true(data.table::is.data.table(h2oGLM_preds))
   # print(sum(glm_preds-h2oGLM_preds))
-  expect_true(all.equal(as.vector(glm_preds), as.vector(h2oGLM_preds)))
+  expect_true(all.equal(as.vector(glm_preds), as.vector(h2oGLM_preds[[1]])))
 })
 
 test_that("Lrnr_h2o_glm trains based on a subset of covariates (predictors)", {
@@ -49,14 +49,14 @@ test_that("Lrnr_h2o_glm trains based on a subset of covariates (predictors)", {
   # print(h2oGLM_fit)
   # str(h2oGLM_fit$params)
   h2oGLM_preds_2 <- h2oGLM_fit$predict()
-  expect_true(is.vector(h2oGLM_preds_2))
+  expect_true(data.table::is.data.table(h2oGLM_preds_2))
 
   glm.fit <- glm(haz ~ apgar1 + apgar5, data = cpp, family = stats::gaussian())
   glm_preds_2 <- as.vector(predict(glm.fit))
 
   # print(sum(glm_preds_2-h2oGLM_preds_2))
   expect_true(sum(h2oGLM_preds_2 - glm_preds_2) < 10^(-10), )
-  expect_true(all.equal(as.vector(glm_preds_2), as.vector(h2oGLM_preds_2)))
+  expect_true(all.equal(as.vector(glm_preds_2), as.vector(h2oGLM_preds_2[[1]])))
 })
 
 test_that("Lrnr_h2o_glm defines interactions", {
@@ -68,14 +68,14 @@ test_that("Lrnr_h2o_glm defines interactions", {
   # print(h2oGLM_fit)
   # str(h2oGLM_fit$params)
   h2oGLM_preds_3 <- h2oGLM_fit$predict()
-  expect_true(is.vector(h2oGLM_preds_3))
+  expect_true(data.table::is.data.table(h2oGLM_preds_3))
 
   glm.fit <- glm(haz ~ apgar1 + apgar5 + parity + apgar1:apgar5, data = cpp, family = stats::gaussian())
   # print(glm.fit)
   glm_preds_3 <- as.vector(predict(glm.fit))
 
   expect_true(sum(h2oGLM_preds_3 - glm_preds_3) < 10^(-10))
-  expect_true(all.equal(as.vector(glm_preds_3), as.vector(h2oGLM_preds_3)))
+  expect_true(all.equal(as.vector(glm_preds_3), as.vector(h2oGLM_preds_3[[1]])))
 })
 
 test_that("Lrnr_h2o_glm works with screener", {
@@ -104,6 +104,7 @@ test_that("Lrnr_h2o_glm works with stacking", {
   stack_fit <- learner_stack$train(task)
   # print(stack_fit)
   preds <- stack_fit$predict()
+  expect_true(data.table::is.data.table(preds))
   # print(head(preds))
 })
 
@@ -149,7 +150,7 @@ test_that("Lrnr_h2o_glm works with binomial families for binary outcome and give
   h2oGLM_fit <- h2o_glm$train(task_bin)
   preds_2 <- h2oGLM_fit$predict()
 
-  expect_true(all.equal(fglm_preds_2, preds_2))
+  expect_true(all.equal(fglm_preds_2[[1]], preds_2[[1]]))
   # print(h2oGLM_fit)
   # expect_true(all.equal(preds_1, preds_2))
 })
@@ -181,7 +182,6 @@ test_that("Lrnr_h2o_glm works with different solvers", {
   # print(h2oGLM_fit)
 })
 
-
 test_that("Lrnr_h2o_glm works with regularized regression and internal CV for lambda", {
   h2o::h2o.no_progress()
   cpp_hazbin <- cpp
@@ -193,4 +193,4 @@ test_that("Lrnr_h2o_glm works with regularized regression and internal CV for la
   # print(h2oGLM_fit)
 })
 
-h2o::h2o.shutdown(prompt = FALSE)
+h2o::h2o.shutdown(prompt = FALSE); Sys.sleep(3)

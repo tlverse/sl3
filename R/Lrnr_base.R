@@ -1,4 +1,4 @@
-#' Base Class for all sl3 learners. 
+#' Base Class for all sl3 learners.
 #'
 #' Generally this base Learner class shouldn't be instantiated. It's intended to be an abstract class, although abstract classes aren't explicitly supported by R6.
 #' @docType class
@@ -38,15 +38,6 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                         #trains learner to data
                         assert_that(is(task,"sl3_Task"))
 
-                        ##OS 08/08/17: Over-write task covariates (if specified for this learner as part of 'params'). Otherwise copy covariates from task.
-                        ##todo: add checks for errors, params$covariates must be alway a subset of task$nodes$covariates
-                        # covariates <- task$nodes$covariates
-                        # if ("covariates" %in% names(self$params)) {
-                        #   self$params$covariates <- intersect(covariates, self$params$covariates)
-                        # } else {
-                        #   self$params$covariates <- covariates
-                        # }
-
                         #todo: add error handling
                         fit_object = private$.train(task)
 
@@ -60,7 +51,6 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                        #todo: figure out how to do this without a public method that is mutuating private variables.
                        private$.fit_object = fit_object
                        private$.training_task = training_task
-
 
                      },
 
@@ -93,7 +83,6 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
 
                       return(next_task)
 
-
                      },
                     print = function(){
                       print(self$name)
@@ -102,6 +91,7 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                       if(!is.null(fit_object))
                       print(fit_object)
                     }),
+
                    active = list(
                      is_trained=function(){
                        return(!is.null(private$.fit_object))

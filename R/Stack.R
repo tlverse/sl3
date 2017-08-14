@@ -35,7 +35,7 @@ Stack <- R6Class(classname = "Stack",
                          learners=self$params$learners
                          learner_names=sapply(learners,function(learner)learner$name)
                          name = paste(learner_names, collapse="x")
-                         
+
                          return(name)
                        }
                      ),
@@ -52,40 +52,49 @@ Stack <- R6Class(classname = "Stack",
                            fit = current_learner$train(task)
                            learner_fits[[i]]=fit
                         }
-                        
+
                          fit_object <- list(learner_fits = learner_fits)
-                         
+
                          return(fit_object)
-                         
+
                        },
                        .predict = function(task){
-                         # browser()
                          learner_fits = private$.fit_object$learner_fits
                          learners=self$params$learners
                          learner_names=sapply(learners,function(learner)learner$name)
                          n_to_pred=nrow(task$X)
                          n_learners=length(learner_names)
-                         learner_preds=matrix(NA, nrow = n_to_pred, ncol=n_learners)
-                         #todo: should be foreach or future_lapply
-                         for(i in seq_along(learner_fits)){
+
+                         ## Cannot use := to add columns to a null data.table (no columns),
+                         ## hence we have to first seed an initial column, then delete it later
+                         learner_preds = data.table::data.table(init_seed_preds_to_delete = rep(NA_real_,n_to_pred))
+
+                         resNULL <- foreach(i=seq_along(learner_fits)) %dopar% {
                            current_fit=learner_fits[[i]]
-                           learner_preds[,i]=current_fit$predict(task)
+                           current_preds = current_fit$predict(task)
+                           current_names = learner_names[i]
+                           if (!is.na(safe_dim(current_preds)[2]) && safe_dim(current_preds)[2] > 1) {
+                            current_names = paste0(learner_names[i], "_", names(current_preds))
+                            stopifnot(length(current_names) == safe_dim(current_preds)[2])
+                           }
+                           data.table::set(learner_preds, j = current_names, value = current_preds)
+                           invisible(NULL)
                          }
-                         
-                         colnames(learner_preds)=learner_names
-                         
+
+                         ## remove the initial seeded column by reference
+                         data.table::set(learner_preds, j = "init_seed_preds_to_delete", value = NULL)
                          return(learner_preds)
                        },
                        .chain = function(task){
                          predictions = self$predict(task)
                          predictions = as.data.table(predictions)
-                         
+
                          #now make a new task where these are the covariates
-                         
+
                          return(task$next_in_chain(predictions))
                        }
-                       
+
                        )
-                     
+
 )
 

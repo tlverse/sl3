@@ -20,10 +20,8 @@ GetWarningsToSuppress <- function(update.step=FALSE) {
   warnings.to.suppress <- c("glm.fit: fitted probabilities numerically 0 or 1 occurred",
                             "prediction from a rank-deficient fit may be misleading",
                             "non-integer #successes in a binomial glm!",
-                            "the matrix is either rank-deficient or indefinite")
-  if (update.step) {
-    warnings.to.suppress <- c(warnings.to.suppress, "glm.fit: algorithm did not converge")
-  }
+                            "the matrix is either rank-deficient or indefinite",
+                            "glm.fit: algorithm did not converge")
   return(warnings.to.suppress)
 }
 
@@ -45,7 +43,6 @@ add_interactions_toDT <- function(XmatDT, interactions) {
     if (is.null(name)) name <- paste0(interact, collapse = "_")
     if (all(interact %in% names(XmatDT))){
       XmatDT[, (name) := prod.DT(.SD), .SD = interact]
-      # XmatDT[, `:=`(name, prod.DT(.SD)), .SD = interact]
     }
   }
 
@@ -87,6 +84,7 @@ Lrnr_glm_fast <- R6Class(classname = "Lrnr_glm_fast", inherit = Lrnr_base, porta
   ),
   private = list(
     .train = function(task) {
+      verbose <- getOption("sl3.verbose")
       params <- self$params
       family <- params[["family"]]
       if (is.character(family)) {
@@ -109,25 +107,24 @@ Lrnr_glm_fast <- R6Class(classname = "Lrnr_glm_fast", inherit = Lrnr_base, porta
         }, GetWarningsToSuppress())
 
       if (inherits(fit_object, "try-error")) { # if failed, fall back on stats::glm
-          ## todo: enable message below once verbose mode works
-          ## todo: find example where speedglm fails, and this code runs, add to tests
-          # if (gvars$verbose) message("speedglm::speedglm.wfit failed, falling back on stats:glm.fit; ", fit_object)
-          ctrl <- glm.control(trace = FALSE)
-          SuppressGivenWarnings({
-            fit_object <- stats::glm.fit(x = X,
-                                        y = task$Y,
-                                        family = family,
-                                        control = ctrl,
-                                        weights = task$weights)
-          }, GetWarningsToSuppress())
-          fit_object$linear.predictors <- NULL
-          fit_object$weights <- NULL
-          fit_object$prior.weights <- NULL
-          fit_object$y <- NULL
-          fit_object$residuals <- NULL
-          fit_object$fitted.values <- NULL
-          fit_object$effects <- NULL
-          fit_object$qr <- NULL
+        ## todo: find example where speedglm fails, and this code runs, add to tests
+        if (verbose) message("speedglm::speedglm.wfit failed, falling back on stats:glm.fit; ", fit_object)
+        ctrl <- glm.control(trace = FALSE)
+        SuppressGivenWarnings({
+          fit_object <- stats::glm.fit(x = X,
+                                      y = task$Y,
+                                      family = family,
+                                      control = ctrl,
+                                      weights = task$weights)
+        }, GetWarningsToSuppress())
+        fit_object$linear.predictors <- NULL
+        fit_object$weights <- NULL
+        fit_object$prior.weights <- NULL
+        fit_object$y <- NULL
+        fit_object$residuals <- NULL
+        fit_object$fitted.values <- NULL
+        fit_object$effects <- NULL
+        fit_object$qr <- NULL
       }
 
       fit_object[["linkinv_fun"]] <- linkinv_fun
@@ -135,6 +132,7 @@ Lrnr_glm_fast <- R6Class(classname = "Lrnr_glm_fast", inherit = Lrnr_base, porta
     },
 
     .predict = function(task = NULL) {
+      verbose <- getOption("sl3.verbose")
       X <- defineX(task, self$params)
       predictions <- rep.int(NA, nrow(X))
       if (nrow(X) > 0) {
@@ -144,6 +142,6 @@ Lrnr_glm_fast <- R6Class(classname = "Lrnr_glm_fast", inherit = Lrnr_base, porta
           predictions <- as.vector(private$.fit_object$linkinv_fun(eta))
         }
       }
-      return(predictions)
+      return(data.table::data.table(predictions))
     }
 ), )
