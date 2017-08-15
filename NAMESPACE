@@ -2,6 +2,7 @@
 
 S3method("[",sl3_Task)
 export(Lrnr_base)
+export(Lrnr_condensier)
 export(Lrnr_cv)
 export(Lrnr_glm)
 export(Lrnr_glm_fast)

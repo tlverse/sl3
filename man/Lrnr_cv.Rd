@@ -31,7 +31,7 @@ A wrapper around any learner that generates cross-validate predictions
 
 \seealso{
 Other Learners: \code{\link{Lrnr_base}},
-  \code{\link{Lrnr_glm}}, \code{\link{Pipeline}},
+  \code{\link{Lrnr_condensier}}, \code{\link{Pipeline}},
   \code{\link{Stack}}
 }
 \keyword{data}
