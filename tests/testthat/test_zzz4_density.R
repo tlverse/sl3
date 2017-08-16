@@ -50,7 +50,7 @@ system.time(res_speedglm2 <- test_learner_dens(Lrnr_condensier, task, bin_estima
 # system.time(res_XGB <- test_learner_dens(Lrnr_condensier, task,
 #                                     bin_estimator = Lrnr_xgboost$new(nrounds = 50, objective = "reg:logistic")
 #                                     )
-)
+# )
 # cbind(res_XGB, mtcars)
 
 ##todo: For some reason some of the predicted values (likelihood) are > 1. This should never happen!!
