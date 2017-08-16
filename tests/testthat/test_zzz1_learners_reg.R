@@ -44,5 +44,19 @@ test_learner(Lrnr_h2o_grid, task, algorithm = "deeplearning")
 ## test h2o classifiers and mutator:
 test_learner(Lrnr_h2o_classifier, task, algorithm = "naivebayes")
 test_learner(Lrnr_h2o_mutator, task, algorithm = "pca", k = 3, impute_missing = TRUE)
-
 h2o::h2o.shutdown(prompt = FALSE); Sys.sleep(3)
+
+## test xgboost learner:
+op <- options(sl3.verbose = TRUE)
+test_learner(Lrnr_xgboost, task, nrounds = 50) ## nrounds is always needed
+test_learner(Lrnr_xgboost, task, nrounds = 50, objective = "reg:linear") ## linear link function
+test_learner(Lrnr_xgboost, task, nrounds = 50, objective = "reg:logistic") ## logit-linear link function
+test_learner(Lrnr_xgboost, task, nrounds = 200, booster = "gblinear") ## GLM, i.e., use linear model for at each boosting stage
+test_learner(Lrnr_xgboost, task, nrounds = 50, booster = "gbtree") ## GBM (default), i.e., use tree model for at each boosting stage
+test_learner(Lrnr_xgboost, task, nrounds = 50, booster = "dart") ## another type of tree model
+
+options(sl3.verbose = FALSE)
+test_learner(Lrnr_xgboost, task, nrounds = 50)
+options(op)
+
+

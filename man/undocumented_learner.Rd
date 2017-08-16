@@ -2,7 +2,8 @@
 % Please edit documentation in R/Lrnr_condensier.R, R/Lrnr_glm.R,
 %   R/Lrnr_glm_fast.R, R/Lrnr_h2o_glm.R, R/Lrnr_h2o_grid.R,
 %   R/Lrnr_model.matrix.R, R/Lrnr_pkg_SuperLearner.R,
-%   R/Lrnr_pkg_SuperLearner_screener.R, R/Lrnr_sl.R, R/sl3-package.R
+%   R/Lrnr_pkg_SuperLearner_screener.R, R/Lrnr_sl.R, R/Lrnr_xgboost.R,
+%   R/sl3-package.R
 \docType{data}
 \name{Lrnr_condensier}
 \alias{Lrnr_condensier}
@@ -16,6 +17,7 @@
 \alias{Lrnr_pkg_SuperLearner}
 \alias{Lrnr_pkg_SuperLearner_screener}
 \alias{Lrnr_sl}
+\alias{Lrnr_xgboost}
 \alias{undocumented_learner}
 \title{Undocumented Learner}
 \format{An object of class \code{R6ClassGenerator} of length 24.}
@@ -41,6 +43,8 @@ Lrnr_pkg_SuperLearner
 Lrnr_pkg_SuperLearner_screener
 
 Lrnr_sl
+
+Lrnr_xgboost
 }
 \value{
 \code{\link{Lrnr_base}} object with methods for training and prediction
