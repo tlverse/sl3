@@ -35,7 +35,8 @@ test_learner_dens=function(learner, task, ...){
 op <- options(sl3.verbose = FALSE)
 ## w/ speedglm:
 system.time(res_speedglm <- test_learner_dens(Lrnr_condensier, task))
-cbind(res_speedglm, mtcars)
+system.time(res_speedglm <- test_learner_dens(Lrnr_condensier, task, covariates = c("cyl", "disp")))
+# cbind(res_speedglm, mtcars)
 ## regular GLM:
 system.time(res_GLM <- test_learner_dens(Lrnr_condensier, task, bin_estimator = Lrnr_glm$new(family = "binomial")))
 # cbind(res_GLM, mtcars)
