@@ -58,11 +58,6 @@ system.time(res_nbins <- test_learner_dens(Lrnr_condensier, task, nbins = 10))
 
 system.time(res_nbins2 <- test_learner_dens(Lrnr_condensier, task, nbins = 10, bin_estimator = condensier::speedglmR6$new()))
 
-system.time(res_XGB <- test_learner_dens(Lrnr_condensier, task, nbins = 10,
-                                    bin_estimator = Lrnr_xgboost$new(nrounds = 50, objective = "reg:logistic")
-                                    )
-)
-# cbind(res_XGB, mtcars)
 # cbind(res_nbins2, mtcars)
 
 

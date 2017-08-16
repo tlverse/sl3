@@ -28,7 +28,8 @@ Imports:
   h2o,
   stats,
   nnls,
-  SuperLearner
+  SuperLearner,
+  xgboost
 Suggests:
   testthat,
   knitr,

@@ -1,3 +1,5 @@
+#' @importFrom utils str
+NULL
 
 define_xgboost_X = function(task, covariates, params, add_outcome = FALSE) {
   verbose <- getOption("sl3.verbose")
