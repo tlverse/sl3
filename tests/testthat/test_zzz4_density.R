@@ -47,9 +47,9 @@ system.time(res_speedglm2 <- test_learner_dens(Lrnr_condensier, task, bin_estima
 # cbind(res_speedglm2, mtcars)
 
 ## w/ xgboost
-system.time(res_XGB <- test_learner_dens(Lrnr_condensier, task,
-                                    bin_estimator = Lrnr_xgboost$new(nrounds = 50, objective = "reg:logistic")
-                                    )
+# system.time(res_XGB <- test_learner_dens(Lrnr_condensier, task,
+#                                     bin_estimator = Lrnr_xgboost$new(nrounds = 50, objective = "reg:logistic")
+#                                     )
 )
 # cbind(res_XGB, mtcars)
 
