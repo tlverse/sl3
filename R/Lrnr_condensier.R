@@ -16,6 +16,13 @@ Lrnr_condensier <- R6Class(classname = "Lrnr_condensier", inherit = Lrnr_base, p
 
       assert_that(is(bin_estimator, "Lrnr_base") || is(bin_estimator, "logisfitR6"))
 
+      ## Perform additional injection if bin_estimator is a learner from sl3 package.
+      ## Wrap sl3 learner object into special wrapper class that
+      ## provides a communication link between the two packages.
+      if (inherits(bin_estimator,"Lrnr_base")) {
+        bin_estimator <- Lrnr_pkg_condensier_logisfitR6$new(sl3_lrnr = bin_estimator)
+      }
+
       params <- list(
         bin_estimator = bin_estimator,
         bin.method = bin.method[1L],

@@ -52,12 +52,12 @@ system.time(res_nbins <- test_learner(Lrnr_condensier, task, nbins = 10))
 system.time(res_nbins2 <- test_learner(Lrnr_condensier, task, nbins = 10, bin_estimator = condensier::speedglmR6$new()))
 # cbind(res_nbins2, mtcars)
 
-## some fits fail (response cannot be constant), in which case it engages the glm fall-back:
+## h2o binary learners for density estimation are not tested for now
+# h2o::h2o.init(nthread = 1);
+# ## some fits fail (response cannot be constant), in which case it engages the glm fall-back:
 # system.time(res_h2oGLM <- test_learner(Lrnr_condensier, task, bin_estimator = Lrnr_h2o_glm$new(family = "binomial")))
 # cbind(res_h2oGLM, mtcars)
-
-## some fits fail (response cannot be constant), in which case it engages the glm fall-back:
+# ## some fits fail (response cannot be constant), in which case it engages the glm fall-back:
 # system.time(res_h2oGBM <- test_learner(Lrnr_condensier, task, bin_estimator = Lrnr_h2o_grid$new(algorithm = "gbm", distribution = "bernoulli")))
 # cbind(res_h2oGBM, mtcars)
-
 # h2o::h2o.shutdown(prompt = FALSE); Sys.sleep(3)
