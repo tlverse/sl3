@@ -41,7 +41,7 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                         #todo: add error handling
                         fit_object = private$.train(task)
 
-                        new_object=self$clone() # copy parameters, and whatever else
+                        new_object = self$clone() # copy parameters, and whatever else
                         new_object$set_train(fit_object, task)
 
                         return(new_object)
@@ -95,6 +95,10 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                    active = list(
                      is_trained=function(){
                        return(!is.null(private$.fit_object))
+                     },
+                     fit_object=function() {
+                       fit_object=private$.fit_object
+                       return(fit_object)
                      },
                      name=function(){
                        #todo: allow custom names

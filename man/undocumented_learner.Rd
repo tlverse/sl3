@@ -10,6 +10,8 @@
 \alias{Lrnr_glm_fast}
 \alias{Lrnr_h2o_glm}
 \alias{Lrnr_h2o_grid}
+\alias{Lrnr_h2o_classifier}
+\alias{Lrnr_h2o_mutator}
 \alias{Lrnr_model.matrix}
 \alias{Lrnr_pkg_SuperLearner}
 \alias{Lrnr_pkg_SuperLearner_screener}
@@ -27,6 +29,10 @@ Lrnr_glm_fast
 Lrnr_h2o_glm
 
 Lrnr_h2o_grid
+
+Lrnr_h2o_classifier
+
+Lrnr_h2o_mutator
 
 Lrnr_model.matrix
 

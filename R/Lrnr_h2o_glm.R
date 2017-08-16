@@ -43,9 +43,9 @@ define_h2o_X = function(task, covariates, params) {
 #' @rdname undocumented_learner
 Lrnr_h2o_glm <- R6Class(classname = "Lrnr_h2o_glm", inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(family = "gaussian", ...) {
+    initialize = function(family = "gaussian", covariates = NULL, ...) {
       if (is.function(family)) family <- family()[["family"]]
-      params <- list(family = family, ...)
+      params <- list(family = family, covariates = covariates, ...)
       super$initialize(params = params)
     }
   ),
@@ -63,7 +63,7 @@ Lrnr_h2o_glm <- R6Class(classname = "Lrnr_h2o_glm", inherit = Lrnr_base, portabl
       }
 
       private$.covariates <- task$nodes$covariates
-      if ("covariates" %in% names(params)) {
+      if ("covariates" %in% names(params) && !is.null(params[["covariates"]])) {
         private$.covariates <- intersect(private$.covariates, params$covariates)
       }
       X <- define_h2o_X(task, private$.covariates, params)
