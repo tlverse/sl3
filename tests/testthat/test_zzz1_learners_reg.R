@@ -50,7 +50,7 @@ h2o::h2o.shutdown(prompt = FALSE); Sys.sleep(3)
 op <- options(sl3.verbose = TRUE)
 test_learner(Lrnr_xgboost, task, nrounds = 50) ## nrounds is always needed
 test_learner(Lrnr_xgboost, task, nrounds = 50, objective = "reg:linear") ## linear link function
-test_learner(Lrnr_xgboost, task, nrounds = 50, objective = "reg:logistic") ## logit-linear link function
+# test_learner(Lrnr_xgboost, task, nrounds = 50, objective = "reg:logistic") ## logit-linear link function, need [0,1] outcomes
 test_learner(Lrnr_xgboost, task, nrounds = 200, booster = "gblinear") ## GLM, i.e., use linear model for at each boosting stage
 test_learner(Lrnr_xgboost, task, nrounds = 50, booster = "gbtree") ## GBM (default), i.e., use tree model for at each boosting stage
 test_learner(Lrnr_xgboost, task, nrounds = 50, booster = "dart") ## another type of tree model
