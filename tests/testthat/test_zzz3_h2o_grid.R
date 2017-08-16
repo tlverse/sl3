@@ -31,13 +31,24 @@ task$nodes$covariates
 
 options(sl3.verbose = TRUE)
 
-test_that("Lrnr_h2o_grid works with naiveBays for categorical outcome", {
+test_that("Lrnr_h2o_classifier works with naiveBays for categorical outcome", {
   h2o::h2o.no_progress()
   cpp_hazbin <- cpp
   cpp_hazbin[["haz_cat"]] <- as.factor(rep_len(c(0L,1L,2L), nrow(cpp)))
   task_bin <- sl3_Task$new(cpp_hazbin, covariates = covars, outcome = "haz_cat")
 
-  bays_lrn <- Lrnr_h2o_grid$new(algorithm = "naivebayes")$train(task_bin)
+  bays_lrn <- Lrnr_h2o_classifier$new(algorithm = "naivebayes")$train(task_bin)
+  print(bays_lrn)
+  bays_lrn_preds <- bays_lrn$predict()
+  expect_true(ncol(bays_lrn_preds)==4)
+})
+
+test_that("Lrnr_h2o_classifier works with naiveBays for non-factor outcomes", {
+  h2o::h2o.no_progress()
+  cpp_hazbin <- cpp
+  cpp_hazbin[["haz_cat"]] <- rep_len(c(0L,1L,2L), nrow(cpp))
+  task_bin <- sl3_Task$new(cpp_hazbin, covariates = covars, outcome = "haz_cat")
+  bays_lrn <- Lrnr_h2o_classifier$new(algorithm = "naivebayes")$train(task_bin)
   print(bays_lrn)
   bays_lrn_preds <- bays_lrn$predict()
   expect_true(ncol(bays_lrn_preds)==4)
@@ -86,6 +97,15 @@ test_that("stack$predict plays nicely when Learner$predict() is a grid of predic
   expect_true(ncol(preds)==6L)
 })
 
+test_that("check Lrnr_h2o_mutator returns matrices of mutated predictors", {
+  h2o::h2o.no_progress()
+  ## regular GLM
+  pca_lrnr <- Lrnr_h2o_mutator$new(algorithm = "pca", k = 4, impute_missing = TRUE)
+  pca_fit <- pca_lrnr$train(task)
+  preds <- pca_fit$predict()
+  expect_true(ncol(preds) == 4L)
+})
+
 test_that("h2o.pca works with pipelines (not checking results)", {
   h2o::h2o.no_progress()
 
@@ -97,7 +117,7 @@ test_that("h2o.pca works with pipelines (not checking results)", {
 
   ## apply PCA to X, then fit GLM on results of PCA
   pca_to_glm <- Pipeline$new(
-                  Lrnr_h2o_grid$new(algorithm = "pca", k = 2, impute_missing = TRUE),
+                  Lrnr_h2o_mutator$new(algorithm = "pca", k = 3, impute_missing = TRUE),
                   Lrnr_glm_fast$new())
 
   # stack above learners and fit them all:

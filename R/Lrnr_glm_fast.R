@@ -54,7 +54,7 @@ add_interactions_toDT <- function(XmatDT, interactions) {
 ## Can define interaction columns if spec'ed in params
 defineX <- function(task, params) {
   covariates <- task$nodes$covariates
-  if ("covariates" %in% names(params)) {
+  if ("covariates" %in% names(params) && !is.null(params[["covariates"]])) {
     covariates <- intersect(covariates, params$covariates)
   }
   X <- cbind(Intercept = 1L, task$X[,covariates, with=FALSE, drop=FALSE])
@@ -77,8 +77,9 @@ Lrnr_glm_fast <- R6Class(classname = "Lrnr_glm_fast", inherit = Lrnr_base, porta
   public = list(
     initialize = function(family = gaussian(),
                           method = c('Cholesky', 'eigen','qr'),
+                          covariates = NULL,
                           ...) {
-      params <- list(family = family, method = method[1L], ...)
+      params <- list(family = family, method = method[1L], covariates = covariates, ...)
       super$initialize(params = params)
     }
   ),

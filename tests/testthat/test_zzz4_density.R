@@ -31,35 +31,33 @@ test_learner=function(learner, task, ...){
   chained_task=fit_obj$chain()
   test_that("Chaining returns a task",expect_true(is(chained_task,"sl3_Task")))
   test_that("Chaining returns the correct number of rows",expect_equal(nrow(chained_task$X),nrow(task$X)))
+  return(train_preds)
 }
 
 options(sl.verbose = FALSE)
 
-system.time(test_learner(Lrnr_condensier, task))
-## currently fails:
-# system.time(test_learner(Lrnr_condensier, task, bin_estimator = Lrnr_glm$new(family = "binomial")))
+## w/ speedglm:
+system.time(res_speedglm <- test_learner(Lrnr_condensier, task))
+# cbind(res_speedglm, mtcars)
 
-system.time(test_learner(Lrnr_condensier, task, bin_estimator = condensier::speedglmR6$new()))
+## regular GLM:
+system.time(res_GLM <- test_learner(Lrnr_condensier, task, bin_estimator = Lrnr_glm$new(family = "binomial")))
+# cbind(res_GLM, mtcars)
+
+system.time(res_speedglm2 <- test_learner(Lrnr_condensier, task, bin_estimator = condensier::speedglmR6$new()))
+# cbind(res_speedglm2, mtcars)
 
 ## For some reason some of the predicted values (likelihood) are > 1. This should never happen!!
-system.time(test_learner(Lrnr_condensier, task, nbins = 10))
-system.time(test_learner(Lrnr_condensier, task, nbins = 10, bin_estimator = condensier::speedglmR6$new()))
+system.time(res_nbins <- test_learner(Lrnr_condensier, task, nbins = 10))
+system.time(res_nbins2 <- test_learner(Lrnr_condensier, task, nbins = 10, bin_estimator = condensier::speedglmR6$new()))
+# cbind(res_nbins2, mtcars)
 
-## currently fails (response cannot be constant), need to have a glm fall-back:
-# system.time(test_learner(Lrnr_condensier, task, bin_estimator = Lrnr_h2o_glm$new(family = "binomial")))
-## currently fails (response cannot be constant), need to have a glm fall-back:
-# system.time(test_learner(Lrnr_condensier, task, bin_estimator = Lrnr_h2o_grid$new(algorithm = "gbm")))
+## some fits fail (response cannot be constant), in which case it engages the glm fall-back:
+# system.time(res_h2oGLM <- test_learner(Lrnr_condensier, task, bin_estimator = Lrnr_h2o_glm$new(family = "binomial")))
+# cbind(res_h2oGLM, mtcars)
 
-
-# test_learner(Lrnr_glm_fast, task)
-# test_learner(Lrnr_h2o_glm, task)
-# test_learner(Lrnr_h2o_grid, task, algorithm = "glm")
-# test_learner(Lrnr_h2o_grid, task, algorithm = "gbm")
-# test_learner(Lrnr_h2o_grid, task, algorithm = "randomForest")
-# test_learner(Lrnr_h2o_grid, task, algorithm = "kmeans")
-# test_learner(Lrnr_h2o_grid, task, algorithm = "deeplearning")
-# ## todo: works only with categorical (factor) outcomes, need separate host of tests for classification
-# # test_learner(Lrnr_h2o_grid, task, algorithm = "naivebayes")
-# test_learner(Lrnr_h2o_grid, task, algorithm = "pca", k = 2, impute_missing = TRUE)
+## some fits fail (response cannot be constant), in which case it engages the glm fall-back:
+# system.time(res_h2oGBM <- test_learner(Lrnr_condensier, task, bin_estimator = Lrnr_h2o_grid$new(algorithm = "gbm", distribution = "bernoulli")))
+# cbind(res_h2oGBM, mtcars)
 
 # h2o::h2o.shutdown(prompt = FALSE); Sys.sleep(3)

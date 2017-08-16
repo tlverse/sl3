@@ -40,8 +40,9 @@ test_learner(Lrnr_h2o_grid, task, algorithm = "gbm")
 test_learner(Lrnr_h2o_grid, task, algorithm = "randomForest")
 test_learner(Lrnr_h2o_grid, task, algorithm = "kmeans")
 test_learner(Lrnr_h2o_grid, task, algorithm = "deeplearning")
-## todo: works only with categorical (factor) outcomes, need separate host of tests for classification
-# test_learner(Lrnr_h2o_grid, task, algorithm = "naivebayes")
-test_learner(Lrnr_h2o_grid, task, algorithm = "pca", k = 2, impute_missing = TRUE)
+
+## test h2o classifiers and mutator:
+test_learner(Lrnr_h2o_classifier, task, algorithm = "naivebayes")
+test_learner(Lrnr_h2o_mutator, task, algorithm = "pca", k = 3, impute_missing = TRUE)
 
 h2o::h2o.shutdown(prompt = FALSE); Sys.sleep(3)
