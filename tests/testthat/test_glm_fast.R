@@ -7,7 +7,7 @@ if (FALSE) {
     library("devtools")
     document()
     load_all("./")  # load all R files in /R and datasets in /data. Ignores NAMESPACE:
-    devtools::check() # runs full check
+    # devtools::check() # runs full check
     setwd("..")
     install("sl3", build_vignettes = FALSE, dependencies = FALSE)  # INSTALL W/ devtools:
 }
@@ -142,12 +142,14 @@ test_that("Lrnr_glm_fast works with different families ('family = ...') and solv
 test_that("When speedglm fails (singlular X) the fallback glm works", {
   op <- options(sl3.verbose = TRUE)
   ## make a singular X for testing:
+  set.seed(123456)
+  dat_test <- data.frame(Y = rep(0L,100), X1 = rnorm(100), X2 = rnorm(100))
   dat_test <- cbind(dat_test, X3 = dat_test[["X1"]] + dat_test[["X2"]])
   task_all <- sl3_Task$new(dat_test, covariates = c("X1", "X2", "X3"), outcome = "Y")
   glm_lrnr <- Lrnr_glm$new()$train(task_all)
   fglm_lrnr <- Lrnr_glm_fast$new(method = "Cholesky")$train(task_all)
   glm_preds <- glm_lrnr$predict()
   fglm_preds <- fglm_lrnr$predict()
-  # expect_true(all.equal(as.vector(glm_preds), as.vector(fglm_preds[["predictions"]])))
+  expect_true(all.equal(as.vector(glm_preds), as.vector(fglm_preds[["predictions"]])))
   options(op)
 })
