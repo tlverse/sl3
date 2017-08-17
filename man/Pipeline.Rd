@@ -30,8 +30,8 @@ A Pipeline of learners is a way to "chain" Learners together, where the output o
 }
 
 \seealso{
-Other Learners: \code{\link{Lrnr_base}},
-  \code{\link{Lrnr_condensier}}, \code{\link{Lrnr_cv}},
+Other Learners: \code{\link{Lrnr_arima}},
+  \code{\link{Lrnr_base}}, \code{\link{Lrnr_cv}},
   \code{\link{Stack}}
 }
 \keyword{data}
