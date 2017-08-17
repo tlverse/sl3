@@ -2,7 +2,7 @@ Package: sl3
 Title: Machine Learning Pipelines
 Version: 0.2
 Date: 2017-08-01
-Authors@R:  c(
+Authors@R: c(
   person("Jeremy", "Coyle", email = "jeremyrcoyle@gmail.com",
          role = c("aut", "cre", "cph")),
   person("Nima", "Hejazi", email = "nh@nimahejazi.org", role = "aut"),
@@ -29,7 +29,8 @@ Imports:
   stats,
   nnls,
   SuperLearner,
-  xgboost
+  xgboost,
+  forecast
 Suggests:
   testthat,
   knitr,
@@ -41,4 +42,4 @@ Remotes:
   github::osofr/condensier
 LazyLoad: yes
 VignetteBuilder: knitr
-RoxygenNote: 6.0.1
+RoxygenNote: 6.0.1.9000
