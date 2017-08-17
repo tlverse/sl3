@@ -56,7 +56,7 @@ system.time(res_nbins <- test_learner_dens(Lrnr_condensier, task, nbins = 10))
 
 ## h2o binary learners for density estimation:
 options(sl3.verbose = TRUE)
-h2o::h2o.init(nthread = 1);
+Sys.sleep(3); h2o::h2o.init(nthread = 1); Sys.sleep(3)
 # ## some fits fail (response cannot be constant), in which case it engages the glm fall-back:
 system.time(res_h2oGLM <- test_learner_dens(Lrnr_condensier, task, nbins = 3, maxNperBin = 50, bin_estimator = Lrnr_h2o_glm$new(family = "binomial")))
 # cbind(res_h2oGLM, mtcars)
