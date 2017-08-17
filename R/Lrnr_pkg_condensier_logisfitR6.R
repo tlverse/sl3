@@ -56,7 +56,6 @@ Lrnr_pkg_condensier_logisfitR6 <- R6Class("Lrnr_pkg_condensier_logisfitR6",
 
     predict = function(datsum_obj, m.fit) {
       verbose <- getOption("sl3.verbose")
-      if (verbose) print(paste("calling predict for", self$fitfunname))
       X_mat <- datsum_obj$getXDT
       assert_that(!is.null(X_mat)); assert_that(!is.null(datsum_obj$subset_idx))
       pAout <- rep.int(NA_real_, datsum_obj$n)
