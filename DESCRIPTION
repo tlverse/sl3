@@ -25,6 +25,7 @@ Imports:
   origami,
   future,
   R6,
+  Rsolnp,
   h2o,
   stats,
   nnls,

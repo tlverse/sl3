@@ -3,9 +3,9 @@ library(testthat)
 
 # define test dataset
 data(mtcars)
-task <- sl3_Task$new(mtcars, covariates = c("cyl", "disp", "hp", "drat", "wt", "qsec", 
+task <- sl3_Task$new(mtcars, covariates = c("cyl", "disp", "hp", "drat", "wt", "qsec",
     "vs", "am", "gear", "carb"), outcome = "mpg")
-task2 <- sl3_Task$new(mtcars, covariates = c("cyl", "disp", "hp", "drat", "wt", "qsec", 
+task2 <- sl3_Task$new(mtcars, covariates = c("cyl", "disp", "hp", "drat", "wt", "qsec",
     "vs", "am", "gear", "carb"), outcome = "mpg")
 
 test_learner_dens <- function(learner, task, ...) {
@@ -13,26 +13,26 @@ test_learner_dens <- function(learner, task, ...) {
     # only default arguments. Not sure if this is a reasonable requirement
     learner_obj <- Lrnr_condensier$new(...)
     print(sprintf("Testing Learner: %s", learner_obj$name))
-    
+
     # test learner training
     fit_obj <- learner_obj$train(task)
     test_that("Learner can be trained on data", expect_true(fit_obj$is_trained))
-    
+
     # test learner prediction
     train_preds <- fit_obj$predict()
     # print(train_preds)
-    test_that("Learner can generate training set predictions", expect_equal(sl3:::safe_dim(train_preds)[1], 
+    test_that("Learner can generate training set predictions", expect_equal(sl3:::safe_dim(train_preds)[1],
         nrow(task$X)))
-    
+
     holdout_preds <- fit_obj$predict(task2)
     # print(holdout_preds)
-    test_that("Learner can generate holdout set predictions", expect_equal(train_preds[["likelihood"]], 
+    test_that("Learner can generate holdout set predictions", expect_equal(train_preds[["likelihood"]],
         holdout_preds[["likelihood"]]))
-    
+
     # test learner chaining
     chained_task <- fit_obj$chain()
     test_that("Chaining returns a task", expect_true(is(chained_task, "sl3_Task")))
-    test_that("Chaining returns the correct number of rows", expect_equal(nrow(chained_task$X), 
+    test_that("Chaining returns the correct number of rows", expect_equal(nrow(chained_task$X),
         nrow(task$X)))
     return(train_preds)
 }
@@ -40,7 +40,7 @@ test_learner_dens <- function(learner, task, ...) {
 op <- options(sl3.verbose = FALSE)
 ## w/ speedglm:
 system.time(res_speedglm <- test_learner_dens(Lrnr_condensier, task))
-system.time(res_speedglm <- test_learner_dens(Lrnr_condensier, task, covariates = c("cyl", 
+system.time(res_speedglm <- test_learner_dens(Lrnr_condensier, task, covariates = c("cyl",
     "disp")))
 # cbind(res_speedglm, mtcars) regular GLM:
 system.time(res_GLM <- test_learner_dens(Lrnr_condensier, task, bin_estimator = Lrnr_glm$new(family = "binomial")))
@@ -62,7 +62,7 @@ h2o::h2o.init(nthread = 1)
 Sys.sleep(1)
 # ## some fits fail (response cannot be constant), in which case it engages the
 # glm fall-back:
-system.time(res_h2oGLM <- test_learner_dens(Lrnr_condensier, task, nbins = 3, maxNperBin = 50, 
+system.time(res_h2oGLM <- test_learner_dens(Lrnr_condensier, task, nbins = 3, maxNperBin = 50,
     bin_estimator = Lrnr_h2o_glm$new(family = "binomial")))
 # cbind(res_h2oGLM, mtcars) ## some fits fail (response cannot be constant), in
 # which case it engages the glm fall-back: system.time(res_h2oGBM <-
@@ -71,5 +71,5 @@ system.time(res_h2oGLM <- test_learner_dens(Lrnr_condensier, task, nbins = 3, ma
 # cbind(res_h2oGBM, mtcars)
 h2o::h2o.shutdown(prompt = FALSE)
 Sys.sleep(3)
-
 options(op)
+

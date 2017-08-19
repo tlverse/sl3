@@ -8,6 +8,7 @@
 \name{Lrnr_arima}
 \alias{Lrnr_arima}
 \alias{Lrnr_condensier}
+\alias{Lrnr_solnp_density}
 \alias{Lrnr_glm}
 \alias{Lrnr_glm_fast}
 \alias{Lrnr_h2o_glm}
@@ -27,6 +28,8 @@
 Lrnr_arima
 
 Lrnr_condensier
+
+Lrnr_solnp_density
 
 Lrnr_glm
 
