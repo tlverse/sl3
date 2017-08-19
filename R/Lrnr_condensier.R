@@ -6,11 +6,11 @@
 #' @rdname undocumented_learner
 Lrnr_condensier <- R6Class(classname = "Lrnr_condensier", inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(bin.method = c("equal.mass", "equal.len", "dhist"),
+    initialize = function(bin_method = c("equal.mass", "equal.len", "dhist"),
                           nbins = NA_integer_,
-                          maxncats = 20,
-                          poolContinVar = FALSE,
-                          maxNperBin = 1000,
+                          max_n_cat = 20,
+                          pool = FALSE,
+                          max_n_bin = 1000,
                           bin_estimator = Lrnr_glm_fast$new(family = "binomial"),
                           ...) {
 
@@ -25,11 +25,11 @@ Lrnr_condensier <- R6Class(classname = "Lrnr_condensier", inherit = Lrnr_base, p
 
       params <- list(
         bin_estimator = bin_estimator,
-        bin.method = bin.method[1L],
+        bin_method = bin_method[1L],
         nbins = nbins[1L],
-        maxncats = maxncats,
-        poolContinVar = poolContinVar,
-        maxNperBin = maxNperBin,
+        max_n_cat = max_n_cat,
+        pool = pool,
+        max_n_bin = max_n_bin,
         ...
       )
 
@@ -53,7 +53,8 @@ Lrnr_condensier <- R6Class(classname = "Lrnr_condensier", inherit = Lrnr_base, p
         input_data = task$data,
         nbins = params$nbins,
         bin_estimator = params$bin_estimator,
-        verbose = TRUE
+        pool = params$pool,
+        verbose = verbose
       )
       return(fit_object)
     },
@@ -61,8 +62,64 @@ Lrnr_condensier <- R6Class(classname = "Lrnr_condensier", inherit = Lrnr_base, p
     .predict = function(task = NULL) {
       verbose = getOption("sl3.verbose")
       predictions <- condensier::predict_probability(private$.fit_object, task$data)
-      sampled_value <- condensier::sample_value(private$.fit_object, task$data)
-      predictions <- data.table::data.table(likelihood = predictions, sampled_value = sampled_value)
+      # sampled_value <- condensier::sample_value(private$.fit_object, task$data)
+      # predictions <- data.table::data.table(likelihood = predictions, sampled_value = sampled_value)
+      predictions <- data.table::data.table(likelihood = predictions)
       return(predictions)
+    }
+), )
+
+
+## ------------------------------------------------------------------------
+## meta learner for density, find convex combo of candidate density estimators
+## by minimizing the cross-validated negative log-likelihood loss of each density.
+## The optimization problem is solved with Rsolnp::solnp, using largrandge multipliers.
+## ------------------------------------------------------------------------
+#' @export
+#' @rdname undocumented_learner
+Lrnr_solnp_density <- R6Class(classname = "Lrnr_solnp_density", inherit = Lrnr_base, portable = TRUE, class = TRUE,
+  public = list(
+    initialize = function(...) {
+      params <- list(...)
+      super$initialize(params = params)
+    }
+  ),
+
+  private = list(
+    .covariates = NULL,
+    .train = function(task) {
+      verbose = getOption("sl3.verbose")
+      params <- self$params
+
+      eval_fun_loss <- function(alphas) {
+        sum(-log(as.vector(as.matrix(task$X) %*% alphas)))
+      }
+
+      eq_fun <- function(alphas) {
+        sum(alphas)
+      }
+
+      fit_object <- Rsolnp::solnp(runif(ncol(task$X)), eval_fun_loss,  eqfun = eq_fun, eqB = 1, LB = rep(0L, ncol(task$X)))
+      fit_object$coef <- fit_object$pars
+      names(fit_object$coef) <- colnames(task$X)
+      # if (verbose) {
+        cat("\ndensity meta-learner fit:\n"); print(fit_object$coef)
+      # }
+      fit_object$name <- "solnp"
+      return(fit_object)
+    },
+
+    .predict = function(task = NULL) {
+      verbose <- getOption("sl3.verbose")
+      X <- task$X
+      predictions <- rep.int(NA, nrow(X))
+      if (nrow(X) > 0) {
+        coef <- private$.fit_object$coef
+        if (!all(is.na(coef))) {
+          eta <- as.matrix(X[, which(!is.na(coef)), drop = FALSE, with = FALSE]) %*% coef[!is.na(coef)]
+          predictions <- eta
+        }
+      }
+      return(data.table::data.table(predictions))
     }
 ), )

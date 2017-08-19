@@ -7,6 +7,7 @@
 \docType{data}
 \name{Lrnr_condensier}
 \alias{Lrnr_condensier}
+\alias{Lrnr_solnp_density}
 \alias{Lrnr_glm}
 \alias{Lrnr_glm_fast}
 \alias{Lrnr_h2o_glm}
@@ -23,6 +24,8 @@
 \format{An object of class \code{R6ClassGenerator} of length 24.}
 \usage{
 Lrnr_condensier
+
+Lrnr_solnp_density
 
 Lrnr_glm
 
