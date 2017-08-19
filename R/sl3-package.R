@@ -24,10 +24,27 @@ NULL
 #' @source
 #' \url{https://catalog.archives.gov/id/606622}
 #'
-#' Broman, Sarah. "The collaborative perinatal project: an overview." Handbook of longitudinal research 1 (1984): 185-227.
+#' Broman, Sarah. 'The collaborative perinatal project: an overview.' Handbook of longitudinal research 1 (1984): 185-227.
 #' @usage cpp
 #' @keywords data
 #' @examples
 #' data(cpp)
 #' head(cpp)
+NULL
+
+#' Bicycle sharing time series dataset  
+#'
+#' @name bsds
+#' @docType data
+#' @description
+#' Bicycle sharing time series dataset from the UCI Machine Learning Repository. 
+#' @source
+#' \url{https://archive.ics.uci.edu/ml/datasets/bike+sharing+dataset}
+#'
+#' Fanaee-T, Hadi, and Gama, Joao, 'Event labeling combining ensemble detectors and background knowledge', Progress in Artificial Intelligence (2013): pp. 1-15, Springer Berlin Heidelberg
+#' @usage bsds
+#' @keywords data
+#' @examples
+#' data(bsds)
+#' head(bsds)
 NULL

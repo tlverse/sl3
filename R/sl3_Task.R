@@ -44,10 +44,13 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                            assert_that(all(all_nodes%in%names(data)))
 
                            private$.nodes = nodes
-                           # generate folds
-                           # maybe set keys based on fold object if it exists
-                           #setkeyv(self$data)
-                           #guess outcome type by count unique
+                           
+                           if(is.null(folds)){
+                             folds=make_folds(cluster_ids=self$id)
+                             
+                           }
+                           
+                           private$.folds=folds
 
                            invisible(self)
                          },
@@ -108,11 +111,15 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                            }
 
                            return(ids)
+                         },
+                         folds = function(){
+                           return(private$.folds)
                          }),
                        private = list(
                          .data = NULL,
                          .nodes = NULL,
-                         .X = NULL
+                         .X = NULL,
+                         .folds = NULL
                        )
 )
 

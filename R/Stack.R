@@ -20,6 +20,9 @@ Stack <- R6Class(classname = "Stack",
                      public = list(
                        initialize = function(...) {
                          learners=list(...)
+                         if(length(learners)==1&&inherits(learners,"Stack")){
+                           return(learners)
+                         }
                          params=list(learners=learners)
                          super$initialize(params=params)
                        },

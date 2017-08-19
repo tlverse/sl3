@@ -42,8 +42,8 @@ Lrnr_cv <- R6Class(classname = "Lrnr_cv",
                      portable = TRUE,
                      class = TRUE,
                      public = list(
-                       initialize = function(learner) {
-                         params=list(learner=learner)
+                       initialize = function(learner, folds=NULL) {
+                         params=list(learner=learner, folds=folds)
                          super$initialize(params=params)
                        },
                        print = function(){
@@ -58,8 +58,13 @@ Lrnr_cv <- R6Class(classname = "Lrnr_cv",
                      ),
                      private = list(
                        .train = function(task) {
-                         #should get folds from task if available
-                         folds=make_folds(task$X)
+                         
+                         #prefer folds from params, but default to folds from task
+                         folds=self$params$folds
+                         if(is.null(folds)){
+                           folds=task$folds  
+                         }
+                         
                          learner=self$params$learner
 
                          cv_train=function(fold,learner,task){
