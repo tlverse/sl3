@@ -29,7 +29,12 @@ Lrnr_sl <- R6Class(classname = "Lrnr_sl",
                        .train = function(task) {
                          #make stack and cv learner objects
                          learners=self$params$learners
-                         learner_stack=do.call(Stack$new,learners)
+                         if(inherits(learners,"Stack")){
+                           learner_stack=learners
+                           learners=learner_stack$params$learners
+                         } else{
+                          learner_stack=do.call(Stack$new,learners)
+                         }
                          cv_stack=Lrnr_cv$new(learner_stack)
                          
                          #fit stack on cv data

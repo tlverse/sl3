@@ -1,22 +1,23 @@
 context("Test h2o grid")
 
-if(FALSE) {
-  setwd(".."); setwd(".."); getwd()
-  library("devtools")
-  document()
-  load_all("./") # load all R files in /R and datasets in /data. Ignores NAMESPACE:
-  setwd("..");
-  install("sl3", build_vignettes = FALSE, dependencies = FALSE) # INSTALL W/ devtools:
-  Sys.setenv(JAVA_HOME="/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/")
+if (FALSE) {
+    setwd("..")
+    setwd("..")
+    getwd()
+    library("devtools")
+    document()
+    load_all("./")  # load all R files in /R and datasets in /data. Ignores NAMESPACE:
+    setwd("..")
+    install("sl3", build_vignettes = FALSE, dependencies = FALSE)  # INSTALL W/ devtools:
+    Sys.setenv(JAVA_HOME = "/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/")
 }
 
 
 library(testthat)
 library(sl3)
 library(h2o)
-h2o::h2o.init(nthread = 1);
-# library(data.table)
-# library(origami)
+h2o::h2o.init(nthread = 1)
+# library(data.table) library(origami)
 library(SuperLearner)
 set.seed(1)
 
@@ -32,98 +33,99 @@ task$nodes$covariates
 options(sl3.verbose = TRUE)
 
 test_that("Lrnr_h2o_classifier works with naiveBays for categorical outcome", {
-  h2o::h2o.no_progress()
-  cpp_hazbin <- cpp
-  cpp_hazbin[["haz_cat"]] <- as.factor(rep_len(c(0L,1L,2L), nrow(cpp)))
-  task_bin <- sl3_Task$new(cpp_hazbin, covariates = covars, outcome = "haz_cat")
-
-  bays_lrn <- Lrnr_h2o_classifier$new(algorithm = "naivebayes")$train(task_bin)
-  print(bays_lrn)
-  bays_lrn_preds <- bays_lrn$predict()
-  expect_true(ncol(bays_lrn_preds)==4)
+    h2o::h2o.no_progress()
+    cpp_hazbin <- cpp
+    cpp_hazbin[["haz_cat"]] <- as.factor(rep_len(c(0L, 1L, 2L), nrow(cpp)))
+    task_bin <- sl3_Task$new(cpp_hazbin, covariates = covars, outcome = "haz_cat")
+    
+    bays_lrn <- Lrnr_h2o_classifier$new(algorithm = "naivebayes")$train(task_bin)
+    print(bays_lrn)
+    bays_lrn_preds <- bays_lrn$predict()
+    expect_true(ncol(bays_lrn_preds) == 4)
 })
 
 test_that("Lrnr_h2o_classifier works with naiveBays for non-factor outcomes", {
-  h2o::h2o.no_progress()
-  cpp_hazbin <- cpp
-  cpp_hazbin[["haz_cat"]] <- rep_len(c(0L,1L,2L), nrow(cpp))
-  task_bin <- sl3_Task$new(cpp_hazbin, covariates = covars, outcome = "haz_cat")
-  bays_lrn <- Lrnr_h2o_classifier$new(algorithm = "naivebayes")$train(task_bin)
-  print(bays_lrn)
-  bays_lrn_preds <- bays_lrn$predict()
-  expect_true(ncol(bays_lrn_preds)==4)
+    h2o::h2o.no_progress()
+    cpp_hazbin <- cpp
+    cpp_hazbin[["haz_cat"]] <- rep_len(c(0L, 1L, 2L), nrow(cpp))
+    task_bin <- sl3_Task$new(cpp_hazbin, covariates = covars, outcome = "haz_cat")
+    bays_lrn <- Lrnr_h2o_classifier$new(algorithm = "naivebayes")$train(task_bin)
+    print(bays_lrn)
+    bays_lrn_preds <- bays_lrn$predict()
+    expect_true(ncol(bays_lrn_preds) == 4)
 })
 
 test_that("Lrnr_h2o_grid learner works with a grid of regularized GLMs", {
-  h2o::h2o.no_progress()
-  h2o_glm_grid <- Lrnr_h2o_grid$new(algorithm = "glm",
-                                       hyper_params =
-                                        list(alpha = c(0, 0.5, 1)))
-  h2o_glm_grid <- h2o_glm_grid$train(task)
-  h2oGLM_preds <- h2o_glm_grid$predict()
+    h2o::h2o.no_progress()
+    h2o_glm_grid <- Lrnr_h2o_grid$new(algorithm = "glm", hyper_params = list(alpha = c(0, 
+        0.5, 1)))
+    h2o_glm_grid <- h2o_glm_grid$train(task)
+    h2oGLM_preds <- h2o_glm_grid$predict()
 })
 
 test_that("Lrnr_h2o_grid learner works with a grid of GBMs", {
-  h2o::h2o.no_progress()
-  glm_preds <- Lrnr_glm$new()$train(task)$predict()
-  glm_preds2 <- Lrnr_glm_fast$new()$train(task)$predict()
-
-  h2o_gbm_grid <- Lrnr_h2o_grid$new(algorithm = "gbm",
-                                       hyper_params =
-                                        list(ntrees = c(10, 20, 50)))
-  h2o_gbm_grid <- h2o_gbm_grid$train(task)
-  h2ogbm_preds <- h2o_gbm_grid$predict()
+    h2o::h2o.no_progress()
+    glm_preds <- Lrnr_glm$new()$train(task)$predict()
+    glm_preds2 <- Lrnr_glm_fast$new()$train(task)$predict()
+    
+    h2o_gbm_grid <- Lrnr_h2o_grid$new(algorithm = "gbm", hyper_params = list(ntrees = c(10, 
+        20, 50)))
+    h2o_gbm_grid <- h2o_gbm_grid$train(task)
+    h2ogbm_preds <- h2o_gbm_grid$predict()
 })
 
-test_that("stack$predict plays nicely when Learner$predict() is a grid of predictions from several models", {
-  h2o::h2o.no_progress()
-  glm_learner <- Lrnr_glm$new()
-  fglm_learner <- Lrnr_glm_fast$new()
-
-  screen_and_glm <- Pipeline$new(Lrnr_pkg_SuperLearner_screener$new("screen.glmnet"), fglm_learner)
-
-  h2o_gbm_grid <- Lrnr_h2o_grid$new(algorithm = "gbm",
-                                       hyper_params =
-                                        list(ntrees = c(10, 20)))
-
-  SL.glmnet_learner <- Lrnr_pkg_SuperLearner$new(SL_wrapper = "SL.glmnet")
-
-  # now lets stack some learners:
-  learner_stack <- Stack$new(glm_learner, fglm_learner, screen_and_glm, h2o_gbm_grid, SL.glmnet_learner)
-  stack_fit <- learner_stack$train(task)
-  preds <- stack_fit$predict()
-
-  expect_true(data.table::is.data.table(preds))
-  expect_true(ncol(preds)==6L)
-})
+test_that("stack$predict plays nicely when Learner$predict() is a grid of predictions from several models", 
+    {
+        h2o::h2o.no_progress()
+        glm_learner <- Lrnr_glm$new()
+        fglm_learner <- Lrnr_glm_fast$new()
+        
+        screen_and_glm <- Pipeline$new(Lrnr_pkg_SuperLearner_screener$new("screen.glmnet"), 
+            fglm_learner)
+        
+        h2o_gbm_grid <- Lrnr_h2o_grid$new(algorithm = "gbm", hyper_params = list(ntrees = c(10, 
+            20)))
+        
+        SL.glmnet_learner <- Lrnr_pkg_SuperLearner$new(SL_wrapper = "SL.glmnet")
+        
+        # now lets stack some learners:
+        learner_stack <- Stack$new(glm_learner, fglm_learner, screen_and_glm, h2o_gbm_grid, 
+            SL.glmnet_learner)
+        stack_fit <- learner_stack$train(task)
+        preds <- stack_fit$predict()
+        
+        expect_true(data.table::is.data.table(preds))
+        expect_true(ncol(preds) == 6L)
+    })
 
 test_that("check Lrnr_h2o_mutator returns matrices of mutated predictors", {
-  h2o::h2o.no_progress()
-  ## regular GLM
-  pca_lrnr <- Lrnr_h2o_mutator$new(algorithm = "pca", k = 4, impute_missing = TRUE)
-  pca_fit <- pca_lrnr$train(task)
-  preds <- pca_fit$predict()
-  expect_true(ncol(preds) == 4L)
+    h2o::h2o.no_progress()
+    ## regular GLM
+    pca_lrnr <- Lrnr_h2o_mutator$new(algorithm = "pca", k = 4, impute_missing = TRUE)
+    pca_fit <- pca_lrnr$train(task)
+    preds <- pca_fit$predict()
+    expect_true(ncol(preds) == 4L)
 })
 
 test_that("h2o.pca works with pipelines (not checking results)", {
-  h2o::h2o.no_progress()
-
-  ## regular GLM
-  fglm_learner <- Lrnr_glm_fast$new()
-
-  ## screen covars in X, then fit GLM on modified (subset of) X:
-  screen_and_glm <- Pipeline$new(Lrnr_pkg_SuperLearner_screener$new("screen.glmnet"), fglm_learner)
-
-  ## apply PCA to X, then fit GLM on results of PCA
-  pca_to_glm <- Pipeline$new(
-                  Lrnr_h2o_mutator$new(algorithm = "pca", k = 3, impute_missing = TRUE),
-                  Lrnr_glm_fast$new())
-
-  # stack above learners and fit them all:
-  learner_stack <- Stack$new(fglm_learner, screen_and_glm, pca_to_glm)
-  stack_fit <- learner_stack$train(task)
-  preds <- stack_fit$predict()
+    h2o::h2o.no_progress()
+    
+    ## regular GLM
+    fglm_learner <- Lrnr_glm_fast$new()
+    
+    ## screen covars in X, then fit GLM on modified (subset of) X:
+    screen_and_glm <- Pipeline$new(Lrnr_pkg_SuperLearner_screener$new("screen.glmnet"), 
+        fglm_learner)
+    
+    ## apply PCA to X, then fit GLM on results of PCA
+    pca_to_glm <- Pipeline$new(Lrnr_h2o_mutator$new(algorithm = "pca", k = 3, impute_missing = TRUE), 
+        Lrnr_glm_fast$new())
+    
+    # stack above learners and fit them all:
+    learner_stack <- Stack$new(fglm_learner, screen_and_glm, pca_to_glm)
+    stack_fit <- learner_stack$train(task)
+    preds <- stack_fit$predict()
 })
 
-h2o::h2o.shutdown(prompt = FALSE); Sys.sleep(3)
+h2o::h2o.shutdown(prompt = FALSE)
+Sys.sleep(3)
