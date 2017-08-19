@@ -22,8 +22,8 @@ covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn"
 
 
 
-# todo: make a learner (or whatever) that preprocesses data, including factorizing 'discretish' variables, and
-# makes missingness indicators
+# todo: make a learner (or whatever) that preprocesses data, including
+# factorizing 'discretish' variables, and makes missingness indicators
 cpp[is.na(cpp)] <- 0
 outcome <- "haz"
 

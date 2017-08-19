@@ -23,8 +23,8 @@ covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn"
 
 
 
-# todo: make a learner (or whatever) that preprocesses data, including factorizing 'discretish' variables, and
-# makes missingness indicators
+# todo: make a learner (or whatever) that preprocesses data, including
+# factorizing 'discretish' variables, and makes missingness indicators
 cpp[is.na(cpp)] <- 0
 outcome <- "haz"
 
@@ -58,13 +58,14 @@ ml_fit$predict()
 print(ml_fit)
 
 # convenience learner combining all this
-sl <- Lrnr_sl$new(learners = list(SL.glmnet_learner, glm_learner, screen_and_glm), metalearner = glm_learner)
+sl <- Lrnr_sl$new(learners = list(SL.glmnet_learner, glm_learner, screen_and_glm), 
+    metalearner = glm_learner)
 sl_fit <- sl$train(task)
 sl_fit
 
 # now lets cross_validate that against its candidates
-learners <- list(SL.glmnet_learner = SL.glmnet_learner, glm_learner = glm_learner, screen_and_glm = screen_and_glm,
-    sl = sl)
+learners <- list(SL.glmnet_learner = SL.glmnet_learner, glm_learner = glm_learner, 
+    screen_and_glm = screen_and_glm, sl = sl)
 sapply(learners, estimate_risk, task)
 
 # now the question is, how can we steal this meta-learner fit going forward

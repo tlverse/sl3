@@ -2,8 +2,8 @@ true_obj_size <- function(obj) {
     length(serialize(obj, NULL))
 }
 reduce_fit_test <- function(learner_fit) {
-    # given a learner fit, sequentially drop components from the internal fit object, keeping track of which
-    # components are needed for prediction
+    # given a learner fit, sequentially drop components from the internal fit object,
+    # keeping track of which components are needed for prediction
     
     # learner_fit = glm_fit
     original_fit <- learner_fit$fit_object
