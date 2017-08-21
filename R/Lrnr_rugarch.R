@@ -73,7 +73,7 @@ public = list(
                           }
                           
                           #Give the same output as glm
-                          predictions <- ugarchforecast(private$.fit_object, n.ahead=n.ahead)
+                          predictions <- ugarchforecast(private$.fit_object, data=task$X, n.ahead=n.ahead)
                           predictions<-as.numeric(predictions@forecast$seriesFor)
                           predictions <- structure(predictions, names=1:n.ahead)
                           
