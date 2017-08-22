@@ -18,7 +18,11 @@ r:
 r_github_packages:
   - jimhester/covr
   - schloerke/travisDrat
-
+  
+env:
+  global:
+    - RGL_USE_NULL=TRUE
+    
 after_success:
   - Rscript -e 'covr::codecov()'
 
