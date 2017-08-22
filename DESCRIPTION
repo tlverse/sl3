@@ -31,14 +31,17 @@ Imports:
   nnls,
   SuperLearner,
   xgboost,
-  forecast
+  forecast,
+  nloptr,
+  rugarch
 Suggests:
   testthat,
   knitr,
   rmarkdown,
   glmnet,
   devtools,
-  dplyr
+  dplyr,
+  rgl
 Remotes:
   github::osofr/condensier
 LazyLoad: yes

@@ -5,6 +5,7 @@ warnings_are_errors: true
 
 before_install:
   Rscript -e 'update.packages(ask = FALSE)'
+  - export RGL_USE_NULL=TRUE
 
 r_packages:
   - covr
@@ -17,7 +18,11 @@ r:
 r_github_packages:
   - jimhester/covr
   - schloerke/travisDrat
-
+  
+env:
+  global:
+    - RGL_USE_NULL=TRUE
+    
 after_success:
   - Rscript -e 'covr::codecov()'
 
