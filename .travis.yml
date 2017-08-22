@@ -5,6 +5,7 @@ warnings_are_errors: true
 
 before_install:
   Rscript -e 'update.packages(ask = FALSE)'
+  - export RGL_USE_NULL=TRUE
 
 r_packages:
   - covr
