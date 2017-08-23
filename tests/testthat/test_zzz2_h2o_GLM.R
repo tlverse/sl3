@@ -1,65 +1,67 @@
-# context("Test h2o GLM")
+context("Test h2o GLM")
 
-# if (FALSE) {
-#     setwd("..")
-#     setwd("..")
-#     getwd()
-#     library("devtools")
-#     document()
-#     load_all("./")  # load all R files in /R and datasets in /data. Ignores NAMESPACE:
-#     setwd("..")
-#     install("sl3", build_vignettes = FALSE, dependencies = FALSE)  # INSTALL W/ devtools:
-#     Sys.setenv(JAVA_HOME = "/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/")
-# }
+if (FALSE) {
+    setwd("..")
+    setwd("..")
+    getwd()
+    library("devtools")
+    document()
+    load_all("./")  # load all R files in /R and datasets in /data. Ignores NAMESPACE:
+    setwd("..")
+    install("sl3", build_vignettes = FALSE, dependencies = FALSE)  # INSTALL W/ devtools:
+    Sys.setenv(JAVA_HOME = "/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/")
+}
 
 
-# library(testthat)
-# library(sl3)
-# library(h2o)
-# h2o::h2o.init(nthread = 1)
-# # library(data.table) library(origami)
+library(testthat)
+library(sl3)
+library(h2o)
+h2o.init(nthread = 1)
+Sys.sleep(3)
+# library(data.table)
+# library(origami)
 # library(SuperLearner)
-# set.seed(1)
+set.seed(1)
 
-# data(cpp)
-# cpp <- cpp[!is.na(cpp[, "haz"]), ]
-# covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")
-# cpp[is.na(cpp)] <- 0
-# outcome <- "haz"
+data(cpp)
+cpp <- cpp[!is.na(cpp[, "haz"]), ]
+covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")
+cpp[is.na(cpp)] <- 0
+outcome <- "haz"
 
-# task <- sl3_Task$new(cpp, covariates = covars, outcome = outcome)
-# task$nodes$covariates
+task <- sl3_Task$new(cpp, covariates = covars, outcome = outcome)
+task$nodes$covariates
 
-# test_that("Lrnr_glm and Lrnr_h2o_glm learners give the same predictions", {
-#     h2o::h2o.no_progress()
-#     glm_learner <- Lrnr_glm$new()
-#     h2o_glm <- Lrnr_h2o_glm$new()
-#     GLM_fit <- glm_learner$train(task)
-#     glm_preds <- GLM_fit$predict()
-#     h2oGLM_fit <- h2o_glm$train(task)
-#     h2oGLM_preds <- h2oGLM_fit$predict()
-#     expect_true(data.table::is.data.table(h2oGLM_preds))
-#     # print(sum(glm_preds-h2oGLM_preds))
-#     expect_true(all.equal(as.vector(glm_preds), as.vector(h2oGLM_preds[[1]])))
-# })
+test_that("Lrnr_glm and Lrnr_h2o_glm learners give the same predictions", {
+    h2o::h2o.no_progress()
+    glm_learner <- Lrnr_glm$new()
+    h2o_glm <- Lrnr_h2o_glm$new()
+    GLM_fit <- glm_learner$train(task)
+    glm_preds <- GLM_fit$predict()
+    h2oGLM_fit <- h2o_glm$train(task)
+    h2oGLM_preds <- h2oGLM_fit$predict()
+    expect_true(data.table::is.data.table(h2oGLM_preds))
+    # print(sum(glm_preds-h2oGLM_preds))
+    expect_true(all.equal(as.vector(glm_preds), as.vector(h2oGLM_preds[[1]])))
+})
 
-# test_that("Lrnr_h2o_glm trains based on a subset of covariates (predictors) and defines interactions", {
-#     h2o::h2o.no_progress()
-#     h2o_glm <- Lrnr_h2o_glm$new(covariates = c("apgar1", "apgar5", "parity"),
-#                                 interactions = c("apgar1", "apgar5"))
+test_that("Lrnr_h2o_glm trains based on a subset of covariates (predictors) and defines interactions", {
+    h2o::h2o.no_progress()
+    h2o_glm <- Lrnr_h2o_glm$new(covariates = c("apgar1", "apgar5", "parity"),
+                                interactions = c("apgar1", "apgar5"))
 
-#     h2oGLM_fit <- h2o_glm$train(task)
-#     # print(h2oGLM_fit) str(h2oGLM_fit$params)
-#     h2oGLM_preds_3 <- h2oGLM_fit$predict()
-#     expect_true(data.table::is.data.table(h2oGLM_preds_3))
+    h2oGLM_fit <- h2o_glm$train(task)
+    # print(h2oGLM_fit) str(h2oGLM_fit$params)
+    h2oGLM_preds_3 <- h2oGLM_fit$predict()
+    expect_true(data.table::is.data.table(h2oGLM_preds_3))
 
-#     glm.fit <- glm(haz ~ apgar1 + apgar5 + parity + apgar1:apgar5, data = cpp, family = stats::gaussian())
-#     # print(glm.fit)
-#     glm_preds_3 <- as.vector(predict(glm.fit))
+    glm.fit <- glm(haz ~ apgar1 + apgar5 + parity + apgar1:apgar5, data = cpp, family = stats::gaussian())
+    # print(glm.fit)
+    glm_preds_3 <- as.vector(predict(glm.fit))
 
-#     expect_true(sum(h2oGLM_preds_3 - glm_preds_3) < 10^(-10))
-#     expect_true(all.equal(as.vector(glm_preds_3), as.vector(h2oGLM_preds_3[[1]])))
-# })
+    expect_true(sum(h2oGLM_preds_3 - glm_preds_3) < 10^(-10))
+    expect_true(all.equal(as.vector(glm_preds_3), as.vector(h2oGLM_preds_3[[1]])))
+})
 
 # test_that("Lrnr_h2o_glm works with screener", {
 #     h2o::h2o.no_progress()
@@ -170,5 +172,5 @@
 #         # print(h2oGLM_fit)
 #     })
 
-# h2o::h2o.shutdown(prompt = FALSE)
-# Sys.sleep(3)
+h2o.shutdown(prompt = FALSE)
+Sys.sleep(3)
