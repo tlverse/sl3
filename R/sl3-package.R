@@ -32,12 +32,12 @@ NULL
 #' head(cpp)
 NULL
 
-#' Bicycle sharing time series dataset  
+#' Bicycle sharing time series dataset
 #'
 #' @name bsds
 #' @docType data
 #' @description
-#' Bicycle sharing time series dataset from the UCI Machine Learning Repository. 
+#' Bicycle sharing time series dataset from the UCI Machine Learning Repository.
 #' @source
 #' \url{https://archive.ics.uci.edu/ml/datasets/bike+sharing+dataset}
 #'
@@ -47,4 +47,17 @@ NULL
 #' @examples
 #' data(bsds)
 #' head(bsds)
+NULL
+
+#' Simulated data with continuous exposure
+#'
+#' @name density_dat
+#' @docType data
+#' @description
+#' Simulated data with continuous exposure, used with examples of conditional density estimation.
+#' @usage density_dat
+#' @keywords data
+#' @examples
+#' data(density_dat)
+#' head(density_dat)
 NULL
