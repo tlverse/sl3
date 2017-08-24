@@ -1,7 +1,5 @@
 library(sl3)
 library(testthat)
-# library(h2o)
-# h2o::h2o.init(nthread = 1)
 
 # define test dataset
 data(mtcars)
@@ -39,18 +37,6 @@ test_learner <- function(learner, task, ...) {
 
 test_learner(Lrnr_glm, task)
 test_learner(Lrnr_glm_fast, task)
-# test_learner(Lrnr_h2o_glm, task)
-# test_learner(Lrnr_h2o_grid, task, algorithm = "glm")
-# test_learner(Lrnr_h2o_grid, task, algorithm = "gbm")
-# test_learner(Lrnr_h2o_grid, task, algorithm = "randomForest")
-# test_learner(Lrnr_h2o_grid, task, algorithm = "kmeans")
-# test_learner(Lrnr_h2o_grid, task, algorithm = "deeplearning")
-
-## test h2o classifiers and mutator:
-# test_learner(Lrnr_h2o_classifier, task, algorithm = "naivebayes")
-# test_learner(Lrnr_h2o_mutator, task, algorithm = "pca", k = 3, impute_missing = TRUE)
-# h2o::h2o.shutdown(prompt = FALSE)
-# Sys.sleep(3)
 
 ## test xgboost learner:
 op <- options(sl3.verbose = TRUE)

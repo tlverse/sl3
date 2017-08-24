@@ -23,8 +23,10 @@ cpp <- cpp[!is.na(cpp[, "haz"]), ]
 covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")
 cpp[is.na(cpp)] <- 0
 outcome <- "haz"
+cpp <- cpp[1:150, ]
 
 task <- sl3_Task$new(cpp, covariates = covars, outcome = outcome)
+
 task$nodes$covariates
 
 test_that("Lrnr_glm and Learenr_GLMfast learners give the same predictions", {
