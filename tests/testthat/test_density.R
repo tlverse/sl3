@@ -48,9 +48,7 @@ system.time(res_GLM <- test_learner_dens(Lrnr_condensier, task, bin_estimator = 
 system.time(res_speedglm2 <- test_learner_dens(Lrnr_condensier, task, bin_estimator = condensier::speedglmR6$new()))
 # cbind(res_speedglm2, mtcars) w/ xgboost, ***** seems to fail on travis ***** :
 # system.time(res_XGB <- test_learner_dens(Lrnr_condensier, task, bin_estimator =
-# Lrnr_xgboost$new(nrounds = 50, objective = 'reg:logistic') ) ) cbind(res_XGB,
-# mtcars) todo: For some reason some of the predicted values (likelihood) are >
-# 1. This should never happen!!
+# Lrnr_xgboost$new(nrounds = 50, objective = 'reg:logistic') ) ) cbind(res_XGB, mtcars)
 system.time(res_nbins <- test_learner_dens(Lrnr_condensier, task, nbins = 10))
 # system.time(res_nbins2 <- test_learner_dens(Lrnr_condensier, task, nbins = 10,
 # bin_estimator = condensier::speedglmR6$new())) cbind(res_nbins2, mtcars)

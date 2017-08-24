@@ -56,12 +56,10 @@ test_learner(Lrnr_glm_fast, task)
 op <- options(sl3.verbose = TRUE)
 test_learner(Lrnr_xgboost, task, nrounds = 10)  ## nrounds is always needed
 test_learner(Lrnr_xgboost, task, nrounds = 10, objective = "reg:linear")  ## linear link function
-# # test_learner(Lrnr_xgboost, task, nrounds = 50, objective = 'reg:logistic') ##
-# logit-linear link function, need [0,1] outcomes
+# test_learner(Lrnr_xgboost, task, nrounds = 50, objective = 'reg:logistic') ## logit-linear link function, need [0,1] outcomes
 test_learner(Lrnr_xgboost, task, nrounds = 50, booster = "gblinear")  ## GLM, i.e., use linear model for at each boosting stage
 test_learner(Lrnr_xgboost, task, nrounds = 10, booster = "gbtree")  ## GBM (default), i.e., use tree model for at each boosting stage
-# test_learner(Lrnr_xgboost, task, nrounds = 50, booster = 'dart') ## another
-# type of tree model
+# test_learner(Lrnr_xgboost, task, nrounds = 50, booster = 'dart') ## another type of tree model
 test_learner(Lrnr_xgboost, task, nrounds = 10, booster = "gbtree", covariates = c("cyl",
     "disp", "drat"), interactions = list(c("cyl", "disp"), c("hp", "drat")))
 options(sl3.verbose = FALSE)
