@@ -35,25 +35,18 @@ task2 <- sl3_Task$new(cpp, covariates = covars, outcome = outcome)
 task$nodes$covariates
 
 test_learner <- function(learner, task, ...) {
-
-    # test learner definition this requires that a learner can be instantiated with
-    # only default arguments. Not sure if this is a reasonable requirement
     learner_obj <- learner$new(...)
     print(sprintf("Testing Learner: %s", learner_obj$name))
-
     # test learner training
     fit_obj <- learner_obj$train(task)
     test_that("Learner can be trained on data", expect_true(fit_obj$is_trained))
-
     # test learner prediction
     train_preds <- fit_obj$predict()
     test_that("Learner can generate training set predictions", expect_equal(sl3:::safe_dim(train_preds)[1],
         nrow(task$X)))
-
     holdout_preds <- fit_obj$predict(task2)
     test_that("Learner can generate holdout set predictions", expect_equal(train_preds,
         holdout_preds))
-
     # test learner chaining
     chained_task <- fit_obj$chain()
     test_that("Chaining returns a task", expect_true(is(chained_task, "sl3_Task")))
@@ -61,8 +54,6 @@ test_learner <- function(learner, task, ...) {
         nrow(task$X)))
 }
 
-# library(h2o)
-# h2o::h2o.init(nthread = 1)
 test_learner(Lrnr_h2o_glm, task)
 test_learner(Lrnr_h2o_grid, task, algorithm = "glm")
 test_learner(Lrnr_h2o_grid, task, algorithm = "gbm")
@@ -72,8 +63,6 @@ test_learner(Lrnr_h2o_grid, task, algorithm = "deeplearning")
 ## test h2o classifiers and mutator:
 test_learner(Lrnr_h2o_classifier, task, algorithm = "naivebayes")
 test_learner(Lrnr_h2o_mutator, task, algorithm = "pca", k = 3, impute_missing = TRUE)
-# h2o::h2o.shutdown(prompt = FALSE)
-# Sys.sleep(3)
 
 test_that("Lrnr_glm and Lrnr_h2o_glm learners give the same predictions", {
     h2o::h2o.no_progress()
@@ -92,18 +81,25 @@ test_that("Lrnr_h2o_glm trains based on a subset of covariates (predictors) and 
     h2o::h2o.no_progress()
     h2o_glm <- Lrnr_h2o_glm$new(covariates = c("apgar1", "apgar5", "parity"),
                                 interactions = c("apgar1", "apgar5"))
-
     h2oGLM_fit <- h2o_glm$train(task)
-    # print(h2oGLM_fit) str(h2oGLM_fit$params)
     h2oGLM_preds_3 <- h2oGLM_fit$predict()
     expect_true(data.table::is.data.table(h2oGLM_preds_3))
-
     glm.fit <- glm(haz ~ apgar1 + apgar5 + parity + apgar1:apgar5, data = cpp, family = stats::gaussian())
     # print(glm.fit)
     glm_preds_3 <- as.vector(predict(glm.fit))
-
     expect_true(sum(h2oGLM_preds_3 - glm_preds_3) < 10^(-10))
     expect_true(all.equal(as.vector(glm_preds_3), as.vector(h2oGLM_preds_3[[1]])))
+})
+
+test_that("Lrnr_h2o_grid learner works with a grid of regularized GLMs, on a subset of covariates (predictors) and defines interactions", {
+    h2o::h2o.no_progress()
+    h2o_glm_grid <- Lrnr_h2o_grid$new(algorithm = "glm",
+        covariates = c("apgar1", "apgar5", "parity"),
+        interactions = c("apgar1", "apgar5"),
+        hyper_params = list(alpha = c(0, 0.5, 1)),
+        lambda_search = TRUE)
+    h2o_glm_grid <- h2o_glm_grid$train(task)
+    h2oGLM_preds <- h2o_glm_grid$predict()
 })
 
 # test_that("Lrnr_h2o_glm works with screener", {
