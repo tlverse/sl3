@@ -12,11 +12,9 @@ Lrnr_h2o_grid <- R6Class(classname = "Lrnr_h2o_grid", inherit = Lrnr_base, porta
       params <- self$params
       if (verbose) h2o::h2o.show_progress() else h2o::h2o.no_progress()
 
-      if (inherits(connectH2O <- try(h2o::h2o.getConnection(), silent = TRUE), "try-error")) {
-        if (verbose) {
-          message("No active connection to an H2O cluster has been detected. Will now attempt to initialize a local h2o cluster. In the future, please run `h2o::h2o.init()` prior to model training with h2o.")
-        }
-        h2o::h2o.init()
+      connectH2O <- try(h2o::h2o.getConnection(), silent = TRUE)
+      if (inherits(connectH2O, "try-error")) {
+        stop("No active H2O cluster found, please initiate h2o cluster first by running 'h2o::h2o.init()'")
       }
 
       private$.covariates <- task$nodes$covariates

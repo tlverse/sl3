@@ -72,7 +72,8 @@ Stack <- R6Class(classname = "Stack",
                          ## hence we have to first seed an initial column, then delete it later
                          learner_preds = data.table::data.table(init_seed_preds_to_delete = rep(NA_real_,n_to_pred))
 
-                         resNULL <- foreach(i=seq_along(learner_fits)) %dopar% {
+                         #todo: should be foreach or future_lapply
+                         for(i in seq_along(learner_fits)) {
                            current_fit=learner_fits[[i]]
                            current_preds = current_fit$predict(task)
                            current_names = learner_names[i]

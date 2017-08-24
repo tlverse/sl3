@@ -55,11 +55,10 @@ Lrnr_h2o_glm <- R6Class(classname = "Lrnr_h2o_glm", inherit = Lrnr_base, portabl
     .train = function(task) {
       verbose = getOption("sl3.verbose")
       params <- self$params
-      if (inherits(connectH2O <- try(h2o::h2o.getConnection(), silent = TRUE), "try-error")) {
-          if (verbose) {
-            message("No active connection to an H2O cluster has been detected. Will now attempt to initialize a local h2o cluster. In the future, please run `h2o::h2o.init()` prior to model training with h2o.")
-          }
-          h2o::h2o.init()
+
+      connectH2O <- try(h2o::h2o.getConnection(), silent = TRUE)
+      if (inherits(connectH2O, "try-error")) {
+        stop("No active H2O cluster found, please initiate h2o cluster first by running 'h2o::h2o.init()'")
       }
 
       private$.covariates <- task$nodes$covariates
