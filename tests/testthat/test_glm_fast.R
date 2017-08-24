@@ -40,21 +40,7 @@ test_that("Lrnr_glm and Learenr_GLMfast learners give the same predictions", {
     expect_true(all.equal(as.vector(glm_preds), as.vector(fglm_preds[["predictions"]])))
 })
 
-test_that("Lrnr_glm_fast trains on a subset of covariates (predictors)", {
-    fglm_learner <- Lrnr_glm_fast$new(covariates = c("apgar1", "apgar5"))
-    fGLM_fit <- fglm_learner$train(task)
-    # print(fGLM_fit) str(fGLM_fit$params)
-    fglm_preds_2 <- fGLM_fit$predict()
-    expect_true(data.table::is.data.table(fglm_preds_2))
-
-    glm.fit <- glm(haz ~ apgar1 + apgar5, data = cpp, family = stats::gaussian())
-    glm_preds_2 <- as.vector(predict(glm.fit))
-
-    expect_true(sum(fglm_preds_2 - glm_preds_2) < 10^(-10), )
-    expect_true(all.equal(as.vector(glm_preds_2), as.vector(fglm_preds_2[["predictions"]])))
-})
-
-test_that("Lrnr_glm_fast defines interactions", {
+test_that("Lrnr_glm_fast trains on a subset of covariates (predictors) and defines interactions", {
     fglm_learner <- Lrnr_glm_fast$new(covariates = c("apgar1", "apgar5"), interactions = list(c("apgar1",
         "apgar5")))
     fGLM_fit <- fglm_learner$train(task)

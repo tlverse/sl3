@@ -65,7 +65,6 @@ test_learner(Lrnr_h2o_classifier, task, algorithm = "naivebayes")
 test_learner(Lrnr_h2o_mutator, task, algorithm = "pca", k = 3, impute_missing = TRUE)
 
 test_that("Lrnr_glm and Lrnr_h2o_glm learners give the same predictions", {
-    h2o::h2o.no_progress()
     glm_learner <- Lrnr_glm$new()
     h2o_glm <- Lrnr_h2o_glm$new()
     GLM_fit <- glm_learner$train(task)
@@ -78,7 +77,6 @@ test_that("Lrnr_glm and Lrnr_h2o_glm learners give the same predictions", {
 })
 
 test_that("Lrnr_h2o_glm trains based on a subset of covariates (predictors) and defines interactions", {
-    h2o::h2o.no_progress()
     h2o_glm <- Lrnr_h2o_glm$new(covariates = c("apgar1", "apgar5", "parity"),
                                 interactions = c("apgar1", "apgar5"))
     h2oGLM_fit <- h2o_glm$train(task)
@@ -92,7 +90,6 @@ test_that("Lrnr_h2o_glm trains based on a subset of covariates (predictors) and 
 })
 
 test_that("Lrnr_h2o_grid learner works with a grid of regularized GLMs, on a subset of covariates (predictors) and defines interactions", {
-    h2o::h2o.no_progress()
     h2o_glm_grid <- Lrnr_h2o_grid$new(algorithm = "glm",
         covariates = c("apgar1", "apgar5", "parity"),
         interactions = c("apgar1", "apgar5"),
@@ -288,24 +285,32 @@ test_that("check Lrnr_h2o_mutator returns matrices of mutated predictors", {
 
 test_that("h2o.pca works with pipelines (not checking results)", {
     h2o::h2o.no_progress()
-
     ## regular GLM
     fglm_learner <- Lrnr_glm_fast$new()
-
     ## screen covars in X, then fit GLM on modified (subset of) X:
     screen_and_glm <- Pipeline$new(Lrnr_pkg_SuperLearner_screener$new("screen.glmnet"),
         fglm_learner)
-
     ## apply PCA to X, then fit GLM on results of PCA
     pca_to_glm <- Pipeline$new(Lrnr_h2o_mutator$new(algorithm = "pca", k = 3, impute_missing = TRUE),
         Lrnr_glm_fast$new())
-
     # stack above learners and fit them all:
     learner_stack <- Stack$new(fglm_learner, screen_and_glm, pca_to_glm)
     stack_fit <- learner_stack$train(task)
     preds <- stack_fit$predict()
 })
 
-
 h2o.shutdown(prompt = FALSE)
 Sys.sleep(3)
+
+# test_that("Lrnr_h2o_grid and Lrnr_h2o_glm will start a new instance of h2o if none was found", {
+#     op <- options(sl3.verbose = TRUE)
+#     h2o_glm <- Lrnr_h2o_glm$new()
+#     expect_error(h2oGLM_fit <- h2o_glm$train(task))
+
+#     h2o_glm_grid <- Lrnr_h2o_grid$new(algorithm = "glm",
+#         covariates = c("apgar1", "apgar5", "parity"),
+#         interactions = c("apgar1", "apgar5"),
+#         hyper_params = list(alpha = c(0, 0.5)))
+#     expect_error(h2o_glm_grid <- h2o_glm_grid$train(task))
+#     options(op)
+# })
