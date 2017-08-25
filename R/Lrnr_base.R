@@ -26,8 +26,11 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                    portable = TRUE,
                    class = TRUE,
                    public = list(
-                     initialize = function(params, memoise_learner = getOption("sl3.memoise.learner"), ...) {
-
+                     initialize = function(params=NULL, memoise_learner = getOption("sl3.memoise.learner"), ...) {
+                       if(is.null(params)){
+                         params=list(...)
+                       }
+                       
                        private$.params=params
                        private$.learner_uuid = UUIDgenerate(use.time=T)
                        
