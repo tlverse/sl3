@@ -19,6 +19,7 @@
 #'   }
 #' @importFrom assertthat assert_that is.count is.flag
 #' @importFrom uuid UUIDgenerate
+#' @importFrom memoise memoise cache_memory cache_filesystem
 
 #' @family Learners
 Lrnr_base <- R6Class(classname = "Lrnr_base",
