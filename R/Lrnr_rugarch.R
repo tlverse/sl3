@@ -35,7 +35,7 @@ public = list(
                              ...) {
                           
                           params <- list(variance.model = variance.model, mean.model=mean.model, distribution.model=distribution.model, start.pars=start.pars, fixed.pars=fixed.pars, n.ahead=n.ahead, ...)
-                          super$initialize(params = params)
+                          super$initialize(params = params, ...)
                         }
                       ),
                       private = list(

@@ -21,7 +21,8 @@ Pipeline <- R6Class(classname = "Pipeline",
                       initialize = function(...) {
                         learners=list(...)
                         params=list(learners=learners)
-                        super$initialize(params=params)
+                        # underlying learners can choose to memoise or not
+                        super$initialize(params=params, memoise_learner = FALSE) 
                       },
                       prefit_pipeline = function(learners,task){
                         

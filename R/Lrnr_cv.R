@@ -42,9 +42,9 @@ Lrnr_cv <- R6Class(classname = "Lrnr_cv",
                      portable = TRUE,
                      class = TRUE,
                      public = list(
-                       initialize = function(learner, folds=NULL) {
-                         params=list(learner=learner, folds=folds)
-                         super$initialize(params=params)
+                       initialize = function(learner, folds=NULL, ...) {
+                         params=list(learner=learner, folds=folds, ...)
+                         super$initialize(params=params, ...)
                        },
                        print = function(){
                          print("Lrnr_cv")

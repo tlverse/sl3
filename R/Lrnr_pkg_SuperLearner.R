@@ -10,7 +10,7 @@ Lrnr_pkg_SuperLearner <- R6Class(classname = "Lrnr_pkg_SuperLearner",
                        initialize = function(SL_wrapper, ...) {
                          wrapper_fun=get(SL_wrapper)
                          params=list(wrapper_name=SL_wrapper, wrapper_fun=wrapper_fun, ...)
-                         super$initialize(params=params)
+                         super$initialize(params=params, ...)
                        }),
                      private = list(
                        .train = function(task) {

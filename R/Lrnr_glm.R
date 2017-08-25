@@ -3,9 +3,9 @@
 #' @export
 #' @rdname undocumented_learner
 Lrnr_glm <- R6Class(classname = "Lrnr_glm", inherit = Lrnr_base, portable = TRUE, 
-    class = TRUE, public = list(initialize = function(family = gaussian()) {
-        params <- list(family = family)
-        super$initialize(params = params)
+    class = TRUE, public = list(initialize = function(family = gaussian(), ...) {
+        params <- list(family = family, ...)
+        super$initialize(params = params, ...)
     }), private = list(.train = function(task) {
         params <- self$params
         family <- params[["family"]]

@@ -46,7 +46,7 @@ Lrnr_h2o_glm <- R6Class(classname = "Lrnr_h2o_glm", inherit = Lrnr_base, portabl
     initialize = function(family = "gaussian", covariates = NULL, ...) {
       if (is.function(family)) family <- family()[["family"]]
       params <- list(family = family, covariates = covariates, ...)
-      super$initialize(params = params)
+      super$initialize(params = params, ...)
     }
   ),
 

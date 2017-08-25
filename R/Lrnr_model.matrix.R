@@ -7,9 +7,9 @@ Lrnr_model.matrix <- R6Class(classname = "Lrnr_model.matrix",
                        portable = TRUE,
                        class = TRUE,
                        public = list(
-                         initialize = function(formula) {
-                           params=list(formula=formula)
-                           super$initialize(params=params)
+                         initialize = function(formula, ...) {
+                           params=list(formula=formula, ...)
+                           super$initialize(params=params, ...)
                          }),
                        private = list(
                          .train = function(task) {
