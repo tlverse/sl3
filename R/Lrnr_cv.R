@@ -100,20 +100,8 @@ Lrnr_cv <- R6Class(classname = "Lrnr_cv",
                          predictions=aorder(fold_predictions$predictions,order(fold_predictions$index))
 
                          return(predictions)
-                       },
-
-                       .chain = function(task){
-                         predictions = self$predict(task)
-                         predictions = as.data.table(predictions)
-
-                         #now make a new task where these are the covariates
-
-                         return(task$next_in_chain(predictions))
                        }
-
-
-
-                       )
+                     )
 
 )
 

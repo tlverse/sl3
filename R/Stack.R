@@ -88,16 +88,7 @@ Stack <- R6Class(classname = "Stack",
                          ## remove the initial seeded column by reference
                          data.table::set(learner_preds, j = "init_seed_preds_to_delete", value = NULL)
                          return(learner_preds)
-                       },
-                       .chain = function(task){
-                         predictions = self$predict(task)
-                         predictions = as.data.table(predictions)
-
-                         #now make a new task where these are the covariates
-
-                         return(task$next_in_chain(predictions))
                        }
-
                        )
 
 )

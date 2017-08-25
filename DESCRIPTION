@@ -33,7 +33,8 @@ Imports:
   xgboost,
   forecast,
   nloptr,
-  rugarch
+  rugarch,
+  uuid
 Suggests:
   testthat,
   knitr,
