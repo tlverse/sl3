@@ -13,34 +13,30 @@ Lrnr_model.matrix <- R6Class(classname = "Lrnr_model.matrix",
                          }),
                        private = list(
                          .train = function(task) {
-                           #todo: think about whether to do this here, or only on calling predict
                            mm_X=model.matrix(self$params$formula,data = task$X)
-                           mm_task=task$next_in_chain(mm_X)
-                           fit_object=list(mm_task=mm_task)
-
+                           fit_object=list(mm_X=mm_X)
                            return(fit_object)
 
                          },
                          .predict = function(task = NULL) {
                            if(identical(task,private$.training_task)){
-                             return(private$.fit_object$mm_task$X)
+                             return(private$.fit_object$mm_X)
                            } else{
                              mm_X=model.matrix(self$params$formula,data = task$X)
                              return(mm_X)
                            }
                          },
                          .chain = function(task = NULL) {
-                           if(identical(task,private$.training_task)){
-                             return(private$.fit_object$mm_task)
-                           } else{
-                             mm_X=model.matrix(self$params$formula,data = task$X)
-                             mm_task=task$next_in_chain(mm_X)
-                             return(mm_task)
-                           }
+                           predictions = self$predict(task)
+                           predictions = as.data.table(predictions)
+                           
+                           
+                           #add predictions as new columns
+                           new_col_names = task$add_columns(self$fit_uuid, predictions)
+                           
+                           return(task$next_in_chain(covariates=new_col_names))
                          }
-
                        )
-
 )
 
 

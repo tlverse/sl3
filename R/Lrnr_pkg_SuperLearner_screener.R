@@ -22,11 +22,13 @@ Lrnr_pkg_SuperLearner_screener <- R6Class(classname = "Lrnr_pkg_SuperLearner_scr
                          return(fit_object)
                          
                        },
-                       .predict = function(task = NULL) {
+                       .predict = function(task) {
                          task$X[,private$.fit_object$selected,with=F, drop=F]
                          
+                       },
+                       .chain = function(task) {
+                         return(task$next_in_chain(covariates=private$.fit_object$selected))
                        }
-                       #todo: reimplement chain in a more efficient way (just redefine nodes$covariates)
                        )
                      
 )

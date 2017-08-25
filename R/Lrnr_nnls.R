@@ -14,7 +14,7 @@ Lrnr_nnls <- R6Class(classname = "Lrnr_nnls", inherit = Lrnr_base, portable = TR
         return(fit_object)
         
     }, .predict = function(task = NULL) {
-        predictions <- as.matrix(task$X) %*% coef(fit_object)
+        predictions <- as.matrix(task$X) %*% coef(private$.fit_object)
         
         return(predictions)
         

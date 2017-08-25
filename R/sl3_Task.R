@@ -21,6 +21,7 @@
 #'   \item{\code{next_in_chain(new_X)}}{Generates a copy of this task with the set of covariates redefined. This is mostly to be used internally for \code{\link{Pipeline}}s}
 #'   }
 #' @importFrom assertthat assert_that is.count is.flag
+#' @importFrom uuid UUIDgenerate
 #' @import data.table
 sl3_Task <- R6Class(classname = "sl3_Task",
                        portable = TRUE,
@@ -29,7 +30,11 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                          outcome_type = NULL,       # Values of the binary outcome (Ynode) in observed data where det.Y = TRUE obs are set to NA
                          initialize = function(data, covariates, outcome, outcome_type=NULL, id=NULL, weights=NULL, folds=NULL, nodes=NULL) {
                            assert_that(is.data.frame(data) | is.data.table(data))
-                           self$data <- data.table(data) # makes a copy of the input data (shallow)
+                           private$.data <- data
+                           if(!inherits(data,"data.table")){
+                             setDT(private$.data)
+                           }
+                           
                            if(is.null(nodes)){
                              nodes <- list(covariates=covariates,
                                            outcome = outcome,
@@ -38,7 +43,7 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                            } else {
                              # todo: validate node schema
                            }
-                           all_nodes=unlist(nodes)
+                           all_nodes=unlist(nodes[c("covariates","outcome","id","weights")])
 
                            #verify nodes are contained in dataset
                            assert_that(all(all_nodes%in%names(data)))
@@ -52,45 +57,98 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                            
                            private$.folds=folds
 
+                           private$.uuid = UUIDgenerate(use.time=T)
+                           
                            invisible(self)
                          },
-                         next_in_chain=function(new_X){
-                           #construct new internal dataset
-                           nodes=self$nodes
-
-                           #all but covariates
-                           other_node_types=setdiff(names(nodes),"covariates")
-                           chain_nodes=nodes[other_node_types]
-
-                           old_nodes=unlist(chain_nodes)
-                           old_data=private$.data[,old_nodes,with=F, drop=F]
-
-
-                           chain_data=cbind(old_data,new_X)
-                           chain_nodes$covariates=colnames(new_X)
-
+                         add_columns=function(fit_uuid, new_data, global_cols = FALSE){
+                           data = private$.data
+                           current_cols = names(data)
+                           
+                           if(!(is.data.frame(new_data) | is.data.table(new_data))){
+                             new_data=as.data.table(new_data)
+                           }
+                           
+                           setDT(new_data)
+                           
+                           col_names = names(new_data)
+                           original_names = copy(col_names)
+                           
+                           if(!global_cols){
+                             #by default prepend column names with fit_uuid to prevent column name conflicts for multiple fits from same learner
+                             col_names = paste(fit_uuid, original_names, sep="_")
+                             setnames(new_data, original_names, col_names)
+                           }
+                           
+                           
+                           # only add columns that are not already in data
+                           # because new columns are uniquely named, if the column exists
+                           # it should be a duplicate of the one in new_cols
+                           new_col_names = setdiff(col_names, current_cols)
+                           
+                           if(length(new_col_names)>0){
+                             new_data = new_data[, new_col_names, with=F, drop=F]
+                             set(data, j=new_col_names, value=new_data)
+                           }
+                           
+                           # return a vector of the column names corresponding to the added columns
+                           return(col_names)
+                             
+                         },
+                         
+                         next_in_chain=function(covariates=NULL, outcome=NULL, id=NULL, weights=NULL){
+                           new_nodes=self$nodes
+                           
+                           if(!is.null(covariates)){
+                             new_nodes$covariates=covariates
+                           }
+                           
+                           if(!is.null(outcome)){
+                             new_nodes$outcome=outcome
+                           }
+                           
+                           if(!is.null(id)){
+                             new_nodes$id=id
+                           }
+                           
+                           if(!is.null(weights)){
+                             new_nodes$weights=weights
+                           }
+                           
+                           all_nodes=unlist(new_nodes[c("covariates","outcome","id","weights")])
+                           
+                           #verify nodes are contained in dataset
+                           assert_that(all(all_nodes%in%names(private$.data)))
+                           
                            new_task=self$clone()
-                           new_task$initialize(chain_data,nodes=chain_nodes)
+                           new_task$initialize(private$.data,nodes=new_nodes)
 
                            return(new_task)
                          }),
                        active = list(
-                         data = function(data) {
-                           if (missing(data)) {
+                         data = function() {
                              return(private$.data)
-                           } else {
-                             assert_that(is.matrix(data) | is.data.table(data))
-                             private$.data <- data
-                           }
                          },
                          nodes = function(){
-                           private$.nodes
+                           return(private$.nodes)
                          },
                          X = function(){
-                           private$.data[,private$.nodes$covariates, with=FALSE, drop=FALSE]
+                           covariates =  private$.nodes$covariates
+                           covariate_cols = private$.nodes$covariate_cols
+                           if(is.null(covariate_cols)){
+                             covariate_cols=covariates
+                           }
+                           X_dt = private$.data[, covariate_cols, with=FALSE, drop=FALSE]
+                           if(!identical(covariates,covariate_cols)){
+                             print(covariates)
+                             print(covariate_cols)
+                             setnames(X_dt, names(X_dt), covariates)
+                           }
+                           
+                           return(X_dt)
                          },
                          Y = function(){
-                           private$.data[[private$.nodes$outcome]]
+                           return(private$.data[[private$.nodes$outcome]])
                          },
                          weights = function(){
                            weight_node=private$.nodes$weights
@@ -114,17 +172,22 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                          },
                          folds = function(){
                            return(private$.folds)
+                         },
+                         uuid = function(){
+                           return(private$.uuid)
                          }),
                        private = list(
                          .data = NULL,
                          .nodes = NULL,
                          .X = NULL,
-                         .folds = NULL
+                         .folds = NULL,
+                         .uuid = NULL
                        )
 )
 
 #' @export
 `[.sl3_Task` <- function(x,i=NULL,j=NULL,...) {
-  sl3_Task$new(x$data[i,],nodes=x$nodes)
+  all_nodes=unlist(x$nodes[c("covariates","outcome","id","weights")])
+  sl3_Task$new(x$data[i,all_nodes, with=F],nodes=x$nodes)
 }
 
