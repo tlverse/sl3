@@ -80,7 +80,7 @@ Lrnr_glm_fast <- R6Class(classname = "Lrnr_glm_fast", inherit = Lrnr_base, porta
                           covariates = NULL,
                           ...) {
       params <- list(family = family, method = method[1L], covariates = covariates, ...)
-      super$initialize(params = params)
+      super$initialize(params = params, ...)
     }
   ),
   private = list(

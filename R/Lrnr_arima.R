@@ -26,7 +26,7 @@ Lrnr_arima <- R6Class(classname = "Lrnr_arima", inherit = Lrnr_base, portable = 
                                               ...) {
                           
                           params <- list(order = order, seasonal=seasonal, n.ahead=n.ahead, ...)
-                          super$initialize(params = params)
+                          super$initialize(params = params, ...)
                         }
                       ),
                       private = list(

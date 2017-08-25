@@ -8,9 +8,9 @@ Lrnr_sl <- R6Class(classname = "Lrnr_sl",
                      portable = TRUE,
                      class = TRUE,
                      public = list(
-                       initialize = function(learners, metalearner) {
-                         params=list(learners=learners, metalearner=metalearner)
-                         super$initialize(params=params)
+                       initialize = function(learners, metalearner, ...) {
+                         params=list(learners=learners, metalearner=metalearner, ...)
+                         super$initialize(params=params, ...)
                        },
                        print = function(){
                          print("SuperLearner")

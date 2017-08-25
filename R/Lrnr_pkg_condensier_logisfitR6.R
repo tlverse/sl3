@@ -13,12 +13,13 @@ Lrnr_pkg_condensier_logisfitR6 <- R6Class("Lrnr_pkg_condensier_logisfitR6",
     lmclass = NULL,
     fitfunname = NULL,
 
-    initialize = function(sl3_lrnr) {
+    initialize = function(sl3_lrnr, ...) {
       assert_that(is(sl3_lrnr,"Lrnr_base"))
       self$lmclass <- paste0("sl3::", class(sl3_lrnr)[1L])
       self$fitfunname <- paste0("sl3::", class(sl3_lrnr)[1L], "$train")
       private$sl3_lrnr <- sl3_lrnr
       self$get_validity
+      super$initialize(...)
     },
 
     fit = function(datsum_obj) {

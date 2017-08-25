@@ -29,11 +29,10 @@ Lrnr_condensier <- R6Class(classname = "Lrnr_condensier", inherit = Lrnr_base, p
         nbins = nbins[1L],
         max_n_cat = max_n_cat,
         pool = pool,
-        max_n_bin = max_n_bin,
-        ...
-      )
+        max_n_bin = max_n_bin, 
+        ...)
 
-      super$initialize(params = params)
+      super$initialize(params = params, ...)
     }
   ),
 

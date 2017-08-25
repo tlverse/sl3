@@ -24,7 +24,8 @@ Stack <- R6Class(classname = "Stack",
                            return(learners)
                          }
                          params=list(learners=learners)
-                         super$initialize(params=params)
+                         # underlying learners can choose to memoise or not
+                         super$initialize(params=params, memoise_learner = FALSE) 
                        },
                        print = function(){
                          if(is.null(private$.fit_object)){

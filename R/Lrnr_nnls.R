@@ -3,9 +3,9 @@
 #' @export
 #' @rdname undocumented_learner
 Lrnr_nnls <- R6Class(classname = "Lrnr_nnls", inherit = Lrnr_base, portable = TRUE, 
-    class = TRUE, public = list(initialize = function() {
-        params <- list()
-        super$initialize(params = params)
+    class = TRUE, public = list(initialize = function(...) {
+        params <- list(...)
+        super$initialize(params = params, ...)
     }), private = list(.train = function(task) {
         x <- task$X
         y <- task$Y

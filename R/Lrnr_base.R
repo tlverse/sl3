@@ -25,22 +25,29 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                    portable = TRUE,
                    class = TRUE,
                    public = list(
-                     params = NULL,
-                     initialize = function(...) {
-                       params=list(...)
-                       if(length(params)==1 && names(params)=="params"){
-                         params=params$params
-                       }
+                     initialize = function(params, memoise_learner = getOption("sl3.memoise.learner"), ...) {
 
-                       self$params=params
+                       private$.params=params
                        private$.learner_uuid = UUIDgenerate(use.time=T)
                        
+                       if(memoise_learner){
+                         memoise_cache = cache_uuid(cache_memory())
+                         memoised = memoise(self$default_train, cache=memoise_cache)
+                         private$.memoised_train=memoised
+                       }
                        invisible(self)
                      },
-                     train = function(task) {
+                     train = function(task){
+                       if(!is.null(private$.memoised_train)){
+                         return(private$.memoised_train(task))
+                       } else {
+                         return(self$default_train(task))
+                       }
+                     },
+                     default_train = function(task) {
                         #trains learner to data
                         assert_that(is(task,"sl3_Task"))
-
+                       
                         #todo: add error handling
                         fit_object = private$.train(task)
 
@@ -126,6 +133,9 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                      },
                      fit_uuid=function(){
                        return(private$.fit_uuid)
+                     },
+                     params=function(){
+                       return(private$.params)
                      }
                    ),
                    private = list(
@@ -134,6 +144,8 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                      .training_task = NULL,
                      .learner_uuid = NULL,
                      .fit_uuid = NULL,
+                     .memoised_train = NULL,
+                     .params = NULL,
                      .train = function(task){
                        stop("Learner is meant to be abstract, you should instead use specific learners. See listLearners()")
                      },
