@@ -23,151 +23,164 @@
 
 #' @family Learners
 Lrnr_base <- R6Class(classname = "Lrnr_base",
-                   portable = TRUE,
-                   class = TRUE,
-                   public = list(
-                     initialize = function(params=NULL, memoise_learner = getOption("sl3.memoise.learner"), ...) {
-                       if(is.null(params)){
-                         params=list(...)
-                       }
-                       
-                       private$.params=params
-                       private$.learner_uuid = UUIDgenerate(use.time=T)
-                       
-                       if(memoise_learner){
-                         memoise_cache = cache_uuid(cache_memory())
-                         memoised = memoise(self$default_train, cache=memoise_cache)
-                         private$.memoised_train=memoised
-                       }
-                       invisible(self)
-                     },
-                     train = function(task){
-                       if(!is.null(private$.memoised_train)){
-                         return(private$.memoised_train(task))
-                       } else {
-                         return(self$default_train(task))
-                       }
-                     },
-                     default_train = function(task) {
-                        #trains learner to data
-                        assert_that(is(task,"sl3_Task"))
-                       
-                        #todo: add error handling
-                        fit_object = private$.train(task)
-
-                        new_object = self$clone() # copy parameters, and whatever else
-                        new_object$set_train(fit_object, task)
-
-                        return(new_object)
-                     },
-
-                     set_train = function(fit_object, training_task){
-                       #todo: figure out how to do this without a public method that is mutuating private variables.
-                       private$.fit_object = fit_object
-                       private$.training_task = training_task
-                       private$.fit_uuid = UUIDgenerate(use.time=T)
-
-                     },
-
-                     predict = function(task = NULL){
-                       if(!self$is_trained){
-                         stop("Learner has not yet been train to data. Call learner$train(task) first.")
-                       }
-
-                       if(is.null(task)){
-                         task <- private$.training_task
-                       }
-                       assert_that(is(task,"sl3_Task"))
-
-                       predictions = private$.predict(task)
-
-                       return(predictions)
-                     },
-
-                    chain = function(task = NULL){
-                      if(!self$is_trained){
-                        stop("Learner has not yet been train to data. Call learner$train(task) first.")
-                      }
-
-                      if(is.null(task)){
-                        task <- private$.training_task
-                      }
-                      assert_that(is(task,"sl3_Task"))
-
-                      next_task = private$.chain(task)
-
-                      return(next_task)
-
-                     },
-                    print = function(){
-                      print(self$name)
-                      #print(self$params)
-                      fit_object=private$.fit_object
-                      if(!is.null(fit_object))
-                      print(fit_object)
-                    }),
-
-                   active = list(
-                     is_trained=function(){
-                       return(!is.null(private$.fit_object))
-                     },
-                     fit_object=function() {
-                       fit_object=private$.fit_object
-                       return(fit_object)
-                     },
-                     name=function(){
-                       #todo: allow custom names
-                       if(is.null(private$.name)){
-
-                         params=self$params
-                         if(length(params)>0){
-                           #todo: sanitize further
-                           atom_params=sapply(params,is.atomic)
-                           params=params[atom_params]
+                     portable = TRUE,
+                     class = TRUE,
+                     public = list(
+                       initialize = function(params=NULL, memoise_learner = getOption("sl3.memoise.learner"), ...) {
+                         if(is.null(params)){
+                           params=list(...)
                          }
-                         props = c(list(class(self)[1]), params)
-                         name = paste(props,collapse="_")
-                         private$.name = name
+                         
+                         private$.params=params
+                         private$.learner_uuid = UUIDgenerate(use.time=T)
+                         
+                         if(memoise_learner){
+                           memoise_cache = cache_uuid(cache_memory())
+                           memoised = memoise(self$default_train, cache=memoise_cache)
+                           private$.memoised_train=memoised
+                         }
+                         invisible(self)
+                       },
+                       subset_covariates = function(task){
+                         # allows learners to use only a subset of covariates
+                         if ("covariates" %in% names(self$params) && !is.null(self$params[["covariates"]])) {
+                           task_covariates <- task$nodes$covariates
+                           subset_covariates <- intersect(task_covariates, self$params$covariates)
+                           return(task$next_in_chain(covariates=subset_covariates))
+                         } else {
+                           return(task)
+                         }
+                         
+                         
+                       },
+                       train = function(task){
+                         if(!is.null(private$.memoised_train)){
+                           return(private$.memoised_train(task))
+                         } else {
+                           return(self$default_train(task))
+                         }
+                       },
+                       default_train = function(task) {
+                         #trains learner to data
+                         assert_that(is(task,"sl3_Task"))
+                         
+                         #todo: add error handling
+                         subsetted_task = self$subset_covariates(task)
+                         fit_object = private$.train(subsetted_task)
+                         
+                         new_object = self$clone() # copy parameters, and whatever else
+                         new_object$set_train(fit_object, task)
+                         
+                         return(new_object)
+                       },
+                       
+                       set_train = function(fit_object, training_task){
+                         #todo: figure out how to do this without a public method that is mutuating private variables.
+                         private$.fit_object = fit_object
+                         private$.training_task = training_task
+                         private$.fit_uuid = UUIDgenerate(use.time=T)
+                         
+                       },
+                       
+                       predict = function(task = NULL){
+                         if(!self$is_trained){
+                           stop("Learner has not yet been train to data. Call learner$train(task) first.")
+                         }
+                         
+                         if(is.null(task)){
+                           task <- private$.training_task
+                         }
+                         assert_that(is(task,"sl3_Task"))
+                         subsetted_task = self$subset_covariates(task)
+                         predictions = private$.predict(subsetted_task)
+                         
+                         return(predictions)
+                       },
+                       
+                       chain = function(task = NULL){
+                         if(!self$is_trained){
+                           stop("Learner has not yet been train to data. Call learner$train(task) first.")
+                         }
+                         
+                         if(is.null(task)){
+                           task <- private$.training_task
+                         }
+                         assert_that(is(task,"sl3_Task"))
+                         subsetted_task = self$subset_covariates(task)
+                         next_task = private$.chain(subsetted_task)
+                         
+                         return(next_task)
+                         
+                       },
+                       print = function(){
+                         print(self$name)
+                         #print(self$params)
+                         fit_object=private$.fit_object
+                         if(!is.null(fit_object))
+                           print(fit_object)
+                       }),
+                     
+                     active = list(
+                       is_trained=function(){
+                         return(!is.null(private$.fit_object))
+                       },
+                       fit_object=function() {
+                         fit_object=private$.fit_object
+                         return(fit_object)
+                       },
+                       name=function(){
+                         #todo: allow custom names
+                         if(is.null(private$.name)){
+                           
+                           params=self$params
+                           if(length(params)>0){
+                             #todo: sanitize further
+                             atom_params=sapply(params,is.atomic)
+                             params=params[atom_params]
+                           }
+                           props = c(list(class(self)[1]), params)
+                           name = paste(props,collapse="_")
+                           private$.name = name
+                         }
+                         
+                         return(private$.name)
+                       },
+                       learner_uuid=function(){
+                         return(private$.learner_uuid)
+                       },
+                       fit_uuid=function(){
+                         return(private$.fit_uuid)
+                       },
+                       params=function(){
+                         return(private$.params)
                        }
-
-                       return(private$.name)
-                     },
-                     learner_uuid=function(){
-                       return(private$.learner_uuid)
-                     },
-                     fit_uuid=function(){
-                       return(private$.fit_uuid)
-                     },
-                     params=function(){
-                       return(private$.params)
-                     }
-                   ),
-                   private = list(
-                     .name = NULL,
-                     .fit_object = NULL,
-                     .training_task = NULL,
-                     .learner_uuid = NULL,
-                     .fit_uuid = NULL,
-                     .memoised_train = NULL,
-                     .params = NULL,
-                     .train = function(task){
-                       stop("Learner is meant to be abstract, you should instead use specific learners. See listLearners()")
-                     },
-                     .predict = function(task){
-                       predictions = predict(private$.fit_object, newdata=task$X)
-                       return(predictions)
-                     },
-                     .chain = function(task){
-                       predictions = self$predict(task)
-                       predictions = as.data.table(predictions)
-                       
-               
-                       #add predictions as new columns
-                       new_col_names = task$add_columns(self$fit_uuid, predictions)
-                       
-                       return(task$next_in_chain(covariates=new_col_names))
-                     }
-                   )
+                     ),
+                     private = list(
+                       .name = NULL,
+                       .fit_object = NULL,
+                       .training_task = NULL,
+                       .learner_uuid = NULL,
+                       .fit_uuid = NULL,
+                       .memoised_train = NULL,
+                       .params = NULL,
+                       .train = function(task){
+                         stop("Learner is meant to be abstract, you should instead use specific learners. See listLearners()")
+                       },
+                       .predict = function(task){
+                         predictions = predict(private$.fit_object, newdata=task$X)
+                         return(predictions)
+                       },
+                       .chain = function(task){
+                         predictions = self$predict(task)
+                         predictions = as.data.table(predictions)
+                         
+                         
+                         #add predictions as new columns
+                         new_col_names = task$add_columns(self$fit_uuid, predictions)
+                         
+                         return(task$next_in_chain(covariates=new_col_names))
+                       }
+                     )
 )
 
 #todo: implement predict S3 method
