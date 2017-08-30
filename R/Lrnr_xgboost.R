@@ -1,22 +1,9 @@
 #' @importFrom utils str
 NULL
 
-define_xgboost_X = function(task, covariates, params, add_outcome = FALSE) {
-  verbose <- getOption("sl3.verbose")
-  outvar <- task$nodes$outcome
-  Xmat <- task$X[,covariates, with=FALSE, drop=FALSE]
-  if (ncol(Xmat) == 0)
-    stop("fitting intercept only model (with no covariates) is not supported with xgboost, use speedglm instead")
+define_xgboost_X = function(task, add_outcome = FALSE) {
+  Xmat <- task$X
 
-  if (!is.null(params[["interactions"]])) {
-    if (verbose) {
-      print("adding interactions in xgboost:")
-      str(params[["interactions"]])
-    }
-    data.table::setDF(Xmat)
-    data.table::setDT(Xmat)
-    add_interactions_toDT(Xmat, params[["interactions"]])
-  }
   Xmat <- as.matrix(Xmat)
   if (is.integer(Xmat)) Xmat[,1] <- as.numeric(Xmat[,1])
   if (add_outcome) {
@@ -43,7 +30,7 @@ Lrnr_xgboost <- R6Class(classname = "Lrnr_xgboost", inherit = Lrnr_base, portabl
       if ("covariates" %in% names(params) && !is.null(params[["covariates"]])) {
         private$.covariates <- intersect(private$.covariates, params$covariates)
       }
-      X <- define_xgboost_X(task, private$.covariates, params, add_outcome = TRUE)
+      X <- define_xgboost_X(task, add_outcome = TRUE)
       mainArgs <- list(data = X)
       mainArgs <- c(mainArgs, params)
       mainArgs[["verbose"]] <- as.integer(verbose)
@@ -56,7 +43,7 @@ Lrnr_xgboost <- R6Class(classname = "Lrnr_xgboost", inherit = Lrnr_base, portabl
     ##todo: write S3 predict method for object "H2OGrid" or just write a new custom (not S3 method)
     .predict = function(task = NULL) {
       verbose <- getOption("sl3.verbose")
-      X <- define_xgboost_X(task, private$.covariates, self$params)
+      X <- define_xgboost_X(task)
 
       fit_object <- private$.fit_object
       pAoutDT <- rep.int(list(numeric()), 1)

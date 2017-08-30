@@ -36,3 +36,13 @@ reduce_fit_test <- function(learner_fit) {
     
     
 }
+
+subset_dt_cols=function(dt,cols){
+#   setDF(dt)
+#   subset=dt[,cols, drop=FALSE]
+#   setDT(subset)
+#   setDT(dt)
+#   return(subset)  
+  return(dt[, cols, with=FALSE, drop=FALSE])  
+}
+

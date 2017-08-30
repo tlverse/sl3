@@ -31,9 +31,9 @@ replace_add_user_args <- function(mainArgs, userArgs, fun) {
 
 ## Upload input data as h2o.Frame
 ## Allows to subset the taks$X data.table by a smaller set of covariates if spec'ed in params
-define_h2o_X = function(task, covariates, params) {
+define_h2o_X = function(task) {
   op <- options("h2o.use.data.table"=TRUE) # op <- options("datatable.verbose"=TRUE, "h2o.use.data.table"=TRUE)
-  X <- h2o::as.h2o(task$data[,c(covariates, task$nodes$outcome), with=FALSE, drop=FALSE])
+  X <- h2o::as.h2o(task$data[,c(task$nodes$covariates, task$nodes$outcome), with=FALSE, drop=FALSE])
   options(op)
   return(X)
 }
@@ -51,7 +51,6 @@ Lrnr_h2o_glm <- R6Class(classname = "Lrnr_h2o_glm", inherit = Lrnr_base, portabl
   ),
 
   private = list(
-    .covariates = NULL,
     .train = function(task) {
       verbose = getOption("sl3.verbose")
       params <- self$params
@@ -61,14 +60,10 @@ Lrnr_h2o_glm <- R6Class(classname = "Lrnr_h2o_glm", inherit = Lrnr_base, portabl
         stop("No active H2O cluster found, please initiate h2o cluster first by running 'h2o::h2o.init()'")
       }
 
-      private$.covariates <- task$nodes$covariates
-      if ("covariates" %in% names(params) && !is.null(params[["covariates"]])) {
-        private$.covariates <- intersect(private$.covariates, params$covariates)
-      }
-      X <- define_h2o_X(task, private$.covariates, params)
+      X <- define_h2o_X(task)
       if (verbose) h2o::h2o.show_progress() else h2o::h2o.no_progress()
 
-      mainArgs <- list(x = private$.covariates,
+      mainArgs <- list(x = task$nodes$covariates,
                        y = task$nodes$outcome,
                        training_frame = X,
                        intercept = TRUE,
@@ -94,7 +89,7 @@ Lrnr_h2o_glm <- R6Class(classname = "Lrnr_h2o_glm", inherit = Lrnr_base, portabl
     .predict = function(task = NULL) {
       verbose = getOption("sl3.verbose")
       if (verbose) h2o::h2o.show_progress() else h2o::h2o.no_progress()
-      X <- define_h2o_X(task, private$.covariates, self$params)
+      X <- define_h2o_X(task)
       predictions <- h2o::h2o.predict(private$.fit_object, X)
       if ("p1" %in% colnames(predictions)) {
         predictions <- predictions[,"p1"]

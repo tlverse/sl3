@@ -8,6 +8,9 @@ task <- sl3_Task$new(mtcars, covariates = c("cyl", "disp", "hp", "drat", "wt", "
 task2 <- sl3_Task$new(mtcars, covariates = c("cyl", "disp", "hp", "drat", "wt", "qsec",
     "vs", "am", "gear", "carb"), outcome = "mpg")
 
+interactions <- list(c("cyl", "disp"), c("hp", "drat"))
+task_with_interactions <- task$add_interactions(interactions)
+
 test_learner <- function(learner, task, ...) {
 
     # test learner definition this requires that a learner can be instantiated with
@@ -46,8 +49,8 @@ test_learner(Lrnr_xgboost, task, nrounds = 10, objective = "reg:linear")  ## lin
 test_learner(Lrnr_xgboost, task, nrounds = 50, booster = "gblinear")  ## GLM, i.e., use linear model for at each boosting stage
 test_learner(Lrnr_xgboost, task, nrounds = 10, booster = "gbtree")  ## GBM (default), i.e., use tree model for at each boosting stage
 # test_learner(Lrnr_xgboost, task, nrounds = 50, booster = 'dart') ## another type of tree model
-test_learner(Lrnr_xgboost, task, nrounds = 10, booster = "gbtree", covariates = c("cyl",
-    "disp", "drat"), interactions = list(c("cyl", "disp"), c("hp", "drat")))
+test_learner(Lrnr_xgboost, task_with_interactions, nrounds = 10, booster = "gbtree", covariates = c("cyl",
+    "disp", "drat", "cyl_disp", "hp_drat"))
 options(sl3.verbose = FALSE)
 test_learner(Lrnr_xgboost, task, nrounds = 50)
 

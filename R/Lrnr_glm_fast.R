@@ -25,50 +25,26 @@ GetWarningsToSuppress <- function(update.step=FALSE) {
   return(warnings.to.suppress)
 }
 
-## -----------------------------------------------------------------------------
-## Add columsn with interactions (by reference) to input design matrix (data.table). Used for training / predicting.
-## The function purposefully returns nothing (NULL), since the input data.table is being modified by REFERENCE.
-## -----------------------------------------------------------------------------
-add_interactions_toDT <- function(XmatDT, interactions) {
-  prod.DT <- function(x) {
-    y <- x[[1]]
-    for(i in 2:ncol(x))
-      y <- y*x[[i]]
-    return(y)
-  }
-
-  for (i in seq_along(interactions)) {
-    interact <- interactions[[i]]
-    name <- names(interactions)[i]
-    if (is.null(name)) name <- paste0(interact, collapse = "_")
-    if (all(interact %in% names(XmatDT))){
-      XmatDT[, (name) := prod.DT(.SD), .SD = interact]
-    }
-  }
-
-  return(invisible(NULL))
-}
-
 ## Define the design matrix for GLM regression. Returns a data.table.
 ## Allows to subset the taks$X data.table by a smaller set of covariates if spec'ed in params
 ## Can define interaction columns if spec'ed in params
-defineX <- function(task, params) {
-  covariates <- task$nodes$covariates
-  if ("covariates" %in% names(params) && !is.null(params[["covariates"]])) {
-    covariates <- intersect(covariates, params$covariates)
-  }
-  X <- cbind(Intercept = 1L, task$X[,covariates, with=FALSE, drop=FALSE])
-  if (!is.null(params[["interactions"]])) {
-    # print("adding interactions in GLM:"); str(params[["interactions"]])
-    ## this is a hack to fix pointer allocation problem (so that X can be modified by reference inside add_interactions_toDT())
-    ## see this for more: http://stackoverflow.com/questions/28078640/adding-new-columns-to-a-data-table-by-reference-within-a-function-not-always-wor
-    ## and this: http://stackoverflow.com/questions/36434717/adding-column-to-nested-r-data-table-by-reference
-    data.table::setDF(X)
-    data.table::setDT(X)
-    add_interactions_toDT(X, params[["interactions"]])
-  }
-  return(X)
-}
+# defineX <- function(task, params) {
+#   covariates <- task$nodes$covariates
+#   if ("covariates" %in% names(params) && !is.null(params[["covariates"]])) {
+#     covariates <- intersect(covariates, params$covariates)
+#   }
+#   X <- cbind(Intercept = 1L, task$X[,covariates, with=FALSE, drop=FALSE])
+#   if (!is.null(params[["interactions"]])) {
+#     # print("adding interactions in GLM:"); str(params[["interactions"]])
+#     ## this is a hack to fix pointer allocation problem (so that X can be modified by reference inside add_interactions_toDT())
+#     ## see this for more: http://stackoverflow.com/questions/28078640/adding-new-columns-to-a-data-table-by-reference-within-a-function-not-always-wor
+#     ## and this: http://stackoverflow.com/questions/36434717/adding-column-to-nested-r-data-table-by-reference
+#     data.table::setDF(X)
+#     data.table::setDT(X)
+#     add_interactions_toDT(X, params[["interactions"]])
+#   }
+#   return(X)
+# }
 
 #' @importFrom assertthat assert_that is.count is.flag
 #' @export
@@ -95,7 +71,7 @@ Lrnr_glm_fast <- R6Class(classname = "Lrnr_glm_fast", inherit = Lrnr_base, porta
       family_name <- family[["family"]]
       linkinv_fun <- family[["linkinv"]]
       method <- params[["method"]]
-      X <- defineX(task, params)
+      X <- task$X_intercept
 
       SuppressGivenWarnings({
         fit_object <- try(speedglm::speedglm.wfit(X = as.matrix(X),
@@ -134,7 +110,7 @@ Lrnr_glm_fast <- R6Class(classname = "Lrnr_glm_fast", inherit = Lrnr_base, porta
 
     .predict = function(task = NULL) {
       verbose <- getOption("sl3.verbose")
-      X <- defineX(task, self$params)
+      X <- task$X_intercept
       predictions <- rep.int(NA, nrow(X))
       if (nrow(X) > 0) {
         coef <- private$.fit_object$coef
