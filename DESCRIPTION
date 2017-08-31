@@ -33,6 +33,7 @@ Imports:
   xgboost,
   forecast,
   nloptr,
+  rugarch,
   uuid,
   memoise,
   digest
@@ -43,8 +44,7 @@ Suggests:
   glmnet,
   devtools,
   dplyr,
-  rgl,
-  rugarch
+  rgl
 Remotes:
   github::osofr/condensier
 LazyLoad: yes
