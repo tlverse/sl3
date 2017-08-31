@@ -75,7 +75,7 @@ Lrnr_cv <- R6Class(classname = "Lrnr_cv",
 
                         cv_results=cross_validate(cv_train,folds,learner,task,.combine=F, future.globals=F)
 
-                        fit_object=list(folds=folds, fold_fits=cv_results$fold_fits, errors=cv_results$errors)
+                        fit_object=list(folds=folds, fold_fits=cv_results$fold_fit, errors=cv_results$errors)
 
                         return(fit_object)
                        },

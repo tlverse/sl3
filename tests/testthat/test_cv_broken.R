@@ -22,4 +22,4 @@ broken_cv <- Lrnr_cv$new(broken_learner)
 
 broken_fit <- broken_cv$train(task)
 errors <- broken_fit$fit_object$errors$error
-lapply(errors, attr, "condition")
+expect_true(all(errors == "Error in private$.train(subsetted_task) : \n  this task always returns an error\n"))
