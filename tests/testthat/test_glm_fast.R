@@ -31,7 +31,7 @@ task$nodes$covariates
 
 interactions <- list(c("apgar1", "apgar5"))
 task_with_interactions <- task$add_interactions(interactions)
- 
+
 test_that("Lrnr_glm and Learenr_GLMfast learners give the same predictions", {
     glm_learner <- Lrnr_glm$new()
     fglm_learner <- Lrnr_glm_fast$new()
@@ -46,7 +46,7 @@ test_that("Lrnr_glm and Learenr_GLMfast learners give the same predictions", {
 test_that("Lrnr_glm_fast trains on a subset of covariates (predictors)", {
     fglm_learner <- Lrnr_glm_fast$new(covariates = c("apgar1", "apgar5", "apgar1_apgar5"))
     fGLM_fit <- fglm_learner$train(task_with_interactions)
-    
+
     # print(fGLM_fit) str(fGLM_fit$params)
     fglm_preds_3 <- fGLM_fit$predict()
     expect_true(data.table::is.data.table(fglm_preds_3))

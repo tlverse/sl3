@@ -12,7 +12,7 @@ Lrnr_rugarch
 \code{\link{Lrnr_base}} object with methods for training and prediction
 }
 \description{
-This learner supports autoregressive fractionally integrated moving average and 
+This learner supports autoregressive fractionally integrated moving average and
 various flavors of generalized autoregressive conditional heteroskedasticity models for univariate time-series.
 }
 \section{Fields}{
