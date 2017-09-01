@@ -27,12 +27,17 @@ cpp <- cpp[1:150, ]
 
 task <- sl3_Task$new(cpp, covariates = covars, outcome = outcome)
 
-task$nodes$covariates
-
 interactions <- list(c("apgar1", "apgar5"))
 task_with_interactions <- task$add_interactions(interactions)
 
-test_that("Lrnr_glm and Learenr_GLMfast learners give the same predictions", {
+test_that("Lrnr_glm_fast works with empty X (intercept-only)", {
+    fglm_learner <- Lrnr_glm_fast$new()
+    empty_task <- sl3_Task$new(cpp, covariates = NULL, outcome = outcome)
+    fGLM_fit <- fglm_learner$train(empty_task)
+    fglm_preds <- fGLM_fit$predict()
+})
+
+test_that("Lrnr_glm and Lrnr_glm_fast works with empty X (intercept-only)", {
     glm_learner <- Lrnr_glm$new()
     fglm_learner <- Lrnr_glm_fast$new()
     GLM_fit <- glm_learner$train(task)

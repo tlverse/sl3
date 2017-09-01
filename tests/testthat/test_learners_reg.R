@@ -17,7 +17,6 @@ test_learner <- function(learner, task, ...) {
     # only default arguments. Not sure if this is a reasonable requirement
     learner_obj <- learner$new(...)
     print(sprintf("Testing Learner: %s", learner_obj$name))
-
     # test learner training
     fit_obj <- learner_obj$train(task)
     test_that("Learner can be trained on data", expect_true(fit_obj$is_trained))
@@ -25,7 +24,7 @@ test_learner <- function(learner, task, ...) {
     # test learner prediction
     train_preds <- fit_obj$predict()
     test_that("Learner can generate training set predictions", expect_equal(sl3:::safe_dim(train_preds)[1],
-        nrow(task$X)))
+        length(task$Y)))
 
     holdout_preds <- fit_obj$predict(task2)
     test_that("Learner can generate holdout set predictions", expect_equal(train_preds,
