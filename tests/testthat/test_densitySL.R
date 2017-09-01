@@ -30,9 +30,9 @@ test_that("Super Learner for densities works", {
                               condensier::speedglmR6$new()
                               # bin_estimator = Lrnr_xgboost$new(nrounds = 20, objective = 'reg:logistic')
                               )
-  sl <- Lrnr_sl$new(learners = list(lrn1, lrn2, lrn3, lrn4),
-                    metalearner = Lrnr_solnp_density$new())
-  sl_fit <- sl$train(task_1)
+  # sl <- Lrnr_sl$new(learners = list(lrn1, lrn2, lrn3, lrn4),
+  #                   metalearner = Lrnr_solnp_density$new())
+  # sl_fit <- sl$train(task_1)
 
 
   ## obtain likelihood predictions from SL fit for new data:
