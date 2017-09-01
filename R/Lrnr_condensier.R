@@ -7,10 +7,11 @@
 Lrnr_condensier <- R6Class(classname = "Lrnr_condensier", inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
     initialize = function(bin_method = c("equal.mass", "equal.len", "dhist"),
-                          nbins = NA_integer_,
+                          nbins = 5,
                           max_n_cat = 20,
                           pool = FALSE,
-                          max_n_bin = 1000,
+                          max_n_bin = NA_integer_,
+                          parfit = FALSE,
                           bin_estimator = Lrnr_glm_fast$new(family = "binomial"),
                           ...) {
 
@@ -29,7 +30,8 @@ Lrnr_condensier <- R6Class(classname = "Lrnr_condensier", inherit = Lrnr_base, p
         nbins = nbins[1L],
         max_n_cat = max_n_cat,
         pool = pool,
-        max_n_bin = max_n_bin, 
+        max_n_bin = max_n_bin,
+        parfit = parfit,
         ...)
 
       super$initialize(params = params, ...)
@@ -50,9 +52,12 @@ Lrnr_condensier <- R6Class(classname = "Lrnr_condensier", inherit = Lrnr_base, p
         X = private$.covariates,
         Y = task$nodes$outcome,
         input_data = task$data,
+        bin_method = params$bin_method,
         nbins = params$nbins,
         bin_estimator = params$bin_estimator,
         pool = params$pool,
+        max_n_bin = params$max_n_bin,
+        parfit = params$parfit,
         verbose = verbose
       )
       return(fit_object)
