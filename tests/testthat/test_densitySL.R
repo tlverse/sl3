@@ -1,4 +1,6 @@
-# require(condensier)
+require(condensier)
+require(sl3)
+
 test_that("Super Learner for densities works", {
   ## Simulation code for the original density_dat
   # require("simcausal")
@@ -17,7 +19,6 @@ test_that("Super Learner for densities works", {
   op <- options(sl3.verbose = FALSE)
   data(density_dat)
   ## Define 3 density estimators (candidate learners) using sl3 package:
-  task <- sl3_Task$new(density_dat, covariates=c("W1", "W2", "W3"),outcome="sA", folds=origami::make_folds(V = 5, cluster_ids = density_dat$ID))
   task_1 <- sl3_Task$new(density_dat, covariates=c("W1", "W2", "W3"),outcome="sA", folds=origami::make_folds(V = 5, cluster_ids = density_dat$ID))
   newdata <- density_dat[1:5, c("W1", "W2", "W3", "sA")]
   new_task <- sl3_Task$new(newdata, covariates=c("W1", "W2", "W3"),outcome="sA" )
@@ -30,13 +31,11 @@ test_that("Super Learner for densities works", {
                               condensier::speedglmR6$new()
                               # bin_estimator = Lrnr_xgboost$new(nrounds = 20, objective = 'reg:logistic')
                               )
-  # sl <- Lrnr_sl$new(learners = list(lrn1, lrn2, lrn3, lrn4),
-  #                   metalearner = Lrnr_solnp_density$new())
-  # sl_fit <- sl$train(task_1)
-
-
+  sl <- Lrnr_sl$new(learners = list(lrn1, lrn2, lrn3, lrn4),
+                    metalearner = Lrnr_solnp_density$new())
+  sl_fit <- sl$train(task_1)
+  is(sl_fit, "Lrnr_base")
   ## obtain likelihood predictions from SL fit for new data:
   sl_preds <- sl_fit$predict(new_task)
   options(op)
 })
-
