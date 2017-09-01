@@ -193,7 +193,7 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                         # returns X matrix with manually generated intercept column
                         X_dt=self$X
                         if(ncol(X_dt)==0){
-                          X_dt=self$data[,list(intercept=rep(1,.N)]
+                          X_dt=self$data[,list(intercept=rep(1,.N))]
                         } else {
                           X_dt[,intercept:=1]
                         }
