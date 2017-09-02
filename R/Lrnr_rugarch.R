@@ -18,65 +18,67 @@
 #' @family Learners
 #'
 Lrnr_rugarch <- R6Class(classname = "Lrnr_rugarch", inherit = Lrnr_base, portable = TRUE, class = TRUE,
-public = list(
-        initialize = function(variance.model=list(model = "sGARCH", garchOrder = c(1, 1),
-                             submodel = NULL, external.regressors = NULL, variance.targeting = FALSE),
-
-                             mean.model=list(armaOrder = c(1, 1), include.mean = TRUE, archm = FALSE,
-                                            archpow = 1, arfima = FALSE, external.regressors = NULL, archex = FALSE),
-
-                             distribution.model = "norm",
-                             start.pars = list(),
-                             fixed.pars = list(),
-                             n.ahead=NULL,
-                             ...) {
-
-                          params <- list(variance.model = variance.model, mean.model=mean.model, distribution.model=distribution.model, start.pars=start.pars, fixed.pars=fixed.pars, n.ahead=n.ahead, ...)
-                          super$initialize(params = params, ...)
-                        }
-                      ),
-                      private = list(
-
-                        .train = function(task) {
-                          params <- self$params
-                          variance.model <- params[["variance.model"]]
-                          mean.model <- params[["mean.model"]]
-                          distribution.model <- params[["distribution.model"]]
-                          start.pars <- params[["start.pars"]]
-                          fixed.pars <- params[["fixed.pars"]]
-
-                          #Support for a single time-series
-                          spec_object<-rugarch::ugarchspec(variance.model=variance.model,
-                                                 mean.model=mean.model,
-                                                 distribution.model=distribution.model,
-                                                 start.pars=start.pars,
-                                                 fixed.pars=fixed.pars)
-
-                          #Perhaps might not want to store all the info. TO DO
-                          fit_object<-rugarch::ugarchfit(spec_object, task$X)
-
-                          return(fit_object)
-
-                        },
-
-                        #Only simple forecast, do not implement CV based forecast here
-                        .predict = function(task = NULL) {
-
-                          params <- self$params
-                          n.ahead <- params[["n.ahead"]]
-
-                          if(is.null(n.ahead)){
-                            n.ahead=nrow(task$X)
+                        public = list(
+                          initialize = function(variance.model=list(model = "sGARCH", garchOrder = c(1, 1),
+                                                                    submodel = NULL, external.regressors = NULL, variance.targeting = FALSE),
+                                                
+                                                mean.model=list(armaOrder = c(1, 1), include.mean = TRUE, archm = FALSE,
+                                                                archpow = 1, arfima = FALSE, external.regressors = NULL, archex = FALSE),
+                                                
+                                                distribution.model = "norm",
+                                                start.pars = list(),
+                                                fixed.pars = list(),
+                                                n.ahead=NULL,
+                                                ...) {
+                            
+                            params <- list(variance.model = variance.model, mean.model=mean.model, distribution.model=distribution.model, start.pars=start.pars, fixed.pars=fixed.pars, n.ahead=n.ahead, ...)
+                            super$initialize(params = params, ...)
                           }
-
-                          #Give the same output as glm
-                          predictions <- rugarch::ugarchforecast(private$.fit_object, data=task$X, n.ahead=n.ahead)
-                          predictions<-as.numeric(predictions@forecast$seriesFor)
-                          predictions <- structure(predictions, names=1:n.ahead)
-
-                          return(predictions)
-
-                        }
-                      ), )
+                        ),
+                        private = list(
+                          
+                          .train = function(task) {
+                            params <- self$params
+                            variance.model <- params[["variance.model"]]
+                            mean.model <- params[["mean.model"]]
+                            distribution.model <- params[["distribution.model"]]
+                            start.pars <- params[["start.pars"]]
+                            fixed.pars <- params[["fixed.pars"]]
+                            
+                            #Support for a single time-series
+                            spec_object<-rugarch::ugarchspec(variance.model=variance.model,
+                                                             mean.model=mean.model,
+                                                             distribution.model=distribution.model,
+                                                             start.pars=start.pars,
+                                                             fixed.pars=fixed.pars)
+                            
+                            #Perhaps might not want to store all the info. TO DO
+                            fit_object<-rugarch::ugarchfit(spec_object, task$X)
+                            
+                            return(fit_object)
+                            
+                          },
+                          
+                          #Only simple forecast, do not implement CV based forecast here
+                          .predict = function(task = NULL) {
+                            
+                            params <- self$params
+                            n.ahead <- params[["n.ahead"]]
+                            
+                            if(is.null(n.ahead)){
+                              n.ahead=nrow(task$X)
+                            }
+                            
+                            #Give the same output as glm
+                            predictions <- rugarch::ugarchforecast(private$.fit_object, data=task$X, n.ahead=n.ahead)
+                            predictions<-as.numeric(predictions@forecast$seriesFor)
+                            predictions <- structure(predictions, names=1:n.ahead)
+                            
+                            return(predictions)
+                            
+                          },
+                          .required_packages=c("rugarch")
+                        ), 
+)
 
 

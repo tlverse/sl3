@@ -23,7 +23,8 @@ Lrnr_pkg_SuperLearner <- R6Class(classname = "Lrnr_pkg_SuperLearner",
 
                          return(fit_object)
 
-                       }
+                       },
+                       .required_packages = c("SuperLearner")
                        # generic learner predict suffices
                        )
 

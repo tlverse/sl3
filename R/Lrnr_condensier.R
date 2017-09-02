@@ -70,5 +70,6 @@ Lrnr_condensier <- R6Class(classname = "Lrnr_condensier", inherit = Lrnr_base, p
       # predictions <- data.table::data.table(likelihood = predictions, sampled_value = sampled_value)
       predictions <- data.table::data.table(likelihood = predictions)
       return(predictions)
-    }
+    },
+    .required_packages = c("condensier")
 ), )

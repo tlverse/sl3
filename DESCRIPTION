@@ -20,23 +20,14 @@ Depends:
 Imports:
   data.table,
   assertthat,
-  condensier,
-  cvAUC,
   origami,
   future,
   R6,
-  Rsolnp,
-  h2o,
   stats,
-  nnls,
-  SuperLearner,
-  xgboost,
-  forecast,
-  nloptr,
-  rugarch,
   uuid,
   memoise,
-  digest
+  digest,
+  BBmisc
 Suggests:
   testthat,
   knitr,
@@ -44,7 +35,17 @@ Suggests:
   glmnet,
   devtools,
   dplyr,
-  rgl
+  rgl,
+  Rsolnp,
+  condensier,
+  cvAUC,
+  h2o,
+  xgboost,
+  forecast,
+  nloptr,
+  rugarch,
+  nnls,
+  SuperLearner
 Remotes:
   github::osofr/condensier
 LazyLoad: yes

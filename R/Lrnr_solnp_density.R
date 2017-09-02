@@ -51,5 +51,6 @@ Lrnr_solnp_density <- R6Class(classname = "Lrnr_solnp_density", inherit = Lrnr_b
         setnames(predictions, "likelihood")
       }
       return(predictions)
-    }
+    },
+    .required_packages = c("Rsolnp")
 ), )

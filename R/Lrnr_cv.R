@@ -100,7 +100,8 @@ Lrnr_cv <- R6Class(classname = "Lrnr_cv",
                          predictions=aorder(fold_predictions$predictions,order(fold_predictions$index))
 
                          return(predictions)
-                       }
+                       },
+                       .required_packages = c("origami")
                      )
 
 )

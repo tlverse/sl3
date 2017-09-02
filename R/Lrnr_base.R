@@ -20,13 +20,14 @@
 #' @importFrom assertthat assert_that is.count is.flag
 #' @importFrom uuid UUIDgenerate
 #' @importFrom memoise memoise cache_memory cache_filesystem
-
+#' @importFrom BBmisc requirePackages
 #' @family Learners
 Lrnr_base <- R6Class(classname = "Lrnr_base",
                      portable = TRUE,
                      class = TRUE,
                      public = list(
                        initialize = function(params=NULL, memoise_learner = getOption("sl3.memoise.learner"), ...) {
+                         private$.load_packages()
                          if(is.null(params)){
                            params=list(...)
                          }
@@ -163,6 +164,7 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                        .fit_uuid = NULL,
                        .memoised_train = NULL,
                        .params = NULL,
+                       .required_packages = NULL,
                        .train = function(task){
                          stop("Learner is meant to be abstract, you should instead use specific learners. See listLearners()")
                        },
@@ -179,6 +181,11 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                          new_col_names = task$add_columns(self$fit_uuid, predictions)
                          
                          return(task$next_in_chain(covariates=new_col_names))
+                       },
+                       .load_packages = function(){
+                         if(!is.null(private$.required_packages)){
+                          requirePackages(private$.required_packages, why = class(self)[1], default.method = "load")
+                         }
                        }
                      )
 )

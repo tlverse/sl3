@@ -108,7 +108,8 @@ Lrnr_h2o_grid <- R6Class(classname = "Lrnr_h2o_grid", inherit = Lrnr_base, porta
 
       h2o::h2o.show_progress()
       return(predictions)
-    }
+    },
+    .required_packages = c("h2o")
   ), )
 
 

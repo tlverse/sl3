@@ -99,5 +99,6 @@ Lrnr_h2o_glm <- R6Class(classname = "Lrnr_h2o_glm", inherit = Lrnr_base, portabl
       predictions <- data.table::as.data.table(predictions)
       h2o::h2o.show_progress()
       return(predictions)
-    }
+    },
+    .required_packages = c("h2o")
 ), )

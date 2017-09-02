@@ -63,7 +63,8 @@ Lrnr_arima <- R6Class(classname = "Lrnr_arima", inherit = Lrnr_base, portable = 
 
                           return(predictions)
 
-                        }
+                        }, 
+                        .required_packages = c("forecast")
                       ), )
 
 

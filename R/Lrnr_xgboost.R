@@ -61,5 +61,6 @@ Lrnr_xgboost <- R6Class(classname = "Lrnr_xgboost", inherit = Lrnr_base, portabl
       predictions <- as.data.table(pAoutDT)
       # names(pAoutDT) <- names(models_list)
       return(predictions)
-    }
+    },
+    .required_packages = c("xgboost")
   ), )
