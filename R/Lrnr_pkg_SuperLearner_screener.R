@@ -28,7 +28,8 @@ Lrnr_pkg_SuperLearner_screener <- R6Class(classname = "Lrnr_pkg_SuperLearner_scr
                        },
                        .chain = function(task) {
                          return(task$next_in_chain(covariates=private$.fit_object$selected))
-                       }
+                       },
+                       .required_packages = c("SuperLearner")
                        )
                      
 )

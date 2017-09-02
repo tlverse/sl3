@@ -120,5 +120,6 @@ Lrnr_glm_fast <- R6Class(classname = "Lrnr_glm_fast", inherit = Lrnr_base, porta
         }
       }
       return(data.table::data.table(predictions))
-    }
+    }, 
+    .required_packages = c("speedglm")
 ), )

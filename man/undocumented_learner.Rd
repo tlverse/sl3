@@ -3,11 +3,10 @@
 %   R/Lrnr_define_interactions.R, R/Lrnr_glm.R, R/Lrnr_glm_fast.R,
 %   R/Lrnr_h2o_glm.R, R/Lrnr_h2o_grid.R, R/Lrnr_nnls.R,
 %   R/Lrnr_pkg_SuperLearner.R, R/Lrnr_pkg_SuperLearner_screener.R, R/Lrnr_sl.R,
-%   R/Lrnr_xgboost.R, R/sl3-package.R
+%   R/Lrnr_solnp_density.R, R/Lrnr_xgboost.R, R/sl3-package.R
 \docType{data}
 \name{Lrnr_condensier}
 \alias{Lrnr_condensier}
-\alias{Lrnr_solnp_density}
 \alias{Lrnr_define_interactions}
 \alias{Lrnr_glm}
 \alias{Lrnr_glm_fast}
@@ -19,14 +18,13 @@
 \alias{Lrnr_pkg_SuperLearner}
 \alias{Lrnr_pkg_SuperLearner_screener}
 \alias{Lrnr_sl}
+\alias{Lrnr_solnp_density}
 \alias{Lrnr_xgboost}
 \alias{undocumented_learner}
 \title{Undocumented Learner}
 \format{An object of class \code{R6ClassGenerator} of length 24.}
 \usage{
 Lrnr_condensier
-
-Lrnr_solnp_density
 
 Lrnr_define_interactions
 
@@ -49,6 +47,8 @@ Lrnr_pkg_SuperLearner
 Lrnr_pkg_SuperLearner_screener
 
 Lrnr_sl
+
+Lrnr_solnp_density
 
 Lrnr_xgboost
 }
