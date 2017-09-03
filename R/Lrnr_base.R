@@ -82,11 +82,13 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                          private$.fit_uuid = UUIDgenerate(use.time=T)
                          
                        },
-                       
-                       predict = function(task = NULL){
+                       assert_trained = function(){
                          if(!self$is_trained){
                            stop("Learner has not yet been train to data. Call learner$train(task) first.")
                          }
+                       },
+                       predict = function(task = NULL){
+                         self$assert_trained()
                          
                          if(is.null(task)){
                            task <- private$.training_task
@@ -99,9 +101,7 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                        },
                        
                        chain = function(task = NULL){
-                         if(!self$is_trained){
-                           stop("Learner has not yet been train to data. Call learner$train(task) first.")
-                         }
+                         self$assert_trained()
                          
                          if(is.null(task)){
                            task <- private$.training_task

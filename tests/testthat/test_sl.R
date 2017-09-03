@@ -19,6 +19,7 @@ stack2 <- Stack$new(stack)
 nnls_learner <- Lrnr_nnls$new()
 sl1 <- Lrnr_sl$new(learners = list(glm_learner, glmnet_learner), metalearner = nnls_learner)
 sl1_fit <- sl1$train(task)
+sl1_fit$cv_risk(loss_squared_error)
 
 sl2 <- Lrnr_sl$new(learners = stack, metalearner = nnls_learner)
 sl2_fit <- sl2$train(task)
