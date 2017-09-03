@@ -7,38 +7,34 @@
 #' @keywords data
 #' @return \code{\link{Lrnr_base}} object with methods for training and prediction
 #' @format \code{\link{R6Class}} object.
-#' @field order A specification of the non-seasonal part of the ARIMA model: the three integer components (p, d, q) are the AR order, the degree of differencing, and the MA order.
-#' @field seasonal A specification of the seasonal part of the ARIMA model, plus the period (which defaults to frequency(x)). This should be a list with components order and period, but a specification of just a numeric vector of length 3 will be turned into a suitable list with the specification as the order.
 #' @field n.ahead The forecast horizon. If not specified, returns forecast of size task$X.
 #' @field K Maximum order(s) of Fourier terms.
 #' @field freq the number of observations per unit of time. 
 #'
-#'
 #' @importFrom assertthat assert_that is.count is.flag
 #' @importFrom stats arima
+#' @importFrom uuid UUIDgenerate
 #'
 #' @family Learners
 #'
 
 Lrnr_HarmonicReg <- R6Class(classname = "Lrnr_HarmonicReg", inherit = Lrnr_base, portable = TRUE, class = TRUE,
                       public = list(
-                        initialize = function(order=NULL,
-                                              seasonal=list(order = c(0L, 0L, 0L), period = NA),
-                                              K=K,
+                        initialize = function(K=K,
                                               n.ahead=NULL,
                                               freq=freq,
                                               ...) {
                           
-                          params <- list(order = order, seasonal=seasonal, n.ahead=n.ahead, K=K, freq=freq, ...)
+                          params <- list(n.ahead=n.ahead, K=K, freq=freq, ...)
                           super$initialize(params = params, ...)
                         }
                       ),
                       private = list(
                         
                         .train = function(task) {
+                          
                           params <- self$params
-                          ord <- params[["order"]]
-                          season <- params[["seasonal"]]
+              
                           K <- params[["K"]]
                           freq <- params[["freq"]]
                           
@@ -49,12 +45,8 @@ Lrnr_HarmonicReg <- R6Class(classname = "Lrnr_HarmonicReg", inherit = Lrnr_base,
                           }else if(any(2*K > freq)){
                             stop("K must be not be greater than period/2")
                           }
-
-                          if (is.numeric(ord)) {
-                            fit_object <- arima(task_ts, xreg=fourier(task_ts, K=K), order=ord, seasonal=season)
-                          }else{
-                            fit_object <- forecast::auto.arima(task_ts, xreg=fourier(task_ts, K=K))
-                          }
+                          
+                          fit_object <- forecast::tslm(task_ts~forecast::fourier(task_ts, K=K))
                           
                           return(fit_object)
                           
@@ -71,7 +63,7 @@ Lrnr_HarmonicReg <- R6Class(classname = "Lrnr_HarmonicReg", inherit = Lrnr_base,
                           
                           task_ts <- ts(task$X, frequency = freq)
                           
-                          predictions <- forecast(private$.fit_object, xreg=fourier(task_ts, K=K, h=n.ahead))
+                          predictions <- forecast::forecast(private$.fit_object, data.frame(forecast::fourier(task_ts, K=K, h=n.ahead)))
                           
                           #Create output as in glm
                           predictions <- as.numeric(predictions$mean)
@@ -82,5 +74,4 @@ Lrnr_HarmonicReg <- R6Class(classname = "Lrnr_HarmonicReg", inherit = Lrnr_base,
                         }, 
                         .required_packages = c("forecast")
                       ), )
-
 

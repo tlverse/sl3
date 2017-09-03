@@ -17,10 +17,6 @@ This learner fits first harmonics in a Fourier expansion to one or more time ser
 \section{Fields}{
 
 \describe{
-\item{\code{order}}{A specification of the non-seasonal part of the ARIMA model: the three integer components (p, d, q) are the AR order, the degree of differencing, and the MA order.}
-
-\item{\code{seasonal}}{A specification of the seasonal part of the ARIMA model, plus the period (which defaults to frequency(x)). This should be a list with components order and period, but a specification of just a numeric vector of length 3 will be turned into a suitable list with the specification as the order.}
-
 \item{\code{n.ahead}}{The forecast horizon. If not specified, returns forecast of size task$X.}
 
 \item{\code{K}}{Maximum order(s) of Fourier terms.}
