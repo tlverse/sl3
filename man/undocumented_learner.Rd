@@ -65,10 +65,11 @@ We haven't documented this one yet.
 }}
 
 \seealso{
-Other Learners: \code{\link{Lrnr_arima}},
-  \code{\link{Lrnr_base}}, \code{\link{Lrnr_cv}},
-  \code{\link{Lrnr_rugarch}}, \code{\link{Lrnr_tsDyn}},
-  \code{\link{Pipeline}}, \code{\link{Stack}}
+Other Learners: \code{\link{Lrnr_HarmonicReg}},
+  \code{\link{Lrnr_arima}}, \code{\link{Lrnr_base}},
+  \code{\link{Lrnr_cv}}, \code{\link{Lrnr_rugarch}},
+  \code{\link{Lrnr_tsDyn}}, \code{\link{Pipeline}},
+  \code{\link{Stack}}
 }
 \keyword{data}
 \keyword{datasets}

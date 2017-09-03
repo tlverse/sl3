@@ -30,8 +30,9 @@ A wrapper around any learner that generates cross-validate predictions
 }
 
 \seealso{
-Other Learners: \code{\link{Lrnr_arima}},
-  \code{\link{Lrnr_base}}, \code{\link{Lrnr_condensier}},
+Other Learners: \code{\link{Lrnr_HarmonicReg}},
+  \code{\link{Lrnr_arima}}, \code{\link{Lrnr_base}},
+  \code{\link{Lrnr_condensier}},
   \code{\link{Lrnr_rugarch}}, \code{\link{Lrnr_tsDyn}},
   \code{\link{Pipeline}}, \code{\link{Stack}}
 }
