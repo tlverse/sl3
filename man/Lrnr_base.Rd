@@ -37,7 +37,7 @@ Generally this base Learner class shouldn't be instantiated. It's intended to be
 \seealso{
 Other Learners: \code{\link{Lrnr_arima}},
   \code{\link{Lrnr_condensier}}, \code{\link{Lrnr_cv}},
-  \code{\link{Lrnr_rugarch}}, \code{\link{Pipeline}},
-  \code{\link{Stack}}
+  \code{\link{Lrnr_rugarch}}, \code{\link{Lrnr_tsDyn}},
+  \code{\link{Pipeline}}, \code{\link{Stack}}
 }
 \keyword{data}

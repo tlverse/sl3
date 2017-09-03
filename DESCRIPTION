@@ -45,7 +45,8 @@ Suggests:
   nloptr,
   rugarch,
   nnls,
-  SuperLearner
+  SuperLearner,
+  tsDyn
 Remotes:
   github::osofr/condensier
 LazyLoad: yes

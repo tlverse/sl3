@@ -1,53 +1,51 @@
 #' Nonlinear Time Series Analysis
 #'
-#' This learner supports various forms of nonlinear autoregression, including additive AR, neural nets,
-#' SETAR and LSTAR models, threshold VAR and VECM.
+#' This learner supports various forms of nonlinear autoregression, including additive AR, neural nets, SETAR and LSTAR models, threshold VAR and VECM.
 #' @docType class
 #' @importFrom R6 R6Class
 #' @export
 #' @keywords data
 #' @return \code{\link{Lrnr_base}} object with methods for training and prediction
 #' @format \code{\link{R6Class}} object.
-#' @field learner Available built-in time series models. Currently available are listed by \code{tsDyn::availableModels()}.
-#' @field m embedding dimension
-#' @field d time delay
-#' @field include Type of deterministic regressors to include
-#' @field type Whether the variable is taken is level, difference or a mix (diff y= y-1, diff lags) as in the ADF test
-#' @field mL autoregressive order for 'low' regime
-#' @field mH autoregressive order for 'high' regime
-#' @field mM autoregressive order for 'middle' regime
-#' @field thDelay 'time delay' for the threshold variable
-#' @field common Indicates which elements are common to all regimes: no, only the include variables, the lags or both
-#' @field ML vector of lags for order for ‘low’ 
-#' @field MM vector of lags for order for ‘middle’ 
-#' @field MH vector of lags for order for ‘high’ 
-#' @field nthresh Number of threshold of the model
-#' @field trim trimming parameter indicating the minimal percentage of observations in each regime
-#' @field sig significance level for the tests to select the number of regimes
-#' @field control further arguments to be passed as control list to \code{optim}
-#' @field r Number of cointegrating relationships
+#' @field learner Available built-in time series models. Currently available are listed by with availableModels() function.
+#' @field m embedding dimension.
+#' @field d time delay.
+#' @field include Type of deterministic regressors to include.
+#' @field type Whether the variable is taken is level, difference or a mix as in the ADF test.
+#' @field mL autoregressive order for low regime.
+#' @field mH autoregressive order for high regime.
+#' @field mM autoregressive order for middle regime.
+#' @field thDelay Time delay for the threshold variable.
+#' @field common Indicates which elements are common to all regimes.
+#' @field ML vector of lags for order for low. 
+#' @field MM vector of lags for order for middle.
+#' @field MH vector of lags for order for high.
+#' @field nthresh Threshold of the model.
+#' @field trim trimming parameter indicating the minimal percentage of observations in each regime.
+#' @field sig significance level for the tests to select the number of regimes.
+#' @field control further arguments to be passed as control list to optim.
+#' @field r Number of cointegrating relationships.
 #' @field model Model to estimate. Choices: VAR/VECM/TAR/MTAR.
-#' @field I For VAR only: whether in the VAR the variables are to be taken in levels (original series) or in difference, or similarly to the univariate ADF case.
+#' @field I For VAR only: whether in the VAR variables are to be taken in levels or as a difference.
 #' @field beta For VECM only: imposed cointegrating value. 
-#' @field estim Type of estimator for the VECM (two-step approach or Johansen MLE)
-#' @field exogen Inclusion of exogenous variables 
-#' @field LRinclude Possibility to include in the long-run relationship and the ECT trend
-#' @field commonInter Whether the deterministic regressors are regime specific
+#' @field estim Type of estimator for the VECM (two-step approach or Johansen MLE).
+#' @field exogen Inclusion of exogenous variables.
+#' @field LRinclude Possibility to include in the long-run relationship and the ECT trend.
+#' @field commonInter Whether the deterministic regressors are regime specific.
 #' @field mTh combination of variables with same lag order for the transition variable.
-#' @field gamma prespecified threshold values
-#' @filed dummyToBothRegimes Whether the dummy in the one threshold model is applied to each regime 
-#' @filed max.iter Number of iterations for the algorithm
-#' @field size number of hidden units in the neural network
-#' @field lag Number of lags to include in each regime
+#' @field gamma prespecified threshold values.
+#' @field dummyToBothRegimes Whether the dummy in the one threshold model is applied to each regime. 
+#' @field max.iter Number of iterations for the algorithm.
+#' @field size number of hidden units in the neural network.
+#' @field lag Number of lags to include in each regime.
 #' @field n.ahead The forecast horizon.
-#' @field ngridBeta number of elements to search for the cointegrating value
-#' @field ngridTh number of elements to search for the threshold value
-#' @field th1 different possibilities to pre-specify an exact value, an interval or a central point for the search of the threshold 
-#' @field th2 different possibilities to pre-specify an exact value or a central point for the search of the second threshold 
-#' @field beta0 Additional regressors to include in the cointegrating relation
+#' @field ngridBeta number of elements to search for the cointegrating value.
+#' @field ngridTh number of elements to search for the threshold value.
+#' @field th1 different possibilities to pre-specify an exact value, an interval or a central point for the search of the threshold. 
+#' @field th2 different possibilities to pre-specify an exact value or a central point for the search of the second threshold. 
+#' @field beta0 Additional regressors to include in the cointegrating relation.
 #'
 #' @importFrom assertthat assert_that is.count is.flag
-#' @importFrom tsDyn
 #' 
 #' @family Learners
 #' 
@@ -226,7 +224,7 @@ Lrnr_tsDyn <- R6Class(classname = "Lrnr_tsDyn", inherit = Lrnr_base, portable = 
                             }else if(learner=="linear"){
                               
                               if (is.character(learner)) {
-                                learner <- get(learner, mode = "function")
+                                learner <- get(learner, mode = "function", envir = parent.frame())
                               }
                               
                               fit_object<-learner(task$X,m=m,d=d,include=include,type=type)
@@ -266,7 +264,8 @@ Lrnr_tsDyn <- R6Class(classname = "Lrnr_tsDyn", inherit = Lrnr_base, portable = 
                             }
                             
                           }, 
-                          .required_packages = c("tsDyn")
-                        ), )
+                          .required_packages=c("tsDyn")
+                        ),
+)
 
 
