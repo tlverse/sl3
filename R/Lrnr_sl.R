@@ -25,8 +25,8 @@ Lrnr_sl <- R6Class(classname = "Lrnr_sl",
                        return(private$.fit_object$cv_meta_fit$fit_object)
                      },
                      cv_risk = function(loss_fun){
-                       cv_meta_task <- sl1_fit$fit_object$cv_meta_task
-                       cv_meta_fit <- sl1_fit$fit_object$cv_meta_fit
+                       cv_meta_task <- self$fit_object$cv_meta_task
+                       cv_meta_fit <- self$fit_object$cv_meta_fit
                        losses <- cv_meta_task$X[,lapply(.SD,loss_fun,cv_meta_task$Y)]
                        losses[, SuperLearner:=loss_fun(cv_meta_fit$predict(),cv_meta_task$Y)]
                        
@@ -43,7 +43,12 @@ Lrnr_sl <- R6Class(classname = "Lrnr_sl",
                        min_risks <- apply(fold_risks,2,min)
                        se <- apply(fold_risks, 2, sd)
                        
-                       learner_names <- c(sapply(sl1_fit$params$learners, "[[","name"),"SuperLearner")
+                       learners <- self$params$learners
+                       #kludge to deal with stack as learners
+                       if(inherits(learners,"Stack")){
+                         learners <- learners$params$learners
+                       }
+                       learner_names <- c(sapply(learners, "[[","name"),"SuperLearner")
                        risk_dt <- data.table::data.table(learner=learner_names, mean=mean_risks, se=se, min=min_risks,max=max_risks)
                        
                        return(risk_dt)

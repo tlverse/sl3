@@ -19,15 +19,11 @@ stack2 <- Stack$new(stack)
 nnls_learner <- Lrnr_nnls$new()
 sl1 <- Lrnr_sl$new(learners = list(glm_learner, glmnet_learner), metalearner = nnls_learner)
 sl1_fit <- sl1$train(task)
-sl1_fit$cv_risk(loss_squared_error)
+sl1_risk <- sl1_fit$cv_risk(loss_squared_error) 
 
 sl2 <- Lrnr_sl$new(learners = stack, metalearner = nnls_learner)
 sl2_fit <- sl2$train(task)
+sl2_risk <- sl2_fit$cv_risk(loss_squared_error) 
 
-get_sl_coefs <- function(sl_fit) {
-    # todo: this needs to be easier
-    ml_fit <- sl1_fit$fit_object$full_fit$fit_object$learner_fits[[2]]$fit_object
-    coef(ml_fit)
-}
-test_that("Lrnr_sl can accept a pre-made stack", expect_equal(get_sl_coefs(sl1_fit), 
-    get_sl_coefs(sl2_fit)))
+
+test_that("Lrnr_sl can accept a pre-made stack", expect_equal(sl1_risk$mean,sl2_risk$mean, tolerance = 1e-3))
