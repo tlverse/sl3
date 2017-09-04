@@ -24,8 +24,12 @@ Lrnr_pkg_SuperLearner <- R6Class(classname = "Lrnr_pkg_SuperLearner",
                          return(fit_object)
 
                        },
+                       .predict = function(task){
+                         predictions = predict(private$.fit_object, newdata=task$X, family=gaussian())
+                         return(predictions)
+                       },
                        .required_packages = c("SuperLearner")
-                       # generic learner predict suffices
+
                        )
 
 )
