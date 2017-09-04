@@ -25,6 +25,7 @@ Lrnr_sl <- R6Class(classname = "Lrnr_sl",
                        return(private$.fit_object$cv_meta_fit$fit_object)
                      },
                      cv_risk = function(loss_fun){
+                       warning("cv_risks are for demonstration purposes only. Don't trust these for now")
                        cv_meta_task <- self$fit_object$cv_meta_task
                        cv_meta_fit <- self$fit_object$cv_meta_fit
                        losses <- cv_meta_task$X[,lapply(.SD,loss_fun,cv_meta_task$Y)]
