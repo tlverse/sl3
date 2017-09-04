@@ -32,9 +32,10 @@ various flavors of generalized autoregressive conditional heteroskedasticity mod
 }}
 
 \seealso{
-Other Learners: \code{\link{Lrnr_arima}},
-  \code{\link{Lrnr_base}}, \code{\link{Lrnr_condensier}},
-  \code{\link{Lrnr_cv}}, \code{\link{Pipeline}},
+Other Learners: \code{\link{Lrnr_HarmonicReg}},
+  \code{\link{Lrnr_arima}}, \code{\link{Lrnr_base}},
+  \code{\link{Lrnr_condensier}}, \code{\link{Lrnr_cv}},
+  \code{\link{Lrnr_tsDyn}}, \code{\link{Pipeline}},
   \code{\link{Stack}}
 }
 \keyword{data}

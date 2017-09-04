@@ -21,7 +21,6 @@ covars <- c("cnt")
 outcome <- "cnt"
 
 task <- sl3_Task$new(bsds, covariates = covars, outcome = outcome)
-task$nodes$covariates
 
 test_that("Lrnr_arima gives expected values with auto.arima", {
     arima_learner <- Lrnr_arima$new(n.ahead=1)
@@ -64,16 +63,3 @@ test_that("Lrnr_arima with further forecasts", {
     expect_true(sum(arima_preds - arima_preds_2) < 10^(-10))
     expect_true(all.equal(arima_preds_2, arima_preds))
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
