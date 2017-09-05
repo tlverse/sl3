@@ -33,7 +33,7 @@ A Stack is a special Learner that combines multiple other learners, "stacking" t
 Other Learners: \code{\link{Lrnr_HarmonicReg}},
   \code{\link{Lrnr_arima}}, \code{\link{Lrnr_base}},
   \code{\link{Lrnr_condensier}}, \code{\link{Lrnr_cv}},
-  \code{\link{Lrnr_rugarch}}, \code{\link{Lrnr_tsDyn}},
-  \code{\link{Pipeline}}
+  \code{\link{Lrnr_delayed}}, \code{\link{Lrnr_rugarch}},
+  \code{\link{Lrnr_tsDyn}}, \code{\link{Pipeline}}
 }
 \keyword{data}

@@ -57,7 +57,31 @@ Lrnr_cv <- R6Class(classname = "Lrnr_cv",
                        }
                      ),
                      private = list(
-                       .train = function(task) {
+                       .pretrain = function(task){
+                         #prefer folds from params, but default to folds from task
+                         folds <- self$params$folds
+                         if(is.null(folds)){
+                           #todo: this breaks if task is delayed
+                           folds <- task$folds
+                         }
+                         
+                         learner <- self$params$learner
+                         
+                         delayed_training <- delayed_fun(training)
+                         delayed_cv_train <- function(fold,learner,task){
+                           training_task  <- delayed_training(task)
+                           fit_object  <- delayed_learner_train(learner,training_task)
+                           return(fit_object)
+                         }
+                         
+                         #todo: maybe write delayed_cross_validate (as it'd be a neat thing to have around anyway)
+                         cv_results <- lapply(folds,delayed_cv_train,learner,task)
+                         result <- bundle_delayed_list(cv_results)
+                         
+                         return(result)
+                       },
+                       
+                       .train = function(task, prefit) {
 
                          #prefer folds from params, but default to folds from task
                          folds=self$params$folds
@@ -65,17 +89,8 @@ Lrnr_cv <- R6Class(classname = "Lrnr_cv",
                            folds=task$folds
                          }
 
-                         learner=self$params$learner
-
-                         cv_train=function(fold,learner,task){
-                           training_task=training(task)
-                           fit_object=learner$train(training_task)
-                           return(list(fold_fit=fit_object))
-                         }
-
-                        cv_results=cross_validate(cv_train,folds,learner,task,.combine=F, future.globals=F)
-
-                        fit_object=list(folds=folds, fold_fits=cv_results$fold_fit, errors=cv_results$errors)
+                        
+                        fit_object=list(folds=folds, fold_fits=prefit)
 
                         return(fit_object)
                        },
