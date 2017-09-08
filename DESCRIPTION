@@ -27,7 +27,8 @@ Imports:
   uuid,
   memoise,
   digest,
-  BBmisc
+  BBmisc,
+  tsDyn
 Suggests:
   testthat,
   knitr,
@@ -45,8 +46,7 @@ Suggests:
   nloptr,
   rugarch,
   nnls,
-  SuperLearner,
-  tsDyn
+  SuperLearner
 Remotes:
   github::osofr/condensier
 LazyLoad: yes
