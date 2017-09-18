@@ -20,12 +20,12 @@
 
 Lrnr_HarmonicReg <- R6Class(classname = "Lrnr_HarmonicReg", inherit = Lrnr_base, portable = TRUE, class = TRUE,
                       public = list(
-                        initialize = function(K=K,
+                        initialize = function(Kparam=Kparam,
                                               n.ahead=NULL,
                                               freq=freq,
                                               ...) {
                           
-                          params <- list(n.ahead=n.ahead, K=K, freq=freq, ...)
+                          params <- list(Kparam=Kparam, n.ahead=n.ahead, freq=freq, ...)
                           super$initialize(params = params, ...)
                         }
                       ),
@@ -34,20 +34,20 @@ Lrnr_HarmonicReg <- R6Class(classname = "Lrnr_HarmonicReg", inherit = Lrnr_base,
                         .train = function(task) {
                           
                           params <- self$params
-              
-                          K <- params[["K"]]
+                          Kparam <- params[["Kparam"]]
                           freq <- params[["freq"]]
                           
                           task_ts <- ts(task$X, frequency = freq)
                           
-                          if(length(freq) != length(K)){
+                          if(length(freq) != length(Kparam)){
                             stop("Number of periods does not match number of orders")
-                          }else if(any(2*K > freq)){
+                          }else if(any(2*Kparam > freq)){
                             stop("K must be not be greater than period/2")
                           }
                           
-                          fit_object <- forecast::tslm(task_ts~forecast::fourier(task_ts, K=K))
-                          
+                          fourier_fit <- forecast::fourier(task_ts, K=Kparam)
+                          fit_object <- forecast::tslm(task_ts~fourier_fit)
+
                           return(fit_object)
                           
                         },
@@ -56,6 +56,8 @@ Lrnr_HarmonicReg <- R6Class(classname = "Lrnr_HarmonicReg", inherit = Lrnr_base,
                           
                           params <- self$params
                           n.ahead <- params[["n.ahead"]]
+                          freq <- params[["freq"]]
+                          Kparam <- params[["Kparam"]]
                           
                           if(is.null(n.ahead)){
                             n.ahead=nrow(task$X)
@@ -63,7 +65,8 @@ Lrnr_HarmonicReg <- R6Class(classname = "Lrnr_HarmonicReg", inherit = Lrnr_base,
                           
                           task_ts <- ts(task$X, frequency = freq)
                           
-                          predictions <- forecast::forecast(private$.fit_object, data.frame(forecast::fourier(task_ts, K=K, h=n.ahead)))
+                          fourier_fit <- data.frame(forecast::fourier(task_ts, K=Kparam, h=n.ahead))
+                          predictions <- forecast::forecast(private$.fit_object,fourier_fit)
                           
                           #Create output as in glm
                           predictions <- as.numeric(predictions$mean)
