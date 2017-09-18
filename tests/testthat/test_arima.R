@@ -78,19 +78,6 @@ test_that("Lrnr_tsDyn with multiple different models, univariate", {
   
   expect_true(all.equal(fit_1_preds, fit_2_preds))
   
-  #Neural network nonlinear autoregressive model
-  #set.seed(1)
-  #tsDyn_learner <- Lrnr_tsDyn$new(learner="nnetTs", m=1, size=3, n.ahead=5)
-  #fit_1 <- tsDyn_learner$train(task)
-  #fit_1_preds <- fit_1$predict(task)
-  
-  #fit_2 <- tsDyn::nnetTs(bsds$cnt, m=1, size=3)
-  #fit_2_preds <- predict(fit_2,n.ahead=5)
-  #fit_2_preds <- as.numeric(fit_2_preds)
-  #fit_2_preds  <- structure(fit_2_preds, names=1:5)
-  
-  #expect_true(all.equal(fit_1_preds, fit_2_preds))
-  
   #self exciting threshold autoregressive model
   tsDyn_learner <- Lrnr_tsDyn$new(learner="setar", m=1, model="TAR", n.ahead=5)
   fit_1 <- tsDyn_learner$train(task)
@@ -125,7 +112,7 @@ test_that("Lrnr_tsDyn with multiple different models, univariate", {
   fit_2_preds <- as.numeric(fit_2_preds)
   fit_2_preds  <- structure(fit_2_preds, names=1:5)
   
-  expect_true(all.equal(fit_1_preds, fit_2_preds))         
+  expect_true(all.equal(fit_1_preds, fit_2_preds))
   
   #Additive nonlinear autoregressive model
   tsDyn_learner <- Lrnr_tsDyn$new(learner="aar", m=1, n.ahead=5)
@@ -138,7 +125,6 @@ test_that("Lrnr_tsDyn with multiple different models, univariate", {
   fit_2_preds  <- structure(fit_2_preds, names=1:5)
   
   expect_true(all.equal(fit_1_preds, fit_2_preds))  
-
 })
 
 test_that("Lrnr_tsDyn with multiple different models, multivariate", {
@@ -183,5 +169,3 @@ test_that("Lrnr_tsDyn with multiple different models, multivariate", {
   #fit_2 <- tsDyn::TVAR(task$X, lag=2)
   
 })
-  
-
