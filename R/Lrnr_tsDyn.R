@@ -131,7 +131,7 @@ Lrnr_tsDyn <- R6Class(classname = "Lrnr_tsDyn", inherit = Lrnr_base, portable = 
                             if(learner=="nnetTs"){
                               
                               if (is.character(learner)) {
-                                learner <- get(learner, mode = "function", envir = parent.frame())
+                                learner <- get(learner, mode = "function", envir = asNamespace("tsDyn"))
                               }
                               
                               
@@ -140,7 +140,7 @@ Lrnr_tsDyn <- R6Class(classname = "Lrnr_tsDyn", inherit = Lrnr_base, portable = 
                             }else if(learner=="setar"){
                               
                               if (is.character(learner)) {
-                                learner <- get(learner, mode = "function", envir = parent.frame())
+                                learner <- get(learner, mode = "function", envir = asNamespace("tsDyn"))
                               }
                               
                               if(!model %in% c("TAR", "MTAR")){
@@ -154,7 +154,7 @@ Lrnr_tsDyn <- R6Class(classname = "Lrnr_tsDyn", inherit = Lrnr_base, portable = 
                             }else if(learner=="lstar"){
                               
                               if (is.character(learner)) {
-                                learner <- get(learner, mode = "function", envir = parent.frame())
+                                learner <- get(learner, mode = "function", envir = asNamespace("tsDyn"))
                               }
                               
                               fit_object<-learner(as.matrix(task$X), m=m, d=d, mL=mL,mH=mH,thDelay=thDelay,control=control)
@@ -162,7 +162,7 @@ Lrnr_tsDyn <- R6Class(classname = "Lrnr_tsDyn", inherit = Lrnr_base, portable = 
                             }else if(learner=="star"){
                               
                               if (is.character(learner)) {
-                                learner <- get(learner, mode = "function", envir = parent.frame())
+                                learner <- get(learner, mode = "function", envir = asNamespace("tsDyn"))
                               }
                               
                               fit_object<-learner(as.matrix(task$X), m=m, d=d, thDelay=thDelay,sig=sig,control=control)
@@ -170,7 +170,7 @@ Lrnr_tsDyn <- R6Class(classname = "Lrnr_tsDyn", inherit = Lrnr_base, portable = 
                             }else if(learner=="aar"){
                               
                               if (is.character(learner)) {
-                                learner <- get(learner, mode = "function", envir = parent.frame())
+                                learner <- get(learner, mode = "function", envir = asNamespace("tsDyn"))
                               }
                               
                               fit_object<-learner(task$X, m=m, d=d)
@@ -178,7 +178,7 @@ Lrnr_tsDyn <- R6Class(classname = "Lrnr_tsDyn", inherit = Lrnr_base, portable = 
                             }else if(learner=="lineVar"){
                               
                               if (is.character(learner)) {
-                                learner <- get(learner, mode = "function", envir = parent.frame())
+                                learner <- get(learner, mode = "function", envir = asNamespace("tsDyn"))
                               }
                               
                               if(!model %in% c("VAR", "VECM")){
@@ -191,7 +191,7 @@ Lrnr_tsDyn <- R6Class(classname = "Lrnr_tsDyn", inherit = Lrnr_base, portable = 
                             }else if(learner=="VECM"){
                               
                               if (is.character(learner)) {
-                                learner <- get(learner, mode = "function", envir = parent.frame())
+                                learner <- get(learner, mode = "function", envir = asNamespace("tsDyn"))
                               }
                               
                               fit_object<-learner(task$X,lag=lag,r=r,include=include,
@@ -200,7 +200,7 @@ Lrnr_tsDyn <- R6Class(classname = "Lrnr_tsDyn", inherit = Lrnr_base, portable = 
                             }else if(learner=="TVAR"){
                               
                               if (is.character(learner)) {
-                                learner <- get(learner, mode = "function", envir = parent.frame())
+                                learner <- get(learner, mode = "function", envir = asNamespace("tsDyn"))
                               }
                               
                               if(!model %in% c("TAR", "MTAR")){
@@ -214,7 +214,7 @@ Lrnr_tsDyn <- R6Class(classname = "Lrnr_tsDyn", inherit = Lrnr_base, portable = 
                             }else if(learner=="TVECM"){
                               
                               if (is.character(learner)) {
-                                learner <- get(learner, mode = "function", envir = parent.frame())
+                                learner <- get(learner, mode = "function", envir = asNamespace("tsDyn"))
                               }
                               
                               fit_object<-learner(task$X,lag=lag,nthresh=nthresh,trim=trim,ngridBeta=ngridBeta,
@@ -224,7 +224,7 @@ Lrnr_tsDyn <- R6Class(classname = "Lrnr_tsDyn", inherit = Lrnr_base, portable = 
                             }else if(learner=="linear"){
                               
                               if (is.character(learner)) {
-                                learner <- get(learner, mode = "function", envir = parent.frame())
+                                learner <- get(learner, mode = "function", envir = asNamespace("tsDyn"))
                               }
                               
                               fit_object<-learner(task$X,m=m,d=d,include=include,type=type)
@@ -265,7 +265,7 @@ Lrnr_tsDyn <- R6Class(classname = "Lrnr_tsDyn", inherit = Lrnr_base, portable = 
                             
                           }, 
                           .required_packages=c("tsDyn")
-                        ),
-)
+                        ), )
+
 
 

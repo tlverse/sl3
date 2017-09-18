@@ -33,7 +33,7 @@ A Pipeline of learners is a way to "chain" Learners together, where the output o
 Other Learners: \code{\link{Lrnr_HarmonicReg}},
   \code{\link{Lrnr_arima}}, \code{\link{Lrnr_base}},
   \code{\link{Lrnr_condensier}}, \code{\link{Lrnr_cv}},
-  \code{\link{Lrnr_rugarch}}, \code{\link{Lrnr_tsDyn}},
-  \code{\link{Stack}}
+  \code{\link{Lrnr_expSmooth}}, \code{\link{Lrnr_rugarch}},
+  \code{\link{Lrnr_tsDyn}}, \code{\link{Stack}}
 }
 \keyword{data}

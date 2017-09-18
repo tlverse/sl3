@@ -27,8 +27,8 @@ This learner fits first harmonics in a Fourier expansion to one or more time ser
 \seealso{
 Other Learners: \code{\link{Lrnr_arima}},
   \code{\link{Lrnr_base}}, \code{\link{Lrnr_condensier}},
-  \code{\link{Lrnr_cv}}, \code{\link{Lrnr_rugarch}},
-  \code{\link{Lrnr_tsDyn}}, \code{\link{Pipeline}},
-  \code{\link{Stack}}
+  \code{\link{Lrnr_cv}}, \code{\link{Lrnr_expSmooth}},
+  \code{\link{Lrnr_rugarch}}, \code{\link{Lrnr_tsDyn}},
+  \code{\link{Pipeline}}, \code{\link{Stack}}
 }
 \keyword{data}
