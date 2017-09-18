@@ -27,7 +27,7 @@ Imports:
   uuid,
   memoise,
   digest,
-  BBmisc,
+  BBmisc
 Suggests:
   testthat,
   knitr,
