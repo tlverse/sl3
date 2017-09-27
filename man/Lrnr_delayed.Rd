@@ -42,9 +42,9 @@ Other Learners: \code{\link{Lrnr_HarmonicReg}};
   \code{\link{Lrnr_solnp_density}},
   \code{\link{Lrnr_xgboost}},
   \code{\link{undocumented_learner}};
-  \code{\link{Lrnr_cv}}; \code{\link{Lrnr_rugarch}};
-  \code{\link{Lrnr_tsDyn}}; \code{\link{Pipeline}};
-  \code{\link{Stack}}
+  \code{\link{Lrnr_cv}}; \code{\link{Lrnr_expSmooth}};
+  \code{\link{Lrnr_rugarch}}; \code{\link{Lrnr_tsDyn}};
+  \code{\link{Pipeline}}; \code{\link{Stack}}
 }
 \keyword{data}
 

@@ -13,6 +13,7 @@ Lrnr_condensier <- R6Class(classname = "Lrnr_condensier", inherit = Lrnr_base, p
                           max_n_bin = NA_integer_,
                           parfit = FALSE,
                           bin_estimator = Lrnr_glm_fast$new(family = "binomial"),
+                          intrvls = NULL,
                           ...) {
 
       assert_that(is(bin_estimator, "Lrnr_base") || is(bin_estimator, "logisfitR6"))
@@ -32,6 +33,7 @@ Lrnr_condensier <- R6Class(classname = "Lrnr_condensier", inherit = Lrnr_base, p
         pool = pool,
         max_n_bin = max_n_bin,
         parfit = parfit,
+        intrvls = intrvls,
         ...)
 
       super$initialize(params = params, ...)
@@ -58,6 +60,7 @@ Lrnr_condensier <- R6Class(classname = "Lrnr_condensier", inherit = Lrnr_base, p
         pool = params$pool,
         max_n_bin = params$max_n_bin,
         parfit = params$parfit,
+        intrvls = params$intrvls,
         verbose = verbose
       )
       return(fit_object)

@@ -19,13 +19,21 @@ Lrnr_pkg_SuperLearner <- R6Class(classname = "Lrnr_pkg_SuperLearner",
                          #to minimize prediction costs (since we throw out preds from here anyways), newX is just a single row
                          newX=task$X[1,]
 
-                         fit_object <- wrapper(task$Y, task$X, newX, family=gaussian(), obsWeights=task$weights, id= task$id)$fit
+                         family <- gaussian()
+                         if (!is.null(self$params$family)) {
+                            family <- self$params$family
+                            if (is.character(family)) {
+                              family <- get(family, mode = "function", envir = parent.frame())
+                              family <- family()
+                            }
+                         }
+                         fit_object <- wrapper(task$Y, task$X, newX, family=family, obsWeights=task$weights, id= task$id)$fit
 
                          return(fit_object)
 
                        },
                        .predict = function(task){
-                         predictions = predict(private$.fit_object, newdata=task$X, family=gaussian())
+                         predictions = predict(private$.fit_object, newdata=task$X) # , family=gaussian()
                          return(predictions)
                        },
                        .required_packages = c("SuperLearner")

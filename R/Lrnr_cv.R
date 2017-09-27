@@ -78,6 +78,7 @@ Lrnr_cv <- R6Class(classname = "Lrnr_cv",
                            fit_object  <- delayed_learner_train(learner,training_task)
                            return(fit_object)
                          }
+
                          
                          #todo: maybe write delayed_cross_validate (as it'd be a neat thing to have around anyway)
                          cv_results <- lapply(folds,delayed_cv_train,learner,task)
