@@ -264,7 +264,7 @@ Lrnr_tsDyn <- R6Class(classname = "Lrnr_tsDyn", inherit = Lrnr_base, portable = 
                             }
                             
                           }, 
-                          .required_packages=c("tsDyn")
+                          .required_packages=c("tsDyn", "mgcv")
                         ), )
 
 
