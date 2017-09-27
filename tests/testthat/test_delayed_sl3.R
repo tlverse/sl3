@@ -1,4 +1,3 @@
-setwd("~/Dropbox/gates/sl3")
 library(delayed)
 library(testthat)
 library(SuperLearner)
