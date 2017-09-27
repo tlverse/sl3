@@ -5,6 +5,7 @@
 #' Learner helpers
 #' @param learner a learner object to fit to the task
 #' @param task the task to fit on
+#' @param pretrain any data obtained from a pretrain step
 #' @rdname learner_helpers
 #' @export
 learner_train <- function(learner, task, pretrain){

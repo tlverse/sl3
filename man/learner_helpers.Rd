@@ -26,6 +26,8 @@ delayed_learner_fit_chain(learner_fit, task = NULL)
 
 \item{task}{the task to fit on}
 
+\item{pretrain}{any data obtained from a pretrain step}
+
 \item{learner_fit}{a learner object that has already been fit}
 }
 \description{

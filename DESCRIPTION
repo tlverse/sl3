@@ -47,7 +47,8 @@ Suggests:
   rugarch,
   nnls,
   SuperLearner,
-  tsDyn
+  tsDyn,
+  randomForest
 Remotes:
   github::osofr/condensier,
   github::jeremyrcoyle/delayed

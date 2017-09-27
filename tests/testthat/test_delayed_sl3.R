@@ -3,7 +3,6 @@ library(delayed)
 library(testthat)
 library(SuperLearner)
 library(future)
-library(future.batchtools)
 context("Delayed sl3")
 
 plan(sequential)
@@ -30,8 +29,14 @@ cv_rf <- Lrnr_cv$new(random_forest, folds=task$folds)
 cv_stack <- Lrnr_cv$new(stack, folds=task$folds)
 cv_pipeline <- Lrnr_cv$new(pipeline, folds=task$folds)
 
-library(parallel)
-test <- delayed_learner_train(cv_stack, task)
+
+test <- delayed_learner_train(cv_pipeline, task)
+system.time({
+  sched <- Scheduler$new(test, SequentialJob)
+  cv_fit <- sched$compute()
+})
+
+
 # plan(multicore, workers=16)
 # system.time({
 #   sched <- Scheduler$new(test, FutureJob, nworkers=16, verbose = TRUE)
@@ -45,9 +50,3 @@ test <- delayed_learner_train(cv_stack, task)
 #   sched <- Scheduler$new(test, WorkerJob, workers, verbose=TRUE)
 #   cv_fit <- sched$compute()
 # })
-
-test <- delayed_learner_train(cv_pipeline, task)
-system.time({
-  sched <- Scheduler$new(test, SequentialJob)
-  cv_fit <- sched$compute()
-})
