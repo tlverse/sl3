@@ -20,12 +20,13 @@ Stack <- R6Class(classname = "Stack",
                      public = list(
                        initialize = function(...) {
                          learners=list(...)
-                         if(length(learners)==1&&inherits(learners,"Stack")){
-                           return(learners)
+                         if(length(learners)==1&&inherits(learners[[1]],"Stack")){
+                           #if we were passed a stack (instead of a list of learners), just copy that stack's learners
+                           learners <- learners[[1]]$params$learners
                          }
+                         
                          params=list(learners=learners)
-                         # underlying learners can choose to memoise or not
-                         super$initialize(params=params, memoise_learner = FALSE) 
+                         super$initialize(params=params) 
                        },
                        print = function(){
                          if(is.null(private$.fit_object)){

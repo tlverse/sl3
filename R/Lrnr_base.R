@@ -169,6 +169,9 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                        },
                        params=function(){
                          return(private$.params)
+                       },
+                       training_task=function(){
+                         return(private$.training_task)
                        }
                      ),
                      private = list(

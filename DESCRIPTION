@@ -28,7 +28,9 @@ Imports:
   memoise,
   digest,
   BBmisc,
-  delayed
+  delayed,
+  methods,
+  stats
 Suggests:
   testthat,
   knitr,

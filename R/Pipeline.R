@@ -21,21 +21,15 @@ Pipeline <- R6Class(classname = "Pipeline",
                       initialize = function(...) {
                         learners=list(...)
                         params=list(learners=learners)
-                        # underlying learners can choose to memoise or not
-                        super$initialize(params=params, memoise_learner = FALSE) 
-                      },
-                      prefit_pipeline = function(learners,task){
-                        
-                        
-                        learners_trained=sapply(learners,`[[`,'is_trained')
-                        if(!all(learners_trained)){
-                          stop('Not all learners are fit')
+                        learners_trained <- sapply(learners,`[[`,"is_trained")
+                        if(all(learners_trained)){
+                          #we've been passed a list of existing fits so we're already fit
+                          private$.fit_object <- list(learner_fits=learners)
+                          private$.training_task <- learners[[1]]$training_task
+                          
                         }
-                        fit_object=list(learner_fits=learners)
-                        new_object=self$clone() # copy parameters, and whatever else
                         
-                        new_object$set_train(fit_object, task)
-                        return(new_object)
+                        super$initialize(params=params) 
                       },
                       
                       print = function(){

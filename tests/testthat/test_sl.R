@@ -13,14 +13,15 @@ task <- sl3_Task$new(cpp, covariates = covars, outcome = outcome)
 
 glm_learner <- Lrnr_glm$new()
 glmnet_learner <- Lrnr_pkg_SuperLearner$new("SL.glmnet")
-stack <- Stack$new(glm_learner, glmnet_learner)
-stack2 <- Stack$new(stack)
+subset_apgar <- Lrnr_subset_covariates$new(covariates=c("apgar1","apgar5"))
+sl1 <- Lrnr_sl$new(learners = list(glm_learner, glmnet_learner, subset_apgar), metalearner = glm_learner)
+delayed_fit <- delayed_learner_train(sl1,task)
+plot(delayed_fit)
 
-nnls_learner <- Lrnr_nnls$new()
-sl1 <- Lrnr_sl$new(learners = list(glm_learner, glmnet_learner), metalearner = nnls_learner)
 sl1_fit <- sl1$train(task)
+sl1_fit
 suppressWarnings({sl1_risk <- sl1_fit$cv_risk(loss_squared_error) })
-
+stack <- Stack$new(glm_learner, glmnet_learner, subset_apgar)
 sl2 <- Lrnr_sl$new(learners = stack, metalearner = nnls_learner)
 sl2_fit <- sl2$train(task)
 suppressWarnings({sl2_risk <- sl2_fit$cv_risk(loss_squared_error) })
