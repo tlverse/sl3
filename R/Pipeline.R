@@ -71,7 +71,7 @@ Pipeline <- R6Class(classname = "Pipeline",
                           current_task=next_task
                         }
                         
-                        return(bundle_delayed_list(learner_fits))
+                        return(bundle_delayed(learner_fits))
                         
                       },
                       .train = function(task, pretrain) {

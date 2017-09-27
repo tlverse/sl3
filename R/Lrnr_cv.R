@@ -67,16 +67,21 @@ Lrnr_cv <- R6Class(classname = "Lrnr_cv",
                          
                          learner <- self$params$learner
                          
-                         delayed_training <- delayed_fun(training)
+                         train_task <- function(task, fold){
+                           return(task[fold$training_set])
+                         }
+                         delayed_train_task <- delayed_fun(train_task)
+
                          delayed_cv_train <- function(fold,learner,task){
-                           training_task  <- delayed_training(task)
+                           training_task  <- delayed_train_task(task, fold)
+                           # training_task$sequential <- FALSE
                            fit_object  <- delayed_learner_train(learner,training_task)
                            return(fit_object)
                          }
                          
                          #todo: maybe write delayed_cross_validate (as it'd be a neat thing to have around anyway)
                          cv_results <- lapply(folds,delayed_cv_train,learner,task)
-                         result <- bundle_delayed_list(cv_results)
+                         result <- bundle_delayed(cv_results)
                          
                          return(result)
                        },
@@ -96,9 +101,9 @@ Lrnr_cv <- R6Class(classname = "Lrnr_cv",
                        },
 
                        .predict = function(task){
-                         if(!identical(task,private$.training_task)){
-                           stop("task must match training task for Lrnr_cv")
-                         }
+                         # if(!identical(task,private$.training_task)){
+                         #   stop("task must match training task for Lrnr_cv")
+                         # }
                          #doing train and predict like this is stupid, but that's the paradigm (for now!)
                          folds=private$.fit_object$folds
                          fold_fits = private$.fit_object$fold_fits

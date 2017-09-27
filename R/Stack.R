@@ -49,7 +49,7 @@ Stack <- R6Class(classname = "Stack",
                          learners <- self$params$learners
                          subtasks <- lapply(learners, delayed_learner_train, task)
                          
-                         return(bundle_delayed_list(subtasks))
+                         return(bundle_delayed(subtasks))
                        },
                        .train = function(task, pretrain) {
                          fit_object <- list(learner_fits = pretrain)

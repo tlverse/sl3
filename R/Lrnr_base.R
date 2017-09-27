@@ -34,7 +34,7 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                      portable = TRUE,
                      class = TRUE,
                      public = list(
-                       initialize = function(params=NULL, memoise_learner = getOption("sl3.memoise.learner"), ...) {
+                       initialize = function(params=NULL, ...) {
                          private$.load_packages()
                          if(is.null(params)){
                            params=list(...)
@@ -43,11 +43,7 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                          private$.params=params
                          private$.learner_uuid = UUIDgenerate(use.time=T)
                          
-                         # if(memoise_learner){
-                         #   memoise_cache = cache_uuid(cache_memory())
-                         #   memoised = memoise(self$default_train, cache=memoise_cache)
-                         #   private$.memoised_train=memoised
-                         # }
+                         
                          invisible(self)
                        },
                        subset_covariates = function(task){
@@ -82,7 +78,7 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                        set_train = function(fit_object, training_task){
                          #todo: figure out how to do this without a public method that is mutuating private variables.
                          private$.fit_object = fit_object
-                         private$.training_task = training_task
+                         # private$.training_task = training_task
                          private$.fit_uuid = UUIDgenerate(use.time=T)
                          
                        },
@@ -181,7 +177,6 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                        .training_task = NULL,
                        .learner_uuid = NULL,
                        .fit_uuid = NULL,
-                       .memoised_train = NULL,
                        .params = NULL,
                        .required_packages = NULL,
                        .pretrain = function(task){

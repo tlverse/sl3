@@ -2,6 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
+.future
 README.html
 vignettes/*.html
 

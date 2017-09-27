@@ -49,7 +49,7 @@ Suggests:
   SuperLearner,
   tsDyn
 Remotes:
-  github::osofr/condensier
+  github::osofr/condensier,
   github::jeremyrcoyle/delayed
 LazyLoad: yes
 VignetteBuilder: knitr

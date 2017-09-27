@@ -17,7 +17,10 @@ delayed_learner_train <- function(learner, task){
   pretrain <- learner$pretrain(task)
   train_delayed <- delayed_fun(learner_train)(learner, task, pretrain)
   train_delayed$name <- learner$name
-  
+  if(!is.null(pretrain)){
+    #if a learner is sequential assume the train step is minimal and don't paralellize
+    train_delayed$sequential <- TRUE
+  }
   return(train_delayed)
 }
 
@@ -32,9 +35,8 @@ learner_fit_predict <- function(learner_fit, task = NULL){
 #' @rdname learner_helpers
 #' @export
 delayed_learner_fit_predict <- function(learner_fit, task=NULL){
-  pred_delayed <- delayed_fun(learner_fit_predict)(learner_fit, task)
+  pred_delayed <- delayed_fun(learner_fit_predict, sequential = TRUE)(learner_fit, task)
   pred_delayed$name <- "predict"
-  
   return(pred_delayed)
 }
 
@@ -47,21 +49,7 @@ learner_fit_chain <- function(learner_fit, task = NULL){
 #' @rdname learner_helpers
 #' @export
 delayed_learner_fit_chain <- function(learner_fit, task = NULL){
-  chain_delayed <- delayed_fun(learner_fit_chain)(learner_fit, task)
+  chain_delayed <- delayed_fun(learner_fit_chain, sequential = TRUE)(learner_fit, task)
   chain_delayed$name <- "chain"
-  
   return(chain_delayed)
-}
-
-# thin wrapper around list because delayed doesn't like primitives
-bundle_args<-function(...){
-  return(list(...))
-}
-
-#' @export
-bundle_delayed_list <- function(delayed_list){
-  delayed_bundle <- delayed_fun(bundle_args)
-  bundle <- do.call(delayed_bundle,delayed_list)
-  bundle$name <- "bundle"
-  return(bundle)
 }
