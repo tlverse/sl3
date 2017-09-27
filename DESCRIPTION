@@ -23,7 +23,6 @@ Imports:
   origami,
   future,
   R6,
-  stats,
   uuid,
   memoise,
   digest,

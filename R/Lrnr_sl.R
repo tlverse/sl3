@@ -50,7 +50,7 @@ Lrnr_sl <- R6Class(classname = "Lrnr_sl",
                        se <- apply(fold_risks, 2, sd)
                        
 
-                       learner_names <- c(sapply(learners, "[[","name"),"SuperLearner")
+                       learner_names <- c(sapply(self$params$learners, "[[","name"),"SuperLearner")
                        risk_dt <- data.table::data.table(learner=learner_names, mean=mean_risks, se=se, min=min_risks,max=max_risks)
                        
                        return(risk_dt)
