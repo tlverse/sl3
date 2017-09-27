@@ -43,6 +43,10 @@ Lrnr_cv <- R6Class(classname = "Lrnr_cv",
                      class = TRUE,
                      public = list(
                        initialize = function(learner, folds=NULL, ...) {
+                         #check if learner is a list of learners, and if so, make a stack
+                         if(is.list(learner) && all(sapply(learner,inherits,"Lrnr_base"))){
+                           learner <- Stack$new(learner)
+                         }
                          params=list(learner=learner, folds=folds, ...)
                          super$initialize(params=params, ...)
                        },

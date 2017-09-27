@@ -85,7 +85,7 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                           interact <- interactions[[i]]
                           name <- interaction_names[i]
                           
-                          if (is.null(name)){
+                          if (is.null(name) || is.na(name)){
                             name <-  interaction_names[i] <- paste0(interact, collapse = "_")
                           } 
                           
@@ -138,29 +138,31 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                         
                       },
                       
-                      next_in_chain=function(covariates=NULL, outcome=NULL, id=NULL, weights=NULL){
-                        new_nodes=self$nodes
-                        
-                        if(!is.null(covariates)){
-                          new_nodes$covariates=covariates
-                        }
-                        
-                        if(!is.null(outcome)){
-                          new_nodes$outcome=outcome
-                        }
-                        
-                        if(!is.null(id)){
-                          new_nodes$id=id
-                        }
-                        
-                        if(!is.null(weights)){
-                          new_nodes$weights=weights
+                      next_in_chain=function(covariates=NULL, outcome=NULL, id=NULL, weights=NULL, new_nodes=NULL){
+                        if(is.null(new_nodes)){
+                          new_nodes=self$nodes
+                          
+                          if(!is.null(covariates)){
+                            new_nodes$covariates=covariates
+                          }
+                          
+                          if(!is.null(outcome)){
+                            new_nodes$outcome=outcome
+                          }
+                          
+                          if(!is.null(id)){
+                            new_nodes$id=id
+                          }
+                          
+                          if(!is.null(weights)){
+                            new_nodes$weights=weights
+                          }
                         }
                         
                         all_nodes=unlist(new_nodes[c("covariates","outcome","id","weights")])
                         
                         #verify nodes are contained in dataset
-                        assert_that(all(all_nodes%in%names(private$.data)))
+                        assert_that(all(all_nodes%in%names(private$.data)), msg = setdiff(all_nodes,names(private$.data)))
                         
                         new_task=self$clone()
                         new_task$initialize(private$.data,nodes=new_nodes, folds = self$folds)

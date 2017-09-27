@@ -10,7 +10,7 @@ task2 <- sl3_Task$new(mtcars, covariates = c("cyl", "disp", "hp", "drat", "wt", 
 
 interactions <- list(c("cyl", "disp"), c("hp", "drat"))
 task_with_interactions <- task$add_interactions(interactions)
-
+task2 <- task2$add_interactions(interactions)
 test_learner <- function(learner, task, ...) {
 
     # test learner definition this requires that a learner can be instantiated with

@@ -215,24 +215,6 @@ sl_fit <- sl$train(task)
 The `Lrnr_sl` object we create includes a great deal of information (thus we
 regrain from examining it in detail).
 
-<!--
-
-Nima: Not sure what the `estimate_risk` object below is...perhaps we can flesh
-this out a bit more once I figure that out.
-
-Just as easily we can cross-validate the Super Learner that we have just
-created:
-
-```{r sl3-cv-SL, eval=FALSE}
-# now lets cross_validate that against its candidates
-learners <- list(SL.glmnet_learner = SL.glmnet_learner,
-                 glm_learner = glm_learner,
-                 screen_and_glm = screen_and_glm,
-                 sl = sl)
-sapply(learners, estimate_risk, task)
-```
-
--->
 
 ---
 

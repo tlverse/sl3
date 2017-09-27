@@ -92,6 +92,8 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                          
                          if(is.null(task)){
                            task <- private$.training_task
+                         } else{
+                           task <- task$next_in_chain(new_nodes=private$.training_task$nodes)
                          }
                          assert_that(is(task,"sl3_Task"))
                          subsetted_task = self$subset_covariates(task)
@@ -105,6 +107,8 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                          
                          if(is.null(task)){
                            task <- private$.training_task
+                         } else{
+                           task <- task$next_in_chain(new_nodes=private$.training_task$nodes)
                          }
                          assert_that(is(task,"sl3_Task"))
                          subsetted_task = self$subset_covariates(task)
