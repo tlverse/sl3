@@ -20,6 +20,4 @@ broken_learner <- Lrnr_broken$new()
 
 broken_cv <- Lrnr_cv$new(broken_learner)
 
-broken_fit <- broken_cv$train(task)
-errors <- broken_fit$fit_object$errors$error
-expect_true(all(errors == "Error in private$.train(subsetted_task) : \n  this task always returns an error\n"))
+expect_error(broken_fit <- broken_cv$train(task), "this task always returns an error")
