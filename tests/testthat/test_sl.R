@@ -26,4 +26,4 @@ sl2_fit <- sl2$train(task)
 suppressWarnings({sl2_risk <- sl2_fit$cv_risk(loss_squared_error) })
 
 
-test_that("Lrnr_sl can accept a pre-made stack", expect_equal(sl1_risk$mean,sl2_risk$mean, tolerance = 1e-3))
+test_that("Lrnr_sl can accept a pre-made stack", expect_equal(sl1_risk$mean,sl2_risk$mean, tolerance = 1e-2))

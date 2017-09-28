@@ -1,3 +1,11 @@
+# program flow for train/predict/chain:
+# 1) call train/predict/chain (implemented in Lrnr_base)
+# 2) call delayed_train/delayed_predict/delayed_chain  (implemented at the package level, delayed version of:base_train/base_predict/base_chain)
+# 3) call .train/.predict/.chain (implemented in Lrnr subclasses)
+# 4) for user facing train/predict/chain call delayed_obj$compute
+
+
+
 #' Base Class for all sl3 learners.
 #'
 #' Generally this base Learner class shouldn't be instantiated. It's intended to be an abstract class, although abstract classes aren't explicitly supported by R6.
@@ -26,7 +34,7 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                      portable = TRUE,
                      class = TRUE,
                      public = list(
-                       initialize = function(params=NULL, memoise_learner = getOption("sl3.memoise.learner"), ...) {
+                       initialize = function(params=NULL, ...) {
                          private$.load_packages()
                          if(is.null(params)){
                            params=list(...)
@@ -35,11 +43,7 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                          private$.params=params
                          private$.learner_uuid = UUIDgenerate(use.time=T)
                          
-                         if(memoise_learner){
-                           memoise_cache = cache_uuid(cache_memory())
-                           memoised = memoise(self$default_train, cache=memoise_cache)
-                           private$.memoised_train=memoised
-                         }
+                         
                          invisible(self)
                        },
                        subset_covariates = function(task){
@@ -54,21 +58,17 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                          
                          
                        },
-                       train = function(task){
-                         if(!is.null(private$.memoised_train)){
-                           return(private$.memoised_train(task))
-                         } else {
-                           return(self$default_train(task))
-                         }
-                       },
-                       default_train = function(task) {
+                       base_train = function(task, pretrain = NULL) {
                          #trains learner to data
                          assert_that(is(task,"sl3_Task"))
                          
                          #todo: add error handling
                          subsetted_task = self$subset_covariates(task)
-                         fit_object = private$.train(subsetted_task)
-                         
+                         if(!is.null(pretrain)){
+                          fit_object = private$.train(subsetted_task, pretrain)
+                         } else {
+                          fit_object = private$.train(subsetted_task) 
+                         }
                          new_object = self$clone() # copy parameters, and whatever else
                          new_object$set_train(fit_object, task)
                          
@@ -87,7 +87,7 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                            stop("Learner has not yet been train to data. Call learner$train(task) first.")
                          }
                        },
-                       predict = function(task = NULL){
+                       base_predict = function(task = NULL){
                          self$assert_trained()
                          
                          if(is.null(task)){
@@ -100,7 +100,7 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                          return(predictions)
                        },
                        
-                       chain = function(task = NULL){
+                       base_chain = function(task = NULL){
                          self$assert_trained()
                          
                          if(is.null(task)){
@@ -112,6 +112,21 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                          
                          return(next_task)
                          
+                       },
+                       pretrain = function(task){
+                         return(private$.pretrain(task))
+                       },
+                       train = function(task){
+                         delayed_fit <- delayed_learner_train(self, task)
+                         return(delayed_fit$compute())
+                       },
+                       predict = function(task = NULL){
+                         delayed_preds <- delayed_learner_fit_predict(self, task)
+                         return(delayed_preds$compute())
+                       },
+                       chain = function(task = NULL){
+                         delayed_chained <- delayed_learner_fit_chain(self, task)
+                         return(delayed_chained$compute())
                        },
                        print = function(){
                          print(self$name)
@@ -162,9 +177,12 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                        .training_task = NULL,
                        .learner_uuid = NULL,
                        .fit_uuid = NULL,
-                       .memoised_train = NULL,
                        .params = NULL,
                        .required_packages = NULL,
+                       .pretrain = function(task){
+                         #nested fits go here
+                         return(NULL)
+                       },
                        .train = function(task){
                          stop("Learner is meant to be abstract, you should instead use specific learners. See listLearners()")
                        },

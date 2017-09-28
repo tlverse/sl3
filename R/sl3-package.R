@@ -1,5 +1,6 @@
 #' @import R6
 #' @import data.table
+#' @import delayed
 NULL
 
 #' Undocumented Learner

@@ -36,28 +36,23 @@ Stack <- R6Class(classname = "Stack",
                        }),
                      active = list(
                        name = function(){
-                         learners=self$params$learners
-                         learner_names=sapply(learners,function(learner)learner$name)
-                         name = paste(learner_names, collapse="x")
-
+                         # learners=self$params$learners
+                         # learner_names=sapply(learners,function(learner)learner$name)
+                         # name = paste(learner_names, collapse="x")
+                         name = "Stack"
                          return(name)
                        }
                      ),
                      private = list(
-                       .train = function(task) {
-                         # browser()
-                         learners=self$params$learners
-                         learner_names=sapply(learners,function(learner)learner$name)
-                         learner_fits=as.list(rep(NA,length(learners)))
-                         names(learner_fits)=learner_names
-                         #todo: should be foreach or future_lapply
-                         for(i in seq_along(learners)){
-                           current_learner=learners[[i]]
-                           fit = current_learner$train(task)
-                           learner_fits[[i]]=fit
-                        }
-
-                         fit_object <- list(learner_fits = learner_fits)
+                       .pretrain = function(task){
+                         #generate training subtasks
+                         learners <- self$params$learners
+                         subtasks <- lapply(learners, delayed_learner_train, task)
+                         
+                         return(bundle_delayed(subtasks))
+                       },
+                       .train = function(task, pretrain) {
+                         fit_object <- list(learner_fits = pretrain)
 
                          return(fit_object)
 

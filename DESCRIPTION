@@ -27,7 +27,8 @@ Imports:
   uuid,
   memoise,
   digest,
-  BBmisc
+  BBmisc,
+  delayed
 Suggests:
   testthat,
   knitr,
@@ -46,9 +47,11 @@ Suggests:
   rugarch,
   nnls,
   SuperLearner,
-  tsDyn
+  tsDyn,
+  randomForest
 Remotes:
-  github::osofr/condensier
+  github::osofr/condensier,
+  github::jeremyrcoyle/delayed
 LazyLoad: yes
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1.9000

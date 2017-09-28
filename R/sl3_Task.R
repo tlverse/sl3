@@ -163,7 +163,7 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                         assert_that(all(all_nodes%in%names(private$.data)))
                         
                         new_task=self$clone()
-                        new_task$initialize(private$.data,nodes=new_nodes)
+                        new_task$initialize(private$.data,nodes=new_nodes, folds = self$folds)
                         
                         return(new_task)
                       }),
@@ -241,6 +241,5 @@ sl3_Task <- R6Class(classname = "sl3_Task",
 #' @export
 `[.sl3_Task` <- function(x,i=NULL,j=NULL,...) {
   all_nodes=unlist(x$nodes[c("covariates","outcome","id","weights")])
-  sl3_Task$new(x$data[i,all_nodes, with=F],nodes=x$nodes)
+  sl3_Task$new(x$data[i,all_nodes, with=F],nodes=x$nodes, folds=NA)
 }
-
