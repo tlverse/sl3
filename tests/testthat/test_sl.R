@@ -9,7 +9,8 @@ cpp <- cpp[!is.na(cpp[, "haz"]), ]
 covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")
 cpp[is.na(cpp)] <- 0
 outcome <- "haz"
-task <- sl3_Task$new(cpp, covariates = covars, outcome = outcome)
+task <- sl3_Task$new(data.table::copy(cpp), covariates = covars, outcome = outcome)
+task2 <- sl3_Task$new(data.table::copy(cpp), covariates = covars, outcome = outcome)
 
 glm_learner <- Lrnr_glm$new()
 glmnet_learner <- Lrnr_pkg_SuperLearner$new("SL.glmnet")
@@ -19,7 +20,11 @@ sl1 <- Lrnr_sl$new(learners = list(glm_learner, glmnet_learner, subset_apgar), m
 # plot(delayed_fit)
 
 sl1_fit <- sl1$train(task)
-sl1_fit
+sl1_fit$predict()
+sl1_fit$predict(task2)
+full_stack <- sl1_fit$fit_object$full_fit$fit_object$learner_fits[[1]]
+debugonce(task2$add_columns)
+full_stack$base_chain(task2)
 suppressWarnings({sl1_risk <- sl1_fit$cv_risk(loss_squared_error) })
 stack <- Stack$new(glm_learner, glmnet_learner, subset_apgar)
 sl2 <- Lrnr_sl$new(learners = stack, metalearner = glm_learner)
