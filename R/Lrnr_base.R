@@ -200,12 +200,11 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                        .chain = function(task){
                          predictions = self$predict(task)
                          predictions = as.data.table(predictions)
-                         
-                         
+
                          #add predictions as new columns
                          new_col_names = task$add_columns(self$fit_uuid, predictions)
-                         
-                         return(task$next_in_chain(covariates=new_col_names))
+                         new_covariates = union(names(predictions),task$nodes$covariates)
+                         return(task$next_in_chain(covariates = new_covariates, column_names = new_col_names))
                        },
                        .load_packages = function(){
                          if(!is.null(private$.required_packages)){

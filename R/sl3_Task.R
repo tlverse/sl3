@@ -129,28 +129,31 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                         if(!global_cols){
                           #by default prepend column names with fit_uuid to prevent column name conflicts for multiple fits from same learner
                           col_names = paste(fit_uuid, original_names, sep="_")
-                          setnames(new_data, original_names, col_names)
+                          # setnames(new_data, original_names, col_names)
                           
                         }
                         
-                        private$.column_names[original_names] <- col_names
+                        column_names = private$.column_names
+                        column_names[original_names] = col_names
 
                         # only add columns that are not already in data
                         # because new columns are uniquely named, if the column exists
                         # it should be a duplicate of the one in new_cols
-                        new_col_names = setdiff(col_names, current_cols)
+                        
+                        new_original_names = original_names[!(col_names%in%current_cols)]
+                        new_col_names = col_names[!(col_names%in%current_cols)]
                         
                         if(length(new_col_names)>0){
-                          new_data = new_data[, new_col_names, with=F, drop=F]
+                          new_data = new_data[, new_original_names, with=F, drop=F]
                           set(data, j=new_col_names, value=new_data)
                         }
                         
-                        # return a vector of the column names corresponding to the added columns
-                        return(original_names)
+                        # return an updated column_names map
+                        return(column_names)
                         
                       },
                       
-                      next_in_chain=function(covariates=NULL, outcome=NULL, id=NULL, weights=NULL, new_nodes=NULL){
+                      next_in_chain=function(covariates=NULL, outcome=NULL, id=NULL, weights=NULL, column_names=NULL, new_nodes=NULL){
                         if(is.null(new_nodes)){
                           new_nodes=self$nodes
                           
@@ -171,15 +174,18 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                           }
                         }
                         
+                        if(is.null(column_names)){
+                          column_names <- private$.column_names
+                        }
                         all_nodes=unlist(new_nodes[c("covariates","outcome","id","weights")])
                         
                         #verify nodes are contained in dataset
-                        missing_cols <- setdiff(all_nodes,names(private$.column_names))
+                        missing_cols <- setdiff(all_nodes,names(column_names))
 
                         assert_that(length(missing_cols)==0, msg = sprintf("Couldn't find %s",paste(missing_cols,collapse=" ")))
                         
                         new_task=self$clone()
-                        new_task$initialize(private$.data,nodes=new_nodes, folds = self$folds, column_names = private$.column_names)
+                        new_task$initialize(private$.data,nodes=new_nodes, folds = self$folds, column_names = column_names)
                         
                         return(new_task)
                       }),

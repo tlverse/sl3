@@ -23,7 +23,6 @@ sl1_fit <- sl1$train(task)
 sl1_fit$predict()
 sl1_fit$predict(task2)
 full_stack <- sl1_fit$fit_object$full_fit$fit_object$learner_fits[[1]]
-debugonce(task2$add_columns)
 full_stack$base_chain(task2)
 suppressWarnings({sl1_risk <- sl1_fit$cv_risk(loss_squared_error) })
 stack <- Stack$new(glm_learner, glmnet_learner, subset_apgar)
