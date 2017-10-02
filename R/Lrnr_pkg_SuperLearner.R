@@ -33,7 +33,16 @@ Lrnr_pkg_SuperLearner <- R6Class(classname = "Lrnr_pkg_SuperLearner",
 
                        },
                        .predict = function(task){
-                         predictions = predict(private$.fit_object, newdata=task$X) # , family=gaussian()
+                         family <- gaussian()
+                         if (!is.null(self$params$family)) {
+                           family <- self$params$family
+                           if (is.character(family)) {
+                             family <- get(family, mode = "function", envir = parent.frame())
+                             family <- family()
+                           }
+                         }
+                         
+                         predictions = predict(private$.fit_object, newdata=task$X, family=family) # , family=gaussian()
                          return(predictions)
                        },
                        .required_packages = c("SuperLearner")
