@@ -15,11 +15,14 @@ task2 <- sl3_Task$new(data.table::copy(cpp), covariates = covars, outcome = outc
 glm_learner <- Lrnr_glm$new()
 glmnet_learner <- Lrnr_pkg_SuperLearner$new("SL.glmnet")
 subset_apgar <- Lrnr_subset_covariates$new(covariates=c("apgar1","apgar5"))
+
 sl1 <- Lrnr_sl$new(learners = list(glm_learner, glmnet_learner, subset_apgar), metalearner = glm_learner)
-# delayed_fit <- delayed_learner_train(sl1,task)
-# plot(delayed_fit)
 
 sl1_fit <- sl1$train(task)
+expected_learners <- c("Lrnr_glm", "Lrnr_pkg_SuperLearner_SL.glmnet", "Lrnr_subset_covariates_c(\"apgar1\", \"apgar5\")_apgar1", 
+                       "Lrnr_subset_covariates_c(\"apgar1\", \"apgar5\")_apgar5")
+test_that("sl1_fit is based on the right learners", expect_equal(sl1_fit$fit_object$cv_meta_task$nodes$covariates,expected_learners))
+
 sl1_fit$predict()
 sl1_fit$predict(task2)
 full_stack <- sl1_fit$fit_object$full_fit$fit_object$learner_fits[[1]]
