@@ -92,6 +92,8 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                          
                          if(is.null(task)){
                            task <- private$.training_task
+                         } else{
+                           task <- task$next_in_chain(covariates <- private$.training_task$nodes$covariates)
                          }
                          assert_that(is(task,"sl3_Task"))
                          subsetted_task = self$subset_covariates(task)
@@ -105,6 +107,8 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                          
                          if(is.null(task)){
                            task <- private$.training_task
+                         } else{
+                           task <- task$next_in_chain(covariates <- private$.training_task$nodes$covariates)
                          }
                          assert_that(is(task,"sl3_Task"))
                          subsetted_task = self$subset_covariates(task)
@@ -169,6 +173,9 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                        },
                        params=function(){
                          return(private$.params)
+                       },
+                       training_task=function(){
+                         return(private$.training_task)
                        }
                      ),
                      private = list(
@@ -193,12 +200,11 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                        .chain = function(task){
                          predictions = self$predict(task)
                          predictions = as.data.table(predictions)
-                         
-                         
+
                          #add predictions as new columns
                          new_col_names = task$add_columns(self$fit_uuid, predictions)
-                         
-                         return(task$next_in_chain(covariates=new_col_names))
+                         new_covariates = union(names(predictions),task$nodes$covariates)
+                         return(task$next_in_chain(covariates = new_covariates, column_names = new_col_names))
                        },
                        .load_packages = function(){
                          if(!is.null(private$.required_packages)){

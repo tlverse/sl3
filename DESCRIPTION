@@ -23,12 +23,13 @@ Imports:
   origami,
   future,
   R6,
-  stats,
   uuid,
   memoise,
   digest,
   BBmisc,
-  delayed
+  delayed,
+  methods,
+  stats
 Suggests:
   testthat,
   knitr,

@@ -16,7 +16,8 @@ Lrnr_define_interactions <- R6Class(classname = "Lrnr_define_interactions",
                                }),
                              private = list(
                                .train = function(task) {
-                                 interaction_names <- task$add_interactions(self$params$interactions)
+                                 new_task <- task$add_interactions(self$params$interactions)
+                                 interaction_names <- setdiff(new_task$nodes$covariates,task$nodes$covariates)
                                  fit_object <- list(interaction_names = interaction_names)
                                  return(fit_object)
                                  

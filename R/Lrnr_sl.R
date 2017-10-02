@@ -8,8 +8,13 @@ Lrnr_sl <- R6Class(classname = "Lrnr_sl",
                    portable = TRUE,
                    class = TRUE,
                    public = list(
-                     initialize = function(learners, metalearner, ...) {
-                       params=list(learners=learners, metalearner=metalearner, ...)
+                     initialize = function(learners, metalearner, folds = NULL, ...) {
+                       #kludge to deal with stack as learners
+                       if(inherits(learners,"Stack")){
+                         learners <- learners$params$learners
+                       }
+                       
+                       params=list(learners=learners, metalearner=metalearner, folds=folds, ...)
                        super$initialize(params=params, ...)
                      },
                      print = function(){
@@ -44,12 +49,8 @@ Lrnr_sl <- R6Class(classname = "Lrnr_sl",
                        min_risks <- apply(fold_risks,2,min)
                        se <- apply(fold_risks, 2, sd)
                        
-                       learners <- self$params$learners
-                       #kludge to deal with stack as learners
-                       if(inherits(learners,"Stack")){
-                         learners <- learners$params$learners
-                       }
-                       learner_names <- c(sapply(learners, "[[","name"),"SuperLearner")
+
+                       learner_names <- c(sapply(self$params$learners, "[[","name"),"SuperLearner")
                        risk_dt <- data.table::data.table(learner=learner_names, mean=mean_risks, se=se, min=min_risks,max=max_risks)
                        
                        return(risk_dt)
@@ -61,35 +62,42 @@ Lrnr_sl <- R6Class(classname = "Lrnr_sl",
                      }
                    ),
                    private = list(
-                     .train = function(task) {
-                       #make stack and cv learner objects
-                       learners=self$params$learners
-                       if(inherits(learners,"Stack")){
-                         learner_stack=learners
-                         learners=learner_stack$params$learners
-                       } else{
-                         learner_stack=do.call(Stack$new,learners)
+                     .pretrain = function(task){
+                       #prefer folds from params, but default to folds from task
+                       folds <- self$params$folds
+                       if(is.null(folds)){
+                         #todo: this breaks if task is delayed
+                         folds <- task$folds
                        }
-                       cv_stack=Lrnr_cv$new(learner_stack)
+                       
+                       #make stack and cv learner objects
+                       learners <- self$params$learners
+                       learner_stack <- do.call(Stack$new,learners)
+                       cv_stack <- Lrnr_cv$new(learner_stack, folds=folds)
                        
                        #fit stack on cv data
-                       cv_fit=cv_stack$train(task)
+                       cv_fit <- delayed_learner_train(cv_stack, task)
                        
                        #fit metalearner
-                       metalearner=self$params$metalearner
-                       cv_meta_task=cv_fit$chain()
-                       cv_meta_fit=metalearner$train(cv_meta_task)
+                       metalearner <- self$params$metalearner
+                       cv_meta_task <- delayed_learner_fit_chain(cv_fit,task)
+                       cv_meta_fit <- delayed_learner_train(metalearner, cv_meta_task)
                        
                        #refit stack on full data
-                       stack_fit=learner_stack$train(task)                         
-                       sl_learner=Pipeline$new(learner_stack,metalearner)
-                       full_fit=sl_learner$prefit_pipeline(list(stack_fit,cv_meta_fit),task)
+                       stack_fit <- delayed_learner_train(learner_stack, task)
                        
-                       #just by mixing and matching the fit objects above
+                       #form full SL fit -- a pipeline with the stack fit to the full data,
+                       #and the metalearner fit to the cv predictions
+                       full_fit <- delayed_learner_new(Pipeline,stack_fit,cv_meta_fit)
                        
-                       fit_object=list(cv_meta_task=cv_meta_task, cv_meta_fit=cv_meta_fit, full_fit=full_fit)
                        
-                       return(fit_object)
+                       fit_object <- list(cv_meta_task=cv_meta_task, cv_meta_fit=cv_meta_fit, full_fit=full_fit)
+                       return(bundle_delayed(fit_object))
+
+                     },
+                     .train = function(task, pretrain) {
+                       
+                       return(pretrain)
                      },
                      
                      .predict = function(task){

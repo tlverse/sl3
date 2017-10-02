@@ -62,10 +62,3 @@ sl <- Lrnr_sl$new(learners = list(SL.glmnet_learner, glm_learner, screen_and_glm
     metalearner = glm_learner)
 sl_fit <- sl$train(task)
 sl_fit
-
-# now lets cross_validate that against its candidates
-learners <- list(SL.glmnet_learner = SL.glmnet_learner, glm_learner = glm_learner, 
-    screen_and_glm = screen_and_glm, sl = sl)
-sapply(learners, estimate_risk, task)
-
-# now the question is, how can we steal this meta-learner fit going forward
