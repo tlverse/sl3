@@ -1,3 +1,4 @@
+options(sl3.verbose = TRUE)
 library(sl3)
 library(testthat)
 library(origami)
@@ -30,5 +31,8 @@ sl2 <- Lrnr_sl$new(learners = stack, metalearner = glm_learner)
 sl2_fit <- sl2$train(task)
 suppressWarnings({sl2_risk <- sl2_fit$cv_risk(loss_squared_error) })
 
-
 test_that("Lrnr_sl can accept a pre-made stack", expect_equal(sl1_risk$mean,sl2_risk$mean, tolerance = 1e-2))
+
+sl_nnls <- Lrnr_sl$new(learners = list(glm_learner, glmnet_learner), metalearner = sl3::Lrnr_nnls$new())
+sl_nnls_fit <- sl_nnls$train(task)
+print(sl_nnls_fit)
