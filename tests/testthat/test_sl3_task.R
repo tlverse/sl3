@@ -1,5 +1,6 @@
 library(sl3)
 library(testthat)
+library(data.table)
 
 context("Basic sl3_Task properties")
 # define test dataset
@@ -29,11 +30,25 @@ test_that("task$weights returns appropriate data",{
 })
 
 test_that("task subsetting works",{
-  subset_vector <- 1:10
+  subset_vector <- 5:10
   subsetted <- task[subset_vector]
   expect_equal(subsetted$X, task$X[subset_vector])
+  
+  #we can double subset a task 
+  # (where the second subset vector indexes the logical rows of the first subset)
+  subset_vector2 <- c(4,6)
+  subsetted_2 <- subsetted[subset_vector2]
+  expected_rows <- subset_vector[subset_vector2]
+  expect_equal(subsetted_2$Y,mtcars[[outcome]][expected_rows])
+  
+  #modifying a subset modifies the original
+  column_map <- subsetted_2$add_columns("test_fit",new_data = data.table(data=1:2))
+  new_col_name <- tail(column_map,1)[[1]]
+  
+  #extra column from original
+  new_column <-task$data[[new_col_name]]
+  expect_equal(new_column[expected_rows],1:2)
 })
-
 
 empty_task <- sl3_Task$new(mtcars, covariates = NULL, outcome = NULL)
 

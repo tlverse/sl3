@@ -71,7 +71,6 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                          }
                          new_object = self$clone() # copy parameters, and whatever else
                          new_object$set_train(fit_object, task)
-                         
                          return(new_object)
                        },
                        
