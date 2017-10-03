@@ -23,7 +23,17 @@ Lrnr_pkg_SuperLearner_screener <- R6Class(classname = "Lrnr_pkg_SuperLearner_scr
                          if(is.null(wrapper)){
                            selected <- task$nodes$covariates
                          } else {
-                           selected <- wrapper(task$Y, task$X, family=gaussian(), obsWeights=task$weights, id = task$id)  
+                           
+                           family <- gaussian()
+                           if (!is.null(self$params$family)) {
+                             family <- self$params$family
+                             if (is.character(family)) {
+                               family <- get(family, mode = "function", envir = parent.frame())
+                               family <- family()
+                             }
+                           }
+                           
+                           selected <- wrapper(task$Y, task$X, family=family, obsWeights=task$weights, id = task$id)  
                          }
                          
                          fit_object=list(selected=task$nodes$covariates[selected])

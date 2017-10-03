@@ -30,6 +30,10 @@ newfprob <- exp(newfeta) / (1 + exp(newfeta))
 newy <- rbinom(m, 1, newfprob)
 
 DATA2 <- data.frame(Y = y, X = x)
+Y <- y
+X <- x
+id <- NULL
+obsWeights <- NULL
 newDATA2 <- data.frame(Y = newy, X=newx)
 
 create.SL.knn <- function(k = c(20, 30)) {
@@ -43,9 +47,69 @@ create.SL.knn(c(20, 30, 40, 50, 60, 70))
 
 # library with screening
 SL.library <- list(c("SL.glmnet", "All"), c("SL.glm", "screen.randomForest"),
-                   "SL.randomForest", "SL.knn", "SL.knn.20", "SL.knn.30", "SL.knn.40",
-                   "SL.knn.50", "SL.knn.60", "SL.knn.70",
-                   c("SL.polymars", "screen.randomForest"))
+                   "SL.randomForest", "SL.svm",
+                   c("SL.earth", "screen.randomForest"))
+system.time({
 test <- SuperLearner(Y = DATA2$Y, X = DATA2[, -1], newX = newDATA2[, -1],
                      SL.library = SL.library, verbose = TRUE, family = binomial())
+})
+# test
+plan(sequential)
+system.time({
+  test <- SuperLearner3(Y = DATA2$Y, X = DATA2[, -1], newX = newDATA2[, -1],
+                       SL.library = SL.library, verbose = TRUE, family = binomial())
+})
+# test
+
+
+#define task from arguments
+task_data <- as.data.table(X)
+covariates <- copy(names(task_data))
+#todo: check if these columns already exist in X
+set(task_data, j="Y", value = Y)
+
+if(!is.null(obsWeights)){
+  set(task_data, j="weights", value = obsWeights)
+  weightvar <- "weights"
+} else {
+  weightvar <- NULL
+}
+
+if(!is.null(id)){
+  set(task_data, j="id", value = id)
+  idvar <- "id"
+} else {
+  idvar <- NULL
+}
+
+training_task <- sl3_Task$new(data=task_data, covariates <- covariates, outcome = "Y", id=idvar, weights=weightvar)
+
+learners <- c("SL.glm", "SL.glmnet","SL.randomForest","SL.svm", "SL.mean")
+
+folds <- training_task$folds
+
+fold_vec <- lapply(folds,function(fold)validation())
+set.seed(1234)
+test <- SuperLearner(Y = DATA2$Y, X = DATA2[, -1], newX = newDATA2[, -1],
+                     SL.library = learners, verbose = TRUE, family = binomial(), cvControl = list(validRows = fold_vec))
+
 test
+learner_objs <- lapply(learners,Lrnr_pkg_SuperLearner$new, family="binomial")
+metalearner <- Lrnr_pkg_SuperLearner_method$new(method)
+sl <- Lrnr_sl$new(learner_objs,metalearner,folds)
+plan(sequential)
+set.seed(1234)
+sl_fit <- sl$train(training_task)
+
+sl3z <- as.matrix(sl_fit$fit_object$cv_meta_task$X)
+slz <- test$Z
+plot(sl3z[,1],slz[,1])
+diag(cor(slz,sl3z))
+sl_fit
+test
+stack <- do.call(Stack$new,learner_objs)
+cv_stack <- Lrnr_cv$new(stack, folds)
+csf <- cv_stack$train(training_task)
+z3 <- as.matrix(csf$predict())
+head(z3)
+head(Y)

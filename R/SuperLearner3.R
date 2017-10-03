@@ -47,9 +47,9 @@ SuperLearner3 <- function (Y, X, newX = NULL, family = gaussian(), SL.library,
     }
   })
   
-  nnls <- Lrnr_nnls$new()
-  sl_learner <- Lrnr_sl$new(learner_objs,nnls, folds=training_task$folds)
-  delayed_fit <- delayed_learner_train(sl_learner,training_task)
-  delayed::Scheduler$new(delayed_fit,verbose=TRUE)$compute()
-  plot(delayed_fit)
+  metalearner <- Lrnr_pkg_SuperLearner_method$new(method)
+  
+  sl_learner <- Lrnr_sl$new(learner_objs,metalearner, folds=training_task$folds)
+  sl_fit <- sl_learner$train(training_task)
+  preds <- sl_fit$predict()
 }
