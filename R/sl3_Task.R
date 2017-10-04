@@ -61,7 +61,7 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                         
                         private$.nodes <- nodes
                         
-                        if(is.null(folds)){
+                        if(missing(folds)){
                           folds <- make_folds(cluster_ids=self$id)
                           
                         }
@@ -180,11 +180,24 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                         assert_that(length(missing_cols)==0, msg = sprintf("Couldn't find %s",paste(missing_cols,collapse=" ")))
                         
                         new_task=self$clone()
-                        new_task$initialize(private$.data,nodes=new_nodes, folds = self$folds, column_names = column_names, row_index = private$.row_index)
+                        new_task$initialize(private$.data,nodes=new_nodes, folds = self$folds, 
+                                            column_names = column_names, row_index = private$.row_index)
                         
                         return(new_task)
                       },
-                      subset_data = function(rows = NULL, columns){
+                      subset_task = function(row_index){
+                        old_row_index <- private$.row_index
+                        if(!is.null(old_row_index)){
+                          #index into the logical rows of this task
+                          row_index <- old_row_index[row_index]
+                        }
+                        new_task=self$clone()
+                        new_task$initialize(private$.data,nodes=private$.nodes, folds = self$folds, 
+                                            column_names = private$.column_names, row_index = row_index)
+                        
+                        return(new_task)
+                      },
+                      get_data = function(rows = NULL, columns){
                         if(missing(rows)){
                           rows = private$.row_index
                         }
@@ -204,7 +217,7 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                         if(is.null(node_var)){
                           return(generator_fun(node_name, self$nrow))
                         } else{
-                          data_col <- self$subset_data(,node_var)
+                          data_col <- self$get_data(,node_var)
                           return(unlist(data_col, use.names = FALSE))
                         }
                       }),
@@ -227,7 +240,7 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                         
                         covariates =  private$.nodes$covariates
                         covariate_cols <- unlist(private$.column_names[covariates])
-                        X_dt = self$subset_data(, covariate_cols)
+                        X_dt = self$get_data(, covariate_cols)
                         if(ncol(X_dt)>0){
                           data.table::setnames(X_dt, covariate_cols, covariates)
                         }
@@ -278,5 +291,5 @@ sl3_Task <- R6Class(classname = "sl3_Task",
 
 #' @export
 `[.sl3_Task` <- function(x,i=NULL,j=NULL,...) {
-  sl3_Task$new(x$data,nodes=x$nodes, folds=NA,row_index = i)
+  return(x$subset_task(i))
 }

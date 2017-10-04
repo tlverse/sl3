@@ -47,7 +47,8 @@ sl3Options <- function (o, value)  {
               "sl3.temp.dir"   = tempdir(),
               # sl3.file.name  = 'sl3-report-%T-%N-%n'
               "sl3.file.name"  = paste0('sl3-report-', Sys.Date()),
-              "sl3.memoise.learner" = FALSE
+              "sl3.memoise.learner" = FALSE,
+              "sl3.save.training" = TRUE
             )
   # for (i in setdiff(names(opts),names(options()))) {
   #   browser()

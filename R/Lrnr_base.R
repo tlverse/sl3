@@ -71,14 +71,15 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                          }
                          new_object = self$clone() # copy parameters, and whatever else
                          new_object$set_train(fit_object, task)
-                         
                          return(new_object)
                        },
                        
                        set_train = function(fit_object, training_task){
                          #todo: figure out how to do this without a public method that is mutuating private variables.
                          private$.fit_object = fit_object
-                         private$.training_task = training_task
+                         if(getOption("sl3.save.training")){
+                          private$.training_task = training_task
+                         }
                          private$.fit_uuid = UUIDgenerate(use.time=T)
                          
                        },
