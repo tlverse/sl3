@@ -1,4 +1,3 @@
-
 #' @importFrom R6 R6Class
 #' @export
 #' @rdname undocumented_learner
