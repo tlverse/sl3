@@ -23,7 +23,7 @@ glm_fast <- Lrnr_glm_fast$new()
 nnls_lrnr <- Lrnr_nnls$new()
 # xgb <- Lrnr_xgboost(nrounds=50)
 
-sl <- Lrnr_sl$new(list(random_forest, sl_glmnet, glm_fast), nnls_lrnr, folds=task$folds)
+sl <- Lrnr_sl$new(list(random_forest, sl_glmnet, glm_fast), nnls_lrnr)
 
 test <- delayed_learner_train(sl, task)
 system.time({
