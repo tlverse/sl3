@@ -39,3 +39,7 @@ test_that("Lrnr_sl can accept a pre-made stack", expect_equal(sl1_risk$mean_risk
 sl_nnls <- Lrnr_sl$new(learners = list(glm_learner, glmnet_learner), metalearner = sl3::Lrnr_nnls$new())
 sl_nnls_fit <- sl_nnls$train(task)
 print(sl_nnls_fit)
+
+sl1_small <- Lrnr_sl$new(learners = list(glm_learner, glmnet_learner, subset_apgar), metalearner = glm_learner, keep_extra = FALSE)
+sl1_small_fit <- sl1_small$train(task)
+expect_lt(length(sl1_small_fit$fit_object), length(sl1_fit$fit_object))
