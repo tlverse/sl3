@@ -1,0 +1,52 @@
+---
+title: "SuperLearner Benchmarks"
+author: "Jeremy Coyle"
+date: "10/5/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE, results='hide'}
+knitr::opts_chunk$set(echo = TRUE)
+library(sl3)
+```
+## Test Setup
+
+### Session Information
+
+```{r sessionInfo, echo=FALSE, results="asis"}
+sessionInfo()
+```
+
+### Test System
+
+```{r systemInfo, echo=FALSE, results="asis"}
+uname <- system("uname -a", intern = TRUE)
+os <- sub(" .*", "", uname)
+if(os=="Darwin"){
+  cpu_model <- system("sysctl -n machdep.cpu.brand_string", intern = TRUE)
+  cpus_physical <- system("sysctl -n hw.physicalcpu", intern = TRUE)
+  cpus_logical <- system("sysctl -n hw.logicalcpu", intern = TRUE)
+  cpu_clock <- system("sysctl -n hw.cpufrequency_max", intern = TRUE)
+  memory <- system("sysctl -n hw.memsize", intern = TRUE)
+}
+```
+
+* CPU model: `r cpu_model`
+* Physical cores: `r as.numeric(cpus_physical)`
+* Logical cores: `r as.numeric(cpus_logical)`
+* Clock speed: `r as.numeric(cpu_clock)/10^9`GHz
+* Memory: `r as.numeric(memory)/2^30`GB
+
+### Test Data
+
+### Test Descriptions
+
+#### `sl3` with Legacy `SuperLearner` Wrappers
+
+#### `sl3` with Improved Wrappers
+
+#### Legacy `SuperLearner`
+
+
+
+## Results

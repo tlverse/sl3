@@ -8,15 +8,34 @@ Lrnr_pkg_SuperLearner_screener <- R6Class(classname = "Lrnr_pkg_SuperLearner_scr
                      class = TRUE,
                      public = list(
                        initialize = function(SL_wrapper, ...) {
-                         wrapper_fun=get(SL_wrapper)
+                         if(SL_wrapper == "All"){
+                           wrapper_fun = NULL
+                         } else {
+                           wrapper_fun=get(SL_wrapper)  
+                         }
+                         
                          params=list(wrapper_name=SL_wrapper, wrapper_fun=wrapper_fun, ...)
                          super$initialize(params=params, ...)
                        }),
                      private = list(
                        .train = function(task) {
                          wrapper=self$params$wrapper_fun
-
-                         selected <- wrapper(task$Y, task$X, family=gaussian(), obsWeights=task$weights, id = task$id)
+                         if(is.null(wrapper)){
+                           selected <- task$nodes$covariates
+                         } else {
+                           
+                           family <- gaussian()
+                           if (!is.null(self$params$family)) {
+                             family <- self$params$family
+                             if (is.character(family)) {
+                               family <- get(family, mode = "function", envir = parent.frame())
+                               family <- family()
+                             }
+                           }
+                           
+                           selected <- wrapper(task$Y, task$X, family=family, obsWeights=task$weights, id = task$id)  
+                         }
+                         
                          fit_object=list(selected=task$nodes$covariates[selected])
                          
                          return(fit_object)

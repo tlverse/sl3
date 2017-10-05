@@ -77,7 +77,8 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                        set_train = function(fit_object, training_task){
                          #todo: figure out how to do this without a public method that is mutuating private variables.
                          private$.fit_object = fit_object
-                         if(getOption("sl3.save.training")){
+                         save_training <- getOption("sl3.save.training")
+                         if(is.null(save_training)||save_training){
                           private$.training_task = training_task
                          }
                          private$.fit_uuid = UUIDgenerate(use.time=T)

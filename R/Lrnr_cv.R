@@ -78,7 +78,7 @@ Lrnr_cv <- R6Class(classname = "Lrnr_cv",
                        
                        delayed_cv_train <- function(fold,learner,task){
                          training_task  <- delayed_train_task(task, fold)
-                         # training_task$sequential <- FALSE
+                         training_task$sequential <- TRUE
                          fit_object  <- delayed_learner_train(learner,training_task)
                          return(fit_object)
                        }
@@ -142,8 +142,12 @@ Lrnr_cv <- R6Class(classname = "Lrnr_cv",
                          list(index=index,predictions=predictions)
                        }
                        
-                       fold_predictions=cross_validate(cv_predict,folds,fold_fits,task, future.globals=F)
-                       predictions=aorder(fold_predictions$predictions,order(fold_predictions$index))
+                       # fold_predictions=cross_validate(cv_predict,folds,fold_fits,task, future.globals=F)
+                       # don't use cross_validate as it will call future_lapply
+                       fold_predictions=lapply(folds,cv_predict, fold_fits, task)
+                       index=unlist(lapply(fold_predictions,`[[`,"index"))
+                       predictions=data.table::rbindlist(lapply(fold_predictions,`[[`,"predictions"))
+                       predictions=aorder(predictions, order(index))
                        
                        return(predictions)
                      },
