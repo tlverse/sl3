@@ -4,6 +4,8 @@ library(SuperLearner)
 library(future)
 context("Delayed sl3")
 
+ncores=future::availableCores()/2
+
 plan(sequential)
 
 data(cpp)
@@ -11,8 +13,9 @@ cpp <- cpp[!is.na(cpp[, "haz"]), ]
 covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")
 cpp[is.na(cpp)] <- 0
 cpp <- cpp[sample(nrow(cpp),10000,replace=T),]
-outcome <- "haz"
 # cpp <- cpp[1:150, ]
+outcome <- "haz"
+
 
 task <- sl3_Task$new(cpp, covariates = covars, outcome = outcome)
 
@@ -42,7 +45,6 @@ system.time({
 # 266.308   2.796 269.078 
 
 #sl3 multicore (hyperthreaded)
-ncores=16
 test <- delayed_learner_train(sl, task)
 plan(multicore, workers=ncores*2)
 system.time({
@@ -54,7 +56,7 @@ system.time({
 # 332.150  27.066 110.942 
 # compute server
 # user  system elapsed 
-# 317.056  12.144  34.234 
+# 337.640  11.104  37.863 
 
 #sl3 multicore (not hyperthreaded)
 test <- delayed_learner_train(sl, task)
@@ -72,16 +74,19 @@ system.time({
 #sl3 multisession (not hyperthreaded)
 test <- delayed_learner_train(sl, task)
 plan(multisession, workers=ncores)
+# cl <- future:::ClusterRegistry("get")
+# clusterCall(cl, function(){options("sl.save.training"=FALSE)})
 system.time({
   sched <- Scheduler$new(test, FutureJob, nworkers=ncores, verbose = FALSE)
+  # delayed:::plot_delayed_shiny(sched)
   cv_fit <- sched$compute()
 })
 # macbook
 # user  system elapsed 
-# 122.682  26.707 211.257 
+# 13.402   4.377 171.005 
 # compute server
 # user  system elapsed 
-# 98.840  12.972 153.813 
+# 8.496   1.572  39.115  
 
 #sl3 multicore, reduce fit size (hyperthreaded)
 options("sl3.save.training" = FALSE)
