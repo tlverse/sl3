@@ -8,13 +8,13 @@ Lrnr_sl <- R6Class(classname = "Lrnr_sl",
                    portable = TRUE,
                    class = TRUE,
                    public = list(
-                     initialize = function(learners, metalearner, folds = NULL, ...) {
+                     initialize = function(learners, metalearner, folds = NULL, keep_extra = TRUE, ...) {
                        #kludge to deal with stack as learners
                        if(inherits(learners,"Stack")){
                          learners <- learners$params$learners
                        }
 
-                       params=list(learners=learners, metalearner=metalearner, folds=folds, ...)
+                       params=list(learners=learners, metalearner=metalearner, folds=folds, keep_extra = keep_extra, ...)
                        super$initialize(params=params, ...)
                      },
                      print = function(){
@@ -108,13 +108,23 @@ Lrnr_sl <- R6Class(classname = "Lrnr_sl",
                        full_fit <- delayed_learner_new(Pipeline,stack_fit,cv_meta_fit)
 
 
-                       fit_object <- list(cv_meta_task=cv_meta_task, cv_meta_fit=cv_meta_fit, full_fit=full_fit)
+                       fit_object <- list(cv_fit = cv_fit, cv_meta_task = cv_meta_task, 
+                                          cv_meta_fit = cv_meta_fit, full_fit = full_fit)
                        return(bundle_delayed(fit_object))
 
                      },
                      .train = function(task, pretrain) {
-
-                       return(pretrain)
+                       # propagate stack errors from cross-validation to full refit
+                       fit_object <- pretrain
+                       cv_errors <- fit_object$cv_fit$fit_object$is_error
+                       fit_object$full_fit$fit_object$learner_fits[[1]]$update_errors(cv_errors)
+                       
+                       if(self$params$keep_extra){
+                         keep = names(fit_object)
+                       } else {
+                         keep = c("full_fit")
+                       }
+                       return(fit_object[keep])
                      },
 
                      .predict = function(task){
