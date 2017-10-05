@@ -18,28 +18,18 @@ task <- sl3_Task$new(cpp, covariates = covars, outcome = outcome)
 
 sl_screen_glmnet <- Lrnr_pkg_SuperLearner_screener$new("screen.glmnet")
 sl_glmnet <- Lrnr_pkg_SuperLearner$new("SL.glmnet")
+sl_random_forest <- Lrnr_pkg_SuperLearner$new("SL.randomForest")
+sl_glm <- Lrnr_pkg_SuperLearner$new("SL.glm")
 random_forest <- Lrnr_randomForest$new()
 glm_fast <- Lrnr_glm_fast$new()
 nnls_lrnr <- Lrnr_nnls$new()
 # xgb <- Lrnr_xgboost(nrounds=50)
 
-sl <- Lrnr_sl$new(list(random_forest, sl_glmnet, glm_fast), nnls_lrnr)
+sl <- Lrnr_sl$new(list(sl_random_forest, sl_glmnet, sl_glm), nnls_lrnr)
 
+#sl3 sequential
 test <- delayed_learner_train(sl, task)
 system.time({
   sched <- Scheduler$new(test, SequentialJob)
   cv_fit <- sched$compute()
 })
-
-# test <- delayed_learner_train(sl, task)
-# plan(multicore, workers=2)
-# system.time({
-#   sched <- Scheduler$new(test, FutureJob, nworkers=2, verbose = TRUE)
-#   cv_fit <- sched$compute()
-# })
-# options(mc.cores=16)
-# system.time({
-# mcSuperLearner(task$Y, as.data.frame(task$X), newX = NULL, family = gaussian(), SL.library=c("SL.glmnet","SL.randomForest","SL.glm"),
-#              method = "method.NNLS", id = NULL, verbose = FALSE,
-#              control = list(), cvControl = list(), obsWeights = NULL, env = parent.frame())
-# })

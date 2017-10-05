@@ -78,7 +78,7 @@ Lrnr_cv <- R6Class(classname = "Lrnr_cv",
 
                          delayed_cv_train <- function(fold,learner,task){
                            training_task  <- delayed_train_task(task, fold)
-                           # training_task$sequential <- FALSE
+                           training_task$sequential <- TRUE
                            fit_object  <- delayed_learner_train(learner,training_task)
                            return(fit_object)
                          }
