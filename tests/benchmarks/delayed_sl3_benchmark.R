@@ -56,13 +56,26 @@ system.time({
 # user  system elapsed 
 # 258.373  29.370 173.735 
 
-#sl3 multisession (hyperthreaded)
+
+#sl3 multicore, don't save tasks (hyperthreaded)
+options("sl3.save.training" = FALSE)
 test <- delayed_learner_train(sl, task)
-plan(multisession, workers=4)
+plan(multicore, workers=4)
 system.time({
   sched <- Scheduler$new(test, FutureJob, nworkers=4, verbose = FALSE)
   cv_fit <- sched$compute()
 })
+# user  system elapsed 
+# 361.818  34.814 130.688 
+
+
+#sl3 multisession (hyperthreaded)
+# test <- delayed_learner_train(sl, task)
+# plan(multisession, workers=4)
+# system.time({
+#   sched <- Scheduler$new(test, FutureJob, nworkers=4, verbose = FALSE)
+#   cv_fit <- sched$compute()
+# })
 #doesn't work currently
 
 
