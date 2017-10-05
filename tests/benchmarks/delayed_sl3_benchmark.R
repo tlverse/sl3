@@ -59,6 +59,8 @@ system.time({
 
 #sl3 multicore, don't save tasks (hyperthreaded)
 options("sl3.save.training" = FALSE)
+sl <- Lrnr_sl$new(list(sl_random_forest, sl_glmnet, sl_glm), nnls_lrnr, keep_extra = FALSE)
+
 test <- delayed_learner_train(sl, task)
 plan(multicore, workers=4)
 system.time({
