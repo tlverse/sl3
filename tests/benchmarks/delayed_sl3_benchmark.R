@@ -34,53 +34,71 @@ system.time({
   sched <- Scheduler$new(test, SequentialJob)
   cv_fit <- sched$compute()
 })
+# macbook
 # user  system elapsed 
 # 227.038   5.566 234.053 
+# 16 core compute server
+# user  system elapsed 
+# 266.308   2.796 269.078 
 
 #sl3 multicore (hyperthreaded)
+ncores=16
 test <- delayed_learner_train(sl, task)
-plan(multicore, workers=4)
+plan(multicore, workers=ncores*2)
 system.time({
-  sched <- Scheduler$new(test, FutureJob, nworkers=4, verbose = FALSE)
+  sched <- Scheduler$new(test, FutureJob, nworkers=ncores*2, verbose = FALSE)
   cv_fit <- sched$compute()
 })
+# macbook
 # user  system elapsed 
 # 332.150  27.066 110.942 
+# compute server
+# user  system elapsed 
+# 317.056  12.144  34.234 
 
 #sl3 multicore (not hyperthreaded)
 test <- delayed_learner_train(sl, task)
 system.time({
-  sched <- Scheduler$new(test, FutureJob, nworkers=2, verbose = FALSE)
+  sched <- Scheduler$new(test, FutureJob, nworkers=ncores, verbose = FALSE)
   cv_fit <- sched$compute()
 })
+# macbook
 # user  system elapsed 
 # 211.840  20.079 141.281 
+# compute server
+# user  system elapsed 
+# 303.492  12.964  33.448 
 
-
-#sl3 multisession (hyperthreaded)
+#sl3 multisession (not hyperthreaded)
 test <- delayed_learner_train(sl, task)
-plan(multisession, workers=4)
+plan(multisession, workers=ncores)
 system.time({
-  sched <- Scheduler$new(test, FutureJob, nworkers=4, verbose = FALSE)
+  sched <- Scheduler$new(test, FutureJob, nworkers=ncores, verbose = FALSE)
   cv_fit <- sched$compute()
 })
+# macbook
 # user  system elapsed 
 # 122.682  26.707 211.257 
+# compute server
+# user  system elapsed 
+# 98.840  12.972 153.813 
 
 #sl3 multicore, reduce fit size (hyperthreaded)
 options("sl3.save.training" = FALSE)
 sl <- Lrnr_sl$new(list(sl_random_forest, sl_glmnet, sl_glm), nnls_lrnr, keep_extra = FALSE)
 
 test <- delayed_learner_train(sl, task)
-plan(multicore, workers=4)
+plan(multicore, workers=ncores*2)
 system.time({
-  sched <- Scheduler$new(test, FutureJob, nworkers=4, verbose = FALSE)
+  sched <- Scheduler$new(test, FutureJob, nworkers=ncores*2, verbose = FALSE)
   cv_fit <- sched$compute()
 })
+# macbook
 # user  system elapsed 
 # 343.318  22.030 105.594  
-
-
+# compute server
+# user  system elapsed 
+# 315.908  19.340  33.920
 
 #SuperLearner sequential
 system.time({
@@ -88,26 +106,34 @@ system.time({
                  method = "method.NNLS", id = NULL, verbose = FALSE,
                  control = list(), cvControl = list(), obsWeights = NULL, env = parent.frame())
 })
+# macbook
 # user  system elapsed 
 # 226.006  11.005 239.479
+# compute server
+# user  system elapsed 
+# 262.088   1.544 263.614 
 
 #SuperLearner multicore
-options(mc.cores=4)
+options(mc.cores=ncores*2)
 system.time({
 mcSuperLearner(task$Y, as.data.frame(task$X), newX = NULL, family = gaussian(), SL.library=c("SL.glmnet","SL.randomForest","SL.glm"),
              method = "method.NNLS", id = NULL, verbose = FALSE,
              control = list(), cvControl = list(), obsWeights = NULL, env = parent.frame())
 })
+# macbook
 # user  system elapsed 
 # 284.488  17.208 117.978 
+# compute server
+# user  system elapsed 
+# 273.076   9.604  58.310 
 
 #SuperLearner multisession
 library(parallel)
-cl <- makeCluster(4, type = "PSOCK") # can use different types here
+cl <- makeCluster(ncores*2, type = "PSOCK") # can use different types here
 clusterSetRNGStream(cl, iseed = 2343)
 system.time({
 snowSuperLearner(cluster=cl, task$Y, as.data.frame(task$X), newX = NULL, family = gaussian(), SL.library=c("SL.glmnet","SL.randomForest","SL.glm"),
                method = "method.NNLS", id = NULL, verbose = FALSE,
                control = list(), cvControl = list(), obsWeights = NULL)
 })
-#also doesn't work
+#doesn't work
