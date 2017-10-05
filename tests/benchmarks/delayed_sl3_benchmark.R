@@ -35,7 +35,7 @@ system.time({
   cv_fit <- sched$compute()
 })
 # user  system elapsed 
-# 235.783   9.634 253.067 
+# 227.038   5.566 234.053 
 
 #sl3 multicore (hyperthreaded)
 test <- delayed_learner_train(sl, task)
@@ -45,7 +45,7 @@ system.time({
   cv_fit <- sched$compute()
 })
 # user  system elapsed 
-# 349.565  37.540 140.794 
+# 332.150  27.066 110.942 
 
 #sl3 multicore (not hyperthreaded)
 test <- delayed_learner_train(sl, task)
@@ -54,10 +54,10 @@ system.time({
   cv_fit <- sched$compute()
 })
 # user  system elapsed 
-# 258.373  29.370 173.735 
+# 211.840  20.079 141.281 
 
 
-#sl3 multicore, don't save tasks (hyperthreaded)
+#sl3 multicore, reduce fit size (hyperthreaded)
 options("sl3.save.training" = FALSE)
 sl <- Lrnr_sl$new(list(sl_random_forest, sl_glmnet, sl_glm), nnls_lrnr, keep_extra = FALSE)
 
@@ -68,16 +68,16 @@ system.time({
   cv_fit <- sched$compute()
 })
 # user  system elapsed 
-# 361.818  34.814 130.688 
+# 343.318  22.030 105.594  
 
 
 #sl3 multisession (hyperthreaded)
-# test <- delayed_learner_train(sl, task)
-# plan(multisession, workers=4)
-# system.time({
-#   sched <- Scheduler$new(test, FutureJob, nworkers=4, verbose = FALSE)
-#   cv_fit <- sched$compute()
-# })
+test <- delayed_learner_train(sl, task)
+plan(multisession, workers=4)
+system.time({
+  sched <- Scheduler$new(test, FutureJob, nworkers=4, verbose = FALSE)
+  cv_fit <- sched$compute()
+})
 #doesn't work currently
 
 
@@ -88,7 +88,7 @@ system.time({
                  control = list(), cvControl = list(), obsWeights = NULL, env = parent.frame())
 })
 # user  system elapsed 
-# 233.910   8.645 247.546
+# 226.006  11.005 239.479
 
 #SuperLearner multicore
 options(mc.cores=4)
@@ -98,15 +98,15 @@ mcSuperLearner(task$Y, as.data.frame(task$X), newX = NULL, family = gaussian(), 
              control = list(), cvControl = list(), obsWeights = NULL, env = parent.frame())
 })
 # user  system elapsed 
-# 294.038  20.984 139.005 
+# 284.488  17.208 117.978 
 
 #SuperLearner multisession
-# library(parallel)
-# cl <- makeCluster(4, type = "PSOCK") # can use different types here
-# clusterSetRNGStream(cl, iseed = 2343)
-# system.time({
-# snowSuperLearner(cluster=cl, task$Y, as.data.frame(task$X), newX = NULL, family = gaussian(), SL.library=c("SL.glmnet","SL.randomForest","SL.glm"),
-#                method = "method.NNLS", id = NULL, verbose = FALSE,
-#                control = list(), cvControl = list(), obsWeights = NULL)
-# })
+library(parallel)
+cl <- makeCluster(4, type = "PSOCK") # can use different types here
+clusterSetRNGStream(cl, iseed = 2343)
+system.time({
+snowSuperLearner(cluster=cl, task$Y, as.data.frame(task$X), newX = NULL, family = gaussian(), SL.library=c("SL.glmnet","SL.randomForest","SL.glm"),
+               method = "method.NNLS", id = NULL, verbose = FALSE,
+               control = list(), cvControl = list(), obsWeights = NULL)
+})
 #also doesn't work
