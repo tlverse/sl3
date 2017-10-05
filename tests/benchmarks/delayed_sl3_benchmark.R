@@ -57,6 +57,16 @@ system.time({
 # 211.840  20.079 141.281 
 
 
+#sl3 multisession (hyperthreaded)
+test <- delayed_learner_train(sl, task)
+plan(multisession, workers=4)
+system.time({
+  sched <- Scheduler$new(test, FutureJob, nworkers=4, verbose = FALSE)
+  cv_fit <- sched$compute()
+})
+# user  system elapsed 
+# 122.682  26.707 211.257 
+
 #sl3 multicore, reduce fit size (hyperthreaded)
 options("sl3.save.training" = FALSE)
 sl <- Lrnr_sl$new(list(sl_random_forest, sl_glmnet, sl_glm), nnls_lrnr, keep_extra = FALSE)
@@ -70,15 +80,6 @@ system.time({
 # user  system elapsed 
 # 343.318  22.030 105.594  
 
-
-#sl3 multisession (hyperthreaded)
-test <- delayed_learner_train(sl, task)
-plan(multisession, workers=4)
-system.time({
-  sched <- Scheduler$new(test, FutureJob, nworkers=4, verbose = FALSE)
-  cv_fit <- sched$compute()
-})
-#doesn't work currently
 
 
 #SuperLearner sequential
