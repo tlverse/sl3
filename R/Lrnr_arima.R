@@ -1,27 +1,44 @@
 #' Univariate ARIMA Models
 #'
-#' This learner supports autoregressive integrated moving average model for univariate time-series.
-#' @docType class
-#' @importFrom R6 R6Class
-#' @export
-#' @keywords data
-#' @return \code{\link{Lrnr_base}} object with methods for training and prediction
-#' @format \code{\link{R6Class}} object.
-#' @field order A specification of the non-seasonal part of the ARIMA model: the three integer components (p, d, q) are the AR order, the degree of differencing, and the MA order.
-#' @field seasonal A specification of the seasonal part of the ARIMA model, plus the period (which defaults to frequency(x)). This should be a list with components order and period, but a specification of just a numeric vector of length 3 will be turned into a suitable list with the specification as the order.
-#' @field n.ahead The forecast horizon. If not specified, returns forecast of size \code{task$X}.
+#' This learner supports autoregressive integrated moving average model for
+#' univariate time-series.
 #'
+#' @docType class
+#'
+#' @keywords data
+#'
+#' @return \code{\link{Lrnr_base}} object with methods for training and
+#' prediction.
+#;
+#' @format \code{\link{R6Class}} object.
+#'
+#' @field order A specification of the non-seasonal part of the ARIMA model: the
+#' three integer components (p, d, q) are the AR order, the degree of
+#' differencing, and the MA order.
+#' @field seasonal A specification of the seasonal part of the ARIMA model, plus
+#' the period (which defaults to frequency(x)). This should be a list with
+#' components order and period, but a specification of just a numeric vector of
+#' length 3 will be turned into a suitable list with the specification as the
+#' order.
+#' @field n.ahead The forecast horizon. If not specified, returns forecast of
+#' size \code{task$X}.
+#'
+#' @importFrom R6 R6Class
 #' @importFrom assertthat assert_that is.count is.flag
 #' @importFrom stats arima
 #'
 #' @family Learners
 #'
-
-Lrnr_arima <- R6Class(classname = "Lrnr_arima", inherit = Lrnr_base, portable = TRUE, class = TRUE,
+#' @export
+#
+Lrnr_arima <- R6Class(classname = "Lrnr_arima", inherit = Lrnr_base,
+                      portable = TRUE, class = TRUE,
                       public = list(
-                        initialize = function(order=NULL,
-                                              seasonal=list(order = c(0L, 0L, 0L), period = NA),
-                                              n.ahead=NULL,
+                        initialize = function(order = NULL,
+                                              seasonal = list(order =
+                                                              c(0L, 0L, 0L),
+                                              period = NA),
+                                              n.ahead = NULL,
                                               ...) {
 
                           params <- list(order = order, seasonal=seasonal, n.ahead=n.ahead, ...)

@@ -3,9 +3,9 @@ NULL
 
 #' Querying/setting a single \code{sl3} option
 #'
-#' To list all \code{sl3} options, just run this function without any parameters provided. To query only one value, pass the first parameter.
-#' To set that, use the \code{value} parameter too.
-#'
+#' To list all \code{sl3} options, just run this function without any parameters
+#'  provided. To query only one value, pass the first parameter. To set that,
+#'  use the \code{value} parameter too.
 #'
 #' @param o Option name (string).
 #' @param value Value to assign (optional)
@@ -16,6 +16,7 @@ NULL
 #' sl3Options('sl3.temp.dir')
 #' sl3Options('sl3.verbose', TRUE)
 #' }
+#
 sl3Options <- function (o, value)  {
   res <- options()[grep("sl3", names(options()))]
   if (missing(value)) {
@@ -80,3 +81,4 @@ sl3Options <- function (o, value)  {
     packageStartupMessage('Please note the package is in early stages of development. Check often for updates and report bugs at http://github.com/jeremyrcoyle/sl3.', '\n')
   }
 }
+
