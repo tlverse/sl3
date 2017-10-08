@@ -18,34 +18,18 @@ task <- sl3_Task$new(cpp, covariates = covars, outcome = outcome)
 
 sl_screen_glmnet <- Lrnr_pkg_SuperLearner_screener$new("screen.glmnet")
 sl_glmnet <- Lrnr_pkg_SuperLearner$new("SL.glmnet")
+sl_random_forest <- Lrnr_pkg_SuperLearner$new("SL.randomForest")
+sl_glm <- Lrnr_pkg_SuperLearner$new("SL.glm")
 random_forest <- Lrnr_randomForest$new()
 glm_fast <- Lrnr_glm_fast$new()
+nnls_lrnr <- Lrnr_nnls$new()
 # xgb <- Lrnr_xgboost(nrounds=50)
 
-stack <- Stack$new(random_forest, sl_glmnet, glm_fast)
-pipeline <- Pipeline$new(sl_screen_glmnet, stack)
-cv_rf <- Lrnr_cv$new(random_forest, folds=task$folds)
-cv_stack <- Lrnr_cv$new(stack, folds=task$folds)
-cv_pipeline <- Lrnr_cv$new(pipeline, folds=task$folds)
+sl <- Lrnr_sl$new(list(sl_random_forest, sl_glmnet, sl_glm), nnls_lrnr)
 
-
-test <- delayed_learner_train(cv_pipeline, task)
+#sl3 sequential
+test <- delayed_learner_train(sl, task)
 system.time({
   sched <- Scheduler$new(test, SequentialJob)
   cv_fit <- sched$compute()
 })
-
-
-# plan(multicore, workers=16)
-# system.time({
-#   sched <- Scheduler$new(test, FutureJob, nworkers=16, verbose = TRUE)
-#   cv_fit <- sched$compute()
-# })
-# 
-
-# workers <- replicate(16, MCWorker$new())
-# test <- delayed_learner_train(cv_pipeline, task)
-# system.time({
-#   sched <- Scheduler$new(test, WorkerJob, workers, verbose=TRUE)
-#   cv_fit <- sched$compute()
-# })

@@ -33,7 +33,7 @@ task_with_interactions <- task$add_interactions(interactions)
 test_that("Lrnr_glm_fast works with empty X (intercept-only)", {
     fglm_learner <- Lrnr_glm_fast$new()
     empty_task <- sl3_Task$new(cpp, covariates = NULL, outcome = outcome)
-    fGLM_fit <- fglm_learner$train(empty_task)
+    fGLM_fit <- fglm_learner$base_train(empty_task)
     fglm_preds <- fGLM_fit$predict()
 })
 

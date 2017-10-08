@@ -71,14 +71,16 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                          }
                          new_object = self$clone() # copy parameters, and whatever else
                          new_object$set_train(fit_object, task)
-                         
                          return(new_object)
                        },
                        
                        set_train = function(fit_object, training_task){
                          #todo: figure out how to do this without a public method that is mutuating private variables.
                          private$.fit_object = fit_object
-                         private$.training_task = training_task
+                         save_training <- getOption("sl3.save.training")
+                         if(is.null(save_training)||save_training){
+                          private$.training_task = training_task
+                         }
                          private$.fit_uuid = UUIDgenerate(use.time=T)
                          
                        },
@@ -92,6 +94,8 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                          
                          if(is.null(task)){
                            task <- private$.training_task
+                         } else{
+                           task <- task$next_in_chain(covariates <- private$.training_task$nodes$covariates)
                          }
                          assert_that(is(task,"sl3_Task"))
                          subsetted_task = self$subset_covariates(task)
@@ -105,6 +109,8 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                          
                          if(is.null(task)){
                            task <- private$.training_task
+                         } else{
+                           task <- task$next_in_chain(covariates <- private$.training_task$nodes$covariates)
                          }
                          assert_that(is(task,"sl3_Task"))
                          subsetted_task = self$subset_covariates(task)
@@ -169,6 +175,9 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                        },
                        params=function(){
                          return(private$.params)
+                       },
+                       training_task=function(){
+                         return(private$.training_task)
                        }
                      ),
                      private = list(
@@ -193,12 +202,11 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                        .chain = function(task){
                          predictions = self$predict(task)
                          predictions = as.data.table(predictions)
-                         
-                         
+
                          #add predictions as new columns
                          new_col_names = task$add_columns(self$fit_uuid, predictions)
-                         
-                         return(task$next_in_chain(covariates=new_col_names))
+                         # new_covariates = union(names(predictions),task$nodes$covariates)
+                         return(task$next_in_chain(covariates = names(predictions), column_names = new_col_names))
                        },
                        .load_packages = function(){
                          if(!is.null(private$.required_packages)){

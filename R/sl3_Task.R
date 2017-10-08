@@ -28,7 +28,7 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                     class = TRUE,
                     public = list(
                       outcome_type = NULL,       # Values of the binary outcome (Ynode) in observed data where det.Y = TRUE obs are set to NA
-                      initialize = function(data, covariates, outcome, outcome_type=NULL, id=NULL, weights=NULL, folds=NULL, nodes=NULL) {
+                      initialize = function(data, covariates, outcome, outcome_type=NULL, id=NULL, weights=NULL, folds=NULL, nodes=NULL, column_names=NULL, row_index=NULL) {
                         assert_that(is.data.frame(data) | is.data.table(data))
                         private$.data <- data
                         
@@ -45,21 +45,31 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                         } else {
                           # todo: validate node schema
                         }
-                        all_nodes=unlist(nodes[c("covariates","outcome","id","weights")])
+                        
+                        if(is.null(column_names)){
+                          column_names <- as.list(names(data))
+                          names(column_names) <- column_names
+                        }
+                        private$.row_index <- row_index
+                        private$.column_names <- column_names
                         
                         #verify nodes are contained in dataset
-                        assert_that(all(all_nodes%in%names(data)))
+                        all_nodes <- unlist(nodes[c("covariates","outcome","id","weights")])
+                        missing_cols <- setdiff(all_nodes,names(column_names))
+  
+                        assert_that(length(missing_cols)==0, msg = sprintf("Couldn't find %s",paste(missing_cols,collapse=" ")))
                         
-                        private$.nodes = nodes
+                        private$.nodes <- nodes
                         
-                        if(is.null(folds)){
-                          folds=make_folds(cluster_ids=self$id)
+                        if(missing(folds)){
+                          folds <- make_folds(cluster_ids=self$id)
                           
                         }
                         
-                        private$.folds=folds
+                        private$.folds <- folds
                         
-                        private$.uuid = UUIDgenerate(use.time=T)
+                        
+                        private$.uuid <- UUIDgenerate(use.time=T)
                         
                         invisible(self)
                       },
@@ -85,7 +95,7 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                           interact <- interactions[[i]]
                           name <- interaction_names[i]
                           
-                          if (is.null(name)){
+                          if (is.null(name) || is.na(name)){
                             name <-  interaction_names[i] <- paste0(interact, collapse = "_")
                           } 
                           
@@ -99,6 +109,7 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                         
                         
                         interaction_names <- intersect(interaction_names, names(private$.data)) #drop interactions that didn't get made
+                        private$.column_names[interaction_names] <- interaction_names
                         new_covariates <- c(self$nodes$covariates, interaction_names)
                         return(self$next_in_chain(covariates = new_covariates))
                       },
@@ -119,72 +130,119 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                         if(!global_cols){
                           #by default prepend column names with fit_uuid to prevent column name conflicts for multiple fits from same learner
                           col_names = paste(fit_uuid, original_names, sep="_")
-                          setnames(new_data, original_names, col_names)
+                          # setnames(new_data, original_names, col_names)
+                          
                         }
                         
-                        
-                        # only add columns that are not already in data
-                        # because new columns are uniquely named, if the column exists
-                        # it should be a duplicate of the one in new_cols
-                        new_col_names = setdiff(col_names, current_cols)
-                        
-                        if(length(new_col_names)>0){
-                          new_data = new_data[, new_col_names, with=F, drop=F]
-                          set(data, j=new_col_names, value=new_data)
+                        column_names = private$.column_names
+                        column_names[original_names] = col_names
+
+                        if(is.null(private$.row_index)){
+                          set(data, j=col_names, value=new_data)
+                        } else{
+                          set(data, i=private$.row_index, j=col_names, value=new_data)
                         }
                         
-                        # return a vector of the column names corresponding to the added columns
-                        return(col_names)
+                        # return an updated column_names map
+                        return(column_names)
                         
                       },
                       
-                      next_in_chain=function(covariates=NULL, outcome=NULL, id=NULL, weights=NULL){
-                        new_nodes=self$nodes
-                        
-                        if(!is.null(covariates)){
-                          new_nodes$covariates=covariates
+                      next_in_chain=function(covariates=NULL, outcome=NULL, id=NULL, weights=NULL, column_names=NULL, new_nodes=NULL){
+                        if(is.null(new_nodes)){
+                          new_nodes=self$nodes
+                          
+                          if(!is.null(covariates)){
+                            new_nodes$covariates=covariates
+                          }
+                          
+                          if(!is.null(outcome)){
+                            new_nodes$outcome=outcome
+                          }
+                          
+                          if(!is.null(id)){
+                            new_nodes$id=id
+                          }
+                          
+                          if(!is.null(weights)){
+                            new_nodes$weights=weights
+                          }
                         }
                         
-                        if(!is.null(outcome)){
-                          new_nodes$outcome=outcome
+                        if(is.null(column_names)){
+                          column_names <- private$.column_names
                         }
-                        
-                        if(!is.null(id)){
-                          new_nodes$id=id
-                        }
-                        
-                        if(!is.null(weights)){
-                          new_nodes$weights=weights
-                        }
-                        
                         all_nodes=unlist(new_nodes[c("covariates","outcome","id","weights")])
                         
                         #verify nodes are contained in dataset
-                        assert_that(all(all_nodes%in%names(private$.data)))
+                        missing_cols <- setdiff(all_nodes,names(column_names))
+
+                        assert_that(length(missing_cols)==0, msg = sprintf("Couldn't find %s",paste(missing_cols,collapse=" ")))
                         
                         new_task=self$clone()
-                        new_task$initialize(private$.data,nodes=new_nodes, folds = self$folds)
+                        new_task$initialize(private$.data,nodes=new_nodes, folds = self$folds, 
+                                            column_names = column_names, row_index = private$.row_index)
                         
                         return(new_task)
+                      },
+                      subset_task = function(row_index){
+                        old_row_index <- private$.row_index
+                        if(!is.null(old_row_index)){
+                          #index into the logical rows of this task
+                          row_index <- old_row_index[row_index]
+                        }
+                        new_task=self$clone()
+                        new_task$initialize(private$.data,nodes=private$.nodes, folds = self$folds, 
+                                            column_names = private$.column_names, row_index = row_index)
+                        
+                        return(new_task)
+                      },
+                      get_data = function(rows = NULL, columns){
+                        if(missing(rows)){
+                          rows = private$.row_index
+                        }
+                        if(!is.null(rows)){
+                          return(private$.data[rows, columns, with=FALSE])
+                        } else {
+                          return(private$.data[, columns, with=FALSE])
+                        }
+                      },
+                      get_node = function(node_name, generator_fun = NULL){
+                        if(missing(generator_fun)){
+                          generator_fun <- function(node_name, n){
+                            stop(sprintf("Node %s not specified", node_name))
+                          }
+                        }
+                        node_var <- private$.nodes[[node_name]]
+                        if(is.null(node_var)){
+                          return(generator_fun(node_name, self$nrow))
+                        } else{
+                          data_col <- self$get_data(,node_var)
+                          return(unlist(data_col, use.names = FALSE))
+                        }
                       }),
+                    
                     active = list(
                       data = function() {
                         return(private$.data)
+                      },
+                      nrow = function(){
+                        if(is.null(private$.row_index)){
+                          return(nrow(private$.data))
+                        } else{
+                          return(length(private$.row_index))
+                        }
                       },
                       nodes = function(){
                         return(private$.nodes)
                       },
                       X = function(){
+                        
                         covariates =  private$.nodes$covariates
-                        covariate_cols = private$.nodes$covariate_cols
-                        if(is.null(covariate_cols)){
-                          covariate_cols=covariates
-                        }
-                        X_dt = subset_dt_cols(private$.data, covariate_cols)
-                        if(!identical(covariates,covariate_cols)){
-                          print(covariates)
-                          print(covariate_cols)
-                          setnames(X_dt, names(X_dt), covariates)
+                        covariate_cols <- unlist(private$.column_names[covariates])
+                        X_dt = self$get_data(, covariate_cols)
+                        if(ncol(X_dt)>0){
+                          data.table::setnames(X_dt, covariate_cols, covariates)
                         }
                         
                         return(X_dt)
@@ -192,8 +250,10 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                       X_intercept = function(){
                         # returns X matrix with manually generated intercept column
                         X_dt=self$X
+
                         if(ncol(X_dt)==0){
-                          X_dt=self$data[,list(intercept=rep(1,.N))]
+                          intercept=rep(1,self$nrow)
+                          X_dt=self$data[,list(intercept=intercept)]
                         } else {
                           X_dt[,intercept:=1]
                         }
@@ -201,45 +261,35 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                         return(X_dt)
                       },
                       Y = function(){
-                        return(private$.data[[private$.nodes$outcome]])
+                        return(self$get_node("outcome"))
                       },
                       weights = function(){
-                        weight_node=private$.nodes$weights
-                        if(is.null(weight_node)){
-                          weights=rep(1,nrow(private$.data))
-                        } else {
-                          weights=private$.data[[weight_node]]
-                        }
-                        
-                        return(weights)
+                        return(self$get_node("weights",function(node_var,n){rep(1,n)}))
                       },
                       id = function(){
-                        id_node=private$.nodes$id
-                        if(is.null(id_node)){
-                          ids=seq_len(nrow(private$.data))
-                        } else {
-                          ids=private$.data[[id_node]]
-                        }
-                        
-                        return(ids)
+                        return(self$get_node("id",function(node_var,n){seq_len(n)}))
                       },
                       folds = function(){
                         return(private$.folds)
                       },
                       uuid = function(){
                         return(private$.uuid)
+                      },
+                      column_names = function(){
+                        return(private$.column_names)
                       }),
                     private = list(
                       .data = NULL,
                       .nodes = NULL,
                       .X = NULL,
                       .folds = NULL,
-                      .uuid = NULL
+                      .uuid = NULL,
+                      .column_names = NULL,
+                      .row_index = NULL
                     )
 )
 
 #' @export
 `[.sl3_Task` <- function(x,i=NULL,j=NULL,...) {
-  all_nodes=unlist(x$nodes[c("covariates","outcome","id","weights")])
-  sl3_Task$new(x$data[i,all_nodes, with=F],nodes=x$nodes, folds=NA)
+  return(x$subset_task(i))
 }

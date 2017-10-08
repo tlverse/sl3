@@ -13,7 +13,7 @@ library(sl3)
 # library(data.table)
 library(origami)
 library(SuperLearner)
-context("Overall Test")
+context("SL.screen Test")
 set.seed(1)
 
 data(cpp)

@@ -3,6 +3,21 @@
 # 2) delayed_fun does not respect member function's environment (containing self and private)
 
 #' Learner helpers
+#' @param learner_class the learner class to instantiate
+#' @param ... parameters with which to instantiate the learner
+#' @rdname learner_helpers
+#' @export
+learner_new <- function(learner_class, ...){
+  learner_class$new(...)
+}
+
+#' @rdname learner_helpers
+#' @export
+delayed_learner_new <- function(learner_class, ...){
+  pred_delayed <- delayed_fun(learner_new, sequential = TRUE)(learner_class, ...)
+  return(pred_delayed)
+}
+
 #' @param learner a learner object to fit to the task
 #' @param task the task to fit on
 #' @param pretrain any data obtained from a pretrain step
