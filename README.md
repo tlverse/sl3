@@ -39,16 +39,6 @@ Install the most recent *stable release* from GitHub via [`devtools`](https://ww
 devtools::install_github("jeremyrcoyle/sl3")
 ```
 
-<!--
-To contribute, install the _development version_ from GitHub via
-[`devtools`](https://www.rstudio.com/products/rpackages/devtools/):
-
-
-```r
-devtools::install_github("jeremyrcoyle/sl3", ref = "develop")
-```
--->
-
 ------------------------------------------------------------------------
 
 Contributions and Issues
@@ -57,8 +47,6 @@ Contributions and Issues
 It is our hope that `sl3` will grow to be widely used for creating stacked regression models and the cross-validation of pipelines that make up such models, as well as the variety of other applications in which the Super Learner algorithm plays a role. To that end, contributions are very welcome, though we ask that interested contributors consult our [`contribution guidelines`](https://github.com/jeremyrcoyle/sl3/blob/master/CONTRIBUTING.md) prior to submitting a pull request.
 
 If you encounter any bugs or have any specific feature requests, please [file an issue](https://github.com/jeremyrcoyle/sl3/issues).
-
-[![](https://graphs.waffle.io/jeremyrcoyle/sl3/throughput.svg)](https://waffle.io/jeremyrcoyle/sl3/metrics/throughput)
 
 ------------------------------------------------------------------------
 
@@ -114,23 +102,23 @@ stack_fit <- learner_stack$train(task)
 #> The following objects are masked from 'package:purrr':
 #> 
 #>     accumulate, when
-#> Loaded glmnet 2.0-10
+#> Loaded glmnet 2.0-13
 preds <- stack_fit$predict()
 head(preds)
-#>      Lrnr_pkg_SuperLearner_SL.glmnet   Lrnr_glm
-#> [1,]                       0.3525946 0.36298498
-#> [2,]                       0.3525946 0.36298498
-#> [3,]                       0.2442593 0.25993072
-#> [4,]                       0.2442593 0.25993072
-#> [5,]                       0.2442593 0.25993072
-#> [6,]                       0.0269504 0.05680264
-#>      Lrnr_pkg_SuperLearner_screener_screen.glmnet___Lrnr_glm
-#> [1,]                                              0.36228209
-#> [2,]                                              0.36228209
-#> [3,]                                              0.25870995
-#> [4,]                                              0.25870995
-#> [5,]                                              0.25870995
-#> [6,]                                              0.05600958
+#>    Lrnr_pkg_SuperLearner_SL.glmnet   Lrnr_glm
+#> 1:                      0.35495384 0.36298498
+#> 2:                      0.35495384 0.36298498
+#> 3:                      0.24777855 0.25993072
+#> 4:                      0.24777855 0.25993072
+#> 5:                      0.24777855 0.25993072
+#> 6:                      0.03402737 0.05680264
+#>    Lrnr_pkg_SuperLearner_screener_screen.glmnet___Lrnr_glm
+#> 1:                                              0.36228209
+#> 2:                                              0.36228209
+#> 3:                                              0.25870995
+#> 4:                                              0.25870995
+#> 5:                                              0.25870995
+#> 6:                                              0.05600958
 ```
 
 ------------------------------------------------------------------------

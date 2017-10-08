@@ -9,7 +9,7 @@
 #'
 #' @return \code{\link{Lrnr_base}} object with methods for training and
 #' prediction.
-#;
+#'
 #' @format \code{\link{R6Class}} object.
 #'
 #' @field bin_method The type of smoothing to be performed. See documentation of
