@@ -1,6 +1,6 @@
 ---
 output: github_document
-bibliography: refs.bib
+bibliography: README-refs.bib
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
