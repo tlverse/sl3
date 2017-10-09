@@ -12,8 +12,9 @@ sl3Options(o, value)
 \item{value}{Value to assign (optional)}
 }
 \description{
-To list all \code{sl3} options, just run this function without any parameters provided. To query only one value, pass the first parameter.
-To set that, use the \code{value} parameter too.
+To list all \code{sl3} options, just run this function without any parameters
+ provided. To query only one value, pass the first parameter. To set that,
+ use the \code{value} parameter too.
 }
 \examples{
 \dontrun{

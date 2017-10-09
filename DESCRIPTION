@@ -1,58 +1,58 @@
 Package: sl3
-Title: Machine Learning Pipelines
-Version: 0.2
-Date: 2017-08-01
+Title: Pipelines for Machine Learning and Super Learning
+Version: 0.2.1.0
 Authors@R: c(
-  person("Jeremy", "Coyle", email = "jeremyrcoyle@gmail.com",
-         role = c("aut", "cre", "cph")),
-  person("Nima", "Hejazi", email = "nh@nimahejazi.org", role = "aut"),
-  person("Oleg", "Sofrygin", email="oleg.sofrygin@gmail.com", role = "aut"),
-  person("Ivana", "Malenica", email = "imalenica@berkeley.edu", role = "aut")
+    person("Jeremy", "Coyle", email = "jeremyrcoyle@gmail.com",
+           role = c("aut", "cre", "cph")),
+    person("Nima", "Hejazi", email = "nh@nimahejazi.org", role = "aut"),
+    person("Oleg", "Sofrygin", email="oleg.sofrygin@gmail.com", role = "aut"),
+    person("Ivana", "Malenica", email = "imalenica@berkeley.edu", role = "aut")
   )
 Maintainer: Jeremy Coyle <jeremyrcoyle@gmail.com>
 Description: Implements the super learner prediction method and contains a
-  library of prediction algorithms to be used in the super learner.
+    library of prediction algorithms to be used in the super learner.
+Depends: R (>= 2.14.0)
+Imports:
+    data.table,
+    assertthat,
+    origami,
+    future,
+    R6,
+    uuid,
+    memoise,
+    digest,
+    BBmisc,
+    delayed,
+    methods,
+    stats
+Suggests:
+    testthat,
+    knitr,
+    rmarkdown,
+    glmnet,
+    devtools,
+    dplyr,
+    rgl,
+    Rsolnp,
+    condensier,
+    cvAUC,
+    h2o,
+    xgboost,
+    forecast,
+    nloptr,
+    rugarch,
+    nnls,
+    SuperLearner,
+    tsDyn,
+    randomForest
+Remotes:
+    github::osofr/condensier,
+    github::jeremyrcoyle/delayed
 License: GPL-3
 URL: https://github.com/jeremyrcoyle/sl3
 BugReports: https://github.com/jeremyrcoyle/sl3/issues
-Depends:
-  R (>= 2.14.0)
-Imports:
-  data.table,
-  assertthat,
-  origami,
-  future,
-  R6,
-  uuid,
-  memoise,
-  digest,
-  BBmisc,
-  delayed,
-  methods,
-  stats
-Suggests:
-  testthat,
-  knitr,
-  rmarkdown,
-  glmnet,
-  devtools,
-  dplyr,
-  rgl,
-  Rsolnp,
-  condensier,
-  cvAUC,
-  h2o,
-  xgboost,
-  forecast,
-  nloptr,
-  rugarch,
-  nnls,
-  SuperLearner,
-  tsDyn,
-  randomForest
-Remotes:
-  github::osofr/condensier,
-  github::jeremyrcoyle/delayed
+Encoding: UTF-8
+LazyData: yes
 LazyLoad: yes
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1.9000
