@@ -24,6 +24,9 @@ Imports:
     BBmisc,
     delayed,
     methods,
+    speedglm,
+    randomForest,
+    xgboost,
     stats
 Suggests:
     testthat,
@@ -37,14 +40,12 @@ Suggests:
     condensier,
     cvAUC,
     h2o,
-    xgboost,
     forecast,
     nloptr,
     rugarch,
     nnls,
     SuperLearner,
-    tsDyn,
-    randomForest
+    tsDyn
 Remotes:
     github::osofr/condensier,
     github::jeremyrcoyle/delayed
