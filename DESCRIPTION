@@ -1,6 +1,6 @@
 Package: sl3
 Title: Pipelines for Machine Learning and Super Learning
-Version: 0.2.1.0
+Version: 0.2.2
 Authors@R: c(
     person("Jeremy", "Coyle", email = "jeremyrcoyle@gmail.com",
            role = c("aut", "cre", "cph")),
