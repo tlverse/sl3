@@ -1,5 +1,6 @@
 #' @importFrom assertthat assert_that is.count is.flag
-#' @import origami
+#' @importFrom origami make_folds cross_validate
+#' @importFrom data.table data.table
 #' @export
 #' @rdname undocumented_learner
 Lrnr_sl <- R6Class(classname = "Lrnr_sl", inherit = Lrnr_base, portable = TRUE,
@@ -53,7 +54,8 @@ Lrnr_sl <- R6Class(classname = "Lrnr_sl", inherit = Lrnr_base, portable = TRUE,
                                                              na.rm = TRUE)])
       # get fold specific risks
       validation_means <- function(fold, losses, weight) {
-        risks <- lapply(validation(losses), weighted.mean, validation(weight))
+        risks <- lapply(origami::validation(losses), weighted.mean,
+                        origami::validation(weight))
         return(list(risks = as.data.frame(risks)))
       }
       # TODO: this ignores weights, square errors are also incorrect

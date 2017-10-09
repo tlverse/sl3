@@ -45,7 +45,7 @@ Lrnr_pkg_SuperLearner <- R6Class(classname = "Lrnr_pkg_SuperLearner",
         family <- self$params$family
         if (is.character(family)) {
           family <- get(family, mode = "function", envir = parent.frame())
-          family <- stats::family()
+          family <- family()
         }
       }
       fit_object <- wrapper(task$Y, task$X, newX, family = stats::family,
@@ -62,7 +62,7 @@ Lrnr_pkg_SuperLearner <- R6Class(classname = "Lrnr_pkg_SuperLearner",
         }
       }
       predictions = predict(private$.fit_object, newdata = task$X,
-                            family = stats::family)
+                            family = family)
       return(predictions)
     },
     .required_packages = c("SuperLearner")

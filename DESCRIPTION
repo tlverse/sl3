@@ -22,13 +22,14 @@ Imports:
     memoise,
     digest,
     BBmisc,
+    stats,
     delayed,
     methods,
     speedglm,
     randomForest,
     xgboost,
     Rsolnp,
-    stats
+    h2o
 Suggests:
     testthat,
     knitr,
@@ -39,7 +40,6 @@ Suggests:
     rgl,
     condensier,
     cvAUC,
-    h2o,
     forecast,
     nloptr,
     rugarch,

@@ -8,22 +8,6 @@
 ## - All predictions are based on external matrix multiplication with a family-based link functions
 ## ------------------------------------------------------------------------
 
-#if warning is in ignoreWarningList, ignore it; otherwise post it as usual
-SuppressGivenWarnings <- function(expr, warningsToIgnore) {
-  h <- function (w) {
-    if (w$message %in% warningsToIgnore) invokeRestart("muffleWarning")
-  }
-  withCallingHandlers(expr, warning = h)
-}
-
-GetWarningsToSuppress <- function(update.step=FALSE) {
-  warnings.to.suppress <- c("glm.fit: fitted probabilities numerically 0 or 1 occurred",
-                            "prediction from a rank-deficient fit may be misleading",
-                            "non-integer #successes in a binomial glm!",
-                            "the matrix is either rank-deficient or indefinite",
-                            "glm.fit: algorithm did not converge")
-  return(warnings.to.suppress)
-}
 
 #' Faster GLM Fits
 #'
