@@ -20,7 +20,7 @@
 #' @field ... Additional arguments. Currently unused.
 #'
 #' @importFrom R6 R6Class
-#' @importFrom stats gaussian
+#' @importFrom stats gaussian predict
 #'
 #' @export
 #
@@ -48,7 +48,7 @@ Lrnr_pkg_SuperLearner <- R6Class(classname = "Lrnr_pkg_SuperLearner",
           family <- family()
         }
       }
-      fit_object <- wrapper(task$Y, task$X, newX, family = stats::family,
+      fit_object <- wrapper(task$Y, task$X, newX, family = family,
                             obsWeights = task$weights, id = task$id)$fit
       return(fit_object)
     },
@@ -61,8 +61,8 @@ Lrnr_pkg_SuperLearner <- R6Class(classname = "Lrnr_pkg_SuperLearner",
           family <- family()
         }
       }
-      predictions = predict(private$.fit_object, newdata = task$X,
-                            family = family)
+      predictions = stats::predict(private$.fit_object, newdata = task$X,
+                                   family = family)
       return(predictions)
     },
     .required_packages = c("SuperLearner")
