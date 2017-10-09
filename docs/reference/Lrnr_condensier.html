@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Univariate ARIMA Models — Lrnr_arima • sl3</title>
+<title>Conditional Density Estimation — Lrnr_condensier • sl3</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -95,15 +95,15 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Univariate ARIMA Models</h1>
+    <h1>Conditional Density Estimation</h1>
     </div>
 
     
-    <p>This learner supports autoregressive integrated moving average model for
-univariate time-series.</p>
+    <p>This learner provides facilities for conditional density estimation using
+the <code>condensier</code> package.</p>
     
 
-    <pre class="usage"><span class='no'>Lrnr_arima</span></pre>
+    <pre class="usage"><span class='no'>Lrnr_condensier</span></pre>
         
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
@@ -118,22 +118,28 @@ prediction.</p>
 
     
     <dl class='dl-horizontal'>
-<dt><code>order</code></dt><dd><p>A specification of the non-seasonal part of the ARIMA model: the
-three integer components (p, d, q) are the AR order, the degree of
-differencing, and the MA order.</p></dd>
-    <dt><code>seasonal</code></dt><dd><p>A specification of the seasonal part of the ARIMA model, plus
-the period (which defaults to frequency(x)). This should be a list with
-components order and period, but a specification of just a numeric vector of
-length 3 will be turned into a suitable list with the specification as the
-order.</p></dd>
-    <dt><code>n.ahead</code></dt><dd><p>The forecast horizon. If not specified, returns forecast of
-size <code>task$X</code>.</p></dd>
+<dt><code>bin_method</code></dt><dd><p>The type of smoothing to be performed. See documentation of
+the <code>condensier</code> package for details.</p></dd>
+    <dt><code>nbins</code></dt><dd><p>The number of observations per bin. See documentation of the
+<code>condensier</code> package for details.</p></dd>
+    <dt><code>max_n_cat</code></dt><dd><p>Maximum number of unique levels for categorical outcomes.
+See documentation of the <code>condensier</code> package for details.</p></dd>
+    <dt><code>pool</code></dt><dd><p>Whether pooling of data across bins should be performed. See
+documentation of the <code>condensier</code> package for details.</p></dd>
+    <dt><code>max_n_bin</code></dt><dd><p>Maximum number of observations per single bin for continuous
+outcome. See documentation of the <code>condensier</code> package for details.</p></dd>
+    <dt><code>parfit</code></dt><dd><p>Whether to invoke parallelization in the fitting procedure. See
+documentation of the <code>condensier</code> package for details.</p></dd>
+    <dt><code>bin_estimator</code></dt><dd><p>The classification algorithm to be used in the fitting
+process. See documentation of the <code>condensier</code> package for details.</p></dd>
+    <dt><code>intrvls</code></dt><dd><p>An interval range to be used for custom bin definitions. See
+documentation of the <code>condensier</code> package for details.</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <p>Other Learners: <code><a href='Lrnr_HarmonicReg.html'>Lrnr_HarmonicReg</a></code>,
-  <code><a href='Lrnr_base.html'>Lrnr_base</a></code>, <code><a href='Lrnr_condensier.html'>Lrnr_condensier</a></code>,
+  <code><a href='Lrnr_arima.html'>Lrnr_arima</a></code>, <code><a href='Lrnr_base.html'>Lrnr_base</a></code>,
   <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
   <code><a href='Lrnr_define_interactions.html'>Lrnr_define_interactions</a></code>,
   <code><a href='Lrnr_expSmooth.html'>Lrnr_expSmooth</a></code>, <code><a href='Lrnr_rugarch.html'>Lrnr_rugarch</a></code>,

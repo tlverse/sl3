@@ -75,7 +75,7 @@
       <h1>Super Learning Done Right (working title)</h1>
                         <h4 class="author">Jeremy Coyle &amp; Nima Hejazi</h4>
             
-            <h4 class="date">2017-10-08</h4>
+            <h4 class="date">2017-10-09</h4>
           </div>
 
     
@@ -165,7 +165,7 @@ outcome &lt;-<span class="st"> "haz"</span></code></pre></div>
 ##     .folds: list
 ##     .nodes: list
 ##     .row_index: NULL
-##     .uuid: 50f0f164-ac5f-11e7-be59-a8667f0792e4
+##     .uuid: ce24c9cc-acc7-11e7-a678-a8667f0792e4
 ##     .X: NULL</code></pre>
 <p>The object is composed of several nodes, defining the outcome and covariates, as well as other information that might be useful (e.g., weights to assign to specific covariates, and subject IDs to effectively deal with repeated measures).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">task<span class="op">$</span>nodes</code></pre></div>
@@ -286,13 +286,13 @@ ml_fit &lt;-<span class="st"> </span>glm_stack<span class="op">$</span><span cla
 ## 
 ## Coefficients:
 ##                                             (Intercept)  
-##                                                0.032212  
+##                                                 0.02217  
 ##                         Lrnr_pkg_SuperLearner_SL.glmnet  
-##                                                0.271485  
+##                                                 0.73514  
 ##                                                Lrnr_glm  
-##                                                0.529574  
+##                                                 0.24388  
 ## Lrnr_pkg_SuperLearner_screener_screen.glmnet___Lrnr_glm  
-##                                                0.006546  
+##                                                -0.11126  
 ## 
 ## Degrees of Freedom: 1440 Total (i.e. Null);  1437 Residual
 ## Null Deviance:       2353 
@@ -312,13 +312,13 @@ ml_fit &lt;-<span class="st"> </span>glm_stack<span class="op">$</span><span cla
 ## 
 ## Coefficients:
 ##                                             (Intercept)  
-##                                                0.032212  
+##                                                 0.02217  
 ##                         Lrnr_pkg_SuperLearner_SL.glmnet  
-##                                                0.271485  
+##                                                 0.73514  
 ##                                                Lrnr_glm  
-##                                                0.529574  
+##                                                 0.24388  
 ## Lrnr_pkg_SuperLearner_screener_screen.glmnet___Lrnr_glm  
-##                                                0.006546  
+##                                                -0.11126  
 ## 
 ## Degrees of Freedom: 1440 Total (i.e. Null);  1437 Residual
 ## Null Deviance:       2353 
@@ -327,7 +327,7 @@ ml_fit &lt;-<span class="st"> </span>glm_stack<span class="op">$</span><span cla
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ml_fit_preds &lt;-<span class="st"> </span>ml_fit<span class="op">$</span><span class="kw">predict</span>()
 <span class="kw">head</span>(ml_fit_preds)</code></pre></div>
 <pre><code>##          1          2          3          4          5          6 
-## 0.32134110 0.30560300 0.20999663 0.29511926 0.29511926 0.04227278</code></pre>
+## 0.32842859 0.30734293 0.21322527 0.29833122 0.29833122 0.01965967</code></pre>
 <p>Finally, we can build a proper Super Learner in a single call by providing the library of learners as well as the meta-learner. For simplicity, we will use the same set of learners and meta-learning algorithm as we did before, which means that we are merely building a GLM-based Super Learner (of class <code>Lrnr_sl</code>), with learning algorithms including an elastic net, GLM, and GLM with elastic net screener. Below, we train the Super Learner on the data simply by invoking the <code>train</code> method:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># convenience learner combining all this</span>
 sl &lt;-<span class="st"> </span>Lrnr_sl<span class="op">$</span><span class="kw">new</span>(<span class="dt">learners =</span> <span class="kw">list</span>(SL.glmnet_learner, glm_learner,

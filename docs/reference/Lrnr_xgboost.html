@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Univariate ARIMA Models — Lrnr_arima • sl3</title>
+<title>xgboost: eXtreme Gradient Boosting Definition — Lrnr_xgboost • sl3</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -95,16 +95,37 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Univariate ARIMA Models</h1>
+    <h1>xgboost: eXtreme Gradient Boosting Definition</h1>
     </div>
 
     
-    <p>This learner supports autoregressive integrated moving average model for
-univariate time-series.</p>
+    <p>Definition of <code>xgboost</code> type models. This function is for internal use
+only.</p>
+<p>This learner provides fitting procedures for <code>xgboost</code> models, using the
+<code>xgboost</code> package. Such models are classification and regression trees
+with extreme gradient boosting. For details on the fitting procedure, consult
+the documentation of the <code>xgboost</code> package.</p>
     
 
-    <pre class="usage"><span class='no'>Lrnr_arima</span></pre>
-        
+    <pre class="usage"><span class='fu'>define_xgboost_X</span>(<span class='no'>task</span>, <span class='kw'>add_outcome</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+
+<span class='no'>Lrnr_xgboost</span></pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>task</th>
+      <td><p>An object of type <code>Lrnr_base</code> as defined in this package.</p></td>
+    </tr>
+    <tr>
+      <th>add_outcome</th>
+      <td><p>A <code>logical</code> indicating whether the trained model
+object should be fit in a supervised fashion (with the outcome vector) or in
+an unsupervised fashion.</p></td>
+    </tr>
+    </table>
+    
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
     <p><code>R6Class</code> object.</p>
@@ -112,47 +133,18 @@ univariate time-series.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code><a href='Lrnr_base.html'>Lrnr_base</a></code> object with methods for training and
-prediction.</p>
-    
-    <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
-
-    
-    <dl class='dl-horizontal'>
-<dt><code>order</code></dt><dd><p>A specification of the non-seasonal part of the ARIMA model: the
-three integer components (p, d, q) are the AR order, the degree of
-differencing, and the MA order.</p></dd>
-    <dt><code>seasonal</code></dt><dd><p>A specification of the seasonal part of the ARIMA model, plus
-the period (which defaults to frequency(x)). This should be a list with
-components order and period, but a specification of just a numeric vector of
-length 3 will be turned into a suitable list with the specification as the
-order.</p></dd>
-    <dt><code>n.ahead</code></dt><dd><p>The forecast horizon. If not specified, returns forecast of
-size <code>task$X</code>.</p></dd>
-</dl>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <p>Other Learners: <code><a href='Lrnr_HarmonicReg.html'>Lrnr_HarmonicReg</a></code>,
-  <code><a href='Lrnr_base.html'>Lrnr_base</a></code>, <code><a href='Lrnr_condensier.html'>Lrnr_condensier</a></code>,
-  <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
-  <code><a href='Lrnr_define_interactions.html'>Lrnr_define_interactions</a></code>,
-  <code><a href='Lrnr_expSmooth.html'>Lrnr_expSmooth</a></code>, <code><a href='Lrnr_rugarch.html'>Lrnr_rugarch</a></code>,
-  <code><a href='undocumented_learner.html'>Lrnr_sl</a></code>, <code><a href='Lrnr_tsDyn.html'>Lrnr_tsDyn</a></code>,
-  <code><a href='Pipeline.html'>Pipeline</a></code>, <code><a href='Stack.html'>Stack</a></code></p>
+ prediction.</p>
     
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#format">Format</a></li>
 
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#fields">Fields</a></li>
-
-      <li><a href="#see-also">See also</a></li>
           </ul>
 
   </div>
