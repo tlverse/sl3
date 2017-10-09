@@ -27,6 +27,7 @@ Imports:
     speedglm,
     randomForest,
     xgboost,
+    Rsolnp,
     stats
 Suggests:
     testthat,
@@ -36,7 +37,6 @@ Suggests:
     devtools,
     dplyr,
     rgl,
-    Rsolnp,
     condensier,
     cvAUC,
     h2o,
