@@ -1,33 +1,50 @@
-## ------------------------------------------------------------------------
-## meta learner for density, find convex combo of candidate density estimators
-## by minimizing the cross-validated negative log-likelihood loss of each density.
-## The optimization problem is solved with Rsolnp::solnp, using largrandge multipliers.
-## ------------------------------------------------------------------------
+#' Nonlinear Optimization via Augmented Lagrange
+#'
+#' This meta-learner provides fitting procedures for density estimation, finding
+#' convex combinations of candidate density estimators by minimizing the
+#' cross-validated negative log-likelihood loss of each candidate density. The
+#' optimization problem is solved by making use of \code{Rsolnp::solnp}, using
+#' Lagrange multipliers. For further details, consult the documentation of the
+#' \code{Rsolnp} package.
+#'
+#' @docType class
+#'
+#' @keywords data
+#'
+#' @return \code{\link{Lrnr_base}} object with methods for training and
+#'  prediction.
+#'
+#' @format \code{\link{R6Class}} object.
+#'
+#' @field ... Additional arguments. Currently unused.
+#'
+#' @importFrom R6 R6Class
+#'
 #' @export
-#' @rdname undocumented_learner
-Lrnr_solnp_density <- R6Class(classname = "Lrnr_solnp_density", inherit = Lrnr_base, portable = TRUE, class = TRUE,
+#
+Lrnr_solnp_density <- R6Class(classname = "Lrnr_solnp_density",
+                              inherit = Lrnr_base, portable = TRUE,
+                              class = TRUE,
   public = list(
     initialize = function(...) {
       params <- list(...)
       super$initialize(params = params)
     }
   ),
-
   private = list(
     .covariates = NULL,
     .train = function(task) {
       verbose = getOption("sl3.verbose")
       params <- self$params
-
       eval_fun_loss <- function(alphas) {
         sum(-log(as.vector(as.matrix(task$X) %*% alphas)))
       }
-
       eq_fun <- function(alphas) {
         sum(alphas)
       }
-
-      fit_object <- Rsolnp::solnp(runif(ncol(task$X)), eval_fun_loss,  eqfun = eq_fun, eqB = 1, LB = rep(0L, ncol(task$X)))
+      fit_object <- Rsolnp::solnp(runif(ncol(task$X)), eval_fun_loss,
+                                  eqfun = eq_fun, eqB = 1,
+                                  LB = rep(0L, ncol(task$X)))
       fit_object$coef <- fit_object$pars
       names(fit_object$coef) <- colnames(task$X)
       # if (verbose) {
@@ -36,7 +53,6 @@ Lrnr_solnp_density <- R6Class(classname = "Lrnr_solnp_density", inherit = Lrnr_b
       fit_object$name <- "solnp"
       return(fit_object)
     },
-
     .predict = function(task = NULL) {
       verbose <- getOption("sl3.verbose")
       X <- task$X
@@ -44,7 +60,10 @@ Lrnr_solnp_density <- R6Class(classname = "Lrnr_solnp_density", inherit = Lrnr_b
       if (nrow(X) > 0) {
         coef <- private$.fit_object$coef
         if (!all(is.na(coef))) {
-          predictions <- data.table::data.table(as.matrix(X[, which(!is.na(coef)), drop = FALSE, with = FALSE]) %*% coef[!is.na(coef)])
+          predictions <- data.table::data.table(as.matrix(X[,
+                                                          which(!is.na(coef)),
+                                                drop = FALSE, with = FALSE]) %*%
+                                                coef[!is.na(coef)])
         } else {
           stop("all SL model coefficients are NA")
         }
@@ -53,4 +72,6 @@ Lrnr_solnp_density <- R6Class(classname = "Lrnr_solnp_density", inherit = Lrnr_b
       return(predictions)
     },
     .required_packages = c("Rsolnp")
-), )
+  ),
+)
+

@@ -9,26 +9,38 @@
 Lrnr_arima
 }
 \value{
-\code{\link{Lrnr_base}} object with methods for training and prediction
+\code{\link{Lrnr_base}} object with methods for training and
+prediction.
 }
 \description{
-This learner supports autoregressive integrated moving average model for univariate time-series.
+This learner supports autoregressive integrated moving average model for
+univariate time-series.
 }
 \section{Fields}{
 
 \describe{
-\item{\code{order}}{A specification of the non-seasonal part of the ARIMA model: the three integer components (p, d, q) are the AR order, the degree of differencing, and the MA order.}
+\item{\code{order}}{A specification of the non-seasonal part of the ARIMA model: the
+three integer components (p, d, q) are the AR order, the degree of
+differencing, and the MA order.}
 
-\item{\code{seasonal}}{A specification of the seasonal part of the ARIMA model, plus the period (which defaults to frequency(x)). This should be a list with components order and period, but a specification of just a numeric vector of length 3 will be turned into a suitable list with the specification as the order.}
+\item{\code{seasonal}}{A specification of the seasonal part of the ARIMA model, plus
+the period (which defaults to frequency(x)). This should be a list with
+components order and period, but a specification of just a numeric vector of
+length 3 will be turned into a suitable list with the specification as the
+order.}
 
-\item{\code{n.ahead}}{The forecast horizon. If not specified, returns forecast of size \code{task$X}.}
+\item{\code{n.ahead}}{The forecast horizon. If not specified, returns forecast of
+size \code{task$X}.}
 }}
 
 \seealso{
 Other Learners: \code{\link{Lrnr_HarmonicReg}},
   \code{\link{Lrnr_base}}, \code{\link{Lrnr_condensier}},
-  \code{\link{Lrnr_cv}}, \code{\link{Lrnr_expSmooth}},
-  \code{\link{Lrnr_rugarch}}, \code{\link{Lrnr_tsDyn}},
+  \code{\link{Lrnr_cv}},
+  \code{\link{Lrnr_define_interactions}},
+  \code{\link{Lrnr_expSmooth}}, \code{\link{Lrnr_rugarch}},
+  \code{\link{Lrnr_sl}}, \code{\link{Lrnr_tsDyn}},
   \code{\link{Pipeline}}, \code{\link{Stack}}
 }
+\concept{Learners}
 \keyword{data}
