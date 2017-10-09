@@ -16,6 +16,7 @@
 
 # other miscellaneous non-CRAN files
 xgboost.model
+deploy.sh
 ^docs$
 ^README\.Rmd$
 ^README\.html$
