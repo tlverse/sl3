@@ -11,8 +11,6 @@
 #'
 #' @param task An object of type \code{Lrnr_base} as defined in this package.
 #'
-#' @importFrom h2o as.h2o
-#'
 #' @rdname Lrnr_h2o_glm
 #'
 #' @name Lrnr_h2o_glm
@@ -50,9 +48,6 @@ define_h2o_X = function(task) {
 #' @field ... Additional arguments.
 #'
 #' @importFrom R6 R6Class
-#' @importFrom h2o h2o.getConnection h2o.show_progress h2o.no_progress
-#' h2o.predict
-#' @importFrom data.table as.data.table
 #' @importFrom assertthat assert_that is.count is.flag
 #'
 #' @rdname Lrnr_h2o_glm

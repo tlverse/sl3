@@ -15,9 +15,6 @@
 #' @format \code{\link{R6Class}} object.
 #'
 #' @importFrom R6 R6Class
-#' @importFrom h2o h2o.getConnection h2o.show_progress h2o.no_progress h2o.cbind
-#' as.factor h2o.unique h2o.predict h2o.grid h2o.getGrid h2o.getModel
-#' @importFrom data.table as.data.table
 #' @importFrom utils getFromNamespace
 #' @importFrom assertthat assert_that is.count is.flag
 #'

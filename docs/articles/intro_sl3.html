@@ -165,7 +165,7 @@ outcome &lt;-<span class="st"> "haz"</span></code></pre></div>
 ##     .folds: list
 ##     .nodes: list
 ##     .row_index: NULL
-##     .uuid: ce24c9cc-acc7-11e7-a678-a8667f0792e4
+##     .uuid: 2d0d236e-ad20-11e7-a0c3-a8667f0792e4
 ##     .X: NULL</code></pre>
 <p>The object is composed of several nodes, defining the outcome and covariates, as well as other information that might be useful (e.g., weights to assign to specific covariates, and subject IDs to effectively deal with repeated measures).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">task<span class="op">$</span>nodes</code></pre></div>
@@ -203,7 +203,7 @@ sg_fit &lt;-<span class="st"> </span>screen_and_glm<span class="op">$</span><spa
 ## $Lrnr_glm
 ## [1] "Lrnr_glm"
 ## 
-## Call:  glm(formula = Y ~ ., family = family, data = task$X, weights = task$weights)
+## Call:  stats::glm(formula = Y ~ ., family = family, data = task$X, weights = task$weights)
 ## 
 ## Coefficients:
 ## (Intercept)       apgar1       parity     gagebrth         mage  
@@ -224,7 +224,7 @@ sg_fit &lt;-<span class="st"> </span>screen_and_glm<span class="op">$</span><spa
 ## $learner_fits$Lrnr_glm
 ## [1] "Lrnr_glm"
 ## 
-## Call:  glm(formula = Y ~ ., family = family, data = task$X, weights = task$weights)
+## Call:  stats::glm(formula = Y ~ ., family = family, data = task$X, weights = task$weights)
 ## 
 ## Coefficients:
 ## (Intercept)       apgar1       parity     gagebrth         mage  
@@ -282,21 +282,21 @@ ml_fit &lt;-<span class="st"> </span>glm_stack<span class="op">$</span><span cla
 ## $Lrnr_glm
 ## [1] "Lrnr_glm"
 ## 
-## Call:  glm(formula = Y ~ ., family = family, data = task$X, weights = task$weights)
+## Call:  stats::glm(formula = Y ~ ., family = family, data = task$X, weights = task$weights)
 ## 
 ## Coefficients:
 ##                                             (Intercept)  
-##                                                 0.02217  
+##                                                 0.01958  
 ##                         Lrnr_pkg_SuperLearner_SL.glmnet  
-##                                                 0.73514  
+##                                                 0.96532  
 ##                                                Lrnr_glm  
-##                                                 0.24388  
+##                                                 1.18916  
 ## Lrnr_pkg_SuperLearner_screener_screen.glmnet___Lrnr_glm  
-##                                                -0.11126  
+##                                                -1.27656  
 ## 
 ## Degrees of Freedom: 1440 Total (i.e. Null);  1437 Residual
 ## Null Deviance:       2353 
-## Residual Deviance: 2308  AIC: 4778</code></pre>
+## Residual Deviance: 2307  AIC: 4778</code></pre>
 <pre><code>## $learner_fits
 ## $learner_fits$CV_Stack
 ## [1] "Lrnr_cv"
@@ -308,26 +308,26 @@ ml_fit &lt;-<span class="st"> </span>glm_stack<span class="op">$</span><span cla
 ## $learner_fits$Lrnr_glm
 ## [1] "Lrnr_glm"
 ## 
-## Call:  glm(formula = Y ~ ., family = family, data = task$X, weights = task$weights)
+## Call:  stats::glm(formula = Y ~ ., family = family, data = task$X, weights = task$weights)
 ## 
 ## Coefficients:
 ##                                             (Intercept)  
-##                                                 0.02217  
+##                                                 0.01958  
 ##                         Lrnr_pkg_SuperLearner_SL.glmnet  
-##                                                 0.73514  
+##                                                 0.96532  
 ##                                                Lrnr_glm  
-##                                                 0.24388  
+##                                                 1.18916  
 ## Lrnr_pkg_SuperLearner_screener_screen.glmnet___Lrnr_glm  
-##                                                -0.11126  
+##                                                -1.27656  
 ## 
 ## Degrees of Freedom: 1440 Total (i.e. Null);  1437 Residual
 ## Null Deviance:       2353 
-## Residual Deviance: 2308  AIC: 4778</code></pre>
+## Residual Deviance: 2307  AIC: 4778</code></pre>
 <p>And the first few prediction from the model:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ml_fit_preds &lt;-<span class="st"> </span>ml_fit<span class="op">$</span><span class="kw">predict</span>()
 <span class="kw">head</span>(ml_fit_preds)</code></pre></div>
 <pre><code>##          1          2          3          4          5          6 
-## 0.32842859 0.30734293 0.21322527 0.29833122 0.29833122 0.01965967</code></pre>
+## 0.32800411 0.31457899 0.20850463 0.29322737 0.29322737 0.00831161</code></pre>
 <p>Finally, we can build a proper Super Learner in a single call by providing the library of learners as well as the meta-learner. For simplicity, we will use the same set of learners and meta-learning algorithm as we did before, which means that we are merely building a GLM-based Super Learner (of class <code>Lrnr_sl</code>), with learning algorithms including an elastic net, GLM, and GLM with elastic net screener. Below, we train the Super Learner on the data simply by invoking the <code>train</code> method:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># convenience learner combining all this</span>
 sl &lt;-<span class="st"> </span>Lrnr_sl<span class="op">$</span><span class="kw">new</span>(<span class="dt">learners =</span> <span class="kw">list</span>(SL.glmnet_learner, glm_learner,
@@ -358,24 +358,27 @@ sl_fit &lt;-<span class="st"> </span>sl<span class="op">$</span><span class="kw"
 ##  [1] glmnet_2.0-13            foreach_1.4.3           
 ##  [3] Matrix_1.2-11            bindrcpp_0.2            
 ##  [5] SuperLearner_2.0-23-9000 nnls_1.4                
-##  [7] origami_0.8.0            sl3_0.2                 
+##  [7] origami_0.8.0            sl3_0.2.2               
 ##  [9] dplyr_0.7.4              data.table_1.10.4       
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_0.12.13       compiler_3.4.2     bindr_0.1         
-##  [4] iterators_1.0.8    tools_3.4.2        digest_0.6.12     
-##  [7] delayed_0.2.1      uuid_0.1-2         lattice_0.20-35   
-## [10] jsonlite_1.5       evaluate_0.10.1    rstackdeque_1.1.1 
-## [13] memoise_1.1.0      tibble_1.3.4       checkmate_1.8.4   
-## [16] pkgconfig_2.0.1    rlang_0.1.2.9000   igraph_1.1.2      
-## [19] yaml_2.1.14        parallel_3.4.2     stringr_1.2.0.9000
-## [22] knitr_1.17         htmlwidgets_0.9    globals_0.10.2    
-## [25] grid_3.4.2         rprojroot_1.2      glue_1.1.1        
-## [28] listenv_0.6.0      R6_2.2.2           rmarkdown_1.6     
-## [31] magrittr_1.5       backports_1.1.1    BBmisc_1.11       
-## [34] codetools_0.2-15   htmltools_0.3.6    assertthat_0.2.0  
-## [37] abind_1.4-5        future_1.6.1       colorspace_1.3-2  
-## [40] stringi_1.1.5      visNetwork_2.0.1</code></pre>
+##  [1] h2o_3.14.0.3        listenv_0.6.0       lattice_0.20-35    
+##  [4] colorspace_1.3-2    htmltools_0.3.6     yaml_2.1.14        
+##  [7] rlang_0.1.2.9000    glue_1.1.1          xgboost_0.6-4      
+## [10] speedglm_0.3-2      uuid_0.1-2          bindr_0.1          
+## [13] stringr_1.2.0.9000  visNetwork_2.0.1    future_1.6.1       
+## [16] htmlwidgets_0.9     codetools_0.2-15    evaluate_0.10.1    
+## [19] memoise_1.1.0       knitr_1.17          parallel_3.4.2     
+## [22] rstackdeque_1.1.1   Rcpp_0.12.13        delayed_0.2.1      
+## [25] backports_1.1.1     checkmate_1.8.4     jsonlite_1.5       
+## [28] truncnorm_1.0-7     abind_1.4-5         digest_0.6.12      
+## [31] stringi_1.1.5       BBmisc_1.11         rprojroot_1.2      
+## [34] grid_3.4.2          tools_3.4.2         bitops_1.0-6       
+## [37] magrittr_1.5        RCurl_1.95-4.8      Rsolnp_1.16        
+## [40] tibble_1.3.4        randomForest_4.6-12 pkgconfig_2.0.1    
+## [43] MASS_7.3-47         assertthat_0.2.0    rmarkdown_1.6      
+## [46] iterators_1.0.8     R6_2.2.2            globals_0.10.2     
+## [49] igraph_1.1.2        compiler_3.4.2</code></pre>
 <hr>
 </div>
 <div id="references" class="section level2 unnumbered">

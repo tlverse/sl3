@@ -24,12 +24,7 @@ Imports:
     BBmisc,
     stats,
     delayed,
-    methods,
-    speedglm,
-    randomForest,
-    xgboost,
-    Rsolnp,
-    h2o
+    methods
 Suggests:
     testthat,
     knitr,
@@ -44,8 +39,13 @@ Suggests:
     nloptr,
     rugarch,
     nnls,
+    tsDyn,
+    Rsolnp,
+    xgboost,
+    speedglm,
+    randomForest,
     SuperLearner,
-    tsDyn
+    h2o
 Remotes:
     github::osofr/condensier,
     github::jeremyrcoyle/delayed

@@ -19,8 +19,6 @@
 #' @field ... Additional arguments. Currently unused.
 #'
 #' @importFrom R6 R6Class
-#' @importFrom Rsolnp solnp
-#' @importFrom data.table data.table
 #'
 #' @export
 #

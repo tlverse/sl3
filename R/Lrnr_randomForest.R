@@ -17,7 +17,6 @@
 #'
 #' @importFrom R6 R6Class
 #' @importFrom stats predict
-#' @importFrom randomForest randomForest
 #' @importFrom assertthat assert_that is.count is.flag
 #'
 #' @export

@@ -8,8 +8,6 @@
 #'  object should be fit in a supervised fashion (with the outcome vector) or in
 #'  an unsupervised fashion.
 #'
-#' @importFrom xgboost xgb.DMatrix
-#'
 #' @rdname Lrnr_xgboost
 #'
 #' @name Lrnr_xgboost
@@ -48,7 +46,6 @@ define_xgboost_X = function(task, add_outcome = FALSE) {
 #'
 #' @importFrom R6 R6Class
 #' @importFrom stats predict
-#' @importFrom data.table as.data.table
 #' @importFrom assertthat assert_that is.count is.flag
 #'
 #' @rdname Lrnr_xgboost

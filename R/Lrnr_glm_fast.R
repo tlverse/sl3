@@ -34,9 +34,7 @@
 #' @field ... Additional arguments.
 #'
 #' @importFrom R6 R6Class
-#' @importFrom data.table data.table
 #' @importFrom stats glm.fit
-#' @importFrom speedglm speedglm.wfit
 #' @importFrom assertthat assert_that is.count is.flag
 #'
 #' @export
