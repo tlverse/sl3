@@ -1,10 +1,42 @@
-## ------------------------------------------------------------------------
-## Learner for fitting conditional density using "condensier" R package
-## ------------------------------------------------------------------------
-
+#' Conditional Density Estimation
+#'
+#' This learner provides facilities for conditional density estimation using
+#' the \code{condensier} package.
+#'
+#' @docType class
+#'
+#' @keywords data
+#'
+#' @return \code{\link{Lrnr_base}} object with methods for training and
+#' prediction.
+#'
+#' @format \code{\link{R6Class}} object.
+#'
+#' @field bin_method The type of smoothing to be performed. See documentation of
+#'  the \code{condensier} package for details.
+#' @field nbins The number of observations per bin. See documentation of the
+#'  \code{condensier} package for details.
+#' @field max_n_cat Maximum number of unique levels for categorical outcomes.
+#'  See documentation of the \code{condensier} package for details.
+#' @field pool Whether pooling of data across bins should be performed. See
+#'  documentation of the \code{condensier} package for details.
+#' @field max_n_bin Maximum number of observations per single bin for continuous
+#'  outcome. See documentation of the \code{condensier} package for details.
+#' @field parfit Whether to invoke parallelization in the fitting procedure. See
+#'  documentation of the \code{condensier} package for details.
+#' @field bin_estimator The classification algorithm to be used in the fitting
+#'  process. See documentation of the \code{condensier} package for details.
+#' @field intrvls An interval range to be used for custom bin definitions. See
+#'  documentation of the \code{condensier} package for details.
+#'
+#' @importFrom R6 R6Class
+#'
+#' @family Learners
+#'
 #' @export
-#' @rdname undocumented_learner
-Lrnr_condensier <- R6Class(classname = "Lrnr_condensier", inherit = Lrnr_base, portable = TRUE, class = TRUE,
+#
+Lrnr_condensier <- R6Class(classname = "Lrnr_condensier", inherit = Lrnr_base,
+                           portable = TRUE, class = TRUE,
   public = list(
     initialize = function(bin_method = c("equal.mass", "equal.len", "dhist"),
                           nbins = 5,
@@ -16,9 +48,10 @@ Lrnr_condensier <- R6Class(classname = "Lrnr_condensier", inherit = Lrnr_base, p
                           intrvls = NULL,
                           ...) {
 
-      assert_that(is(bin_estimator, "Lrnr_base") || is(bin_estimator, "logisfitR6"))
+      assert_that(is(bin_estimator, "Lrnr_base") || is(bin_estimator,
+                                                       "logisfitR6"))
 
-      ## Perform additional injection if bin_estimator is a learner from sl3 package.
+      ## Perform additional injection if bin_estimator is a learner from sl3.
       ## Wrap sl3 learner object into special wrapper class that
       ## provides a communication link between the two packages.
       if (inherits(bin_estimator,"Lrnr_base")) {
@@ -76,3 +109,4 @@ Lrnr_condensier <- R6Class(classname = "Lrnr_condensier", inherit = Lrnr_base, p
     },
     .required_packages = c("condensier")
 ), )
+

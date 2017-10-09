@@ -1,6 +1,6 @@
 ---
 output: github_document
-bibliography: refs.bib
+bibliography: README-refs.bib
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -68,15 +68,6 @@ Install the most recent _stable release_ from GitHub via
 devtools::install_github("jeremyrcoyle/sl3")
 ```
 
-<!--
-To contribute, install the _development version_ from GitHub via
-[`devtools`](https://www.rstudio.com/products/rpackages/devtools/):
-
-```{r gh-develop-installation, eval = FALSE}
-devtools::install_github("jeremyrcoyle/sl3", ref = "develop")
-```
--->
-
 ---
 
 ## Contributions and Issues
@@ -91,8 +82,6 @@ prior to submitting a pull request.
 
 If you encounter any bugs or have any specific feature requests, please [file an
 issue](https://github.com/jeremyrcoyle/sl3/issues).
-
-[![](https://graphs.waffle.io/jeremyrcoyle/sl3/throughput.svg)](https://waffle.io/jeremyrcoyle/sl3/metrics/throughput)
 
 ---
 
