@@ -42,38 +42,20 @@
 Lrnr_glm_fast <- R6Class(classname = "Lrnr_glm_fast", inherit = Lrnr_base,
                          portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(family = NULL, 
-                          method = c('Cholesky', 'eigen','qr'),
-                          covariates = NULL,
-                          ...) {
-      params <- list(family = family, method = method[1L],
-                     covariates = covariates, ...)
-      super$initialize(params = params, ...)
+    initialize = function(family=NULL, method = "Cholesky", ...){
+      super$initialize(params = args_to_list(), ...)  
     }
-  ),
+      
+  ),                    
   private = list(
+    .default_params = list(method = 'Cholesky'),
     .properties = c("continuous", "binomial", "weights", "offset"),
     .train = function(task) {
       verbose <- getOption("sl3.verbose")
       params <- self$params
       outcome_type <- self$get_outcome_type(task)
-      
-      # use family from parameters first
-      family <- params$family
-      if (is.character(family)) {
-        family <- get(family, mode = "function", envir = parent.frame())
-        family <- family()
-      } else if(is.null(family)){
-        # if family isn't specified, use a family appropriate for the outcome_type
-        if(outcome_type=="continuous"){
-          family = gaussian()
-        } else if(outcome_type=="binomial"){
-          family = binomial()
-        } else{
-          warning("No family specified and untested outcome_type. Defaulting to gaussian")
-          family = gaussian()
-        }
-      }
+
+      family <- get_glm_family(params$family, outcome_type)
       params$family <- family
       family_name <- family$family
       linkinv_fun <- family$linkinv
@@ -99,12 +81,14 @@ Lrnr_glm_fast <- R6Class(classname = "Lrnr_glm_fast", inherit = Lrnr_base,
 
       if (inherits(fit_object, "try-error")) {
         # if failed, fall back on stats::glm
-        ## TODO: find example where speedglm fails and this runs, add to tests
         if (verbose) {
           message("speedglm::speedglm.wfit failed, falling back on stats:glm.fit; ", fit_object)
         }
         args$ctrl <- glm.control(trace = FALSE)
         args$method <- NULL
+        args$x <- args$X
+        args <- keep_only_fun_args(args, stats::glm.fit)
+        
         SuppressGivenWarnings({
           fit_object <- do.call(stats::glm.fit, args)
         }, GetWarningsToSuppress())

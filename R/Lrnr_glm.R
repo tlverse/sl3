@@ -31,6 +31,7 @@ Lrnr_glm <- R6Class(classname = "Lrnr_glm", inherit = Lrnr_base,
     }
   ),
   private = list(
+    .properties = c("continuous", "binomial", "weights", "offset"),
     .train = function(task) {
       params <- self$params
       family <- params[["family"]]

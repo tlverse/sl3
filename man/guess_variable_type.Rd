@@ -4,7 +4,7 @@
 \alias{guess_variable_type}
 \title{guess variable type}
 \usage{
-guess_variable_type(x, pcontinuous = 0.2)
+guess_variable_type(x, pcontinuous = 0.05)
 }
 \arguments{
 \item{x}{the variable}

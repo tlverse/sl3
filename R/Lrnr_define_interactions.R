@@ -28,6 +28,7 @@ Lrnr_define_interactions <- R6Class(classname = "Lrnr_define_interactions",
       super$initialize(params = params, ...)
     }),
   private = list(
+    .properties = c("preprocessing"),
     .train = function(task) {
       new_task <- task$add_interactions(self$params$interactions)
       interaction_names <- setdiff(new_task$nodes$covariates,

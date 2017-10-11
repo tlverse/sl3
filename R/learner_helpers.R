@@ -8,6 +8,10 @@
 #' @rdname learner_helpers
 #' @export
 make_learner <- function(learner_class, ...){
+  if(is.character(learner_class)){
+    learner_class <- get(learner_class)
+  }
+  
   learner_class$new(...)
 }
 

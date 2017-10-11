@@ -31,7 +31,7 @@ Lrnr_solnp <- R6Class(classname = "Lrnr_solnp",
     }
   ),
   private = list(
-    .covariates = NULL,
+    .properties = c("continuous", "binomial", "categorical", "weights"),
     .train = function(task) {
 
       verbose = getOption("sl3.verbose")

@@ -36,17 +36,15 @@ Lrnr_arima <- R6Class(classname = "Lrnr_arima", inherit = Lrnr_base,
                       public = list(
                         initialize = function(order = NULL,
                                               seasonal = list(order =
-                                                              c(0L, 0L, 0L),
-                                              period = NA),
-                                              n.ahead = NULL,
-                                              ...) {
-
-                          params <- list(order = order, seasonal=seasonal, n.ahead=n.ahead, ...)
-                          super$initialize(params = params, ...)
+                                                                c(0L, 0L, 0L),
+                                                              period = NA),
+                                              n.ahead = NULL, ...){
+                          
+                          super$initialize(params = args_to_list(), ...)
                         }
                       ),
                       private = list(
-                        .properties = c("timeseries"),
+                        .properties = c("timeseries", "continuous"),
                         .train = function(task) {
                           params <- self$params
                           ord <- params[["order"]]

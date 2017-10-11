@@ -122,9 +122,12 @@ subset_dt_cols = function(dt, cols) {
 #' @param x the variable
 #' @param pcontinuous The proportion of observations that have to be unique before a variable is determined to be continuous
 #' @export
-guess_variable_type=function(x, pcontinuous=0.2){
+guess_variable_type=function(x, pcontinuous=0.05){
   nunique <- length(unique(x))
-  if(nunique==1){
+  
+  if(!is.null(ncol(x))){
+    type <- "multivariate"
+  } else if(nunique==1){
     type <- "constant"
   } else if(nunique==2){
     type <- "binomial"
@@ -135,4 +138,55 @@ guess_variable_type=function(x, pcontinuous=0.2){
   }
   
   return(type)
+}
+
+################################################################################
+
+#' determine glm family
+get_glm_family <- function(family, outcome_type){
+  #prefer explicit family, otherwise infer from outcome_type
+  if (is.character(family)) {
+    family <- get(family, mode = "function", envir = parent.frame())
+    family <- family()
+  } else if(is.null(family)){
+    # if family isn't specified, use a family appropriate for the outcome_type
+    if(outcome_type=="continuous"){
+      family = gaussian()
+    } else if(outcome_type=="binomial"){
+      family = binomial()
+    } else{
+      warning("No family specified and untested outcome_type. Defaulting to gaussian")
+      family = gaussian()
+    }
+  }
+  
+  return(family)
+}
+
+#' Get all args of parent call (both specified and defaults) as list
+#' 
+#' @param parent do not use
+#' @param fn do not use
+#' @return a list of all for the parent function call
+args_to_list <- function(parent = sys.parent()){
+  call <- sys.call(parent)
+  fn <- sys.function(parent)
+
+  # get specified args
+  expanded <- match.call(fn, call)
+  args <- as.list(expanded[-1])
+  
+  # get default args
+  all_args <- formals(fn)
+  
+  # drop dots from formals if it exists
+  all_args$`...` <- NULL
+  
+  # add in specified args
+  all_args[names(args)] <- args
+  
+  # evaluate args
+  evaled <- lapply(all_args, eval, envir=parent.frame())
+  
+  return(evaled)
 }

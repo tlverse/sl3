@@ -57,7 +57,7 @@ Lrnr_expSmooth <- R6Class(classname = "Lrnr_expSmooth", inherit = Lrnr_base, por
                         }
                       ),
                       private = list(
-                        
+                        .properties = c("timeseries", "continuous"),
                         .train = function(task) {
                           
                           params <- self$params

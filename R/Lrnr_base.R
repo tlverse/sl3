@@ -37,11 +37,11 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                        initialize = function(params=NULL, ...) {
                          private$.load_packages()
                          if(is.null(params)){
-                           params=list(...)
+                           params <- list(...)
                          }
                          
-                         private$.params=params
-                         private$.learner_uuid = UUIDgenerate(use.time=T)
+                         private$.params <- params
+                         private$.learner_uuid <- UUIDgenerate(use.time=T)
                          
                          
                          invisible(self)

@@ -79,10 +79,7 @@ sl3Options <- function (o, value)  {
     # if (dev && (Sys.Date() - as.Date(d))>28)
     #     packageStartupMessage("**********\nThis development version of sl3 was built more than 4 weeks ago. Please update.\n**********")
     packageStartupMessage('Please note the package is in early stages of development. Check often for updates and report bugs at http://github.com/jeremyrcoyle/sl3.', '\n')
-    all_learner_names <- ls("package:sl3", pattern="^Lrnr")
     
-    all_learners <- mget(all_learner_names, getNamespace('sl3'))
-    sl3_learner_registry$set_learners(all_learners)
   }
 }
 

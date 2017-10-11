@@ -62,6 +62,7 @@ Lrnr_cv <- R6Class(classname = "Lrnr_cv",
                      }
                    ),
                    private = list(
+                     .properties = c("wrapper"),
                      .pretrain = function(task){
                        #prefer folds from params, but default to folds from task
                        folds <- self$params$folds
