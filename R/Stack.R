@@ -20,11 +20,20 @@ Stack <- R6Class(classname = "Stack",
                      public = list(
                        initialize = function(...) {
                          learners=list(...)
-                         if(length(learners)==1&&inherits(learners[[1]],"Stack")){
-                           #if we were passed a stack (instead of a list of learners), just copy that stack's learners
-                           learners <- learners[[1]]$params$learners
+                         if(length(learners)==1){
+                           if(inherits(learners[[1]],"Stack")){
+                             #if we were passed a stack (instead of learners as separate parameters), just copy that stack's learners
+                             learners <- learners[[1]]$params$learners
+                           } else if(is.list(learners[[1]])){
+                             #if we were passed a list of learners (instead of learners as separate parameters), use that list
+                             learners <- learners[[1]]
+                           }
                          }
                          
+                         learner_names <- sapply(learners, `[[`, "name")
+                         if(any(duplicated(learner_names))){
+                           warning("Stack has learners with identical names. This is unsupported and might lead to errors")
+                         }
                          params=list(learners=learners)
                          super$initialize(params=params) 
                        },

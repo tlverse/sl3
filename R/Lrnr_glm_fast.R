@@ -42,7 +42,7 @@
 Lrnr_glm_fast <- R6Class(classname = "Lrnr_glm_fast", inherit = Lrnr_base,
                          portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(family = gaussian(),
+    initialize = function(family = NULL, 
                           method = c('Cholesky', 'eigen','qr'),
                           covariates = NULL,
                           ...) {
@@ -52,26 +52,49 @@ Lrnr_glm_fast <- R6Class(classname = "Lrnr_glm_fast", inherit = Lrnr_base,
     }
   ),
   private = list(
+    .properties = c("continuous", "binomial", "weights", "offset"),
     .train = function(task) {
       verbose <- getOption("sl3.verbose")
       params <- self$params
-      family <- params[["family"]]
+      outcome_type <- self$get_outcome_type(task)
+      
+      # use family from parameters first
+      family <- params$family
       if (is.character(family)) {
         family <- get(family, mode = "function", envir = parent.frame())
         family <- family()
+      } else if(is.null(family)){
+        # if family isn't specified, use a family appropriate for the outcome_type
+        if(outcome_type=="continuous"){
+          family = gaussian()
+        } else if(outcome_type=="binomial"){
+          family = binomial()
+        } else{
+          warning("No family specified and untested outcome_type. Defaulting to gaussian")
+          family = gaussian()
+        }
       }
-      family_name <- family[["family"]]
-      linkinv_fun <- family[["linkinv"]]
-      method <- params[["method"]]
-      X <- task$X_intercept
+      params$family <- family
+      family_name <- family$family
+      linkinv_fun <- family$linkinv
 
+      # generate arguments from params and other sources
+      args <- keep_only_fun_args(params, speedglm::speedglm.wfit)
+      args$X <- as.matrix(task$X_intercept)
+      args$y <- task$Y
+      args$trace <- FALSE
+      
+      if(task$has_node("weights")){
+        args$weights <- task$weights
+      }
+      
+      if(task$has_node("offset")){
+        args$offset <- task$offset
+      }
+      
+      browser()
       SuppressGivenWarnings({
-        fit_object <- try(speedglm::speedglm.wfit(X = as.matrix(X),
-                                                  y = task$Y,
-                                                  method = method,
-                                                  family = family,
-                                                  trace = FALSE,
-                                                  weights = task$weights),
+        fit_object <- try(do.call(speedglm::speedglm.wfit, args),
                         silent = TRUE)
         }, GetWarningsToSuppress())
 
@@ -81,13 +104,10 @@ Lrnr_glm_fast <- R6Class(classname = "Lrnr_glm_fast", inherit = Lrnr_base,
         if (verbose) {
           message("speedglm::speedglm.wfit failed, falling back on stats:glm.fit; ", fit_object)
         }
-        ctrl <- glm.control(trace = FALSE)
+        args$ctrl <- glm.control(trace = FALSE)
+        args$method <- NULL
         SuppressGivenWarnings({
-          fit_object <- stats::glm.fit(x = X,
-                                      y = task$Y,
-                                      family = family,
-                                      control = ctrl,
-                                      weights = task$weights)
+          fit_object <- do.call(stats::glm.fit, args)
         }, GetWarningsToSuppress())
         fit_object$linear.predictors <- NULL
         fit_object$weights <- NULL
@@ -98,7 +118,7 @@ Lrnr_glm_fast <- R6Class(classname = "Lrnr_glm_fast", inherit = Lrnr_base,
         fit_object$effects <- NULL
         fit_object$qr <- NULL
       }
-      fit_object[["linkinv_fun"]] <- linkinv_fun
+      fit_object$linkinv_fun <- linkinv_fun
       return(fit_object)
     },
 

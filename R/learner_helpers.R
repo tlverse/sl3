@@ -7,14 +7,14 @@
 #' @param ... parameters with which to instantiate the learner
 #' @rdname learner_helpers
 #' @export
-learner_new <- function(learner_class, ...){
+make_learner <- function(learner_class, ...){
   learner_class$new(...)
 }
 
 #' @rdname learner_helpers
 #' @export
-delayed_learner_new <- function(learner_class, ...){
-  pred_delayed <- delayed_fun(learner_new, sequential = TRUE)(learner_class, ...)
+delayed_make_learner <- function(learner_class, ...){
+  pred_delayed <- delayed_fun(make_learner, sequential = TRUE)(learner_class, ...)
   return(pred_delayed)
 }
 

@@ -3,29 +3,16 @@
 \docType{class}
 \name{Lrnr_xgboost}
 \alias{Lrnr_xgboost}
-\alias{define_xgboost_X}
-\title{xgboost: eXtreme Gradient Boosting Definition}
+\title{xgboost: eXtreme Gradient Boosting}
 \format{\code{\link{R6Class}} object.}
 \usage{
-define_xgboost_X(task, add_outcome = FALSE)
-
 Lrnr_xgboost
-}
-\arguments{
-\item{task}{An object of type \code{Lrnr_base} as defined in this package.}
-
-\item{add_outcome}{A \code{logical} indicating whether the trained model
-object should be fit in a supervised fashion (with the outcome vector) or in
-an unsupervised fashion.}
 }
 \value{
 \code{\link{Lrnr_base}} object with methods for training and
  prediction.
 }
 \description{
-Definition of \code{xgboost} type models. This function is for internal use
-only.
-
 This learner provides fitting procedures for \code{xgboost} models, using the
 \code{xgboost} package. Such models are classification and regression trees
 with extreme gradient boosting. For details on the fitting procedure, consult

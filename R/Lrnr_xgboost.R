@@ -1,32 +1,4 @@
-#' xgboost: eXtreme Gradient Boosting Definition
-#'
-#' Definition of \code{xgboost} type models. This function is for internal use
-#' only.
-#'
-#' @param task An object of type \code{Lrnr_base} as defined in this package.
-#' @param add_outcome A \code{logical} indicating whether the trained model
-#'  object should be fit in a supervised fashion (with the outcome vector) or in
-#'  an unsupervised fashion.
-#'
-#' @rdname Lrnr_xgboost
-#'
-#' @name Lrnr_xgboost
-#'
-#' @export
-#
-define_xgboost_X = function(task, add_outcome = FALSE) {
-  Xmat <- task$X
-  Xmat <- as.matrix(Xmat)
-  if (is.integer(Xmat)) {
-    Xmat[, 1] <- as.numeric(Xmat[, 1])
-  }
-  if (add_outcome) {
-    fit_dmat <- try(xgboost::xgb.DMatrix(Xmat, label = task$Y))
-  } else {
-    fit_dmat <- try(xgboost::xgb.DMatrix(Xmat))
-  }
-  return(fit_dmat)
-}
+
 
 #' xgboost: eXtreme Gradient Boosting
 #'
@@ -57,34 +29,56 @@ define_xgboost_X = function(task, add_outcome = FALSE) {
 Lrnr_xgboost <- R6Class(classname = "Lrnr_xgboost", inherit = Lrnr_base,
                         portable = TRUE, class = TRUE,
   private = list(
-    .covariates = NULL,
-    .classify = FALSE,
-    .return_prediction_as_vector = TRUE,
-
+    .properties = c("continuous", "binomial", "categorical"),
     .train = function(task) {
       verbose <- getOption("sl3.verbose")
       params <- self$params
-      private$.covariates <- task$nodes$covariates
-      if ("covariates" %in% names(params) && !is.null(params[["covariates"]])) {
-        private$.covariates <- intersect(private$.covariates,
-                                         params$covariates)
+      outcome_type <- self$get_outcome_type(task)
+      
+      Xmat <- as.matrix(task$X)
+      
+      if (is.integer(Xmat)) {
+        Xmat[, 1] <- as.numeric(Xmat[, 1])
       }
-      X <- define_xgboost_X(task, add_outcome = TRUE)
-      mainArgs <- list(data = X)
+      
+      Y <- task$format_Y(outcome_type)
+      
+      if(outcome_type=="categorical"){
+        num_class <- length(levels(Y))
+        Y <- as.numeric(Y)-1
+      }
+      xgb_data <- try(xgboost::xgb.DMatrix(Xmat, label = Y))
+        
+      mainArgs <- list(data = xgb_data)
       mainArgs <- c(mainArgs, params)
       mainArgs[["verbose"]] <- as.integer(verbose)
       mainArgs[["print_every_n"]] <- 20
-      mainArgs[["watchlist"]] <- list(train = X)
+      mainArgs[["watchlist"]] <- list(train = xgb_data)
+      
+      if(outcome_type=="binomial"){
+        mainArgs[["objective"]] <- "binary:logistic"
+      } else if(outcome_type=="categorical"){
+        mainArgs[["objective"]] <- "multi:softprob"
+        mainArgs[["num_class"]] <- num_class
+      }
       fit_object <- do.call(xgboost::xgb.train, mainArgs)
       return(fit_object)
     },
     .predict = function(task = NULL) {
+      outcome_type <- private$.training_outcome_type
       verbose <- getOption("sl3.verbose")
-      X <- define_xgboost_X(task)
+      
+      Xmat <- as.matrix(task$X)
+      
+      if (is.integer(Xmat)) {
+        Xmat[, 1] <- as.numeric(Xmat[, 1])
+      }
+      
+      xgb_data <- try(xgboost::xgb.DMatrix(Xmat))
       fit_object <- private$.fit_object
-      pAoutDT <- rep.int(list(numeric()), 1)
+      predictions <- rep.int(list(numeric()), 1)
 
-      if (nrow(X) > 0) {
+      if (nrow(Xmat) > 0) {
         # Use ntreelimit for prediction, if used during model training.
         # Use it only for gbtree (not gblinear, i.e., glm -- not implemented)
         ntreelimit <- 0
@@ -93,10 +87,14 @@ Lrnr_xgboost <- R6Class(classname = "Lrnr_xgboost", inherit = Lrnr_base,
           ntreelimit <- fit_object[["best_ntreelimit"]]
         }
         # will generally return vector, needs to be put into data.table column
-        pAoutDT[[1]] <- stats::predict(fit_object, newdata = X,
-                                       ntreelimit = ntreelimit)
+        predictions <- stats::predict(fit_object, newdata = xgb_data,
+                                      ntreelimit = ntreelimit, reshape=TRUE)
       }
-      predictions <- data.table::as.data.table(pAoutDT)
+      
+      if(outcome_type=="categorical"){
+        # pack predictions in a single column
+        predictions <- pack_predictions(predictions)
+      }
       # names(pAoutDT) <- names(models_list)
       return(predictions)
     },

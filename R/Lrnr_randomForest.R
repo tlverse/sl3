@@ -30,18 +30,40 @@ Lrnr_randomForest <- R6Class(classname = "Lrnr_randomForest",
     }
   ),
   private = list(
+    .properties = c("continuous", "binomial", "categorical"),
     .train = function(task) {
+      outcome_type <- self$get_outcome_type(task)
       X <- task$X
-      Y <- task$Y
+      Y <- task$format_Y(outcome_type)
+      
+      if(outcome_type == "binomial"){
+        Y <- factor(Y, levels=c(0,1))
+      }
+      
       fit_object <- randomForest::randomForest(y = Y, x = X, ntree = 100,
                                                keep.forest = TRUE,
                                                mtry = floor(ncol(X)),
                                                nodesize = 5, maxnodes = NULL,
                                                importance = FALSE)
+      
       return(fit_object)
     },
     .predict = function(task) {
-      predictions = stats::predict(private$.fit_object, newdata = task$X)
+      
+      outcome_type <- private$.training_outcome_type
+      type <- ifelse(outcome_type %in% c("binomial","categorical"),
+                     "prob",
+                     "response")
+      predictions = stats::predict(private$.fit_object, newdata = task$X, type=type)
+      
+      if(outcome_type == "binomial"){
+        # extract p(Y=1)
+        predictions <- predictions[, 2]
+        
+      } else if(outcome_type == "categorical"){
+        # pack predictions in a single column
+        predictions <- pack_predictions(predictions)
+      }
       return(predictions)
     },
     .required_packages = c("randomForest")

@@ -58,6 +58,15 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                          
                          
                        },
+                       get_outcome_type = function(task){
+                         outcome_type <- task$outcome_type
+                         if(!is.null(self$params$outcome_type)){
+                           # learners can override task outcome type
+                           outcome_type <- self$params$outcome_type
+                         }
+                         
+                         return(outcome_type)
+                       },
                        base_train = function(task, pretrain = NULL) {
                          #trains learner to data
                          assert_that(is(task,"sl3_Task"))
@@ -65,9 +74,9 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                          #todo: add error handling
                          subsetted_task = self$subset_covariates(task)
                          if(!is.null(pretrain)){
-                          fit_object = private$.train(subsetted_task, pretrain)
+                           fit_object = private$.train(subsetted_task, pretrain)
                          } else {
-                          fit_object = private$.train(subsetted_task) 
+                           fit_object = private$.train(subsetted_task) 
                          }
                          new_object = self$clone() # copy parameters, and whatever else
                          new_object$set_train(fit_object, task)
@@ -79,7 +88,11 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                          private$.fit_object = fit_object
                          save_training <- getOption("sl3.save.training")
                          if(is.null(save_training)||save_training){
-                          private$.training_task = training_task
+                           private$.training_task = training_task
+                         }
+                         private$.training_outcome_type <- self$get_outcome_type(training_task)
+                         if(private$.training_outcome_type %in% c("binomial", "categorical")){
+                           private$.training_outcome_levels <- get_levels(training_task$Y)
                          }
                          private$.fit_uuid = UUIDgenerate(use.time=T)
                          
@@ -178,16 +191,22 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                        },
                        training_task=function(){
                          return(private$.training_task)
+                       },
+                       properties=function(){
+                         return(private$.properties)
                        }
                      ),
                      private = list(
                        .name = NULL,
                        .fit_object = NULL,
                        .training_task = NULL,
+                       .training_outcome_type = NULL,
+                       .training_outcome_levels = NULL,
                        .learner_uuid = NULL,
                        .fit_uuid = NULL,
                        .params = NULL,
                        .required_packages = NULL,
+                       .properties = list(),
                        .pretrain = function(task){
                          #nested fits go here
                          return(NULL)
@@ -202,7 +221,7 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                        .chain = function(task){
                          predictions = self$predict(task)
                          predictions = as.data.table(predictions)
-
+                         
                          #add predictions as new columns
                          new_col_names = task$add_columns(self$fit_uuid, predictions)
                          # new_covariates = union(names(predictions),task$nodes$covariates)
@@ -210,15 +229,8 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                        },
                        .load_packages = function(){
                          if(!is.null(private$.required_packages)){
-                          requirePackages(private$.required_packages, why = class(self)[1], default.method = "load")
+                           requirePackages(private$.required_packages, why = class(self)[1], default.method = "load")
                          }
                        }
                      )
 )
-
-#todo: implement predict S3 method
-
-
-print.Learner=function(object){
-  object$print()
-}

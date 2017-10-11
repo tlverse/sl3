@@ -109,7 +109,7 @@ Lrnr_sl <- R6Class(classname = "Lrnr_sl", inherit = Lrnr_base, portable = TRUE,
 
       # form full SL fit -- a pipeline with the stack fit to the full data,
       # and the metalearner fit to the cv predictions
-      full_fit <- delayed_learner_new(Pipeline, stack_fit, cv_meta_fit)
+      full_fit <- delayed_make_learner(Pipeline, stack_fit, cv_meta_fit)
       fit_object <- list(cv_fit = cv_fit, cv_meta_task = cv_meta_task,
                          cv_meta_fit = cv_meta_fit, full_fit = full_fit)
       return(bundle_delayed(fit_object))

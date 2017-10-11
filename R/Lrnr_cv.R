@@ -36,6 +36,7 @@ aorder <- function(mat, index, along = 1) {
 #'   \item{\code{new(learner)}}{Wraps the \code{learner} in a cross-validation layer.}
 #'   }
 #' @importFrom assertthat assert_that is.count is.flag
+#' @importFrom origami training validation fold_index
 #' @family Learners
 Lrnr_cv <- R6Class(classname = "Lrnr_cv",
                    inherit= Lrnr_base,

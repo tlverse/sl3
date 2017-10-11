@@ -35,6 +35,7 @@ Lrnr_pkg_SuperLearner <- R6Class(classname = "Lrnr_pkg_SuperLearner",
     }
   ),
   private = list(
+    .properties = c("binomial", "continuous", "weights", "ids"),
     .train = function(task) {
       wrapper = self$params$wrapper_fun
       # to minimize prediction costs (since we throw out predictions from here

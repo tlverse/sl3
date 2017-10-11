@@ -115,3 +115,24 @@ subset_dt_cols = function(dt, cols) {
   return(dt[, cols, with = FALSE, drop = FALSE])
 }
 
+################################################################################
+
+#' guess variable type
+#' 
+#' @param x the variable
+#' @param pcontinuous The proportion of observations that have to be unique before a variable is determined to be continuous
+#' @export
+guess_variable_type=function(x, pcontinuous=0.2){
+  nunique <- length(unique(x))
+  if(nunique==1){
+    type <- "constant"
+  } else if(nunique==2){
+    type <- "binomial"
+  } else if((nunique/length(x))<pcontinuous){
+    type <- "categorical"
+  } else{
+    type <- "continuous"
+  }
+  
+  return(type)
+}
