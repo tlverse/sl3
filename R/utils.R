@@ -173,7 +173,7 @@ args_to_list <- function(parent = sys.parent()){
   fn <- sys.function(parent)
 
   # get specified args
-  expanded <- match.call(fn, call)
+  expanded <- match.call(fn, call, envir=parent.frame(2L))
   args <- as.list(expanded[-1])
   
   # get default args
@@ -184,9 +184,9 @@ args_to_list <- function(parent = sys.parent()){
   
   # add in specified args
   all_args[names(args)] <- args
-  
+
   # evaluate args
-  evaled <- lapply(all_args, eval, envir=parent.frame())
+  evaled <- lapply(all_args, eval, envir=parent.frame(2L))
   
   return(evaled)
 }

@@ -211,7 +211,9 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                         
                         new_task=self$clone()
                         
-                        if(new_nodes$outcome==self$nodes$outcome){
+                        
+                        if((is.null(new_nodes$outcome)&&is.null(self$nodes_outcome))||
+                           (new_nodes$outcome==self$nodes$outcome)){
                           # if we have the same outcome, transfer outcome properties
                           new_outcome_type <- self$outcome_type
                           new_outcome_levels <- self$outcome_levels
