@@ -55,6 +55,7 @@ xgb <- make_learner(Lrnr_xgboost, nrounds=20)
 lrnr_glmnet <- make_learner(Lrnr_glmnet)
 lrnr_mean <- make_learner(Lrnr_mean)
 lrnr_glm_fast <- make_learner(Lrnr_glm_fast)
+debugonce(lrnr_glm_fast$.__enclos_env__$private$.train)
 fit <- lrnr_glm_fast$train(task)
 
 lrnr_glm_fast_true_covars <- make_learner(Lrnr_glm_fast, covariates="W1")

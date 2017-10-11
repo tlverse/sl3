@@ -92,7 +92,6 @@ Lrnr_glm_fast <- R6Class(classname = "Lrnr_glm_fast", inherit = Lrnr_base,
         args$offset <- task$offset
       }
       
-      browser()
       SuppressGivenWarnings({
         fit_object <- try(do.call(speedglm::speedglm.wfit, args),
                         silent = TRUE)

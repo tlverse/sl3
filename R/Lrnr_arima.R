@@ -46,7 +46,7 @@ Lrnr_arima <- R6Class(classname = "Lrnr_arima", inherit = Lrnr_base,
                         }
                       ),
                       private = list(
-
+                        .properties = c("timeseries"),
                         .train = function(task) {
                           params <- self$params
                           ord <- params[["order"]]

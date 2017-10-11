@@ -1,5 +1,9 @@
 get_levels <- function(x){
-  return(sort(unique(x)))
+  if(is.factor(x)){
+    return(levels(x))
+  } else {
+    return(sort(unique(x)))
+  }
 }
 
 pack_predictions <- function(pred_matrix){
@@ -35,7 +39,8 @@ mn_loglik <- function(pred, truth) {
 
 #' @export
 mn_logit <- function(alpha, x) {
-  unpacked <- lapply(x,unpack_predictions)
+  
+  unpacked <- lapply(as.data.frame(x),unpack_predictions)
   multiplied <- mapply(`*`, unpacked, alpha, SIMPLIFY = FALSE)
   Y_pred <- Reduce(`+`, multiplied)
   

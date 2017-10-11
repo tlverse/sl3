@@ -74,7 +74,7 @@ Lrnr_condensier <- R6Class(classname = "Lrnr_condensier", inherit = Lrnr_base,
   ),
 
   private = list(
-    .properties = c("density"),
+    .properties = c("continuous", "binomial", "categorical", "density"),
     .covariates = NULL,
     .train = function(task) {
       verbose = getOption("sl3.verbose")

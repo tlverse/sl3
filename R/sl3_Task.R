@@ -234,10 +234,12 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                           }
                         }
                         node_var <- private$.nodes[[node_name]]
+                        
                         if(is.null(node_var)){
                           return(generator_fun(node_name, self$nrow))
                         } else{
-                          data_col <- self$get_data(,node_var)
+                          col_name <- private$.column_names[[node_var]]
+                          data_col <- self$get_data(,col_name)
                           return(unlist(data_col, use.names = FALSE))
                         }
                       },
