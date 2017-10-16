@@ -1,0 +1,11 @@
+Package: sl3
+Version: 0.2.2
+Depends: R (>= 2.14.0)
+Imports: data.table, assertthat, origami, future, R6, uuid, memoise,
+        digest, BBmisc, stats, delayed, methods
+Suggests: testthat, knitr, rmarkdown, glmnet, devtools, dplyr, rgl,
+        condensier, cvAUC, forecast, nloptr, rugarch, nnls, tsDyn,
+        Rsolnp, xgboost, speedglm, randomForest, SuperLearner, h2o
+License: GPL-3
+MD5sum: f157a19ab1314c264e7ed9a045703609
+NeedsCompilation: no
