@@ -1,9 +1,0 @@
-Package: sl3
-Version: 0.2
-Depends: R (>= 2.14.0)
-Imports: data.table, assertthat, cvAUC, origami, future, R6, h2o,
-        stats, nnls, SuperLearner
-Suggests: testthat, knitr, rmarkdown, glmnet, devtools, dplyr
-License: GPL-3
-MD5sum: 9c4b440c3beecec038ace62f36148528
-NeedsCompilation: no
