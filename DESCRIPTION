@@ -44,7 +44,8 @@ Suggests:
     SuperLearner,
     h2o,
     future,
-    e1071
+    e1071,
+    earth
 Remotes:
     github::osofr/condensier,
     github::jeremyrcoyle/delayed
