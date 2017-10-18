@@ -43,7 +43,8 @@ Suggests:
     randomForest,
     SuperLearner,
     h2o,
-    future
+    future,
+    e1071
 Remotes:
     github::osofr/condensier,
     github::jeremyrcoyle/delayed

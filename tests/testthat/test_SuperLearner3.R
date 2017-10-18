@@ -36,6 +36,12 @@ obsWeights <- NULL
 newDATA2 <- data.frame(Y = newy, X=newx)
 method <- "method.NNLS2"
 
+message("loading the thing")
+require('e1071', character.only = TRUE)
+message("loaded the thing")
+message("loading the thing 2")
+library(e1071)
+message("loaded the thing 2")
 # library with screening
 SL.library <- list(c("SL.glmnet", "All"), c("SL.glm", "screen.randomForest"),
                    "SL.randomForest", "SL.svm",
