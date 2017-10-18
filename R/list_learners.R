@@ -19,12 +19,14 @@ sl3_list_properties <- function(){
   
   return(sort(unique(unlist(properties))))
 }
+
 #' List sl3 Learners
 #' 
 #' Lists learners in \code{sl3} (defined as objects that start with \code{Lrnr_} and inherit from \code{Lrnr_base})
 #' @rdname list_learners
 #' @param properties a vector of properties that learners must match to be returned
 #' @return a vector of learner names that match the property list
+#' @importFrom utils apropos
 #' @export
 sl3_list_learners <- function(properties=c()){
   learners <- get_all_learners()

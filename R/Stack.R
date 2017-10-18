@@ -1,5 +1,5 @@
 #' Learner Stacking
-#' A Stack is a special Learner that combines multiple other learners, "stacking" their predictions in columns. Currently, train fits the learners one-at-a-time, but this will be parallelized with \link{future} going forward.
+#' A Stack is a special Learner that combines multiple other learners, "stacking" their predictions in columns.
 #' @docType class
 #' @importFrom R6 R6Class
 #' @export

@@ -1,5 +1,4 @@
 library(devtools)
-load_all()
 library(SuperLearner)
 library(data.table)
 # 2
@@ -47,7 +46,6 @@ system.time({
 })
 
 # test
-plan(sequential)
 system.time({
   test_sl3 <- SuperLearner3(Y = DATA2$Y, X = DATA2[, -1], newX = newDATA2[, -1],
                             SL.library = SL.library, verbose = TRUE, family = binomial())

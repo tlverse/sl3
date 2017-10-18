@@ -32,7 +32,7 @@ gen_data <- function(n = 1000, p = 4) {
     colnames(W) <- paste("W", seq_len(p), sep = "")
     g0W <- g0(W)
     A <- factor(apply(g0W, 1, function(pAi) which(rmultinom(1, 1, pAi) == 1)))
-    A_vals <- vals_from_factor(A)
+    A_vals <- levels(A)
     
     u <- runif(n)
     Y <- as.numeric(u < Qbar0(A, W))
@@ -61,7 +61,7 @@ xgb <- make_learner(Lrnr_xgboost, nrounds=20)
 lrnr_glmnet <- make_learner(Lrnr_glmnet)
 lrnr_mean <- make_learner(Lrnr_mean)
 lrnr_glm_fast <- make_learner(Lrnr_glm_fast)
-lrnr_multinom_gf <- make_learner(Lrnr_chained_binomial, lrnr_glm_fast)
+lrnr_multinom_gf <- make_learner(Lrnr_independent_binomial, lrnr_glm_fast)
 fit <- lrnr_multinom_gf$train(task)
 ct <- fit$chain()
 mn_metalearner <- make_learner(Lrnr_solnp, loss_function = mn_loglik, learner_function = mn_logit)
@@ -69,12 +69,8 @@ stack <- make_learner(Stack, list(rf, xgb, lrnr_mean, lrnr_glmnet, lrnr_multinom
 sf <- stack$train(task)
 ct <- sf$chain()
 ct
-debugonce(mn_metalearner$.__enclos_env__$private$.train)
-Rprof(tmp <- tempfile())
+
 mf <- mn_metalearner$base_train(ct)
-Rprof()
-summaryRprof(tmp)
-unlink(tmp)
 
 
 mn_sl <- make_learner(Lrnr_sl, stack, mn_metalearner)

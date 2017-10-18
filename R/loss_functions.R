@@ -13,6 +13,7 @@ loss_binom_loglik <- function(pred, truth) {
   -1*ifelse(truth==1, log(pred), log(1-pred))
 }
 
+#' @importFrom stats plogis qlogis
 metalearner_binom_logit <- function(alpha, X){
   plogis(qlogis(X) %*% alpha)
 }

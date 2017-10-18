@@ -28,7 +28,6 @@ normalize_rows <- function(x) {
   sweep(x, 1, rowSums(x), "/")
 }
 
-# Super Learner for Multinomial A (also multinomial probabilities?)
 mn_loglik <- function(pred, truth) {
   #make index matrix
   index_mat <- cbind(seq_along(truth), truth)
@@ -37,7 +36,6 @@ mn_loglik <- function(pred, truth) {
   return(-1 * class_liks)
 }
 
-#' @export
 mn_logit <- function(alpha, x) {
   
   unpacked <- lapply(as.data.frame(x),unpack_predictions)

@@ -143,6 +143,10 @@ guess_variable_type=function(x, pcontinuous=0.05){
 ################################################################################
 
 #' determine glm family
+#' @importFrom stats binomial
+#' @param family family argument specified to learner, either character or an actual family object
+#' @param outcome_type outcome type from Learner$get_outcome_type
+#' @return family object determined by combination of arguments
 get_glm_family <- function(family, outcome_type){
   #prefer explicit family, otherwise infer from outcome_type
   if (is.character(family)) {
@@ -165,10 +169,10 @@ get_glm_family <- function(family, outcome_type){
 
 #' Get all args of parent call (both specified and defaults) as list
 #' 
-#' @param parent do not use
-#' @param fn do not use
 #' @return a list of all for the parent function call
-args_to_list <- function(parent = sys.parent()){
+#' @export
+args_to_list <- function(){
+  parent <- sys.parent()
   call <- sys.call(parent)
   fn <- sys.function(parent)
 

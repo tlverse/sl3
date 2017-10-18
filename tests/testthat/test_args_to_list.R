@@ -3,6 +3,7 @@ my_function <- function(arg1="default_1", arg2="default_2", ...){
 }
 
 arglist <- my_function(arg2="specified_2", dot_arg="test")
+
 expect_equal(arglist, list(arg1 = "default_1", arg2 = "specified_2", dot_arg = "test"))
 
 arglist <- my_function(arg3=list(a=2, b=list(c=1, d=3)))

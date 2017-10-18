@@ -55,7 +55,6 @@ xgb <- make_learner(Lrnr_xgboost, nrounds=20)
 lrnr_glmnet <- make_learner(Lrnr_glmnet)
 lrnr_mean <- make_learner(Lrnr_mean)
 lrnr_glm_fast <- make_learner(Lrnr_glm_fast)
-debugonce(lrnr_glm_fast$.__enclos_env__$private$.train)
 fit <- lrnr_glm_fast$train(task)
 
 lrnr_glm_fast_true_covars <- make_learner(Lrnr_glm_fast, covariates="W1")
@@ -64,7 +63,6 @@ stack <- make_learner(Stack, rf, xgb, lrnr_mean, lrnr_glmnet, lrnr_glm_fast, lrn
 cv_stack <- make_learner(Lrnr_cv, stack, folds = task$folds)
 cv_stack_fit <- cv_stack$train(task)
 cv_task <- cv_stack_fit$chain()
-# debugonce(logit_metalearner$.__enclos_env__$private$.train)
 ml_fit <- logit_metalearner$base_train(cv_task)
 
 binom_sl <- make_learner(Lrnr_sl, stack, logit_metalearner)
