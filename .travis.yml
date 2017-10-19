@@ -1,34 +1,42 @@
 language: r
-sudo: false
-cache: packages
-warnings_are_errors: true
 
-before_install:
-  Rscript -e 'update.packages(ask = FALSE)'
-  - export RGL_USE_NULL=TRUE
+dist: trusty
+sudo: required
+cache: packages
+
+warnings_are_errors: true
+r_check_args: ''
+
+before_install: Rscript -e 'update.packages(ask = FALSE)' - export RGL_USE_NULL=TRUE
 
 r_packages:
-  - covr
+- covr
 
 r:
   - release
   - devel
 
 r_github_packages:
-  - jimhester/covr
-  - schloerke/travisDrat
-  
+- jimhester/covr
+
 env:
   global:
-    - RGL_USE_NULL=TRUE
-    
+  - RGL_USE_NULL=TRUE
+  - PKG_CFLAGS="-O3 -Wall -pedantic"
+  # use token from @nhejazi to auto-deploy drat repo
+  - secure: "fzZVo/2Qyk1Lgx2k2k8+WO4nlEzbo3/aOZg1fzyZu5UXNES6ZRYzQeYXNYHyxFPVD8WL6Of2mJuQaqI3jIXL30w8MQPVIM5a6+rPXR7DoaN38yf/vV36lY9PqU0QoWMocT8LlorhlJfbWyVrZM1qrXIbP8/YSe3/hXnwkWUZYoK6AVdxodXM/p5MKCx5VRL9CTNmoD43Q8FAraIOzgxMQ2w2LtItsS0l/8M8CfJnxtJQBElQMQFr/zSY3PPTFQQRqszAIATqvz3lDNMKIJK9SIA5w6LOQyH6nUHGYB7lb+cXwS2rDyCqtzvb7m4AJTP8VvWeq/WjrpMbIgpmTyHD2sp8fun3h8isXrYbsdUa0sWVA+gfdeeuTMVRxc5sMX6KPRH/ZkmvMB7yddyfVKv70JPUABiOYDEilyIPRDPE3v7OyyC1DDzjhHOWdAnGUQ2kWr2fgdw8ze8RZx+e4S0XuNuZVwryGT5kPEgM7JedGEBSEKE+4NhZTPtqoK9KSLQiLXkBWoIOk4byWi9aMsL7n0oqUHRw9LIkR3PkB/C/t4nNmqJFG2uREh5/hi6EAWBrtYj5vf0MzBkAVGg/sI1+aKmHpe97QJiTaq5ngd/stoQDBAUJVWmcK1FuHYGBAU3uh/DpBr/6DuBHP2iwgdCl2Ma4UrGqPT6ML66NXw+U6Nc="
+
 after_success:
-  - Rscript -e 'covr::codecov()'
+- travis_wait Rscript -e 'covr::codecov()'
+- test $TRAVIS_PULL_REQUEST == "false" &&
+        test $TRAVIS_BRANCH == "master" &&
+        bash deploy.sh
 
 on_failure:
-  - ./travis-tool.sh dump_logs
+- ./travis-tool.sh dump_logs
 
 notifications:
   email:
     on_success: change
     on_failure: change
+

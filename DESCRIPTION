@@ -29,6 +29,7 @@ Suggests:
     glmnet,
     devtools,
     dplyr,
+    drat,
     rgl,
     condensier,
     cvAUC,
