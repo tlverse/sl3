@@ -1,9 +1,12 @@
-library(sl3)
 library(testthat)
+context("test_sl3_task -- Basic sl3_Task functionality")
+
+
+library(sl3)
 library(data.table)
 library(uuid)
 
-context("Basic sl3_Task properties")
+
 # define test dataset
 data(mtcars)
 covariates <- c("cyl", "disp", "hp", "drat", "wt", "qsec",

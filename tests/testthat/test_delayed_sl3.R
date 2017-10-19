@@ -2,7 +2,7 @@ library(delayed)
 library(testthat)
 library(SuperLearner)
 library(future)
-context("Delayed sl3")
+context("test_delayed_sl3.R -- manually delay learner fit")
 
 plan(sequential)
 
@@ -16,16 +16,16 @@ outcome <- "haz"
 
 task <- sl3_Task$new(cpp, covariates = covars, outcome = outcome)
 
-sl_screen_glmnet <- Lrnr_pkg_SuperLearner_screener$new("screen.glmnet")
-sl_glmnet <- Lrnr_pkg_SuperLearner$new("SL.glmnet")
-sl_random_forest <- Lrnr_pkg_SuperLearner$new("SL.randomForest")
-sl_glm <- Lrnr_pkg_SuperLearner$new("SL.glm")
-random_forest <- Lrnr_randomForest$new()
-glm_fast <- Lrnr_glm_fast$new()
-nnls_lrnr <- Lrnr_nnls$new()
+learners <- list(
+  rf <- make_learner(Lrnr_randomForest),
+  glmnet <- make_learner(Lrnr_glmnet),
+  glm <- make_learner(Lrnr_glm_fast)
+)
+
+nnls_metalearner <- make_learner(Lrnr_nnls)
 # xgb <- Lrnr_xgboost(nrounds=50)
 
-sl <- Lrnr_sl$new(list(sl_random_forest, sl_glmnet, sl_glm), nnls_lrnr)
+sl <- make_learner(Lrnr_sl, learners, nnls_metalearner)
 
 #sl3 sequential
 test <- delayed_learner_train(sl, task)

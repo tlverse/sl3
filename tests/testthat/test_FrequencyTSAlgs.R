@@ -1,4 +1,4 @@
-context("Test Frequency Analysis time series approaches")
+context("test_FrequencyTSAlgs.R -- Lrnr_HarmonicReg")
 
 if (FALSE) {
   setwd("..")

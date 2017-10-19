@@ -1,3 +1,5 @@
+context("test_pkg_SuperLearner_screener.R -- SL.screen wrapper")
+
 if (FALSE) {
     setwd("..")
     setwd("..")
@@ -13,7 +15,7 @@ library(sl3)
 # library(data.table)
 library(origami)
 library(SuperLearner)
-context("SL.screen Test")
+
 set.seed(1)
 
 data(cpp)

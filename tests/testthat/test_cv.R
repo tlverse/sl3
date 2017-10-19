@@ -1,4 +1,4 @@
-context("sl3 Cross-validation")
+context("test_cv.R -- Cross-validation fold handling")
 library(sl3)
 library(testthat)
 library(origami)

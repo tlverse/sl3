@@ -1,4 +1,4 @@
-context("Test Fast GLM")
+context("test_glm_fast.R -- Lrnr_glm_fast")
 
 if (FALSE) {
     setwd("..")

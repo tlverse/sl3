@@ -1,3 +1,5 @@
+context("test_densitySL.R -- Lrnr_condensier in a SuperLearner")
+
 require(condensier)
 require(sl3)
 

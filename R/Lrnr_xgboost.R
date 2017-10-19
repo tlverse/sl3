@@ -28,6 +28,11 @@
 #
 Lrnr_xgboost <- R6Class(classname = "Lrnr_xgboost", inherit = Lrnr_base,
                         portable = TRUE, class = TRUE,
+  public = list(
+    initialize = function(nrounds = 20, ...) {
+      params <- args_to_list()
+      super$initialize(params = params, ...)
+  }),
   private = list(
     .properties = c("continuous", "binomial", "categorical", "weights"),
     .train = function(task) {
@@ -55,7 +60,7 @@ Lrnr_xgboost <- R6Class(classname = "Lrnr_xgboost", inherit = Lrnr_base,
 
       
       args$verbose <- as.integer(verbose)
-      args$print_every_n <- 20
+      args$print_every_n <- 1000
       args$watchlist <- list(train = args$data)
       
       if(outcome_type=="binomial"){

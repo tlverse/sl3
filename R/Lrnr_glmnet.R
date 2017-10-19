@@ -42,9 +42,8 @@ Lrnr_glmnet <- R6Class(classname = "Lrnr_glmnet",
       
       outcome_type <- self$get_outcome_type(task)
       args$family <- get_glm_family(args$family, outcome_type)
-      
-      # specify data
 
+      # specify data
       args$x <- as.matrix(task$X)
       args$y <- task$format_Y(outcome_type)
       

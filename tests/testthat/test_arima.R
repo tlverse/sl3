@@ -1,4 +1,4 @@
-context("Test ARIMA sl3")
+context("test_arima.R -- time series methods")
 
 if (FALSE) {
     setwd("..")

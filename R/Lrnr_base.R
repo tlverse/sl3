@@ -191,7 +191,20 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                        },
                        properties=function(){
                          return(private$.properties)
+                       },
+                       coefficients = function(){
+                         
+                         self$assert_trained()
+                         
+                         coefs <- try(coef(self$fit_object))
+                         
+                         if(inherits(coefs, "try-error")){
+                           return(NULL)
+                         } else {
+                           return(coefs)
+                         }
                        }
+                       
                      ),
                      private = list(
                        .name = NULL,

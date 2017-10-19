@@ -1,3 +1,5 @@
+context("test_SuperLearner3.R -- Replicate legacy SuperLearner interface")
+
 library(devtools)
 library(SuperLearner)
 library(data.table)
@@ -7,7 +9,7 @@ set.seed(1)
 # training
 b <- c(2, 2, 2, -3*sqrt(2))
 n <- 150
-p <- 200
+p <- 10
 truerho <- 0.5
 corrmat <- diag(rep(1-truerho, p)) + matrix(truerho, p, p)
 corrmat[, 4] = sqrt(truerho)
@@ -36,12 +38,6 @@ obsWeights <- NULL
 newDATA2 <- data.frame(Y = newy, X=newx)
 method <- "method.NNLS2"
 
-message("loading the thing")
-require('e1071', character.only = TRUE)
-message("loaded the thing")
-message("loading the thing 2")
-library(e1071)
-message("loaded the thing 2")
 # library with screening
 SL.library <- list(c("SL.glmnet", "All"), c("SL.glm", "screen.randomForest"),
                    "SL.randomForest", "SL.svm",

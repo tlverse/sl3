@@ -1,4 +1,4 @@
-context("Test Outcome Type Handling")
+context("test_outcome_types.R -- Outcome Type Handling")
 
 
 # guess_variable_type

@@ -1,11 +1,11 @@
-#generate learners from SL.library
+# generate learners from sl3 SL.library
 convert_SL.library <- function(SL.library, family = "gaussian"){
   screeners <- sapply(SL.library,function(learner){ifelse(length(learner)==1,"All",learner[[2]])})
   learners <- sapply(SL.library,`[`,1) 
   
   unique_screeners <- unique(screeners)
   
-  #generate one stack per screener in a pipeline with that screener  
+  # generate one stack per screener in a pipeline with that screener  
   learner_objs <- lapply(unique_screeners,function(screener){
     learners_with_screener <- learners[screener==screeners]
     learner_objs <- lapply(learners_with_screener, function(learner) make_learner(Lrnr_pkg_SuperLearner, SL_wrapper = learner, family = family))

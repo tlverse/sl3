@@ -25,9 +25,12 @@ Lrnr_solnp <- R6Class(classname = "Lrnr_solnp",
                               inherit = Lrnr_base, portable = TRUE,
                               class = TRUE,
   public = list(
-    initialize = function(...) {
-      params <- list(...)
-      super$initialize(params = params)
+    initialize = function(learner_function = metalearner_linear,
+                          loss_function = loss_squared_error,
+                          make_sparse = TRUE,
+                          ...) {
+      params <- args_to_list()
+      super$initialize(params = params, ...)
     }
   ),
   private = list(
@@ -45,7 +48,6 @@ Lrnr_solnp <- R6Class(classname = "Lrnr_solnp",
         preds <- learner_function(alphas, X)
         losses <- loss_function(preds, Y)
         risk <- weighted.mean(losses, weights)
-        
         return(risk)
       }
       eq_fun <- function(alphas) {
@@ -57,16 +59,27 @@ Lrnr_solnp <- R6Class(classname = "Lrnr_solnp",
                                   eqfun = eq_fun, eqB = 1,
                                   LB = rep(0L, ncol(task$X)),
                                   control = list(trace=0))
-      fit_object$coef <- fit_object$pars
-      names(fit_object$coef) <- colnames(task$X)
-
+      coefs <- fit_object$pars
+      names(coefs) <- colnames(task$X)
+      
+      if(params$make_sparse){
+        max_coef <- max(coefs)
+        threshold <- max_coef/1000
+        coefs[coefs < threshold] <- 0
+        coefs <- coefs / sum(coefs)
+      }
+      
+      fit_object$coefficients <- coefs
+      
+      
+      
       fit_object$name <- "solnp"
       return(fit_object)
     },
     .predict = function(task = NULL) {
       verbose <- getOption("sl3.verbose")
       X <- as.matrix(task$X)
-      alphas <- self$fit_object$coef
+      alphas <- self$fit_object$coefficients
       predictions <- self$params$learner_function(alphas, X)
       
       return(predictions)

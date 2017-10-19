@@ -167,20 +167,19 @@ guess_variable_type=function(x, pcontinuous=0.05){
 #' @return family object determined by combination of arguments
 get_glm_family <- function(family, outcome_type){
   #prefer explicit family, otherwise infer from outcome_type
-  if (is.character(family)) {
-    family <- get(family, mode = "function", envir = parent.frame())
-    family <- family()
+  if (inherits(family, "family")) {
+    family <- family$family
   } else if(is.null(family)){
     # if family isn't specified, use a family appropriate for the outcome_type
     if(outcome_type=="continuous"){
-      family = gaussian()
+      family <- "gaussian"
     } else if(outcome_type=="binomial"){
-      family = binomial()
+      family <- "binomial"
     } else if(outcome_type=="categorical"){
-      family = "multinomial"
+      family <- "multinomial"
     } else{
       warning("No family specified and untested outcome_type. Defaulting to gaussian")
-      family = gaussian()
+      family <- "gaussian"
     }
   }
   

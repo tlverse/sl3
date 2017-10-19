@@ -1,4 +1,4 @@
-context("Test h2o GLM")
+context("test_zzz_h2o.R -- h2o learners")
 
 if (FALSE) {
     setwd("..")

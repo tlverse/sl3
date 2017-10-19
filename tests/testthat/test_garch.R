@@ -1,4 +1,4 @@
-context("Test GARCH sl3")
+context("test_garch.R -- Lrnr_rugarch")
 
 if (FALSE) {
   setwd("..")

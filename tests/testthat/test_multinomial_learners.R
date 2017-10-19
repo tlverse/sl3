@@ -1,15 +1,5 @@
-context("multinomial SL")
+context("test_multinomial_learners.R -- multinomial learners in a Super Learner")
 library(origami)
-
-Qbar0 <- function(A, W) {
-    
-    W1 <- W[, 1]
-    W2 <- W[, 2]
-    W3 <- W[, 3]
-    W4 <- W[, 4]
-    Qbar <- (1/2)*(plogis(-5*(A==2)*(W1+0.5)+5*(A==3)*(W1-0.5))+plogis(W2*W3))
-    return(Qbar)
-}
 
 g0 <- function(W) {
     W1 <- W[, 1]
@@ -35,47 +25,39 @@ gen_data <- function(n = 1000, p = 4) {
     A <- factor(apply(g0W, 1, function(pAi) which(rmultinom(1, 1, pAi) == 1)))
     A_vals <- levels(A)
     
-    u <- runif(n)
-    Y <- as.numeric(u < Qbar0(A, W))
-    Q0aW <- sapply(A_vals, Qbar0, W)
-    d0 <- max.col(Q0aW)
-    Yd0 <- as.numeric(u < Qbar0(d0, W))
-    df=data.frame(W, A, Y, d0, Yd0)
+    df=data.frame(W, A)
        
     df$g0W=g0(W)
-    df$Q0aW=Q0aW
     
     return(df)
 }
 
+set.seed(1234)
 data <- gen_data(1000)
 
 
 Wnodes <- grep("^W", names(data), value = TRUE)
 Anode <- "A"
-Ynode <- "Y"
-
 task <- sl3_Task$new(data, covariates = Wnodes, outcome=Anode)
 
-rf <- make_learner(Lrnr_randomForest)
-xgb <- make_learner(Lrnr_xgboost, nrounds=20)
-lrnr_glmnet <- make_learner(Lrnr_glmnet)
-lrnr_mean <- make_learner(Lrnr_mean)
-lrnr_glm_fast <- make_learner(Lrnr_glm_fast)
-lrnr_multinom_gf <- make_learner(Lrnr_independent_binomial, lrnr_glm_fast)
-fit <- lrnr_multinom_gf$train(task)
-ct <- fit$chain()
-mn_metalearner <- make_learner(Lrnr_solnp, loss_function = mn_loglik, learner_function = mn_logit)
-stack <- make_learner(Stack, list(rf, xgb, lrnr_mean, lrnr_glmnet, lrnr_multinom_gf))
-sf <- stack$train(task)
-ct <- sf$chain()
+#define learners
+learners <- list(
+    rf <- make_learner(Lrnr_randomForest),
+    xgb <- make_learner(Lrnr_xgboost),
+    glmnet <- make_learner(Lrnr_glmnet),
+    multinom_gf <- make_learner(Lrnr_independent_binomial, make_learner(Lrnr_glm_fast)),
+    mean <- make_learner(Lrnr_mean)
+)
 
+#define metalearner
+mn_metalearner <- make_learner(Lrnr_solnp, loss_function = loss_loglik_multinomial, learner_function = metalearner_linear_multinomial)
 
-mf <- mn_metalearner$base_train(ct)
+#define Super Learner
+mn_sl <- make_learner(Lrnr_sl, learners, mn_metalearner)
 
-
-mn_sl <- make_learner(Lrnr_sl, stack, mn_metalearner)
-sl_fit <- mn_sl$train(task)
-sl_fit$fit_object$cv_meta_fit$fit_object$coef
-sl_fit$base_predict()
-sl_fit$cv_risk(mn_loglik)
+test_that("Lrnr_sl multinomial integration test", {
+  sl_fit <- mn_sl$train(task)
+  coef(sl_fit)
+  preds <- sl_fit$base_predict()
+  sl_fit$cv_risk(loss_loglik_multinomial)
+})

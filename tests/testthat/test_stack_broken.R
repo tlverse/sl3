@@ -1,3 +1,5 @@
+context("test_stack_broken.R -- Stack robustness to sub-learner errors")
+
 library(sl3)
 library(R6)
 
@@ -36,7 +38,7 @@ predictions <- broken_fit$predict()
 
 test_that("Stack predicts on remaining good learners", {
   expect_equal(dim(predictions), c(nrow(cpp),1))
-  expect_equal(names(predictions),"Lrnr_glm")  
+  expect_equal(names(predictions),"Lrnr_glm_NULL")  
 })
 
 test_that("Stack fails if all learners return errors", {
@@ -49,7 +51,7 @@ test_that("Lrnr_cv on stack drops all learners that error on any fold", {
   expect_warning({broken_cv_fit <<- broken_cv$train(task)})
   cv_preds <- broken_cv_fit$predict()
   expect_equal(dim(cv_preds), c(nrow(cpp),1))
-  expect_equal(names(cv_preds),"Lrnr_glm")  
+  expect_equal(names(cv_preds),"Lrnr_glm_NULL")  
 })
 
 test_that("Lrnr_sl propagates errors to full refit", {
