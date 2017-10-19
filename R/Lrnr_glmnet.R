@@ -24,28 +24,39 @@
 Lrnr_glmnet <- R6Class(classname = "Lrnr_glmnet",
                              inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(...) {
-      params = list(...)
-      super$initialize(params = params, ...)
+    initialize = function(lambda = NULL, type.measure = "deviance", nfolds = 10, 
+                                 family = NULL, alpha = 1, nlambda = 100, ...) {
+      super$initialize(params = args_to_list(), ...)
     }
   ),
   private = list(
     .properties = c("continuous", "binomial", "categorical", "weights"),
     .train = function(task) {
+      
+      args <- self$params
+      
+      
+      
+      args <- self$params
+      
+      
       outcome_type <- self$get_outcome_type(task)
-      X <- as.matrix(task$X)
-      Y <- task$format_Y(outcome_type)
-      weights <- task$weights
+      args$family <- get_glm_family(args$family, outcome_type)
       
-      family<-switch(outcome_type, 
-                     continuous="gaussian",
-                     binomial="binomial",
-                     categorical="multinomial"
-                     )
+      # specify data
+
+      args$x <- as.matrix(task$X)
+      args$y <- task$format_Y(outcome_type)
       
-      fit_object <- glmnet::cv.glmnet(x = X, y = Y, weights = weights, 
-                                 lambda = NULL, type.measure = "deviance", nfolds = 10, 
-                                 family = family, alpha = 1, nlambda = 100)
+      if(task$has_node("weights")){
+        args$weights <- task$weights
+      }
+      
+      if(task$has_node("offset")){
+        args$offset <- task$offset
+      }
+      
+      fit_object <- call_with_args(glmnet::cv.glmnet, args, names(formals(glmnet::glmnet)))
       
       return(fit_object)
     },
@@ -63,7 +74,7 @@ Lrnr_glmnet <- R6Class(classname = "Lrnr_glmnet",
       }
       return(predictions)
     },
-    .required_packages = c("randomForest")
+    .required_packages = c("glmnet")
   )
 )
 

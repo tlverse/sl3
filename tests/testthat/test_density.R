@@ -39,12 +39,11 @@ test_learner_dens <- function(learner, task, ...) {
 
 op <- options(sl3.verbose = FALSE)
 
-lrn_1 <- Lrnr_condensier$new(task, nbins = 6,
+lrn_1 <- Lrnr_condensier$new(nbins = 6,
                             bin_method = "equal.len",
                             pool = FALSE,
-                            bin_estimator = condensier::speedglmR6$new()
-                            )
-fit_lrn_1 <- lrn_1$train(task)
+                            bin_estimator = condensier::speedglmR6$new())
+fit_lrn_1 <- lrn_1$base_train(task)
 
 ## w/ speedglm:
 system.time(res_speedglm <- test_learner_dens(Lrnr_condensier, task))

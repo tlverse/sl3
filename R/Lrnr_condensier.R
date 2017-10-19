@@ -66,26 +66,14 @@ Lrnr_condensier <- R6Class(classname = "Lrnr_condensier", inherit = Lrnr_base,
     .properties = c("density", "continuous"),
     .covariates = NULL,
     .train = function(task) {
-      verbose = getOption("sl3.verbose")
-      params <- self$params
-      private$.covariates <- task$nodes$covariates
-      if ("covariates" %in% names(params)) {
-        private$.covariates <- intersect(private$.covariates, params$covariates)
-      }
-
-      fit_object <- condensier::fit_density(
-        X = private$.covariates,
-        Y = task$nodes$outcome,
-        input_data = task$data,
-        bin_method = params$bin_method,
-        nbins = params$nbins,
-        bin_estimator = params$bin_estimator,
-        pool = params$pool,
-        max_n_bin = params$max_n_bin,
-        parfit = params$parfit,
-        intrvls = params$intrvls,
-        verbose = verbose
-      )
+      verbose <- getOption("sl3.verbose")
+      
+      args <- self$params
+      args$X = task$nodes$covariates
+      args$Y = task$nodes$outcome
+      args$input_data = task$data
+      
+      fit_object <- call_with_args(condensier::fit_density, args)
       return(fit_object)
     },
 

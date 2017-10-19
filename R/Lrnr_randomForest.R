@@ -24,27 +24,31 @@
 Lrnr_randomForest <- R6Class(classname = "Lrnr_randomForest",
                              inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(...) {
-      params = list(...)
+    initialize = function(ntree = 100,
+                    keep.forest = TRUE,
+                    nodesize = 5, maxnodes = NULL,
+                    importance = FALSE, ...) {
+      params = args_to_list()
       super$initialize(params = params, ...)
     }
   ),
   private = list(
     .properties = c("continuous", "binomial", "categorical"),
     .train = function(task) {
+      args <- self$params
       outcome_type <- self$get_outcome_type(task)
-      X <- task$X
-      Y <- task$format_Y(outcome_type)
-      
-      if(outcome_type == "binomial"){
-        Y <- factor(Y, levels=c(0,1))
+      args$x <- task$X
+      args$y <- task$format_Y(outcome_type)
+      if(is.null(args$mtry)){
+        args$mtry = floor(ncol(args$x))
       }
       
-      fit_object <- randomForest::randomForest(y = Y, x = X, ntree = 100,
-                                               keep.forest = TRUE,
-                                               mtry = floor(ncol(X)),
-                                               nodesize = 5, maxnodes = NULL,
-                                               importance = FALSE)
+      if(outcome_type == "binomial"){
+        args$y <- factor(args$y, levels=c(0,1))
+      }
+      
+      rf_fun <- getS3method("randomForest", "default", envir=getNamespace("randomForest"))
+      fit_object <- call_with_args(rf_fun, args)
       
       return(fit_object)
     },

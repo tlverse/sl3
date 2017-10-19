@@ -37,33 +37,28 @@ Lrnr_pkg_SuperLearner <- R6Class(classname = "Lrnr_pkg_SuperLearner",
   private = list(
     .properties = c("binomial", "continuous", "weights", "ids"),
     .train = function(task) {
-      wrapper = self$params$wrapper_fun
+      args <- self$params
+      wrapper = args$wrapper_fun
       # to minimize prediction costs (since we throw out predictions from here
       # anyways), newX is just a single row
       newX = task$X[1, ]
-      family <- stats::gaussian()
-      if (!is.null(self$params$family)) {
-        family <- self$params$family
-        if (is.character(family)) {
-          family <- get(family, mode = "function", envir = parent.frame())
-          family <- family()
-        }
-      }
-      fit_object <- wrapper(task$Y, task$X, newX, family = family,
+      
+      
+      
+      outcome_type <- self$get_outcome_type(task)
+      args$family <- get_glm_family(args$family, outcome_type)
+
+      fit_object <- wrapper(task$Y, task$X, newX, family = args$family,
                             obsWeights = task$weights, id = task$id)$fit
       return(fit_object)
     },
     .predict = function(task) {
-      family <- stats::gaussian()
-      if (!is.null(self$params$family)) {
-        family <- self$params$family
-        if (is.character(family)) {
-          family <- get(family, mode = "function", envir = parent.frame())
-          family <- family()
-        }
-      }
+      args <- self$params
+      outcome_type <- private$.training_outcome_type
+      args$family <- get_glm_family(args$family, outcome_type)
+      
       predictions = stats::predict(private$.fit_object, newdata = task$X,
-                                   family = family)
+                                   family = args$family)
       return(predictions)
     },
     .required_packages = c("SuperLearner")

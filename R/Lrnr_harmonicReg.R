@@ -36,12 +36,12 @@ Lrnr_HarmonicReg <- R6Class(classname = "Lrnr_HarmonicReg", inherit = Lrnr_base,
                                               freq = freq,
                                               ...) {
   
-                          params <- list(Kparam=Kparam, n.ahead=n.ahead, freq=freq, ...)
+                          params <- args_to_list()
                           super$initialize(params = params, ...)
                         }
                       ),
                       private = list(
-                        
+                        .properties = c("timeseries", "continuous"),
                         .train = function(task) {
                           
                           params <- self$params

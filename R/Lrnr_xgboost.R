@@ -29,10 +29,10 @@
 Lrnr_xgboost <- R6Class(classname = "Lrnr_xgboost", inherit = Lrnr_base,
                         portable = TRUE, class = TRUE,
   private = list(
-    .properties = c("continuous", "binomial", "categorical"),
+    .properties = c("continuous", "binomial", "categorical", "weights"),
     .train = function(task) {
       verbose <- getOption("sl3.verbose")
-      params <- self$params
+      args <- self$params
       outcome_type <- self$get_outcome_type(task)
       
       Xmat <- as.matrix(task$X)
@@ -44,24 +44,28 @@ Lrnr_xgboost <- R6Class(classname = "Lrnr_xgboost", inherit = Lrnr_base,
       Y <- task$format_Y(outcome_type)
       
       if(outcome_type=="categorical"){
-        num_class <- length(levels(Y))
         Y <- as.numeric(Y)-1
       }
-      xgb_data <- try(xgboost::xgb.DMatrix(Xmat, label = Y))
-        
-      mainArgs <- list(data = xgb_data)
-      mainArgs <- c(mainArgs, params)
-      mainArgs[["verbose"]] <- as.integer(verbose)
-      mainArgs[["print_every_n"]] <- 20
-      mainArgs[["watchlist"]] <- list(train = xgb_data)
+      
+      if(task$has_node("weights")){
+        args$data <- try(xgboost::xgb.DMatrix(Xmat, weight = task$weights, label = Y))
+      } else {
+        args$data <- try(xgboost::xgb.DMatrix(Xmat, label = Y))    
+      }
+
+      
+      args$verbose <- as.integer(verbose)
+      args$print_every_n <- 20
+      args$watchlist <- list(train = args$data)
       
       if(outcome_type=="binomial"){
-        mainArgs[["objective"]] <- "binary:logistic"
+        args$objective <- "binary:logistic"
       } else if(outcome_type=="categorical"){
-        mainArgs[["objective"]] <- "multi:softprob"
-        mainArgs[["num_class"]] <- num_class
+        args$objective <- "multi:softprob"
+        args$num_class <- length(task$outcome_levels)
       }
-      fit_object <- do.call(xgboost::xgb.train, mainArgs)
+      
+      fit_object <- call_with_args(xgboost::xgb.train, args, keep_all = TRUE)
       return(fit_object)
     },
     .predict = function(task = NULL) {

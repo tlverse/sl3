@@ -17,6 +17,7 @@ Lrnr_pkg_SuperLearner_method <- R6Class(classname = "Lrnr_pkg_SuperLearner_metho
     }
   ),
   private = list(
+    .properties = c("binomial", "continuous", "weights"),
     .train = function(task) {
       method <- self$params$method
       X <- as.matrix(task$X)

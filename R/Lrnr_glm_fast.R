@@ -52,18 +52,21 @@ Lrnr_glm_fast <- R6Class(classname = "Lrnr_glm_fast", inherit = Lrnr_base,
     .properties = c("continuous", "binomial", "weights", "offset"),
     .train = function(task) {
       verbose <- getOption("sl3.verbose")
-      params <- self$params
+      
+      
+      args <- self$params
+      
+      
       outcome_type <- self$get_outcome_type(task)
-
-      family <- get_glm_family(params$family, outcome_type)
-      params$family <- family
+      family <- get_glm_family(args$family, outcome_type)
+      args$family <- family
       family_name <- family$family
       linkinv_fun <- family$linkinv
+      
+      # specify data
 
-      # generate arguments from params and other sources
-      args <- keep_only_fun_args(params, speedglm::speedglm.wfit)
       args$X <- as.matrix(task$X_intercept)
-      args$y <- task$Y
+      args$y <- task$format_Y(outcome_type)
       args$trace <- FALSE
       
       if(task$has_node("weights")){
@@ -75,7 +78,7 @@ Lrnr_glm_fast <- R6Class(classname = "Lrnr_glm_fast", inherit = Lrnr_base,
       }
       
       SuppressGivenWarnings({
-        fit_object <- try(do.call(speedglm::speedglm.wfit, args),
+        fit_object <- try(call_with_args(speedglm::speedglm.wfit, args),
                         silent = TRUE)
         }, GetWarningsToSuppress())
 
@@ -85,12 +88,10 @@ Lrnr_glm_fast <- R6Class(classname = "Lrnr_glm_fast", inherit = Lrnr_base,
           message("speedglm::speedglm.wfit failed, falling back on stats:glm.fit; ", fit_object)
         }
         args$ctrl <- glm.control(trace = FALSE)
-        args$method <- NULL
         args$x <- args$X
-        args <- keep_only_fun_args(args, stats::glm.fit)
         
         SuppressGivenWarnings({
-          fit_object <- do.call(stats::glm.fit, args)
+          fit_object <- call_with_args(stats::glm.fit, args)
         }, GetWarningsToSuppress())
         fit_object$linear.predictors <- NULL
         fit_object$weights <- NULL
@@ -117,7 +118,7 @@ Lrnr_glm_fast <- R6Class(classname = "Lrnr_glm_fast", inherit = Lrnr_base,
           predictions <- as.vector(private$.fit_object$linkinv_fun(eta))
         }
       }
-      return(data.table::data.table(predictions))
+      return(predictions)
     },
     .required_packages = c("speedglm")
 ), )

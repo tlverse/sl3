@@ -33,6 +33,7 @@ Lrnr_solnp_density <- R6Class(classname = "Lrnr_solnp_density",
   ),
   private = list(
     .covariates = NULL,
+    .properties = "density",
     .train = function(task) {
       verbose = getOption("sl3.verbose")
       params <- self$params

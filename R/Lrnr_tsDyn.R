@@ -51,185 +51,60 @@
 #' 
 Lrnr_tsDyn <- R6Class(classname = "Lrnr_tsDyn", inherit = Lrnr_base, portable = TRUE, class = TRUE, 
                         public = list(
-                          initialize = function(learner=learner,
-                                                m=1,
-                                                size=1,
-                                                lag=1,
-                                                d=1,
-                                                include= "const",
-                                                type= "level",
-                                                n.ahead=NULL, 
-                                                mL=m,mH=m,mM=NULL,
-                                                thDelay=0,
-                                                common="none",
-                                                ML=seq_len(mL),MM=NULL,MH=seq_len(mH),
-                                                nthresh=1,trim=0.15,
-                                                sig=0.05, control=list(),
-                                                r=1,model="VAR",I="level",beta=NULL,estim="2OLS",
-                                                exogen = NULL,LRinclude="none",
-                                                commonInter=FALSE,mTh=1,gamma = NULL,
-                                                dummyToBothRegimes=TRUE,max.iter=2,
-                                                ngridBeta=50,ngridTh=50,
-                                                th1=list(exact = NULL, int = c("from","to"), around = "val"),
-                                                th2 = list(exact = NULL, int = c("from", "to"),around = "val"),
-                                                beta0=0,...) {
+                          initialize = function(learner,
+                                          m=1,
+                                          size=1,
+                                          lag=1,
+                                          d=1,
+                                          include= "const",
+                                          type= "level",
+                                          n.ahead=NULL, 
+                                          mL=m,mH=m,mM=NULL,
+                                          thDelay=0,
+                                          common="none",
+                                          ML=seq_len(mL),MM=NULL,MH=seq_len(mH),
+                                          nthresh=1,trim=0.15,
+                                          sig=0.05, control=list(),
+                                          r=1,model="VAR",I="level",beta=NULL,estim="2OLS",
+                                          exogen = NULL,LRinclude="none",
+                                          commonInter=FALSE,mTh=1,gamma = NULL,
+                                          dummyToBothRegimes=TRUE,max.iter=2,
+                                          ngridBeta=50,ngridTh=50,
+                                          th1=list(exact = NULL, int = c("from","to"), around = "val"),
+                                          th2 = list(exact = NULL, int = c("from", "to"),around = "val"),
+                                          beta0=0,...) {
                             
-                            params <- list(learner=learner,m=m,size=size,lag=lag,d=d,include=include,
-                                           type=type,n.ahead=n.ahead,mL=mL,mM=mM,mH=mH,thDelay=thDelay,
-                                           common=common,ML=ML,MM=MM,MH=MH,nthresh=nthresh,trim=trim,
-                                           sig=sig,control=control,r=r,model=model,I=I,beta=beta,estim=estim,
-                                           exogen=exogen,LRinclude=LRinclude,commonInter=commonInter,mTh=mTh,
-                                           gamma=gamma,dummyToBothRegimes=dummyToBothRegimes,max.iter=max.iter,
-                                           ngridBeta=ngridBeta,ngridTh=ngridTh,th1=th1,th2=th2,
-                                           beta0=beta0,...)
+                            params <- args_to_list()
                             super$initialize(params = params)
                           }
                         ),
                         private = list(
-                          
+                          .properties = c("timeseries", "continuous"),
                           .train = function(task) {
                             
-                            params <- self$params
+                            args <- self$params
+                            learner <- args$learner
+                            learner_fun <- get(learner, mode = "function", envir = asNamespace("tsDyn"))
+                            model <- args$model
+                            args$data <- args$x <- as.matrix(task$X)
                             
-                            learner <- params[["learner"]]
-                            m <- params[["m"]]
-                            size <- params[["size"]]
-                            lag <- params[["lag"]]
-                            d <- params[["d"]]
-                            include <- params[["include"]]
-                            type <- params[["type"]]
-                            mL <- params[["mL"]]
-                            mM <- params[["mM"]]
-                            mH <- params[["mH"]]
-                            thDelay <- params[["thDelay"]]
-                            common <- params[["common"]]
-                            ML <- params[["ML"]]
-                            MM <- params[["MM"]]
-                            MH <- params[["MH"]]
-                            nthresh <- params[["nthresh"]]
-                            trim <- params[["trim"]]
-                            sig <- params[["sig"]]
-                            control <- params[["control"]]
-                            r <- params[["r"]]
-                            model <- params[["model"]]
-                            I <- params[["I"]]
-                            beta <- params[["beta"]]
-                            estim <- params[["estim"]]
-                            exogen <- params[["exogen"]]
-                            LRinclude <- params[["LRinclude"]]
-                            commonInter <- params[["commonInter"]]
-                            mTh <- params[["mTh"]]
-                            gamma <- params[["gamma"]]
-                            dummyToBothRegimes <- params[["dummyToBothRegimes"]]
-                            max.iter <- params[["max.iter"]]
-                            ngridBeta <- params[["ngridBeta"]]
-                            ngridTh <- params[["ngridTh"]]
-                            th1 <- params[["th1"]]
-                            th2 <- params[["th2"]]
-                            beta0 <- params[["beta0"]]
-
-                            if(learner=="nnetTs"){
+                            if(learner=="setar"){
                               
-                              if (is.character(learner)) {
-                                learner <- get(learner, mode = "function", envir = asNamespace("tsDyn"))
-                              }
-                              
-                              
-                              fit_object<-learner(task$X, m=m, d=d, size = size, control=control)
-                              
-                            }else if(learner=="setar"){
-                              
-                              if (is.character(learner)) {
-                                learner <- get(learner, mode = "function", envir = asNamespace("tsDyn"))
-                              }
                               
                               if(!model %in% c("TAR", "MTAR")){
                                 stop("When trying to fit self exciting threshold autoregressive model, must specify model to be either TAR or MTAR.")
                               }
-                              
-                              fit_object<-learner(as.matrix(task$X), m=m, d=d, mL=mL,mM=mM,mH=mH,thDelay=thDelay,mTh=mTh,
-                                                  common=common,model=model,
-                                                  ML=ML,MM=MM,MH=MH,nthresh=nthresh,trim=trim,type=type)
-                              
-                            }else if(learner=="lstar"){
-                              
-                              if (is.character(learner)) {
-                                learner <- get(learner, mode = "function", envir = asNamespace("tsDyn"))
-                              }
-                              
-                              fit_object<-learner(as.matrix(task$X), m=m, d=d, mL=mL,mH=mH,thDelay=thDelay,control=control)
-                                                  
-                            }else if(learner=="star"){
-                              
-                              if (is.character(learner)) {
-                                learner <- get(learner, mode = "function", envir = asNamespace("tsDyn"))
-                              }
-                              
-                              fit_object<-learner(as.matrix(task$X), m=m, d=d, thDelay=thDelay,sig=sig,control=control)
-                              
-                            }else if(learner=="aar"){
-                              
-                              if (is.character(learner)) {
-                                learner <- get(learner, mode = "function", envir = asNamespace("tsDyn"))
-                              }
-                              
-                              fit_object<-learner(task$X, m=m, d=d)
-                              
-                            }else if(learner=="lineVar"){
-                              
-                              if (is.character(learner)) {
-                                learner <- get(learner, mode = "function", envir = asNamespace("tsDyn"))
-                              }
-                              
+                            } else if(learner=="lineVar"){
                               if(!model %in% c("VAR", "VECM")){
                                 stop("Must specify model to be either VAR or VECM.")
                               }
-                              
-                              fit_object<-learner(task$X,lag=lag,r=r,include=include,model=model,I=I,
-                                                  beta=beta,estim=estim,LRinclude=LRinclude,exogen)
-                              
-                            }else if(learner=="VECM"){
-                              
-                              if (is.character(learner)) {
-                                learner <- get(learner, mode = "function", envir = asNamespace("tsDyn"))
-                              }
-                              
-                              fit_object<-learner(task$X,lag=lag,r=r,include=include,
-                                                  beta=beta,estim=estim,LRinclude=LRinclude,exogen=exogen)
-                              
-                            }else if(learner=="TVAR"){
-                              
-                              if (is.character(learner)) {
-                                learner <- get(learner, mode = "function", envir = asNamespace("tsDyn"))
-                              }
-                              
+                            } else if(learner=="TVAR"){
                               if(!model %in% c("TAR", "MTAR")){
                                 stop("When trying to fit multivariate Threshold VAR model, must specify model to be either TAR or MTAR.")
                               }
-                              
-                              fit_object<-learner(task$X,lag=lag,include=include,model=model,commonInter=commonInter,
-                                                  nthresh=nthresh,thDelay=thDelay,mTh=mTh,trim=trim,
-                                                  dummyToBothRegimes=dummyToBothRegimes,max.iter=max.iter)
-
-                            }else if(learner=="TVECM"){
-                              
-                              if (is.character(learner)) {
-                                learner <- get(learner, mode = "function", envir = asNamespace("tsDyn"))
-                              }
-                              
-                              fit_object<-learner(task$X,lag=lag,nthresh=nthresh,trim=trim,ngridBeta=ngridBeta,
-                                                  ngridTh=ngridTh,th1=th1,th2=th2,common=common,include=include,
-                                                  dummyToBothRegimes=dummyToBothRegimes,beta0=beta0)
-                              
-                            }else if(learner=="linear"){
-                              
-                              if (is.character(learner)) {
-                                learner <- get(learner, mode = "function", envir = asNamespace("tsDyn"))
-                              }
-                              
-                              fit_object<-learner(task$X,m=m,d=d,include=include,type=type)
- 
                             }
+                              
+                            fit_object <- call_with_args(learner_fun, args)
                               
                             return(fit_object)
                             

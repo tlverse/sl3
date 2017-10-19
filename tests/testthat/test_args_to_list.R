@@ -1,3 +1,5 @@
+context("args_to_list")
+
 my_function <- function(arg1="default_1", arg2="default_2", ...){
   return(args_to_list())
 }
@@ -26,3 +28,10 @@ wrapper_function <- function(){
 a=2
 arglist <- wrapper_function()
 expect_equal(arglist$arg1,1)
+
+my_function_defaults=function(arg1=1, arg2=arg1){
+  return(args_to_list())
+}
+
+arglist <- my_function_defaults()
+expect_equal(arglist, list(arg1 = 1, arg2 = 1))

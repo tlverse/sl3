@@ -18,7 +18,6 @@ GetWarningsToSuppress <- function(update.step=FALSE) {
 }
 
 ################################################################################
-
 #' Streamline Function Arguments
 #'
 #' Reduce a list of function argsuments by taking a function body and returning
@@ -41,6 +40,25 @@ keep_only_fun_args <- function(Args, fun) {
   return(Args)
 }
 
+################################################################################
+#' Call with filtered argument list
+#'
+#' Call a function with a list of arguments, eliminating any that aren't 
+#' matched in the function prototype
+#'
+#' @param fun A \code{function} whose signature will be used to reduce the
+#' @param args A \code{list} of function arguments to use
+#' @param other_valid A \code{list} of function arguments names that are valid, but not formals of \code{fun}
+#' @param keep_all A \code{boolean} don't drop arguments, even if they aren't matched in either the function prototype or other_valid
+#' @keywords internal#
+call_with_args <- function(fun, args, other_valid=list(), keep_all=FALSE) {
+  if(!keep_all){
+    formal_args <- names(formals(fun))
+    all_valid <- c(formal_args, other_valid)
+    args <- args[which(names(args)%in%all_valid)]
+  }
+  do.call(fun, args)
+}
 ################################################################################
 
 #' Replace an argument in \code{mainArgs} if it also appears in \code{userArgs}.
@@ -158,6 +176,8 @@ get_glm_family <- function(family, outcome_type){
       family = gaussian()
     } else if(outcome_type=="binomial"){
       family = binomial()
+    } else if(outcome_type=="categorical"){
+      family = "multinomial"
     } else{
       warning("No family specified and untested outcome_type. Defaulting to gaussian")
       family = gaussian()
@@ -190,7 +210,13 @@ args_to_list <- function(){
   all_args[names(args)] <- args
 
   # evaluate args
-  evaled <- lapply(all_args, eval, envir=parent.frame(2L))
+  num_args <- length(all_args)
+  for(i in seq_len(num_args)){
+    if(!is.null(all_args[[i]])){
+      all_args[[i]]=eval(all_args[[i]], envir=all_args, enclos=parent.frame(2L))
+    }
+  }
+  # evaled <- lapply(all_args, eval, envir=parent.frame(2L))
   
-  return(evaled)
+  return(all_args)
 }

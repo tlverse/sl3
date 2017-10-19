@@ -31,26 +31,17 @@ Lrnr_rugarch <- R6Class(classname = "Lrnr_rugarch", inherit = Lrnr_base, portabl
                                                 n.ahead=NULL,
                                                 ...) {
                             
-                            params <- list(variance.model = variance.model, mean.model=mean.model, distribution.model=distribution.model, start.pars=start.pars, fixed.pars=fixed.pars, n.ahead=n.ahead, ...)
+                            params <- args_to_list()
                             super$initialize(params = params, ...)
                           }
                         ),
                         private = list(
-                          
+                          .properties = c("timeseries", "continuous"),
                           .train = function(task) {
-                            params <- self$params
-                            variance.model <- params[["variance.model"]]
-                            mean.model <- params[["mean.model"]]
-                            distribution.model <- params[["distribution.model"]]
-                            start.pars <- params[["start.pars"]]
-                            fixed.pars <- params[["fixed.pars"]]
+                            args <- self$params
                             
                             #Support for a single time-series
-                            spec_object<-rugarch::ugarchspec(variance.model=variance.model,
-                                                             mean.model=mean.model,
-                                                             distribution.model=distribution.model,
-                                                             start.pars=start.pars,
-                                                             fixed.pars=fixed.pars)
+                            spec_object<-call_with_args(rugarch::ugarchspec, args)
                             
                             #Perhaps might not want to store all the info. TO DO
                             fit_object<-rugarch::ugarchfit(spec_object, task$X)

@@ -90,9 +90,7 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                            private$.training_task = training_task
                          }
                          private$.training_outcome_type <- self$get_outcome_type(training_task)
-                         if(private$.training_outcome_type %in% c("binomial", "categorical")){
-                           private$.training_outcome_levels <- get_levels(training_task$Y)
-                         }
+                         private$.training_outcome_levels <- training_task$outcome_levels
                          private$.fit_uuid = UUIDgenerate(use.time=T)
                          
                        },

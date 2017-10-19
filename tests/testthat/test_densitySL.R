@@ -24,10 +24,10 @@ test_that("Super Learner for densities works", {
   new_task <- sl3_Task$new(newdata, covariates=c("W1", "W2", "W3"),outcome="sA" )
 
   ## Define some learners:
-  lrn1 <- Lrnr_condensier$new(task_1, nbins = 5, bin_method = "equal.len", pool = FALSE)
-  lrn2 <- Lrnr_condensier$new(task_1, nbins = 5, bin_method = "equal.len", pool = TRUE)
-  lrn3 <- Lrnr_condensier$new(task_1, nbins = 7, bin_method = "equal.mass", pool = TRUE)
-  lrn4 <- Lrnr_condensier$new(task_1, nbins = 5, bin_method = "equal.len", pool = TRUE,
+  lrn1 <- Lrnr_condensier$new(nbins = 5, bin_method = "equal.len", pool = FALSE)
+  lrn2 <- Lrnr_condensier$new(nbins = 5, bin_method = "equal.len", pool = TRUE)
+  lrn3 <- Lrnr_condensier$new(nbins = 7, bin_method = "equal.mass", pool = TRUE)
+  lrn4 <- Lrnr_condensier$new(nbins = 5, bin_method = "equal.len", pool = TRUE,
                               condensier::speedglmR6$new()
                               # bin_estimator = Lrnr_xgboost$new(nrounds = 20, objective = 'reg:logistic')
                               )

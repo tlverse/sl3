@@ -1,3 +1,4 @@
+context("multinomial SL")
 library(origami)
 
 Qbar0 <- function(A, W) {
@@ -68,7 +69,7 @@ mn_metalearner <- make_learner(Lrnr_solnp, loss_function = mn_loglik, learner_fu
 stack <- make_learner(Stack, list(rf, xgb, lrnr_mean, lrnr_glmnet, lrnr_multinom_gf))
 sf <- stack$train(task)
 ct <- sf$chain()
-ct
+
 
 mf <- mn_metalearner$base_train(ct)
 

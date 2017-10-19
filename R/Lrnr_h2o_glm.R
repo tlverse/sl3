@@ -59,44 +59,54 @@ define_h2o_X = function(task) {
 Lrnr_h2o_glm <- R6Class(classname = "Lrnr_h2o_glm", inherit = Lrnr_base,
                         portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(family = "gaussian", covariates = NULL, ...) {
-      if (is.function(family)) {
-        family <- family()[["family"]]
-      }
-      params <- list(family = family, covariates = covariates, ...)
-      super$initialize(params = params, ...)
+    initialize = function(family = NULL, intercept = TRUE,
+                     standardize = TRUE,
+                     lambda = 0L,
+                     max_iterations = 100,
+                     ignore_const_cols = FALSE,
+                     missing_values_handling = "Skip", ...) {
+      super$initialize(params = args_to_list(), ...)
     }
   ),
 
   private = list(
+    .properties = c("continuous", "binomial", "categorical", "weights"),
     .train = function(task) {
       verbose = getOption("sl3.verbose")
-      params <- self$params
-
+      args <- self$params
+      
+      
+      outcome_type <- self$get_outcome_type(task)
+      args$family <- get_glm_family(args$family, outcome_type)
+      if(inherits(args$family,"family")){
+        args$family <- args$family$family
+      }
+      
       connectH2O <- try(h2o::h2o.getConnection(), silent = TRUE)
       if (inherits(connectH2O, "try-error")) {
         stop("No active H2O cluster found, please initiate h2o cluster first by running 'h2o::h2o.init()'")
       }
 
-      X <- define_h2o_X(task)
+      h2o_data <- define_h2o_X(task)
       if (verbose) {
         h2o::h2o.show_progress()
       } else {
         h2o::h2o.no_progress()
       }
 
-      mainArgs <- list(x = task$nodes$covariates,
-                       y = task$nodes$outcome,
-                       training_frame = X,
-                       intercept = TRUE,
-                       standardize = TRUE,
-                       lambda = 0L,
-                       max_iterations = 100,
-                       ignore_const_cols = FALSE,
-                       missing_values_handling = "Skip")
+      args$x <- task$nodes$covariates
+      args$y <- task$nodes$outcome
+      args$training_frame <- h2o_data
+      
+      if(task$has_node("weights")){
+        args$weights_column <- task$nodes$weights
+      }
+      
+      if(task$has_node("offset")){
+        args$offset_column <- task$nodes$offset
+      }
 
-      mainArgs <- replace_add_user_args(mainArgs, params, fun = h2o::h2o.glm)
-      fit_object <- do.call(h2o::h2o.glm, mainArgs)
+      fit_object <- call_with_args(h2o::h2o.glm, args)
 
       h2o::h2o.show_progress()
       ## assign the fitted coefficients in correct order (same as predictor order in x)

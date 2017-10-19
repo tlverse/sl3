@@ -1,3 +1,4 @@
+context("binomial Super Learner")
 library(origami)
 
 Qbar0 <- function(A, W) {

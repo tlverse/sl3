@@ -90,12 +90,6 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                         # process row_index
                         private$.row_index <- row_index
                         
-                        # process folds
-                        if(missing(folds)){
-                          folds <- make_folds(cluster_ids=self$id)
-                          
-                        }
-                        
                         private$.folds <- folds
                         
                         # assign uuid
@@ -242,14 +236,26 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                         return(new_task)
                       },
                       get_data = function(rows = NULL, columns){
+                        
+                        
+                        
                         if(missing(rows)){
                           rows = private$.row_index
                         }
+                        
+                        true_columns <- unlist(private$.column_names[columns])
+                        
                         if(!is.null(rows)){
-                          return(private$.data[rows, columns, with=FALSE])
+                          subset <- private$.data[rows, true_columns, with=FALSE]
                         } else {
-                          return(private$.data[, columns, with=FALSE])
+                          subset <- private$.data[, true_columns, with=FALSE]
                         }
+                        
+                        if(ncol(subset)>0){
+                          data.table::setnames(subset, true_columns, columns)
+                        }
+                        
+                        return(subset)
                       },
                       has_node = function(node_name){
                         node_var <- private$.nodes[[node_name]]
@@ -266,8 +272,7 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                         if(is.null(node_var)){
                           return(generator_fun(node_name, self$nrow))
                         } else{
-                          col_name <- unlist(private$.column_names[node_var])
-                          data_col <- self$get_data(,col_name)
+                          data_col <- self$get_data(,node_var)
                           
                           if(ncol(data_col)==1){
                             return(unlist(data_col, use.names = FALSE))
@@ -301,8 +306,13 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                       }),
                     
                     active = list(
-                      data = function() {
+                      raw_data = function(){
                         return(private$.data)
+                      },
+                      data = function() {
+                        all_nodes <- unlist(private$.nodes)
+                        
+                        return(self$get_data(,all_nodes))
                       },
                       nrow = function(){
                         if(is.null(private$.row_index)){
@@ -317,11 +327,7 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                       X = function(){
                         
                         covariates =  private$.nodes$covariates
-                        covariate_cols <- unlist(private$.column_names[covariates])
-                        X_dt = self$get_data(, covariate_cols)
-                        if(ncol(X_dt)>0){
-                          data.table::setnames(X_dt, covariate_cols, covariates)
-                        }
+                        X_dt = self$get_data(, covariates)
                         
                         return(X_dt)
                       },
@@ -350,7 +356,16 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                       id = function(){
                         return(self$get_node("id",function(node_var,n){seq_len(n)}))
                       },
-                      folds = function(){
+                      folds = function(new_folds){
+                        
+                        if(!missing(new_folds)){
+                          private$.folds <- new_folds
+                        } else if(is.null(private$.folds)){
+                          # generate folds now if never specified
+                          private$.folds <- make_folds(cluster_ids=self$id)
+                          
+                        }
+                        
                         return(private$.folds)
                       },
                       uuid = function(){
