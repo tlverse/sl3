@@ -67,23 +67,39 @@ Lrnr_sl <- R6Class(classname = "Lrnr_sl", inherit = Lrnr_base, portable = TRUE,
       fold_max_risk <- apply(fold_risks, 2, max)
       fold_SD <- apply(fold_risks, 2, sd)
 
-      learner_names <- c(sapply(self$params$learners, "[[", "name"),
+      learner_names <- c(cv_meta_task$nodes$covariates,
                          "SuperLearner")
+      
+      coefs <- self$coefficients
+
       risk_dt <- data.table::data.table(learner = learner_names,
+                                        coefficients = NA*0.0,
                                         mean_risk = fold_mean_risk,
                                         SE_risk = se,
                                         fold_SD = fold_SD,
                                         fold_min_risk = fold_min_risk,
                                         fold_max_risk = fold_max_risk)
+      
+      if(!is.null(coefs)){
+        risk_dt[match(learner, names(coefs)), coefficients:=coefs]
+      }
+      
       return(risk_dt)
     }
   ),
   active = list(
     name = function() {
       name = paste("CV", self$params$learner$name, sep = "_")
+    },
+    coefficients = function(){
+      
+      self$assert_trained()
+      
+      return(coef(self$fit_object$cv_meta_fit))
     }
   ),
   private = list(
+    .properties = c("wrapper"),
     .pretrain = function(task) {
       # prefer folds from params, but default to folds from task
       folds <- self$params$folds
@@ -109,7 +125,7 @@ Lrnr_sl <- R6Class(classname = "Lrnr_sl", inherit = Lrnr_base, portable = TRUE,
 
       # form full SL fit -- a pipeline with the stack fit to the full data,
       # and the metalearner fit to the cv predictions
-      full_fit <- delayed_learner_new(Pipeline, stack_fit, cv_meta_fit)
+      full_fit <- delayed_make_learner(Pipeline, stack_fit, cv_meta_fit)
       fit_object <- list(cv_fit = cv_fit, cv_meta_task = cv_meta_task,
                          cv_meta_fit = cv_meta_fit, full_fit = full_fit)
       return(bundle_delayed(fit_object))
@@ -124,6 +140,11 @@ Lrnr_sl <- R6Class(classname = "Lrnr_sl", inherit = Lrnr_base, portable = TRUE,
         keep = names(fit_object)
       } else {
         keep = c("full_fit")
+        
+        # todo: replace learners with zero weight with smaller fit objects
+        # coefs <- self$coefficients
+        # nz_learners <- which(coefs>0)
+        
       }
       return(fit_object[keep])
     },

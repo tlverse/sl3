@@ -4,7 +4,7 @@
 \name{Stack}
 \alias{Stack}
 \title{Learner Stacking
-A Stack is a special Learner that combines multiple other learners, "stacking" their predictions in columns. Currently, train fits the learners one-at-a-time, but this will be parallelized with \link{future} going forward.}
+A Stack is a special Learner that combines multiple other learners, "stacking" their predictions in columns.}
 \format{\code{\link{R6Class}} object.}
 \usage{
 Stack
@@ -14,7 +14,7 @@ Stack
 }
 \description{
 Learner Stacking
-A Stack is a special Learner that combines multiple other learners, "stacking" their predictions in columns. Currently, train fits the learners one-at-a-time, but this will be parallelized with \link{future} going forward.
+A Stack is a special Learner that combines multiple other learners, "stacking" their predictions in columns.
 }
 \section{Fields}{
 
@@ -38,5 +38,4 @@ Other Learners: \code{\link{Lrnr_HarmonicReg}},
   \code{\link{Lrnr_sl}}, \code{\link{Lrnr_tsDyn}},
   \code{\link{Pipeline}}
 }
-\concept{Learners}
 \keyword{data}

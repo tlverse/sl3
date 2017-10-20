@@ -16,15 +16,12 @@ Imports:
     data.table,
     assertthat,
     origami,
-    future,
     R6,
     uuid,
-    memoise,
-    digest,
     BBmisc,
     stats,
     delayed,
-    methods
+    utils
 Suggests:
     testthat,
     knitr,
@@ -46,7 +43,10 @@ Suggests:
     speedglm,
     randomForest,
     SuperLearner,
-    h2o
+    h2o,
+    future,
+    e1071,
+    earth
 Remotes:
     github::osofr/condensier,
     github::jeremyrcoyle/delayed

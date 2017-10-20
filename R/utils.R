@@ -18,7 +18,6 @@ GetWarningsToSuppress <- function(update.step=FALSE) {
 }
 
 ################################################################################
-
 #' Streamline Function Arguments
 #'
 #' Reduce a list of function argsuments by taking a function body and returning
@@ -41,6 +40,25 @@ keep_only_fun_args <- function(Args, fun) {
   return(Args)
 }
 
+################################################################################
+#' Call with filtered argument list
+#'
+#' Call a function with a list of arguments, eliminating any that aren't 
+#' matched in the function prototype
+#'
+#' @param fun A \code{function} whose signature will be used to reduce the
+#' @param args A \code{list} of function arguments to use
+#' @param other_valid A \code{list} of function arguments names that are valid, but not formals of \code{fun}
+#' @param keep_all A \code{boolean} don't drop arguments, even if they aren't matched in either the function prototype or other_valid
+#' @keywords internal#
+call_with_args <- function(fun, args, other_valid=list(), keep_all=FALSE) {
+  if(!keep_all){
+    formal_args <- names(formals(fun))
+    all_valid <- c(formal_args, other_valid)
+    args <- args[which(names(args)%in%all_valid)]
+  }
+  do.call(fun, args)
+}
 ################################################################################
 
 #' Replace an argument in \code{mainArgs} if it also appears in \code{userArgs}.
@@ -115,3 +133,89 @@ subset_dt_cols = function(dt, cols) {
   return(dt[, cols, with = FALSE, drop = FALSE])
 }
 
+################################################################################
+
+#' guess variable type
+#' 
+#' @param x the variable
+#' @param pcontinuous The proportion of observations that have to be unique before a variable is determined to be continuous
+#' @export
+guess_variable_type=function(x, pcontinuous=0.05){
+  nunique <- length(unique(x))
+  
+  if(!is.null(ncol(x))){
+    type <- "multivariate"
+  } else if(nunique==1){
+    type <- "constant"
+  } else if(nunique==2){
+    type <- "binomial"
+  } else if((nunique/length(x))<pcontinuous){
+    type <- "categorical"
+  } else{
+    type <- "continuous"
+  }
+  
+  return(type)
+}
+
+################################################################################
+
+#' determine glm family
+#' @importFrom stats binomial
+#' @param family family argument specified to learner, either character or an actual family object
+#' @param outcome_type outcome type from Learner$get_outcome_type
+#' @return family object determined by combination of arguments
+get_glm_family <- function(family, outcome_type){
+  #prefer explicit family, otherwise infer from outcome_type
+  if (inherits(family, "family")) {
+    family <- family$family
+  } else if(is.null(family)){
+    # if family isn't specified, use a family appropriate for the outcome_type
+    if(outcome_type=="continuous"){
+      family <- "gaussian"
+    } else if(outcome_type=="binomial"){
+      family <- "binomial"
+    } else if(outcome_type=="categorical"){
+      family <- "multinomial"
+    } else{
+      warning("No family specified and untested outcome_type. Defaulting to gaussian")
+      family <- "gaussian"
+    }
+  }
+  
+  return(family)
+}
+
+#' Get all args of parent call (both specified and defaults) as list
+#' 
+#' @return a list of all for the parent function call
+#' @export
+args_to_list <- function(){
+  parent <- sys.parent()
+  call <- sys.call(parent)
+  fn <- sys.function(parent)
+
+  # get specified args
+  expanded <- match.call(fn, call, envir=parent.frame(2L))
+  args <- as.list(expanded[-1])
+  
+  # get default args
+  all_args <- formals(fn)
+  
+  # drop dots from formals if it exists
+  all_args$`...` <- NULL
+  
+  # add in specified args
+  all_args[names(args)] <- args
+
+  # evaluate args
+  num_args <- length(all_args)
+  for(i in seq_len(num_args)){
+    if(!is.null(all_args[[i]])){
+      all_args[[i]]=eval(all_args[[i]], envir=all_args, enclos=parent.frame(2L))
+    }
+  }
+  # evaled <- lapply(all_args, eval, envir=parent.frame(2L))
+  
+  return(all_args)
+}

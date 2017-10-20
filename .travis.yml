@@ -13,9 +13,8 @@ r_packages:
 - covr
 
 r:
-- oldrel
-- release
-- devel
+  - release
+  - devel
 
 r_github_packages:
 - jimhester/covr

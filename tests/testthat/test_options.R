@@ -1,4 +1,4 @@
-context("Test Options")
+context("test_options.R -- default options")
 library(testthat)
 library(sl3)
 

@@ -1,6 +1,6 @@
 library(sl3)
 library(testthat)
-context("Lrnr_sl Test")
+context("test_define_interactions.R -- Lrnr_define_interactions")
 
 data(cpp)
 cpp <- cpp[!is.na(cpp[, "haz"]), ]

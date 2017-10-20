@@ -28,5 +28,4 @@ Other Learners: \code{\link{Lrnr_HarmonicReg}},
   \code{\link{Lrnr_sl}}, \code{\link{Lrnr_tsDyn}},
   \code{\link{Pipeline}}, \code{\link{Stack}}
 }
-\concept{Learners}
 \keyword{datasets}

@@ -42,6 +42,7 @@ Lrnr_nnls <- R6Class(classname = "Lrnr_nnls", inherit = Lrnr_base,
     }
   ),
   private = list(
+    .properties = c("continuous"),
     .train = function(task) {
       x <- task$X
       y <- task$Y

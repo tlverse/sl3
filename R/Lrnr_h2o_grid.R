@@ -26,13 +26,27 @@
 #
 Lrnr_h2o_grid <- R6Class(classname = "Lrnr_h2o_grid", inherit = Lrnr_base,
                          portable = TRUE, class = TRUE,
+  public = list(
+    initialize = function(seed = 1,
+                    family = NULL,
+                    distribution = NULL,
+                    intercept = TRUE,
+                    standardize = TRUE,
+                    lambda = 0L,
+                    max_iterations = 100,
+                    ignore_const_cols = FALSE,
+                    missing_values_handling = "Skip", ...) {
+      super$initialize(params = args_to_list(), ...)
+    }
+  ),
   private = list(
     .classify = FALSE,
     .return_prediction_as_vector = TRUE,
-
+    .properties = c("continuous", "binomial", "categorical", "weights"),
     .train = function(task) {
       verbose <- getOption("sl3.verbose")
-      params <- self$params
+      args <- self$params
+
       if (verbose) {
         h2o::h2o.show_progress()
       } else {
@@ -44,23 +58,31 @@ Lrnr_h2o_grid <- R6Class(classname = "Lrnr_h2o_grid", inherit = Lrnr_base,
         stop("No active H2O cluster found, please initiate h2o cluster first by running 'h2o::h2o.init()'")
       }
 
-      X <- define_h2o_X(task)
+      outcome_type <- self$get_outcome_type(task)
+      args$family <- get_glm_family(args$family, outcome_type)
+      if(inherits(args$family,"family")){
+        args$family <- args$family$family
+      }
+      args$distribution <- args$family 
+      
+      h2o_data <- define_h2o_X(task)
+      
+      
+      args$x <- task$nodes$covariates
+      args$y <- task$nodes$outcome
+      args$training_frame <- h2o_data
+      
+      if(task$has_node("weights")){
+        args$weights_column <- task$nodes$weights
+      }
+      
+      if(task$has_node("offset")){
+        args$offset_column <- task$nodes$offset
+      }
 
-      mainArgs <- list(x = task$nodes$covariates,
-                       y = task$nodes$outcome,
-                       training_frame = X,
-                       seed = 1,
-                       family = "gaussian",
-                       distribution = "gaussian",
-                       intercept = TRUE,
-                       standardize = TRUE,
-                       lambda = 0L,
-                       max_iterations = 100,
-                       ignore_const_cols = FALSE,
-                       missing_values_handling = "Skip"
-                      )
+
       # keep_cross_validation_predictions = TRUE, keep_cross_validation_fold_assignment = TRUE,
-      algorithm <- params[["algorithm"]]
+      algorithm <- args$algorithm
 
       if (is.null(algorithm)) {
         stop("must specify the 'algorithm' name when running 'h2o.grid'")
@@ -78,13 +100,13 @@ Lrnr_h2o_grid <- R6Class(classname = "Lrnr_h2o_grid", inherit = Lrnr_base,
       }
 
       algo_fun <- utils::getFromNamespace(algo_fun_name, ns = 'h2o')
-      # Keep only the relevant args in mainArgs list:
-      mainArgs <- keep_only_fun_args(mainArgs, fun = algo_fun)
-      # Add user args that pertain to this specific learner:
-      mainArgs <- replace_add_user_args(mainArgs, params, fun = algo_fun)
+      # Keep only the relevant algorithm args in mainArgs list:
+      mainArgs <- keep_only_fun_args(args, fun = algo_fun)
+      
+      #add back in args to h2o.grid
       mainArgs[["algorithm"]] <- algorithm
-      mainArgs[["search_criteria"]] <- params[["search_criteria"]]
-      mainArgs[["hyper_params"]] <- params[["hyper_params"]]
+      mainArgs[["search_criteria"]] <- args[["search_criteria"]]
+      mainArgs[["hyper_params"]] <- args[["hyper_params"]]
 
       # Remove any args from mainArgs that also appear in hyper_params:
       common_hyper_args <- intersect(names(mainArgs),
@@ -99,6 +121,8 @@ Lrnr_h2o_grid <- R6Class(classname = "Lrnr_h2o_grid", inherit = Lrnr_base,
         }
       }
 
+
+      # todo: make this play nice with outcome_type
       ## if dealing with classification problem then need to set outcome as factor:
       classify <- private$.classify || (!is.null(mainArgs[["distribution"]]) &&
                                         (mainArgs[["distribution"]] %in% "bernoulli"))

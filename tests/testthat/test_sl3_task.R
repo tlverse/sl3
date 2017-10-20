@@ -1,8 +1,12 @@
-library(sl3)
 library(testthat)
-library(data.table)
+context("test_sl3_task -- Basic sl3_Task functionality")
 
-context("Basic sl3_Task properties")
+
+library(sl3)
+library(data.table)
+library(uuid)
+
+
 # define test dataset
 data(mtcars)
 covariates <- c("cyl", "disp", "hp", "drat", "wt", "qsec",
@@ -46,7 +50,7 @@ test_that("task subsetting works",{
   new_col_name <- tail(column_map,1)[[1]]
   
   #extra column from original
-  new_column <-task$data[[new_col_name]]
+  new_column <-task$raw_data[[new_col_name]]
   expect_equal(new_column[expected_rows],1:2)
 })
 
@@ -56,7 +60,20 @@ test_that("task$X_intercept works for empty X (intercept-only)", {
   expect_equal(nrow(empty_task$X_intercept),nrow(mtcars))
 })
 
-test_that("task errors for empty Y (intercept-only)", {
+test_that("task errors for empty Y", {
   expect_error(empty_task$Y)
 })
 
+
+test_that("two chained tasks can have the same column name without conflicts", {
+  new_data1 <- task$data[, test_col:=1]
+  column_names1 <- task$add_columns(fit_uuid = UUIDgenerate(), new_data = new_data1)
+  chained1 <- task$next_in_chain(covariates = "test_col", column_names = column_names1)
+
+  new_data2 <- task$data[, test_col:=2]
+  column_names2 <- task$add_columns(fit_uuid = UUIDgenerate(), new_data = new_data2)
+  chained2 <- task$next_in_chain(covariates = "test_col", column_names = column_names2)
+
+  expect_true(all(chained1$X$test_col==1))
+  expect_true(all(chained2$X$test_col==2))
+})

@@ -42,52 +42,63 @@
 Lrnr_glm_fast <- R6Class(classname = "Lrnr_glm_fast", inherit = Lrnr_base,
                          portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(family = gaussian(),
-                          method = c('Cholesky', 'eigen','qr'),
-                          covariates = NULL,
-                          ...) {
-      params <- list(family = family, method = method[1L],
-                     covariates = covariates, ...)
-      super$initialize(params = params, ...)
+    initialize = function(family=NULL, method = "Cholesky", ...){
+      super$initialize(params = args_to_list(), ...)  
     }
-  ),
+      
+  ),                    
   private = list(
+    .default_params = list(method = 'Cholesky'),
+    .properties = c("continuous", "binomial", "weights", "offset"),
     .train = function(task) {
       verbose <- getOption("sl3.verbose")
-      params <- self$params
-      family <- params[["family"]]
-      if (is.character(family)) {
-        family <- get(family, mode = "function", envir = parent.frame())
-        family <- family()
+      
+      
+      args <- self$params
+      
+      
+      outcome_type <- self$get_outcome_type(task)
+      
+      family <- get_glm_family(args$family, outcome_type)
+      
+      if(is.character(family)){
+        family_fun <- get(family, mode = "function", envir = parent.frame())
+        family <- family_fun()
       }
-      family_name <- family[["family"]]
-      linkinv_fun <- family[["linkinv"]]
-      method <- params[["method"]]
-      X <- task$X_intercept
+      
+      args$family <- family
+      family_name <- family$family
+      linkinv_fun <- family$linkinv
+      
+      # specify data
 
+      args$X <- as.matrix(task$X_intercept)
+      args$y <- task$format_Y(outcome_type)
+      args$trace <- FALSE
+      
+      if(task$has_node("weights")){
+        args$weights <- task$weights
+      }
+      
+      if(task$has_node("offset")){
+        args$offset <- task$offset
+      }
+      
       SuppressGivenWarnings({
-        fit_object <- try(speedglm::speedglm.wfit(X = as.matrix(X),
-                                                  y = task$Y,
-                                                  method = method,
-                                                  family = family,
-                                                  trace = FALSE,
-                                                  weights = task$weights),
+        fit_object <- try(call_with_args(speedglm::speedglm.wfit, args),
                         silent = TRUE)
         }, GetWarningsToSuppress())
 
       if (inherits(fit_object, "try-error")) {
         # if failed, fall back on stats::glm
-        ## TODO: find example where speedglm fails and this runs, add to tests
         if (verbose) {
           message("speedglm::speedglm.wfit failed, falling back on stats:glm.fit; ", fit_object)
         }
-        ctrl <- glm.control(trace = FALSE)
+        args$ctrl <- glm.control(trace = FALSE)
+        args$x <- args$X
+        
         SuppressGivenWarnings({
-          fit_object <- stats::glm.fit(x = X,
-                                      y = task$Y,
-                                      family = family,
-                                      control = ctrl,
-                                      weights = task$weights)
+          fit_object <- call_with_args(stats::glm.fit, args)
         }, GetWarningsToSuppress())
         fit_object$linear.predictors <- NULL
         fit_object$weights <- NULL
@@ -98,7 +109,7 @@ Lrnr_glm_fast <- R6Class(classname = "Lrnr_glm_fast", inherit = Lrnr_base,
         fit_object$effects <- NULL
         fit_object$qr <- NULL
       }
-      fit_object[["linkinv_fun"]] <- linkinv_fun
+      fit_object$linkinv_fun <- linkinv_fun
       return(fit_object)
     },
 
@@ -114,7 +125,7 @@ Lrnr_glm_fast <- R6Class(classname = "Lrnr_glm_fast", inherit = Lrnr_base,
           predictions <- as.vector(private$.fit_object$linkinv_fun(eta))
         }
       }
-      return(data.table::data.table(predictions))
+      return(predictions)
     },
     .required_packages = c("speedglm")
 ), )

@@ -1,4 +1,4 @@
-context("Test Exponential Smoothing sl3")
+context("test_expSmooth.R -- Lrnr_expSmooth")
 
 if (FALSE) {
   setwd("..")

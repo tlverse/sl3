@@ -17,6 +17,7 @@ Lrnr_pkg_SuperLearner_method <- R6Class(classname = "Lrnr_pkg_SuperLearner_metho
     }
   ),
   private = list(
+    .properties = c("binomial", "continuous", "weights"),
     .train = function(task) {
       method <- self$params$method
       X <- as.matrix(task$X)
@@ -29,6 +30,7 @@ Lrnr_pkg_SuperLearner_method <- R6Class(classname = "Lrnr_pkg_SuperLearner_metho
     .predict = function(task) {
       coef <- private$.fit_object$coef
       X <- as.matrix(task$X)
+      method <- self$params$method
       predictions = method$computePred(X, coef)
       return(predictions)
     },
@@ -36,3 +38,4 @@ Lrnr_pkg_SuperLearner_method <- R6Class(classname = "Lrnr_pkg_SuperLearner_metho
   )
 )
 
+# sl3_learner_registry$register_learner(Lrnr_pkg_SuperLearner)

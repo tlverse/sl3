@@ -1,4 +1,4 @@
-context("Test h2o GLM")
+context("test_zzz_h2o.R -- h2o learners")
 
 if (FALSE) {
     setwd("..")
@@ -60,6 +60,7 @@ test_learner(Lrnr_h2o_grid, task, algorithm = "gbm")
 test_learner(Lrnr_h2o_grid, task, algorithm = "randomForest")
 test_learner(Lrnr_h2o_grid, task, algorithm = "kmeans")
 test_learner(Lrnr_h2o_grid, task, algorithm = "deeplearning")
+
 ## test h2o classifiers and mutator:
 test_learner(Lrnr_h2o_classifier, task, algorithm = "naivebayes")
 test_learner(Lrnr_h2o_mutator, task, algorithm = "pca", k = 3, impute_missing = TRUE)

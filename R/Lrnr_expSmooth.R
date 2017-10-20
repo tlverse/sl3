@@ -57,43 +57,16 @@ Lrnr_expSmooth <- R6Class(classname = "Lrnr_expSmooth", inherit = Lrnr_base, por
                         }
                       ),
                       private = list(
-                        
+                        .properties = c("timeseries", "continuous"),
                         .train = function(task) {
                           
-                          params <- self$params
+                          args <- self$params
+                          args$y = ts(task$X, frequency = args$freq)
                           
-                          model <- params[["model"]]
-                          damped <- params[["damped"]]
-                          alpha <- params[["alpha"]]
-                          beta <- params[["beta"]]
-                          gamma <- params[["gamma"]]
-                          phi <- params[["phi"]]
-                          lambda <- params[["lambda"]]
-                          additive.only <- params[["additive.only"]]
-                          biasadj <- params[["biasadj"]]
-                          lower <- params[["lower"]]
-                          upper <- params[["upper"]]
-                          opt.crit <- params[["opt.crit"]]
-                          nmse <- params[["nmse"]]  
-                          bounds <- params[["bounds"]]
-                          ic <- params[["ic"]]
-                          restrict <- params[["restrict"]]
-                          allow.multiplicative.trend <- params[["allow.multiplicative.trend"]]
-                          use.initial.values <- params[["use.initial.values"]]
-                          freq <- params[["freq"]]
-    
-                          task_ts <- ts(task$X, frequency = freq)
-                          
-                          if (model=="ZZZ") {
-                            fit_object <- forecast::ets(task_ts)
+                          if (args$model=="ZZZ") {
+                            fit_object <- forecast::ets(args$y)
                           }else{
-                            
-                            fit_object <- forecast::ets(task_ts,model=model,damped=damped,alpha=alpha,beta=beta,
-                                                     gamma=gamma,phi=phi,additive.only=additive.only,lambda=lambda,
-                                                     biasadj=biasadj,lower=lower,upper=upper,opt.crit=opt.crit,nmse=nmse,
-                                                     bounds=bounds,ic=ic,restrict=restrict,
-                                                     allow.multiplicative.trend=allow.multiplicative.trend,
-                                                     use.initial.values=use.initial.values)
+                            fit_object <- call_with_args(forecast::ets, args)
                           }
                           
                           return(fit_object)

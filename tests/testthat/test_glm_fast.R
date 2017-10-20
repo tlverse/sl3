@@ -1,4 +1,4 @@
-context("Test Fast GLM")
+context("test_glm_fast.R -- Lrnr_glm_fast")
 
 if (FALSE) {
     setwd("..")
@@ -44,8 +44,7 @@ test_that("Lrnr_glm and Lrnr_glm_fast works with empty X (intercept-only)", {
     glm_preds <- GLM_fit$predict()
     fGLM_fit <- fglm_learner$train(task)
     fglm_preds <- fGLM_fit$predict()
-    expect_true(data.table::is.data.table(fglm_preds))
-    expect_true(all.equal(as.vector(glm_preds), as.vector(fglm_preds[["predictions"]])))
+    expect_true(all.equal(as.vector(glm_preds), as.vector(fglm_preds)))
 })
 
 test_that("Lrnr_glm_fast trains on a subset of covariates (predictors)", {
@@ -54,14 +53,13 @@ test_that("Lrnr_glm_fast trains on a subset of covariates (predictors)", {
 
     # print(fGLM_fit) str(fGLM_fit$params)
     fglm_preds_3 <- fGLM_fit$predict()
-    expect_true(data.table::is.data.table(fglm_preds_3))
 
     glm.fit <- glm(haz ~ apgar1 + apgar5 + apgar1:apgar5, data = cpp, family = stats::gaussian())
     # print(glm.fit)
     glm_preds_3 <- as.vector(predict(glm.fit))
 
     expect_true(sum(fglm_preds_3 - glm_preds_3) < 10^(-10))
-    expect_true(all.equal(as.vector(glm_preds_3), as.vector(fglm_preds_3[["predictions"]])))
+    expect_true(all.equal(as.vector(glm_preds_3), as.vector(fglm_preds_3)))
 })
 
 test_that("Lrnr_glm_fast works with screener", {
@@ -146,6 +144,6 @@ test_that("When speedglm fails (singlular X) the fallback glm works", {
     fglm_lrnr <- Lrnr_glm_fast$new(method = "Cholesky")$train(task_all)
     glm_preds <- glm_lrnr$predict()
     fglm_preds <- fglm_lrnr$predict()
-    expect_true(all.equal(as.vector(glm_preds), as.vector(fglm_preds[["predictions"]])))
+    expect_true(all.equal(as.vector(glm_preds), as.vector(fglm_preds)))
     options(op)
 })

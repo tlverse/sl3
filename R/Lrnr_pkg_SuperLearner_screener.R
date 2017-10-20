@@ -39,20 +39,24 @@ Lrnr_pkg_SuperLearner_screener <- R6Class(classname = "Lrnr_pkg_SuperLearner_scr
     }
   ),
   private = list(
+    .properties = c("binomial", "continuous", "weights", "ids"),
     .train = function(task) {
-      wrapper = self$params$wrapper_fun
+      args <- self$params
+      outcome_type <- self$get_outcome_type(task)
+      family <- get_glm_family(args$family, outcome_type)
+
+      if(is.character(family)){
+        family_fun <- get(family, mode = "function", envir = parent.frame())
+        family <- family_fun()
+      }
+      
+      args$family <- family
+      
+      wrapper = args$wrapper_fun
       if (is.null(wrapper)) {
         selected <- task$nodes$covariates
       } else {
-        family <- stats::gaussian()
-        if (!is.null(self$params$family)) {
-          family <- self$params$family
-          if (is.character(family)) {
-            family <- get(family, mode = "function", envir = parent.frame())
-            family <- family()
-          }
-        }
-        selected <- wrapper(task$Y, task$X, family = family,
+        selected <- wrapper(task$Y, task$X, family = args$family,
                             obsWeights = task$weights, id = task$id)
       }
       fit_object = list(selected = task$nodes$covariates[selected])

@@ -27,48 +27,72 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                     portable = TRUE,
                     class = TRUE,
                     public = list(
-                      outcome_type = NULL,       # Values of the binary outcome (Ynode) in observed data where det.Y = TRUE obs are set to NA
-                      initialize = function(data, covariates, outcome, outcome_type=NULL, id=NULL, weights=NULL, folds=NULL, nodes=NULL, column_names=NULL, row_index=NULL) {
+                      initialize = function(data, covariates, outcome = NULL, outcome_type = NULL, outcome_levels = NULL,
+                                            id = NULL, weights = NULL, offset = NULL, nodes = NULL, column_names = NULL, 
+                                            row_index = NULL, folds = NULL) {
+                        
+                        # process data
                         assert_that(is.data.frame(data) | is.data.table(data))
                         private$.data <- data
-                        
                         
                         if(!inherits(data,"data.table")){
                           setDT(private$.data)
                         }
                         
-                        if(is.null(nodes)){
-                          nodes <- list(covariates=covariates,
-                                        outcome = outcome,
-                                        id = id,
-                                        weights= weights)
-                        } else {
-                          # todo: validate node schema
-                        }
-                        
+                        # process column_names
                         if(is.null(column_names)){
                           column_names <- as.list(names(data))
                           names(column_names) <- column_names
                         }
-                        private$.row_index <- row_index
+                        
                         private$.column_names <- column_names
                         
-                        #verify nodes are contained in dataset
+                        # generate node list from other arguments
+                        if(is.null(nodes)){
+                          nodes <- list(covariates=covariates,
+                                        outcome = outcome,
+                                        id = id,
+                                        weights = weights,
+                                        offset = offset)
+                        } else {
+                          # todo: validate node schema
+                        }
+                        
+                        # verify nodes are contained in dataset
                         all_nodes <- unlist(nodes[c("covariates","outcome","id","weights")])
                         missing_cols <- setdiff(all_nodes,names(column_names))
-  
+                        
                         assert_that(length(missing_cols)==0, msg = sprintf("Couldn't find %s",paste(missing_cols,collapse=" ")))
                         
                         private$.nodes <- nodes
                         
-                        if(missing(folds)){
-                          folds <- make_folds(cluster_ids=self$id)
-                          
+                        
+                        # process outcome type
+                        if(is.null(outcome_type)){
+                          if(!is.null(nodes$outcome)){
+                            outcome_type <- guess_variable_type(self$Y)
+                          } else {
+                            outcome_type <- "none"
+                          }
                         }
+                        
+                        private$.outcome_type <- outcome_type
+                        
+                        # process outcome levels
+                        if(is.null(outcome_levels)){
+                          if(outcome_type %in% c("binomial", "categorical")){
+                            outcome_levels <- get_levels(self$Y)
+                          }
+                        }
+                        
+                        private$.outcome_levels <- outcome_levels
+                        
+                        # process row_index
+                        private$.row_index <- row_index
                         
                         private$.folds <- folds
                         
-                        
+                        # assign uuid
                         private$.uuid <- UUIDgenerate(use.time=T)
                         
                         invisible(self)
@@ -136,7 +160,7 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                         
                         column_names = private$.column_names
                         column_names[original_names] = col_names
-
+                        
                         if(is.null(private$.row_index)){
                           set(data, j=col_names, value=new_data)
                         } else{
@@ -176,12 +200,25 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                         
                         #verify nodes are contained in dataset
                         missing_cols <- setdiff(all_nodes,names(column_names))
-
+                        
                         assert_that(length(missing_cols)==0, msg = sprintf("Couldn't find %s",paste(missing_cols,collapse=" ")))
                         
                         new_task=self$clone()
-                        new_task$initialize(private$.data,nodes=new_nodes, folds = self$folds, 
-                                            column_names = column_names, row_index = private$.row_index)
+                        
+                        
+                        if((is.null(new_nodes$outcome)&&is.null(self$nodes$outcome))||
+                           (new_nodes$outcome==self$nodes$outcome)){
+                          # if we have the same outcome, transfer outcome properties
+                          new_outcome_type <- self$outcome_type
+                          new_outcome_levels <- self$outcome_levels
+                        } else {
+                          # otherwise, let the new task guess
+                          new_outcome_type <- NULL
+                          new_outcome_levels <- NULL
+                        }
+                        new_task$initialize(private$.data,nodes=new_nodes, folds = private$.folds, 
+                                            column_names = column_names, row_index = private$.row_index,
+                                            outcome_type = new_outcome_type, outcome_levels = new_outcome_levels)
                         
                         return(new_task)
                       },
@@ -193,19 +230,36 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                         }
                         new_task=self$clone()
                         new_task$initialize(private$.data,nodes=private$.nodes, folds = self$folds, 
-                                            column_names = private$.column_names, row_index = row_index)
+                                            column_names = private$.column_names, row_index = row_index,
+                                            outcome_type = self$outcome_type, outcome_levels = self$outcome_levels)
                         
                         return(new_task)
                       },
                       get_data = function(rows = NULL, columns){
+                        
+                        
+                        
                         if(missing(rows)){
                           rows = private$.row_index
                         }
+                        
+                        true_columns <- unlist(private$.column_names[columns])
+                        
                         if(!is.null(rows)){
-                          return(private$.data[rows, columns, with=FALSE])
+                          subset <- private$.data[rows, true_columns, with=FALSE]
                         } else {
-                          return(private$.data[, columns, with=FALSE])
+                          subset <- private$.data[, true_columns, with=FALSE]
                         }
+                        
+                        if(ncol(subset)>0){
+                          data.table::setnames(subset, true_columns, columns)
+                        }
+                        
+                        return(subset)
+                      },
+                      has_node = function(node_name){
+                        node_var <- private$.nodes[[node_name]]
+                        return(!is.null(node_var))
                       },
                       get_node = function(node_name, generator_fun = NULL){
                         if(missing(generator_fun)){
@@ -214,17 +268,51 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                           }
                         }
                         node_var <- private$.nodes[[node_name]]
+                        
                         if(is.null(node_var)){
                           return(generator_fun(node_name, self$nrow))
                         } else{
                           data_col <- self$get_data(,node_var)
-                          return(unlist(data_col, use.names = FALSE))
+                          
+                          if(ncol(data_col)==1){
+                            return(unlist(data_col, use.names = FALSE))
+                          } else {
+                            return(data_col)
+                          }
                         }
+                      },
+                      format_Y = function(outcome_type = NULL){
+                        Y <- self$Y
+                        if(missing(outcome_type)){
+                          outcome_type <- self$outcome_type
+                        }
+                        
+                        if(outcome_type == "binomial"){
+                          max_level <- max(self$outcome_levels)
+                          Y <- as.numeric(Y == max_level)
+                        } else if (outcome_type == "categorical"){
+                          if(is.null(self$outcome_levels)){
+                            stop("categorical outcome_type specified, but task does not define outcome levels.\n",
+                                 "Please make a new task with a forced outcome_type='multinomial'")
+                          }
+                          Y <- factor(Y, levels = self$outcome_levels)
+                        }
+                        
+                        return(Y)
+                      },
+                      print = function(){
+                        cat(sprintf("A sl3 Task with %d observations and the following nodes:\n", self$nrow))
+                        print(self$nodes)
                       }),
                     
                     active = list(
-                      data = function() {
+                      raw_data = function(){
                         return(private$.data)
+                      },
+                      data = function() {
+                        all_nodes <- unlist(private$.nodes)
+                        
+                        return(self$get_data(,all_nodes))
                       },
                       nrow = function(){
                         if(is.null(private$.row_index)){
@@ -239,18 +327,14 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                       X = function(){
                         
                         covariates =  private$.nodes$covariates
-                        covariate_cols <- unlist(private$.column_names[covariates])
-                        X_dt = self$get_data(, covariate_cols)
-                        if(ncol(X_dt)>0){
-                          data.table::setnames(X_dt, covariate_cols, covariates)
-                        }
+                        X_dt = self$get_data(, covariates)
                         
                         return(X_dt)
                       },
                       X_intercept = function(){
                         # returns X matrix with manually generated intercept column
                         X_dt=self$X
-
+                        
                         if(ncol(X_dt)==0){
                           intercept=rep(1,self$nrow)
                           X_dt=self$data[,list(intercept=intercept)]
@@ -263,13 +347,31 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                       Y = function(){
                         return(self$get_node("outcome"))
                       },
+                      offset = function(){
+                        return(self$get_node("offset"))
+                      },
                       weights = function(){
                         return(self$get_node("weights",function(node_var,n){rep(1,n)}))
                       },
                       id = function(){
                         return(self$get_node("id",function(node_var,n){seq_len(n)}))
                       },
-                      folds = function(){
+                      folds = function(new_folds){
+                        
+                        if(!missing(new_folds)){
+                          private$.folds <- new_folds
+                        } else if(is.null(private$.folds)){
+                          # generate folds now if never specified
+                          if(self$has_node("id")){
+                            new_folds <- make_folds(cluster_ids=self$id)
+                          } else {
+                            new_folds <- make_folds(n=self$nrow)
+                          }
+                          
+                          private$.folds <- new_folds
+                          
+                        }
+                        
                         return(private$.folds)
                       },
                       uuid = function(){
@@ -277,6 +379,12 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                       },
                       column_names = function(){
                         return(private$.column_names)
+                      },
+                      outcome_type = function(){
+                        return(private$.outcome_type)
+                      },
+                      outcome_levels = function(){
+                        return(private$.outcome_levels)
                       }),
                     private = list(
                       .data = NULL,
@@ -285,7 +393,9 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                       .folds = NULL,
                       .uuid = NULL,
                       .column_names = NULL,
-                      .row_index = NULL
+                      .row_index = NULL,
+                      .outcome_type = NULL,
+                      .outcome_levels = list()
                     )
 )
 

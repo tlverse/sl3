@@ -24,24 +24,50 @@
 Lrnr_randomForest <- R6Class(classname = "Lrnr_randomForest",
                              inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(...) {
-      params = list(...)
+    initialize = function(ntree = 100,
+                    keep.forest = TRUE,
+                    nodesize = 5, maxnodes = NULL,
+                    importance = FALSE, ...) {
+      params = args_to_list()
       super$initialize(params = params, ...)
     }
   ),
   private = list(
+    .properties = c("continuous", "binomial", "categorical"),
     .train = function(task) {
-      X <- task$X
-      Y <- task$Y
-      fit_object <- randomForest::randomForest(y = Y, x = X, ntree = 100,
-                                               keep.forest = TRUE,
-                                               mtry = floor(ncol(X)),
-                                               nodesize = 5, maxnodes = NULL,
-                                               importance = FALSE)
+      args <- self$params
+      outcome_type <- self$get_outcome_type(task)
+      args$x <- task$X
+      args$y <- task$format_Y(outcome_type)
+      if(is.null(args$mtry)){
+        args$mtry = floor(ncol(args$x))
+      }
+      
+      if(outcome_type == "binomial"){
+        args$y <- factor(args$y, levels=c(0,1))
+      }
+      
+      rf_fun <- getS3method("randomForest", "default", envir=getNamespace("randomForest"))
+      fit_object <- call_with_args(rf_fun, args)
+      
       return(fit_object)
     },
     .predict = function(task) {
-      predictions = stats::predict(private$.fit_object, newdata = task$X)
+      
+      outcome_type <- private$.training_outcome_type
+      type <- ifelse(outcome_type %in% c("binomial","categorical"),
+                     "prob",
+                     "response")
+      predictions = stats::predict(private$.fit_object, newdata = task$X, type=type)
+      
+      if(outcome_type == "binomial"){
+        # extract p(Y=1)
+        predictions <- predictions[, 2]
+        
+      } else if(outcome_type == "categorical"){
+        # pack predictions in a single column
+        predictions <- pack_predictions(predictions)
+      }
       return(predictions)
     },
     .required_packages = c("randomForest")
