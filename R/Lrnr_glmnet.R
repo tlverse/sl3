@@ -35,6 +35,10 @@ Lrnr_glmnet <- R6Class(classname = "Lrnr_glmnet",
       args <- self$params
       outcome_type <- self$get_outcome_type(task)
       args$family <- get_glm_family(args$family, outcome_type)
+      if (args$family %in% "quasibinomial") {
+        args$family <- "gaussian"
+        warning("Lrnr_glmnet doesn't understand outcome_type='quasibinomial'; fitting glmnet with family='gaussian' instead.")
+      }
 
       # specify data
       args$x <- as.matrix(task$X)
