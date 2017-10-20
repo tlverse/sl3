@@ -43,47 +43,43 @@ Lrnr_glm_fast <- R6Class(classname = "Lrnr_glm_fast", inherit = Lrnr_base,
                          portable = TRUE, class = TRUE,
   public = list(
     initialize = function(family=NULL, method = "Cholesky", ...){
-      super$initialize(params = args_to_list(), ...)  
+      super$initialize(params = args_to_list(), ...)
     }
-      
-  ),                    
+
+  ),
   private = list(
     .default_params = list(method = 'Cholesky'),
     .properties = c("continuous", "binomial", "weights", "offset"),
     .train = function(task) {
       verbose <- getOption("sl3.verbose")
-      
-      
       args <- self$params
-      
-      
       outcome_type <- self$get_outcome_type(task)
-      
+
       family <- get_glm_family(args$family, outcome_type)
-      
+
       if(is.character(family)){
         family_fun <- get(family, mode = "function", envir = parent.frame())
         family <- family_fun()
       }
-      
+
       args$family <- family
       family_name <- family$family
       linkinv_fun <- family$linkinv
-      
+
       # specify data
 
       args$X <- as.matrix(task$X_intercept)
       args$y <- task$format_Y(outcome_type)
       args$trace <- FALSE
-      
+
       if(task$has_node("weights")){
         args$weights <- task$weights
       }
-      
+
       if(task$has_node("offset")){
         args$offset <- task$offset
       }
-      
+
       SuppressGivenWarnings({
         fit_object <- try(call_with_args(speedglm::speedglm.wfit, args),
                         silent = TRUE)
@@ -96,7 +92,7 @@ Lrnr_glm_fast <- R6Class(classname = "Lrnr_glm_fast", inherit = Lrnr_base,
         }
         args$ctrl <- glm.control(trace = FALSE)
         args$x <- args$X
-        
+
         SuppressGivenWarnings({
           fit_object <- call_with_args(stats::glm.fit, args)
         }, GetWarningsToSuppress())

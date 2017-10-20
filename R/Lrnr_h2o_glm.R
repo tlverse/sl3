@@ -70,18 +70,17 @@ Lrnr_h2o_glm <- R6Class(classname = "Lrnr_h2o_glm", inherit = Lrnr_base,
   ),
 
   private = list(
-    .properties = c("continuous", "binomial", "categorical", "weights"),
+    .properties = c("continuous", "binomial", "categorical", "weights", "offset"),
     .train = function(task) {
       verbose = getOption("sl3.verbose")
       args <- self$params
-      
-      
+
       outcome_type <- self$get_outcome_type(task)
       args$family <- get_glm_family(args$family, outcome_type)
       if(inherits(args$family,"family")){
         args$family <- args$family$family
       }
-      
+
       connectH2O <- try(h2o::h2o.getConnection(), silent = TRUE)
       if (inherits(connectH2O, "try-error")) {
         stop("No active H2O cluster found, please initiate h2o cluster first by running 'h2o::h2o.init()'")
@@ -97,11 +96,11 @@ Lrnr_h2o_glm <- R6Class(classname = "Lrnr_h2o_glm", inherit = Lrnr_base,
       args$x <- task$nodes$covariates
       args$y <- task$nodes$outcome
       args$training_frame <- h2o_data
-      
+
       if(task$has_node("weights")){
         args$weights_column <- task$nodes$weights
       }
-      
+
       if(task$has_node("offset")){
         args$offset_column <- task$nodes$offset
       }
