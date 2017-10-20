@@ -34,55 +34,58 @@ Lrnr_xgboost <- R6Class(classname = "Lrnr_xgboost", inherit = Lrnr_base,
       super$initialize(params = params, ...)
   }),
   private = list(
-    .properties = c("continuous", "binomial", "categorical", "weights"),
+    .properties = c("continuous", "binomial", "categorical", "weights", "offset"),
     .train = function(task) {
       verbose <- getOption("sl3.verbose")
       args <- self$params
       outcome_type <- self$get_outcome_type(task)
-      
+
       Xmat <- as.matrix(task$X)
-      
+
       if (is.integer(Xmat)) {
         Xmat[, 1] <- as.numeric(Xmat[, 1])
       }
-      
+
       Y <- task$format_Y(outcome_type)
-      
+
       if(outcome_type=="categorical"){
         Y <- as.numeric(Y)-1
       }
-      
+
+      args$data <- try(xgboost::xgb.DMatrix(Xmat, label = Y))
+
       if(task$has_node("weights")){
-        args$data <- try(xgboost::xgb.DMatrix(Xmat, weight = task$weights, label = Y))
-      } else {
-        args$data <- try(xgboost::xgb.DMatrix(Xmat, label = Y))    
+        try(xgboost::setinfo(args$data, "weight", task$weights))
       }
 
-      
+      if(task$has_node("offset")){
+        try(xgboost::setinfo(args$data, "base_margin", task$offset))
+      }
+
       args$verbose <- as.integer(verbose)
       args$print_every_n <- 1000
       args$watchlist <- list(train = args$data)
-      
+
       if(outcome_type=="binomial"){
         args$objective <- "binary:logistic"
       } else if(outcome_type=="categorical"){
         args$objective <- "multi:softprob"
         args$num_class <- length(task$outcome_levels)
       }
-      
+
       fit_object <- call_with_args(xgboost::xgb.train, args, keep_all = TRUE)
       return(fit_object)
     },
     .predict = function(task = NULL) {
       outcome_type <- private$.training_outcome_type
       verbose <- getOption("sl3.verbose")
-      
+
       Xmat <- as.matrix(task$X)
-      
+
       if (is.integer(Xmat)) {
         Xmat[, 1] <- as.numeric(Xmat[, 1])
       }
-      
+
       xgb_data <- try(xgboost::xgb.DMatrix(Xmat))
       fit_object <- private$.fit_object
       predictions <- rep.int(list(numeric()), 1)
@@ -99,7 +102,7 @@ Lrnr_xgboost <- R6Class(classname = "Lrnr_xgboost", inherit = Lrnr_base,
         predictions <- stats::predict(fit_object, newdata = xgb_data,
                                       ntreelimit = ntreelimit, reshape=TRUE)
       }
-      
+
       if(outcome_type=="categorical"){
         # pack predictions in a single column
         predictions <- pack_predictions(predictions)

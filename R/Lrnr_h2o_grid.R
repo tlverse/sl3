@@ -42,7 +42,7 @@ Lrnr_h2o_grid <- R6Class(classname = "Lrnr_h2o_grid", inherit = Lrnr_base,
   private = list(
     .classify = FALSE,
     .return_prediction_as_vector = TRUE,
-    .properties = c("continuous", "binomial", "categorical", "weights"),
+    .properties = c("continuous", "binomial", "categorical", "weights", "offset"),
     .train = function(task) {
       verbose <- getOption("sl3.verbose")
       args <- self$params
@@ -63,19 +63,19 @@ Lrnr_h2o_grid <- R6Class(classname = "Lrnr_h2o_grid", inherit = Lrnr_base,
       if(inherits(args$family,"family")){
         args$family <- args$family$family
       }
-      args$distribution <- args$family 
-      
+      args$distribution <- args$family
+
       h2o_data <- define_h2o_X(task)
-      
-      
+
+
       args$x <- task$nodes$covariates
       args$y <- task$nodes$outcome
       args$training_frame <- h2o_data
-      
+
       if(task$has_node("weights")){
         args$weights_column <- task$nodes$weights
       }
-      
+
       if(task$has_node("offset")){
         args$offset_column <- task$nodes$offset
       }
@@ -102,7 +102,7 @@ Lrnr_h2o_grid <- R6Class(classname = "Lrnr_h2o_grid", inherit = Lrnr_base,
       algo_fun <- utils::getFromNamespace(algo_fun_name, ns = 'h2o')
       # Keep only the relevant algorithm args in mainArgs list:
       mainArgs <- keep_only_fun_args(args, fun = algo_fun)
-      
+
       #add back in args to h2o.grid
       mainArgs[["algorithm"]] <- algorithm
       mainArgs[["search_criteria"]] <- args[["search_criteria"]]
