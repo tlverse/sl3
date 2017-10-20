@@ -43,7 +43,7 @@ keep_only_fun_args <- function(Args, fun) {
 ################################################################################
 #' Call with filtered argument list
 #'
-#' Call a function with a list of arguments, eliminating any that aren't 
+#' Call a function with a list of arguments, eliminating any that aren't
 #' matched in the function prototype
 #'
 #' @param fun A \code{function} whose signature will be used to reduce the
@@ -136,13 +136,13 @@ subset_dt_cols = function(dt, cols) {
 ################################################################################
 
 #' guess variable type
-#' 
+#'
 #' @param x the variable
 #' @param pcontinuous The proportion of observations that have to be unique before a variable is determined to be continuous
 #' @export
 guess_variable_type=function(x, pcontinuous=0.05){
   nunique <- length(unique(x))
-  
+
   if(!is.null(ncol(x))){
     type <- "multivariate"
   } else if(nunique==1){
@@ -154,7 +154,7 @@ guess_variable_type=function(x, pcontinuous=0.05){
   } else{
     type <- "continuous"
   }
-  
+
   return(type)
 }
 
@@ -175,6 +175,8 @@ get_glm_family <- function(family, outcome_type){
       family <- "gaussian"
     } else if(outcome_type=="binomial"){
       family <- "binomial"
+    } else if(outcome_type=="quasibinomial"){
+      family <- "quasibinomial"
     } else if(outcome_type=="categorical"){
       family <- "multinomial"
     } else{
@@ -182,12 +184,12 @@ get_glm_family <- function(family, outcome_type){
       family <- "gaussian"
     }
   }
-  
+
   return(family)
 }
 
 #' Get all args of parent call (both specified and defaults) as list
-#' 
+#'
 #' @return a list of all for the parent function call
 #' @export
 args_to_list <- function(){
@@ -198,13 +200,13 @@ args_to_list <- function(){
   # get specified args
   expanded <- match.call(fn, call, envir=parent.frame(2L))
   args <- as.list(expanded[-1])
-  
+
   # get default args
   all_args <- formals(fn)
-  
+
   # drop dots from formals if it exists
   all_args$`...` <- NULL
-  
+
   # add in specified args
   all_args[names(args)] <- args
 
@@ -216,6 +218,6 @@ args_to_list <- function(){
     }
   }
   # evaled <- lapply(all_args, eval, envir=parent.frame(2L))
-  
+
   return(all_args)
 }

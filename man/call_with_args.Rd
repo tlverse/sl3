@@ -16,7 +16,7 @@ call_with_args(fun, args, other_valid = list(), keep_all = FALSE)
 \item{keep_all}{A \code{boolean} don't drop arguments, even if they aren't matched in either the function prototype or other_valid}
 }
 \description{
-Call a function with a list of arguments, eliminating any that aren't 
+Call a function with a list of arguments, eliminating any that aren't
 matched in the function prototype
 }
 \keyword{internal#}

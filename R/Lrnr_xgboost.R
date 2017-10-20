@@ -68,6 +68,8 @@ Lrnr_xgboost <- R6Class(classname = "Lrnr_xgboost", inherit = Lrnr_base,
 
       if(outcome_type=="binomial"){
         args$objective <- "binary:logistic"
+      } else if(outcome_type=="quasibinomial"){
+        args$objective <- "reg:logistic"
       } else if(outcome_type=="categorical"){
         args$objective <- "multi:softprob"
         args$num_class <- length(task$outcome_levels)
