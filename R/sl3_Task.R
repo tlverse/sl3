@@ -216,7 +216,7 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                           new_outcome_type <- NULL
                           new_outcome_levels <- NULL
                         }
-                        new_task$initialize(private$.data,nodes=new_nodes, folds = self$folds, 
+                        new_task$initialize(private$.data,nodes=new_nodes, folds = private$.folds, 
                                             column_names = column_names, row_index = private$.row_index,
                                             outcome_type = new_outcome_type, outcome_levels = new_outcome_levels)
                         
@@ -362,7 +362,13 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                           private$.folds <- new_folds
                         } else if(is.null(private$.folds)){
                           # generate folds now if never specified
-                          private$.folds <- make_folds(cluster_ids=self$id)
+                          if(self$has_node("id")){
+                            new_folds <- make_folds(cluster_ids=self$id)
+                          } else {
+                            new_folds <- make_folds(n=self$nrow)
+                          }
+                          
+                          private$.folds <- new_folds
                           
                         }
                         
