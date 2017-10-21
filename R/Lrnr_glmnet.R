@@ -25,7 +25,7 @@ Lrnr_glmnet <- R6Class(classname = "Lrnr_glmnet",
                              inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
     initialize = function(lambda = NULL, type.measure = "deviance", nfolds = 10,
-                                 family = NULL, alpha = 1, nlambda = 100, ...) {
+                                 alpha = 1, nlambda = 100, ...) {
       super$initialize(params = args_to_list(), ...)
     }
   ),
@@ -34,7 +34,11 @@ Lrnr_glmnet <- R6Class(classname = "Lrnr_glmnet",
     .train = function(task) {
       args <- self$params
       outcome_type <- self$get_outcome_type(task)
-      args$family <- get_glm_family(args$family, outcome_type)
+      
+      if(is.null(args$family)){
+        args$family <- outcome_type$glm_family()
+      }
+      
       if (args$family %in% "quasibinomial") {
         args$family <- "gaussian"
         warning("Lrnr_glmnet doesn't understand outcome_type='quasibinomial'; fitting glmnet with family='gaussian' instead.")
@@ -42,7 +46,7 @@ Lrnr_glmnet <- R6Class(classname = "Lrnr_glmnet",
 
       # specify data
       args$x <- as.matrix(task$X)
-      args$y <- task$format_Y(outcome_type)
+      args$y <- outcome_type$format(task$Y)
 
       if(task$has_node("weights")){
         args$weights <- task$weights
@@ -61,7 +65,7 @@ Lrnr_glmnet <- R6Class(classname = "Lrnr_glmnet",
       outcome_type <- private$.training_outcome_type
       predictions <- stats::predict(private$.fit_object, newx = as.matrix(task$X), type="response", s = "lambda.min")
 
-      if(outcome_type == "categorical"){
+      if(outcome_type$type == "categorical"){
         # predictions is a 3-dim matrix, convert to 2-dim matrix
         dim(predictions) <- dim(predictions)[1:2]
 

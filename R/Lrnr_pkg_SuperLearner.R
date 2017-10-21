@@ -46,14 +46,12 @@ Lrnr_pkg_SuperLearner <- R6Class(classname = "Lrnr_pkg_SuperLearner",
       
       
       outcome_type <- self$get_outcome_type(task)
-      family <- get_glm_family(args$family, outcome_type)
-
-      if(is.character(family)){
-        family_fun <- get(family, mode = "function", envir = parent.frame())
-        family <- family_fun()
-      }
       
-      args$family <- family
+      
+      if(is.null(args$family)){
+        args$family <- outcome_type$glm_family(return_object = TRUE)
+      }
+
       
       fit_object <- wrapper(task$Y, task$X, newX, family = args$family,
                             obsWeights = task$weights, id = task$id)$fit
@@ -62,14 +60,11 @@ Lrnr_pkg_SuperLearner <- R6Class(classname = "Lrnr_pkg_SuperLearner",
     .predict = function(task) {
       args <- self$params
       outcome_type <- private$.training_outcome_type
-      family <- get_glm_family(args$family, outcome_type)
       
-      if(is.character(family)){
-        family_fun <- get(family, mode = "function", envir = parent.frame())
-        family <- family_fun()
+      if(is.null(args$family)){
+        args$family <- outcome_type$glm_family(return_object = TRUE)
       }
-      
-      args$family <- family
+
       
       predictions = stats::predict(private$.fit_object, newdata = task$X,
                                    family = args$family)

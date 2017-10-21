@@ -28,7 +28,6 @@ Lrnr_h2o_grid <- R6Class(classname = "Lrnr_h2o_grid", inherit = Lrnr_base,
                          portable = TRUE, class = TRUE,
   public = list(
     initialize = function(seed = 1,
-                    family = NULL,
                     distribution = NULL,
                     intercept = TRUE,
                     standardize = TRUE,
@@ -59,13 +58,19 @@ Lrnr_h2o_grid <- R6Class(classname = "Lrnr_h2o_grid", inherit = Lrnr_base,
       }
 
       outcome_type <- self$get_outcome_type(task)
-      args$family <- get_glm_family(args$family, outcome_type)
+      
+      
+      if(is.null(args$family)){
+        args$family <- outcome_type$glm_family()
+      }
+      
       if(inherits(args$family,"family")){
         args$family <- args$family$family
       }
+      
       args$distribution <- args$family
 
-      h2o_data <- define_h2o_X(task)
+      h2o_data <- define_h2o_X(task, outcome_type)
 
 
       args$x <- task$nodes$covariates

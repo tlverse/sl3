@@ -97,11 +97,11 @@ test_that("Lrnr_glm_fast works with quasibinomial and continuous outcomes in (0,
         cpp_haz_01range[["haz_01range"]] <- rep_len(c(0.1, 0.9), nrow(cpp))
         task_01range <- sl3_Task$new(cpp_haz_01range, covariates = covars, outcome = "haz_01range")
 
-        fglm_learner <- Lrnr_glm_fast$new(family = "quasibinomial")
+        fglm_learner <- Lrnr_glm_fast$new(family = quasibinomial())
         fGLM_fit <- fglm_learner$train(task_01range)
         # print(fGLM_fit)
 
-        fglm_learner <- Lrnr_glm_fast$new(family = "binomial")
+        fglm_learner <- Lrnr_glm_fast$new(family = binomial())
         fGLM_fit <- fglm_learner$train(task_01range)
         # print(fGLM_fit)
     })
@@ -112,23 +112,23 @@ test_that("Lrnr_glm_fast works with different families ('family = ...') and solv
         cpp_hazbin[["haz_bin"]] <- rep_len(c(0L, 1L), nrow(cpp))
         task_bin <- sl3_Task$new(cpp_hazbin, covariates = covars, outcome = "haz_bin")
 
-        fglm_learner <- Lrnr_glm_fast$new(family = "quasibinomial")
+        fglm_learner <- Lrnr_glm_fast$new(family = quasibinomial())
         fGLM_fit <- fglm_learner$train(task_bin)
         # print(fGLM_fit)
 
-        fglm_learner <- Lrnr_glm_fast$new(family = "binomial")
+        fglm_learner <- Lrnr_glm_fast$new(family = binomial())
         fGLM_fit <- fglm_learner$train(task_bin)
         # print(fGLM_fit)
 
-        fglm_learner <- Lrnr_glm_fast$new(family = "binomial", method = "eigen")
+        fglm_learner <- Lrnr_glm_fast$new(family = binomial(), method = "eigen")
         fGLM_fit <- fglm_learner$train(task_bin)
         # print(fGLM_fit)
 
-        fglm_learner <- Lrnr_glm_fast$new(family = "binomial", method = "Cholesky")
+        fglm_learner <- Lrnr_glm_fast$new(family = binomial(), method = "Cholesky")
         fGLM_fit <- fglm_learner$train(task_bin)
         # print(fGLM_fit)
 
-        fglm_learner <- Lrnr_glm_fast$new(family = "binomial", method = "qr")
+        fglm_learner <- Lrnr_glm_fast$new(family = binomial(), method = "qr")
         fGLM_fit <- fglm_learner$train(task_bin)
         # print(fGLM_fit)
     })

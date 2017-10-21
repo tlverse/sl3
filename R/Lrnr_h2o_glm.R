@@ -10,6 +10,7 @@
 #' covariates if spec'ed in params.
 #'
 #' @param task An object of type \code{Lrnr_base} as defined in this package.
+#' @param outcome_type An object of type \code{Variable_Tyoe} for use in formatting the outcome
 #'
 #' @rdname Lrnr_h2o_glm
 #'
@@ -17,11 +18,18 @@
 #'
 #' @export
 #
-define_h2o_X = function(task) {
+define_h2o_X = function(task, outcome_type = NULL) {
   op <- options("h2o.use.data.table" = TRUE)
   # op <- options("datatable.verbose" = TRUE, "h2o.use.data.table" = TRUE)
-  X <- h2o::as.h2o(task$data[, c(task$nodes$covariates, task$nodes$outcome),
-                   with = FALSE, drop = FALSE])
+  data <- task$data
+  
+  if(!is.null(outcome_type)){
+    y_formatted <- outcome_type$format(task$Y) 
+    set(data, j=task$nodes$outcome, y_formatted)
+  }
+  
+  X <- h2o::as.h2o(data)
+  
   options(op)
   return(X)
 }
@@ -59,7 +67,7 @@ define_h2o_X = function(task) {
 Lrnr_h2o_glm <- R6Class(classname = "Lrnr_h2o_glm", inherit = Lrnr_base,
                         portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(family = NULL, intercept = TRUE,
+    initialize = function(intercept = TRUE,
                      standardize = TRUE,
                      lambda = 0L,
                      max_iterations = 100,
@@ -76,7 +84,13 @@ Lrnr_h2o_glm <- R6Class(classname = "Lrnr_h2o_glm", inherit = Lrnr_base,
       args <- self$params
 
       outcome_type <- self$get_outcome_type(task)
-      args$family <- get_glm_family(args$family, outcome_type)
+      
+      
+      if(is.null(args$family)){
+        args$family <- outcome_type$glm_family()
+      }
+      
+      
       if(inherits(args$family,"family")){
         args$family <- args$family$family
       }
@@ -86,7 +100,7 @@ Lrnr_h2o_glm <- R6Class(classname = "Lrnr_h2o_glm", inherit = Lrnr_base,
         stop("No active H2O cluster found, please initiate h2o cluster first by running 'h2o::h2o.init()'")
       }
 
-      h2o_data <- define_h2o_X(task)
+      h2o_data <- define_h2o_X(task, outcome_type)
       if (verbose) {
         h2o::h2o.show_progress()
       } else {

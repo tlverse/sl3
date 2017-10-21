@@ -46,9 +46,9 @@ Lrnr_xgboost <- R6Class(classname = "Lrnr_xgboost", inherit = Lrnr_base,
         Xmat[, 1] <- as.numeric(Xmat[, 1])
       }
 
-      Y <- task$format_Y(outcome_type)
+      Y <- outcome_type$format(task$Y)
 
-      if(outcome_type=="categorical"){
+      if(outcome_type$type=="categorical"){
         Y <- as.numeric(Y)-1
       }
 
@@ -65,16 +65,17 @@ Lrnr_xgboost <- R6Class(classname = "Lrnr_xgboost", inherit = Lrnr_base,
       args$verbose <- as.integer(verbose)
       args$print_every_n <- 1000
       args$watchlist <- list(train = args$data)
-
-      if(outcome_type=="binomial"){
-        args$objective <- "binary:logistic"
-      } else if(outcome_type=="quasibinomial"){
-        args$objective <- "reg:logistic"
-      } else if(outcome_type=="categorical"){
-        args$objective <- "multi:softprob"
-        args$num_class <- length(task$outcome_levels)
+      
+      if(is.null(args$objective)){
+        if(outcome_type$type=="binomial"){
+          args$objective <- "binary:logistic"
+        } else if(outcome_type$type=="quasibinomial"){
+          args$objective <- "reg:logistic"
+        } else if(outcome_type$type=="categorical"){
+          args$objective <- "multi:softprob"
+          args$num_class <- length(outcome_type$levels)
+        }
       }
-
       fit_object <- call_with_args(xgboost::xgb.train, args, keep_all = TRUE)
       return(fit_object)
     },
@@ -105,7 +106,7 @@ Lrnr_xgboost <- R6Class(classname = "Lrnr_xgboost", inherit = Lrnr_base,
                                       ntreelimit = ntreelimit, reshape=TRUE)
       }
 
-      if(outcome_type=="categorical"){
+      if(outcome_type$type == "categorical"){
         # pack predictions in a single column
         predictions <- pack_predictions(predictions)
       }

@@ -51,7 +51,7 @@ system.time(res_speedglm <- test_learner_dens(Lrnr_condensier, task))
 system.time(res_speedglm <- test_learner_dens(Lrnr_condensier, task, covariates = c("cyl",
     "disp")))
 # cbind(res_speedglm, mtcars) regular GLM:
-system.time(res_GLM <- test_learner_dens(Lrnr_condensier, task, nbins = 6, bin_estimator = Lrnr_glm$new(family = "binomial")))
+system.time(res_GLM <- test_learner_dens(Lrnr_condensier, task, nbins = 6, bin_estimator = Lrnr_glm$new(family = binomial())))
 # cbind(res_GLM, mtcars) original speedglm learner class from condensier:
 system.time(res_speedglm2 <- test_learner_dens(Lrnr_condensier, task, bin_estimator = condensier::speedglmR6$new()))
 # cbind(res_speedglm2, mtcars) w/ xgboost, ***** seems to fail on travis ***** :
