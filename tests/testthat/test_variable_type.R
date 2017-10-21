@@ -1,16 +1,16 @@
 context("test_variable_types.R -- Variable Type Handling")
 
 
-# guess_variable_type
+# guess variable type
 data(mtcars)
-variable_types <- lapply(mtcars,guess_variable_type,0.25)
+variable_types <- lapply(mtcars,function(x)variable_type(x=x,pcontinuous=0.25))
 type_names <- sapply(variable_types, `[[`, "type")
 expected_variable_types <- c(mpg = "continuous", cyl = "categorical", disp = "continuous", 
                              hp = "continuous", drat = "continuous", wt = "continuous", 
                              qsec = "continuous", vs = "binomial", am = "binomial", gear = "categorical", 
                              carb = "categorical")
 
-test_that("guess_variable_type makes good guesses", 
+test_that("variable_type makes good guesses", 
           expect_equal(type_names,expected_variable_types))
 
 
