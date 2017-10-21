@@ -22,8 +22,6 @@ variable_type(type = NULL, levels = NULL, bounds = NULL, x = NULL,
 \item{x}{data to use for inferring type if not specified}
 
 \item{pcontinuous}{if type inferred, proportion of unique observations above which variable is continuous}
-
-\item{...}{not currently used}
 }
 \description{
 Specify variable type

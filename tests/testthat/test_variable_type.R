@@ -48,6 +48,7 @@ task <- sl3_Task$new(cpp, covariates = covars, outcome = outcome, outcome_type =
 test_that("outcome_levels can be forced", 
           expect_equal(task$outcome_type$levels, 1:3))
 
+task <- sl3_Task$new(cpp, covariates = covars, outcome = outcome, outcome_type = "categorical")
 Y_categorical <- task$outcome_type$format(task$Y)
 test_that("outcome levels are passed as factor levels from format_Y",
           expect_equal(levels(Y_categorical), as.character(task$outcome_type$levels)))
