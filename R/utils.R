@@ -134,60 +134,6 @@ subset_dt_cols = function(dt, cols) {
 }
 
 ################################################################################
-
-#' guess variable type
-#'
-#' @param x the variable
-#' @param pcontinuous The proportion of observations that have to be unique before a variable is determined to be continuous
-#' @export
-guess_variable_type=function(x, pcontinuous=0.05){
-  nunique <- length(unique(x))
-
-  if(!is.null(ncol(x))){
-    type <- "multivariate"
-  } else if(nunique==1){
-    type <- "constant"
-  } else if(nunique==2){
-    type <- "binomial"
-  } else if((nunique/length(x))<pcontinuous){
-    type <- "categorical"
-  } else{
-    type <- "continuous"
-  }
-
-  return(type)
-}
-
-################################################################################
-
-#' determine glm family
-#' @importFrom stats binomial
-#' @param family family argument specified to learner, either character or an actual family object
-#' @param outcome_type outcome type from Learner$get_outcome_type
-#' @return family object determined by combination of arguments
-get_glm_family <- function(family, outcome_type){
-  #prefer explicit family, otherwise infer from outcome_type
-  if (inherits(family, "family")) {
-    family <- family$family
-  } else if(is.null(family)){
-    # if family isn't specified, use a family appropriate for the outcome_type
-    if(outcome_type=="continuous"){
-      family <- "gaussian"
-    } else if(outcome_type=="binomial"){
-      family <- "binomial"
-    } else if(outcome_type=="quasibinomial"){
-      family <- "quasibinomial"
-    } else if(outcome_type=="categorical"){
-      family <- "multinomial"
-    } else{
-      warning("No family specified and untested outcome_type. Defaulting to gaussian")
-      family <- "gaussian"
-    }
-  }
-
-  return(family)
-}
-
 #' Get all args of parent call (both specified and defaults) as list
 #'
 #' @return a list of all for the parent function call

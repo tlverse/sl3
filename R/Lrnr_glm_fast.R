@@ -42,7 +42,7 @@
 Lrnr_glm_fast <- R6Class(classname = "Lrnr_glm_fast", inherit = Lrnr_base,
                          portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(family=NULL, method = "Cholesky", ...){
+    initialize = function(method = "Cholesky", ...){
       super$initialize(params = args_to_list(), ...)
     }
 
@@ -55,21 +55,18 @@ Lrnr_glm_fast <- R6Class(classname = "Lrnr_glm_fast", inherit = Lrnr_base,
       args <- self$params
       outcome_type <- self$get_outcome_type(task)
 
-      family <- get_glm_family(args$family, outcome_type)
-
-      if(is.character(family)){
-        family_fun <- get(family, mode = "function", envir = parent.frame())
-        family <- family_fun()
+      
+      if(is.null(args$family)){
+        args$family <- outcome_type$glm_family(return_object = TRUE)
       }
-
-      args$family <- family
-      family_name <- family$family
-      linkinv_fun <- family$linkinv
-
+      family_name <- args$family$family
+      linkinv_fun <- args$family$linkinv
+      
       # specify data
 
       args$X <- as.matrix(task$X_intercept)
-      args$y <- task$format_Y(outcome_type)
+      args$y <- outcome_type$format(task$Y)
+
       args$trace <- FALSE
 
       if(task$has_node("weights")){

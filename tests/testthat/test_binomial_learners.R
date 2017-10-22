@@ -49,11 +49,16 @@ logit_metalearner <- make_learner(Lrnr_solnp,
 binom_sl <- make_learner(Lrnr_sl, learners, logit_metalearner)
 
 # test_that("Binomial Lrnr_sl components for debugging", {
+#   # debugonce(learners$xgb$.__enclos_env__$private$.train)
+#   # learners$xgb$base_train(task)
 #   stack <- make_learner(Stack, learners)
 #   stack_fit <- stack$train(task)
-# 
+#   
+#   fits <- stack_fit$fit_object$learner_fits
+#   preds <- lapply(fits, learner_fit_predict)
+#   
 #   stack_chained <- stack_fit$chain()
-# 
+#   
 #   cv_stack <- make_learner(Lrnr_cv, stack)
 #   cv_stack_fit <- cv_stack$train(task)
 #   cv_stack_chained <- cv_stack_fit$chain()

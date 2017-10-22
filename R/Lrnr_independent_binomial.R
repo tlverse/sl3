@@ -34,8 +34,12 @@ Lrnr_independent_binomial <- R6Class(classname = "Lrnr_independent_binomial",
     .properties = c("categorical"),
     .train = function(task) {
       
+      outcome_type <- self$get_outcome_type(task)
+      if(outcome_type$type != "categorical"){
+        stop("Lrnr_independent_binomial only works for categorical outcomes")
+      }
       X <- as.matrix(task$X)
-      Y <- task$format_Y("categorical")
+      Y <- outcome_type$format(task$Y)
       Y_levels <- levels(Y)
       
       reference <- Y_levels[1]

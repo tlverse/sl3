@@ -43,14 +43,12 @@ Lrnr_pkg_SuperLearner_screener <- R6Class(classname = "Lrnr_pkg_SuperLearner_scr
     .train = function(task) {
       args <- self$params
       outcome_type <- self$get_outcome_type(task)
-      family <- get_glm_family(args$family, outcome_type)
-
-      if(is.character(family)){
-        family_fun <- get(family, mode = "function", envir = parent.frame())
-        family <- family_fun()
-      }
       
-      args$family <- family
+            
+      if(is.null(args$family)){
+        args$family <- outcome_type$glm_family(return_object = TRUE)
+      }
+
       
       wrapper = args$wrapper_fun
       if (is.null(wrapper)) {

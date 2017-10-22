@@ -90,7 +90,6 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                            private$.training_task = training_task
                          }
                          private$.training_outcome_type <- self$get_outcome_type(training_task)
-                         private$.training_outcome_levels <- training_task$outcome_levels
                          private$.fit_uuid = UUIDgenerate(use.time=T)
 
                        },
@@ -189,6 +188,9 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                        training_task=function(){
                          return(private$.training_task)
                        },
+                       training_outcome_type = function(){
+                         return(private$.training_outcome_type)
+                       },
                        properties=function(){
                          return(private$.properties)
                        },
@@ -211,7 +213,6 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                        .fit_object = NULL,
                        .training_task = NULL,
                        .training_outcome_type = NULL,
-                       .training_outcome_levels = NULL,
                        .learner_uuid = NULL,
                        .fit_uuid = NULL,
                        .params = NULL,

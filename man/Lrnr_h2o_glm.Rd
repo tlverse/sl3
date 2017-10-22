@@ -8,12 +8,14 @@
 \title{h2o Model Definition}
 \format{\code{\link{R6Class}} object.}
 \usage{
-define_h2o_X(task)
+define_h2o_X(task, outcome_type = NULL)
 
 Lrnr_h2o_glm
 }
 \arguments{
 \item{task}{An object of type \code{Lrnr_base} as defined in this package.}
+
+\item{outcome_type}{An object of type \code{Variable_Tyoe} for use in formatting the outcome}
 }
 \value{
 \code{\link{Lrnr_base}} object with methods for training and

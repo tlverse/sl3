@@ -44,7 +44,7 @@ Lrnr_condensier <- R6Class(classname = "Lrnr_condensier", inherit = Lrnr_base,
                           pool = FALSE,
                           max_n_bin = NA_integer_,
                           parfit = FALSE,
-                          bin_estimator = Lrnr_glm_fast$new(family = "binomial"),
+                          bin_estimator = Lrnr_glm_fast$new(family = binomial()),
                           intrvls = NULL,
                           ...) {
       params <- args_to_list()

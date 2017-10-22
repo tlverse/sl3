@@ -33,11 +33,11 @@ Lrnr_mean <- R6Class(classname = "Lrnr_mean", inherit = Lrnr_base,
     .properties = c("continuous", "binomial", "categorical", "weights"),
     .train = function(task) {
       outcome_type <- self$get_outcome_type(task)
-      y <- task$format_Y(outcome_type)
+      y <- outcome_type$format(task$Y)
       weights <- task$weights
       
-      if(outcome_type == "categorical"){
-        y_levels <- levels(y)
+      if(outcome_type$type == "categorical"){
+        y_levels <- outcome_type$levels
         means <- sapply(y_levels, function(level)weighted.mean(y==level, weights))
         fit_object <- list(mean = pack_predictions(matrix(means, nrow=1)))
         

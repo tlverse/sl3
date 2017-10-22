@@ -55,6 +55,23 @@ mn_metalearner <- make_learner(Lrnr_solnp, loss_function = loss_loglik_multinomi
 #define Super Learner
 mn_sl <- make_learner(Lrnr_sl, learners, mn_metalearner)
 
+# test_that("Multinomial Lrnr_sl components for debugging", {
+#   # debugonce(learners$xgb$.__enclos_env__$private$.train)
+#   # learners$xgb$base_train(task)
+#   stack <- make_learner(Stack, learners)
+#   stack_fit <- stack$train(task)
+#   
+#   fits <- stack_fit$fit_object$learner_fits
+#   preds <- lapply(fits, learner_fit_predict)
+#   
+#   stack_chained <- stack_fit$chain()
+#   
+#   cv_stack <- make_learner(Lrnr_cv, stack)
+#   cv_stack_fit <- cv_stack$train(task)
+#   cv_stack_chained <- cv_stack_fit$chain()
+#   meta_fit <- logit_metalearner$base_train(cv_stack_chained)
+#   coef(meta_fit)
+# })
 test_that("Lrnr_sl multinomial integration test", {
   sl_fit <- mn_sl$train(task)
   coef(sl_fit)

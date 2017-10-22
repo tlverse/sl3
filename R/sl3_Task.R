@@ -68,24 +68,17 @@ sl3_Task <- R6Class(classname = "sl3_Task",
 
 
                         # process outcome type
-                        if(is.null(outcome_type)){
+                        if(is.character(outcome_type)){
+                          outcome_type <- variable_type(type = outcome_type, levels = outcome_levels, x = self$Y)
+                        } else if(is.null(outcome_type)){
                           if(!is.null(nodes$outcome)){
-                            outcome_type <- guess_variable_type(self$Y)
+                            outcome_type <- variable_type(x = self$Y)
                           } else {
-                            outcome_type <- "none"
+                            outcome_type <- variable_type("none")
                           }
                         }
 
                         private$.outcome_type <- outcome_type
-
-                        # process outcome levels
-                        if(is.null(outcome_levels)){
-                          if(outcome_type %in% c("binomial", "categorical")){
-                            outcome_levels <- get_levels(self$Y)
-                          }
-                        }
-
-                        private$.outcome_levels <- outcome_levels
 
                         # process row_index
                         private$.row_index <- row_index
@@ -210,15 +203,13 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                            (new_nodes$outcome==self$nodes$outcome)){
                           # if we have the same outcome, transfer outcome properties
                           new_outcome_type <- self$outcome_type
-                          new_outcome_levels <- self$outcome_levels
                         } else {
                           # otherwise, let the new task guess
                           new_outcome_type <- NULL
-                          new_outcome_levels <- NULL
                         }
                         new_task$initialize(private$.data,nodes=new_nodes, folds = private$.folds,
                                             column_names = column_names, row_index = private$.row_index,
-                                            outcome_type = new_outcome_type, outcome_levels = new_outcome_levels)
+                                            outcome_type = new_outcome_type)
 
                         return(new_task)
                       },
@@ -231,7 +222,7 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                         new_task=self$clone()
                         new_task$initialize(private$.data,nodes=private$.nodes, folds = self$folds,
                                             column_names = private$.column_names, row_index = row_index,
-                                            outcome_type = self$outcome_type, outcome_levels = self$outcome_levels)
+                                            outcome_type = self$outcome_type)
 
                         return(new_task)
                       },
@@ -281,32 +272,11 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                           }
                         }
                       },
-                      format_Y = function(outcome_type = NULL){
-                        Y <- self$Y
-                        if(missing(outcome_type)){
-                          outcome_type <- self$outcome_type
-                        }
-
-                        if(outcome_type == "binomial"){
-                          max_level <- max(self$outcome_levels)
-                          Y <- as.numeric(Y == max_level)
-                        } else if (outcome_type == "quasibinomial") {
-                          if (any(Y<0)||any(Y>1)) warning("Detected 'Y' outside [0-1] range with 'quasibinomial' outcome_type -- beware, this will break most learners.")
-                        } else if (outcome_type == "categorical"){
-                          if(is.null(self$outcome_levels)){
-                            stop("'categorical' outcome_type specified, but task does not define outcome levels.\n",
-                                 "Please make a new task with a forced outcome_type='multinomial'")
-                          }
-                          Y <- factor(Y, levels = self$outcome_levels)
-                        }
-
-                        return(Y)
-                      },
                       print = function(){
                         cat(sprintf("A sl3 Task with %d observations and the following nodes:\n", self$nrow))
                         print(self$nodes)
-                      }),
-
+                      }
+                    ),
                     active = list(
                       raw_data = function(){
                         return(private$.data)
@@ -384,10 +354,8 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                       },
                       outcome_type = function(){
                         return(private$.outcome_type)
-                      },
-                      outcome_levels = function(){
-                        return(private$.outcome_levels)
-                      }),
+                      }
+                    ),
                     private = list(
                       .data = NULL,
                       .nodes = NULL,
@@ -396,8 +364,7 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                       .uuid = NULL,
                       .column_names = NULL,
                       .row_index = NULL,
-                      .outcome_type = NULL,
-                      .outcome_levels = list()
+                      .outcome_type = NULL
                     )
 )
 
