@@ -10,8 +10,8 @@ addToDrat(){
 
   ## Set up Repo parameters
   git init
-  git config user.name "addToDrat"
-  git config user.email "addToDrat@travis.ci"
+  git config user.name "Nima Hejazi"
+  git config user.email "nh@nimahejazi.org"
 
   ## Get drat repo
   git remote add upstream "https://$GH_TOKEN@github.com/jeremyrcoyle/sl3.git" \
