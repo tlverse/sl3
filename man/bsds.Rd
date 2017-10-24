@@ -10,7 +10,7 @@
 Fanaee-T, Hadi, and Gama, Joao, 'Event labeling combining ensemble detectors and background knowledge', Progress in Artificial Intelligence (2013): pp. 1-15, Springer Berlin Heidelberg
 }
 \usage{
-bsds
+data(bsds)
 }
 \description{
 Bicycle sharing time series dataset from the UCI Machine Learning Repository.

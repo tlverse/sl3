@@ -5,7 +5,7 @@
 \alias{density_dat}
 \title{Simulated data with continuous exposure}
 \usage{
-density_dat
+data(density_dat)
 }
 \description{
 Simulated data with continuous exposure, used with examples of conditional density estimation.
