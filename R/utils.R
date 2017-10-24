@@ -167,3 +167,19 @@ args_to_list <- function(){
 
   return(all_args)
 }
+
+
+
+#' dim that works for vectors too
+#' 
+#' \code{safe_dim} tries to get dimensions from \code{dim} and falls back on \code{length} if \code{dim} returns \code{NULL}
+#' @param x the object to get dimensions from
+#' @export
+safe_dim <- function(x) {
+  d <- dim(x)
+  if (is.null(d)) {
+    d <- length(x)
+  }
+  
+  return(d)
+}

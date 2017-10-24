@@ -1,13 +1,4 @@
 
-# dim that works for vectors too
-safe_dim <- function(x) {
-  d <- dim(x)
-  if (is.null(d)) {
-    d <- length(x)
-  }
-
-  return(d)
-}
 
 
 # sort n-dimensional array (for multinomial/multivariate SL support)

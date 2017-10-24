@@ -1,10 +1,9 @@
-#' Nonlinear Optimization via Augmented Lagrange
+#' Optimization
 #'
 #' This meta-learner provides fitting procedures for any pairing of loss 
 #' function and metalearner function, subject to constraints. The
-#' optimization problem is solved by making use of \code{Rsolnp::solnp}, using
-#' Lagrange multipliers. For further details, consult the documentation of the
-#' \code{Rsolnp} package.
+#' optimization problem is solved by making use of \code{optim}, For further details, 
+#' consult the documentation of \code{\link{optim}}
 #'
 #' @docType class
 #'
@@ -21,14 +20,13 @@
 #'
 #' @export
 #
-Lrnr_solnp <- R6Class(classname = "Lrnr_solnp",
+Lrnr_optim <- R6Class(classname = "Lrnr_optim",
                               inherit = Lrnr_base, portable = TRUE,
                               class = TRUE,
   public = list(
     initialize = function(learner_function = metalearner_linear,
                           loss_function = loss_squared_error,
-                          make_sparse = TRUE, convex_combination = TRUE,
-                          init_0 = FALSE,
+                          intercept = FALSE, init_0 = FALSE,
                           ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
@@ -42,7 +40,11 @@ Lrnr_solnp <- R6Class(classname = "Lrnr_solnp",
       params <- self$params
       learner_function <- params$learner_function
       loss_function <- params$loss_function
-      X <- as.matrix(task$X)
+      if(params$intercept){
+        X <- as.matrix(task$X_intercept)
+      } else {
+        X <- as.matrix(task$X)
+      }
       Y <- task$Y
       
       if(task$has_node("offset")){
@@ -64,17 +66,6 @@ Lrnr_solnp <- R6Class(classname = "Lrnr_solnp",
         return(risk)
       }
       
-      if(params$convex_combination){
-        eq_fun <- function(alphas) {
-          sum(alphas)
-        }
-        eqB <- 1
-        LB <- rep(0L, ncol(task$X))
-      } else {
-        eq_fun <- NULL
-        eqB <- NULL
-        LB <- NULL
-      }
       p <- ncol(X)
       
       if(params$init_0){
@@ -82,30 +73,26 @@ Lrnr_solnp <- R6Class(classname = "Lrnr_solnp",
       } else{
         init_alphas <- rep(1/p, p)
       }
-      fit_object <- Rsolnp::solnp(init_alphas, risk,
-                                  eqfun = eq_fun, eqB = eqB,
-                                  LB = LB,
-                                  control = list(trace=0))
-      coefs <- fit_object$pars
+      
+      fit_object <- optim(init_alphas, risk, method="BFGS")
+      coefs <- fit_object$par
       names(coefs) <- colnames(task$X)
       
-      if(params$make_sparse){
-        max_coef <- max(coefs)
-        threshold <- max_coef/1000
-        coefs[coefs < threshold] <- 0
-        coefs <- coefs / sum(coefs)
-      }
-      
+ 
       fit_object$coefficients <- coefs
       fit_object$training_offset <- task$has_node("offset")
       
       
-      fit_object$name <- "solnp"
+      fit_object$name <- "optim"
       return(fit_object)
     },
     .predict = function(task = NULL) {
       verbose <- getOption("sl3.verbose")
-      X <- as.matrix(task$X)
+      if(self$params$intercept){
+        X <- as.matrix(task$X_intercept)
+      } else {
+        X <- as.matrix(task$X)
+      }
       alphas <- self$fit_object$coefficients
       
       if(self$fit_object$training_offset){
@@ -114,9 +101,12 @@ Lrnr_solnp <- R6Class(classname = "Lrnr_solnp",
         predictions <- self$params$learner_function(alphas, X)
       }
       
+      if(ncol(predictions)==1){
+        predictions <- as.vector(predictions)
+      }
+      
       return(predictions)
-    },
-    .required_packages = c("Rsolnp")
+    }
   ),
 )
 
