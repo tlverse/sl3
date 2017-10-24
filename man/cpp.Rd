@@ -4,13 +4,49 @@
 \name{cpp}
 \alias{cpp}
 \title{Subset of growth data from the collaborative perinatal project (CPP)}
+\format{A data frame with 1,912 repated-measures observations and 500 unique subjects:
+\describe{
+  \item{subjid}{Subject ID}
+  \item{agedays}{Age since birth at examination (days)}
+  \item{wtkg}{Weight (kg)}
+  \item{htcm}{Standing height (cm)}
+  \item{lencm}{Recumbent length (cm)}
+  \item{bmi}{BMI (kg/m**2)}
+  \item{waz}{Weight for age z-score}
+  \item{haz}{Length/height for age z-score}
+  \item{whz}{Weight for length/height z-score}
+  \item{baz}{BMI for age z-score}
+  \item{siteid}{Investigational Site ID}
+  \item{sexn}{Sex (num)}
+  \item{sex}{Sex}
+  \item{feedingn}{Maternal breastfeeding status (num)}
+  \item{feeding}{Maternal breastfeeding status}
+  \item{gagebrth}{Gestational age at birth (days)}
+  \item{birthwt}{Birth weight (gm)}
+  \item{birthlen}{Birth length (cm)}
+  \item{apgar1}{APGAR Score 1 min after birth}
+  \item{apgar5}{APGAR Score 5 min after birth}
+  \item{mage}{Maternal age at birth of child (yrs)}
+  \item{mracen}{Maternal race (num)}
+  \item{mrace}{Maternal race}
+  \item{mmaritn}{Mothers marital status (num)}
+  \item{mmarit}{Mothers marital status}
+  \item{meducyrs}{Mother, years of education}
+  \item{sesn}{Socio-economic status (num)}
+  \item{ses}{Socio-economic status}
+  \item{parity}{Maternal parity}
+  \item{gravida}{Maternal num pregnancies}
+  \item{smoked}{Maternal smoking status}
+  \item{mcignum}{Num cigarettes mom smoked per day}
+  \item{comprisk}{Maternal risk factors}
+}}
 \source{
 \url{https://catalog.archives.gov/id/606622}
 
 Broman, Sarah. 'The collaborative perinatal project: an overview.' Handbook of longitudinal research 1 (1984): 185-227.
 }
 \usage{
-cpp
+data(cpp)
 }
 \description{
 Subset of growth data from the collaborative perinatal project (CPP).

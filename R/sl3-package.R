@@ -18,19 +18,75 @@ NULL
 
 #' Subset of growth data from the collaborative perinatal project (CPP)
 #'
-#' @name cpp
-#' @docType data
 #' @description
 #' Subset of growth data from the collaborative perinatal project (CPP).
+#' @format A data frame with 1,912 repated-measures observations and 500 unique subjects:
+#' \describe{
+#'   \item{subjid}{Subject ID}
+#'   \item{agedays}{Age since birth at examination (days)}
+#'   \item{wtkg}{Weight (kg)}
+#'   \item{htcm}{Standing height (cm)}
+#'   \item{lencm}{Recumbent length (cm)}
+#'   \item{bmi}{BMI (kg/m**2)}
+#'   \item{waz}{Weight for age z-score}
+#'   \item{haz}{Length/height for age z-score}
+#'   \item{whz}{Weight for length/height z-score}
+#'   \item{baz}{BMI for age z-score}
+#'   \item{siteid}{Investigational Site ID}
+#'   \item{sexn}{Sex (num)}
+#'   \item{sex}{Sex}
+#'   \item{feedingn}{Maternal breastfeeding status (num)}
+#'   \item{feeding}{Maternal breastfeeding status}
+#'   \item{gagebrth}{Gestational age at birth (days)}
+#'   \item{birthwt}{Birth weight (gm)}
+#'   \item{birthlen}{Birth length (cm)}
+#'   \item{apgar1}{APGAR Score 1 min after birth}
+#'   \item{apgar5}{APGAR Score 5 min after birth}
+#'   \item{mage}{Maternal age at birth of child (yrs)}
+#'   \item{mracen}{Maternal race (num)}
+#'   \item{mrace}{Maternal race}
+#'   \item{mmaritn}{Mothers marital status (num)}
+#'   \item{mmarit}{Mothers marital status}
+#'   \item{meducyrs}{Mother, years of education}
+#'   \item{sesn}{Socio-economic status (num)}
+#'   \item{ses}{Socio-economic status}
+#'   \item{parity}{Maternal parity}
+#'   \item{gravida}{Maternal num pregnancies}
+#'   \item{smoked}{Maternal smoking status}
+#'   \item{mcignum}{Num cigarettes mom smoked per day}
+#'   \item{comprisk}{Maternal risk factors}
+#' }
+#' @name cpp
+#' @docType data
 #' @source
 #' \url{https://catalog.archives.gov/id/606622}
 #'
 #' Broman, Sarah. 'The collaborative perinatal project: an overview.' Handbook of longitudinal research 1 (1984): 185-227.
-#' @usage cpp
+#' @usage data(cpp)
 #' @keywords data
 #' @examples
 #' data(cpp)
 #' head(cpp)
+NULL
+
+#' Subset of growth data from the collaborative perinatal project (CPP)
+#'
+#' @name cpp_1yr
+#' @docType data
+#' @description
+#' Subset of growth data from the collaborative perinatal project (CPP) at single time-point. 
+#' The rows in original \code{cpp} data were subset for agedays==366.
+#' See \code{?cpp} for the description of the variables.
+#' @source
+#' \url{https://catalog.archives.gov/id/606622}
+#'
+#' Broman, Sarah. 'The collaborative perinatal project: an overview.' Handbook of longitudinal research 1 (1984): 185-227.
+#' @usage data(cpp_1yr)
+#' @keywords data
+#' @examples
+#' data(cpp_1yr)
+#' head(cpp_1yr)
+#' table(cpp_1yr[["agedays"]])
 NULL
 
 #' Bicycle sharing time series dataset
@@ -43,7 +99,7 @@ NULL
 #' \url{https://archive.ics.uci.edu/ml/datasets/bike+sharing+dataset}
 #'
 #' Fanaee-T, Hadi, and Gama, Joao, 'Event labeling combining ensemble detectors and background knowledge', Progress in Artificial Intelligence (2013): pp. 1-15, Springer Berlin Heidelberg
-#' @usage bsds
+#' @usage data(bsds)
 #' @keywords data
 #' @examples
 #' data(bsds)
@@ -56,7 +112,7 @@ NULL
 #' @docType data
 #' @description
 #' Simulated data with continuous exposure, used with examples of conditional density estimation.
-#' @usage density_dat
+#' @usage data(density_dat)
 #' @keywords data
 #' @examples
 #' data(density_dat)
