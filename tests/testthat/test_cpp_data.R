@@ -14,9 +14,8 @@ if (FALSE) {
 notrun.save.cpp.data <- function() {
   library("hbgd")
   data(cpp)
-  cpp <- data.table(cpp)
-  cpp <- cpp[, !names(cpp) %in% c("geniq", "sysbp", "diabp", "preeclmp"), with = FALSE]
-  cpp_1yr <- cpp[agedays==366, ]
+  cpp <- cpp[, names(cpp)[!names(cpp) %in% c("geniq", "sysbp", "diabp", "preeclmp")]]
+  cpp_1yr <- cpp[cpp[["agedays"]]==366, ]
   # --------------------------------
   # save as compressed R file
   # --------------------------------
