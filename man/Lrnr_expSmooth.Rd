@@ -63,9 +63,10 @@ multiplicative errors, etc.}
 }}
 
 \seealso{
-Other Learners: \code{\link{Lrnr_HarmonicReg}},
-  \code{\link{Lrnr_arima}}, \code{\link{Lrnr_base}},
-  \code{\link{Lrnr_condensier}}, \code{\link{Lrnr_cv}},
+Other Learners: \code{\link{Custom_chain}},
+  \code{\link{Lrnr_HarmonicReg}}, \code{\link{Lrnr_arima}},
+  \code{\link{Lrnr_base}}, \code{\link{Lrnr_condensier}},
+  \code{\link{Lrnr_cv}},
   \code{\link{Lrnr_define_interactions}},
   \code{\link{Lrnr_rugarch}}, \code{\link{Lrnr_sl}},
   \code{\link{Lrnr_tsDyn}}, \code{\link{Pipeline}},

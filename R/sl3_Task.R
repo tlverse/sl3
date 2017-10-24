@@ -165,7 +165,8 @@ sl3_Task <- R6Class(classname = "sl3_Task",
 
                       },
 
-                      next_in_chain=function(covariates=NULL, outcome=NULL, id=NULL, weights=NULL, column_names=NULL, new_nodes=NULL){
+                      next_in_chain=function(covariates=NULL, outcome=NULL, id=NULL, weights=NULL, 
+                                             offset=NULL, column_names=NULL, new_nodes=NULL, ...){
                         if(is.null(new_nodes)){
                           new_nodes=self$nodes
 
@@ -184,12 +185,17 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                           if(!is.null(weights)){
                             new_nodes$weights=weights
                           }
+                          
+                          if(!is.null(offset)){
+                            new_nodes$offset=offset
+                          }
+                          
                         }
 
                         if(is.null(column_names)){
                           column_names <- private$.column_names
                         }
-                        all_nodes=unlist(new_nodes[c("covariates","outcome","id","weights")])
+                        all_nodes=unlist(new_nodes[c("covariates","outcome","id","weights", "offset")])
 
                         #verify nodes are contained in dataset
                         missing_cols <- setdiff(all_nodes,names(column_names))
@@ -209,7 +215,7 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                         }
                         new_task$initialize(private$.data,nodes=new_nodes, folds = private$.folds,
                                             column_names = column_names, row_index = private$.row_index,
-                                            outcome_type = new_outcome_type)
+                                            outcome_type = new_outcome_type, ...)
 
                         return(new_task)
                       },
