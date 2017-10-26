@@ -380,21 +380,3 @@ sl3_Task <- R6Class(classname = "sl3_Task",
 make_sl3_Task <- function(...){
   do.call(sl3_Task$new, args_to_list())
 }
-
-
-#' Create a new sl3_Task
-#' @name sl3_Task$new
-#' @param data A \code{data.frame} or \code{data.table} containing the underlying data
-#' #' \describe{
-#'   \item{\code{new(data, covariates, outcome = NULL, outcome_type = NULL, outcome_levels = NULL,
-#'               id = NULL, weights = NULL, offset = NULL, nodes = NULL, column_names = NULL,
-#'               row_index = NULL, folds = NULL)}}{
-#'               This method is used to create an object of this class.
-#'               \describe{
-#'                 \item{\code{data}}{A \code{data.frame} or \code{data.table} containing the raw data}
-#'               }}
-#'   \item{\code{next_in_chain(new_X)}}{
-#'   Generates a copy of this task with the set of covariates redefined. This is mostly to be used internally for \code{\link{Pipeline}}s}
-#'   }
-
-sl3_Task$public_methods$initialize
