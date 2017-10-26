@@ -3,7 +3,7 @@
 \docType{class}
 \name{Pipeline}
 \alias{Pipeline}
-\title{Pipeline (chain) of learners. 
+\title{Pipeline (chain) of learners.
 A Pipeline of learners is a way to "chain" Learners together, where the output of one learner is used as output for the next learner. This can be used for things like screening, two stage machine learning methods, and Super Learning. A pipeline is fit by fitting the first \code{Learner}, calling \code{chain()} to create the next task, which becomes the training data for the next \code{Learner}. Similarly, for prediction, the predictions from the first \code{Learner} become the data to predict on for the next \code{Learner}.}
 \format{\code{\link{R6Class}} object.}
 \usage{
@@ -13,7 +13,7 @@ Pipeline
 \code{\link{Lrnr_base}} object with methods for training and prediction
 }
 \description{
-Pipeline (chain) of learners. 
+Pipeline (chain) of learners.
 A Pipeline of learners is a way to "chain" Learners together, where the output of one learner is used as output for the next learner. This can be used for things like screening, two stage machine learning methods, and Super Learning. A pipeline is fit by fitting the first \code{Learner}, calling \code{chain()} to create the next task, which becomes the training data for the next \code{Learner}. Similarly, for prediction, the predictions from the first \code{Learner} become the data to predict on for the next \code{Learner}.
 }
 \section{Fields}{
@@ -25,8 +25,8 @@ A Pipeline of learners is a way to "chain" Learners together, where the output o
 \section{Methods}{
 
 \describe{
-  \item{\code{new(...)}}{This method is used to create a pipeline of learners. Arguments should be indiviual \code{Learner}s, in the order they should be applied.}
-  }
+\item{\code{new(...)}}{This method is used to create a pipeline of learners. Arguments should be indiviual \code{Learner}s, in the order they should be applied.}
+}
 }
 
 \seealso{

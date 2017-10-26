@@ -245,3 +245,15 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                        }
                      )
 )
+
+#' Instantiate a Learner
+#' @param learner_class the learner class to instantiate
+#' @param ... parameters with which to instantiate the learner
+#' @export
+make_learner <- function(learner_class, ...){
+  if(is.character(learner_class)){
+    learner_class <- get(learner_class)
+  }
+  
+  learner_class$new(...)
+}

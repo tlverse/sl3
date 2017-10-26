@@ -15,10 +15,14 @@ vignette: >
 ## Learner Template Here
 
 ### Explain methods that can/should be overridden
-
-### Registering your learner
-we need some method of enumerating learners
-
+* initialize
+* `.train` and `.pretrain`
+* `.predict`
+* `.chain`
+* `.properties`
+`sl3_list_properties`
+`sl3_list_learners`
+* `.required_packages`
 ## Testing Your Learner
 
 * should pass the general test

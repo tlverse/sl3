@@ -10,10 +10,10 @@ Lrnr_solnp
 }
 \value{
 \code{\link{Lrnr_base}} object with methods for training and
- prediction.
+prediction.
 }
 \description{
-This meta-learner provides fitting procedures for any pairing of loss 
+This meta-learner provides fitting procedures for any pairing of loss
 function and metalearner function, subject to constraints. The
 optimization problem is solved by making use of \code{Rsolnp::solnp}, using
 Lagrange multipliers. For further details, consult the documentation of the

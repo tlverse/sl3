@@ -10,7 +10,7 @@ Lrnr_solnp_density
 }
 \value{
 \code{\link{Lrnr_base}} object with methods for training and
- prediction.
+prediction.
 }
 \description{
 This meta-learner provides fitting procedures for density estimation, finding

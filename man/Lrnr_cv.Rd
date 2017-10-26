@@ -25,8 +25,8 @@ A wrapper around any learner that generates cross-validate predictions
 \section{Methods}{
 
 \describe{
-  \item{\code{new(learner)}}{Wraps the \code{learner} in a cross-validation layer.}
-  }
+\item{\code{new(learner)}}{Wraps the \code{learner} in a cross-validation layer.}
+}
 }
 
 \seealso{

@@ -18,13 +18,13 @@ Lrnr_h2o_mutator
 }
 \value{
 \code{\link{Lrnr_base}} object with methods for training and
- prediction.
+prediction.
 
 \code{\link{Lrnr_base}} object with methods for training and
- prediction.
+prediction.
 
 \code{\link{Lrnr_base}} object with methods for training and
- prediction.
+prediction.
 }
 \description{
 This learner provides facilities for fitting various types of models with

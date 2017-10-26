@@ -13,8 +13,8 @@ sl3Options(o, value)
 }
 \description{
 To list all \code{sl3} options, just run this function without any parameters
- provided. To query only one value, pass the first parameter. To set that,
- use the \code{value} parameter too.
+provided. To query only one value, pass the first parameter. To set that,
+use the \code{value} parameter too.
 }
 \examples{
 \dontrun{

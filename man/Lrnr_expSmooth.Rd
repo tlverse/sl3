@@ -20,7 +20,7 @@ This learner supports exponential smoothing models.
 \item{\code{model}}{Three-character string identifying method. In all cases, "N"=none, "A"=additive,
 "M"=multiplicative, and "Z"=automatically selected. The first letter denotes the error type, second
 letter denotes the trend type, third letter denotes the season type. For example, "ANN" is simple
-exponential smoothing with additive errors, "MAM" is multiplicative Holt-Winters' methods with 
+exponential smoothing with additive errors, "MAM" is multiplicative Holt-Winters' methods with
 multiplicative errors, etc.}
 
 \item{\code{damped}}{If TRUE, use a damped trend (either additive or multiplicative). If NULL, both damped and non-damped trends will be tried and the best model (according to the information criterion ic) returned.}

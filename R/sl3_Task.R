@@ -15,11 +15,7 @@
 #' @field Y a vector containing the outcomes
 #' @field weights a vector containing the observation weights. If weights aren't specified on construction, weights will default to 1
 #' @field id a vector containing the observation units.
-#' @section Methods:
-#' \describe{
-#'   \item{\code{new(data, covariates, outcome, outcome_type, id, weights, folds, nodes)}}{This method is used to create an object of this class. todo: describe inputs and behavior}
-#'   \item{\code{next_in_chain(new_X)}}{Generates a copy of this task with the set of covariates redefined. This is mostly to be used internally for \code{\link{Pipeline}}s}
-#'   }
+#' @template sl3_Task_methods
 #' @importFrom assertthat assert_that is.count is.flag
 #' @importFrom uuid UUIDgenerate
 #' @import data.table
@@ -378,3 +374,27 @@ sl3_Task <- R6Class(classname = "sl3_Task",
 `[.sl3_Task` <- function(x,i=NULL,j=NULL,...) {
   return(x$subset_task(i))
 }
+
+#' @rdname sl3_Task
+#' @export
+make_sl3_Task <- function(...){
+  do.call(sl3_Task$new, args_to_list())
+}
+
+
+#' Create a new sl3_Task
+#' @name sl3_Task$new
+#' @param data A \code{data.frame} or \code{data.table} containing the underlying data
+#' #' \describe{
+#'   \item{\code{new(data, covariates, outcome = NULL, outcome_type = NULL, outcome_levels = NULL,
+#'               id = NULL, weights = NULL, offset = NULL, nodes = NULL, column_names = NULL,
+#'               row_index = NULL, folds = NULL)}}{
+#'               This method is used to create an object of this class.
+#'               \describe{
+#'                 \item{\code{data}}{A \code{data.frame} or \code{data.table} containing the raw data}
+#'               }}
+#'   \item{\code{next_in_chain(new_X)}}{
+#'   Generates a copy of this task with the set of covariates redefined. This is mostly to be used internally for \code{\link{Pipeline}}s}
+#'   }
+
+sl3_Task$public_methods$initialize

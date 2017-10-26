@@ -10,10 +10,10 @@ Lrnr_independent_binomial
 }
 \value{
 \code{\link{Lrnr_base}} object with methods for training and
- prediction.
+prediction.
 }
 \description{
-This learner provides converts a binomial learner into a multinomial learner using a series of independent binomials. 
+This learner provides converts a binomial learner into a multinomial learner using a series of independent binomials.
 The procedure is modelled on \url{https://en.wikipedia.org/wiki/Multinomial_logistic_regression#As_a_set_of_independent_binary_regressions}
 }
 \section{Fields}{

@@ -19,7 +19,7 @@ Lrnr_h2o_glm
 }
 \value{
 \code{\link{Lrnr_base}} object with methods for training and
- prediction.
+prediction.
 }
 \description{
 Definition of \code{h2o} type models. This function is for internal use only.

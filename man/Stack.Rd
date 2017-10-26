@@ -25,8 +25,8 @@ A Stack is a special Learner that combines multiple other learners, "stacking" t
 \section{Methods}{
 
 \describe{
-  \item{\code{new(...)}}{This method is used to create a stack of learners. Arguments should be indiviual \code{Learner}s.}
-  }
+\item{\code{new(...)}}{This method is used to create a stack of learners. Arguments should be indiviual \code{Learner}s.}
+}
 }
 
 \seealso{

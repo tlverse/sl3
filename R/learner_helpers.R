@@ -2,19 +2,11 @@
 # 1) a delayed(learner) is not a learner and therefore doesn't have the same members as a learner
 # 2) delayed_fun does not respect member function's environment (containing self and private)
 
+
+
 #' Learner helpers
 #' @param learner_class the learner class to instantiate
 #' @param ... parameters with which to instantiate the learner
-#' @rdname learner_helpers
-#' @export
-make_learner <- function(learner_class, ...){
-  if(is.character(learner_class)){
-    learner_class <- get(learner_class)
-  }
-  
-  learner_class$new(...)
-}
-
 #' @rdname learner_helpers
 #' @export
 delayed_make_learner <- function(learner_class, ...){

@@ -10,28 +10,19 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+```{r setup, echo=FALSE, results='hide'}
+library(sl3)
+```
 ## Introduction
 
-The `sl3` package provides a modern implementation of the Super Learner
+The `sl3` package provides a modern framework for Machine Learning. This includes the Super Learner
 algorithm [@vdl2007super], a method for performing stacked regressions
 [@breiman1996stacked] and combining this with covariate screening and
-cross-validation. Several key design principles make the `sl3` implementation...
+cross-validation. `sl3` uses an Object Oriented Programming (OOP) approach and leverages [`R6`](https://cran.r-project.org/web/packages/R6/vignettes/Introduction.html)  classes to define both _Tasks_ (machine learning problems) and _Learners_ (machine learning algorithms that solve those problems) in a way that is flexible and extensible. The design of `sl3` owes a lot to the `SuperLearner` and `mlr` packages that also provide a unified framework for machine learning.
 
-<!--
-Nima: to be expanded, not sure how much detail to provide yet...
--->
+### Example Data
 
-The advantages that `sl3` provides are perhaps best illustrated by example.
-
----
-
-## A Whirlwind Tour
-
-```{r install_pkg}
-if (!("sl3" %in% installed.packages())) {
-  devtools::install_github("jeremyrcoyle/sl3")
-}
-```
+Throughout this vignette, we use data from the Collaborative Perinatal Project (CPP) to illustrate `sl3` features and usage. 
 
 We use several standard packages (e.g., `dplyr`) and a data set included with
 the `sl3` package to begin looking at how we can perform covariate screening,
@@ -60,11 +51,30 @@ covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
 outcome <- "haz"
 ```
 
+
 In the above, after setting up our analysis environment, we simply modified the
 included data set via a very simple imputation rule: all rows for which the
 outcome of interest has a missing value of `NA` have all `NA` values replaced by
 zero. We then simply create character vectors to indicate the covariates of
 interest and the outcome.
+
+### Object Oriented Programming Basics
+
+As mentioned above, `sl3` is designed using OOP principles. While we've tried to make it easy to use `sl3` without a deep understanding of OOP, it is helpful to have some intuition about how `sl3` is structured. In this section, we briefly outline some key concepts from OOP. Readers familiar with OOP basics can skip this section. The key concept of OOP is that of an _object_, a collection of data and functions that corresponds to some conceptual unit. Objects have two main types of elements, _fields_, which can be thought of as nouns, are information about an object, and _methods_, which can be thought of as verbs, are things an object can do. Objects are members of _classes_ that define what these fields and methods are. Classes can _inherit_ elements from other classes (sometimes called _base classes_), so that classes that are similar, but not exactly the same, can share some parts of their definitions. 
+
+Many different implementations of OOP exist which vary in how these concepts are implemented and used. R  has several different implementations, including S3, S4, reference classes, and R6. `sl3` uses the [`R6`](https://cran.r-project.org/web/packages/R6/vignettes/Introduction.html) implementation. In R6, methods and fields of a class object are accessed using the `$` operator. The next section explains how these concepts are used in `sl3`
+
+
+## `sl3` objects
+
+`sl3` defines two key classes: `sl3_Task`, and `Lrnr_base`, that define machine learning problems and machine learning algorithms respectively. In the next sections, we describe these objects and how they are used to fit machine learning algorithms and generate prediction
+
+### `sl3_Task`
+`sl3_Task` defines a machine learning problem. 
+
+The 
+We can see an example of that here, using the cpp dataset described above:
+
 
 Now that we just set up our problem, we are ready to begin looking at how `sl3`
 might be used. First, we will need to define a "task" object, with a class of
@@ -88,6 +98,58 @@ measures).
 ```{r sl3-task-nodes}
 task$nodes
 ```
+
+
+
+`sl3_Task` objects have a range of fields and methods that facillitate fitting machine learning algorithms to the underlying data. However, these are mostly used internally by learners, and can be ignored by the user. These features are documented in the help for [`sl3_Task`](../help/sl3_Task).
+
+
+## Learners
+
+`sl3` defines Learners as classes that inherit from the `Lrnr_base` base class.
+
+
+`Lrnr_base` is a base class for defining a machine learning algorithm, and also a _fit_ of that algorithm to a particular task. `Lrnr_base` defines three main methods: `Lrnr_base$train`, `Lrnr_base$predict`, and `Lrnr_base$chain`.
+
+Different machine learning algorithms are defined in classes that inherit for `Lrnr_base`. For instance, the `Lrnr_glm` class defines a learner that fits generalized linear models.
+
+### Finding Learners
+Learners have _properties_ that indicate what features they support. You can use `sl3_list_properties` to get a list of all properties supported by at least one learner. You can then use `sl3_list_learners` to find learners supporting any set of properties. For example:
+
+```{r sl3-list-learner}
+sl3_list_properties()
+
+sl3_list_learners(c("binomial", "offset"))
+```
+
+The list of supported learners is currently rather limited. Some learners not yet supported natively in `sl3` can be used via their `SuperLearner` wrappers. `SuperLearner` wrappers, screeners, and methods can all be used as `sl3` learners via `Lrnr_pkg_SuperLearner`, `Lrnr_pkg_SuperLearner_screener`, and `Lrnr_pkg_SuperLearner_method` respectively. Here's an example
+
+```{r SuperLearner Wrapper}
+
+#TODO 
+```
+
+In most cases, using these wrappers will not be as efficient as their native `sl3` counterparts. If your favorite learner is missing from `sl3`, please consider adding it by following the [Defining New Learners vignette](custom_lrnrs.html).
+
+### Learner Parameters
+
+In general, learners can be instantiated without providing any additional parameters. We've tried to provide sensible defaults for each learner. However, if you would like to modify the learners' behavior, you can do so by instantiating learners with different parameters.
+
+`sl3` Learners support some common parameters that work with all learners for which they are applicable:
+
+* `covariates`: subsets covariates before fitting. This allows different learners to be fit to the same task with different covariate subsets.
+* `outcome_type`: overrides the `task$outcome_type`. This allows different learners to be fit to the same task with different outcome_types.
+* `transform_offset`: for learners that use offsets, this indicates that the `offset` should be transformed before being passed to the learner. 
+* `...`: abitrary parameters typically passed directly to the internal learner method. The documentation for each learner will direct to the appropriate function documentation for the learner method.
+
+## Composing Learners
+<a name="composition"></a>
+
+`sl3` defines two special learners, `Pipeline` and `Stack`, that allow learners to be composed in a flexible manner.
+
+
+
+
 
 As discussed above, the design of `sl3` allows for screening and learning
 algorithms to be _chained_ to form _pipelines_. Let's take a look at how we
@@ -214,6 +276,8 @@ sl_fit <- sl$train(task)
 
 The `Lrnr_sl` object we create includes a great deal of information (thus we
 regrain from examining it in detail).
+
+## `delayed` Computation
 
 
 ---

@@ -79,7 +79,7 @@ Lrnr_tsDyn <- R6Class(classname = "Lrnr_tsDyn", inherit = Lrnr_base, portable = 
                           }
                         ),
                         private = list(
-                          .properties = c("timeseries", "continuous"),
+                          .properties = c("timeseries", "continuous", "multivariate_outcome"),
                           .train = function(task) {
                             
                             args <- self$params
