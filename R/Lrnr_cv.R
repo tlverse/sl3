@@ -42,6 +42,11 @@ Lrnr_cv <- R6Class(classname = "Lrnr_cv",
                        params=list(learner=learner, folds=folds, ...)
                        super$initialize(params=params, ...)
                      },
+                     cv_risk = function(loss){
+                       preds <- self$predict()
+                       task <- self$training_task
+                       risks <- apply(preds, 2, risk, task$Y, loss, task$weights)
+                     },
                      print = function(){
                        print("Lrnr_cv")
                        print(self$params$learner)

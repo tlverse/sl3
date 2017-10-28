@@ -375,8 +375,8 @@ sl3_Task <- R6Class(classname = "sl3_Task",
   return(x$subset_task(i))
 }
 
+#' @param ... See documentation for the \code{new} method below.
 #' @rdname sl3_Task
 #' @export
-make_sl3_Task <- function(...){
-  do.call(sl3_Task$new, args_to_list())
-}
+#' @inheritParams sl3_Task$public_methods$initialize
+make_sl3_Task <- sl3_Task$new

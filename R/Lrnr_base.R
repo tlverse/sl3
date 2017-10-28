@@ -109,7 +109,11 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                          assert_that(is(task,"sl3_Task"))
                          subsetted_task = self$subset_covariates(task)
                          predictions = private$.predict(subsetted_task)
-
+                         
+                         ncols <- ncol(predictions)
+                         if(!is.null(ncols)&&(ncols==1)){
+                           predictions <- as.vector(predictions)
+                         }
                          return(predictions)
                        },
 

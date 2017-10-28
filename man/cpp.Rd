@@ -3,6 +3,7 @@
 \docType{data}
 \name{cpp}
 \alias{cpp}
+\alias{cpp_imputed}
 \title{Subset of growth data from the collaborative perinatal project (CPP)}
 \format{A data frame with 1,912 repated-measures observations and 500 unique subjects:
 \describe{
@@ -49,7 +50,9 @@ Broman, Sarah. 'The collaborative perinatal project: an overview.' Handbook of l
 data(cpp)
 }
 \description{
-Subset of growth data from the collaborative perinatal project (CPP).
+Subset of growth data from the collaborative perinatal project (CPP). \code{cpp_imputed}
+drops observations for which the \code{haz} column is \code{NA}, and imputes all other observations as 0.
+This is only for the purposes of simplifying testing and examples.
 }
 \examples{
 data(cpp)

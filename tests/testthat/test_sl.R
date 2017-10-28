@@ -6,13 +6,11 @@ library(sl3)
 library(origami)
 library(SuperLearner)
 
-data(cpp)
-cpp <- cpp[!is.na(cpp[, "haz"]), ]
+data(cpp_imputed)
 covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")
-cpp[is.na(cpp)] <- 0
 outcome <- "haz"
-task <- sl3_Task$new(data.table::copy(cpp), covariates = covars, outcome = outcome)
-task2 <- sl3_Task$new(data.table::copy(cpp), covariates = covars, outcome = outcome)
+task <- sl3_Task$new(data.table::copy(cpp_imputed), covariates = covars, outcome = outcome)
+task2 <- sl3_Task$new(data.table::copy(cpp_imputed), covariates = covars, outcome = outcome)
 
 glm_learner <- Lrnr_glm$new()
 glmnet_learner <- Lrnr_pkg_SuperLearner$new("SL.glmnet")

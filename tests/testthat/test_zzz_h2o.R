@@ -23,15 +23,12 @@ Sys.sleep(3)
 # library(SuperLearner)
 set.seed(1)
 
-data(cpp)
-cpp <- cpp[!is.na(cpp[, "haz"]), ]
+data(cpp_imputed)
 covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")
-cpp[is.na(cpp)] <- 0
 outcome <- "haz"
-cpp <- cpp[1:150, ]
-
-task <- sl3_Task$new(cpp, covariates = covars, outcome = outcome)
-task2 <- sl3_Task$new(cpp, covariates = covars, outcome = outcome)
+cpp_imputed <- cpp_imputed[1:150, ]
+task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
+task2 <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
 task$nodes$covariates
 
 test_learner <- function(learner, task, ...) {
@@ -83,7 +80,7 @@ test_that("Lrnr_h2o_glm trains based on a subset of covariates (predictors) and 
     h2oGLM_fit <- h2o_glm$train(task)
     h2oGLM_preds_3 <- h2oGLM_fit$predict()
     expect_true(data.table::is.data.table(h2oGLM_preds_3))
-    glm.fit <- glm(haz ~ apgar1 + apgar5 + parity + apgar1:apgar5, data = cpp, family = stats::gaussian())
+    glm.fit <- glm(haz ~ apgar1 + apgar5 + parity + apgar1:apgar5, data = cpp_imputed, family = stats::gaussian())
     # print(glm.fit)
     glm_preds_3 <- as.vector(predict(glm.fit))
     expect_true(sum(h2oGLM_preds_3 - glm_preds_3) < 10^(-10))
@@ -199,8 +196,8 @@ test_that("Lrnr_h2o_grid learner works with a grid of regularized GLMs, on a sub
 test_that("Lrnr_h2o_glm works with regularized regression and internal CV for lambda",
     {
         h2o::h2o.no_progress()
-        cpp_hazbin <- cpp
-        cpp_hazbin[["haz_bin"]] <- rep_len(c(0L, 1L), nrow(cpp))
+        cpp_hazbin <- cpp_imputed
+        cpp_hazbin[["haz_bin"]] <- rep_len(c(0L, 1L), nrow(cpp_imputed))
         task_bin <- sl3_Task$new(cpp_hazbin, covariates = covars, outcome = "haz_bin")
         h2o_glm <- Lrnr_h2o_glm$new(family = "binomial", alpha = 0.5, lambda_search = TRUE,
             nlambdas = 20, nfolds = 5)
@@ -211,8 +208,8 @@ test_that("Lrnr_h2o_glm works with regularized regression and internal CV for la
 
 test_that("Lrnr_h2o_classifier works with naiveBays for categorical outcome", {
     h2o::h2o.no_progress()
-    cpp_hazbin <- cpp
-    cpp_hazbin[["haz_cat"]] <- as.factor(rep_len(c(0L, 1L, 2L), nrow(cpp)))
+    cpp_hazbin <- cpp_imputed
+    cpp_hazbin[["haz_cat"]] <- as.factor(rep_len(c(0L, 1L, 2L), nrow(cpp_imputed)))
     task_bin <- sl3_Task$new(cpp_hazbin, covariates = covars, outcome = "haz_cat")
 
     bays_lrn <- Lrnr_h2o_classifier$new(algorithm = "naivebayes")$train(task_bin)
@@ -223,8 +220,8 @@ test_that("Lrnr_h2o_classifier works with naiveBays for categorical outcome", {
 
 test_that("Lrnr_h2o_classifier works with naiveBays for non-factor outcomes", {
     h2o::h2o.no_progress()
-    cpp_hazbin <- cpp
-    cpp_hazbin[["haz_cat"]] <- rep_len(c(0L, 1L, 2L), nrow(cpp))
+    cpp_hazbin <- cpp_imputed
+    cpp_hazbin[["haz_cat"]] <- rep_len(c(0L, 1L, 2L), nrow(cpp_imputed))
     task_bin <- sl3_Task$new(cpp_hazbin, covariates = covars, outcome = "haz_cat")
     bays_lrn <- Lrnr_h2o_classifier$new(algorithm = "naivebayes")$train(task_bin)
     print(bays_lrn)

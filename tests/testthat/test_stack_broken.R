@@ -3,12 +3,10 @@ context("test_stack_broken.R -- Stack robustness to sub-learner errors")
 library(sl3)
 library(R6)
 
-data(cpp)
-cpp <- cpp[!is.na(cpp[, "haz"]), ]
+data(cpp_imputed)
 covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")
-cpp[is.na(cpp)] <- 0
 outcome <- "haz"
-task <- sl3_Task$new(cpp, covariates = covars, outcome = outcome)
+task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
 
 library(uuid)
 Lrnr_broken <- R6Class(classname = "Lrnr_broken", inherit = Lrnr_base, portable = TRUE, 
@@ -37,7 +35,7 @@ test_that("Stack produces warning for learners that return errors", {
 predictions <- broken_fit$predict()
 
 test_that("Stack predicts on remaining good learners", {
-  expect_equal(dim(predictions), c(nrow(cpp),1))
+  expect_equal(dim(predictions), c(nrow(cpp_imputed),1))
   expect_equal(names(predictions),"Lrnr_glm")  
 })
 
@@ -50,7 +48,7 @@ test_that("Lrnr_cv on stack drops all learners that error on any fold", {
   broken_cv <- Lrnr_cv$new(broken_stack)
   expect_warning({broken_cv_fit <<- broken_cv$train(task)})
   cv_preds <- broken_cv_fit$predict()
-  expect_equal(dim(cv_preds), c(nrow(cpp),1))
+  expect_equal(dim(cv_preds), c(nrow(cpp_imputed),1))
   expect_equal(names(cv_preds),"Lrnr_glm")  
 })
 

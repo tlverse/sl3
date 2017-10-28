@@ -18,19 +18,12 @@ library(SuperLearner)
 
 set.seed(1)
 
-data(cpp)
-cpp <- cpp[!is.na(cpp[, "haz"]), ]
+data(cpp_imputed)
 covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")
-
-
-
-# todo: make a learner (or whatever) that preprocesses data, including
-# factorizing 'discretish' variables, and makes missingness indicators
-cpp[is.na(cpp)] <- 0
 outcome <- "haz"
 
 
-task <- sl3_Task$new(cpp, covariates = covars, outcome = outcome)
+task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
 task$nodes$covariates
 
 # example of learner chaining
