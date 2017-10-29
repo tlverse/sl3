@@ -59,14 +59,23 @@ Examples
 set.seed(49753)
 suppressMessages(library(data.table))
 library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:data.table':
+#> 
+#>     between, first, last
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
 library(SuperLearner)
 #> Loading required package: nnls
 #> Super Learner
-#> Version: 2.0-23-9000
-#> Package created on 2017-07-20
+#> Version: 2.0-22
+#> Package created on 2017-07-18
 library(origami)
-#> origami: Generalized Cross-Validation Framework
-#> Version: 0.8.0
 library(sl3)
 
 # load example data set
@@ -91,27 +100,17 @@ learner_stack <- Stack$new(SL.glmnet_learner, glm_learner, screen_and_glm)
 stack_fit <- learner_stack$train(task)
 #> Loading required package: glmnet
 #> Loading required package: Matrix
-#> 
-#> Attaching package: 'Matrix'
-#> The following object is masked from 'package:tidyr':
-#> 
-#>     expand
 #> Loading required package: foreach
-#> 
-#> Attaching package: 'foreach'
-#> The following objects are masked from 'package:purrr':
-#> 
-#>     accumulate, when
 #> Loaded glmnet 2.0-13
 preds <- stack_fit$predict()
 head(preds)
 #>    Lrnr_pkg_SuperLearner_SL.glmnet   Lrnr_glm
-#> 1:                      0.35495384 0.36298498
-#> 2:                      0.35495384 0.36298498
-#> 3:                      0.24777855 0.25993072
-#> 4:                      0.24777855 0.25993072
-#> 5:                      0.24777855 0.25993072
-#> 6:                      0.03402737 0.05680264
+#> 1:                      0.35345519 0.36298498
+#> 2:                      0.35345519 0.36298498
+#> 3:                      0.24554305 0.25993072
+#> 4:                      0.24554305 0.25993072
+#> 5:                      0.24554305 0.25993072
+#> 6:                      0.02953193 0.05680264
 #>    Lrnr_pkg_SuperLearner_screener_screen.glmnet___Lrnr_glm
 #> 1:                                              0.36228209
 #> 2:                                              0.36228209

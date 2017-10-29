@@ -46,7 +46,8 @@ Suggests:
     h2o,
     future,
     e1071,
-    earth
+    earth,
+    R.rsp
 Remotes:
     github::osofr/condensier,
     github::jeremyrcoyle/delayed
@@ -56,6 +57,7 @@ BugReports: https://github.com/jeremyrcoyle/sl3/issues
 Encoding: UTF-8
 LazyData: yes
 LazyLoad: yes
-VignetteBuilder: knitr
+VignetteBuilder: knitr,
+                 R.rsp
 RoxygenNote: 6.0.1.9000
 Roxygen: list(markdown = TRUE)

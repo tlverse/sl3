@@ -250,9 +250,7 @@ delayed_sl_fit <- delayed_learner_train(sl, task)
 plot(delayed_sl_fit)
 ```
 
-Delayed then allows us to parallelize across these tasks using the [`future`](https://github.com/HenrikBengtsson/future) package. Examples of how to do this and performance comparisons can be found here: https://github.com/jeremyrcoyle/sl3/blob/master/inst/benchmarks/SuperLearner_benchmarks.html. This feature is currently experimental and hasn't yet been throughly tested on a range of parallel backedns.
-
-<!-- Nima -- I don't know how to integrate the above into the docs without making it a vignette. I don't want it to re-run every time we build the package -->
+Delayed then allows us to parallelize across these tasks using the [`future`](https://github.com/HenrikBengtsson/future) package. See the [`future`](https://github.com/HenrikBengtsson/future) for information on specifying a `future` `plan` to use for parallelization. Performance comparisons can be found in the [SuperLearner Benchmarks](SuperLearner_benchmarks.html) vignette. This feature is currently experimental and hasn't yet been throughly tested on a range of parallel backends. 
 
 ---
 
