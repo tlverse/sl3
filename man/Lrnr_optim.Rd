@@ -10,12 +10,12 @@ Lrnr_optim
 }
 \value{
 \code{\link{Lrnr_base}} object with methods for training and
- prediction.
+prediction.
 }
 \description{
-This meta-learner provides fitting procedures for any pairing of loss 
+This meta-learner provides fitting procedures for any pairing of loss
 function and metalearner function, subject to constraints. The
-optimization problem is solved by making use of \code{optim}, For further details, 
+optimization problem is solved by making use of \code{optim}, For further details,
 consult the documentation of \code{\link{optim}}
 }
 \section{Fields}{

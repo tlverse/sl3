@@ -4,7 +4,6 @@
 \name{Lrnr_h2o_glm}
 \alias{Lrnr_h2o_glm}
 \alias{define_h2o_X}
-\alias{Lrnr_h2o_glm}
 \title{h2o Model Definition}
 \format{\code{\link{R6Class}} object.}
 \usage{
@@ -19,7 +18,7 @@ Lrnr_h2o_glm
 }
 \value{
 \code{\link{Lrnr_base}} object with methods for training and
- prediction.
+prediction.
 }
 \description{
 Definition of \code{h2o} type models. This function is for internal use only.

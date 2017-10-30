@@ -19,7 +19,9 @@ NULL
 #' Subset of growth data from the collaborative perinatal project (CPP)
 #'
 #' @description
-#' Subset of growth data from the collaborative perinatal project (CPP).
+#' Subset of growth data from the collaborative perinatal project (CPP). \code{cpp_imputed} 
+#' drops observations for which the \code{haz} column is \code{NA}, and imputes all other observations as 0. 
+#' This is only for the purposes of simplifying testing and examples.
 #' @format A data frame with 1,912 repated-measures observations and 500 unique subjects:
 #' \describe{
 #'   \item{subjid}{Subject ID}
@@ -63,10 +65,15 @@ NULL
 #'
 #' Broman, Sarah. 'The collaborative perinatal project: an overview.' Handbook of longitudinal research 1 (1984): 185-227.
 #' @usage data(cpp)
+#' @usage data(cpp_imputed)
 #' @keywords data
 #' @examples
 #' data(cpp)
 #' head(cpp)
+NULL
+
+#' @name cpp_imputed
+#' @rdname cpp
 NULL
 
 #' Subset of growth data from the collaborative perinatal project (CPP)

@@ -42,6 +42,11 @@ Lrnr_cv <- R6Class(classname = "Lrnr_cv",
                        params=list(learner=learner, folds=folds, ...)
                        super$initialize(params=params, ...)
                      },
+                     cv_risk = function(loss){
+                       preds <- self$predict()
+                       task <- self$training_task
+                       risks <- apply(preds, 2, risk, task$Y, loss, task$weights)
+                     },
                      print = function(){
                        print("Lrnr_cv")
                        print(self$params$learner)
@@ -54,7 +59,7 @@ Lrnr_cv <- R6Class(classname = "Lrnr_cv",
                    ),
                    private = list(
                      .properties = c("wrapper"),
-                     .pretrain = function(task){
+                     .train_sublearners = function(task){
                        #prefer folds from params, but default to folds from task
                        folds <- self$params$folds
                        if(is.null(folds)){
@@ -84,14 +89,14 @@ Lrnr_cv <- R6Class(classname = "Lrnr_cv",
                        return(result)
                      },
 
-                     .train = function(task, prefit) {
+                     .train = function(task, trained_sublearners) {
                        #prefer folds from params, but default to folds from task
                        folds=self$params$folds
                        if(is.null(folds)){
                          folds=task$folds
                        }
 
-                       fold_fits <- prefit
+                       fold_fits <- trained_sublearners
                        learner <- self$params$learner
 
                        ever_error <- NULL
@@ -132,7 +137,7 @@ Lrnr_cv <- R6Class(classname = "Lrnr_cv",
                          validation_task=validation(task)
                          index=validation()
                          fit=fold_index(fold_fits)[[1]]
-                         predictions=fit$predict(validation_task)
+                         predictions=fit$base_predict(validation_task)
                          list(index=index,predictions=predictions)
                        }
 

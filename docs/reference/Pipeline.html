@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Pipeline (chain) of learners. 
+<title>Pipeline (chain) of learners.
 A Pipeline of learners is a way to "chain" Learners together, where the output of one learner is used as output for the next learner. This can be used for things like screening, two stage machine learning methods, and Super Learning. A pipeline is fit by fitting the first <code>Learner</code>, calling <code>chain()</code> to create the next task, which becomes the training data for the next <code>Learner</code>. Similarly, for prediction, the predictions from the first <code>Learner</code> become the data to predict on for the next <code>Learner</code>. — Pipeline • sl3</title>
 
 <!-- jquery -->
@@ -69,10 +69,10 @@ A Pipeline of learners is a way to "chain" Learners together, where the output o
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/custom_lrnrs.html">Defining New Learners</a>
+      <a href="../articles/custom_lrnrs.html">Defining New `sl3` Learners</a>
     </li>
     <li>
-      <a href="../articles/intro_sl3.html">Super Learning Done Right (working title)</a>
+      <a href="../articles/intro_sl3.html">Modern Machine Learning in R</a>
     </li>
   </ul>
 </li>
@@ -96,12 +96,12 @@ A Pipeline of learners is a way to "chain" Learners together, where the output o
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Pipeline (chain) of learners. 
+    <h1>Pipeline (chain) of learners.
 A Pipeline of learners is a way to "chain" Learners together, where the output of one learner is used as output for the next learner. This can be used for things like screening, two stage machine learning methods, and Super Learning. A pipeline is fit by fitting the first <code>Learner</code>, calling <code>chain()</code> to create the next task, which becomes the training data for the next <code>Learner</code>. Similarly, for prediction, the predictions from the first <code>Learner</code> become the data to predict on for the next <code>Learner</code>.</h1>
     </div>
 
     
-    <p>Pipeline (chain) of learners. 
+    <p>Pipeline (chain) of learners.
 A Pipeline of learners is a way to "chain" Learners together, where the output of one learner is used as output for the next learner. This can be used for things like screening, two stage machine learning methods, and Super Learning. A pipeline is fit by fitting the first <code>Learner</code>, calling <code>chain()</code> to create the next task, which becomes the training data for the next <code>Learner</code>. Similarly, for prediction, the predictions from the first <code>Learner</code> become the data to predict on for the next <code>Learner</code>.</p>
     
 
@@ -126,14 +126,15 @@ A Pipeline of learners is a way to "chain" Learners together, where the output o
 
     
     <dl class='dl-horizontal'>
-  <dt><code>new(...)</code></dt><dd><p>This method is used to create a pipeline of learners. Arguments should be indiviual <code>Learner</code>s, in the order they should be applied.</p></dd>
-  </dl>
+<dt><code>new(...)</code></dt><dd><p>This method is used to create a pipeline of learners. Arguments should be indiviual <code>Learner</code>s, in the order they should be applied.</p></dd>
+</dl>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>Other Learners: <code><a href='Lrnr_HarmonicReg.html'>Lrnr_HarmonicReg</a></code>,
-  <code><a href='Lrnr_arima.html'>Lrnr_arima</a></code>, <code><a href='Lrnr_base.html'>Lrnr_base</a></code>,
-  <code><a href='Lrnr_condensier.html'>Lrnr_condensier</a></code>, <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
+    <p>Other Learners: <code><a href='Custom_chain.html'>Custom_chain</a></code>,
+  <code><a href='Lrnr_HarmonicReg.html'>Lrnr_HarmonicReg</a></code>, <code><a href='Lrnr_arima.html'>Lrnr_arima</a></code>,
+  <code><a href='Lrnr_base.html'>Lrnr_base</a></code>, <code><a href='Lrnr_condensier.html'>Lrnr_condensier</a></code>,
+  <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
   <code><a href='Lrnr_define_interactions.html'>Lrnr_define_interactions</a></code>,
   <code><a href='Lrnr_expSmooth.html'>Lrnr_expSmooth</a></code>, <code><a href='Lrnr_rugarch.html'>Lrnr_rugarch</a></code>,
   <code><a href='undocumented_learner.html'>Lrnr_sl</a></code>, <code><a href='Lrnr_tsDyn.html'>Lrnr_tsDyn</a></code>,

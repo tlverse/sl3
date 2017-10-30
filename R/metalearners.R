@@ -8,18 +8,31 @@ trim_logit <- function (x, trim = 1e-05)
   return(foo)
 }
 
+#' Combine predictions from multiple learners
+#' @param alpha a vector of combination coefficients
+#' @param X a matrix of predictions
+#' @param trim a value use to trim predictions away from 0 and 1.
+#' @name metalearners
+#' 
+
 #' @importFrom stats plogis qlogis
+#' @rdname metalearners
+#' @export
 metalearner_logistic_binomial <- function(alpha, X, trim){
   plogis(trim_logit(X) %*% alpha)
 }
 
+#' @rdname metalearners
+#' @export
 metalearner_linear <- function(alpha, X){
   X %*% alpha
 }
 
-metalearner_linear_multinomial <- function(alpha, x) {
+#' @rdname metalearners
+#' @export
+metalearner_linear_multinomial <- function(alpha, X) {
   
-  unpacked <- lapply(as.data.frame(x),unpack_predictions)
+  unpacked <- lapply(as.data.frame(X),unpack_predictions)
   multiplied <- mapply(`*`, unpacked, alpha, SIMPLIFY = FALSE)
   Y_pred <- Reduce(`+`, multiplied)
   

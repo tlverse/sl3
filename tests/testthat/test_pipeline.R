@@ -6,12 +6,10 @@ library(origami)
 library(SuperLearner)
 library(data.table)
 
-data(cpp)
-cpp <- cpp[!is.na(cpp[, "haz"]), ]
+data(cpp_imputed)
 covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")
-cpp[is.na(cpp)] <- 0
 outcome <- "haz"
-task <- sl3_Task$new(cpp, covariates = covars, outcome = outcome)
+task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
 
 screen_glmnet <- Lrnr_pkg_SuperLearner_screener$new("screen.glmnet")
 glm_learner <- Lrnr_glm$new()

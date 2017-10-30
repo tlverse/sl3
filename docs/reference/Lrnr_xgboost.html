@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>xgboost: eXtreme Gradient Boosting Definition — Lrnr_xgboost • sl3</title>
+<title>xgboost: eXtreme Gradient Boosting — Lrnr_xgboost • sl3</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -68,10 +68,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/custom_lrnrs.html">Defining New Learners</a>
+      <a href="../articles/custom_lrnrs.html">Defining New `sl3` Learners</a>
     </li>
     <li>
-      <a href="../articles/intro_sl3.html">Super Learning Done Right (working title)</a>
+      <a href="../articles/intro_sl3.html">Modern Machine Learning in R</a>
     </li>
   </ul>
 </li>
@@ -95,37 +95,18 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>xgboost: eXtreme Gradient Boosting Definition</h1>
+    <h1>xgboost: eXtreme Gradient Boosting</h1>
     </div>
 
     
-    <p>Definition of <code>xgboost</code> type models. This function is for internal use
-only.</p>
-<p>This learner provides fitting procedures for <code>xgboost</code> models, using the
+    <p>This learner provides fitting procedures for <code>xgboost</code> models, using the
 <code>xgboost</code> package. Such models are classification and regression trees
 with extreme gradient boosting. For details on the fitting procedure, consult
 the documentation of the <code>xgboost</code> package.</p>
     
 
-    <pre class="usage"><span class='fu'>define_xgboost_X</span>(<span class='no'>task</span>, <span class='kw'>add_outcome</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-
-<span class='no'>Lrnr_xgboost</span></pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>task</th>
-      <td><p>An object of type <code>Lrnr_base</code> as defined in this package.</p></td>
-    </tr>
-    <tr>
-      <th>add_outcome</th>
-      <td><p>A <code>logical</code> indicating whether the trained model
-object should be fit in a supervised fashion (with the outcome vector) or in
-an unsupervised fashion.</p></td>
-    </tr>
-    </table>
-    
+    <pre class="usage"><span class='no'>Lrnr_xgboost</span></pre>
+        
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
     <p><code>R6Class</code> object.</p>
@@ -133,14 +114,13 @@ an unsupervised fashion.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code><a href='Lrnr_base.html'>Lrnr_base</a></code> object with methods for training and
- prediction.</p>
+prediction.</p>
     
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#format">Format</a></li>
 

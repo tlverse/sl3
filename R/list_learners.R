@@ -13,6 +13,7 @@ get_learner_class_properties <- function(learner_class){
 }
 
 #' @rdname list_learners
+#' @export
 sl3_list_properties <- function(){
   learners <- get_all_learners()
   properties <- lapply(learners, get_learner_class_properties)

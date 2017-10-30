@@ -6,15 +6,11 @@ context("test_delayed_sl3.R -- manually delay learner fit")
 
 plan(sequential)
 
-data(cpp)
-cpp <- cpp[!is.na(cpp[, "haz"]), ]
+data(cpp_imputed)
 covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")
-cpp[is.na(cpp)] <- 0
-# cpp <- cpp[sample(nrow(cpp),10000,replace=T),]
 outcome <- "haz"
-# cpp <- cpp[1:150, ]
 
-task <- sl3_Task$new(cpp, covariates = covars, outcome = outcome)
+task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
 
 learners <- list(
   rf <- make_learner(Lrnr_randomForest),

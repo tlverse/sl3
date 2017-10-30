@@ -26,4 +26,4 @@ deploy.sh
 ^CONTRIBUTING\.md$
 ^Makefile$
 ^LICENSE$
-
+man-roxygen

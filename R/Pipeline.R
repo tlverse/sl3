@@ -49,7 +49,7 @@ Pipeline <- R6Class(classname = "Pipeline",
                       }
                     ),
                     private = list(
-                      .pretrain = function(task){
+                      .train_sublearners = function(task){
                         learners=self$params$learners
                         learner_names=sapply(learners,function(learner)learner$name)
                         learner_fits=as.list(rep(NA,length(learners)))
@@ -68,9 +68,9 @@ Pipeline <- R6Class(classname = "Pipeline",
                         return(bundle_delayed(learner_fits))
                         
                       },
-                      .train = function(task, pretrain) {
+                      .train = function(task, trained_sublearners) {
                         
-                        fit_object <- list(learner_fits = pretrain)
+                        fit_object <- list(learner_fits = trained_sublearners)
                         
                         return(fit_object)
                         
@@ -83,11 +83,11 @@ Pipeline <- R6Class(classname = "Pipeline",
                         for(i in seq_along(learner_fits)){
                           current_task=next_task
                           current_fit=learner_fits[[i]]
-                          next_task=current_fit$chain(current_task)
+                          next_task=current_fit$base_chain(current_task)
                         }
                         
                         # current_task is now the task for the last fit, so we can just do this
-                        predictions=current_fit$predict(current_task)
+                        predictions=current_fit$base_predict(current_task)
                         
                         return(predictions)
                       }

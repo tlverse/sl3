@@ -68,10 +68,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/custom_lrnrs.html">Defining New Learners</a>
+      <a href="../articles/custom_lrnrs.html">Defining New `sl3` Learners</a>
     </li>
     <li>
-      <a href="../articles/intro_sl3.html">Super Learning Done Right (working title)</a>
+      <a href="../articles/intro_sl3.html">Modern Machine Learning in R</a>
     </li>
   </ul>
 </li>
@@ -99,11 +99,51 @@
     </div>
 
     
-    <p>Subset of growth data from the collaborative perinatal project (CPP).</p>
+    <p>Subset of growth data from the collaborative perinatal project (CPP). <code>cpp_imputed</code>
+drops observations for which the <code>haz</code> column is <code>NA</code>, and imputes all other observations as 0.
+This is only for the purposes of simplifying testing and examples.</p>
     
 
-    <pre class="usage"><span class='no'>cpp</span></pre>
+    <pre class="usage"><span class='fu'>data</span>(<span class='no'>cpp</span>)</pre>
         
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+
+    <p>A data frame with 1,912 repated-measures observations and 500 unique subjects:</p><dl class='dl-horizontal'>
+<dt>subjid</dt><dd><p>Subject ID</p></dd>
+<dt>agedays</dt><dd><p>Age since birth at examination (days)</p></dd>
+<dt>wtkg</dt><dd><p>Weight (kg)</p></dd>
+<dt>htcm</dt><dd><p>Standing height (cm)</p></dd>
+<dt>lencm</dt><dd><p>Recumbent length (cm)</p></dd>
+<dt>bmi</dt><dd><p>BMI (kg/m**2)</p></dd>
+<dt>waz</dt><dd><p>Weight for age z-score</p></dd>
+<dt>haz</dt><dd><p>Length/height for age z-score</p></dd>
+<dt>whz</dt><dd><p>Weight for length/height z-score</p></dd>
+<dt>baz</dt><dd><p>BMI for age z-score</p></dd>
+<dt>siteid</dt><dd><p>Investigational Site ID</p></dd>
+<dt>sexn</dt><dd><p>Sex (num)</p></dd>
+<dt>sex</dt><dd><p>Sex</p></dd>
+<dt>feedingn</dt><dd><p>Maternal breastfeeding status (num)</p></dd>
+<dt>feeding</dt><dd><p>Maternal breastfeeding status</p></dd>
+<dt>gagebrth</dt><dd><p>Gestational age at birth (days)</p></dd>
+<dt>birthwt</dt><dd><p>Birth weight (gm)</p></dd>
+<dt>birthlen</dt><dd><p>Birth length (cm)</p></dd>
+<dt>apgar1</dt><dd><p>APGAR Score 1 min after birth</p></dd>
+<dt>apgar5</dt><dd><p>APGAR Score 5 min after birth</p></dd>
+<dt>mage</dt><dd><p>Maternal age at birth of child (yrs)</p></dd>
+<dt>mracen</dt><dd><p>Maternal race (num)</p></dd>
+<dt>mrace</dt><dd><p>Maternal race</p></dd>
+<dt>mmaritn</dt><dd><p>Mothers marital status (num)</p></dd>
+<dt>mmarit</dt><dd><p>Mothers marital status</p></dd>
+<dt>meducyrs</dt><dd><p>Mother, years of education</p></dd>
+<dt>sesn</dt><dd><p>Socio-economic status (num)</p></dd>
+<dt>ses</dt><dd><p>Socio-economic status</p></dd>
+<dt>parity</dt><dd><p>Maternal parity</p></dd>
+<dt>gravida</dt><dd><p>Maternal num pregnancies</p></dd>
+<dt>smoked</dt><dd><p>Maternal smoking status</p></dd>
+<dt>mcignum</dt><dd><p>Num cigarettes mom smoked per day</p></dd>
+<dt>comprisk</dt><dd><p>Maternal risk factors</p></dd>
+</dl>
+    
     <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
 
     <p><a href='https://catalog.archives.gov/id/606622'>https://catalog.archives.gov/id/606622</a></p>
@@ -115,21 +155,27 @@
 <span class='fu'>head</span>(<span class='no'>cpp</span>)</div><div class='output co'>#&gt;   subjid agedays   wtkg htcm lencm      bmi   waz   haz   whz   baz siteid sexn
 #&gt; 1      1       1  4.621   55    55 15.27603  2.38  2.61  0.19  1.35      5    1
 #&gt; 2      1     123  8.760   NA    NA       NA  1.99    NA    NA    NA      5    1
+#&gt; 3      1     366 14.500   79    79 23.23346  3.84  1.35  4.02  3.89      5    1
 #&gt;    sex feedingn feeding gagebrth birthwt birthlen apgar1 apgar5 mage mracen
 #&gt; 1 Male       90 Unknown      287    4621       55      8      9   21      5
 #&gt; 2 Male       90 Unknown      287    4621       55      8      9   21      5
+#&gt; 3 Male       90 Unknown      287    4621       55      8      9   21      5
 #&gt;   mrace mmaritn  mmarit meducyrs sesn          ses parity gravida smoked
 #&gt; 1 White       1 Married       12   50       Middle      1       1      0
 #&gt; 2 White       1 Married       12   50       Middle      1       1      0
-#&gt;   mcignum preeclmp comprisk geniq sysbp diabp
-#&gt; 1       0        0     none    NA    NA    NA
-#&gt; 2       0        0     none    NA    NA    NA
-#&gt;  [ reached getOption("max.print") -- omitted 4 rows ]</div></pre>
+#&gt; 3 White       1 Married       12   50       Middle      1       1      0
+#&gt;   mcignum comprisk
+#&gt; 1       0     none
+#&gt; 2       0     none
+#&gt; 3       0     none
+#&gt;  [ reached getOption("max.print") -- omitted 3 rows ]</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       
+      <li><a href="#format">Format</a></li>
+
       <li><a href="#source">Source</a></li>
       
       <li><a href="#examples">Examples</a></li>

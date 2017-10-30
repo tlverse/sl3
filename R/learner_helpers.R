@@ -2,19 +2,11 @@
 # 1) a delayed(learner) is not a learner and therefore doesn't have the same members as a learner
 # 2) delayed_fun does not respect member function's environment (containing self and private)
 
+
+
 #' Learner helpers
 #' @param learner_class the learner class to instantiate
 #' @param ... parameters with which to instantiate the learner
-#' @rdname learner_helpers
-#' @export
-make_learner <- function(learner_class, ...){
-  if(is.character(learner_class)){
-    learner_class <- get(learner_class)
-  }
-  
-  learner_class$new(...)
-}
-
 #' @rdname learner_helpers
 #' @export
 delayed_make_learner <- function(learner_class, ...){
@@ -24,21 +16,21 @@ delayed_make_learner <- function(learner_class, ...){
 
 #' @param learner a learner object to fit to the task
 #' @param task the task to fit on
-#' @param pretrain any data obtained from a pretrain step
+#' @param trained_sublearners any data obtained from a train_sublearners step
 #' @rdname learner_helpers
 #' @export
-learner_train <- function(learner, task, pretrain){
-  learner$base_train(task, pretrain)
+learner_train <- function(learner, task, trained_sublearners){
+  learner$base_train(task, trained_sublearners)
 }
 
 #' @rdname learner_helpers
 #' @export
 delayed_learner_train <- function(learner, task){
-  pretrain <- learner$pretrain(task)
-  train_delayed <- delayed_fun(learner_train)(learner, task, pretrain)
+  trained_sublearners <- learner$train_sublearners(task)
+  train_delayed <- delayed_fun(learner_train)(learner, task, trained_sublearners)
   train_delayed$name <- learner$name
-  if(!is.null(pretrain)){
-    #if a learner is sequential assume the train step is minimal and don't paralellize
+  if(!is.null(trained_sublearners)){
+    #if a learner is sequential assume the train step is minimal and don't parallelize
     train_delayed$sequential <- TRUE
   }
   return(train_delayed)

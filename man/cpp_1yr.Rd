@@ -13,7 +13,7 @@ Broman, Sarah. 'The collaborative perinatal project: an overview.' Handbook of l
 data(cpp_1yr)
 }
 \description{
-Subset of growth data from the collaborative perinatal project (CPP) at single time-point. 
+Subset of growth data from the collaborative perinatal project (CPP) at single time-point.
 The rows in original \code{cpp} data were subset for agedays==366.
 See \code{?cpp} for the description of the variables.
 }

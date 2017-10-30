@@ -10,7 +10,7 @@ Lrnr_xgboost
 }
 \value{
 \code{\link{Lrnr_base}} object with methods for training and
- prediction.
+prediction.
 }
 \description{
 This learner provides fitting procedures for \code{xgboost} models, using the

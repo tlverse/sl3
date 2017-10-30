@@ -18,21 +18,18 @@ library(sl3)
 library(SuperLearner)
 set.seed(1)
 
-data(cpp)
-cpp <- cpp[!is.na(cpp[, "haz"]), ]
+data(cpp_imputed)
 covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")
-cpp[is.na(cpp)] <- 0
 outcome <- "haz"
-cpp <- cpp[1:150, ]
 
-task <- sl3_Task$new(cpp, covariates = covars, outcome = outcome)
+task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
 
 interactions <- list(c("apgar1", "apgar5"))
 task_with_interactions <- task$add_interactions(interactions)
 
 test_that("Lrnr_glm_fast works with empty X (intercept-only)", {
     fglm_learner <- Lrnr_glm_fast$new()
-    empty_task <- sl3_Task$new(cpp, covariates = NULL, outcome = outcome)
+    empty_task <- sl3_Task$new(cpp_imputed, covariates = NULL, outcome = outcome)
     fGLM_fit <- fglm_learner$base_train(empty_task)
     fglm_preds <- fGLM_fit$predict()
 })
@@ -54,7 +51,7 @@ test_that("Lrnr_glm_fast trains on a subset of covariates (predictors)", {
     # print(fGLM_fit) str(fGLM_fit$params)
     fglm_preds_3 <- fGLM_fit$predict()
 
-    glm.fit <- glm(haz ~ apgar1 + apgar5 + apgar1:apgar5, data = cpp, family = stats::gaussian())
+    glm.fit <- glm(haz ~ apgar1 + apgar5 + apgar1:apgar5, data = cpp_imputed, family = stats::gaussian())
     # print(glm.fit)
     glm_preds_3 <- as.vector(predict(glm.fit))
 
@@ -93,8 +90,8 @@ test_that("Lrnr_glm_fast works with stacking", {
 
 test_that("Lrnr_glm_fast works with quasibinomial and continuous outcomes in (0,1)",
     {
-        cpp_haz_01range <- cpp
-        cpp_haz_01range[["haz_01range"]] <- rep_len(c(0.1, 0.9), nrow(cpp))
+        cpp_haz_01range <- cpp_imputed
+        cpp_haz_01range[["haz_01range"]] <- rep_len(c(0.1, 0.9), nrow(cpp_imputed))
         task_01range <- sl3_Task$new(cpp_haz_01range, covariates = covars, outcome = "haz_01range")
 
         fglm_learner <- Lrnr_glm_fast$new(family = quasibinomial())
@@ -108,8 +105,8 @@ test_that("Lrnr_glm_fast works with quasibinomial and continuous outcomes in (0,
 
 test_that("Lrnr_glm_fast works with different families ('family = ...') and solvers ('method = ...')",
     {
-        cpp_hazbin <- cpp
-        cpp_hazbin[["haz_bin"]] <- rep_len(c(0L, 1L), nrow(cpp))
+        cpp_hazbin <- cpp_imputed
+        cpp_hazbin[["haz_bin"]] <- rep_len(c(0L, 1L), nrow(cpp_imputed))
         task_bin <- sl3_Task$new(cpp_hazbin, covariates = covars, outcome = "haz_bin")
 
         fglm_learner <- Lrnr_glm_fast$new(family = quasibinomial())

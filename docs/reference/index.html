@@ -68,10 +68,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/custom_lrnrs.html">Defining New Learners</a>
+      <a href="../articles/custom_lrnrs.html">Defining New `sl3` Learners</a>
     </li>
     <li>
-      <a href="../articles/intro_sl3.html">Super Learning Done Right (working title)</a>
+      <a href="../articles/intro_sl3.html">Modern Machine Learning in R</a>
     </li>
   </ul>
 </li>
@@ -119,27 +119,69 @@
         <tr>
           <!--  -->
           <td>
-            <p><code><a href="bsds.html">bsds</a></code> </p>
+            <p><code><a href="args_to_list.html">args_to_list</a></code> </p>
+          </td>
+          <td><p>Get all args of parent call (both specified and defaults) as list</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="bsds.html">data</a></code> </p>
           </td>
           <td><p>Bicycle sharing time series dataset</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="cpp.html">cpp</a></code> </p>
+            <p><code><a href="call_with_args.html">call_with_args</a></code> </p>
+          </td>
+          <td><p>Call with filtered argument list</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="cpp_1yr.html">data</a></code> </p>
           </td>
           <td><p>Subset of growth data from the collaborative perinatal project (CPP)</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="density_dat.html">density_dat</a></code> </p>
+            <p><code><a href="cpp.html">data</a></code> </p>
+          </td>
+          <td><p>Subset of growth data from the collaborative perinatal project (CPP)</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="Custom_chain.html">Custom_chain</a></code> </p>
+          </td>
+          <td><p>Customize chaining for a learner</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="customize_chain.html">customize_chain</a></code> </p>
+          </td>
+          <td><p>Modify the chain behavior of a learner</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="density_dat.html">data</a></code> </p>
           </td>
           <td><p>Simulated data with continuous exposure</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="learner_helpers.html">learner_new</a></code> <code><a href="learner_helpers.html">delayed_learner_new</a></code> <code><a href="learner_helpers.html">learner_train</a></code> <code><a href="learner_helpers.html">delayed_learner_train</a></code> <code><a href="learner_helpers.html">learner_fit_predict</a></code> <code><a href="learner_helpers.html">delayed_learner_fit_predict</a></code> <code><a href="learner_helpers.html">learner_fit_chain</a></code> <code><a href="learner_helpers.html">delayed_learner_fit_chain</a></code> </p>
+            <p><code><a href="learner_helpers.html">delayed_make_learner</a></code> <code><a href="learner_helpers.html">learner_train</a></code> <code><a href="learner_helpers.html">delayed_learner_train</a></code> <code><a href="learner_helpers.html">learner_fit_predict</a></code> <code><a href="learner_helpers.html">delayed_learner_fit_predict</a></code> <code><a href="learner_helpers.html">learner_fit_chain</a></code> <code><a href="learner_helpers.html">delayed_learner_fit_chain</a></code> </p>
           </td>
           <td><p>Learner helpers</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="list_learners.html">sl3_list_properties</a></code> <code><a href="list_learners.html">sl3_list_learners</a></code> </p>
+          </td>
+          <td><p>List sl3 Learners</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="loss_functions.html">loss_squared_error</a></code> <code><a href="loss_functions.html">loss_loglik_true_cat</a></code> <code><a href="loss_functions.html">loss_loglik_binomial</a></code> <code><a href="loss_functions.html">loss_loglik_multinomial</a></code> </p>
+          </td>
+          <td><p>Loss Function Definitions</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -149,9 +191,9 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="Lrnr_base.html">Lrnr_base</a></code> </p>
+            <p><code><a href="Lrnr_base.html">Lrnr_base</a></code> <code><a href="Lrnr_base.html">make_learner</a></code> </p>
           </td>
-          <td><p>Base Class for all sl3 learners.</p></td>
+          <td><p>Base Class for all sl3 Learners.</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -192,6 +234,12 @@ A wrapper around any learner that generates cross-validate predictions</p></td>
         </tr><tr>
           <!--  -->
           <td>
+            <p><code><a href="Lrnr_glmnet.html">Lrnr_glmnet</a></code> </p>
+          </td>
+          <td><p>Random Forest Models</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
             <p><code><a href="Lrnr_h2o_glm.html">define_h2o_X</a></code> <code><a href="Lrnr_h2o_glm.html">Lrnr_h2o_glm</a></code> </p>
           </td>
           <td><p>h2o Model Definition</p></td>
@@ -210,6 +258,12 @@ A wrapper around any learner that generates cross-validate predictions</p></td>
         </tr><tr>
           <!--  -->
           <td>
+            <p><code><a href="Lrnr_independent_binomial.html">Lrnr_independent_binomial</a></code> </p>
+          </td>
+          <td><p>Classification from Binomial Regression</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
             <p><code><a href="Lrnr_mean.html">Lrnr_mean</a></code> </p>
           </td>
           <td><p>Intercept Model Fits</p></td>
@@ -219,6 +273,12 @@ A wrapper around any learner that generates cross-validate predictions</p></td>
             <p><code><a href="Lrnr_nnls.html">Lrnr_nnls</a></code> </p>
           </td>
           <td><p>Non-negative Linear Least Squares</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="Lrnr_optim.html">Lrnr_optim</a></code> </p>
+          </td>
+          <td><p>Optimization</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -264,6 +324,12 @@ A wrapper around any learner that generates cross-validate predictions</p></td>
         </tr><tr>
           <!--  -->
           <td>
+            <p><code><a href="Lrnr_solnp.html">Lrnr_solnp</a></code> </p>
+          </td>
+          <td><p>Nonlinear Optimization via Augmented Lagrange</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
             <p><code><a href="Lrnr_subset_covariates.html">Lrnr_subset_covariates</a></code> </p>
           </td>
           <td><p>Learner with Covariate Subsetting</p></td>
@@ -276,22 +342,40 @@ A wrapper around any learner that generates cross-validate predictions</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="Lrnr_xgboost.html">define_xgboost_X</a></code> <code><a href="Lrnr_xgboost.html">Lrnr_xgboost</a></code> </p>
+            <p><code><a href="Lrnr_xgboost.html">Lrnr_xgboost</a></code> </p>
           </td>
-          <td><p>xgboost: eXtreme Gradient Boosting Definition</p></td>
+          <td><p>xgboost: eXtreme Gradient Boosting</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="metalearners.html">metalearner_logistic_binomial</a></code> <code><a href="metalearners.html">metalearner_linear</a></code> <code><a href="metalearners.html">metalearner_linear_multinomial</a></code> </p>
+          </td>
+          <td><p>Combine predictions from multiple learners</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="Pipeline.html">Pipeline</a></code> </p>
           </td>
-          <td><p>Pipeline (chain) of learners. 
+          <td><p>Pipeline (chain) of learners.
 A Pipeline of learners is a way to "chain" Learners together, where the output of one learner is used as output for the next learner. This can be used for things like screening, two stage machine learning methods, and Super Learning. A pipeline is fit by fitting the first <code>Learner</code>, calling <code>chain()</code> to create the next task, which becomes the training data for the next <code>Learner</code>. Similarly, for prediction, the predictions from the first <code>Learner</code> become the data to predict on for the next <code>Learner</code>.</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="sl3_Task.html">sl3_Task</a></code> </p>
+            <p><code><a href="risk.html">risk</a></code> </p>
           </td>
-          <td><p>Class for Task Data</p></td>
+          <td><p>Risk Esimation</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="safe_dim.html">safe_dim</a></code> </p>
+          </td>
+          <td><p>dim that works for vectors too</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="sl3_Task.html">sl3_Task</a></code> <code><a href="sl3_Task.html">make_sl3_Task</a></code> </p>
+          </td>
+          <td><p>Define a Machine Learning Task</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -304,13 +388,31 @@ A Pipeline of learners is a way to "chain" Learners together, where the output o
             <p><code><a href="Stack.html">Stack</a></code> </p>
           </td>
           <td><p>Learner Stacking
-A Stack is a special Learner that combines multiple other learners, "stacking" their predictions in columns. Currently, train fits the learners one-at-a-time, but this will be parallelized with future going forward.</p></td>
+A Stack is a special Learner that combines multiple other learners, "stacking" their predictions in columns.</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="true_obj_size.html">true_obj_size</a></code> </p>
+          </td>
+          <td><p>Estimate object size using serialization</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="undocumented_learner.html">Lrnr_sl</a></code> </p>
           </td>
           <td><p>Undocumented Learner</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="variable_type.html">Variable_Type</a></code> <code><a href="variable_type.html">variable_type</a></code> </p>
+          </td>
+          <td><p>Specify variable type</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="write_learner_template.html">write_learner_template</a></code> </p>
+          </td>
+          <td><p>Generate a file containing a template <code>sl3</code> Learner</p></td>
         </tr>
       </tbody>
       </table>

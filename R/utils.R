@@ -83,7 +83,12 @@ replace_add_user_args <- function(mainArgs, userArgs, fun) {
 }
 
 ################################################################################
-
+#' Estimate object size using serialization
+#' 
+#' Attempts to get a better estimate of object size than that returned by \code{\link{object.size}}
+#' @param obj the object to get the size of
+#' @return the size of \code{obj} in bytes
+#' @export
 true_obj_size <- function(obj) {
     length(serialize(obj, NULL))
 }
@@ -182,4 +187,15 @@ safe_dim <- function(x) {
   }
   
   return(d)
+}
+
+#' Generate a file containing a template \code{sl3} Learner
+#' 
+#' Generates a template file that can be used to write a new \code{sl3} Learner. For more information, see the \href{../doc/custom_lrnrs.html}{Defining New Learners} vignette.
+#' @param file the path where the file should be written
+#' @return the return from \code{\link{file.copy}}. \code{TRUE} if writing the template was successful.
+#' @export
+write_learner_template <- function(file){
+  template_file <- system.file("templates/Lrnr_template.R", package="sl3", mustWork = TRUE)
+  file.copy(template_file, file)
 }

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Base Class for all sl3 learners. — Lrnr_base • sl3</title>
+<title>Base Class for all sl3 Learners. — Lrnr_base • sl3</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -68,10 +68,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/custom_lrnrs.html">Defining New Learners</a>
+      <a href="../articles/custom_lrnrs.html">Defining New `sl3` Learners</a>
     </li>
     <li>
-      <a href="../articles/intro_sl3.html">Super Learning Done Right (working title)</a>
+      <a href="../articles/intro_sl3.html">Modern Machine Learning in R</a>
     </li>
   </ul>
 </li>
@@ -95,47 +95,147 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Base Class for all sl3 learners.</h1>
+    <h1>Base Class for all sl3 Learners.</h1>
     </div>
 
     
-    <p>Generally this base Learner class shouldn't be instantiated. It's intended to be an abstract class, although abstract classes aren't explicitly supported by R6.</p>
+    <p>Generally this base learner class shouldn't be instantiated. It's intended to be an abstract class, although abstract classes aren't explicitly supported by R6.
+All learners support the methods and fields documented below. For more information on a particular learner, see its help file.</p>
     
 
-    <pre class="usage"><span class='no'>Lrnr_base</span></pre>
-        
+    <pre class="usage"><span class='no'>Lrnr_base</span>
+
+<span class='fu'>make_learner</span>(<span class='no'>learner_class</span>, <span class='no'>...</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>learner_class</th>
+      <td><p>the learner class to instantiate</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>parameters with which to instantiate the learner. See Parameters section below.</p></td>
+    </tr>
+    </table>
+    
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
     <p><code>R6Class</code> object.</p>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>Lrnr_base</code> object with methods for training and prediction</p>
+    <p>Learner object with methods for training and prediction</p>
+    
+    <h2 class="hasAnchor" id="parameters"><a class="anchor" href="#parameters"></a>Parameters</h2>
+
+    
+    <p>Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by <code>Lrnr_base</code>, and shared
+by all learners.</p><dl class='dl-horizontal'>
+<dt><code>covariates</code></dt><dd><p>A character vector of covariates. The learner will use this to subset the covariates for any specified task</p></dd>
+<dt><code>outcome_type</code></dt><dd><p>A <code><a href='variable_type.html'>variable_type</a></code> object used to control the outcome_type used by the learner. Overrides the task outcome_type</p></dd>
+<dt><code>...</code></dt><dd><p>All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating</p></dd>
+</dl>
+    
+    <h2 class="hasAnchor" id="user-methods"><a class="anchor" href="#user-methods"></a>User Methods</h2>
+
+    
+    <dl class='dl-horizontal'>
+<dt><code>train</code></dt><dd><p>Trains learner to a task using <code>delayed</code>. Returns a fit object
+    <em>Usage:</em> <code>learner$train(task)</code>
+    <em>Arguments:</em>
+<ul>
+<li><p><code>task</code>: The task to use for training</p></li>
+</ul></p></dd>
+    <dt><code>base_train</code></dt><dd><p>Trains learner to a task. Returns a fit object
+    <em>Usage:</em> <code>learner$base_train(task, trained_sublearners = NULL)</code>
+    <em>Arguments:</em>
+<ul>
+<li><p><code>task</code>: The task to use for training</p></li>
+<li><p><code>trained_sublearners</code>: Any sublearners previous trained. Almost always <code>NULL</code></p></li>
+</ul></p></dd>
+    <dt><code>predict</code></dt><dd><p>Generates predictions using <code>delayed</code>. Returns a prediction vector or matrix.
+    <em>Usage:</em> <code>learner$predict(task=NULL)</code>
+    <em>Arguments:</em>
+<ul>
+<li><p><code>task</code>: The task to use for prediction. If no task is provided, it will use the task used for training.</p></li>
+</ul></p></dd>
+    <dt><code>base_predict</code></dt><dd><p>Generates predictions. Returns a prediction vector or matrix.
+    <em>Usage:</em> <code>learner$base_predict(task=NULL)</code>
+    <em>Arguments:</em>
+<ul>
+<li><p><code>task</code>: The task to use for prediction. If no task is provided, it will use the task used for training.</p></li>
+</ul></p></dd>
+    <dt><code>chain</code></dt><dd><p>Generates a chained task using <code>delayed</code>
+    <em>Usage:</em> <code>learner$chain(task=NULL)</code>
+    <em>Arguments:</em>
+<ul>
+<li><p><code>task</code>: The task to use for chaining If no task is provided, it will use the task used for training.</p></li>
+</ul></p></dd>
+    <dt><code>base_chain</code></dt><dd><p>Generates a chained task
+    <em>Usage:</em> <code>learner$base_chain(task=NULL)</code>
+    <em>Arguments:</em>
+<ul>
+<li><p><code>task</code>: The task to use for chaining If no task is provided, it will use the task used for training.</p></li>
+</ul></p></dd>
+</dl>
     
     <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code>params</code></dt><dd><p>A list of parameters needed to fully specify the learner. This includes things like model hyperparameters.</p></dd>
-    <dt><code>is_trained</code></dt><dd><p>A boolean indicating that the learner has been already trained.</p></dd>
-    <dt><code>name</code></dt><dd><p>A short name used to reference predictions from this class</p></dd>
+<dt><code>is_trained</code></dt><dd><p><code>TRUE</code> if this is a learner fit, not an untrained learner</p></dd>
+<dt><code>fit_object</code></dt><dd><p>The internal fit object</p></dd>
+<dt><code>name</code></dt><dd><p>The learner name</p></dd>
+<dt><code>learner_uuid</code></dt><dd><p>A unique identifier of this learner, but common to all fits of this learner</p></dd>
+<dt><code>fit_uuid</code></dt><dd><p>A unique identifier of this learner fit. <code>NULL</code> if this is an untrained learner</p></dd>
+<dt><code>params</code></dt><dd><p>A list of learner parameters, as specified on construction</p></dd>
+<dt><code>training_task</code></dt><dd><p>The task used for training. <code>NULL</code> if this is an untrained learner</p></dd>
+<dt><code>training_outcome_type</code></dt><dd><p>The outcome_type of the task used for training. <code>NULL</code> if this is an untrained learner</p></dd>
+<dt><code>properties</code></dt><dd><p>The properties supported by this learner</p></dd>
+<dt><code>coefficients</code></dt><dd><p>Fit coefficients, if this learner has coefficients. <code>NULL</code> otherwise, or if this is an untrained learner</p></dd>
 </dl>
     
-    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
+    <h2 class="hasAnchor" id="internal-methods"><a class="anchor" href="#internal-methods"></a>Internal Methods</h2>
 
     
-    <dl class='dl-horizontal'>
-  <dt><code>new(...)</code></dt><dd><p>This method is used to create an object of this class.</p></dd>
-  <dt><code>train(task)</code></dt><dd><p>Trains this Learner on the data in the <code>task</code> object. Returns a new <code>Learner</code> object containing the fit of this Learner to the data in <code>task</code>. This can then be used with the <code>predict</code> and <code>chain</code> methods.</p></dd>
-  <dt><code>predict(task=NULL)</code></dt><dd><p>When called from a <code>Learner</code> object generated by a call to <code>train</code>, can be used to generate predictions on the data in <code>task</code>. If no <code>task</code> is specified, the task used to train the Learner will be used.</p></dd>
-  <dt><code>chain(task=NULL)</code></dt><dd><p>When called from a <code>Learner</code> object generated by a call to <code>train</code>, will generate a new task based on the pre be used to generate predictions on the data in <code>task</code>. This can be used to train a new Learner on the output of this one. This is mostly accomplished by using <code><a href='Pipeline.html'>Pipeline</a></code> Learner. If no <code>task</code> is specified, the task used to train the Learner will be used.</p></dd>
-  </dl>
+    <p>These methods are primiarily for internal use only. They're not recommended for public consumption.</p><dl class='dl-horizontal'>
+<dt><code>subset_covariates</code></dt><dd><p>Returns a task with covariates subsetted using the <code>covariates</code> parameter.
+    <em>Usage:</em> <code>learner$subset_covariates(task)</code>
+    <em>Arguments:</em>
+<ul>
+<li><p><code>task</code>: The task to subset</p></li>
+</ul></p></dd>
+    <dt><code>get_outcome_type</code></dt><dd><p>Mediates between the task outcome_type and parameter outcome_type. If a parameter outcome_type was specified, returns that. Otherwise,
+returns the task$outcome_type.
+    <em>Usage:</em> <code>learner$get_outcome_type(task)</code>
+    <em>Arguments:</em>
+<ul>
+<li><p><code>task</code>: The task for which to determine the outcome_type</p></li>
+</ul></p></dd>
+    <dt><code>train_sublearners</code></dt><dd><p>Trains sublearners to a task using <code>delayed</code>. Returns a delayed sublearner fit.
+    <em>Usage:</em> <code>learner$train_sublearners(task)</code>
+    <em>Arguments:</em>
+<ul>
+<li><p><code>task</code>: The task to use for training</p></li>
+</ul></p></dd>
+    <dt><code>set_train</code></dt><dd><p>Converts a learner to a learner fit.
+    <em>Usage:</em> <code>learner$set_train(fit_object, training_task)</code>
+    <em>Arguments:</em>
+<ul>
+<li><p><code>fit_object</code>: The fit object generated by a call to <code>private$.train</code></p></li>
+<li><p><code>training_task</code>: The task used for training</p></li>
+</ul></p></dd>
+    <dt><code>assert_trained</code></dt><dd><p>Throws an error if this learner does not have a <code>fit_object</code>
+    <em>Usage:</em> <code>learner$assert_trained()</code></p></dd>
+</dl>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>Other Learners: <code><a href='Lrnr_HarmonicReg.html'>Lrnr_HarmonicReg</a></code>,
-  <code><a href='Lrnr_arima.html'>Lrnr_arima</a></code>, <code><a href='Lrnr_condensier.html'>Lrnr_condensier</a></code>,
-  <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
+    <p>Other Learners: <code><a href='Custom_chain.html'>Custom_chain</a></code>,
+  <code><a href='Lrnr_HarmonicReg.html'>Lrnr_HarmonicReg</a></code>, <code><a href='Lrnr_arima.html'>Lrnr_arima</a></code>,
+  <code><a href='Lrnr_condensier.html'>Lrnr_condensier</a></code>, <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
   <code><a href='Lrnr_define_interactions.html'>Lrnr_define_interactions</a></code>,
   <code><a href='Lrnr_expSmooth.html'>Lrnr_expSmooth</a></code>, <code><a href='Lrnr_rugarch.html'>Lrnr_rugarch</a></code>,
   <code><a href='undocumented_learner.html'>Lrnr_sl</a></code>, <code><a href='Lrnr_tsDyn.html'>Lrnr_tsDyn</a></code>,
@@ -146,14 +246,19 @@
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#format">Format</a></li>
 
       <li><a href="#value">Value</a></li>
 
+      <li><a href="#parameters">Parameters</a></li>
+
+      <li><a href="#user-methods">User Methods</a></li>
+
       <li><a href="#fields">Fields</a></li>
 
-      <li><a href="#methods">Methods</a></li>
+      <li><a href="#internal-methods">Internal Methods</a></li>
 
       <li><a href="#see-also">See also</a></li>
           </ul>

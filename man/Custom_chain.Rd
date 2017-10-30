@@ -23,8 +23,8 @@ Customize chaining for a learner
 \section{Methods}{
 
 \describe{
-  \item{\code{new(...)}}{This method is used to create a pipeline of learners. Arguments should be indiviual \code{Learner}s, in the order they should be applied.}
-  }
+\item{\code{new(...)}}{This method is used to create a pipeline of learners. Arguments should be indiviual \code{Learner}s, in the order they should be applied.}
+}
 }
 
 \seealso{
@@ -36,4 +36,5 @@ Other Learners: \code{\link{Lrnr_HarmonicReg}},
   \code{\link{Lrnr_sl}}, \code{\link{Lrnr_tsDyn}},
   \code{\link{Pipeline}}, \code{\link{Stack}}
 }
+\concept{Learners}
 \keyword{data}
