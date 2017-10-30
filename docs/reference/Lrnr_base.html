@@ -52,7 +52,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
+  <a href="..//index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -68,7 +68,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/custom_lrnrs.html">Defining New Learners</a>
+      <a href="../articles/custom_lrnrs.html">Defining New `sl3` Learners</a>
     </li>
     <li>
       <a href="../articles/intro_sl3.html">Modern Machine Learning in R</a>
@@ -133,9 +133,9 @@ All learners support the methods and fields documented below. For more informati
     
     <p>Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by <code>Lrnr_base</code>, and shared
 by all learners.</p><dl class='dl-horizontal'>
-  <dt><code>covariates</code></dt><dd><p>A character vector of covariates. The learner will use this to subset the covariates for any specified task</p></dd>
-  <dt><code>outcome_type</code></dt><dd><p>A <code><a href='variable_type.html'>variable_type</a></code> object used to control the outcome_type used by the learner. Overrides the task outcome_type</p></dd>
-  <dt><code>...</code></dt><dd><p>All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating</p></dd>
+<dt><code>covariates</code></dt><dd><p>A character vector of covariates. The learner will use this to subset the covariates for any specified task</p></dd>
+<dt><code>outcome_type</code></dt><dd><p>A <code><a href='variable_type.html'>variable_type</a></code> object used to control the outcome_type used by the learner. Overrides the task outcome_type</p></dd>
+<dt><code>...</code></dt><dd><p>All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="user-methods"><a class="anchor" href="#user-methods"></a>User Methods</h2>
@@ -145,38 +145,38 @@ by all learners.</p><dl class='dl-horizontal'>
 <dt><code>train</code></dt><dd><p>Trains learner to a task using <code>delayed</code>. Returns a fit object
     <em>Usage:</em> <code>learner$train(task)</code>
     <em>Arguments:</em>
-  <ul>
+<ul>
 <li><p><code>task</code>: The task to use for training</p></li>
 </ul></p></dd>
     <dt><code>base_train</code></dt><dd><p>Trains learner to a task. Returns a fit object
     <em>Usage:</em> <code>learner$base_train(task, trained_sublearners = NULL)</code>
     <em>Arguments:</em>
-  <ul>
+<ul>
 <li><p><code>task</code>: The task to use for training</p></li>
 <li><p><code>trained_sublearners</code>: Any sublearners previous trained. Almost always <code>NULL</code></p></li>
 </ul></p></dd>
     <dt><code>predict</code></dt><dd><p>Generates predictions using <code>delayed</code>. Returns a prediction vector or matrix.
     <em>Usage:</em> <code>learner$predict(task=NULL)</code>
     <em>Arguments:</em>
-  <ul>
+<ul>
 <li><p><code>task</code>: The task to use for prediction. If no task is provided, it will use the task used for training.</p></li>
 </ul></p></dd>
     <dt><code>base_predict</code></dt><dd><p>Generates predictions. Returns a prediction vector or matrix.
     <em>Usage:</em> <code>learner$base_predict(task=NULL)</code>
     <em>Arguments:</em>
-  <ul>
+<ul>
 <li><p><code>task</code>: The task to use for prediction. If no task is provided, it will use the task used for training.</p></li>
 </ul></p></dd>
     <dt><code>chain</code></dt><dd><p>Generates a chained task using <code>delayed</code>
     <em>Usage:</em> <code>learner$chain(task=NULL)</code>
     <em>Arguments:</em>
-  <ul>
+<ul>
 <li><p><code>task</code>: The task to use for chaining If no task is provided, it will use the task used for training.</p></li>
 </ul></p></dd>
     <dt><code>base_chain</code></dt><dd><p>Generates a chained task
     <em>Usage:</em> <code>learner$base_chain(task=NULL)</code>
     <em>Arguments:</em>
-  <ul>
+<ul>
 <li><p><code>task</code>: The task to use for chaining If no task is provided, it will use the task used for training.</p></li>
 </ul></p></dd>
 </dl>
@@ -185,16 +185,16 @@ by all learners.</p><dl class='dl-horizontal'>
 
     
     <dl class='dl-horizontal'>
-  <dt><code>is_trained</code></dt><dd><p><code>TRUE</code> if this is a learner fit, not an untrained learner</p></dd>
-  <dt><code>fit_object</code></dt><dd><p>The internal fit object</p></dd>
-  <dt><code>name</code></dt><dd><p>The learner name</p></dd>
-  <dt><code>learner_uuid</code></dt><dd><p>A unique identifier of this learner, but common to all fits of this learner</p></dd>
-  <dt><code>fit_uuid</code></dt><dd><p>A unique identifier of this learner fit. <code>NULL</code> if this is an untrained learner</p></dd>   
-  <dt><code>params</code></dt><dd><p>A list of learner parameters, as specified on construction</p></dd>   
-  <dt><code>training_task</code></dt><dd><p>The task used for training. <code>NULL</code> if this is an untrained learner</p></dd>   
-  <dt><code>training_outcome_type</code></dt><dd><p>The outcome_type of the task used for training. <code>NULL</code> if this is an untrained learner</p></dd>   
-  <dt><code>properties</code></dt><dd><p>The properties supported by this learner</p></dd>   
-  <dt><code>coefficients</code></dt><dd><p>Fit coefficients, if this learner has coefficients. <code>NULL</code> otherwise, or if this is an untrained learner</p></dd>  
+<dt><code>is_trained</code></dt><dd><p><code>TRUE</code> if this is a learner fit, not an untrained learner</p></dd>
+<dt><code>fit_object</code></dt><dd><p>The internal fit object</p></dd>
+<dt><code>name</code></dt><dd><p>The learner name</p></dd>
+<dt><code>learner_uuid</code></dt><dd><p>A unique identifier of this learner, but common to all fits of this learner</p></dd>
+<dt><code>fit_uuid</code></dt><dd><p>A unique identifier of this learner fit. <code>NULL</code> if this is an untrained learner</p></dd>
+<dt><code>params</code></dt><dd><p>A list of learner parameters, as specified on construction</p></dd>
+<dt><code>training_task</code></dt><dd><p>The task used for training. <code>NULL</code> if this is an untrained learner</p></dd>
+<dt><code>training_outcome_type</code></dt><dd><p>The outcome_type of the task used for training. <code>NULL</code> if this is an untrained learner</p></dd>
+<dt><code>properties</code></dt><dd><p>The properties supported by this learner</p></dd>
+<dt><code>coefficients</code></dt><dd><p>Fit coefficients, if this learner has coefficients. <code>NULL</code> otherwise, or if this is an untrained learner</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="internal-methods"><a class="anchor" href="#internal-methods"></a>Internal Methods</h2>
@@ -204,26 +204,26 @@ by all learners.</p><dl class='dl-horizontal'>
 <dt><code>subset_covariates</code></dt><dd><p>Returns a task with covariates subsetted using the <code>covariates</code> parameter.
     <em>Usage:</em> <code>learner$subset_covariates(task)</code>
     <em>Arguments:</em>
-  <ul>
+<ul>
 <li><p><code>task</code>: The task to subset</p></li>
 </ul></p></dd>
     <dt><code>get_outcome_type</code></dt><dd><p>Mediates between the task outcome_type and parameter outcome_type. If a parameter outcome_type was specified, returns that. Otherwise,
-  returns the task$outcome_type.
+returns the task$outcome_type.
     <em>Usage:</em> <code>learner$get_outcome_type(task)</code>
     <em>Arguments:</em>
-  <ul>
+<ul>
 <li><p><code>task</code>: The task for which to determine the outcome_type</p></li>
 </ul></p></dd>
     <dt><code>train_sublearners</code></dt><dd><p>Trains sublearners to a task using <code>delayed</code>. Returns a delayed sublearner fit.
     <em>Usage:</em> <code>learner$train_sublearners(task)</code>
     <em>Arguments:</em>
-  <ul>
+<ul>
 <li><p><code>task</code>: The task to use for training</p></li>
 </ul></p></dd>
     <dt><code>set_train</code></dt><dd><p>Converts a learner to a learner fit.
     <em>Usage:</em> <code>learner$set_train(fit_object, training_task)</code>
     <em>Arguments:</em>
-  <ul>
+<ul>
 <li><p><code>fit_object</code>: The fit object generated by a call to <code>private$.train</code></p></li>
 <li><p><code>training_task</code>: The task used for training</p></li>
 </ul></p></dd>

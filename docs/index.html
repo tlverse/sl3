@@ -29,7 +29,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="index.html">
+  <a href="/index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -45,7 +45,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/custom_lrnrs.html">Defining New Learners</a>
+      <a href="articles/custom_lrnrs.html">Defining New `sl3` Learners</a>
     </li>
     <li>
       <a href="articles/intro_sl3.html">Modern Machine Learning in R</a>
@@ -77,12 +77,12 @@
     
 <div class="contents">
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-<div id="rsl3-new-and-improved-super-learning" class="section level1">
+<div id="rsl3-modern-machine-learning-pipeliens-for-super-learning" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#rsl3-new-and-improved-super-learning" class="anchor"></a>R/<code>sl3</code>: new and improved Super Learning</h1></div>
+<a href="#rsl3-modern-machine-learning-pipeliens-for-super-learning" class="anchor"></a>R/<code>sl3</code>: modern machine learning pipeliens for Super Learning</h1></div>
 
 <blockquote>
-<p>A modern implementation of the Super Learner ensemble learning / stacking algorithm</p>
+<p>A modern implementation of the Super Learner algorithm for ensemble learning and model stacking</p>
 </blockquote>
 <p><strong>Authors:</strong> <a href="https://github.com/jeremyrcoyle">Jeremy Coyle</a>, <a href="https://github.com/nhejazi">Nima Hejazi</a>, <a href="https://github.com/podTockom">Ivana Malenica</a>, <a href="https://github.com/osofr">Oleg Sofrygin</a></p>
 <hr>
@@ -112,10 +112,9 @@ install.packages("sl3")
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"jeremyrcoyle/sl3"</span>)</code></pre></div>
 <hr>
 </div>
-<div id="contributions-and-issues" class="section level2">
+<div id="issues" class="section level2">
 <h2 class="hasAnchor">
-<a href="#contributions-and-issues" class="anchor"></a>Contributions and Issues</h2>
-<p>It is our hope that <code>sl3</code> will grow to be widely used for creating stacked regression models and the cross-validation of pipelines that make up such models, as well as the variety of other applications in which the Super Learner algorithm plays a role. To that end, contributions are very welcome, though we ask that interested contributors consult our <a href="https://github.com/jeremyrcoyle/sl3/blob/master/CONTRIBUTING.md"><code>contribution guidelines</code></a> prior to submitting a pull request.</p>
+<a href="#issues" class="anchor"></a>Issues</h2>
 <p>If you encounter any bugs or have any specific feature requests, please <a href="https://github.com/jeremyrcoyle/sl3/issues">file an issue</a>.</p>
 <hr>
 </div>
@@ -140,9 +139,11 @@ install.packages("sl3")
 <span class="kw">library</span>(SuperLearner)
 <span class="co">#&gt; Loading required package: nnls</span>
 <span class="co">#&gt; Super Learner</span>
-<span class="co">#&gt; Version: 2.0-22</span>
-<span class="co">#&gt; Package created on 2017-07-18</span>
+<span class="co">#&gt; Version: 2.0-23-9000</span>
+<span class="co">#&gt; Package created on 2017-07-20</span>
 <span class="kw">library</span>(origami)
+<span class="co">#&gt; origami: Generalized Cross-Validation Framework</span>
+<span class="co">#&gt; Version: 0.8.0</span>
 <span class="kw">library</span>(sl3)
 
 <span class="co"># load example data set</span>
@@ -187,16 +188,29 @@ preds &lt;-<span class="st"> </span>stack_fit<span class="op">$</span><span clas
 <span class="co">#&gt; 6:                                              0.05600958</span></code></pre></div>
 <hr>
 </div>
+<div id="contributions" class="section level2">
+<h2 class="hasAnchor">
+<a href="#contributions" class="anchor"></a>Contributions</h2>
+<p>It is our hope that <code>sl3</code> will grow to be widely used for creating stacked regression models and the cross-validation of pipelines that make up such models, as well as the variety of other applications in which the Super Learner algorithm plays a role. To that end, contributions are very welcome, though we ask that interested contributors consult our <a href="https://github.com/jeremyrcoyle/sl3/blob/master/CONTRIBUTING.md"><code>contribution guidelines</code></a> prior to submitting a pull request.</p>
+<hr>
+<p>After using the <code>sl3</code> R package, please cite the following:</p>
+<pre><code>    @misc{coyle2017sl3,
+      author = {Coyle, Jeremy R and Hejazi, Nima S and Malenica, Ivana and
+        Sofrygin, Oleg},
+      title = {{sl3}: Modern Pipelines for Machine Learning and {Super
+        Learning}},
+      year  = {2017},
+      howpublished = {\url{https://github.com/jeremyrcoyle/sl3}},
+      url = {http://dx.doi.org/DOI_HERE},
+      doi = {DOI_HERE}
+    }</code></pre>
+<hr>
+</div>
 <div id="license" class="section level2">
 <h2 class="hasAnchor">
 <a href="#license" class="anchor"></a>License</h2>
 <p>© 2017 <a href="https://github.com/jeremyrcoyle">Jeremy R. Coyle</a>, <a href="https://github.com/nhejazi">Nima S. Hejazi</a>, <a href="https://github.com/podTockom">Ivana Malenica</a>, <a href="https://github.com/osofr">Oleg Sofrygin</a></p>
 <p>The contents of this repository are distributed under the GPL-3 license. See file <code>LICENSE</code> for details.</p>
-<hr>
-</div>
-<div id="references" class="section level2">
-<h2 class="hasAnchor">
-<a href="#references" class="anchor"></a>References</h2>
 </div>
 </div>
 </div>

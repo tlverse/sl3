@@ -15,3 +15,4 @@ doc:
 
 cov:
 	  r -e "covr::codecov()"
+
