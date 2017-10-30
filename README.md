@@ -14,10 +14,10 @@ R/`sl3`: new and improved Super Learning
 What's `sl3`?
 -------------
 
-`sl3` is a modern implementation of the Super Learner algorithm of van der Laan, Polley, and Hubbard (2007). The Super Learner algorithm performs ensemble learning in one of two fashions:
+`sl3` is a modern implementation of the Super Learner algorithm of @vdl2007super. The Super Learner algorithm performs ensemble learning in one of two fashions:
 
 1.  The "discrete" Super Learner can be used to select the best prediction algorithm among a supplied library of learning algorithms ("learners" in the `sl3` nomenclature) -- that is, that algorithm which minimizes the cross-validated risk with respect to some appropriate loss function.
-2.  The "ensemble" Super Learner can be used to assign weights to specified learning algorithms (in a user-supplied library) in order to create a combination of these learners that minimizes the cross-validated risk with respect to an appropriate loss function. This notion of weighted combinations has also been called *stacked regression* (Breiman 1996).
+2.  The "ensemble" Super Learner can be used to assign weights to specified learning algorithms (in a user-supplied library) in order to create a combination of these learners that minimizes the cross-validated risk with respect to an appropriate loss function. This notion of weighted combinations has also been called *stacked regression* \[@breiman1996stacked\].
 
 ------------------------------------------------------------------------
 
@@ -133,7 +133,3 @@ The contents of this repository are distributed under the GPL-3 license. See fil
 
 References
 ----------
-
-Breiman, Leo. 1996. “Stacked Regressions.” *Machine Learning* 24 (1). Springer: 49–64.
-
-van der Laan, Mark J., Eric C. Polley, and Alan E. Hubbard. 2007. “Super Learner.” *Statistical Applications in Genetics and Molecular Biology* 6 (1).

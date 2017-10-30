@@ -90,11 +90,20 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Let’s take a look at that template:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">##' Template of a \code{sl3} Learner.
 ##'
-##' This is a template for defining a new learner. This section is the roxygen documentation for the new learner.
-##' This can be copied to a new file using \code{\link{write_learner_template}}. The remainder of this documentation
-##' is an example of how you might write documentation for your new learner.
-##'
+##' This is a template for defining a new learner.
+##' This can be copied to a new file using \code{\link{write_learner_template}}. 
+##' The remainder of this documentation is an example of how you might write documentation for your new learner.
 ##' This learner uses \code{\link[my_package]{my_ml_fun}} from \code{my_package} to fit my favorite machine learning algorithm.
+##' 
+##' 
+##' @docType class
+##' @importFrom R6 R6Class
+##' @export
+##' @keywords data
+##' @return Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+##' @format \code{\link{R6Class}} object.
+##' @family Learners
+##' 
 ##' @section Parameters:
 ##'
 ##' \describe{
@@ -108,25 +117,18 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ##' 
 ##' @section Methods:
 ##' \describe{
-##'   \item{\code{special_function}}{
-##'     My learner is special so it has a special function.}
-##'
-##'     \emph{Usage:}
-##'     \code{lrnr_template$special_function(arg_1)}
-##'     \emph{Arguments:}
-##'     \itemize{
-##'       \item{\code{arg_1}: A very special argument.
-##'       }
-##'     }
+##' \item{\code{special_function}}{
+##'   My learner is special so it has a special function.
+##'   
+##'   \emph{Usage:} \code{lrnr_template$special_function(arg_1)}
+##'   
+##'   \emph{Arguments:}
+##'   \itemize{
+##'     \item{\code{arg_1}: A very special argument.
+##'    }
+##'   }
 ##'   }
 ##' }
-##' @docType class
-##'
-##' @keywords data
-##'
-##' @return \code{\link{Lrnr_base}} object with methods for training and
-##'  prediction.
-##' @export
 ##' 
 Lrnr_template &lt;-<span class="st"> </span><span class="kw">R6Class</span>(<span class="dt">classname =</span> <span class="st">&quot;Lrnr_template&quot;</span>, <span class="dt">inherit =</span> Lrnr_base,
                     <span class="dt">portable =</span> <span class="ot">TRUE</span>, <span class="dt">class =</span> <span class="ot">TRUE</span>,
@@ -143,7 +145,7 @@ Lrnr_template &lt;-<span class="st"> </span><span class="kw">R6Class</span>(<spa
     },
     
     <span class="co"># you can define public functions that allow your learner to do special things here</span>
-    <span class="co"># for instance a randomForest learner could extract variable importances from its fit object</span>
+    <span class="co"># for instance glm learner might return prediction standard errors</span>
     <span class="dt">special_function =</span> <span class="cf">function</span>(arg_<span class="dv">1</span>){
       
     }
@@ -175,7 +177,8 @@ Lrnr_template &lt;-<span class="st"> </span><span class="kw">R6Class</span>(<spa
       args<span class="op">$</span>x &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(task<span class="op">$</span>X_intercept)
       args<span class="op">$</span>y &lt;-<span class="st"> </span>outcome_type<span class="op">$</span><span class="kw">format</span>(task<span class="op">$</span>Y)
       
-      <span class="co"># only add arguments on weights and offset if those were specified when the task was generated</span>
+      <span class="co"># only add arguments on weights and offset </span>
+      <span class="co"># if those were specified when the task was generated</span>
       <span class="cf">if</span>(task<span class="op">$</span><span class="kw">has_node</span>(<span class="st">&quot;weights&quot;</span>)){
         args<span class="op">$</span>weights &lt;-<span class="st"> </span>task<span class="op">$</span>weights
       }
@@ -237,19 +240,19 @@ Lrnr_template &lt;-<span class="st"> </span><span class="kw">R6Class</span>(<spa
 <div id="the-learner-user-interface." class="section level3">
 <h3>The Learner User Interface.</h3>
 <p>If you’ve used <code>sl3</code> before, you may have noticed that while users are instructed to use <code>learner$train</code>, <code>learner$predict</code>, and <code>learner$chain</code>, to train, generate predictions, and generate a chained task for a given learner object, the template does not implement these methods. Instead, the template implements private methods called <code>.train</code>, <code>.predict</code>, and <code>.chain</code>. The specifics of these methods are explained below. However, it is helpful to first understand how the two sets of methods are related. To make things even more complicated, there is actually a third set of methods, <code>learner$base_train</code>, <code>learner$base_predict</code>, and <code>learner$base_chain</code>, that you may not be aware of.</p>
-<p>So, what happens when a user calls <code>learner$train</code>? That method generates a delayed object using the <code>delayed_learner_train</code> function, and then computes that delayed object. <code>delayed_learner_train</code> in turn defines a delayed computation that calls <code>base_train</code>, a user-facing function that can be used to train tasks without using <code>delayed</code>. <code>base_train</code> validates the user input, and in turn calls <code>private$.train</code>. When <code>private$.train</code> returns a <code>fit_object</code>, <code>base_train</code> takes that fit object, generates a learner fit object, and returns it to the user.</p>
+<p>So, what happens when a user calls <code>learner$train</code>? That method generates a <code>delayed</code> object using the <code>delayed_learner_train</code> function, and then computes that delayed object. <code>delayed_learner_train</code> in turn defines a delayed computation that calls <code>base_train</code>, a user-facing function that can be used to train tasks without using <code>delayed</code>. <code>base_train</code> validates the user input, and in turn calls <code>private$.train</code>. When <code>private$.train</code> returns a <code>fit_object</code>, <code>base_train</code> takes that fit object, generates a learner fit object, and returns it to the user.</p>
 <p>In summary, each call to <code>learner$train</code> involves three separate training methods:</p>
 <ol style="list-style-type: decimal">
 <li>The user-facing <code>learner$train</code> that trains a learner in a way that can be parallelized using <code>delayed</code>, which calls …</li>
 <li>… the user-facing <code>learner$base_train</code> that validates user input, and which calls …</li>
 <li>… the internal <code>private$.train</code>, which does the actual work of fitting the learner and returning the fit object.</li>
 </ol>
-<p>The logic in the user-facing <code>learner$train</code> and <code>learner$base_train</code> is defined in the <code>Lrnr_base</code> base class and is shared across all learners, and so these methods do not need to be reimplemented in individual learners. However, <code>private$.train</code>, contains the behavior that is specific to each individual learner, and should be reimplemented in each individual learner. Because <code>learner$base_train</code> does not use <code>delayed</code>, it can be helpful to use it when debugging the training code in your learner. Similar program flow is used for prediction and chaining.</p>
+<p>The logic in the user-facing <code>learner$train</code> and <code>learner$base_train</code> is defined in the <code>Lrnr_base</code> base class and is shared across all learners, and so these methods do not need to be reimplemented in individual learners. However, <code>private$.train</code>, contains the behavior that is specific to each individual learner, and should be reimplemented in each individual learner. Because <code>learner$base_train</code> does not use <code>delayed</code>, it can be helpful to use it when debugging the training code in your learner. Analogous program flow is used for prediction and chaining.</p>
 </div>
 <div id="private.train" class="section level3">
 <h3><code>private$.train</code></h3>
-<p>This is the main training function, that takes in a task, and returns a <code>fit_object</code> that contains all information needed to generate predictions. If possible, make sure that the fit object doesn’t contain more data than is necessary. Many learner functions (like <code>glm</code>) store one or more copies of their training data. This uses unnecessary memory and will hurt learner performance for large sample sizes. Therefore, these copies should be removed from the fit object before it is returned.</p>
-<p>Most of the time, the learner you are implementing will be fit using a function that already exists elsewhere. We’ve built some tools to facilitate parameter values directly to this function. The <code>private$.train</code> function in the template uses a common pattern: it builds up an argument list starting with the parameter values and using data from the task, it then uses <code>call_with_args</code> to call <code>my_ml_fun</code> with that argument list. It’s not required that learners use this pattern, but it will be helpful in the common case where the learner is simply wrapping an underlying <code>my_ml_fun</code>.</p>
+<p>This is the main training function, that takes in a task, and returns a <code>fit_object</code> that contains all information needed to generate predictions. If possible, make sure that the fit object doesn’t contain more data than is necessary. Many learner functions (like <code>glm</code>) store one or more copies of their training data. This uses unnecessary memory and will hurt learner performance for large sample sizes. Therefore, these copies should be removed from the fit object before it is returned. You can use  on your <code>fit_object</code> to estimate its size. For most learners, <code>fit_object</code> size should not grow linearly with training sample size. If it does, and this is unexpected, please try to reduce the <code>fit_object</code> size.</p>
+<p>Most of the time, the learner you are implementing will be fit using a function that already exists elsewhere. We’ve built some tools to facilitate passing parameter values directly to this function. The <code>private$.train</code> function in the template uses a common pattern: it builds up an argument list starting with the parameter values and using data from the task, it then uses <code>call_with_args</code> to call <code>my_ml_fun</code> with that argument list. It’s not required that learners use this pattern, but it will be helpful in the common case where the learner is simply wrapping an underlying <code>my_ml_fun</code>.</p>
 <p>By default, <code>call_with_args</code> will pass all arguments in the argument list matched by the definition of the function it is calling. This allows the learner to silently drop irrelevant parameters from the call to <code>my_ml_fun</code>. However, some learners either capture important arguments using dot args (<code>...</code>), or pass important arguments through dot args on to a secondary function. Both of these cases can be handled using the <code>other_valid</code> and <code>keep_all</code> options to <code>call_with_args</code>, the former allows you to list other valid arguments, and the latter disables argument filtering altogether.</p>
 </div>
 <div id="private.predict" class="section level3">
@@ -262,23 +265,19 @@ Lrnr_template &lt;-<span class="st"> </span><span class="kw">R6Class</span>(<spa
 </div>
 <div id="learners-that-have-sublearners-advanced" class="section level3">
 <h3>Learners that have sublearners (<em>Advanced</em>)</h3>
-<p>Most of the time, the above sections will be all that’s required for implementing a new learner in <code>sl3</code>. However, some learners have “sublearners”, or learners that they depend on. Examples of such learners are <code>Stack</code>, <code>Pipeline</code>, <code>Lrnr_cv</code>, and <code>Lrnr_sl</code>. In order to parallelize the fitting of these sublearners using delayed, these learners implement a specialized <code>private$.train_sublearners</code> method that calls <code>delayed_learner_train</code> on their sublearners, and returns a single delayed object that, when evaluated, will return all relevant fit objects from these sublearners. The result of that call is then passed as a second argument to their <code>private$.train</code> method, which now has the function prototype <code>private$.train(task, trained_sublearners)</code>. Because they usually have a much shorter computation time, <code>predict</code> and <code>chain</code> are not currently parallelized in this way, although this is subject to change in the future</p>
+<p>Most of the time, the above sections will be all that’s required for implementing a new learner in <code>sl3</code>. However, some learners have “sublearners”, or learners that they depend on. Examples of such learners are <code>Stack</code>, <code>Pipeline</code>, <code>Lrnr_cv</code>, and <code>Lrnr_sl</code>. In order to parallelize the fitting of these sublearners using delayed, these learners implement a specialized <code>private$.train_sublearners</code> method that calls <code>delayed_learner_train</code> on their sublearners, and returns a single delayed object that, when evaluated, will return all relevant fit objects from these sublearners. The result of that call is then passed as a second argument to their <code>private$.train</code> method, which now has the function prototype <code>private$.train(task, trained_sublearners)</code>. Because they usually have a much shorter computation time, <code>predict</code> and <code>chain</code> are not currently parallelized in this way, although this is subject to change in the future.</p>
 <p>If, like these learners, your learner depends on sublearners, you have two options:</p>
 <ol style="list-style-type: decimal">
 <li>Don’t worry about parallelizing sublearners, and simply implement <code>private$.train</code> as discussed above, being sure to call <code>sublearner$base_train</code> and not <code>sublearner$train</code>, to avoid nesting calls to <code>delayed</code>, which may result in suboptimal performance.</li>
 <li>Implement <code>private$.train_sublearners(task)</code> and <code>private$.train(task, trained_sublearners)</code>, to parallelize sublearners using <code>delayed</code>. We suggest reviewing the implementations of the <code>Stack</code>, <code>Pipeline</code>, <code>Lrnr_cv</code>, and <code>Lrnr_sl</code>, to get a better understanding of how to implement parallelized sublearners.</li>
 </ol>
-<p>in either case, you should be careful to call <code>sublearner$base_predict</code> and <code>sublearner$base_chain</code>, instead of <code>sublearner$predict</code> and <code>sublearner$chain</code>, except in the context of the <code>private$.train_sublearners</code> function.</p>
+<p>In either case, you should be careful to call <code>sublearner$base_predict</code> and <code>sublearner$base_chain</code>, instead of <code>sublearner$predict</code> and <code>sublearner$chain</code>, except in the context of the <code>private$.train_sublearners</code> function, where you should use <code>delayed_learner_fit_predict</code> and <code>delayed_learner_fit_chain</code>.</p>
 </div>
 </div>
 <div id="doctest" class="section level2">
 <h2>Documenting and Testing your Learner</h2>
-<ul>
-<li>document default arguments</li>
-<li>document your learner function if applicable</li>
-<li>should pass the general test</li>
-<li>should not decrease overall code coverage</li>
-</ul>
+<p>If you want other people to be able to use your learner, it will be helpful to document and test it. The above template has example documentation, written in <a href="http://r-pkgs.had.co.nz/man.html">roxygen</a>. Importantly, you should describe what your learner does, reference any external code it uses, and document any parameters and public methods defined by it.</p>
+<p>It’s also important to <a href="http://r-pkgs.had.co.nz/tests.html">test</a> your learner. You should write tests that verify your learner can train and predict on new data, and, if applicable, generate a chained task. It might also be a good idea to use the <code>risk</code> function in <code>sl3</code> to verify your learner’s performance on a sample dataset. That way, if you change your learner and performance drops, you know something may have gone wrong.</p>
 </div>
 <div id="submitting-your-learner-to-sl3." class="section level2">
 <h2>Submitting your Learner to <code>sl3</code>.</h2>

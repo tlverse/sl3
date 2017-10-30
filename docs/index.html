@@ -29,7 +29,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="/index.html">
+  <a href="index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -48,7 +48,7 @@
       <a href="articles/custom_lrnrs.html">Defining New Learners</a>
     </li>
     <li>
-      <a href="articles/intro_sl3.html">Super Learning Done Right (working title)</a>
+      <a href="articles/intro_sl3.html">Modern Machine Learning in R</a>
     </li>
   </ul>
 </li>
@@ -140,11 +140,9 @@ install.packages("sl3")
 <span class="kw">library</span>(SuperLearner)
 <span class="co">#&gt; Loading required package: nnls</span>
 <span class="co">#&gt; Super Learner</span>
-<span class="co">#&gt; Version: 2.0-23-9000</span>
-<span class="co">#&gt; Package created on 2017-07-20</span>
+<span class="co">#&gt; Version: 2.0-22</span>
+<span class="co">#&gt; Package created on 2017-07-18</span>
 <span class="kw">library</span>(origami)
-<span class="co">#&gt; origami: Generalized Cross-Validation Framework</span>
-<span class="co">#&gt; Version: 0.8.0</span>
 <span class="kw">library</span>(sl3)
 
 <span class="co"># load example data set</span>
@@ -174,12 +172,12 @@ stack_fit &lt;-<span class="st"> </span>learner_stack<span class="op">$</span><s
 preds &lt;-<span class="st"> </span>stack_fit<span class="op">$</span><span class="kw">predict</span>()
 <span class="kw">head</span>(preds)
 <span class="co">#&gt;    Lrnr_pkg_SuperLearner_SL.glmnet   Lrnr_glm</span>
-<span class="co">#&gt; 1:                      0.35495384 0.36298498</span>
-<span class="co">#&gt; 2:                      0.35495384 0.36298498</span>
-<span class="co">#&gt; 3:                      0.24777855 0.25993072</span>
-<span class="co">#&gt; 4:                      0.24777855 0.25993072</span>
-<span class="co">#&gt; 5:                      0.24777855 0.25993072</span>
-<span class="co">#&gt; 6:                      0.03402737 0.05680264</span>
+<span class="co">#&gt; 1:                      0.35345519 0.36298498</span>
+<span class="co">#&gt; 2:                      0.35345519 0.36298498</span>
+<span class="co">#&gt; 3:                      0.24554305 0.25993072</span>
+<span class="co">#&gt; 4:                      0.24554305 0.25993072</span>
+<span class="co">#&gt; 5:                      0.24554305 0.25993072</span>
+<span class="co">#&gt; 6:                      0.02953193 0.05680264</span>
 <span class="co">#&gt;    Lrnr_pkg_SuperLearner_screener_screen.glmnet___Lrnr_glm</span>
 <span class="co">#&gt; 1:                                              0.36228209</span>
 <span class="co">#&gt; 2:                                              0.36228209</span>
@@ -194,6 +192,11 @@ preds &lt;-<span class="st"> </span>stack_fit<span class="op">$</span><span clas
 <a href="#license" class="anchor"></a>License</h2>
 <p>© 2017 <a href="https://github.com/jeremyrcoyle">Jeremy R. Coyle</a>, <a href="https://github.com/nhejazi">Nima S. Hejazi</a>, <a href="https://github.com/podTockom">Ivana Malenica</a>, <a href="https://github.com/osofr">Oleg Sofrygin</a></p>
 <p>The contents of this repository are distributed under the GPL-3 license. See file <code>LICENSE</code> for details.</p>
+<hr>
+</div>
+<div id="references" class="section level2">
+<h2 class="hasAnchor">
+<a href="#references" class="anchor"></a>References</h2>
 </div>
 </div>
 </div>

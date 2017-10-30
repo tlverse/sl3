@@ -31,7 +31,12 @@ write_learner_template("path/to/write/Learner_template.R")
 ```
 
 ```{r cache=FALSE, echo = FALSE}
-read_chunk("../inst/templates/Lrnr_template.R", label="template")
+chunkfile <- "../inst/templates/Lrnr_template.R"
+if(!file.exists(chunkfile)){
+  #because pkgdown
+  chunkfile <- "../../inst/templates/Lrnr_template.R"
+}
+read_chunk(chunkfile, label="template")
 ```
 
 Let's take a look at that template:

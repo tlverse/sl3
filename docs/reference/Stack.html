@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Learner Stacking
-A Stack is a special Learner that combines multiple other learners, "stacking" their predictions in columns. Currently, train fits the learners one-at-a-time, but this will be parallelized with future going forward. — Stack • sl3</title>
+A Stack is a special Learner that combines multiple other learners, "stacking" their predictions in columns. — Stack • sl3</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -53,7 +53,7 @@ A Stack is a special Learner that combines multiple other learners, "stacking" t
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -72,7 +72,7 @@ A Stack is a special Learner that combines multiple other learners, "stacking" t
       <a href="../articles/custom_lrnrs.html">Defining New Learners</a>
     </li>
     <li>
-      <a href="../articles/intro_sl3.html">Super Learning Done Right (working title)</a>
+      <a href="../articles/intro_sl3.html">Modern Machine Learning in R</a>
     </li>
   </ul>
 </li>
@@ -97,12 +97,12 @@ A Stack is a special Learner that combines multiple other learners, "stacking" t
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Learner Stacking
-A Stack is a special Learner that combines multiple other learners, "stacking" their predictions in columns. Currently, train fits the learners one-at-a-time, but this will be parallelized with future going forward.</h1>
+A Stack is a special Learner that combines multiple other learners, "stacking" their predictions in columns.</h1>
     </div>
 
     
     <p>Learner Stacking
-A Stack is a special Learner that combines multiple other learners, "stacking" their predictions in columns. Currently, train fits the learners one-at-a-time, but this will be parallelized with future going forward.</p>
+A Stack is a special Learner that combines multiple other learners, "stacking" their predictions in columns.</p>
     
 
     <pre class="usage"><span class='no'>Stack</span></pre>
@@ -126,14 +126,15 @@ A Stack is a special Learner that combines multiple other learners, "stacking" t
 
     
     <dl class='dl-horizontal'>
-  <dt><code>new(...)</code></dt><dd><p>This method is used to create a stack of learners. Arguments should be indiviual <code>Learner</code>s.</p></dd>
-  </dl>
+<dt><code>new(...)</code></dt><dd><p>This method is used to create a stack of learners. Arguments should be indiviual <code>Learner</code>s.</p></dd>
+</dl>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>Other Learners: <code><a href='Lrnr_HarmonicReg.html'>Lrnr_HarmonicReg</a></code>,
-  <code><a href='Lrnr_arima.html'>Lrnr_arima</a></code>, <code><a href='Lrnr_base.html'>Lrnr_base</a></code>,
-  <code><a href='Lrnr_condensier.html'>Lrnr_condensier</a></code>, <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
+    <p>Other Learners: <code><a href='Custom_chain.html'>Custom_chain</a></code>,
+  <code><a href='Lrnr_HarmonicReg.html'>Lrnr_HarmonicReg</a></code>, <code><a href='Lrnr_arima.html'>Lrnr_arima</a></code>,
+  <code><a href='Lrnr_base.html'>Lrnr_base</a></code>, <code><a href='Lrnr_condensier.html'>Lrnr_condensier</a></code>,
+  <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
   <code><a href='Lrnr_define_interactions.html'>Lrnr_define_interactions</a></code>,
   <code><a href='Lrnr_expSmooth.html'>Lrnr_expSmooth</a></code>, <code><a href='Lrnr_rugarch.html'>Lrnr_rugarch</a></code>,
   <code><a href='undocumented_learner.html'>Lrnr_sl</a></code>, <code><a href='Lrnr_tsDyn.html'>Lrnr_tsDyn</a></code>,

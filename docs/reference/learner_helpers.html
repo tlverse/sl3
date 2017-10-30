@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Learner helpers — learner_new • sl3</title>
+<title>Learner helpers — delayed_make_learner • sl3</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -52,7 +52,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -71,7 +71,7 @@
       <a href="../articles/custom_lrnrs.html">Defining New Learners</a>
     </li>
     <li>
-      <a href="../articles/intro_sl3.html">Super Learning Done Right (working title)</a>
+      <a href="../articles/intro_sl3.html">Modern Machine Learning in R</a>
     </li>
   </ul>
 </li>
@@ -102,11 +102,9 @@
     <p>Learner helpers</p>
     
 
-    <pre class="usage"><span class='fu'>learner_new</span>(<span class='no'>learner_class</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>delayed_make_learner</span>(<span class='no'>learner_class</span>, <span class='no'>...</span>)
 
-<span class='fu'>delayed_learner_new</span>(<span class='no'>learner_class</span>, <span class='no'>...</span>)
-
-<span class='fu'>learner_train</span>(<span class='no'>learner</span>, <span class='no'>task</span>, <span class='no'>pretrain</span>)
+<span class='fu'>learner_train</span>(<span class='no'>learner</span>, <span class='no'>task</span>, <span class='no'>trained_sublearners</span>)
 
 <span class='fu'>delayed_learner_train</span>(<span class='no'>learner</span>, <span class='no'>task</span>)
 
@@ -138,8 +136,8 @@
       <td><p>the task to fit on</p></td>
     </tr>
     <tr>
-      <th>pretrain</th>
-      <td><p>any data obtained from a pretrain step</p></td>
+      <th>trained_sublearners</th>
+      <td><p>any data obtained from a train_sublearners step</p></td>
     </tr>
     <tr>
       <th>learner_fit</th>
