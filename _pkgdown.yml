@@ -1,0 +1,68 @@
+navbar:
+  title: "sl3"
+  type: inverse
+  left:
+    - text: "Reference"
+      href: "reference/index.html"
+    - text: Articles
+      menu:
+        - text: "Intro to sl3"
+          href: articles/intro_sl3.html
+        - text: "sl3 Benchmarks"
+          href: articles/SuperLearner_Benchmarks.html
+        - text: "sl3 Presentation"
+          href: slides/sl3-slides.html
+        - text: "Defining Custom sl3 Learners"
+          href: articles/custom_lrnrs.html
+
+reference:
+  - title: "Defining A Task"
+    contents:
+      - sl3_Task
+      - Variable_Type
+  - title: "Finding Learners"
+    contents:
+      - sl3_list_properties
+      - sl3_list_learners
+  - title: "sl3 Learners"
+    contents:
+      - starts_with("Lrnr_")
+  - title: "Composing Learners"
+    contents:
+      - Pipeline
+      - Stack
+      - Custom_chain
+  - title: "Loss functions"
+    contents:
+      - starts_with("loss_")
+      - risk
+  - title: "Metalearner functions"
+    contents:
+      - starts_with("metalearner_")
+  - title: "Helpful for Defining Learners"
+    contents:
+      - write_learner_template
+      - args_to_list
+      - call_with_args
+      - true_obj_size
+      - safe_dim
+      - learner_train
+      - learner_fit_predict
+      - learner_fit_chain
+      - delayed_make_learner
+      - delayed_learner_train
+      - delayed_learner_fit_predict
+      - delayed_learner_fit_chain
+  - title: "Sample Datasets"
+    contents:
+      - cpp
+      - cpp_1yr
+      - cpp_imputed
+      - bsds
+      - density_dat
+  - title: "Miscellaneous"
+    contents:
+      - sl3Options
+  - title: "Index"
+    contents:
+      - starts_with("")

@@ -14,10 +14,10 @@ R/`sl3`: modern Super Learning with pipelines
 What's `sl3`?
 -------------
 
-`sl3` is a modern implementation of the Super Learner algorithm of van der Laan, Polley, and Hubbard (2007). The Super Learner algorithm performs ensemble learning in one of two fashions:
+`sl3` is a modern implementation of the Super Learner algorithm of @vdl2007super. The Super Learner algorithm performs ensemble learning in one of two fashions:
 
 1.  The "discrete" Super Learner can be used to select the best prediction algorithm among a supplied library of learning algorithms ("learners" in the `sl3` nomenclature) -- that is, that algorithm which minimizes the cross-validated risk with respect to some appropriate loss function.
-2.  The "ensemble" Super Learner can be used to assign weights to specified learning algorithms (in a user-supplied library) in order to create a combination of these learners that minimizes the cross-validated risk with respect to an appropriate loss function. This notion of weighted combinations has also been called *stacked regression* (Breiman 1996).
+2.  The "ensemble" Super Learner can be used to assign weights to specified learning algorithms (in a user-supplied library) in order to create a combination of these learners that minimizes the cross-validated risk with respect to an appropriate loss function. This notion of weighted combinations has also been called *stacked regression* \[@breiman1996stacked\].
 
 ------------------------------------------------------------------------
 
@@ -57,14 +57,23 @@ Examples
 set.seed(49753)
 suppressMessages(library(data.table))
 library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:data.table':
+#> 
+#>     between, first, last
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
 library(SuperLearner)
 #> Loading required package: nnls
 #> Super Learner
-#> Version: 2.0-23-9000
-#> Package created on 2017-07-20
+#> Version: 2.0-22
+#> Package created on 2017-07-18
 library(origami)
-#> origami: Generalized Cross-Validation Framework
-#> Version: 0.8.0
 library(sl3)
 
 # load example data set
@@ -89,17 +98,7 @@ learner_stack <- Stack$new(SL.glmnet_learner, glm_learner, screen_and_glm)
 stack_fit <- learner_stack$train(task)
 #> Loading required package: glmnet
 #> Loading required package: Matrix
-#> 
-#> Attaching package: 'Matrix'
-#> The following object is masked from 'package:tidyr':
-#> 
-#>     expand
 #> Loading required package: foreach
-#> 
-#> Attaching package: 'foreach'
-#> The following objects are masked from 'package:purrr':
-#> 
-#>     accumulate, when
 #> Loaded glmnet 2.0-13
 preds <- stack_fit$predict()
 head(preds)
@@ -154,7 +153,3 @@ The contents of this repository are distributed under the GPL-3 license. See fil
 
 References
 ----------
-
-Breiman, Leo. 1996. “Stacked Regressions.” *Machine Learning* 24 (1). Springer: 49–64.
-
-van der Laan, Mark J., Eric C. Polley, and Alan E. Hubbard. 2007. “Super Learner.” *Statistical Applications in Genetics and Molecular Biology* 6 (1).

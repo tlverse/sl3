@@ -14,6 +14,8 @@ library(SuperLearner)
 library(future)
 library(ggplot2)
 library(data.table)
+library(stringr)
+library(scales)
 ```
 ## Test Setup
 
@@ -69,7 +71,7 @@ cpp <- cpp[sample(nrow(cpp),10000,replace=T),]
 outcome <- "haz"
 
 
-task <- sl3_Task$new(cpp, covariates = covars, outcome = outcome)
+task <- sl3_Task$new(cpp, covariates = covars, outcome = outcome, outcome_type="continuous")
 
 ```
 
@@ -91,12 +93,12 @@ sl3_legacy <- Lrnr_sl$new(list(sl_random_forest, sl_glmnet, sl_glm), nnls_lrnr)
 
 #### `sl3` with Improved Wrappers
 ```{r sl3_improved_setup, echo=TRUE}
-sl_glmnet <- Lrnr_glmnet$new()
+lrnr_glmnet <- Lrnr_glmnet$new()
 random_forest <- Lrnr_randomForest$new()
 glm_fast <- Lrnr_glm_fast$new()
 nnls_lrnr <- Lrnr_nnls$new()
 
-sl3_improved <- Lrnr_sl$new(list(random_forest, sl_glmnet, glm_fast), nnls_lrnr)
+sl3_improved <- Lrnr_sl$new(list(random_forest, lrnr_glmnet, glm_fast), nnls_lrnr)
 ```
 
 #### Legacy `SuperLearner`
@@ -178,6 +180,7 @@ time_sl3_improved_multisession <- system.time({
 ```
 
 ```{r results, echo=FALSE}
+
 results <- rbind(time_sl3_legacy_sequential, time_sl3_legacy_multicore, 
                  time_sl3_legacy_multicore_ht, time_sl3_legacy_multisession,
                  time_sl3_improved_sequential, time_sl3_improved_multicore, 
@@ -185,12 +188,18 @@ results <- rbind(time_sl3_legacy_sequential, time_sl3_legacy_multicore,
                  time_SuperLearner_sequential, time_SuperLearner_multicore
                 )
 test <- rownames(results)
+
 results <- as.data.table(results)
 
 invisible(results[, test := gsub("time_", "", test)])
+invisible(results[, improved:=str_detect(test, "improved")])
+invisible(results[, parallel:=!str_detect(test, "sequential")])
 results <- results[order(results$elapsed)]
 invisible(results[, test := factor(test,levels=test)])
-ggplot(results, aes(y=test, x=elapsed))+geom_point()+
-  xlab("Time (s)")+ylab("Test")+theme_bw()
+breaks=2^(-20:20)
+ggplot(results, aes(y=test, x=elapsed, color=factor(improved), shape=factor(parallel)))+geom_point(size=3)+
+  xlab("Time (seconds) -- log scale")+ylab("Test")+theme_bw()+
+  scale_shape_discrete("Parallel Computation")+scale_color_discrete("Improved Learners")+
+  scale_x_continuous(trans = log2_trans(), breaks=breaks)+ annotation_logticks(base=2, sides="b")  
 
 ```

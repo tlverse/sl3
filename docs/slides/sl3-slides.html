@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>The sl3 R Package</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Jeremy Coyle, Nima Hejazi, Ivana Malenica, Oleg Sofrygin" />
+    <link href="libs/remark-css-0.0.1/example.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets-0.9/htmlwidgets.js"></script>
+    <link href="libs/vis-4.20.0/vis.css" rel="stylesheet" />
+    <script src="libs/vis-4.20.0/vis.min.js"></script>
+    <script src="libs/visNetwork-binding-2.0.1/visNetwork.js"></script>
+    <link rel="stylesheet" href="custom.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# The <code>sl3</code> R Package
+## Modern Super Learning with Pipelines
+### <a href="https://github.com/jeremyrcoyle">Jeremy Coyle</a>, <a href="https://nimahejazi.org">Nima Hejazi</a>, <a href="https://github.com/podTockom">Ivana Malenica</a>, <a href="https://github.com/osofr">Oleg Sofrygin</a>
+### 2017-10-30 16:52:42
+
+---
+
+
+
+
+# Accessing these slides
+
+--
+
+### View them online:
+
+* [https://jeremyrcoyle.github.io/sl3/slides/sl3-slides.html](https://jeremyrcoyle.github.io/sl3/slides/sl3-slides.html)
+
+* here's a shortened URL: [https://goo.gl/fAEhqJ](https://goo.gl/fAEhqJ)
+
+???
+
+- This talk will focus on introducing the new `sl3` R package, which provides a
+modern implementation of the Super Learner algorithm [@vdl2007super], a method
+for performing stacked regressions [@breiman1996stacked], combined with
+covariate screening and cross-validation.
+
+---
+class: inverse, center, middle
+
+# Core `sl3` Design Principles
+
+---
+
+# `sl3` Architecture
+
+All of the classes defined in `sl3` are based on the R6 framework, which brings
+a newer object-oriented paradigm to the R language.
+
+## Core classes
+
+- `sl3_Task`, for defining a machine learning problem. These objects keep track
+  of the task data, as well as what variables play what roles in the machine
+  learning problem. These are easily created by `make_sl3_Task`.
+
+--
+
+- `Lrnr_base`, a base class for defining machine learning algorithms, as well as
+  _fits_ for those algorithms to particular `sl3_Task`s. Different learning
+  algorithms are defined in classes that inherit from this base class.
+
+--
+
+- `Pipeline`, a set of learners to be fit _sequentially_, where the fit from one
+  learner is used to define the task for the next learner. These are a special
+  kind of learner derived from `Lrnr_base`.
+
+--
+
+- `Stack`, like `Pipelines`, except in that learners are trained
+  _simultaneously_, so that their predictions can be either combined or
+  compared. These are a special kind of learner derived from `Lrnr_base`.
+
+???
+
+- Probably good to point out that cross-validating a `Stack` allows for an
+  included `Pipeline` to be subjected to CV in the same way as other learners
+  (seriously awesome feature).
+- Might be worth mentioning the basic differences between core OOP concepts, for
+  example classes, objects, methods, fields, inheritance, etc.
+- Because all learners inherit from `Lrnr_base`, they have many features in
+  common, and can be used interchangeably.
+- All learners define three main methods: `train`, `predict`, and `chain`.
+- `Pipeline` allows for covariate screening and model fitting to be subjected to
+  the same cross-validation process, necessary for Super Learning.
+
+---
+
+# Object Oriented Programming (OOP)
+
+- The key concept of OOP is that of an object, a collection of data and
+  functions that corresponds to some conceptual unit. Objects have two main
+  types of elements: _fields_ and _methods_.
+  
+--
+
+- _fields_ are information about an object.
+
+--
+
+- _methods_ are actions an object can perform.
+
+--
+
+- Objects are members of _classes_, which define what those specific fields and
+  methods are. Classes can inherit elements from other classes.
+  
+--
+
+- `sl3` is designed using basic OOP principles and the R6 OOP framework, in
+  which methods and fields of a class object are accessed using the `$`
+  operator.
+
+---
+class: inverse, center, middle
+
+# The Anatomy of `sl3`
+
+---
+
+# Get the package
+
+- Currently, installation from the `master` branch is the only option:
+
+
+```r
+devtools::install_github("jeremyrcoyle/sl3")
+```
+
+
+
+--
+
+- Of course, the package will be available on CRAN. An initial release is
+  forthcoming.
+
+--
+
+To start using `sl3`, let's load the package:
+
+
+```r
+library(sl3)
+```
+
+---
+
+# A "toy" data set
+
+We can't do any model fitting without data. We use data from the Collaborative
+Perinatal Project (CPP) to illustrate the features of `sl3` as well as its
+proper usage. For convenience, the data is included with the `sl3` R package.
+
+
+```r
+# load example data set
+data(cpp_imputed)
+
+# here are the covariates we are interested in and, of course, the outcome
+covars &lt;- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
+            "sexn")
+outcome &lt;- "haz"
+```
+
+???
+
+- Next, we'll walk through analyzing some data.
+
+---
+
+# Setting up `sl3_Task`s I
+
+Recall that a `sl3_Task` is the core structure that holds the data set and
+specifications to be respected in the estimation/modeling procedure.
+
+
+```r
+task &lt;- make_sl3_Task(data = cpp_imputed, covariates = covars,
+                      outcome = outcome, outcome_type="continuous")
+```
+
+--
+
+- We use the `make_sl3_Task` method to create a new `sl3_Task`, called `task`.
+
+- Here, we specified the underlying data, `cpp_imputed`, and vectors indicating
+  which varaibles to use as covariates and outcomes.
+
+- We also specified an `outcome_type`, here "continuous", indicating if the outcome corresponds to continuous or categorical (or another type of) data.
+--
+
+## `sl3_Task` Options
+
+- `make_sl3_Task` supports a range of options in order to facilitate the
+  articulation of more advanced specifics informative of the machine learning
+  problem.
+  
+- For example, we can specify the id, weights, and offset nodes.
+
+---
+
+# Setting up `sl3_Task`s II
+
+Let's take a look at the `task` that we set up:
+
+
+```r
+task
+```
+
+```
+## A sl3 Task with 1441 observations and the following nodes:
+## $covariates
+## [1] "apgar1"   "apgar5"   "parity"   "gagebrth" "mage"     "meducyrs"
+## [7] "sexn"    
+## 
+## $outcome
+## [1] "haz"
+## 
+## $id
+## NULL
+## 
+## $weights
+## NULL
+## 
+## $offset
+## NULL
+```
+
+---
+
+# Learners I: Introduction
+
+- `Lrnr_base` is the base class for defining machine learning algorithms, as
+  well as fits for those algorithms to particular `sl3_Task`s.
+
+--
+
+- Different machine learning algorithms are defined in classes that inherit from
+  `Lrnr_base`.
+  
+--
+  
+- For instance, the `Lrnr_glm` class inherits from `Lrnr_base`, and defines a
+  learner that fits generalized linear models.
+  
+--
+
+- Learner objects can be constructed from their class definitions using the
+  `make_learner` function:
+
+
+```r
+# make learner object
+lrnr_glm &lt;- make_learner(Lrnr_glm)
+```
+
+---
+
+# Learners II: Core Methods
+
+- All learners inherit from `Lrnr_base`, so they have many features in common,
+  and can be used interchangeably.
+
+--
+
+- All learners define three main methods: `train`, `predict`, and `chain`.
+
+--
+
+- The first, `train`, takes a `sl3_task` object, and returns a `learner_fit`,
+  which has the same class as the learner that was trained:
+
+
+```r
+# fit learner to task data
+lrnr_glm_fit &lt;- lrnr_glm$train(task)
+
+# verify that the learner is fit
+lrnr_glm_fit$is_trained
+```
+
+```
+## [1] TRUE
+```
+
+--
+
+- Here, we fit the learner to the CPP task we defined above. Both `lrnr_glm` and
+  `lrnr_glm_fit` are objects of class `Lrnr_glm`, although the former defines a
+  learner and the latter defines a fit of that learner.
+
+--
+
+- We can distiguish between the learners and learner fits using the `is_trained`
+  field, which is true for fits but not for learners.
+
+---
+
+# Learners III: Prediction
+
+- Now that we've fit a learner, we can generate predictions using the `predict`
+  method:
+
+
+```r
+# get learner predictions
+preds &lt;- lrnr_glm_fit$predict(task)
+head(preds)
+```
+
+```
+## [1] 0.36298498 0.36298498 0.25993072 0.25993072 0.25993072 0.05680264
+```
+
+--
+
+- Here, we specified `task` as the task for which we wanted to generate
+  predictions. If we had omitted this, we would have gotten the same predictions
+  because `predict` defaults to using the task provided to `train` (called the
+  training task). Alternatively, we could have provided a different task for
+  which we want to generate predictions.
+
+--
+
+- The final important learner method, `chain`, will be discussed later, when we
+  discuss __learner composition__. As with `sl3_Task`, learners have a variety
+  of fields and methods we haven't discussed here.
+
+---
+
+# Learners IV: Properties
+
+- Learners have _properties_ that indicate what features they support. You can
+  use `sl3_list_properties` to get a list of all properties supported by at
+  least one learner.
+
+--
+
+You can then use `sl3_list_learners` to find learners supporting any
+set of properties:
+
+
+```r
+sl3_list_properties()
+```
+
+```
+##  [1] "binomial"             "categorical"          "continuous"          
+##  [4] "density"              "ids"                  "multivariate_outcome"
+##  [7] "offset"               "preprocessing"        "timeseries"          
+## [10] "weights"              "wrapper"
+```
+
+```r
+sl3_list_learners(c("binomial", "offset"))
+```
+
+```
+## [1] "Lrnr_glm"      "Lrnr_glm_fast" "Lrnr_h2o_glm"  "Lrnr_h2o_grid"
+## [5] "Lrnr_optim"    "Lrnr_solnp"    "Lrnr_xgboost"
+```
+
+--
+
+Defining a `sl3` learner that uses the `SL.glmnet` wrapper from `SuperLearner`:
+
+
+```r
+lrnr_sl_glmnet &lt;- make_learner(Lrnr_pkg_SuperLearner, "SL.glmnet")
+```
+
+???
+
+- In most cases, using wrappers from `SuperLearner` will not be as efficient as
+  their native `sl3` counterparts. If your favorite learner is missing from
+  `sl3`, please consider adding it by following the "Defining New Learners"
+  vignette.
+
+---
+
+# Learners V: Parameters
+
+- In general, learners can be instantiated without providing any additional
+  parameters.
+
+--
+
+- We've tried to provide sensible defaults for each learner; however, if you
+  would like to modify the learners' behavior, you may do so by instantiating
+  learners with different parameters.
+
+--
+
+`sl3` Learners support some common parameters that work with all learners for
+which they are applicable:
+
+* `covariates`: subsets covariates before fitting. This allows different
+  learners to be fit to the same task with different covariate subsets.
+
+* `outcome_type`: overrides the `task$outcome_type`. This allows different
+  learners to be fit to the same task with different outcome_types.
+
+* `...`: abitrary parameters typically passed directly to the internal learner
+  method. The documentation for each learner will direct to the appropriate
+  function documentation for the learner method.
+
+---
+class: inverse, center, middle
+
+# Composing Learners in `sl3`
+
+---
+
+# Pipelines I
+
+- **A pipeline is a set of learners to be fit _sequentially_, where the fit from
+  one learner is used to define the task for the next learner.**
+
+--
+
+- There are many ways in which a learner can define the task for the downstream
+  learner. The `chain` method defined by learners defines how this will work.
+  Let's look at the example of pre-screening variables.
+
+--
+
+- Below, we generate a screener object based on the `SuperLearner` function
+  `screen.corP` and fit it to our task. Inspecting the fit, we see that it
+  selected a subset of covariates:
+
+
+```r
+screen_cor &lt;- Lrnr_pkg_SuperLearner_screener$new("screen.corP")
+screen_fit &lt;- screen_cor$train(task)
+print(screen_fit)
+```
+
+```
+## [1] "Lrnr_pkg_SuperLearner_screener_screen.corP"
+## $selected
+## [1] "parity"   "gagebrth"
+```
+
+---
+
+# Pipelines II
+
+- Now, `chain` may be called on this learner fit to define a downstream task:
+
+
+```r
+screened_task &lt;- screen_fit$chain()
+print(screened_task)
+```
+
+```
+## A sl3 Task with 1441 observations and the following nodes:
+## $covariates
+## [1] "parity"   "gagebrth"
+## 
+## $outcome
+## [1] "haz"
+## 
+## $id
+## NULL
+## 
+## $weights
+## NULL
+## 
+## $offset
+## NULL
+```
+
+---
+
+# Pipelines III
+
+- As with `predict`, we can omit a task from the call to `chain`, in which case
+  the call defaults to using the same task that was used for training.
+
+--
+
+- We can see that the chained task reduces the covariates to the subset selected
+  by the screener. We can fit this new task using the `lrnr_glm` we defined
+  above:
+
+
+```r
+screened_glm_fit &lt;- lrnr_glm$train(screened_task)
+screened_preds &lt;- screened_glm_fit$predict()
+head(screened_preds)
+```
+
+```
+## [1]  0.38084472  0.38084472  0.29887623  0.29887623  0.29887623 -0.00987784
+```
+
+--
+
+- The `Pipeline` class automates this process. It takes an arbitrary number of
+  learners and fits them sequentially, training and chaining each one in turn.
+  Since `Pipeline` is a learner like any other, it shares the same interface.
+
+---
+
+# Pipelines IV
+
+- We can define a pipeline using `make_learner`, and use `train` and `predict`
+  just as we did before:
+
+
+```r
+sg_pipeline &lt;- make_learner(Pipeline, screen_cor, lrnr_glm)
+sg_pipeline_fit &lt;- sg_pipeline$train(task)
+sg_pipeline_preds &lt;- sg_pipeline_fit$predict()
+head(sg_pipeline_preds)
+```
+
+```
+## [1]  0.38084472  0.38084472  0.29887623  0.29887623  0.29887623 -0.00987784
+```
+
+--
+
+- We see that the pipeline returns the same predictions as manually training
+  `glm` on the chained task from the screening learner.
+
+---
+
+# Pipelines V
+
+<div id="htmlwidget-868bb3f743491bff1382" style="width:100%;height:500px;" class="visNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-868bb3f743491bff1382">{"x":{"nodes":{"id":["6ce2d1ce-bdcd-11e7-967e-a45e60d0422b","6ce2a3d4-bdcd-11e7-967e-a45e60d0422b","6ce170e0-bdcd-11e7-967e-a45e60d0422b","6ce1cf7c-bdcd-11e7-967e-a45e60d0422b","6ce19e26-bdcd-11e7-967e-a45e60d0422b"],"label":["Lrnr_pkg_SuperLearner_screener_screen.corP___Lrnr_glm","bundle","Lrnr_pkg_SuperLearner_screener_screen.corP","Lrnr_glm","chain"],"level":[1,2,5,3,4],"sequential":[true,true,false,false,true],"state":["waiting","waiting","ready","waiting","waiting"],"group":["none","none","none","none","none"]},"edges":{"from":["6ce170e0-bdcd-11e7-967e-a45e60d0422b","6ce170e0-bdcd-11e7-967e-a45e60d0422b","6ce19e26-bdcd-11e7-967e-a45e60d0422b","6ce1cf7c-bdcd-11e7-967e-a45e60d0422b","6ce2a3d4-bdcd-11e7-967e-a45e60d0422b"],"to":["6ce2a3d4-bdcd-11e7-967e-a45e60d0422b","6ce19e26-bdcd-11e7-967e-a45e60d0422b","6ce1cf7c-bdcd-11e7-967e-a45e60d0422b","6ce2a3d4-bdcd-11e7-967e-a45e60d0422b","6ce2d1ce-bdcd-11e7-967e-a45e60d0422b"],"label":["","","","",""]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot"},"manipulation":{"enabled":false},"edges":{"arrows":"to"},"layout":{"hierarchical":{"enabled":true,"levelSeparation":500,"nodeSpacing":200,"direction":"RL"}},"groups":{"useDefaultGroups":true,"none":{"color":{"border":"black","background":"white"}}}},"groups":"none","width":"100%","height":"500px","idselection":{"enabled":false},"byselection":{"enabled":false},"main":null,"submain":null,"footer":null},"evals":[],"jsHooks":[]}</script>
+
+
+---
+
+# Stacks I
+
+- **Like `Pipeline`s, `Stack`s combine multiple learners. `Stack`s train
+  learners _simultaneously_, so that their predictions can be either combined or
+  compared.**
+
+--
+
+- Again, `Stack` is just a special learner and so has the same interface as all
+  other learners:
+
+
+```r
+stack &lt;- make_learner(Stack, lrnr_glm, sg_pipeline)
+stack_fit &lt;- stack$train(task)
+stack_preds &lt;- stack_fit$predict()
+head(stack_preds)
+```
+
+```
+##      Lrnr_glm Lrnr_pkg_SuperLearner_screener_screen.corP___Lrnr_glm
+## 1: 0.36298498                                            0.38084472
+## 2: 0.36298498                                            0.38084472
+## 3: 0.25993072                                            0.29887623
+## 4: 0.25993072                                            0.29887623
+## 5: 0.25993072                                            0.29887623
+## 6: 0.05680264                                           -0.00987784
+```
+
+--
+
+- Above, we've defined and fit a `stack` comprised of a simple `glm` learner as
+  well as a pipeline that combines a screening algorithm with that same learner.
+
+???
+
+- We could have included any abitrary set of learners and pipelines, the latter
+  of which are themselves just learners.
+
+- We can see that the `predict` method now returns a matrix, with a column for
+  each learner included in the stack.
+
+--- 
+
+---
+# Stacks II
+
+<div id="htmlwidget-acc3d204e4d0d11c5fe8" style="width:100%;height:500px;" class="visNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-acc3d204e4d0d11c5fe8">{"x":{"nodes":{"id":["6d185948-bdcd-11e7-967e-a45e60d0422b","6d180b6e-bdcd-11e7-967e-a45e60d0422b","6d171b14-bdcd-11e7-967e-a45e60d0422b","6d17d1c6-bdcd-11e7-967e-a45e60d0422b","6d17a7be-bdcd-11e7-967e-a45e60d0422b","6d1735ea-bdcd-11e7-967e-a45e60d0422b","6d17668c-bdcd-11e7-967e-a45e60d0422b","6d174e04-bdcd-11e7-967e-a45e60d0422b"],"label":["Stack","bundle","Lrnr_glm","Lrnr_pkg_SuperLearner_screener_screen.corP___Lrnr_glm","bundle","Lrnr_pkg_SuperLearner_screener_screen.corP","Lrnr_glm","chain"],"level":[1,2,3,3,4,7,5,6],"sequential":[true,true,false,true,true,false,false,true],"state":["waiting","waiting","ready","waiting","waiting","ready","waiting","waiting"],"group":["none","none","none","none","none","none","none","none"]},"edges":{"from":["6d171b14-bdcd-11e7-967e-a45e60d0422b","6d1735ea-bdcd-11e7-967e-a45e60d0422b","6d1735ea-bdcd-11e7-967e-a45e60d0422b","6d174e04-bdcd-11e7-967e-a45e60d0422b","6d17668c-bdcd-11e7-967e-a45e60d0422b","6d17a7be-bdcd-11e7-967e-a45e60d0422b","6d17d1c6-bdcd-11e7-967e-a45e60d0422b","6d180b6e-bdcd-11e7-967e-a45e60d0422b"],"to":["6d180b6e-bdcd-11e7-967e-a45e60d0422b","6d17a7be-bdcd-11e7-967e-a45e60d0422b","6d174e04-bdcd-11e7-967e-a45e60d0422b","6d17668c-bdcd-11e7-967e-a45e60d0422b","6d17a7be-bdcd-11e7-967e-a45e60d0422b","6d17d1c6-bdcd-11e7-967e-a45e60d0422b","6d180b6e-bdcd-11e7-967e-a45e60d0422b","6d185948-bdcd-11e7-967e-a45e60d0422b"],"label":["","","","","","","",""]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot"},"manipulation":{"enabled":false},"edges":{"arrows":"to"},"layout":{"hierarchical":{"enabled":true,"levelSeparation":500,"nodeSpacing":200,"direction":"RL"}},"groups":{"useDefaultGroups":true,"none":{"color":{"border":"black","background":"white"}}}},"groups":"none","width":"100%","height":"500px","idselection":{"enabled":false},"byselection":{"enabled":false},"main":null,"submain":null,"footer":null},"evals":[],"jsHooks":[]}</script>
+
+---
+
+# But What About Cross-validation?
+
+_Almost forgot! CV is necessary in order to honestly evaluate our models and
+avoid overfitting. We provide facilities for easily doing this, based on the
+[`origami` package](https://github.com/jeremyrcoyle/origami)._
+
+--
+
+- The `Lrnr_cv` learner wraps another learner and performs training and
+  prediction in a cross-validated fashion, using separate training and
+  validation splits as defined by `task$folds`.
+
+--
+
+- Below, we define a new `Lrnr_cv` object based on the previously defined
+  `stack` and train it and generate predictions on the validation set:
+
+
+```r
+cv_stack &lt;- Lrnr_cv$new(stack)
+cv_fit &lt;- cv_stack$train(task)
+cv_preds &lt;- cv_fit$predict()
+```
+
+---
+
+# Cross-validation (continued...)
+
+- We can also use the special `Lrnr_cv` function `cv_risk` to estimate
+  cross-validated risk values:
+
+
+```r
+risks &lt;- cv_fit$cv_risk(loss_squared_error)
+print(risks)
+```
+
+```
+##                                              Lrnr_glm 
+##                                              1.604769 
+## Lrnr_pkg_SuperLearner_screener_screen.corP___Lrnr_glm 
+##                                              1.604186
+```
+
+--
+
+- In this example, we don't see much difference between the two learners,
+  suggesting the addition of the screening step in the pipeline learner didn't
+  improve performance much.
+
+---
+
+# Cross-validation (continued...)
+
+<div id="htmlwidget-3f55ea67bbbe88b9015e" style="width:100%;height:500px;" class="visNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3f55ea67bbbe88b9015e">{"x":{"nodes":{"id":["6de4d2a2-bdcd-11e7-967e-a45e60d0422b","6de4aed0-bdcd-11e7-967e-a45e60d0422b","6dd63076-bdcd-11e7-967e-a45e60d0422b","6dd4fe7c-bdcd-11e7-967e-a45e60d0422b","6dd5f444-bdcd-11e7-967e-a45e60d0422b","6dd51db2-bdcd-11e7-967e-a45e60d0422b","6dd5c3fc-bdcd-11e7-967e-a45e60d0422b","6dd5a9bc-bdcd-11e7-967e-a45e60d0422b","6dd53d4c-bdcd-11e7-967e-a45e60d0422b","6dd572bc-bdcd-11e7-967e-a45e60d0422b","6dd557fa-bdcd-11e7-967e-a45e60d0422b","6dd79d58-bdcd-11e7-967e-a45e60d0422b","6dd65aec-bdcd-11e7-967e-a45e60d0422b","6dd7777e-bdcd-11e7-967e-a45e60d0422b","6dd67900-bdcd-11e7-967e-a45e60d0422b","6dd7500a-bdcd-11e7-967e-a45e60d0422b","6dd72dc8-bdcd-11e7-967e-a45e60d0422b","6dd696f6-bdcd-11e7-967e-a45e60d0422b","6dd6cbb2-bdcd-11e7-967e-a45e60d0422b","6dd6b032-bdcd-11e7-967e-a45e60d0422b","6dd98f5a-bdcd-11e7-967e-a45e60d0422b","6dd7e150-bdcd-11e7-967e-a45e60d0422b","6dd971c8-bdcd-11e7-967e-a45e60d0422b","6dd809a0-bdcd-11e7-967e-a45e60d0422b","6dd94f5e-bdcd-11e7-967e-a45e60d0422b","6dd921b4-bdcd-11e7-967e-a45e60d0422b","6dd82f0c-bdcd-11e7-967e-a45e60d0422b","6dd898ca-bdcd-11e7-967e-a45e60d0422b","6dd85bc6-bdcd-11e7-967e-a45e60d0422b","6ddc871e-bdcd-11e7-967e-a45e60d0422b","6dd9ab34-bdcd-11e7-967e-a45e60d0422b","6ddc5ed8-bdcd-11e7-967e-a45e60d0422b","6dd9cbdc-bdcd-11e7-967e-a45e60d0422b","6ddc2cba-bdcd-11e7-967e-a45e60d0422b","6ddbc112-bdcd-11e7-967e-a45e60d0422b","6dda9c10-bdcd-11e7-967e-a45e60d0422b","6ddb0420-bdcd-11e7-967e-a45e60d0422b","6ddad1c6-bdcd-11e7-967e-a45e60d0422b","6dddacca-bdcd-11e7-967e-a45e60d0422b","6ddcadde-bdcd-11e7-967e-a45e60d0422b","6ddd9348-bdcd-11e7-967e-a45e60d0422b","6ddcce86-bdcd-11e7-967e-a45e60d0422b","6ddd7584-bdcd-11e7-967e-a45e60d0422b","6ddd5c20-bdcd-11e7-967e-a45e60d0422b","6ddcf438-bdcd-11e7-967e-a45e60d0422b","6ddd293a-bdcd-11e7-967e-a45e60d0422b","6ddd0ea0-bdcd-11e7-967e-a45e60d0422b","6ddf1876-bdcd-11e7-967e-a45e60d0422b","6dddc87c-bdcd-11e7-967e-a45e60d0422b","6ddeee0a-bdcd-11e7-967e-a45e60d0422b","6dde251a-bdcd-11e7-967e-a45e60d0422b","6dded398-bdcd-11e7-967e-a45e60d0422b","6ddeba3e-bdcd-11e7-967e-a45e60d0422b","6dde49a0-bdcd-11e7-967e-a45e60d0422b","6dde85aa-bdcd-11e7-967e-a45e60d0422b","6dde6746-bdcd-11e7-967e-a45e60d0422b","6de06064-bdcd-11e7-967e-a45e60d0422b","6ddf417a-bdcd-11e7-967e-a45e60d0422b","6de04386-bdcd-11e7-967e-a45e60d0422b","6ddf5dc2-bdcd-11e7-967e-a45e60d0422b","6de01faa-bdcd-11e7-967e-a45e60d0422b","6ddff642-bdcd-11e7-967e-a45e60d0422b","6ddf8126-bdcd-11e7-967e-a45e60d0422b","6ddfbb78-bdcd-11e7-967e-a45e60d0422b","6ddf9e2c-bdcd-11e7-967e-a45e60d0422b","6de23b28-bdcd-11e7-967e-a45e60d0422b","6de07c5c-bdcd-11e7-967e-a45e60d0422b","6de212ec-bdcd-11e7-967e-a45e60d0422b","6de0984a-bdcd-11e7-967e-a45e60d0422b","6de1dbf6-bdcd-11e7-967e-a45e60d0422b","6de198c6-bdcd-11e7-967e-a45e60d0422b","6de0b636-bdcd-11e7-967e-a45e60d0422b","6de0ef16-bdcd-11e7-967e-a45e60d0422b","6de0d10c-bdcd-11e7-967e-a45e60d0422b","6de368b8-bdcd-11e7-967e-a45e60d0422b","6de25d88-bdcd-11e7-967e-a45e60d0422b","6de34f5e-bdcd-11e7-967e-a45e60d0422b","6de2801a-bdcd-11e7-967e-a45e60d0422b","6de33370-bdcd-11e7-967e-a45e60d0422b","6de31444-bdcd-11e7-967e-a45e60d0422b","6de2a2b6-bdcd-11e7-967e-a45e60d0422b","6de2de5c-bdcd-11e7-967e-a45e60d0422b","6de2c1e2-bdcd-11e7-967e-a45e60d0422b","6de4913e-bdcd-11e7-967e-a45e60d0422b","6de38186-bdcd-11e7-967e-a45e60d0422b","6de474e2-bdcd-11e7-967e-a45e60d0422b","6de39ae0-bdcd-11e7-967e-a45e60d0422b","6de456b0-bdcd-11e7-967e-a45e60d0422b","6de42bfe-bdcd-11e7-967e-a45e60d0422b","6de3b6f6-bdcd-11e7-967e-a45e60d0422b","6de3ea68-bdcd-11e7-967e-a45e60d0422b","6de3d050-bdcd-11e7-967e-a45e60d0422b"],"label":["CV_Stack","bundle","Stack","train_task(task = task, fold = fold)","bundle","Lrnr_glm","Lrnr_pkg_SuperLearner_screener_screen.corP___Lrnr_glm","bundle","Lrnr_pkg_SuperLearner_screener_screen.corP","Lrnr_glm","chain","Stack","train_task(task = task, fold = fold)","bundle","Lrnr_glm","Lrnr_pkg_SuperLearner_screener_screen.corP___Lrnr_glm","bundle","Lrnr_pkg_SuperLearner_screener_screen.corP","Lrnr_glm","chain","Stack","train_task(task = task, fold = fold)","bundle","Lrnr_glm","Lrnr_pkg_SuperLearner_screener_screen.corP___Lrnr_glm","bundle","Lrnr_pkg_SuperLearner_screener_screen.corP","Lrnr_glm","chain","Stack","train_task(task = task, fold = fold)","bundle","Lrnr_glm","Lrnr_pkg_SuperLearner_screener_screen.corP___Lrnr_glm","bundle","Lrnr_pkg_SuperLearner_screener_screen.corP","Lrnr_glm","chain","Stack","train_task(task = task, fold = fold)","bundle","Lrnr_glm","Lrnr_pkg_SuperLearner_screener_screen.corP___Lrnr_glm","bundle","Lrnr_pkg_SuperLearner_screener_screen.corP","Lrnr_glm","chain","Stack","train_task(task = task, fold = fold)","bundle","Lrnr_glm","Lrnr_pkg_SuperLearner_screener_screen.corP___Lrnr_glm","bundle","Lrnr_pkg_SuperLearner_screener_screen.corP","Lrnr_glm","chain","Stack","train_task(task = task, fold = fold)","bundle","Lrnr_glm","Lrnr_pkg_SuperLearner_screener_screen.corP___Lrnr_glm","bundle","Lrnr_pkg_SuperLearner_screener_screen.corP","Lrnr_glm","chain","Stack","train_task(task = task, fold = fold)","bundle","Lrnr_glm","Lrnr_pkg_SuperLearner_screener_screen.corP___Lrnr_glm","bundle","Lrnr_pkg_SuperLearner_screener_screen.corP","Lrnr_glm","chain","Stack","train_task(task = task, fold = fold)","bundle","Lrnr_glm","Lrnr_pkg_SuperLearner_screener_screen.corP___Lrnr_glm","bundle","Lrnr_pkg_SuperLearner_screener_screen.corP","Lrnr_glm","chain","Stack","train_task(task = task, fold = fold)","bundle","Lrnr_glm","Lrnr_pkg_SuperLearner_screener_screen.corP___Lrnr_glm","bundle","Lrnr_pkg_SuperLearner_screener_screen.corP","Lrnr_glm","chain"],"level":[1,2,3,10,4,5,5,6,9,7,8,3,10,4,5,5,6,9,7,8,3,10,4,5,5,6,9,7,8,3,10,4,5,5,6,9,7,8,3,10,4,5,5,6,9,7,8,3,10,4,5,5,6,9,7,8,3,10,4,5,5,6,9,7,8,3,10,4,5,5,6,9,7,8,3,10,4,5,5,6,9,7,8,3,10,4,5,5,6,9,7,8],"sequential":[true,true,true,true,true,false,true,true,false,false,true,true,true,true,false,true,true,false,false,true,true,true,true,false,true,true,false,false,true,true,true,true,false,true,true,false,false,true,true,true,true,false,true,true,false,false,true,true,true,true,false,true,true,false,false,true,true,true,true,false,true,true,false,false,true,true,true,true,false,true,true,false,false,true,true,true,true,false,true,true,false,false,true,true,true,true,false,true,true,false,false,true],"state":["waiting","waiting","waiting","ready","waiting","waiting","waiting","waiting","waiting","waiting","waiting","waiting","ready","waiting","waiting","waiting","waiting","waiting","waiting","waiting","waiting","ready","waiting","waiting","waiting","waiting","waiting","waiting","waiting","waiting","ready","waiting","waiting","waiting","waiting","waiting","waiting","waiting","waiting","ready","waiting","waiting","waiting","waiting","waiting","waiting","waiting","waiting","ready","waiting","waiting","waiting","waiting","waiting","waiting","waiting","waiting","ready","waiting","waiting","waiting","waiting","waiting","waiting","waiting","waiting","ready","waiting","waiting","waiting","waiting","waiting","waiting","waiting","waiting","ready","waiting","waiting","waiting","waiting","waiting","waiting","waiting","waiting","ready","waiting","waiting","waiting","waiting","waiting","waiting","waiting"],"group":["none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none"]},"edges":{"from":["6dd4fe7c-bdcd-11e7-967e-a45e60d0422b","6dd4fe7c-bdcd-11e7-967e-a45e60d0422b","6dd51db2-bdcd-11e7-967e-a45e60d0422b","6dd4fe7c-bdcd-11e7-967e-a45e60d0422b","6dd4fe7c-bdcd-11e7-967e-a45e60d0422b","6dd53d4c-bdcd-11e7-967e-a45e60d0422b","6dd53d4c-bdcd-11e7-967e-a45e60d0422b","6dd4fe7c-bdcd-11e7-967e-a45e60d0422b","6dd557fa-bdcd-11e7-967e-a45e60d0422b","6dd572bc-bdcd-11e7-967e-a45e60d0422b","6dd5a9bc-bdcd-11e7-967e-a45e60d0422b","6dd5c3fc-bdcd-11e7-967e-a45e60d0422b","6dd5f444-bdcd-11e7-967e-a45e60d0422b","6dd63076-bdcd-11e7-967e-a45e60d0422b","6dd65aec-bdcd-11e7-967e-a45e60d0422b","6dd65aec-bdcd-11e7-967e-a45e60d0422b","6dd67900-bdcd-11e7-967e-a45e60d0422b","6dd65aec-bdcd-11e7-967e-a45e60d0422b","6dd65aec-bdcd-11e7-967e-a45e60d0422b","6dd696f6-bdcd-11e7-967e-a45e60d0422b","6dd696f6-bdcd-11e7-967e-a45e60d0422b","6dd65aec-bdcd-11e7-967e-a45e60d0422b","6dd6b032-bdcd-11e7-967e-a45e60d0422b","6dd6cbb2-bdcd-11e7-967e-a45e60d0422b","6dd72dc8-bdcd-11e7-967e-a45e60d0422b","6dd7500a-bdcd-11e7-967e-a45e60d0422b","6dd7777e-bdcd-11e7-967e-a45e60d0422b","6dd79d58-bdcd-11e7-967e-a45e60d0422b","6dd7e150-bdcd-11e7-967e-a45e60d0422b","6dd7e150-bdcd-11e7-967e-a45e60d0422b","6dd809a0-bdcd-11e7-967e-a45e60d0422b","6dd7e150-bdcd-11e7-967e-a45e60d0422b","6dd7e150-bdcd-11e7-967e-a45e60d0422b","6dd82f0c-bdcd-11e7-967e-a45e60d0422b","6dd82f0c-bdcd-11e7-967e-a45e60d0422b","6dd7e150-bdcd-11e7-967e-a45e60d0422b","6dd85bc6-bdcd-11e7-967e-a45e60d0422b","6dd898ca-bdcd-11e7-967e-a45e60d0422b","6dd921b4-bdcd-11e7-967e-a45e60d0422b","6dd94f5e-bdcd-11e7-967e-a45e60d0422b","6dd971c8-bdcd-11e7-967e-a45e60d0422b","6dd98f5a-bdcd-11e7-967e-a45e60d0422b","6dd9ab34-bdcd-11e7-967e-a45e60d0422b","6dd9ab34-bdcd-11e7-967e-a45e60d0422b","6dd9cbdc-bdcd-11e7-967e-a45e60d0422b","6dd9ab34-bdcd-11e7-967e-a45e60d0422b","6dd9ab34-bdcd-11e7-967e-a45e60d0422b","6dda9c10-bdcd-11e7-967e-a45e60d0422b","6dda9c10-bdcd-11e7-967e-a45e60d0422b","6dd9ab34-bdcd-11e7-967e-a45e60d0422b","6ddad1c6-bdcd-11e7-967e-a45e60d0422b","6ddb0420-bdcd-11e7-967e-a45e60d0422b","6ddbc112-bdcd-11e7-967e-a45e60d0422b","6ddc2cba-bdcd-11e7-967e-a45e60d0422b","6ddc5ed8-bdcd-11e7-967e-a45e60d0422b","6ddc871e-bdcd-11e7-967e-a45e60d0422b","6ddcadde-bdcd-11e7-967e-a45e60d0422b","6ddcadde-bdcd-11e7-967e-a45e60d0422b","6ddcce86-bdcd-11e7-967e-a45e60d0422b","6ddcadde-bdcd-11e7-967e-a45e60d0422b","6ddcadde-bdcd-11e7-967e-a45e60d0422b","6ddcf438-bdcd-11e7-967e-a45e60d0422b","6ddcf438-bdcd-11e7-967e-a45e60d0422b","6ddcadde-bdcd-11e7-967e-a45e60d0422b","6ddd0ea0-bdcd-11e7-967e-a45e60d0422b","6ddd293a-bdcd-11e7-967e-a45e60d0422b","6ddd5c20-bdcd-11e7-967e-a45e60d0422b","6ddd7584-bdcd-11e7-967e-a45e60d0422b","6ddd9348-bdcd-11e7-967e-a45e60d0422b","6dddacca-bdcd-11e7-967e-a45e60d0422b","6dddc87c-bdcd-11e7-967e-a45e60d0422b","6dddc87c-bdcd-11e7-967e-a45e60d0422b","6dde251a-bdcd-11e7-967e-a45e60d0422b","6dddc87c-bdcd-11e7-967e-a45e60d0422b","6dddc87c-bdcd-11e7-967e-a45e60d0422b","6dde49a0-bdcd-11e7-967e-a45e60d0422b","6dde49a0-bdcd-11e7-967e-a45e60d0422b","6dddc87c-bdcd-11e7-967e-a45e60d0422b","6dde6746-bdcd-11e7-967e-a45e60d0422b","6dde85aa-bdcd-11e7-967e-a45e60d0422b","6ddeba3e-bdcd-11e7-967e-a45e60d0422b","6dded398-bdcd-11e7-967e-a45e60d0422b","6ddeee0a-bdcd-11e7-967e-a45e60d0422b","6ddf1876-bdcd-11e7-967e-a45e60d0422b","6ddf417a-bdcd-11e7-967e-a45e60d0422b","6ddf417a-bdcd-11e7-967e-a45e60d0422b","6ddf5dc2-bdcd-11e7-967e-a45e60d0422b","6ddf417a-bdcd-11e7-967e-a45e60d0422b","6ddf417a-bdcd-11e7-967e-a45e60d0422b","6ddf8126-bdcd-11e7-967e-a45e60d0422b","6ddf8126-bdcd-11e7-967e-a45e60d0422b","6ddf417a-bdcd-11e7-967e-a45e60d0422b","6ddf9e2c-bdcd-11e7-967e-a45e60d0422b","6ddfbb78-bdcd-11e7-967e-a45e60d0422b","6ddff642-bdcd-11e7-967e-a45e60d0422b","6de01faa-bdcd-11e7-967e-a45e60d0422b","6de04386-bdcd-11e7-967e-a45e60d0422b","6de06064-bdcd-11e7-967e-a45e60d0422b","6de07c5c-bdcd-11e7-967e-a45e60d0422b","6de07c5c-bdcd-11e7-967e-a45e60d0422b","6de0984a-bdcd-11e7-967e-a45e60d0422b","6de07c5c-bdcd-11e7-967e-a45e60d0422b","6de07c5c-bdcd-11e7-967e-a45e60d0422b","6de0b636-bdcd-11e7-967e-a45e60d0422b","6de0b636-bdcd-11e7-967e-a45e60d0422b","6de07c5c-bdcd-11e7-967e-a45e60d0422b","6de0d10c-bdcd-11e7-967e-a45e60d0422b","6de0ef16-bdcd-11e7-967e-a45e60d0422b","6de198c6-bdcd-11e7-967e-a45e60d0422b","6de1dbf6-bdcd-11e7-967e-a45e60d0422b","6de212ec-bdcd-11e7-967e-a45e60d0422b","6de23b28-bdcd-11e7-967e-a45e60d0422b","6de25d88-bdcd-11e7-967e-a45e60d0422b","6de25d88-bdcd-11e7-967e-a45e60d0422b","6de2801a-bdcd-11e7-967e-a45e60d0422b","6de25d88-bdcd-11e7-967e-a45e60d0422b","6de25d88-bdcd-11e7-967e-a45e60d0422b","6de2a2b6-bdcd-11e7-967e-a45e60d0422b","6de2a2b6-bdcd-11e7-967e-a45e60d0422b","6de25d88-bdcd-11e7-967e-a45e60d0422b","6de2c1e2-bdcd-11e7-967e-a45e60d0422b","6de2de5c-bdcd-11e7-967e-a45e60d0422b","6de31444-bdcd-11e7-967e-a45e60d0422b","6de33370-bdcd-11e7-967e-a45e60d0422b","6de34f5e-bdcd-11e7-967e-a45e60d0422b","6de368b8-bdcd-11e7-967e-a45e60d0422b","6de38186-bdcd-11e7-967e-a45e60d0422b","6de38186-bdcd-11e7-967e-a45e60d0422b","6de39ae0-bdcd-11e7-967e-a45e60d0422b","6de38186-bdcd-11e7-967e-a45e60d0422b","6de38186-bdcd-11e7-967e-a45e60d0422b","6de3b6f6-bdcd-11e7-967e-a45e60d0422b","6de3b6f6-bdcd-11e7-967e-a45e60d0422b","6de38186-bdcd-11e7-967e-a45e60d0422b","6de3d050-bdcd-11e7-967e-a45e60d0422b","6de3ea68-bdcd-11e7-967e-a45e60d0422b","6de42bfe-bdcd-11e7-967e-a45e60d0422b","6de456b0-bdcd-11e7-967e-a45e60d0422b","6de474e2-bdcd-11e7-967e-a45e60d0422b","6de4913e-bdcd-11e7-967e-a45e60d0422b","6de4aed0-bdcd-11e7-967e-a45e60d0422b"],"to":["6dd63076-bdcd-11e7-967e-a45e60d0422b","6dd51db2-bdcd-11e7-967e-a45e60d0422b","6dd5f444-bdcd-11e7-967e-a45e60d0422b","6dd5c3fc-bdcd-11e7-967e-a45e60d0422b","6dd53d4c-bdcd-11e7-967e-a45e60d0422b","6dd5a9bc-bdcd-11e7-967e-a45e60d0422b","6dd557fa-bdcd-11e7-967e-a45e60d0422b","6dd557fa-bdcd-11e7-967e-a45e60d0422b","6dd572bc-bdcd-11e7-967e-a45e60d0422b","6dd5a9bc-bdcd-11e7-967e-a45e60d0422b","6dd5c3fc-bdcd-11e7-967e-a45e60d0422b","6dd5f444-bdcd-11e7-967e-a45e60d0422b","6dd63076-bdcd-11e7-967e-a45e60d0422b","6de4aed0-bdcd-11e7-967e-a45e60d0422b","6dd79d58-bdcd-11e7-967e-a45e60d0422b","6dd67900-bdcd-11e7-967e-a45e60d0422b","6dd7777e-bdcd-11e7-967e-a45e60d0422b","6dd7500a-bdcd-11e7-967e-a45e60d0422b","6dd696f6-bdcd-11e7-967e-a45e60d0422b","6dd72dc8-bdcd-11e7-967e-a45e60d0422b","6dd6b032-bdcd-11e7-967e-a45e60d0422b","6dd6b032-bdcd-11e7-967e-a45e60d0422b","6dd6cbb2-bdcd-11e7-967e-a45e60d0422b","6dd72dc8-bdcd-11e7-967e-a45e60d0422b","6dd7500a-bdcd-11e7-967e-a45e60d0422b","6dd7777e-bdcd-11e7-967e-a45e60d0422b","6dd79d58-bdcd-11e7-967e-a45e60d0422b","6de4aed0-bdcd-11e7-967e-a45e60d0422b","6dd98f5a-bdcd-11e7-967e-a45e60d0422b","6dd809a0-bdcd-11e7-967e-a45e60d0422b","6dd971c8-bdcd-11e7-967e-a45e60d0422b","6dd94f5e-bdcd-11e7-967e-a45e60d0422b","6dd82f0c-bdcd-11e7-967e-a45e60d0422b","6dd921b4-bdcd-11e7-967e-a45e60d0422b","6dd85bc6-bdcd-11e7-967e-a45e60d0422b","6dd85bc6-bdcd-11e7-967e-a45e60d0422b","6dd898ca-bdcd-11e7-967e-a45e60d0422b","6dd921b4-bdcd-11e7-967e-a45e60d0422b","6dd94f5e-bdcd-11e7-967e-a45e60d0422b","6dd971c8-bdcd-11e7-967e-a45e60d0422b","6dd98f5a-bdcd-11e7-967e-a45e60d0422b","6de4aed0-bdcd-11e7-967e-a45e60d0422b","6ddc871e-bdcd-11e7-967e-a45e60d0422b","6dd9cbdc-bdcd-11e7-967e-a45e60d0422b","6ddc5ed8-bdcd-11e7-967e-a45e60d0422b","6ddc2cba-bdcd-11e7-967e-a45e60d0422b","6dda9c10-bdcd-11e7-967e-a45e60d0422b","6ddbc112-bdcd-11e7-967e-a45e60d0422b","6ddad1c6-bdcd-11e7-967e-a45e60d0422b","6ddad1c6-bdcd-11e7-967e-a45e60d0422b","6ddb0420-bdcd-11e7-967e-a45e60d0422b","6ddbc112-bdcd-11e7-967e-a45e60d0422b","6ddc2cba-bdcd-11e7-967e-a45e60d0422b","6ddc5ed8-bdcd-11e7-967e-a45e60d0422b","6ddc871e-bdcd-11e7-967e-a45e60d0422b","6de4aed0-bdcd-11e7-967e-a45e60d0422b","6dddacca-bdcd-11e7-967e-a45e60d0422b","6ddcce86-bdcd-11e7-967e-a45e60d0422b","6ddd9348-bdcd-11e7-967e-a45e60d0422b","6ddd7584-bdcd-11e7-967e-a45e60d0422b","6ddcf438-bdcd-11e7-967e-a45e60d0422b","6ddd5c20-bdcd-11e7-967e-a45e60d0422b","6ddd0ea0-bdcd-11e7-967e-a45e60d0422b","6ddd0ea0-bdcd-11e7-967e-a45e60d0422b","6ddd293a-bdcd-11e7-967e-a45e60d0422b","6ddd5c20-bdcd-11e7-967e-a45e60d0422b","6ddd7584-bdcd-11e7-967e-a45e60d0422b","6ddd9348-bdcd-11e7-967e-a45e60d0422b","6dddacca-bdcd-11e7-967e-a45e60d0422b","6de4aed0-bdcd-11e7-967e-a45e60d0422b","6ddf1876-bdcd-11e7-967e-a45e60d0422b","6dde251a-bdcd-11e7-967e-a45e60d0422b","6ddeee0a-bdcd-11e7-967e-a45e60d0422b","6dded398-bdcd-11e7-967e-a45e60d0422b","6dde49a0-bdcd-11e7-967e-a45e60d0422b","6ddeba3e-bdcd-11e7-967e-a45e60d0422b","6dde6746-bdcd-11e7-967e-a45e60d0422b","6dde6746-bdcd-11e7-967e-a45e60d0422b","6dde85aa-bdcd-11e7-967e-a45e60d0422b","6ddeba3e-bdcd-11e7-967e-a45e60d0422b","6dded398-bdcd-11e7-967e-a45e60d0422b","6ddeee0a-bdcd-11e7-967e-a45e60d0422b","6ddf1876-bdcd-11e7-967e-a45e60d0422b","6de4aed0-bdcd-11e7-967e-a45e60d0422b","6de06064-bdcd-11e7-967e-a45e60d0422b","6ddf5dc2-bdcd-11e7-967e-a45e60d0422b","6de04386-bdcd-11e7-967e-a45e60d0422b","6de01faa-bdcd-11e7-967e-a45e60d0422b","6ddf8126-bdcd-11e7-967e-a45e60d0422b","6ddff642-bdcd-11e7-967e-a45e60d0422b","6ddf9e2c-bdcd-11e7-967e-a45e60d0422b","6ddf9e2c-bdcd-11e7-967e-a45e60d0422b","6ddfbb78-bdcd-11e7-967e-a45e60d0422b","6ddff642-bdcd-11e7-967e-a45e60d0422b","6de01faa-bdcd-11e7-967e-a45e60d0422b","6de04386-bdcd-11e7-967e-a45e60d0422b","6de06064-bdcd-11e7-967e-a45e60d0422b","6de4aed0-bdcd-11e7-967e-a45e60d0422b","6de23b28-bdcd-11e7-967e-a45e60d0422b","6de0984a-bdcd-11e7-967e-a45e60d0422b","6de212ec-bdcd-11e7-967e-a45e60d0422b","6de1dbf6-bdcd-11e7-967e-a45e60d0422b","6de0b636-bdcd-11e7-967e-a45e60d0422b","6de198c6-bdcd-11e7-967e-a45e60d0422b","6de0d10c-bdcd-11e7-967e-a45e60d0422b","6de0d10c-bdcd-11e7-967e-a45e60d0422b","6de0ef16-bdcd-11e7-967e-a45e60d0422b","6de198c6-bdcd-11e7-967e-a45e60d0422b","6de1dbf6-bdcd-11e7-967e-a45e60d0422b","6de212ec-bdcd-11e7-967e-a45e60d0422b","6de23b28-bdcd-11e7-967e-a45e60d0422b","6de4aed0-bdcd-11e7-967e-a45e60d0422b","6de368b8-bdcd-11e7-967e-a45e60d0422b","6de2801a-bdcd-11e7-967e-a45e60d0422b","6de34f5e-bdcd-11e7-967e-a45e60d0422b","6de33370-bdcd-11e7-967e-a45e60d0422b","6de2a2b6-bdcd-11e7-967e-a45e60d0422b","6de31444-bdcd-11e7-967e-a45e60d0422b","6de2c1e2-bdcd-11e7-967e-a45e60d0422b","6de2c1e2-bdcd-11e7-967e-a45e60d0422b","6de2de5c-bdcd-11e7-967e-a45e60d0422b","6de31444-bdcd-11e7-967e-a45e60d0422b","6de33370-bdcd-11e7-967e-a45e60d0422b","6de34f5e-bdcd-11e7-967e-a45e60d0422b","6de368b8-bdcd-11e7-967e-a45e60d0422b","6de4aed0-bdcd-11e7-967e-a45e60d0422b","6de4913e-bdcd-11e7-967e-a45e60d0422b","6de39ae0-bdcd-11e7-967e-a45e60d0422b","6de474e2-bdcd-11e7-967e-a45e60d0422b","6de456b0-bdcd-11e7-967e-a45e60d0422b","6de3b6f6-bdcd-11e7-967e-a45e60d0422b","6de42bfe-bdcd-11e7-967e-a45e60d0422b","6de3d050-bdcd-11e7-967e-a45e60d0422b","6de3d050-bdcd-11e7-967e-a45e60d0422b","6de3ea68-bdcd-11e7-967e-a45e60d0422b","6de42bfe-bdcd-11e7-967e-a45e60d0422b","6de456b0-bdcd-11e7-967e-a45e60d0422b","6de474e2-bdcd-11e7-967e-a45e60d0422b","6de4913e-bdcd-11e7-967e-a45e60d0422b","6de4aed0-bdcd-11e7-967e-a45e60d0422b","6de4d2a2-bdcd-11e7-967e-a45e60d0422b"],"label":["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot"},"manipulation":{"enabled":false},"edges":{"arrows":"to"},"layout":{"hierarchical":{"enabled":true,"levelSeparation":500,"nodeSpacing":200,"direction":"RL"}},"groups":{"useDefaultGroups":true,"none":{"color":{"border":"black","background":"white"}}}},"groups":"none","width":"100%","height":"500px","idselection":{"enabled":false},"byselection":{"enabled":false},"main":null,"submain":null,"footer":null},"evals":[],"jsHooks":[]}</script>
+---
+class: inverse, center, middle
+
+# Putting it all together: Super Learning
+
+---
+
+# Super Learner I: Meta-Learners
+
+- _We can combine `Pipeline`s, `Stack`s, and `Lrnr_cv` to easily define a Super
+  Learner_.
+
+--
+
+- Using some of the objects we defined in the above examples, this becomes a
+  nearly trivial operation:
+
+
+```r
+metalearner &lt;- make_learner(Lrnr_nnls)
+cv_task &lt;- cv_fit$chain()
+ml_fit &lt;- metalearner$train(cv_task)
+```
+
+--
+
+- Here, we used a special learner, `Lrnr_nnls`, for the meta-learning step. This
+  fits a non-negative least squares meta-learner. **Note that any learner can be
+  used as a meta-learner.**
+
+---
+
+# Super Learner II: Pipelines
+
+- The Super Learner finally produced is defined as a pipeline with the learner
+  stack trained on the full data and the meta-learner trained on the
+  validation-set predictions.
+
+--
+
+- Below, we use a special behavior of pipelines: if all objects passed to a
+  pipeline are learner fits (i.e., `learner$is_trained` is `TRUE`), the result
+  will also be a fit:
+
+
+```r
+sl_pipeline &lt;- make_learner(Pipeline, stack_fit, ml_fit)
+sl_preds &lt;- sl_pipeline$predict()
+head(sl_preds)
+```
+
+```
+## [1] 0.33503636 0.33503636 0.25112872 0.25112872 0.25112872 0.02264871
+```
+
+---
+
+# Super Learner III: `Lrnr_sl`
+
+- **A Super Learner may be fit in a more streamlined manner using the `Lrnr_sl`
+  learner.**
+
+--
+
+- For simplicity, we will use the same set of learners and meta-learning
+  algorithm as we did before:
+
+
+```r
+sl &lt;- Lrnr_sl$new(learners = stack,
+                  metalearner = metalearner)
+sl_fit &lt;- sl$train(task)
+lrnr_sl_preds &lt;- sl_fit$predict()
+head(lrnr_sl_preds)
+```
+
+```
+## [1] 0.33503636 0.33503636 0.25112872 0.25112872 0.25112872 0.02264871
+```
+
+--
+
+- We can see that this generates the same predictions as the more hands-on
+  definition we encountered previously.
+
+???
+
+- Worth mentioning that the flexibility offered by our design allows us to
+  invoke the Super Learner algorithm, but we can also do a lot more...
+
+---
+class: inverse, center, middle
+
+# Computing with `delayed`
+
+---
+
+# Delayed I
+
+- For large datasets, fitting a Super Learner can be extremely time-consuming.
+
+--
+
+- To alleviate this complication, we've developed a specialized parallelization
+  framework `delayed` that parallelizes across these tasks in a way that takes
+  into account their inter-dependent nature.
+
+--
+
+- Consider a Super Learner with three learners:
+
+
+```r
+lrnr_rf &lt;- make_learner(Lrnr_randomForest)
+lrnr_glmnet &lt;- make_learner(Lrnr_glmnet)
+sl &lt;- Lrnr_sl$new(learners = list(lrnr_glm, lrnr_rf, lrnr_glmnet),
+                  metalearner = metalearner)
+```
+
+--
+
+- We can plot the network of tasks required to train this Super Learner:
+
+
+```r
+delayed_sl_fit &lt;- delayed_learner_train(sl, task)
+plot(delayed_sl_fit)
+```
+
+---
+
+# Delayed II
+
+<div id="htmlwidget-343f9b3685f5062ee846" style="width:100%;height:500px;" class="visNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-343f9b3685f5062ee846">{"x":{"nodes":{"id":["6fa19d28-bdcd-11e7-967e-a45e60d0422b","6fa17faa-bdcd-11e7-967e-a45e60d0422b","6f9ff81a-bdcd-11e7-967e-a45e60d0422b","6f9fd9de-bdcd-11e7-967e-a45e60d0422b","6f989aac-bdcd-11e7-967e-a45e60d0422b","6f981f50-bdcd-11e7-967e-a45e60d0422b","6f988242-bdcd-11e7-967e-a45e60d0422b","6f98381e-bdcd-11e7-967e-a45e60d0422b","6f985164-bdcd-11e7-967e-a45e60d0422b","6f986ac8-bdcd-11e7-967e-a45e60d0422b","6f998c82-bdcd-11e7-967e-a45e60d0422b","6f98b262-bdcd-11e7-967e-a45e60d0422b","6f996a18-bdcd-11e7-967e-a45e60d0422b","6f98dcd8-bdcd-11e7-967e-a45e60d0422b","6f990f28-bdcd-11e7-967e-a45e60d0422b","6f993e12-bdcd-11e7-967e-a45e60d0422b","6f9a3d12-bdcd-11e7-967e-a45e60d0422b","6f99ac12-bdcd-11e7-967e-a45e60d0422b","6f9a20fc-bdcd-11e7-967e-a45e60d0422b","6f99c9fe-bdcd-11e7-967e-a45e60d0422b","6f99e79a-bdcd-11e7-967e-a45e60d0422b","6f9a0554-bdcd-11e7-967e-a45e60d0422b","6f9ae03c-bdcd-11e7-967e-a45e60d0422b","6f9a5d7e-bdcd-11e7-967e-a45e60d0422b","6f9ac69c-bdcd-11e7-967e-a45e60d0422b","6f9a79a8-bdcd-11e7-967e-a45e60d0422b","6f9a942e-bdcd-11e7-967e-a45e60d0422b","6f9aadf6-bdcd-11e7-967e-a45e60d0422b","6f9b8ad2-bdcd-11e7-967e-a45e60d0422b","6f9afd88-bdcd-11e7-967e-a45e60d0422b","6f9b72a4-bdcd-11e7-967e-a45e60d0422b","6f9b1e6c-bdcd-11e7-967e-a45e60d0422b","6f9b40fe-bdcd-11e7-967e-a45e60d0422b","6f9b5af8-bdcd-11e7-967e-a45e60d0422b","6f9c3428-bdcd-11e7-967e-a45e60d0422b","6f9ba292-bdcd-11e7-967e-a45e60d0422b","6f9c05b6-bdcd-11e7-967e-a45e60d0422b","6f9bbb4c-bdcd-11e7-967e-a45e60d0422b","6f9bd456-bdcd-11e7-967e-a45e60d0422b","6f9bee0a-bdcd-11e7-967e-a45e60d0422b","6f9d2edc-bdcd-11e7-967e-a45e60d0422b","6f9c62f4-bdcd-11e7-967e-a45e60d0422b","6f9d13a2-bdcd-11e7-967e-a45e60d0422b","6f9c94f4-bdcd-11e7-967e-a45e60d0422b","6f9cd0cc-bdcd-11e7-967e-a45e60d0422b","6f9cf87c-bdcd-11e7-967e-a45e60d0422b","6f9e1310-bdcd-11e7-967e-a45e60d0422b","6f9d48d6-bdcd-11e7-967e-a45e60d0422b","6f9df65a-bdcd-11e7-967e-a45e60d0422b","6f9d718a-bdcd-11e7-967e-a45e60d0422b","6f9db924-bdcd-11e7-967e-a45e60d0422b","6f9ddc74-bdcd-11e7-967e-a45e60d0422b","6f9ed390-bdcd-11e7-967e-a45e60d0422b","6f9e3318-bdcd-11e7-967e-a45e60d0422b","6f9eb4be-bdcd-11e7-967e-a45e60d0422b","6f9e500a-bdcd-11e7-967e-a45e60d0422b","6f9e6c84-bdcd-11e7-967e-a45e60d0422b","6f9e8b24-bdcd-11e7-967e-a45e60d0422b","6f9fbd8c-bdcd-11e7-967e-a45e60d0422b","6f9ef1a4-bdcd-11e7-967e-a45e60d0422b","6f9f9f0a-bdcd-11e7-967e-a45e60d0422b","6f9f22a0-bdcd-11e7-967e-a45e60d0422b","6f9f4adc-bdcd-11e7-967e-a45e60d0422b","6f9f7390-bdcd-11e7-967e-a45e60d0422b","6fa01520-bdcd-11e7-967e-a45e60d0422b","6fa035e6-bdcd-11e7-967e-a45e60d0422b","6fa14a44-bdcd-11e7-967e-a45e60d0422b","6fa126d6-bdcd-11e7-967e-a45e60d0422b","6fa10426-bdcd-11e7-967e-a45e60d0422b","6fa05b8e-bdcd-11e7-967e-a45e60d0422b","6fa084f6-bdcd-11e7-967e-a45e60d0422b","6fa0dec4-bdcd-11e7-967e-a45e60d0422b"],"label":["CV_","bundle","CV_Stack","bundle","Stack","train_task(task = task, fold = fold)","bundle","Lrnr_glm","Lrnr_randomForest_100_TRUE_5_NULL_FALSE","Lrnr_glmnet_NULL_deviance_10_1_100","Stack","train_task(task = task, fold = fold)","bundle","Lrnr_glm","Lrnr_randomForest_100_TRUE_5_NULL_FALSE","Lrnr_glmnet_NULL_deviance_10_1_100","Stack","train_task(task = task, fold = fold)","bundle","Lrnr_glm","Lrnr_randomForest_100_TRUE_5_NULL_FALSE","Lrnr_glmnet_NULL_deviance_10_1_100","Stack","train_task(task = task, fold = fold)","bundle","Lrnr_glm","Lrnr_randomForest_100_TRUE_5_NULL_FALSE","Lrnr_glmnet_NULL_deviance_10_1_100","Stack","train_task(task = task, fold = fold)","bundle","Lrnr_glm","Lrnr_randomForest_100_TRUE_5_NULL_FALSE","Lrnr_glmnet_NULL_deviance_10_1_100","Stack","train_task(task = task, fold = fold)","bundle","Lrnr_glm","Lrnr_randomForest_100_TRUE_5_NULL_FALSE","Lrnr_glmnet_NULL_deviance_10_1_100","Stack","train_task(task = task, fold = fold)","bundle","Lrnr_glm","Lrnr_randomForest_100_TRUE_5_NULL_FALSE","Lrnr_glmnet_NULL_deviance_10_1_100","Stack","train_task(task = task, fold = fold)","bundle","Lrnr_glm","Lrnr_randomForest_100_TRUE_5_NULL_FALSE","Lrnr_glmnet_NULL_deviance_10_1_100","Stack","train_task(task = task, fold = fold)","bundle","Lrnr_glm","Lrnr_randomForest_100_TRUE_5_NULL_FALSE","Lrnr_glmnet_NULL_deviance_10_1_100","Stack","train_task(task = task, fold = fold)","bundle","Lrnr_glm","Lrnr_randomForest_100_TRUE_5_NULL_FALSE","Lrnr_glmnet_NULL_deviance_10_1_100","chain","Lrnr_nnls","make_learner(learner_class = learner_class, ..1, ..2)","Stack","bundle","Lrnr_glm","Lrnr_randomForest_100_TRUE_5_NULL_FALSE","Lrnr_glmnet_NULL_deviance_10_1_100"],"level":[1,2,6,7,8,11,9,10,10,10,8,11,9,10,10,10,8,11,9,10,10,10,8,11,9,10,10,10,8,11,9,10,10,10,8,11,9,10,10,10,8,11,9,10,10,10,8,11,9,10,10,10,8,11,9,10,10,10,8,11,9,10,10,10,5,4,3,4,5,6,6,6],"sequential":[true,true,true,true,true,true,true,false,false,false,true,true,true,false,false,false,true,true,true,false,false,false,true,true,true,false,false,false,true,true,true,false,false,false,true,true,true,false,false,false,true,true,true,false,false,false,true,true,true,false,false,false,true,true,true,false,false,false,true,true,true,false,false,false,true,false,true,true,true,false,false,false],"state":["waiting","waiting","waiting","waiting","waiting","ready","waiting","waiting","waiting","waiting","waiting","ready","waiting","waiting","waiting","waiting","waiting","ready","waiting","waiting","waiting","waiting","waiting","ready","waiting","waiting","waiting","waiting","waiting","ready","waiting","waiting","waiting","waiting","waiting","ready","waiting","waiting","waiting","waiting","waiting","ready","waiting","waiting","waiting","waiting","waiting","ready","waiting","waiting","waiting","waiting","waiting","ready","waiting","waiting","waiting","waiting","waiting","ready","waiting","waiting","waiting","waiting","waiting","waiting","waiting","waiting","waiting","ready","ready","ready"],"group":["waiting","waiting","waiting","waiting","waiting","ready","waiting","waiting","waiting","waiting","waiting","ready","waiting","waiting","waiting","waiting","waiting","ready","waiting","waiting","waiting","waiting","waiting","ready","waiting","waiting","waiting","waiting","waiting","ready","waiting","waiting","waiting","waiting","waiting","ready","waiting","waiting","waiting","waiting","waiting","ready","waiting","waiting","waiting","waiting","waiting","ready","waiting","waiting","waiting","waiting","waiting","ready","waiting","waiting","waiting","waiting","waiting","ready","waiting","waiting","waiting","waiting","waiting","waiting","waiting","waiting","waiting","ready","ready","ready"],"shape":["square","square","square","square","square","square","square","dot","dot","dot","square","square","square","dot","dot","dot","square","square","square","dot","dot","dot","square","square","square","dot","dot","dot","square","square","square","dot","dot","dot","square","square","square","dot","dot","dot","square","square","square","dot","dot","dot","square","square","square","dot","dot","dot","square","square","square","dot","dot","dot","square","square","square","dot","dot","dot","square","dot","square","square","square","dot","dot","dot"]},"edges":{"from":["6f981f50-bdcd-11e7-967e-a45e60d0422b","6f981f50-bdcd-11e7-967e-a45e60d0422b","6f98381e-bdcd-11e7-967e-a45e60d0422b","6f981f50-bdcd-11e7-967e-a45e60d0422b","6f985164-bdcd-11e7-967e-a45e60d0422b","6f981f50-bdcd-11e7-967e-a45e60d0422b","6f986ac8-bdcd-11e7-967e-a45e60d0422b","6f988242-bdcd-11e7-967e-a45e60d0422b","6f989aac-bdcd-11e7-967e-a45e60d0422b","6f98b262-bdcd-11e7-967e-a45e60d0422b","6f98b262-bdcd-11e7-967e-a45e60d0422b","6f98dcd8-bdcd-11e7-967e-a45e60d0422b","6f98b262-bdcd-11e7-967e-a45e60d0422b","6f990f28-bdcd-11e7-967e-a45e60d0422b","6f98b262-bdcd-11e7-967e-a45e60d0422b","6f993e12-bdcd-11e7-967e-a45e60d0422b","6f996a18-bdcd-11e7-967e-a45e60d0422b","6f998c82-bdcd-11e7-967e-a45e60d0422b","6f99ac12-bdcd-11e7-967e-a45e60d0422b","6f99ac12-bdcd-11e7-967e-a45e60d0422b","6f99c9fe-bdcd-11e7-967e-a45e60d0422b","6f99ac12-bdcd-11e7-967e-a45e60d0422b","6f99e79a-bdcd-11e7-967e-a45e60d0422b","6f99ac12-bdcd-11e7-967e-a45e60d0422b","6f9a0554-bdcd-11e7-967e-a45e60d0422b","6f9a20fc-bdcd-11e7-967e-a45e60d0422b","6f9a3d12-bdcd-11e7-967e-a45e60d0422b","6f9a5d7e-bdcd-11e7-967e-a45e60d0422b","6f9a5d7e-bdcd-11e7-967e-a45e60d0422b","6f9a79a8-bdcd-11e7-967e-a45e60d0422b","6f9a5d7e-bdcd-11e7-967e-a45e60d0422b","6f9a942e-bdcd-11e7-967e-a45e60d0422b","6f9a5d7e-bdcd-11e7-967e-a45e60d0422b","6f9aadf6-bdcd-11e7-967e-a45e60d0422b","6f9ac69c-bdcd-11e7-967e-a45e60d0422b","6f9ae03c-bdcd-11e7-967e-a45e60d0422b","6f9afd88-bdcd-11e7-967e-a45e60d0422b","6f9afd88-bdcd-11e7-967e-a45e60d0422b","6f9b1e6c-bdcd-11e7-967e-a45e60d0422b","6f9afd88-bdcd-11e7-967e-a45e60d0422b","6f9b40fe-bdcd-11e7-967e-a45e60d0422b","6f9afd88-bdcd-11e7-967e-a45e60d0422b","6f9b5af8-bdcd-11e7-967e-a45e60d0422b","6f9b72a4-bdcd-11e7-967e-a45e60d0422b","6f9b8ad2-bdcd-11e7-967e-a45e60d0422b","6f9ba292-bdcd-11e7-967e-a45e60d0422b","6f9ba292-bdcd-11e7-967e-a45e60d0422b","6f9bbb4c-bdcd-11e7-967e-a45e60d0422b","6f9ba292-bdcd-11e7-967e-a45e60d0422b","6f9bd456-bdcd-11e7-967e-a45e60d0422b","6f9ba292-bdcd-11e7-967e-a45e60d0422b","6f9bee0a-bdcd-11e7-967e-a45e60d0422b","6f9c05b6-bdcd-11e7-967e-a45e60d0422b","6f9c3428-bdcd-11e7-967e-a45e60d0422b","6f9c62f4-bdcd-11e7-967e-a45e60d0422b","6f9c62f4-bdcd-11e7-967e-a45e60d0422b","6f9c94f4-bdcd-11e7-967e-a45e60d0422b","6f9c62f4-bdcd-11e7-967e-a45e60d0422b","6f9cd0cc-bdcd-11e7-967e-a45e60d0422b","6f9c62f4-bdcd-11e7-967e-a45e60d0422b","6f9cf87c-bdcd-11e7-967e-a45e60d0422b","6f9d13a2-bdcd-11e7-967e-a45e60d0422b","6f9d2edc-bdcd-11e7-967e-a45e60d0422b","6f9d48d6-bdcd-11e7-967e-a45e60d0422b","6f9d48d6-bdcd-11e7-967e-a45e60d0422b","6f9d718a-bdcd-11e7-967e-a45e60d0422b","6f9d48d6-bdcd-11e7-967e-a45e60d0422b","6f9db924-bdcd-11e7-967e-a45e60d0422b","6f9d48d6-bdcd-11e7-967e-a45e60d0422b","6f9ddc74-bdcd-11e7-967e-a45e60d0422b","6f9df65a-bdcd-11e7-967e-a45e60d0422b","6f9e1310-bdcd-11e7-967e-a45e60d0422b","6f9e3318-bdcd-11e7-967e-a45e60d0422b","6f9e3318-bdcd-11e7-967e-a45e60d0422b","6f9e500a-bdcd-11e7-967e-a45e60d0422b","6f9e3318-bdcd-11e7-967e-a45e60d0422b","6f9e6c84-bdcd-11e7-967e-a45e60d0422b","6f9e3318-bdcd-11e7-967e-a45e60d0422b","6f9e8b24-bdcd-11e7-967e-a45e60d0422b","6f9eb4be-bdcd-11e7-967e-a45e60d0422b","6f9ed390-bdcd-11e7-967e-a45e60d0422b","6f9ef1a4-bdcd-11e7-967e-a45e60d0422b","6f9ef1a4-bdcd-11e7-967e-a45e60d0422b","6f9f22a0-bdcd-11e7-967e-a45e60d0422b","6f9ef1a4-bdcd-11e7-967e-a45e60d0422b","6f9f4adc-bdcd-11e7-967e-a45e60d0422b","6f9ef1a4-bdcd-11e7-967e-a45e60d0422b","6f9f7390-bdcd-11e7-967e-a45e60d0422b","6f9f9f0a-bdcd-11e7-967e-a45e60d0422b","6f9fbd8c-bdcd-11e7-967e-a45e60d0422b","6f9fd9de-bdcd-11e7-967e-a45e60d0422b","6f9ff81a-bdcd-11e7-967e-a45e60d0422b","6f9ff81a-bdcd-11e7-967e-a45e60d0422b","6fa01520-bdcd-11e7-967e-a45e60d0422b","6fa01520-bdcd-11e7-967e-a45e60d0422b","6fa035e6-bdcd-11e7-967e-a45e60d0422b","6fa05b8e-bdcd-11e7-967e-a45e60d0422b","6fa084f6-bdcd-11e7-967e-a45e60d0422b","6fa0dec4-bdcd-11e7-967e-a45e60d0422b","6fa10426-bdcd-11e7-967e-a45e60d0422b","6fa126d6-bdcd-11e7-967e-a45e60d0422b","6fa035e6-bdcd-11e7-967e-a45e60d0422b","6fa14a44-bdcd-11e7-967e-a45e60d0422b","6fa17faa-bdcd-11e7-967e-a45e60d0422b"],"to":["6f989aac-bdcd-11e7-967e-a45e60d0422b","6f98381e-bdcd-11e7-967e-a45e60d0422b","6f988242-bdcd-11e7-967e-a45e60d0422b","6f985164-bdcd-11e7-967e-a45e60d0422b","6f988242-bdcd-11e7-967e-a45e60d0422b","6f986ac8-bdcd-11e7-967e-a45e60d0422b","6f988242-bdcd-11e7-967e-a45e60d0422b","6f989aac-bdcd-11e7-967e-a45e60d0422b","6f9fd9de-bdcd-11e7-967e-a45e60d0422b","6f998c82-bdcd-11e7-967e-a45e60d0422b","6f98dcd8-bdcd-11e7-967e-a45e60d0422b","6f996a18-bdcd-11e7-967e-a45e60d0422b","6f990f28-bdcd-11e7-967e-a45e60d0422b","6f996a18-bdcd-11e7-967e-a45e60d0422b","6f993e12-bdcd-11e7-967e-a45e60d0422b","6f996a18-bdcd-11e7-967e-a45e60d0422b","6f998c82-bdcd-11e7-967e-a45e60d0422b","6f9fd9de-bdcd-11e7-967e-a45e60d0422b","6f9a3d12-bdcd-11e7-967e-a45e60d0422b","6f99c9fe-bdcd-11e7-967e-a45e60d0422b","6f9a20fc-bdcd-11e7-967e-a45e60d0422b","6f99e79a-bdcd-11e7-967e-a45e60d0422b","6f9a20fc-bdcd-11e7-967e-a45e60d0422b","6f9a0554-bdcd-11e7-967e-a45e60d0422b","6f9a20fc-bdcd-11e7-967e-a45e60d0422b","6f9a3d12-bdcd-11e7-967e-a45e60d0422b","6f9fd9de-bdcd-11e7-967e-a45e60d0422b","6f9ae03c-bdcd-11e7-967e-a45e60d0422b","6f9a79a8-bdcd-11e7-967e-a45e60d0422b","6f9ac69c-bdcd-11e7-967e-a45e60d0422b","6f9a942e-bdcd-11e7-967e-a45e60d0422b","6f9ac69c-bdcd-11e7-967e-a45e60d0422b","6f9aadf6-bdcd-11e7-967e-a45e60d0422b","6f9ac69c-bdcd-11e7-967e-a45e60d0422b","6f9ae03c-bdcd-11e7-967e-a45e60d0422b","6f9fd9de-bdcd-11e7-967e-a45e60d0422b","6f9b8ad2-bdcd-11e7-967e-a45e60d0422b","6f9b1e6c-bdcd-11e7-967e-a45e60d0422b","6f9b72a4-bdcd-11e7-967e-a45e60d0422b","6f9b40fe-bdcd-11e7-967e-a45e60d0422b","6f9b72a4-bdcd-11e7-967e-a45e60d0422b","6f9b5af8-bdcd-11e7-967e-a45e60d0422b","6f9b72a4-bdcd-11e7-967e-a45e60d0422b","6f9b8ad2-bdcd-11e7-967e-a45e60d0422b","6f9fd9de-bdcd-11e7-967e-a45e60d0422b","6f9c3428-bdcd-11e7-967e-a45e60d0422b","6f9bbb4c-bdcd-11e7-967e-a45e60d0422b","6f9c05b6-bdcd-11e7-967e-a45e60d0422b","6f9bd456-bdcd-11e7-967e-a45e60d0422b","6f9c05b6-bdcd-11e7-967e-a45e60d0422b","6f9bee0a-bdcd-11e7-967e-a45e60d0422b","6f9c05b6-bdcd-11e7-967e-a45e60d0422b","6f9c3428-bdcd-11e7-967e-a45e60d0422b","6f9fd9de-bdcd-11e7-967e-a45e60d0422b","6f9d2edc-bdcd-11e7-967e-a45e60d0422b","6f9c94f4-bdcd-11e7-967e-a45e60d0422b","6f9d13a2-bdcd-11e7-967e-a45e60d0422b","6f9cd0cc-bdcd-11e7-967e-a45e60d0422b","6f9d13a2-bdcd-11e7-967e-a45e60d0422b","6f9cf87c-bdcd-11e7-967e-a45e60d0422b","6f9d13a2-bdcd-11e7-967e-a45e60d0422b","6f9d2edc-bdcd-11e7-967e-a45e60d0422b","6f9fd9de-bdcd-11e7-967e-a45e60d0422b","6f9e1310-bdcd-11e7-967e-a45e60d0422b","6f9d718a-bdcd-11e7-967e-a45e60d0422b","6f9df65a-bdcd-11e7-967e-a45e60d0422b","6f9db924-bdcd-11e7-967e-a45e60d0422b","6f9df65a-bdcd-11e7-967e-a45e60d0422b","6f9ddc74-bdcd-11e7-967e-a45e60d0422b","6f9df65a-bdcd-11e7-967e-a45e60d0422b","6f9e1310-bdcd-11e7-967e-a45e60d0422b","6f9fd9de-bdcd-11e7-967e-a45e60d0422b","6f9ed390-bdcd-11e7-967e-a45e60d0422b","6f9e500a-bdcd-11e7-967e-a45e60d0422b","6f9eb4be-bdcd-11e7-967e-a45e60d0422b","6f9e6c84-bdcd-11e7-967e-a45e60d0422b","6f9eb4be-bdcd-11e7-967e-a45e60d0422b","6f9e8b24-bdcd-11e7-967e-a45e60d0422b","6f9eb4be-bdcd-11e7-967e-a45e60d0422b","6f9ed390-bdcd-11e7-967e-a45e60d0422b","6f9fd9de-bdcd-11e7-967e-a45e60d0422b","6f9fbd8c-bdcd-11e7-967e-a45e60d0422b","6f9f22a0-bdcd-11e7-967e-a45e60d0422b","6f9f9f0a-bdcd-11e7-967e-a45e60d0422b","6f9f4adc-bdcd-11e7-967e-a45e60d0422b","6f9f9f0a-bdcd-11e7-967e-a45e60d0422b","6f9f7390-bdcd-11e7-967e-a45e60d0422b","6f9f9f0a-bdcd-11e7-967e-a45e60d0422b","6f9fbd8c-bdcd-11e7-967e-a45e60d0422b","6f9fd9de-bdcd-11e7-967e-a45e60d0422b","6f9ff81a-bdcd-11e7-967e-a45e60d0422b","6fa17faa-bdcd-11e7-967e-a45e60d0422b","6fa01520-bdcd-11e7-967e-a45e60d0422b","6fa17faa-bdcd-11e7-967e-a45e60d0422b","6fa035e6-bdcd-11e7-967e-a45e60d0422b","6fa17faa-bdcd-11e7-967e-a45e60d0422b","6fa10426-bdcd-11e7-967e-a45e60d0422b","6fa10426-bdcd-11e7-967e-a45e60d0422b","6fa10426-bdcd-11e7-967e-a45e60d0422b","6fa126d6-bdcd-11e7-967e-a45e60d0422b","6fa14a44-bdcd-11e7-967e-a45e60d0422b","6fa14a44-bdcd-11e7-967e-a45e60d0422b","6fa17faa-bdcd-11e7-967e-a45e60d0422b","6fa19d28-bdcd-11e7-967e-a45e60d0422b"],"label":["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot"},"manipulation":{"enabled":false},"edges":{"arrows":"to"},"layout":{"hierarchical":{"enabled":true,"levelSeparation":500,"nodeSpacing":200,"direction":"RL"}},"groups":{"waiting":{"color":{"border":"black","background":"white"}},"ready":{"color":{"border":"black","background":"orange"}},"running":{"color":{"border":"black","background":"lightgreen"}},"resolved":{"color":{"border":"black","background":"black"}},"useDefaultGroups":true,"error":{"color":{"border":"black","background":"lightpink"}}}},"groups":["waiting","ready"],"width":"100%","height":"500px","idselection":{"enabled":false},"byselection":{"enabled":false},"main":null,"submain":null,"footer":null,"legend":{"width":0.2,"useGroups":false,"position":"left","ncol":1,"stepX":100,"stepY":100,"nodes":{"label":["waiting","ready","running","resolved","error","sequential","parallel"],"color":[{"border":"black","background":"white"},{"border":"black","background":"orange"},{"border":"black","background":"lightgreen"},{"border":"black","background":"black"},{"border":"black","background":"lightpink"},{"border":"black","background":"white"},{"border":"black","background":"white"}],"shape":["dot","dot","dot","dot","dot","square","dot"]},"nodesToDataframe":true}},"evals":[],"jsHooks":[]}</script>
+
+
+---
+
+# Delayed III
+
+- **shiny demo**
+- `delayed` then allows us to parallelize the procedure across these tasks using
+  the [`future`](https://github.com/HenrikBengtsson/future) package.
+
+- *n.b.*, This feature is currently experimental and hasn't yet been throughly
+  tested on a range of parallel backends.
+
+--
+
+- Performance comparisons can be found in the "SuperLearner Benchmarks" vignette
+  that accompanies this package.
+
+???
+
+- Fitting a Super Learner is composed of many different training and prediction
+  steps, as the procedure requires that the learners in the stack and the
+  meta-learner be fit on cross-validation folds and on the full data.
+
+- For more information on specifying `future` `plan`s for parallelization, see
+  the documentation of the [`future`](https://github.com/HenrikBengtsson/future)
+  package.
+
+---
+class: center, middle
+
+# Thanks!
+
+We have a great team: Jeremy Coyle, Nima Hejazi, Ivana Malenica, Oleg Sofrygin.
+
+Slides created via the R package
+[**xaringan**](https://github.com/yihui/xaringan).
+
+Powered by [remark.js](https://remarkjs.com),
+[**knitr**](http://yihui.name/knitr), and
+[R Markdown](https://rmarkdown.rstudio.com).
+    </textarea>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "zenburn",
+"highlightLines": true,
+"navigation": {
+"scroll": false
+}
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {window.dispatchEvent(new Event('resize'));});
+(function() {var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler"); if (!r) return; s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }"; d.head.appendChild(s);})();</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+  }
+});
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

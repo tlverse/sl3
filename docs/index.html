@@ -16,7 +16,7 @@
 </head>
 <body>
     <div class="container template-vignette">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <header><div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -29,12 +29,6 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="/index.html">
-    <span class="fa fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -45,10 +39,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/custom_lrnrs.html">Defining New `sl3` Learners</a>
+      <a href="articles/intro_sl3.html">Intro to sl3</a>
     </li>
     <li>
-      <a href="articles/intro_sl3.html">Modern Machine Learning in R</a>
+      <a href="articles/SuperLearner_Benchmarks.html">sl3 Benchmarks</a>
+    </li>
+    <li>
+      <a href="slides/sl3-slides.html">sl3 Presentation</a>
+    </li>
+    <li>
+      <a href="articles/custom_lrnrs.html">Defining Custom sl3 Learners</a>
     </li>
   </ul>
 </li>
@@ -139,11 +139,9 @@ install.packages("sl3")
 <span class="kw">library</span>(SuperLearner)
 <span class="co">#&gt; Loading required package: nnls</span>
 <span class="co">#&gt; Super Learner</span>
-<span class="co">#&gt; Version: 2.0-23-9000</span>
-<span class="co">#&gt; Package created on 2017-07-20</span>
+<span class="co">#&gt; Version: 2.0-22</span>
+<span class="co">#&gt; Package created on 2017-07-18</span>
 <span class="kw">library</span>(origami)
-<span class="co">#&gt; origami: Generalized Cross-Validation Framework</span>
-<span class="co">#&gt; Version: 0.8.0</span>
 <span class="kw">library</span>(sl3)
 
 <span class="co"># load example data set</span>
@@ -211,6 +209,11 @@ preds &lt;-<span class="st"> </span>stack_fit<span class="op">$</span><span clas
 <a href="#license" class="anchor"></a>License</h2>
 <p>© 2017 <a href="https://github.com/jeremyrcoyle">Jeremy R. Coyle</a>, <a href="https://github.com/nhejazi">Nima S. Hejazi</a>, <a href="https://github.com/podTockom">Ivana Malenica</a>, <a href="https://github.com/osofr">Oleg Sofrygin</a></p>
 <p>The contents of this repository are distributed under the GPL-3 license. See file <code>LICENSE</code> for details.</p>
+<hr>
+</div>
+<div id="references" class="section level2">
+<h2 class="hasAnchor">
+<a href="#references" class="anchor"></a>References</h2>
 </div>
 </div>
 </div>
