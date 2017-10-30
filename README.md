@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-R/`sl3`: modern machine learning pipeliens for Super Learning
-=============================================================
+R/`sl3`: modern Super Learning with pipelines
+=============================================
 
 [![Travis-CI Build Status](https://travis-ci.org/jeremyrcoyle/sl3.svg?branch=master)](https://travis-ci.org/jeremyrcoyle/sl3) [![Build status](https://ci.appveyor.com/api/projects/status/25reu5wdhrwj9qgy?svg=true)](https://ci.appveyor.com/project/jeremyrcoyle/sl3) [![Coverage Status](https://img.shields.io/codecov/c/github/jeremyrcoyle/sl3/master.svg)](https://codecov.io/github/jeremyrcoyle/sl3?branch=master) [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](http://www.repostatus.org/badges/latest/wip.svg)](http://www.repostatus.org/#wip) [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0) [![Join the chat at https://gitter.im/sl3-Rpkg/Lobby](https://badges.gitter.im/sl3-Rpkg/Lobby.svg)](https://gitter.im/sl3-Rpkg/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
