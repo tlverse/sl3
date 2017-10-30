@@ -12,7 +12,7 @@
 \usage{
 delayed_make_learner(learner_class, ...)
 
-learner_train(learner, task, pretrain)
+learner_train(learner, task, trained_sublearners)
 
 delayed_learner_train(learner, task)
 
@@ -33,7 +33,7 @@ delayed_learner_fit_chain(learner_fit, task = NULL)
 
 \item{task}{the task to fit on}
 
-\item{pretrain}{any data obtained from a pretrain step}
+\item{trained_sublearners}{any data obtained from a train_sublearners step}
 
 \item{learner_fit}{a learner object that has already been fit}
 }

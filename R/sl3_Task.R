@@ -1,6 +1,6 @@
 
 
-#' Class for Task Data
+#' Define a Machine Learning Task
 #'
 #' A thin wrapper around a \code{data.table} containing the data. Contains metadata about the particular machine learning problem, including which variables are to be used as covariates and outcomes.
 #' @docType class
@@ -9,13 +9,7 @@
 #' @keywords data
 #' @return \code{sl3_Task} object
 #' @format \code{\link{R6Class}} object.
-#' @field data Underlying representation of the data
-#' @field nodes A list indicating which columns of \code{data} have which purpose
-#' @field X a data.table containing the covariates
-#' @field Y a vector containing the outcomes
-#' @field weights a vector containing the observation weights. If weights aren't specified on construction, weights will default to 1
-#' @field id a vector containing the observation units.
-#' @template sl3_Task_methods
+#' @template sl3_Task_extra
 #' @importFrom assertthat assert_that is.count is.flag
 #' @importFrom uuid UUIDgenerate
 #' @import data.table
@@ -375,8 +369,7 @@ sl3_Task <- R6Class(classname = "sl3_Task",
   return(x$subset_task(i))
 }
 
-#' @param ... See documentation for the \code{new} method below.
+#' @param ... Passes all arguments to the constructor. See documentation for the Constructor below.
 #' @rdname sl3_Task
 #' @export
-#' @inheritParams sl3_Task$public_methods$initialize
 make_sl3_Task <- sl3_Task$new

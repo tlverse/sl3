@@ -58,7 +58,7 @@ Stack <- R6Class(classname = "Stack",
                        }
                      ),
                      private = list(
-                       .pretrain = function(task){
+                       .train_sublearners = function(task){
                          #generate training subtasks
                          learners <- self$params$learners
                          subtasks <- lapply(learners, function(learner){
@@ -70,11 +70,11 @@ Stack <- R6Class(classname = "Stack",
                          
                          return(bundle_delayed(subtasks))
                        },
-                       .train = function(task, pretrain) {
+                       .train = function(task, trained_sublearners) {
                          
                          #check fits for errors
-                         is_error <- sapply(pretrain, function(result){inherits(result,"error")||inherits(result,"try-error")})
-                         learner_errors <- pretrain[is_error]
+                         is_error <- sapply(trained_sublearners, function(result){inherits(result,"error")||inherits(result,"try-error")})
+                         learner_errors <- trained_sublearners[is_error]
                          errored_learners <- self$params$learners[is_error]
                          
                          for(i in seq_along(errored_learners)){
@@ -86,7 +86,7 @@ Stack <- R6Class(classname = "Stack",
                          if(all(is_error)){
                            stop("All learners in stack have failed")
                          }
-                         fit_object <- list(learner_fits = pretrain, learner_errors = learner_errors, is_error = is_error)
+                         fit_object <- list(learner_fits = trained_sublearners, learner_errors = learner_errors, is_error = is_error)
 
                          return(fit_object)
 
@@ -105,7 +105,7 @@ Stack <- R6Class(classname = "Stack",
 
                          for(i in seq_along(learner_fits)) {
                            current_fit  <- learner_fits[[i]]
-                           current_preds <- current_fit$predict(task)
+                           current_preds <- current_fit$base_predict(task)
                            current_names <- learner_names[i]
                            if (!is.na(safe_dim(current_preds)[2]) && safe_dim(current_preds)[2] > 1) {
                             current_names <- paste0(learner_names[i], "_", names(current_preds))

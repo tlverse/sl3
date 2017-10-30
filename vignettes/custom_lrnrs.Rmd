@@ -11,19 +11,115 @@ vignette: >
 
 ## Introduction
 
-* learner should have defaults for all parameter values (within reason)
-## Learner Template Here
+This guide describes the process of implementing a learner class for a new machine learning algorithm. By writing a learner class for your favorite machine learning algorithm, you can use it in all the places you can use any `sl3` learners, including `Pipeline`s, `Stack`s, and Super Learner. We have done our best to streamline the process of creating a new `sl3` learner. 
 
-### Explain methods that can/should be overridden
-* initialize
-* `.train` and `.pretrain`
-* `.predict`
-* `.chain`
-* `.properties`
-`sl3_list_properties`
-`sl3_list_learners`
-* `.required_packages`
-## Testing Your Learner
+Before diving into defining a new learner, it will be helpful to read some background material. If you haven't already read it, the [Modern Machine Learning in R](intro_sl3.html) vignette is a good introduction to `sl3` and it's architecture. The [`R6`](https://cran.r-project.org/web/packages/R6/vignettes/Introduction.html) documentation will help you understand how `R6` classes are defined. In addition, the help files for [`sl3_Task`](../help/sl3_Task) and [`Lrnr_base`](../help/Lrnr_base) are good resources for how those objects can be used. If you're interested in defining learners that fit sublearners, reading the [delayed](https://jeremyrcoyle.github.io/delayed/articles/delayed.html) documentation will be helpful.
 
-* should pass the general test
-* should not decrease overall code coverage
+In the next sections, we review a template for a new `sl3` learner, and describe the sections that can be used to define your new learner. Then, we discuss the important task of documenting and testing your learner. Finally, we explain how you can add your learner to `sl3` for other users to use.
+
+```{r setup}
+library(sl3)
+library(knitr)
+```
+## Learner Template
+
+`sl3` provides a template of a learner for use in defining new learners. You can make a copy of the template to work on using `write_learner_template`:
+
+```{r write-template, eval=FALSE}
+## Not run:
+write_learner_template("path/to/write/Learner_template.R")
+```
+
+```{r cache=FALSE, echo = FALSE}
+read_chunk("../inst/templates/Lrnr_template.R", label="template")
+```
+
+Let's take a look at that template:
+
+```{r template, eval=FALSE}
+```
+
+The template has comments indicating where details specific to the learner you're trying to implement should be filled in. In the next section, we will discuss those details further.
+
+## Defining your Learner
+
+### Learner Name and Class
+
+At the top of the template, we define an object `Lrnr_template` and set `classname="Lrnr_template"`. You should modify these to match your learner name, which should also match the name of the R file. It should begin with `Lrnr_` and use [`snake_case`](https://en.wikipedia.org/wiki/Snake_case). 
+
+### `public$initialize`
+
+This function defines the constructor for your learner, and it stores the arguments (if any) provided when a user calls `make_learner(Lrnr_your_learner, ...)`. You can also provide default parameter values, as the template does with `param_1="default_1"`, and `param_2="default_2"`. If possible, all parameters used by your learners should have defaults. This will allow users to use your learner without having to figure out what are reasonable parameter values. Parameter values should be documented; see the section below on [documentation](#doctest) for details.
+
+### `public$special_function`s
+
+You can of course define functions for things only your learner can do. These should be public functions like the `special_function` defined in the example. These should be documented; see the section below on [documentation](#doctest) for details.
+
+### `private$.properties`
+
+This field defines properties supported by your learner. This includes things like different outcome types it will support, as well as things like offsets and weights. You can use `sl3_list_properties` to see a list of all properties currently used by at least one learner:
+
+```{r sl3-list-learner}
+sl3_list_properties()
+```
+
+### `private$.required_packages`
+
+This field defines packages required by your learner to work. These will be loaded when an object of your learner class is initialized. 
+
+### The Learner User Interface.
+
+If you've used `sl3` before, you may have noticed that while users are instructed to use `learner$train`, `learner$predict`, and `learner$chain`, to train, generate predictions, and generate a chained task for a given learner object, the template does not implement these methods. Instead, the template implements private methods called `.train`, `.predict`, and `.chain`. The specifics of these methods are explained below. However, it is helpful to first understand how the two sets of methods are related. To make things even more complicated, there is actually a third set of methods, `learner$base_train`, `learner$base_predict`, and `learner$base_chain`, that you may not be aware of.
+
+So, what happens when a user calls `learner$train`? That method generates a `delayed` object using the `delayed_learner_train` function, and then computes that delayed object. `delayed_learner_train` in turn defines a delayed computation that calls `base_train`, a user-facing function that can be used to train tasks without using `delayed`. `base_train` validates the user input, and in turn calls `private$.train`. When `private$.train` returns a `fit_object`, `base_train` takes that fit object, generates a learner fit object, and returns it to the user. 
+
+In summary, each call to `learner$train` involves three separate training methods:
+
+1. The user-facing `learner$train` that trains a learner in a way that can be parallelized using `delayed`, which calls ...
+2. ... the user-facing `learner$base_train` that validates user input, and which calls ...
+3. ... the internal `private$.train`, which does the actual work of fitting the learner and returning the fit object.
+
+The logic in the user-facing `learner$train` and `learner$base_train` is defined in the `Lrnr_base` base class and is shared across all learners, and so these methods do not need to be reimplemented in individual learners. However, `private$.train`, contains the behavior that is specific to each individual learner, and should be reimplemented in each individual learner. Because `learner$base_train` does not use `delayed`, it can be helpful to use it when debugging the training code in your learner. Analogous program flow is used for prediction and chaining. 
+
+### `private$.train`
+
+This is the main training function, that takes in a task, and returns a `fit_object` that contains all information needed to generate predictions. If possible, make sure that the fit object doesn't contain more data than is necessary. Many learner functions (like `glm`) store one or more copies of their training data. This uses unnecessary memory and will hurt learner performance for large sample sizes. Therefore, these copies should be removed from the fit object before it is returned. You can use \code{true_obj_size} on your `fit_object` to estimate its size. For most learners, `fit_object` size should not grow linearly with training sample size. If it does, and this is unexpected, please try to reduce the `fit_object` size.
+
+Most of the time, the learner you are implementing will be fit using a function that already exists elsewhere. We've built some tools to facilitate passing parameter values directly to this function. The `private$.train` function in the template uses a common pattern: it builds up an argument list starting with the parameter values and using data from the task, it then uses `call_with_args` to call `my_ml_fun` with that argument list. It's not required that learners use this pattern, but it will be helpful in the common case where the learner is simply wrapping an underlying `my_ml_fun`. 
+
+By default, `call_with_args` will pass all arguments in the argument list matched by the definition of the function it is calling. This allows the learner to silently drop irrelevant parameters from the call to `my_ml_fun`. However, some learners either capture important arguments using dot args (`...`), or pass important arguments through dot args on to a secondary function. Both of these cases can be handled using the `other_valid` and `keep_all` options to `call_with_args`, the former allows you to list other valid arguments, and the latter disables argument filtering altogether.
+
+### `private$.predict`
+
+This is the main prediction function, and takes in a task and generates predictions for that task using the `fit_object`. If those predictions are 1-dimensional, they will be coerced to a vector by `base_predict`.
+
+
+### `private$.chain`
+
+
+This is the main chain function, and takes in a task and generates a chained task for that task using the `fit_object`. If this method is not implemented, your learner will use the default chaining behavior, which is to return a new task where the covariates are defined as your learner's predictions for the current task.
+
+### Learners that have sublearners (_Advanced_)
+
+Most of the time, the above sections will be all that's required for implementing a new learner in `sl3`. However, some learners have "sublearners", or learners that they depend on. Examples of such learners are `Stack`, `Pipeline`, `Lrnr_cv`, and `Lrnr_sl`. In order to parallelize the fitting of these sublearners using delayed, these learners implement a specialized `private$.train_sublearners` method that calls `delayed_learner_train` on their sublearners, and returns a single delayed object that, when evaluated, will return all relevant fit objects from these sublearners. The result of that call is then passed as a second argument to their `private$.train` method, which now has the function prototype `private$.train(task, trained_sublearners)`. Because they usually have a much shorter computation time, `predict` and `chain` are not currently parallelized in this way, although this is subject to change in the future.
+
+If, like these learners, your learner depends on sublearners, you have two options:
+
+1. Don't worry about parallelizing sublearners, and simply implement `private$.train` as discussed above, being sure to call `sublearner$base_train` and not `sublearner$train`, to avoid nesting calls to `delayed`, which may result in suboptimal performance.
+2. Implement `private$.train_sublearners(task)` and `private$.train(task, trained_sublearners)`, to parallelize sublearners using `delayed`. We suggest reviewing the implementations of the `Stack`, `Pipeline`, `Lrnr_cv`, and `Lrnr_sl`, to get a better understanding of how to implement parallelized sublearners.
+
+In either case, you should be careful to call `sublearner$base_predict` and `sublearner$base_chain`, instead of `sublearner$predict` and `sublearner$chain`, except in the context of the `private$.train_sublearners` function, where you should use `delayed_learner_fit_predict` and `delayed_learner_fit_chain`.
+
+
+## Documenting and Testing your Learner {#doctest}
+
+If you want other people to be able to use your learner, it will be helpful to document and test it. The above template has example documentation, written in [roxygen](http://r-pkgs.had.co.nz/man.html). Importantly, you should describe what your learner does, reference any external code it uses, and document any parameters and public methods defined by it.
+
+It's also important to [test](http://r-pkgs.had.co.nz/tests.html) your learner. You should write tests that verify your learner can train and predict on new data, and, if applicable, generate a chained task. It might also be a good idea to use the `risk` function in `sl3` to verify your learner's performance on a sample dataset. That way, if you change your learner and performance drops, you know something may have gone wrong.
+
+## Submitting your Learner to `sl3`.
+
+Once you've implemented your learner, and made sure that it has quality documentation and testing, please consider adding it to `sl3`. This will allow other `sl3` users to use it. Make sure to add any packages listed in `.required_packages` to the `Suggests:` field of the `DESCRIPTION` file.
+Once this is done, make a _Pull Request_ to `sl3` to request adding your learner. If you've never made a Pull Request before, see this helpful guide: https://yangsu.github.io/pull-request-tutorial/.
+
+Thanks for your interest in extending `sl3`!

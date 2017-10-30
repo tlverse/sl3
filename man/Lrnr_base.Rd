@@ -3,34 +3,197 @@
 \docType{class}
 \name{Lrnr_base}
 \alias{Lrnr_base}
-\title{Base Class for all sl3 learners.}
+\alias{make_learner}
+\title{Base Class for all sl3 Learners.}
 \format{\code{\link{R6Class}} object.}
 \usage{
 Lrnr_base
+
+make_learner(learner_class, ...)
+}
+\arguments{
+\item{learner_class}{the learner class to instantiate}
+
+\item{...}{parameters with which to instantiate the learner. See Parameters section below.}
 }
 \value{
-\code{\link{Lrnr_base}} object with methods for training and prediction
+Learner object with methods for training and prediction
 }
 \description{
-Generally this base Learner class shouldn't be instantiated. It's intended to be an abstract class, although abstract classes aren't explicitly supported by R6.
+Generally this base learner class shouldn't be instantiated. It's intended to be an abstract class, although abstract classes aren't explicitly supported by R6.
+All learners support the methods and fields documented below. For more information on a particular learner, see its help file.
 }
+\section{Parameters}{
+
+
+Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by \code{Lrnr_base}, and shared
+by all learners.
+
+\describe{
+  \item{\code{covariates}}{A character vector of covariates. The learner will use this to subset the covariates for any specified task}
+  \item{\code{outcome_type}}{A \code{\link{variable_type}} object used to control the outcome_type used by the learner. Overrides the task outcome_type}
+  \item{\code{...}}{All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating}
+}
+}
+
+\section{User Methods}{
+
+
+\describe{
+\item{\code{train}}{
+  Trains learner to a task using \code{delayed}. Returns a fit object
+
+  \emph{Usage:} \code{learner$train(task)}
+                     
+  \emph{Arguments:}
+  \itemize{
+    \item{\code{task}: The task to use for training
+    }
+  }
+  }
+  
+\item{\code{base_train}}{
+  Trains learner to a task. Returns a fit object
+
+  \emph{Usage:} \code{learner$base_train(task, trained_sublearners = NULL)}
+                     
+  \emph{Arguments:}
+  \itemize{
+    \item{\code{task}: The task to use for training
+    }
+    \item{\code{trained_sublearners}: Any sublearners previous trained. Almost always \code{NULL}
+    }
+  }
+  }
+  
+\item{\code{predict}}{
+  Generates predictions using \code{delayed}. Returns a prediction vector or matrix.
+
+  \emph{Usage:} \code{learner$predict(task=NULL)}
+                     
+  \emph{Arguments:}
+  \itemize{
+    \item{\code{task}: The task to use for prediction. If no task is provided, it will use the task used for training.
+    }
+  }
+  }
+   
+\item{\code{base_predict}}{
+  Generates predictions. Returns a prediction vector or matrix.
+
+  \emph{Usage:} \code{learner$base_predict(task=NULL)}
+                     
+  \emph{Arguments:}
+  \itemize{
+    \item{\code{task}: The task to use for prediction. If no task is provided, it will use the task used for training.
+    }
+  }
+  }
+   
+\item{\code{chain}}{
+  Generates a chained task using \code{delayed}
+
+  \emph{Usage:} \code{learner$chain(task=NULL)}
+                     
+  \emph{Arguments:}
+  \itemize{
+    \item{\code{task}: The task to use for chaining If no task is provided, it will use the task used for training.
+    }
+  }
+  }
+   
+\item{\code{base_chain}}{
+  Generates a chained task
+
+  \emph{Usage:} \code{learner$base_chain(task=NULL)}
+                     
+  \emph{Arguments:}
+  \itemize{
+    \item{\code{task}: The task to use for chaining If no task is provided, it will use the task used for training.
+    }
+  }
+  }
+}
+}
+
 \section{Fields}{
 
 \describe{
-\item{\code{params}}{A list of parameters needed to fully specify the learner. This includes things like model hyperparameters.}
+  \item{\code{is_trained}}{\code{TRUE} if this is a learner fit, not an untrained learner}
+  \item{\code{fit_object}}{The internal fit object}
+  \item{\code{name}}{The learner name}
+  \item{\code{learner_uuid}}{A unique identifier of this learner, but common to all fits of this learner}
+  \item{\code{fit_uuid}}{A unique identifier of this learner fit. \code{NULL} if this is an untrained learner}   
+  \item{\code{params}}{A list of learner parameters, as specified on construction}   
+  \item{\code{training_task}}{The task used for training. \code{NULL} if this is an untrained learner}   
+  \item{\code{training_outcome_type}}{The outcome_type of the task used for training. \code{NULL} if this is an untrained learner}   
+  \item{\code{properties}}{The properties supported by this learner}   
+  \item{\code{coefficients}}{Fit coefficients, if this learner has coefficients. \code{NULL} otherwise, or if this is an untrained learner}  
+}
+}
 
-\item{\code{is_trained}}{A boolean indicating that the learner has been already trained.}
+\section{Internal Methods}{
 
-\item{\code{name}}{A short name used to reference predictions from this class}
-}}
 
-\section{Methods}{
+These methods are primiarily for internal use only. They're not recommended for public consumption.
 
 \describe{
-\item{\code{new(...)}}{This method is used to create an object of this class.}
-\item{\code{train(task)}}{Trains this Learner on the data in the \code{task} object. Returns a new \code{Learner} object containing the fit of this Learner to the data in \code{task}. This can then be used with the \code{predict} and \code{chain} methods.}
-\item{\code{predict(task=NULL)}}{When called from a \code{Learner} object generated by a call to \code{train}, can be used to generate predictions on the data in \code{task}. If no \code{task} is specified, the task used to train the Learner will be used.}
-\item{\code{chain(task=NULL)}}{When called from a \code{Learner} object generated by a call to \code{train}, will generate a new task based on the pre be used to generate predictions on the data in \code{task}. This can be used to train a new Learner on the output of this one. This is mostly accomplished by using \code{\link{Pipeline}} Learner. If no \code{task} is specified, the task used to train the Learner will be used.}
+\item{\code{subset_covariates}}{
+  Returns a task with covariates subsetted using the \code{covariates} parameter.
+
+  \emph{Usage:} \code{learner$subset_covariates(task)}
+                     
+  \emph{Arguments:}
+  \itemize{
+    \item{\code{task}: The task to subset
+    }
+  }
+  }
+  
+\item{\code{get_outcome_type}}{
+  Mediates between the task outcome_type and parameter outcome_type. If a parameter outcome_type was specified, returns that. Otherwise,
+  returns the task$outcome_type.
+
+  \emph{Usage:} \code{learner$get_outcome_type(task)}
+                     
+  \emph{Arguments:}
+  \itemize{
+    \item{\code{task}: The task for which to determine the outcome_type
+    }
+  }
+  }
+
+\item{\code{train_sublearners}}{
+  Trains sublearners to a task using \code{delayed}. Returns a delayed sublearner fit.
+
+  \emph{Usage:} \code{learner$train_sublearners(task)}
+                     
+  \emph{Arguments:}
+  \itemize{
+    \item{\code{task}: The task to use for training
+    }
+  }
+  }
+  
+\item{\code{set_train}}{
+  Converts a learner to a learner fit.
+
+  \emph{Usage:} \code{learner$set_train(fit_object, training_task)}
+                     
+  \emph{Arguments:}
+  \itemize{
+    \item{\code{fit_object}: The fit object generated by a call to \code{private$.train}
+    }
+    \item{\code{training_task}: The task used for training
+    }
+  }
+  }
+  
+\item{\code{assert_trained}}{
+  Throws an error if this learner does not have a \code{fit_object}
+
+  \emph{Usage:} \code{learner$assert_trained()}
+  }
 }
 }
 

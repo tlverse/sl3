@@ -100,7 +100,7 @@ Lrnr_sl <- R6Class(classname = "Lrnr_sl", inherit = Lrnr_base, portable = TRUE,
   ),
   private = list(
     .properties = c("wrapper"),
-    .pretrain = function(task) {
+    .train_sublearners = function(task) {
       # prefer folds from params, but default to folds from task
       folds <- self$params$folds
       if (is.null(folds)) {
@@ -130,9 +130,9 @@ Lrnr_sl <- R6Class(classname = "Lrnr_sl", inherit = Lrnr_base, portable = TRUE,
                          cv_meta_fit = cv_meta_fit, full_fit = full_fit)
       return(bundle_delayed(fit_object))
     },
-    .train = function(task, pretrain) {
+    .train = function(task, trained_sublearners) {
       # propagate stack errors from cross-validation to full refit
-      fit_object <- pretrain
+      fit_object <- trained_sublearners
       cv_errors <- fit_object$cv_fit$fit_object$is_error
       fit_object$full_fit$fit_object$learner_fits[[1]]$update_errors(cv_errors)
 
@@ -149,7 +149,7 @@ Lrnr_sl <- R6Class(classname = "Lrnr_sl", inherit = Lrnr_base, portable = TRUE,
       return(fit_object[keep])
     },
     .predict = function(task) {
-      predictions = private$.fit_object$full_fit$predict(task)
+      predictions = private$.fit_object$full_fit$base_predict(task)
       return(predictions)
     }
   )
