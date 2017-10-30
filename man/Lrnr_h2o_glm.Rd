@@ -4,7 +4,6 @@
 \name{Lrnr_h2o_glm}
 \alias{Lrnr_h2o_glm}
 \alias{define_h2o_X}
-\alias{Lrnr_h2o_glm}
 \title{h2o Model Definition}
 \format{\code{\link{R6Class}} object.}
 \usage{

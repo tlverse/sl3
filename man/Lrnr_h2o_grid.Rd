@@ -3,9 +3,7 @@
 \docType{class}
 \name{Lrnr_h2o_grid}
 \alias{Lrnr_h2o_grid}
-\alias{Lrnr_h2o_grid}
 \alias{Lrnr_h2o_classifier}
-\alias{Lrnr_h2o_grid}
 \alias{Lrnr_h2o_mutator}
 \title{Grid Search Models with h2o}
 \format{\code{\link{R6Class}} object.}
@@ -31,9 +29,5 @@ This learner provides facilities for fitting various types of models with
 support for grid search over the hyperparameter space of such models, using
 an interface to the H2O platform. For details on the procedures available and
 any limitations, consult the documentation of the \code{h2o} package.
-
-Classification Models with h2o
-
-Mutate Grid Search Models with h2o
 }
 \keyword{data}

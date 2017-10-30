@@ -39,4 +39,5 @@ Other Learners: \code{\link{Custom_chain}},
   \code{\link{Lrnr_sl}}, \code{\link{Lrnr_tsDyn}},
   \code{\link{Stack}}
 }
+\concept{Learners}
 \keyword{data}

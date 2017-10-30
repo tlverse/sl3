@@ -1,5 +1,6 @@
 ---
 output: github_document
+bibliography: README-refs.bib
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -12,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# R/`sl3`: new and improved Super Learning
+# R/`sl3`: modern machine learning pipeliens for Super Learning
 
 [![Travis-CI Build Status](https://travis-ci.org/jeremyrcoyle/sl3.svg?branch=master)](https://travis-ci.org/jeremyrcoyle/sl3)
 [![Build status](https://ci.appveyor.com/api/projects/status/25reu5wdhrwj9qgy?svg=true)](https://ci.appveyor.com/project/jeremyrcoyle/sl3)
@@ -21,8 +22,8 @@ knitr::opts_chunk$set(
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
 [![Join the chat at https://gitter.im/sl3-Rpkg/Lobby](https://badges.gitter.im/sl3-Rpkg/Lobby.svg)](https://gitter.im/sl3-Rpkg/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-> A modern implementation of the Super Learner ensemble learning / stacking
-> algorithm
+> A modern implementation of the Super Learner algorithm for ensemble learning
+> and model stacking
 
 __Authors:__ [Jeremy Coyle](https://github.com/jeremyrcoyle), [Nima
 Hejazi](https://github.com/nhejazi), [Ivana
@@ -69,15 +70,7 @@ devtools::install_github("jeremyrcoyle/sl3")
 
 ---
 
-## Contributions and Issues
-
-It is our hope that `sl3` will grow to be widely used for creating stacked
-regression models and the cross-validation of pipelines that make up such
-models, as well as the variety of other applications in which the Super Learner
-algorithm plays a role. To that end, contributions are very welcome, though we
-ask that interested contributors consult our [`contribution
-guidelines`](https://github.com/jeremyrcoyle/sl3/blob/master/CONTRIBUTING.md)
-prior to submitting a pull request.
+## Issues
 
 If you encounter any bugs or have any specific feature requests, please [file an
 issue](https://github.com/jeremyrcoyle/sl3/issues).
@@ -122,6 +115,33 @@ stack_fit <- learner_stack$train(task)
 preds <- stack_fit$predict()
 head(preds)
 ```
+
+---
+
+## Contributions
+
+It is our hope that `sl3` will grow to be widely used for creating stacked
+regression models and the cross-validation of pipelines that make up such
+models, as well as the variety of other applications in which the Super Learner
+algorithm plays a role. To that end, contributions are very welcome, though we
+ask that interested contributors consult our [`contribution
+guidelines`](https://github.com/jeremyrcoyle/sl3/blob/master/CONTRIBUTING.md)
+prior to submitting a pull request.
+
+---
+
+After using the `sl3` R package, please cite the following:
+
+        @misc{coyle2017sl3,
+          author = {Coyle, Jeremy R and Hejazi, Nima S and Malenica, Ivana and
+            Sofrygin, Oleg},
+          title = {{sl3}: Modern Pipelines for Machine Learning and {Super
+            Learning}},
+          year  = {2017},
+          howpublished = {\url{https://github.com/jeremyrcoyle/sl3}},
+          url = {http://dx.doi.org/DOI_HERE},
+          doi = {DOI_HERE}
+        }
 
 ---
 
