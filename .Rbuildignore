@@ -17,6 +17,7 @@ xgboost.model
 deploy.sh
 ^docs$
 ^README\.Rmd$
+^README-.*\.Rmd$
 ^README\.html$
 ^README-.*\.png$
 ^README-refs.bib$

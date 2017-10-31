@@ -29,5 +29,4 @@ Other Learners: \code{\link{Custom_chain}},
   \code{\link{Lrnr_tsDyn}}, \code{\link{Pipeline}},
   \code{\link{Stack}}
 }
-\concept{Learners}
 \keyword{datasets}

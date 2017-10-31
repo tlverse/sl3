@@ -3,16 +3,26 @@
 \docType{class}
 \name{Custom_chain}
 \alias{Custom_chain}
+\alias{customize_chain}
 \title{Customize chaining for a learner}
 \format{\code{\link{R6Class}} object.}
 \usage{
 Custom_chain
+
+customize_chain(learner, chain_fun)
+}
+\arguments{
+\item{learner}{sl3 learner to modify}
+
+\item{chain_fun}{function with arguments learner and task that defines the new chain behavior}
 }
 \value{
 \code{\link{Lrnr_base}} object with methods for training and prediction
 }
 \description{
 Customize chaining for a learner
+
+This function wraps a learner in such a way that the behavior of learner$chain is modified to use a new function definition. learner$train and learner$predict are unaffected
 }
 \section{Fields}{
 
@@ -36,5 +46,4 @@ Other Learners: \code{\link{Lrnr_HarmonicReg}},
   \code{\link{Lrnr_sl}}, \code{\link{Lrnr_tsDyn}},
   \code{\link{Pipeline}}, \code{\link{Stack}}
 }
-\concept{Learners}
 \keyword{data}

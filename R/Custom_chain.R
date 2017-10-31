@@ -50,7 +50,7 @@ Custom_chain <- R6Class(classname = "Custom_chain",
 #' 
 #' @param learner sl3 learner to modify
 #' @param chain_fun function with arguments learner and task that defines the new chain behavior
-#' @rdname Customize_chain
+#' @rdname Custom_chain
 #' @export
 customize_chain <- function(learner, chain_fun){
   return(make_learner(Custom_chain, learner, chain_fun))
