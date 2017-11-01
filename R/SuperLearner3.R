@@ -23,7 +23,7 @@ convert_SL.library <- function(SL.library, family = "gaussian"){
 }
 
 
-
+#' @importFrom stats gaussian
 SuperLearner3 <- function (Y, X, newX = NULL, family = gaussian(), SL.library, 
                            method = "method.NNLS", id = NULL, verbose = FALSE, control = list(), 
                            cvControl = list(), obsWeights = NULL, env = parent.frame()){

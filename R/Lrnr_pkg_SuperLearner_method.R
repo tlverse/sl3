@@ -1,25 +1,20 @@
-#' Methods for SuperLearner Objects
-#'
-#' Support for \code{SuperLearner} wrappers, obviously not the most efficient
-#' approach, we should reimplement as many as possible.
-#'
-#' @importFrom assertthat assert_that is.count is.flag
-#'
+#' \code{Lrnr_pkg_SuperLearner_method} -- Interface for \code{SuperLearner} combination methods. 
+#' Use \code{SuperLearner::listWrappers("method")} for a list.
+#' @rdname SuperLearner_interface
 #' @export
-#
 Lrnr_pkg_SuperLearner_method <- R6Class(classname = "Lrnr_pkg_SuperLearner_method",
                                         inherit = Lrnr_base, portable = TRUE,
                                         class = TRUE,
   public = list(
-    initialize = function(method, ...) {
-      params = list(method = method, ...)
+    initialize = function(SL_wrapper, ...) {
+      params = list(SL_wrapper = SL_wrapper, ...)
       super$initialize(params=params, ...)
     }
   ),
   private = list(
     .properties = c("binomial", "continuous", "weights"),
     .train = function(task) {
-      method <- self$params$method
+      method <- self$params$SL_wrapper
       X <- as.matrix(task$X)
       Y <- task$Y
 
@@ -30,7 +25,7 @@ Lrnr_pkg_SuperLearner_method <- R6Class(classname = "Lrnr_pkg_SuperLearner_metho
     .predict = function(task) {
       coef <- private$.fit_object$coef
       X <- as.matrix(task$X)
-      method <- self$params$method
+      method <- self$params$SL_wrapper
       predictions = method$computePred(X, coef)
       return(predictions)
     },

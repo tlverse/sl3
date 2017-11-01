@@ -1,39 +1,36 @@
 #' Harmonic Regression
 #'
 #' @description This learner fits first harmonics in a Fourier expansion to one
-#'or more time series.
+#' or more time series. Fourier decomposition uses \code{\link[forecast]{fourier}}, and the timeseries is fit using \code{\link[forecast]{tslm}}
 #'
 #' @docType class
-#'
 #' @importFrom R6 R6Class
-#'
 #' @export
-#'
 #' @keywords data
-#'
-#' @return \code{\link{Lrnr_base}} object with methods for training and
-#' prediction.
-#'
+#' @return Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
 #' @format \code{\link{R6Class}} object.
-#'
-#' @field n.ahead The forecast horizon. If not specified, returns forecast of
-#' size task$X.
-#'
-#' @field K Maximum order(s) of Fourier terms.
-#' @field freq the number of observations per unit of time.
-#'
+#' @family Learners
+#' 
+#' @section Parameters:
+#' \describe{
+#'   \item{\code{Kparam}}{Maximum order of the fourier terms. Passed to \code{\link[forecast]{fourier}}
+#'   }
+#'   \item{\code{n.ahead=NULL}}{ The forecast horizon. If not specified, returns forecast of
+#' size \code{task$X}.
+#'   }
+#'   \item{\code{freq}}{The frequency of the time series
+#'   }
+#'   \item{\code{...}}{Not used.
+#'   }
+#' }
 #' @importFrom assertthat assert_that is.count is.flag
 #' @importFrom stats arima
-#' @importFrom uuid UUIDgenerate
-#'
-#' @family Learners
-#'
 Lrnr_HarmonicReg <- R6Class(classname = "Lrnr_HarmonicReg", inherit = Lrnr_base,
                             portable = TRUE, class = TRUE,
                       public = list(
-                        initialize = function(Kparam = Kparam,
+                        initialize = function(Kparam,
                                               n.ahead = NULL,
-                                              freq = freq,
+                                              freq,
                                               ...) {
   
                           params <- args_to_list()

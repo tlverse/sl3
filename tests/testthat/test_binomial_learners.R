@@ -41,7 +41,7 @@ learners <- list(
 )
 
 #define metalearner
-logit_metalearner <- make_learner(Lrnr_solnp, 
+logit_metalearner <- make_learner(Lrnr_optim, 
                                   loss_function = loss_loglik_binomial, 
                                   learner_function = metalearner_logistic_binomial)
 

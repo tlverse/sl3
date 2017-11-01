@@ -9,88 +9,54 @@
 Lrnr_tsDyn
 }
 \value{
-\code{\link{Lrnr_base}} object with methods for training and prediction
+Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
 This learner supports various forms of nonlinear autoregression, including additive AR, neural nets, SETAR and LSTAR models, threshold VAR and VECM.
 }
-\section{Fields}{
+\section{Parameters}{
 
 \describe{
 \item{\code{learner}}{Available built-in time series models. Currently available are listed by with availableModels() function.}
-
-\item{\code{m}}{embedding dimension.}
-
-\item{\code{d}}{time delay.}
-
-\item{\code{include}}{Type of deterministic regressors to include.}
-
-\item{\code{type}}{Whether the variable is taken is level, difference or a mix as in the ADF test.}
-
-\item{\code{mL}}{autoregressive order for low regime.}
-
-\item{\code{mH}}{autoregressive order for high regime.}
-
-\item{\code{mM}}{autoregressive order for middle regime.}
-
-\item{\code{thDelay}}{Time delay for the threshold variable.}
-
-\item{\code{common}}{Indicates which elements are common to all regimes.}
-
-\item{\code{ML}}{vector of lags for order for low.}
-
-\item{\code{MM}}{vector of lags for order for middle.}
-
-\item{\code{MH}}{vector of lags for order for high.}
-
-\item{\code{nthresh}}{Threshold of the model.}
-
-\item{\code{trim}}{trimming parameter indicating the minimal percentage of observations in each regime.}
-
-\item{\code{sig}}{significance level for the tests to select the number of regimes.}
-
-\item{\code{control}}{further arguments to be passed as control list to optim.}
-
-\item{\code{r}}{Number of cointegrating relationships.}
-
-\item{\code{model}}{Model to estimate. Choices: VAR/VECM/TAR/MTAR.}
-
-\item{\code{I}}{For VAR only: whether in the VAR variables are to be taken in levels or as a difference.}
-
-\item{\code{beta}}{For VECM only: imposed cointegrating value.}
-
-\item{\code{estim}}{Type of estimator for the VECM (two-step approach or Johansen MLE).}
-
-\item{\code{exogen}}{Inclusion of exogenous variables.}
-
-\item{\code{LRinclude}}{Possibility to include in the long-run relationship and the ECT trend.}
-
-\item{\code{commonInter}}{Whether the deterministic regressors are regime specific.}
-
-\item{\code{mTh}}{combination of variables with same lag order for the transition variable.}
-
-\item{\code{gamma}}{prespecified threshold values.}
-
-\item{\code{dummyToBothRegimes}}{Whether the dummy in the one threshold model is applied to each regime.}
-
-\item{\code{max.iter}}{Number of iterations for the algorithm.}
-
-\item{\code{size}}{number of hidden units in the neural network.}
-
-\item{\code{lag}}{Number of lags to include in each regime.}
-
-\item{\code{n.ahead}}{The forecast horizon.}
-
-\item{\code{ngridBeta}}{number of elements to search for the cointegrating value.}
-
-\item{\code{ngridTh}}{number of elements to search for the threshold value.}
-
-\item{\code{th1}}{different possibilities to pre-specify an exact value, an interval or a central point for the search of the threshold.}
-
-\item{\code{th2}}{different possibilities to pre-specify an exact value or a central point for the search of the second threshold.}
-
-\item{\code{beta0}}{Additional regressors to include in the cointegrating relation.}
-}}
+\item{\code{m=1}}{embedding dimension.}
+\item{\code{size=1}}{number of hidden units in the neural network.}
+\item{\code{lag=1}}{Number of lags to include in each regime.}
+\item{\code{d=1}}{time delay.}
+\item{\code{include="const"}}{Type of deterministic regressors to include.}
+\item{\code{type="level"}}{Whether the variable is taken is level, difference or a mix as in the ADF test.}
+\item{\code{n.ahead="null"}}{The forecast horizon.}
+\item{\code{mL=m}}{ autoregressive order for low regime.}
+\item{\code{mH=m}}{ autoregressive order for high regime.}
+\item{\code{mM=NULL}}{ autoregressive order for middle regime.}
+\item{\code{thDelay=0}}{Delay Time delay for the threshold variable.}
+\item{\code{common="none"}}{Indicates which elements are common to all regimes.}
+\item{\code{ML=seq_len(mL)}}{vector of lags for order for low. }
+\item{\code{MM=NULL}}{vector of lags for order for middle.}
+\item{\code{MH=seq_len(mH)}}{vector of lags for order for high.}
+\item{\code{nthresh=1}}{Threshold of the model.}
+\item{\code{trim=0.15}}{trimming parameter indicating the minimal percentage of observations in each regime.}
+\item{\code{sig=0.05}}{significance level for the tests to select the number of regimes.}
+\item{\code{control=list()}}{further arguments to be passed as control list to optim.}
+\item{\code{r=1}}{Number of cointegrating relationships.}
+\item{\code{model="VAR"}}{Model to estimate. Choices: VAR/VECM/TAR/MTAR.}
+\item{\code{I="level"}}{For VAR only: whether in the VAR variables are to be taken in levels or as a difference.}
+\item{\code{beta=NULL}}{For VECM only: imposed cointegrating value. }
+\item{\code{estim="2OLS"}}{Type of estimator for the VECM (two-step approach or Johansen MLE).}
+\item{\code{exogen=NULL}}{Inclusion of exogenous variables.}
+\item{\code{LRinclude="none"}}{Possibility to include in the long-run relationship and the ECT trend.}
+\item{\code{commonInter=FALSE}}{Whether the deterministic regressors are regime specific.}
+\item{\code{mTh=1}}{combination of variables with same lag order for the transition variable.}
+\item{\code{gamma=NULL}}{prespecified threshold values.}
+\item{\code{dummyToBothRegimes=TRUE}}{Whether the dummy in the one threshold model is applied to each regime. }
+\item{\code{max.iter=2}}{Number of iterations for the algorithm.}
+\item{\code{ngridBeta=50}}{Number of elements to search for the cointegrating value.}
+\item{\code{ngridTh=50}}{Number of elements to search for the threshold value.}
+\item{\code{th1}}{different possibilities to pre-specify an exact value, an interval or a central point for the search of the threshold. }
+\item{\code{th2}}{different possibilities to pre-specify an exact value or a central point for the search of the second threshold. }
+\item{\code{beta0=0}}{Additional regressors to include in the cointegrating relation.}
+\item{\code{...}}{Not currently used.}
+}
+}
 
 \seealso{
 Other Learners: \code{\link{Custom_chain}},
@@ -98,8 +64,20 @@ Other Learners: \code{\link{Custom_chain}},
   \code{\link{Lrnr_base}}, \code{\link{Lrnr_condensier}},
   \code{\link{Lrnr_cv}},
   \code{\link{Lrnr_define_interactions}},
-  \code{\link{Lrnr_expSmooth}}, \code{\link{Lrnr_rugarch}},
-  \code{\link{Lrnr_sl}}, \code{\link{Pipeline}},
-  \code{\link{Stack}}
+  \code{\link{Lrnr_expSmooth}},
+  \code{\link{Lrnr_glm_fast}}, \code{\link{Lrnr_glmnet}},
+  \code{\link{Lrnr_glm}}, \code{\link{Lrnr_h2o_grid}},
+  \code{\link{Lrnr_independent_binomial}},
+  \code{\link{Lrnr_mean}}, \code{\link{Lrnr_nnls}},
+  \code{\link{Lrnr_optim}},
+  \code{\link{Lrnr_pkg_SuperLearner}},
+  \code{\link{Lrnr_randomForest}},
+  \code{\link{Lrnr_rugarch}}, \code{\link{Lrnr_sl}},
+  \code{\link{Lrnr_solnp_density}},
+  \code{\link{Lrnr_solnp}},
+  \code{\link{Lrnr_subset_covariates}},
+  \code{\link{Lrnr_xgboost}}, \code{\link{Pipeline}},
+  \code{\link{Stack}}, \code{\link{define_h2o_X}},
+  \code{\link{undocumented_learner}}
 }
 \keyword{data}

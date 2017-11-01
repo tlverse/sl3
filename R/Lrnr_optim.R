@@ -1,4 +1,4 @@
-#' Optimization
+#' Optimize Metalearner according to Loss Function using optim
 #'
 #' This meta-learner provides fitting procedures for any pairing of loss 
 #' function and metalearner function, subject to constraints. The
@@ -6,20 +6,25 @@
 #' consult the documentation of \code{\link{optim}}
 #'
 #' @docType class
-#'
-#' @keywords data
-#'
-#' @return \code{\link{Lrnr_base}} object with methods for training and
-#'  prediction.
-#'
-#' @format \code{\link{R6Class}} object.
-#'
-#' @field ... Additional arguments. Currently unused.
-#'
 #' @importFrom R6 R6Class
-#'
 #' @export
-#
+#' @keywords data
+#' @return Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+#' @format \code{\link{R6Class}} object.
+#' @family Learners
+#' 
+#' @section Parameters:
+#' \describe{
+#'   \item{\code{learner_function=metalearner_linear}}{A function(alpha, X) that takes a vector of covariates and a 
+#'   matrix of data and combines them into a vector of predictions. See \link{metalearners} for options.}
+#'   \item{\code{loss_function=loss_squared_error}}{A function(pred, truth) that takes prediction and truth vectors and returns a loss vector. See \link{loss_functions} for options.}
+#'   \item{\code{intercept=FALSE}}{If true, X includes an intercept term}
+#'   \item{\code{init_0=FALSE}}{If true, alpha is initialized to all 0's, useful for TMLE. 
+#'   Otherwise, it is initialized to equal weights summing to 1, useful for SuperLearner}
+#'   \item{\code{...}}{Not currently used.}
+#' }
+#' @template common_parameters
+#' @importFrom assertthat assert_that is.count is.flag
 Lrnr_optim <- R6Class(classname = "Lrnr_optim",
                               inherit = Lrnr_base, portable = TRUE,
                               class = TRUE,

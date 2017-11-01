@@ -1,23 +1,20 @@
-#' Conversion to Design Matrices
+#' Define interactions
 #'
-#' Utility for converting \code{data.frame} with raw data columns into a model
-#' matrix with columns like interaction terms and factor indicators.
-#' TODO: reimplement this without using \code{model.matrix}.
+#' This learner adds interactions to its chained task
 #'
 #' @docType class
-#'
-#' @format \code{\link{R6Class}} object.
-#'
-#' @field interactions A character or model formula object identifying the exact
-#'  interaction terms to be computed in building a design matrix.
-#'
 #' @importFrom R6 R6Class
-#' @importFrom assertthat assert_that is.count is.flag
-#'
-#' @family Learners
-#'
 #' @export
-#
+#' @keywords data
+#' @return Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+#' @format \code{\link{R6Class}} object.
+#' @family Learners
+#' 
+#' @section Parameters:
+#' \describe{
+#'   \item{\code{interactions}}{A list of lists, with each inner list containing the covariates to create an interaction for.}
+#' }
+#' @importFrom assertthat assert_that is.count is.flag
 Lrnr_define_interactions <- R6Class(classname = "Lrnr_define_interactions",
                                     inherit = Lrnr_base,
                                     portable = TRUE,

@@ -1,29 +1,27 @@
-#' SuperLearner Wrapper Interface
+#' Use SuperLearner Wrappers, Screeners, and Methods, in sl3
 #'
-#' This learner provides an interface to the wrapper functions provided by the
-#' \code{SuperLearner} package. Such wrapper functions are used to draw on
-#' learning algorithms provided by a wide variety of R packages, towards the
-#' goal of fitting a \code{SuperLearner} ensemble model. Consult documentation
-#' of the \code{SuperLearner} package for details on these wrapper functions.
+#' @description These learners provide an interface to the wrapper functions, screening algorithms, and
+#' combination methods provided by the \code{SuperLearner} package. These components add support
+#' for a range of algorithms not currently implemented natively in \code{sl3}. 
 #'
+#' @description \code{Lrnr_pkg_SuperLearner} -- Interface for \code{SuperLearner} wrapper functions. 
+#' Use \code{SuperLearner::listWrappers("SL")} for a list.
+#' 
 #' @docType class
-#'
-#' @keywords data
-#'
-#' @return \code{\link{Lrnr_base}} object with methods for training and
-#'  prediction.
-#'
-#' @format \code{\link{R6Class}} object.
-#'
-#' @field SL_wrapper A \code{SuperLearner} wrapper, used as an interface to
-#'  algorithms to be fit in a \code{SuperLearner} ensemble model.
-#' @field ... Additional arguments. Currently unused.
-#'
 #' @importFrom R6 R6Class
-#' @importFrom stats gaussian predict
-#'
 #' @export
-#
+#' @keywords data
+#' @return Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+#' @format \code{\link{R6Class}} object.
+#' @family Learners
+#' 
+#' @section Parameters:
+#' \describe{
+#'   \item{\code{SL_wrapper}}{The wrapper function to use}
+#'   \item{\code{...}}{Currently not used}
+#' }
+#' @template common_parameters
+#' @rdname SuperLearner_interface
 Lrnr_pkg_SuperLearner <- R6Class(classname = "Lrnr_pkg_SuperLearner",
                                  inherit = Lrnr_base, portable = TRUE,
                                  class = TRUE,

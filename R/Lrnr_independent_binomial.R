@@ -1,24 +1,21 @@
 #' Classification from Binomial Regression
 #'
 #' This learner provides converts a binomial learner into a multinomial learner using a series of independent binomials. 
-#' The procedure is modelled on \url{https://en.wikipedia.org/wiki/Multinomial_logistic_regression#As_a_set_of_independent_binary_regressions}
+#' The procedure is modeled on \url{https://en.wikipedia.org/wiki/Multinomial_logistic_regression#As_a_set_of_independent_binary_regressions}
 #' @docType class
-#'
-#' @keywords data
-#'
-#' @return \code{\link{Lrnr_base}} object with methods for training and
-#'  prediction.
-#'
-#' @format \code{\link{R6Class}} object.
-#'
-#' @field ... Additional arguments. Currently unused.
-#'
 #' @importFrom R6 R6Class
-#' @importFrom stats predict
-#' @importFrom assertthat assert_that is.count is.flag
-#'
 #' @export
-#
+#' @keywords data
+#' @return Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+#' @format \code{\link{R6Class}} object.
+#' @family Learners
+#' 
+#' @section Parameters:
+#' \describe{
+#'   \item{\code{binomial_learner}}{The learner to wrap}
+#' }
+#' @template common_parameters
+#' @importFrom assertthat assert_that is.count is.flag
 Lrnr_independent_binomial <- R6Class(classname = "Lrnr_independent_binomial",
                              inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(

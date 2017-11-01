@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Computationally Efficient GLMs — Lrnr_glm_fast • sl3</title>
+<title>SuperLearner Algorithm — Lrnr_sl • sl3</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -95,16 +95,14 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Computationally Efficient GLMs</h1>
+    <h1>SuperLearner Algorithm</h1>
     </div>
 
     
-    <p>This learner provides faster fitting procedures for generalized linear models
-using the <code>speedglm</code> package. Arguments passed to <code><a href='http://www.rdocumentation.org/packages/speedglm/topics/speedglm'>speedglm.wfit</a></code>.
-Uses <code><a href='http://www.rdocumentation.org/packages/stats/topics/glm'>glm.fit</a></code> as a fallback if <code><a href='http://www.rdocumentation.org/packages/speedglm/topics/speedglm'>speedglm.wfit</a></code> fails.</p>
+    <p>Learner that encapsulates the SuperLearner algorithm. Fits metalearner on cross-validated predictions from learners. Then forms a pipeline with the learners.</p>
     
 
-    <pre class="usage"><span class='no'>Lrnr_glm_fast</span></pre>
+    <pre class="usage"><span class='no'>Lrnr_sl</span></pre>
         
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
@@ -118,9 +116,11 @@ Uses <code><a href='http://www.rdocumentation.org/packages/stats/topics/glm'>glm
 
     
     <dl class='dl-horizontal'>
-<dt><code>intercept=TRUE</code></dt><dd><p>If <code>TRUE</code>, an intercept term is included</p></dd>
-<dt><code>method="Cholesky"</code></dt><dd><p>The matrix decomposition method to use</p></dd>
-<dt><code>...</code></dt><dd><p>Other parameters passed to <code><a href='http://www.rdocumentation.org/packages/speedglm/topics/speedglm'>speedglm.wfit</a></code></p></dd>
+<dt><code>learners</code></dt><dd><p>The "library" of learners to include</p></dd>
+<dt><code>metalearner</code></dt><dd><p>The metalearner to be fit on predictions from the library</p></dd>
+<dt><code>folds=NULL</code></dt><dd><p>An <code>origami</code> folds object. If <code>NULL</code>, folds from the task are used</p></dd>
+<dt><code>keep_extra=TRUE</code></dt><dd><p>Not used</p></dd>
+<dt><code>...</code></dt><dd><p>Not used</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="common-parameters"><a class="anchor" href="#common-parameters"></a>Common Parameters</h2>
@@ -140,14 +140,15 @@ by all learners.</p><dl class='dl-horizontal'>
   <code><a href='Lrnr_base.html'>Lrnr_base</a></code>, <code><a href='Lrnr_condensier.html'>Lrnr_condensier</a></code>,
   <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
   <code><a href='Lrnr_define_interactions.html'>Lrnr_define_interactions</a></code>,
-  <code><a href='Lrnr_expSmooth.html'>Lrnr_expSmooth</a></code>, <code><a href='Lrnr_glmnet.html'>Lrnr_glmnet</a></code>,
+  <code><a href='Lrnr_expSmooth.html'>Lrnr_expSmooth</a></code>,
+  <code><a href='Lrnr_glm_fast.html'>Lrnr_glm_fast</a></code>, <code><a href='Lrnr_glmnet.html'>Lrnr_glmnet</a></code>,
   <code><a href='Lrnr_glm.html'>Lrnr_glm</a></code>, <code><a href='Lrnr_h2o_grid.html'>Lrnr_h2o_grid</a></code>,
   <code><a href='Lrnr_independent_binomial.html'>Lrnr_independent_binomial</a></code>,
   <code><a href='Lrnr_mean.html'>Lrnr_mean</a></code>, <code><a href='Lrnr_nnls.html'>Lrnr_nnls</a></code>,
   <code><a href='Lrnr_optim.html'>Lrnr_optim</a></code>,
   <code><a href='SuperLearner_interface.html'>Lrnr_pkg_SuperLearner</a></code>,
   <code><a href='Lrnr_randomForest.html'>Lrnr_randomForest</a></code>,
-  <code><a href='Lrnr_rugarch.html'>Lrnr_rugarch</a></code>, <code><a href='Lrnr_sl.html'>Lrnr_sl</a></code>,
+  <code><a href='Lrnr_rugarch.html'>Lrnr_rugarch</a></code>,
   <code><a href='Lrnr_solnp_density.html'>Lrnr_solnp_density</a></code>,
   <code><a href='Lrnr_solnp.html'>Lrnr_solnp</a></code>,
   <code><a href='Lrnr_subset_covariates.html'>Lrnr_subset_covariates</a></code>,

@@ -1,42 +1,63 @@
 #' Exponential Smoothing
 #'
-#' This learner supports exponential smoothing models. 
+#' This learner supports exponential smoothing models using the \code{forecast} package. 
+#' Fitting is done with the \code{\link[forecast]{ets}} function.
 #' @docType class
 #' @importFrom R6 R6Class
 #' @export
 #' @keywords data
-#' @return \code{\link{Lrnr_base}} object with methods for training and prediction
+#' @return Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
 #' @format \code{\link{R6Class}} object.
-#' @field model Three-character string identifying method. In all cases, "N"=none, "A"=additive,
+#' @family Learners
+#' 
+#' @section Parameters:
+#' \describe{
+#' \item{\code{model="ZZZ"}}{Three-character string identifying method. In all cases, "N"=none, "A"=additive,
 #' "M"=multiplicative, and "Z"=automatically selected. The first letter denotes the error type, second
 #' letter denotes the trend type, third letter denotes the season type. For example, "ANN" is simple
 #' exponential smoothing with additive errors, "MAM" is multiplicative Holt-Winters' methods with 
 #' multiplicative errors, etc.  
-#' @field damped If TRUE, use a damped trend (either additive or multiplicative). If NULL, both damped and non-damped trends will be tried and the best model (according to the information criterion ic) returned.
-#' @field alpha Value of alpha. If NULL, it is estimated.
-#' @field beta Value of beta. If NULL, it is estimated.
-#' @field gamma Value of gamma. If NULL, it is estimated.
-#' @field phi Value of phi. If NULL, it is estimated.
-#' @field lambda Box-Cox transformation parameter. Ignored if NULL. When lambda is specified, additive.only is set to TRUE.
-#' @field additive.only If TRUE, will only consider additive models.
-#' @field biasadj Use adjusted back-transformed mean for Box-Cox transformations.
-#' @field lower Lower bounds for the parameters (alpha, beta, gamma, phi)
-#' @field upper Upper bounds for the parameters (alpha, beta, gamma, phi)
-#' @field opt.crit Optimization criterion.
-#' @field nmse Number of steps for average multistep MSE (1<=nmse<=30).
-#' @field bounds Type of parameter space to impose: "usual" indicates all parameters must lie between specified lower and upper bounds; "admissible" indicates parameters must lie in the admissible space; "both" (default) takes the intersection of these regions.
-#' @field ic Information criterion to be used in model selection.
-#' @field restrict If TRUE, models with infinite variance will not be allowed.
-#' @field allow.multiplicative.trend If TRUE, models with multiplicative trend are allowed when searching for a model. 
-#' @field use.initial.values If TRUE and model is of class "ets", then the initial values in the model are also not re-estimated.
-#' @field n.ahead The forecast horizon. If not specified, returns forecast of size \code{task$X}.
-#' @field freq the number of observations per unit of time.
-#'
+#' }
+#' \item{\code{damped=NULL}}{If TRUE, use a damped trend (either additive or multiplicative). If NULL, both damped and non-damped trends will be tried and the best model (according to the information criterion ic) returned.
+#' }
+#' \item{\code{alpha=NULL}}{Value of alpha. If NULL, it is estimated.
+#' }
+#' \item{\code{beta=NULL}}{Value of beta. If NULL, it is estimated.
+#' }
+#' \item{\code{gamma=NULL}}{Value of gamma. If NULL, it is estimated.
+#' }
+#' \item{\code{phi=NULL}}{Value of phi. If NULL, it is estimated.
+#' }
+#' \item{\code{lambda=NULL}}{Box-Cox transformation parameter. Ignored if NULL. When lambda is specified, additive.only is set to TRUE.
+#' }
+#' \item{\code{additive.only=FALSE}}{If TRUE, will only consider additive models.
+#' }
+#' \item{\code{biasadj=FALSE}}{Use adjusted back-transformed mean for Box-Cox transformations.
+#' }
+#' \item{\code{lower=c(rep(1e-04, 3), 0.8)}}{Lower bounds for the parameters (alpha, beta, gamma, phi)
+#' }
+#' \item{\code{upper=c(rep(0.9999,3), 0.98)}}{Upper bounds for the parameters (alpha, beta, gamma, phi)
+#' }
+#' \item{\code{opt.crit="lik"}}{Optimization criterion.
+#' }
+#' \item{\code{nmse=3}}{Number of steps for average multistep MSE (1<=nmse<=30).
+#' }
+#' \item{\code{bounds="both"}}{Type of parameter space to impose: "usual" indicates all parameters must lie between specified lower and upper bounds; "admissible" indicates parameters must lie in the admissible space; "both" (default) takes the intersection of these regions.
+#' }
+#' \item{\code{ic="aic"}}{Information criterion to be used in model selection.
+#' }
+#' \item{\code{restrict=TRUE}}{If TRUE, models with infinite variance will not be allowed.
+#' }
+#' \item{\code{allow.multiplicative.trend=FALSE}}{If TRUE, models with multiplicative trend are allowed when searching for a model. 
+#' }
+#' \item{\code{use.initial.values=FALSE}}{If TRUE and model is of class "ets", then the initial values in the model are also not re-estimated.
+#' }
+#' \item{\code{n.ahead}}{The forecast horizon. If not specified, returns forecast of size \code{task$X}.
+#' }
+#' \item{\code{freq=1}}{the number of observations per unit of time.
+#' }
+#' }
 #' @importFrom assertthat assert_that is.count is.flag
-#'
-#' @family Learners
-#'
-
 Lrnr_expSmooth <- R6Class(classname = "Lrnr_expSmooth", inherit = Lrnr_base, portable = TRUE, class = TRUE,
                       public = list(
                         initialize = function(model="ZZZ",
@@ -48,11 +69,7 @@ Lrnr_expSmooth <- R6Class(classname = "Lrnr_expSmooth", inherit = Lrnr_base, por
                                               allow.multiplicative.trend = FALSE,use.initial.values = FALSE,
                                               freq=1, ...) {
                           
-                          params <- list(model=model, damped=damped, alpha=alpha,
-                                         beta=beta, gamma=gamma, phi=phi, lambda=lambda, additive.only=additive.only,
-                                         biasadj=biasadj,lower=lower,upper=upper,opt.crit=opt.crit,nmse=nmse,bounds=bounds,
-                                         ic=ic,restrict=restrict,allow.multiplicative.trend=allow.multiplicative.trend,
-                                         use.initial.values=use.initial.values,freq=freq, ...)
+                          params <- args_to_list()
                           super$initialize(params = params, ...)
                         }
                       ),

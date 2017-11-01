@@ -99,7 +99,8 @@
     </div>
 
     
-    <p>This learner supports exponential smoothing models.</p>
+    <p>This learner supports exponential smoothing models using the <code>forecast</code> package.
+Fitting is done with the <code><a href='http://www.rdocumentation.org/packages/forecast/topics/ets'>ets</a></code> function.</p>
     
 
     <pre class="usage"><span class='no'>Lrnr_expSmooth</span></pre>
@@ -110,36 +111,36 @@
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='Lrnr_base.html'>Lrnr_base</a></code> object with methods for training and prediction</p>
+    <p>Learner object with methods for training and prediction. See <code><a href='Lrnr_base.html'>Lrnr_base</a></code> for documentation on learners.</p>
     
-    <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
+    <h2 class="hasAnchor" id="parameters"><a class="anchor" href="#parameters"></a>Parameters</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code>model</code></dt><dd><p>Three-character string identifying method. In all cases, "N"=none, "A"=additive,
+<dt><code>model="ZZZ"</code></dt><dd><p>Three-character string identifying method. In all cases, "N"=none, "A"=additive,
 "M"=multiplicative, and "Z"=automatically selected. The first letter denotes the error type, second
 letter denotes the trend type, third letter denotes the season type. For example, "ANN" is simple
 exponential smoothing with additive errors, "MAM" is multiplicative Holt-Winters' methods with
 multiplicative errors, etc.</p></dd>
-    <dt><code>damped</code></dt><dd><p>If TRUE, use a damped trend (either additive or multiplicative). If NULL, both damped and non-damped trends will be tried and the best model (according to the information criterion ic) returned.</p></dd>
-    <dt><code>alpha</code></dt><dd><p>Value of alpha. If NULL, it is estimated.</p></dd>
-    <dt><code>beta</code></dt><dd><p>Value of beta. If NULL, it is estimated.</p></dd>
-    <dt><code>gamma</code></dt><dd><p>Value of gamma. If NULL, it is estimated.</p></dd>
-    <dt><code>phi</code></dt><dd><p>Value of phi. If NULL, it is estimated.</p></dd>
-    <dt><code>lambda</code></dt><dd><p>Box-Cox transformation parameter. Ignored if NULL. When lambda is specified, additive.only is set to TRUE.</p></dd>
-    <dt><code>additive.only</code></dt><dd><p>If TRUE, will only consider additive models.</p></dd>
-    <dt><code>biasadj</code></dt><dd><p>Use adjusted back-transformed mean for Box-Cox transformations.</p></dd>
-    <dt><code>lower</code></dt><dd><p>Lower bounds for the parameters (alpha, beta, gamma, phi)</p></dd>
-    <dt><code>upper</code></dt><dd><p>Upper bounds for the parameters (alpha, beta, gamma, phi)</p></dd>
-    <dt><code>opt.crit</code></dt><dd><p>Optimization criterion.</p></dd>
-    <dt><code>nmse</code></dt><dd><p>Number of steps for average multistep MSE (1&lt;=nmse&lt;=30).</p></dd>
-    <dt><code>bounds</code></dt><dd><p>Type of parameter space to impose: "usual" indicates all parameters must lie between specified lower and upper bounds; "admissible" indicates parameters must lie in the admissible space; "both" (default) takes the intersection of these regions.</p></dd>
-    <dt><code>ic</code></dt><dd><p>Information criterion to be used in model selection.</p></dd>
-    <dt><code>restrict</code></dt><dd><p>If TRUE, models with infinite variance will not be allowed.</p></dd>
-    <dt><code>allow.multiplicative.trend</code></dt><dd><p>If TRUE, models with multiplicative trend are allowed when searching for a model.</p></dd>
-    <dt><code>use.initial.values</code></dt><dd><p>If TRUE and model is of class "ets", then the initial values in the model are also not re-estimated.</p></dd>
-    <dt><code>n.ahead</code></dt><dd><p>The forecast horizon. If not specified, returns forecast of size <code>task$X</code>.</p></dd>
-    <dt><code>freq</code></dt><dd><p>the number of observations per unit of time.</p></dd>
+<dt><code>damped=NULL</code></dt><dd><p>If TRUE, use a damped trend (either additive or multiplicative). If NULL, both damped and non-damped trends will be tried and the best model (according to the information criterion ic) returned.</p></dd>
+<dt><code>alpha=NULL</code></dt><dd><p>Value of alpha. If NULL, it is estimated.</p></dd>
+<dt><code>beta=NULL</code></dt><dd><p>Value of beta. If NULL, it is estimated.</p></dd>
+<dt><code>gamma=NULL</code></dt><dd><p>Value of gamma. If NULL, it is estimated.</p></dd>
+<dt><code>phi=NULL</code></dt><dd><p>Value of phi. If NULL, it is estimated.</p></dd>
+<dt><code>lambda=NULL</code></dt><dd><p>Box-Cox transformation parameter. Ignored if NULL. When lambda is specified, additive.only is set to TRUE.</p></dd>
+<dt><code>additive.only=FALSE</code></dt><dd><p>If TRUE, will only consider additive models.</p></dd>
+<dt><code>biasadj=FALSE</code></dt><dd><p>Use adjusted back-transformed mean for Box-Cox transformations.</p></dd>
+<dt><code>lower=c(rep(1e-04, 3), 0.8)</code></dt><dd><p>Lower bounds for the parameters (alpha, beta, gamma, phi)</p></dd>
+<dt><code>upper=c(rep(0.9999,3), 0.98)</code></dt><dd><p>Upper bounds for the parameters (alpha, beta, gamma, phi)</p></dd>
+<dt><code>opt.crit="lik"</code></dt><dd><p>Optimization criterion.</p></dd>
+<dt><code>nmse=3</code></dt><dd><p>Number of steps for average multistep MSE (1&lt;=nmse&lt;=30).</p></dd>
+<dt><code>bounds="both"</code></dt><dd><p>Type of parameter space to impose: "usual" indicates all parameters must lie between specified lower and upper bounds; "admissible" indicates parameters must lie in the admissible space; "both" (default) takes the intersection of these regions.</p></dd>
+<dt><code>ic="aic"</code></dt><dd><p>Information criterion to be used in model selection.</p></dd>
+<dt><code>restrict=TRUE</code></dt><dd><p>If TRUE, models with infinite variance will not be allowed.</p></dd>
+<dt><code>allow.multiplicative.trend=FALSE</code></dt><dd><p>If TRUE, models with multiplicative trend are allowed when searching for a model.</p></dd>
+<dt><code>use.initial.values=FALSE</code></dt><dd><p>If TRUE and model is of class "ets", then the initial values in the model are also not re-estimated.</p></dd>
+<dt><code>n.ahead</code></dt><dd><p>The forecast horizon. If not specified, returns forecast of size <code>task$X</code>.</p></dd>
+<dt><code>freq=1</code></dt><dd><p>the number of observations per unit of time.</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -149,9 +150,21 @@ multiplicative errors, etc.</p></dd>
   <code><a href='Lrnr_base.html'>Lrnr_base</a></code>, <code><a href='Lrnr_condensier.html'>Lrnr_condensier</a></code>,
   <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
   <code><a href='Lrnr_define_interactions.html'>Lrnr_define_interactions</a></code>,
-  <code><a href='Lrnr_rugarch.html'>Lrnr_rugarch</a></code>, <code><a href='undocumented_learner.html'>Lrnr_sl</a></code>,
-  <code><a href='Lrnr_tsDyn.html'>Lrnr_tsDyn</a></code>, <code><a href='Pipeline.html'>Pipeline</a></code>,
-  <code><a href='Stack.html'>Stack</a></code></p>
+  <code><a href='Lrnr_glm_fast.html'>Lrnr_glm_fast</a></code>, <code><a href='Lrnr_glmnet.html'>Lrnr_glmnet</a></code>,
+  <code><a href='Lrnr_glm.html'>Lrnr_glm</a></code>, <code><a href='Lrnr_h2o_grid.html'>Lrnr_h2o_grid</a></code>,
+  <code><a href='Lrnr_independent_binomial.html'>Lrnr_independent_binomial</a></code>,
+  <code><a href='Lrnr_mean.html'>Lrnr_mean</a></code>, <code><a href='Lrnr_nnls.html'>Lrnr_nnls</a></code>,
+  <code><a href='Lrnr_optim.html'>Lrnr_optim</a></code>,
+  <code><a href='SuperLearner_interface.html'>Lrnr_pkg_SuperLearner</a></code>,
+  <code><a href='Lrnr_randomForest.html'>Lrnr_randomForest</a></code>,
+  <code><a href='Lrnr_rugarch.html'>Lrnr_rugarch</a></code>, <code><a href='Lrnr_sl.html'>Lrnr_sl</a></code>,
+  <code><a href='Lrnr_solnp_density.html'>Lrnr_solnp_density</a></code>,
+  <code><a href='Lrnr_solnp.html'>Lrnr_solnp</a></code>,
+  <code><a href='Lrnr_subset_covariates.html'>Lrnr_subset_covariates</a></code>,
+  <code><a href='Lrnr_tsDyn.html'>Lrnr_tsDyn</a></code>, <code><a href='Lrnr_xgboost.html'>Lrnr_xgboost</a></code>,
+  <code><a href='Pipeline.html'>Pipeline</a></code>, <code><a href='Stack.html'>Stack</a></code>,
+  <code><a href='Lrnr_h2o_glm.html'>define_h2o_X</a></code>,
+  <code><a href='undocumented_learner.html'>undocumented_learner</a></code></p>
     
 
   </div>
@@ -163,7 +176,7 @@ multiplicative errors, etc.</p></dd>
 
       <li><a href="#value">Value</a></li>
 
-      <li><a href="#fields">Fields</a></li>
+      <li><a href="#parameters">Parameters</a></li>
 
       <li><a href="#see-also">See also</a></li>
           </ul>

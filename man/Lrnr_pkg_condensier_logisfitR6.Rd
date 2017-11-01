@@ -3,12 +3,13 @@
 \docType{class}
 \name{Lrnr_pkg_condensier_logisfitR6}
 \alias{Lrnr_pkg_condensier_logisfitR6}
-\title{Lrnr_pkg_condensier_logisfitR6}
+\title{sl3 Learner wrapper for condensier}
 \format{An object of class \code{R6ClassGenerator} of length 24.}
 \usage{
 Lrnr_pkg_condensier_logisfitR6
 }
 \description{
-Lrnr_pkg_condensier_logisfitR6
+This wrapper allows the use of any \code{sl3} Learner as a Learner for \code{condensier}.
+For details, see the \code{\link[condensier]{fit_density}} function.
 }
 \keyword{datasets}

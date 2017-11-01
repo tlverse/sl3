@@ -14,7 +14,6 @@
 #'
 #' @rdname Lrnr_h2o_glm
 #'
-#' @name Lrnr_h2o_glm
 #'
 #' @export
 #
@@ -37,33 +36,30 @@ define_h2o_X = function(task, outcome_type = NULL) {
 #' Faster GLMs with h2o
 #'
 #' This learner provides faster fitting procedures for generalized linear models
-#' by using the \code{h2o} package. Such procedures use the H2O platform to fit
-#' GLMs in a computationally efficient manner. For details on the procedure,
+#' by using the \code{h2o} package and the \code{\link[h2o]{h2o.glm}} method.
+#' The h2o Platform fits GLMs in a computationally efficient manner. For details on the procedure,
 #' consult the documentation of the \code{h2o} package.
 #'
 #' @docType class
-#'
-#' @keywords data
-#'
-#' @return \code{\link{Lrnr_base}} object with methods for training and
-#'  prediction.
-#'
-#' @format \code{\link{R6Class}} object.
-#'
-#' @field family A character describing the type of model to be fit in terms of
-#'  the error family of the GLM.
-#' @field covariates Further variables to used in fitting GLMs with \code{h2o}.
-#' @field ... Additional arguments.
-#'
 #' @importFrom R6 R6Class
-#' @importFrom assertthat assert_that is.count is.flag
-#'
-#' @rdname Lrnr_h2o_glm
-#'
-#' @name Lrnr_h2o_glm
-#'
 #' @export
-#
+#' @keywords data
+#' @return Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+#' @format \code{\link{R6Class}} object.
+#' @family Learners
+#' 
+#' @format \code{\link{R6Class}} object.
+#' @section Parameters:
+#' \describe{
+#'   \item{\code{intercept=TRUE}}{If TRUE, and intercept term is included}
+#'   \item{\code{standardize=TRUE}}{Standardize covariates to have mean=0 and SD=1}
+#'   \item{\code{lambda=0}}{Lasso Parameter}
+#'   \item{\code{max_iterations=100}}{Maximum number of iterations}
+#'   \item{\code{ignore_const_columns=FALSE}}{If TRUE, drop constant covariate columns}
+#'   \item{\code{missing_values_handling="Skip"}}{How to handle missing values}
+#'   \item{\code{...}}{Other arguments passed to \code{\link[h2o]{h2o.glm}}}
+#' }
+#' @template common_parameters
 Lrnr_h2o_glm <- R6Class(classname = "Lrnr_h2o_glm", inherit = Lrnr_base,
                         portable = TRUE, class = TRUE,
   public = list(

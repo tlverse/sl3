@@ -48,6 +48,17 @@ If you encounter any bugs or have any specific feature requests, please [file an
 
 ------------------------------------------------------------------------
 
+Documentation
+-------------
+
+The best places to start are the vignettes:
+
+-   [Modern Machine Learning in R](https://jeremyrcoyle.github.io/sl3/articles/intro_sl3.html) `vignette("intro_sl3")`
+-   [Defining New sl3 Learners](https://jeremyrcoyle.github.io/sl3/articles/custom_lrnrs.html) `vignette("custom_lrnrs")`
+-   [SuperLearner Benchmarks](https://jeremyrcoyle.github.io/sl3/articles/SuperLearner_benchmarks.html) `vignette("SuperLearner_benchmarks")`
+
+------------------------------------------------------------------------
+
 Examples
 --------
 
@@ -55,19 +66,9 @@ Examples
 
 ``` r
 set.seed(49753)
-suppressMessages(library(data.table))
-library(dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:data.table':
-#> 
-#>     between, first, last
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
+
+# packages we'll be using
+library(data.table)
 library(SuperLearner)
 #> Loading required package: nnls
 #> Super Learner
@@ -77,24 +78,24 @@ library(origami)
 library(sl3)
 
 # load example data set
-data(cpp)
-cpp <- cpp %>%
-  dplyr::filter(!is.na(haz)) %>%
-  mutate_all(funs(replace(., is.na(.), 0)))
+data(cpp_imputed)
 
-# use covariates of intest and the outcome to build a task object
+# here are the covariates we are interested in and, of course, the outcome
 covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
             "sexn")
-task <- sl3_Task$new(cpp, covariates = covars, outcome = "haz")
+outcome <- "haz"
+
+task <- make_sl3_Task(data = cpp_imputed, covariates = covars,
+                      outcome = outcome, outcome_type="continuous")
 
 # set up screeners and learners via built-in functions and pipelines
-slscreener <- Lrnr_pkg_SuperLearner_screener$new("screen.glmnet")
-glm_learner <- Lrnr_glm$new()
-screen_and_glm <- Pipeline$new(slscreener, glm_learner)
-SL.glmnet_learner <- Lrnr_pkg_SuperLearner$new(SL_wrapper = "SL.glmnet")
+slscreener <- make_learner(Lrnr_pkg_SuperLearner_screener, "screen.glmnet")
+glm_learner <- make_learner(Lrnr_glm)
+screen_and_glm <- make_learner(Pipeline, slscreener, glm_learner)
+lrnr_glmnet <- make_learner(Lrnr_glmnet)
 
 # stack learners into a model (including screeners and pipelines)
-learner_stack <- Stack$new(SL.glmnet_learner, glm_learner, screen_and_glm)
+learner_stack <- make_learner(Stack, lrnr_glmnet, glm_learner, screen_and_glm)
 stack_fit <- learner_stack$train(task)
 #> Loading required package: glmnet
 #> Loading required package: Matrix
@@ -102,13 +103,13 @@ stack_fit <- learner_stack$train(task)
 #> Loaded glmnet 2.0-13
 preds <- stack_fit$predict()
 head(preds)
-#>    Lrnr_pkg_SuperLearner_SL.glmnet   Lrnr_glm
-#> 1:                      0.35345519 0.36298498
-#> 2:                      0.35345519 0.36298498
-#> 3:                      0.24554305 0.25993072
-#> 4:                      0.24554305 0.25993072
-#> 5:                      0.24554305 0.25993072
-#> 6:                      0.02953193 0.05680264
+#>    Lrnr_glmnet_NULL_deviance_10_1_100   Lrnr_glm
+#> 1:                         0.35345519 0.36298498
+#> 2:                         0.35345519 0.36298498
+#> 3:                         0.24554305 0.25993072
+#> 4:                         0.24554305 0.25993072
+#> 5:                         0.24554305 0.25993072
+#> 6:                         0.02953193 0.05680264
 #>    Lrnr_pkg_SuperLearner_screener_screen.glmnet___Lrnr_glm
 #> 1:                                              0.36228209
 #> 2:                                              0.36228209

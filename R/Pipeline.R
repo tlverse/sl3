@@ -1,18 +1,24 @@
 #' Pipeline (chain) of learners. 
-#' A Pipeline of learners is a way to "chain" Learners together, where the output of one learner is used as output for the next learner. This can be used for things like screening, two stage machine learning methods, and Super Learning. A pipeline is fit by fitting the first \code{Learner}, calling \code{chain()} to create the next task, which becomes the training data for the next \code{Learner}. Similarly, for prediction, the predictions from the first \code{Learner} become the data to predict on for the next \code{Learner}.
+#'
+#' A Pipeline of learners is a way to "chain" Learners together, where the output of one learner is used as output for the next learner. 
+#' This can be used for things like screening, two stage machine learning methods, and Super Learning. 
+#' A pipeline is fit by fitting the first \code{Learner}, calling \code{chain()} to create the next task, 
+#' which becomes the training data for the next \code{Learner}. 
+#' Similarly, for prediction, the predictions from the first \code{Learner} become the data to predict on for the next \code{Learner}.
 #' @docType class
 #' @importFrom R6 R6Class
 #' @export
 #' @keywords data
-#' @return \code{\link{Lrnr_base}} object with methods for training and prediction
+#' @return Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
 #' @format \code{\link{R6Class}} object.
-#' @field params A list of learners to chain.
-#' @section Methods:
-#' \describe{
-#'   \item{\code{new(...)}}{This method is used to create a pipeline of learners. Arguments should be indiviual \code{Learner}s, in the order they should be applied.}
-#'   }
-#' @importFrom assertthat assert_that is.count is.flag
 #' @family Learners
+#' 
+#' @section Parameters:
+#' \describe{
+#'   \item{\code{...}}{Parameters should be individual \code{Learner}s, in the order they should be applied.}
+#' }
+#' @template common_parameters
+#' @importFrom assertthat assert_that is.count is.flag
 Pipeline <- R6Class(classname = "Pipeline",
                     inherit= Lrnr_base,
                     portable = TRUE,

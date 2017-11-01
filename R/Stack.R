@@ -1,18 +1,19 @@
 #' Learner Stacking
+#'
 #' A Stack is a special Learner that combines multiple other learners, "stacking" their predictions in columns.
 #' @docType class
 #' @importFrom R6 R6Class
 #' @export
 #' @keywords data
-#' @return \code{\link{Lrnr_base}} object with methods for training and prediction
+#' @return Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
 #' @format \code{\link{R6Class}} object.
-#' @field params A list of learners to stack
-#' @section Methods:
-#' \describe{
-#'   \item{\code{new(...)}}{This method is used to create a stack of learners. Arguments should be indiviual \code{Learner}s.}
-#'   }
-#' @importFrom assertthat assert_that is.count is.flag
 #' @family Learners
+#' 
+#' @section Parameters:
+#' \describe{
+#'   \item{\code{...}}{Parameters should be individual \code{Learner}s.}
+#' }
+#' @template common_parameters
 Stack <- R6Class(classname = "Stack",
                      inherit= Lrnr_base,
                      portable = TRUE,

@@ -13,22 +13,24 @@ aorder <- function(mat, index, along = 1) {
   return(result)
 }
 
-#' Fit/Predict a learner with CV
+#' Fit/Predict a learner with Cross Validation
+#'
 #' A wrapper around any learner that generates cross-validate predictions
 #' @docType class
 #' @importFrom R6 R6Class
 #' @export
 #' @keywords data
-#' @return \code{\link{Lrnr_base}} object with methods for training and prediction
+#' @return Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
 #' @format \code{\link{R6Class}} object.
-#' @field params A learner to be wrapped
-#' @section Methods:
+#' @family Learners
+#' 
+#' @section Parameters:
 #' \describe{
-#'   \item{\code{new(learner)}}{Wraps the \code{learner} in a cross-validation layer.}
-#'   }
+#'   \item{\code{learner}}{The learner to wrap}
+#'   \item{\code{folds=NULL}}{An \code{origami} folds object. If \code{NULL}, folds from the task are used}
+#' }
 #' @importFrom assertthat assert_that is.count is.flag
 #' @importFrom origami training validation fold_index
-#' @family Learners
 Lrnr_cv <- R6Class(classname = "Lrnr_cv",
                    inherit= Lrnr_base,
                    portable = TRUE,

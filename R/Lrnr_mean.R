@@ -4,20 +4,19 @@
 #' predict the outcome variable simply as the mean of the outcome vector.
 #'
 #' @docType class
-#'
-#' @keywords data
-#'
-#' @return \code{\link{Lrnr_base}} object with methods for training and
-#'  prediction.
-#'
-#' @format \code{\link{R6Class}} object.
-#'
-#' @field ... Additional arguments.
-#'
 #' @importFrom R6 R6Class
-#'
 #' @export
-#
+#' @keywords data
+#' @return Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+#' @format \code{\link{R6Class}} object.
+#' @family Learners
+#' 
+#' @section Parameters:
+#' \describe{
+#'   \item{\code{...}}{Not used}
+#' }
+#' @template common_parameters
+#' @importFrom assertthat assert_that is.count is.flag
 Lrnr_mean <- R6Class(classname = "Lrnr_mean", inherit = Lrnr_base,
                      portable = TRUE, class = TRUE,
   public = list(

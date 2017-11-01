@@ -3,9 +3,7 @@
 \docType{class}
 \name{Lrnr_h2o_grid}
 \alias{Lrnr_h2o_grid}
-\alias{Lrnr_h2o_grid}
 \alias{Lrnr_h2o_classifier}
-\alias{Lrnr_h2o_grid}
 \alias{Lrnr_h2o_mutator}
 \title{Grid Search Models with h2o}
 \format{\code{\link{R6Class}} object.}
@@ -17,23 +15,69 @@ Lrnr_h2o_classifier
 Lrnr_h2o_mutator
 }
 \value{
-\code{\link{Lrnr_base}} object with methods for training and
-prediction.
-
-\code{\link{Lrnr_base}} object with methods for training and
-prediction.
-
-\code{\link{Lrnr_base}} object with methods for training and
-prediction.
+Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
-This learner provides facilities for fitting various types of models with
+\code{Lrnr_h2o_grid} -- This learner provides facilities for fitting various types of models with
 support for grid search over the hyperparameter space of such models, using
 an interface to the H2O platform. For details on the procedures available and
 any limitations, consult the documentation of the \code{h2o} package.
 
-Classification Models with h2o
+\code{Lrnr_h2o_classifier} -- Classification Models with h2o
 
-Mutate Grid Search Models with h2o
+\code{Lrnr_h2o_mutator} -- Mutate Grid Search Models with h2o
+}
+\section{Parameters}{
+
+\describe{
+\item{\code{algorithm}}{An h2o ML algorithm. See \url{http://docs.h2o.ai/h2o/latest-stable/h2o-docs/data-science.html#} for a list.}
+\item{\code{seed=1}}{RNG see to use when fitting}
+\item{\code{distribution=NULL}}{Specifies the loss function for GBM, Deep Learning, and XGBoost}
+\item{\code{intercept=TRUE}}{If TRUE, and intercept term is included}
+\item{\code{standardize=TRUE}}{Standardize covariates to have mean=0 and SD=1}
+\item{\code{lambda=0}}{Lasso Parameter}
+\item{\code{max_iterations=100}}{Maximum number of iterations}
+\item{\code{ignore_const_columns=FALSE}}{If TRUE, drop constant covariate columns}
+\item{\code{missing_values_handling="Skip"}}{How to handle missing values}
+\item{\code{...}}{Other arguments passed to the h2o algorithm of choice. See \url{http://docs.h2o.ai/h2o/latest-stable/h2o-docs/parameters.html} for a list.}
+}
+}
+
+\section{Common Parameters}{
+
+
+Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by \code{Lrnr_base}, and shared
+by all learners.
+
+\describe{
+  \item{\code{covariates}}{A character vector of covariates. The learner will use this to subset the covariates for any specified task}
+  \item{\code{outcome_type}}{A \code{\link{variable_type}} object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified}
+  \item{\code{...}}{All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating}
+}
+}
+
+\seealso{
+Other Learners: \code{\link{Custom_chain}},
+  \code{\link{Lrnr_HarmonicReg}}, \code{\link{Lrnr_arima}},
+  \code{\link{Lrnr_base}}, \code{\link{Lrnr_condensier}},
+  \code{\link{Lrnr_cv}},
+  \code{\link{Lrnr_define_interactions}},
+  \code{\link{Lrnr_expSmooth}},
+  \code{\link{Lrnr_glm_fast}}, \code{\link{Lrnr_glmnet}},
+  \code{\link{Lrnr_glm}},
+  \code{\link{Lrnr_independent_binomial}},
+  \code{\link{Lrnr_mean}}, \code{\link{Lrnr_nnls}},
+  \code{\link{Lrnr_optim}},
+  \code{\link{Lrnr_pkg_SuperLearner}},
+  \code{\link{Lrnr_randomForest}},
+  \code{\link{Lrnr_rugarch}}, \code{\link{Lrnr_sl}},
+  \code{\link{Lrnr_solnp_density}},
+  \code{\link{Lrnr_solnp}},
+  \code{\link{Lrnr_subset_covariates}},
+  \code{\link{Lrnr_tsDyn}}, \code{\link{Lrnr_xgboost}},
+  \code{\link{Pipeline}}, \code{\link{Stack}},
+  \code{\link{define_h2o_X}},
+  \code{\link{undocumented_learner}}
 }
 \keyword{data}
+\keyword{datasets}

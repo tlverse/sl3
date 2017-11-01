@@ -9,36 +9,30 @@
 ## ------------------------------------------------------------------------
 
 
-#' Faster GLM Fits
+#' Computationally Efficient GLMs
 #'
 #' This learner provides faster fitting procedures for generalized linear models
-#' by way of a wrapper relying on the \code{speedglm} package.
+#' using the \code{speedglm} package. Arguments passed to \code{\link[speedglm]{speedglm.wfit}}.
+#' Uses \code{\link[stats]{glm.fit}} as a fallback if \code{\link[speedglm]{speedglm.wfit}} fails.
 #'
 #' @docType class
-#'
-#' @keywords data
-#'
-#' @return \code{\link{Lrnr_base}} object with methods for training and
-#'  prediction.
-#'
-#' @format \code{\link{R6Class}} object.
-#'
-#' @field family A \code{family} object from package \code{stats} describing the
-#'  error family of the model to be fit. See the documentation for the package
-#'  \code{speedglm} for details.
-#' @field method The type of matrix decomposition to be used in the model
-#'  fitting process. See documentation for the package \code{speedglm} for
-#'  further details.
-#' @field covariates Extra covariate terms to be passed to the model fitting
-#'  process. See documentation of the \code{speedglm} package for details.
-#' @field ... Additional arguments.
-#'
 #' @importFrom R6 R6Class
-#' @importFrom stats glm.fit
-#' @importFrom assertthat assert_that is.count is.flag
+#' @export
+#' @keywords data
+#' @return Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+#' @format \code{\link{R6Class}} object.
+#' @family Learners
+#' 
+#' @section Parameters:
+#' \describe{
+#'   \item{\code{intercept=TRUE}}{If \code{TRUE}, an intercept term is included}
+#'   \item{\code{method="Cholesky"}}{The matrix decomposition method to use}
+#'   \item{\code{...}}{Other parameters passed to \code{\link[speedglm]{speedglm.wfit}} }
+#' }
+#' @template common_parameters
+#' @importFrom stats glm predict family
 #'
 #' @export
-#
 Lrnr_glm_fast <- R6Class(classname = "Lrnr_glm_fast", inherit = Lrnr_base,
                          portable = TRUE, class = TRUE,
   public = list(
