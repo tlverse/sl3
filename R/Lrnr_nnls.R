@@ -1,24 +1,22 @@
 #' Non-negative Linear Least Squares
 #'
 #' This learner provides fitting procedures for models with non-negative linear
-#' least squares, internally using the \code{nnls} package. For details on the
-#' fitting procedure, consult the documentation of the \code{nnls} package.
+#' least squares, internally using the \code{nnls} package and \code{\link[nnls]{nnls}} function.
 #'
 #' @docType class
-#'
-#' @keywords data
-#'
-#' @return \code{\link{Lrnr_base}} object with methods for training and
-#'  prediction.
-#'
-#' @format \code{\link{R6Class}} object.
-#'
-#' @field ... Additional arguments. Currently unused.
-#'
 #' @importFrom R6 R6Class
-#'
 #' @export
-#
+#' @keywords data
+#' @return Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+#' @format \code{\link{R6Class}} object.
+#' @family Learners
+#' 
+#' @section Parameters:
+#' \describe{
+#'   \item{\code{...}}{Not used}
+#' }
+#' @template common_parameters
+#' @importFrom assertthat assert_that is.count is.flag
 Lrnr_nnls <- R6Class(classname = "Lrnr_nnls", inherit = Lrnr_base,
                      portable = TRUE, class = TRUE,
   public = list(

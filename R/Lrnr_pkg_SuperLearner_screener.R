@@ -1,29 +1,7 @@
-#' SuperLearner Screener Interface
-#'
-#' This learner provides an interface to the screener functions provided by the
-#' \code{SuperLearner} package. Such screening functions are used to reduce the
-#' number of covariates in the process of fitting a \code{SuperLearner} ensemble
-#' model. Consult documentation of the \code{SuperLearner} package for details
-#' on these screener functions.
-#'
-#' @docType class
-#'
-#' @keywords data
-#'
-#' @return \code{\link{Lrnr_base}} object with methods for training and
-#'  prediction.
-#'
-#' @format \code{\link{R6Class}} object.
-#'
-#' @field SL_wrapper A \code{SuperLearner} wrapper, used as an interface to
-#'  algorithms to be fit in a \code{SuperLearner} ensemble model.
-#' @field ... Additional arguments. Currently unused.
-#'
-#' @importFrom R6 R6Class
-#' @importFrom stats gaussian
-#'
+#' \code{Lrnr_pkg_SuperLearner_screener} -- Interface for \code{SuperLearner} screening algorithms. 
+#' Use \code{SuperLearner::listWrappers("screen")} for a list.
+#' @rdname SuperLearner_interface
 #' @export
-#
 Lrnr_pkg_SuperLearner_screener <- R6Class(classname = "Lrnr_pkg_SuperLearner_screener",
                                           inherit = Lrnr_base, portable = TRUE,
                                           class = TRUE,

@@ -3,25 +3,23 @@
 #' This meta-learner provides fitting procedures for density estimation, finding
 #' convex combinations of candidate density estimators by minimizing the
 #' cross-validated negative log-likelihood loss of each candidate density. The
-#' optimization problem is solved by making use of \code{Rsolnp::solnp}, using
+#' optimization problem is solved by making use of \code{\link[Rsolnp]{solnp}}, using
 #' Lagrange multipliers. For further details, consult the documentation of the
 #' \code{Rsolnp} package.
 #'
 #' @docType class
-#'
-#' @keywords data
-#'
-#' @return \code{\link{Lrnr_base}} object with methods for training and
-#'  prediction.
-#'
-#' @format \code{\link{R6Class}} object.
-#'
-#' @field ... Additional arguments. Currently unused.
-#'
 #' @importFrom R6 R6Class
-#'
 #' @export
-#
+#' @keywords data
+#' @return Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+#' @format \code{\link{R6Class}} object.
+#' @family Learners
+#' 
+#' @section Parameters:
+#' \describe{
+#'   \item{\code{...}}{Not currently used.}
+#' }
+#' @template common_parameters
 Lrnr_solnp_density <- R6Class(classname = "Lrnr_solnp_density",
                               inherit = Lrnr_base, portable = TRUE,
                               class = TRUE,

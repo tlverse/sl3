@@ -1,33 +1,39 @@
 #' Grid Search Models with h2o
 #'
-#' This learner provides facilities for fitting various types of models with
+#' \code{Lrnr_h2o_grid} -- This learner provides facilities for fitting various types of models with
 #' support for grid search over the hyperparameter space of such models, using
 #' an interface to the H2O platform. For details on the procedures available and
 #' any limitations, consult the documentation of the \code{h2o} package.
 #'
 #' @docType class
-#'
-#' @keywords data
-#'
-#' @return \code{\link{Lrnr_base}} object with methods for training and
-#'  prediction.
-#'
-#' @format \code{\link{R6Class}} object.
-#'
 #' @importFrom R6 R6Class
-#' @importFrom utils getFromNamespace
-#' @importFrom assertthat assert_that is.count is.flag
-#'
-#' @rdname Lrnr_h2o_grid
-#'
-#' @name Lrnr_h2o_grid
-#'
 #' @export
+#' @keywords data
+#' @return Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+#' @format \code{\link{R6Class}} object.
+#' @family Learners
+#' 
+#' @format \code{\link{R6Class}} object.
+#' @section Parameters:
+#' \describe{
+#'   \item{\code{algorithm}}{An h2o ML algorithm. See \url{http://docs.h2o.ai/h2o/latest-stable/h2o-docs/data-science.html#} for a list.}
+#'   \item{\code{seed=1}}{RNG see to use when fitting}
+#'   \item{\code{distribution=NULL}}{Specifies the loss function for GBM, Deep Learning, and XGBoost}
+#'   \item{\code{intercept=TRUE}}{If TRUE, and intercept term is included}
+#'   \item{\code{standardize=TRUE}}{Standardize covariates to have mean=0 and SD=1}
+#'   \item{\code{lambda=0}}{Lasso Parameter}
+#'   \item{\code{max_iterations=100}}{Maximum number of iterations}
+#'   \item{\code{ignore_const_columns=FALSE}}{If TRUE, drop constant covariate columns}
+#'   \item{\code{missing_values_handling="Skip"}}{How to handle missing values}
+#'   \item{\code{...}}{Other arguments passed to the h2o algorithm of choice. See \url{http://docs.h2o.ai/h2o/latest-stable/h2o-docs/parameters.html} for a list.}
+#' }
+#' @template common_parameters
 #
 Lrnr_h2o_grid <- R6Class(classname = "Lrnr_h2o_grid", inherit = Lrnr_base,
                          portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(seed = 1,
+    initialize = function(algorithm, 
+                    seed = 1,
                     distribution = NULL,
                     intercept = TRUE,
                     standardize = TRUE,
@@ -192,25 +198,9 @@ Lrnr_h2o_grid <- R6Class(classname = "Lrnr_h2o_grid", inherit = Lrnr_base,
   )
 )
 
-#' Classification Models with h2o
-#'
-#' @docType class
-#'
-#' @keywords data
-#'
-#' @return \code{\link{Lrnr_base}} object with methods for training and
-#'  prediction.
-#'
-#' @format \code{\link{R6Class}} object.
-#'
-#' @importFrom R6 R6Class
-#'
+#' \code{Lrnr_h2o_classifier} -- Classification Models with h2o
 #' @rdname Lrnr_h2o_grid
-#'
-#' @name Lrnr_h2o_grid
-#'
 #' @export
-#
 Lrnr_h2o_classifier <- R6Class(classname = "Lrnr_h2o_classifier",
                                inherit = Lrnr_h2o_grid, portable = TRUE,
                                class = TRUE,
@@ -219,25 +209,9 @@ Lrnr_h2o_classifier <- R6Class(classname = "Lrnr_h2o_classifier",
     .return_prediction_as_vector = FALSE),
 )
 
-#' Mutate Grid Search Models with h2o
-#'
-#' @docType class
-#'
-#' @keywords data
-#'
-#' @return \code{\link{Lrnr_base}} object with methods for training and
-#'  prediction.
-#'
-#' @format \code{\link{R6Class}} object.
-#'
-#' @importFrom R6 R6Class
-#'
+#' \code{Lrnr_h2o_mutator} -- Mutate Grid Search Models with h2o
 #' @rdname Lrnr_h2o_grid
-#'
-#' @name Lrnr_h2o_grid
-#'
 #' @export
-#
 Lrnr_h2o_mutator <- R6Class(classname = "Lrnr_h2o_mutator",
                             inherit = Lrnr_h2o_grid, portable = TRUE,
                             class = TRUE,

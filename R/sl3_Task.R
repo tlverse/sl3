@@ -13,6 +13,7 @@
 #' @importFrom assertthat assert_that is.count is.flag
 #' @importFrom uuid UUIDgenerate
 #' @import data.table
+#' @importFrom origami make_folds
 sl3_Task <- R6Class(classname = "sl3_Task",
                     portable = TRUE,
                     class = TRUE,

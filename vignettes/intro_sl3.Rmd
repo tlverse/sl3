@@ -92,7 +92,7 @@ dataset described above:
 
 ```{r sl3-task-create}
 task <- make_sl3_Task(data = cpp_imputed, covariates = covars,
-                      outcome = outcome)
+                      outcome = outcome, outcome_type="continuous")
 ```
 
 We use the `make_sl3_Task` method to create a new `sl3_Task`, called `task`.

@@ -95,7 +95,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ##' The remainder of this documentation is an example of how you might write documentation for your new learner.
 ##' This learner uses \code{\link[my_package]{my_ml_fun}} from \code{my_package} to fit my favorite machine learning algorithm.
 ##' 
-##' 
 ##' @docType class
 ##' @importFrom R6 R6Class
 ##' @export
@@ -105,7 +104,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ##' @family Learners
 ##' 
 ##' @section Parameters:
-##'
 ##' \describe{
 ##'   \item{\code{param_1=&quot;default_1&quot;}}{ This parameter does something.
 ##'   }
@@ -117,19 +115,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ##' 
 ##' @section Methods:
 ##' \describe{
-##' \item{\code{special_function}}{
+##' \item{\code{special_function(arg_1)}}{
 ##'   My learner is special so it has a special function.
 ##'   
-##'   \emph{Usage:} \code{lrnr_template$special_function(arg_1)}
-##'   
-##'   \emph{Arguments:}
 ##'   \itemize{
 ##'     \item{\code{arg_1}: A very special argument.
 ##'    }
 ##'   }
 ##'   }
 ##' }
-##' 
 Lrnr_template &lt;-<span class="st"> </span><span class="kw">R6Class</span>(<span class="dt">classname =</span> <span class="st">&quot;Lrnr_template&quot;</span>, <span class="dt">inherit =</span> Lrnr_base,
                     <span class="dt">portable =</span> <span class="ot">TRUE</span>, <span class="dt">class =</span> <span class="ot">TRUE</span>,
 <span class="co"># Above, you should change Lrnr_template (in both the object name and the classname argument)</span>

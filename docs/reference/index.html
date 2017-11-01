@@ -173,14 +173,13 @@
           <td>
             <p><code><a href="Lrnr_cv.html">Lrnr_cv</a></code> </p>
           </td>
-          <td><p>Fit/Predict a learner with CV
-A wrapper around any learner that generates cross-validate predictions</p></td>
+          <td><p>Fit/Predict a learner with Cross Validation</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="Lrnr_define_interactions.html">Lrnr_define_interactions</a></code> </p>
           </td>
-          <td><p>Conversion to Design Matrices</p></td>
+          <td><p>Define interactions</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -192,19 +191,19 @@ A wrapper around any learner that generates cross-validate predictions</p></td>
           <td>
             <p><code><a href="Lrnr_glm_fast.html">Lrnr_glm_fast</a></code> </p>
           </td>
-          <td><p>Faster GLM Fits</p></td>
+          <td><p>Computationally Efficient GLMs</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="Lrnr_glm.html">Lrnr_glm</a></code> </p>
           </td>
-          <td><p>GLM Fits</p></td>
+          <td><p>Generalized Linear Models</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="Lrnr_glmnet.html">Lrnr_glmnet</a></code> </p>
           </td>
-          <td><p>Random Forest Models</p></td>
+          <td><p>GLMs with Elastic Net Regularization</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -246,43 +245,31 @@ A wrapper around any learner that generates cross-validate predictions</p></td>
           <td>
             <p><code><a href="Lrnr_optim.html">Lrnr_optim</a></code> </p>
           </td>
-          <td><p>Optimization</p></td>
+          <td><p>Optimize Metalearner according to Loss Function using optim</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="Lrnr_pkg_condensier_logisfitR6.html">Lrnr_pkg_condensier_logisfitR6</a></code> </p>
           </td>
-          <td><p>Lrnr_pkg_condensier_logisfitR6</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_pkg_SuperLearner_method.html">Lrnr_pkg_SuperLearner_method</a></code> </p>
-          </td>
-          <td><p>Methods for SuperLearner Objects</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_pkg_SuperLearner_screener.html">Lrnr_pkg_SuperLearner_screener</a></code> </p>
-          </td>
-          <td><p>SuperLearner Screener Interface</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_pkg_SuperLearner.html">Lrnr_pkg_SuperLearner</a></code> </p>
-          </td>
-          <td><p>SuperLearner Wrapper Interface</p></td>
+          <td><p>sl3 Learner wrapper for condensier</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="Lrnr_randomForest.html">Lrnr_randomForest</a></code> </p>
           </td>
-          <td><p>Random Forest Models</p></td>
+          <td><p>Random Forests</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="Lrnr_rugarch.html">Lrnr_rugarch</a></code> </p>
           </td>
           <td><p>Univariate GARCH Models</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="Lrnr_sl.html">Lrnr_sl</a></code> </p>
+          </td>
+          <td><p>SuperLearner Algorithm</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -316,9 +303,9 @@ A wrapper around any learner that generates cross-validate predictions</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="undocumented_learner.html">Lrnr_sl</a></code> </p>
+            <p><code><a href="SuperLearner_interface.html">Lrnr_pkg_SuperLearner</a></code> <code><a href="SuperLearner_interface.html">Lrnr_pkg_SuperLearner_method</a></code> <code><a href="SuperLearner_interface.html">Lrnr_pkg_SuperLearner_screener</a></code> </p>
           </td>
-          <td><p>Undocumented Learner</p></td>
+          <td><p>Use SuperLearner Wrappers, Screeners, and Methods, in sl3</p></td>
         </tr>
       </tbody><tbody>
         <tr>
@@ -332,19 +319,17 @@ A wrapper around any learner that generates cross-validate predictions</p></td>
           <td>
             <p><code><a href="Pipeline.html">Pipeline</a></code> </p>
           </td>
-          <td><p>Pipeline (chain) of learners.
-A Pipeline of learners is a way to "chain" Learners together, where the output of one learner is used as output for the next learner. This can be used for things like screening, two stage machine learning methods, and Super Learning. A pipeline is fit by fitting the first <code>Learner</code>, calling <code>chain()</code> to create the next task, which becomes the training data for the next <code>Learner</code>. Similarly, for prediction, the predictions from the first <code>Learner</code> become the data to predict on for the next <code>Learner</code>.</p></td>
+          <td><p>Pipeline (chain) of learners.</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="Stack.html">Stack</a></code> </p>
           </td>
-          <td><p>Learner Stacking
-A Stack is a special Learner that combines multiple other learners, "stacking" their predictions in columns.</p></td>
+          <td><p>Learner Stacking</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="Custom_chain.html">Custom_chain</a></code> </p>
+            <p><code><a href="Custom_chain.html">Custom_chain</a></code> <code><a href="Custom_chain.html">customize_chain</a></code> </p>
           </td>
           <td><p>Customize chaining for a learner</p></td>
         </tr>
@@ -512,15 +497,9 @@ A Stack is a special Learner that combines multiple other learners, "stacking" t
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="Custom_chain.html">Custom_chain</a></code> </p>
+            <p><code><a href="Custom_chain.html">Custom_chain</a></code> <code><a href="Custom_chain.html">customize_chain</a></code> </p>
           </td>
           <td><p>Customize chaining for a learner</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="customize_chain.html">customize_chain</a></code> </p>
-          </td>
-          <td><p>Modify the chain behavior of a learner</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -568,14 +547,13 @@ A Stack is a special Learner that combines multiple other learners, "stacking" t
           <td>
             <p><code><a href="Lrnr_cv.html">Lrnr_cv</a></code> </p>
           </td>
-          <td><p>Fit/Predict a learner with CV
-A wrapper around any learner that generates cross-validate predictions</p></td>
+          <td><p>Fit/Predict a learner with Cross Validation</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="Lrnr_define_interactions.html">Lrnr_define_interactions</a></code> </p>
           </td>
-          <td><p>Conversion to Design Matrices</p></td>
+          <td><p>Define interactions</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -587,19 +565,19 @@ A wrapper around any learner that generates cross-validate predictions</p></td>
           <td>
             <p><code><a href="Lrnr_glm_fast.html">Lrnr_glm_fast</a></code> </p>
           </td>
-          <td><p>Faster GLM Fits</p></td>
+          <td><p>Computationally Efficient GLMs</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="Lrnr_glm.html">Lrnr_glm</a></code> </p>
           </td>
-          <td><p>GLM Fits</p></td>
+          <td><p>Generalized Linear Models</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="Lrnr_glmnet.html">Lrnr_glmnet</a></code> </p>
           </td>
-          <td><p>Random Forest Models</p></td>
+          <td><p>GLMs with Elastic Net Regularization</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -641,43 +619,31 @@ A wrapper around any learner that generates cross-validate predictions</p></td>
           <td>
             <p><code><a href="Lrnr_optim.html">Lrnr_optim</a></code> </p>
           </td>
-          <td><p>Optimization</p></td>
+          <td><p>Optimize Metalearner according to Loss Function using optim</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="Lrnr_pkg_condensier_logisfitR6.html">Lrnr_pkg_condensier_logisfitR6</a></code> </p>
           </td>
-          <td><p>Lrnr_pkg_condensier_logisfitR6</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_pkg_SuperLearner_method.html">Lrnr_pkg_SuperLearner_method</a></code> </p>
-          </td>
-          <td><p>Methods for SuperLearner Objects</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_pkg_SuperLearner_screener.html">Lrnr_pkg_SuperLearner_screener</a></code> </p>
-          </td>
-          <td><p>SuperLearner Screener Interface</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_pkg_SuperLearner.html">Lrnr_pkg_SuperLearner</a></code> </p>
-          </td>
-          <td><p>SuperLearner Wrapper Interface</p></td>
+          <td><p>sl3 Learner wrapper for condensier</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="Lrnr_randomForest.html">Lrnr_randomForest</a></code> </p>
           </td>
-          <td><p>Random Forest Models</p></td>
+          <td><p>Random Forests</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="Lrnr_rugarch.html">Lrnr_rugarch</a></code> </p>
           </td>
           <td><p>Univariate GARCH Models</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="Lrnr_sl.html">Lrnr_sl</a></code> </p>
+          </td>
+          <td><p>SuperLearner Algorithm</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -719,8 +685,7 @@ A wrapper around any learner that generates cross-validate predictions</p></td>
           <td>
             <p><code><a href="Pipeline.html">Pipeline</a></code> </p>
           </td>
-          <td><p>Pipeline (chain) of learners.
-A Pipeline of learners is a way to "chain" Learners together, where the output of one learner is used as output for the next learner. This can be used for things like screening, two stage machine learning methods, and Super Learning. A pipeline is fit by fitting the first <code>Learner</code>, calling <code>chain()</code> to create the next task, which becomes the training data for the next <code>Learner</code>. Similarly, for prediction, the predictions from the first <code>Learner</code> become the data to predict on for the next <code>Learner</code>.</p></td>
+          <td><p>Pipeline (chain) of learners.</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -750,8 +715,13 @@ A Pipeline of learners is a way to "chain" Learners together, where the output o
           <td>
             <p><code><a href="Stack.html">Stack</a></code> </p>
           </td>
-          <td><p>Learner Stacking
-A Stack is a special Learner that combines multiple other learners, "stacking" their predictions in columns.</p></td>
+          <td><p>Learner Stacking</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="SuperLearner_interface.html">Lrnr_pkg_SuperLearner</a></code> <code><a href="SuperLearner_interface.html">Lrnr_pkg_SuperLearner_method</a></code> <code><a href="SuperLearner_interface.html">Lrnr_pkg_SuperLearner_screener</a></code> </p>
+          </td>
+          <td><p>Use SuperLearner Wrappers, Screeners, and Methods, in sl3</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -761,7 +731,7 @@ A Stack is a special Learner that combines multiple other learners, "stacking" t
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="undocumented_learner.html">Lrnr_sl</a></code> </p>
+            <p><code><a href="undocumented_learner.html">undocumented_learner</a></code> </p>
           </td>
           <td><p>Undocumented Learner</p></td>
         </tr><tr>

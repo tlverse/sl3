@@ -1,31 +1,23 @@
-
-
 #' xgboost: eXtreme Gradient Boosting
 #'
 #' This learner provides fitting procedures for \code{xgboost} models, using the
-#' \code{xgboost} package. Such models are classification and regression trees
+#' \code{xgboost} package, using the \code{\link[xgboost]{xgb.train}} function. Such models are classification and regression trees
 #' with extreme gradient boosting. For details on the fitting procedure, consult
 #' the documentation of the \code{xgboost} package.
-#'
 #' @docType class
-#'
-#' @keywords data
-#'
-#' @return \code{\link{Lrnr_base}} object with methods for training and
-#'  prediction.
-#'
-#' @format \code{\link{R6Class}} object.
-#'
 #' @importFrom R6 R6Class
-#' @importFrom stats predict
-#' @importFrom assertthat assert_that is.count is.flag
-#'
-#' @rdname Lrnr_xgboost
-#'
-#' @name Lrnr_xgboost
-#'
 #' @export
-#
+#' @keywords data
+#' @return Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+#' @format \code{\link{R6Class}} object.
+#' @family Learners
+#' 
+#' @section Parameters:
+#' \describe{
+#'   \item{\code{nrounds=20}}{Number of fitting iterations}
+#'   \item{\code{...}}{Other parameters passed to \code{\link[xgboost]{xgb.train}}}
+#' }
+#' @template common_parameters
 Lrnr_xgboost <- R6Class(classname = "Lrnr_xgboost", inherit = Lrnr_base,
                         portable = TRUE, class = TRUE,
   public = list(

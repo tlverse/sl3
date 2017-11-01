@@ -111,22 +111,21 @@ univariate time-series.</p>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='Lrnr_base.html'>Lrnr_base</a></code> object with methods for training and
-prediction.</p>
+    <p>Learner object with methods for training and prediction. See <code><a href='Lrnr_base.html'>Lrnr_base</a></code> for documentation on learners.</p>
     
-    <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
+    <h2 class="hasAnchor" id="parameters"><a class="anchor" href="#parameters"></a>Parameters</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code>order</code></dt><dd><p>A specification of the non-seasonal part of the ARIMA model: the
+<dt><code>order=NULL</code></dt><dd><p>A specification of the non-seasonal part of the ARIMA model: the
 three integer components (p, d, q) are the AR order, the degree of
 differencing, and the MA order.</p></dd>
-    <dt><code>seasonal</code></dt><dd><p>A specification of the seasonal part of the ARIMA model, plus
+<dt><code>seasonal=list(order=c(0,0,0) period=NA)</code></dt><dd><p>A specification of the seasonal part of the ARIMA model, plus
 the period (which defaults to frequency(x)). This should be a list with
 components order and period, but a specification of just a numeric vector of
 length 3 will be turned into a suitable list with the specification as the
 order.</p></dd>
-    <dt><code>n.ahead</code></dt><dd><p>The forecast horizon. If not specified, returns forecast of
+<dt><code>n.ahead=NULL</code></dt><dd><p>The forecast horizon. If not specified, returns forecast of
 size <code>task$X</code>.</p></dd>
 </dl>
     
@@ -136,9 +135,22 @@ size <code>task$X</code>.</p></dd>
   <code><a href='Lrnr_HarmonicReg.html'>Lrnr_HarmonicReg</a></code>, <code><a href='Lrnr_base.html'>Lrnr_base</a></code>,
   <code><a href='Lrnr_condensier.html'>Lrnr_condensier</a></code>, <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
   <code><a href='Lrnr_define_interactions.html'>Lrnr_define_interactions</a></code>,
-  <code><a href='Lrnr_expSmooth.html'>Lrnr_expSmooth</a></code>, <code><a href='Lrnr_rugarch.html'>Lrnr_rugarch</a></code>,
-  <code><a href='undocumented_learner.html'>Lrnr_sl</a></code>, <code><a href='Lrnr_tsDyn.html'>Lrnr_tsDyn</a></code>,
-  <code><a href='Pipeline.html'>Pipeline</a></code>, <code><a href='Stack.html'>Stack</a></code></p>
+  <code><a href='Lrnr_expSmooth.html'>Lrnr_expSmooth</a></code>,
+  <code><a href='Lrnr_glm_fast.html'>Lrnr_glm_fast</a></code>, <code><a href='Lrnr_glmnet.html'>Lrnr_glmnet</a></code>,
+  <code><a href='Lrnr_glm.html'>Lrnr_glm</a></code>, <code><a href='Lrnr_h2o_grid.html'>Lrnr_h2o_grid</a></code>,
+  <code><a href='Lrnr_independent_binomial.html'>Lrnr_independent_binomial</a></code>,
+  <code><a href='Lrnr_mean.html'>Lrnr_mean</a></code>, <code><a href='Lrnr_nnls.html'>Lrnr_nnls</a></code>,
+  <code><a href='Lrnr_optim.html'>Lrnr_optim</a></code>,
+  <code><a href='SuperLearner_interface.html'>Lrnr_pkg_SuperLearner</a></code>,
+  <code><a href='Lrnr_randomForest.html'>Lrnr_randomForest</a></code>,
+  <code><a href='Lrnr_rugarch.html'>Lrnr_rugarch</a></code>, <code><a href='Lrnr_sl.html'>Lrnr_sl</a></code>,
+  <code><a href='Lrnr_solnp_density.html'>Lrnr_solnp_density</a></code>,
+  <code><a href='Lrnr_solnp.html'>Lrnr_solnp</a></code>,
+  <code><a href='Lrnr_subset_covariates.html'>Lrnr_subset_covariates</a></code>,
+  <code><a href='Lrnr_tsDyn.html'>Lrnr_tsDyn</a></code>, <code><a href='Lrnr_xgboost.html'>Lrnr_xgboost</a></code>,
+  <code><a href='Pipeline.html'>Pipeline</a></code>, <code><a href='Stack.html'>Stack</a></code>,
+  <code><a href='Lrnr_h2o_glm.html'>define_h2o_X</a></code>,
+  <code><a href='undocumented_learner.html'>undocumented_learner</a></code></p>
     
 
   </div>
@@ -150,7 +162,7 @@ size <code>task$X</code>.</p></dd>
 
       <li><a href="#value">Value</a></li>
 
-      <li><a href="#fields">Fields</a></li>
+      <li><a href="#parameters">Parameters</a></li>
 
       <li><a href="#see-also">See also</a></li>
           </ul>

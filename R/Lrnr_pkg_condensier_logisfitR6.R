@@ -3,7 +3,10 @@
 ## In this, the sl3 learner 'Lrnr_base' object is injected into the wraper class below.
 ## This R6 object then provides a communication link between the two packages (sl3 <-> condensier).
 
-#' Lrnr_pkg_condensier_logisfitR6
+#' sl3 Learner wrapper for condensier
+#'
+#' This wrapper allows the use of any \code{sl3} Learner as a Learner for \code{condensier}. 
+#' For details, see the \code{\link[condensier]{fit_density}} function.
 #'
 #' @docType class
 #' @export

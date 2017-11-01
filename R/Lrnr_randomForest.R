@@ -1,26 +1,26 @@
-#' Random Forest Models
+#' Random Forests
 #'
 #' This learner provides fitting procedures for random forest models, using the
-#' \code{randomForest} package. For details on the fitting procedure, consult
-#' the documentation of the \code{randomForest} package.
+#' \code{randomForest} package, using the \code{\link[randomForest]{randomForest}} function.
 #'
 #' @docType class
-#'
-#' @keywords data
-#'
-#' @return \code{\link{Lrnr_base}} object with methods for training and
-#'  prediction.
-#'
-#' @format \code{\link{R6Class}} object.
-#'
-#' @field ... Additional arguments. Currently unused.
-#'
 #' @importFrom R6 R6Class
-#' @importFrom stats predict
-#' @importFrom assertthat assert_that is.count is.flag
-#'
 #' @export
-#
+#' @keywords data
+#' @return Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+#' @format \code{\link{R6Class}} object.
+#' @family Learners
+#' 
+#' @section Parameters:
+#' \describe{
+#'   \item{\code{ntree=100}}{Number of trees in forest}
+#'   \item{\code{keep.forest=TRUE}}{If \code{TRUE}, forest is stored, which is required for prediction.}
+#'   \item{\code{nodesize=5}}{Minimum number of observations in terminal (leaf) nodes}
+#'   \item{\code{maxnodes=NULL}}{Maximum number of terminal (leaf) nodes in each tree}
+#'   \item{\code{importance=FALSE}}{Store variable importance information}
+#'   \item{\code{...}}{Other parameters passed to \code{\link[randomForest]{randomForest}}}
+#' }
+#' @template common_parameters
 Lrnr_randomForest <- R6Class(classname = "Lrnr_randomForest",
                              inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
