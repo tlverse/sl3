@@ -1,6 +1,7 @@
 ---
 title: "The `sl3` R Package"
 subtitle: "Modern Super Learning with Pipelines"
+subsubtitle: "Funded by Bill and Melinda Gates Foundation: Healthy Birth, Growth, and Development Knowledge Initiative"
 author: "[Jeremy Coyle](https://github.com/jeremyrcoyle), [Nima
   Hejazi](https://nimahejazi.org), [Ivana
   Malenica](https://github.com/podTockom), [Oleg
@@ -23,6 +24,8 @@ output:
 knitr::opts_chunk$set(fig.width = 7, fig.height = 4.5, dpi = 300,
                       fig.cap = "", fig.align = "center")
 showtext::showtext.opts(dpi = 300)
+library(sl3)
+library(methods)
 ```
 
 # Accessing these slides
@@ -56,27 +59,24 @@ a newer object-oriented paradigm to the R language.
 
 ## Core classes
 
-- `sl3_Task`, for defining a machine learning problem. These objects keep track
-  of the task data, as well as what variables play what roles in the machine
-  learning problem. These are easily created by `make_sl3_Task`.
+- `sl3_Task`: Define ML problem (task). Keep track of data, as well as the variables. Created by `make_sl3_Task()`.
 
 --
 
-- `Lrnr_base`, a base class for defining machine learning algorithms, as well as
-  _fits_ for those algorithms to particular `sl3_Task`s. Different learning
-  algorithms are defined in classes that inherit from this base class.
+- `Lrnr_base`: Base class for defining ML algorithms. Save the
+  _fits_ on particular `sl3_Task`s. Different learning
+  algorithms are defined in classes that inherit from this class.
 
 --
 
-- `Pipeline`, a set of learners to be fit _sequentially_, where the fit from one
-  learner is used to define the task for the next learner. These are a special
-  kind of learner derived from `Lrnr_base`.
+- `Pipeline`: Define a _sequential_  pipe of learners. The fit of one learner is used by the next one.  
+  - Example pipeline: 1) Pre-process covariates (screener / PCA) -> 2) Fit the estimator to pre-processed data.
 
 --
 
-- `Stack`, like `Pipelines`, except in that learners are trained
-  _simultaneously_, so that their predictions can be either combined or
-  compared. These are a special kind of learner derived from `Lrnr_base`.
+- `Stack`: Stack several ML learners and train them
+  _simultaneously_ on the same data. Their predictions can be either combined or
+  compared.
 
 ???
 
@@ -158,8 +158,7 @@ library(sl3)
 
 # A "toy" data set
 
-We can't do any model fitting without data. We use data from the Collaborative
-Perinatal Project (CPP) to illustrate the features of `sl3` as well as its
+We use data from the Collaborative Perinatal Project (CPP) to illustrate the features of `sl3` as well as its
 proper usage. For convenience, the data is included with the `sl3` R package.
 
 ```{r prelims-data, message=FALSE}
@@ -178,10 +177,13 @@ outcome <- "haz"
 
 ---
 
-# Setting up `sl3_Task`s I
+# Setting up `sl3_Task` I
 
-Recall that a `sl3_Task` is the core structure that holds the data set and
-specifications to be respected in the estimation/modeling procedure.
+- `sl3_Task` is the core structure that holds the data set.
+
+- `sl3_Task` specifies the covariates / outcome / outcome_type.
+
+- These spec's must be respected by all learners that work with this task.
 
 ```{r sl3-task-setup, message=FALSE}
 task <- make_sl3_Task(data = cpp_imputed, covariates = covars,
@@ -190,25 +192,26 @@ task <- make_sl3_Task(data = cpp_imputed, covariates = covars,
 
 --
 
-- We use the `make_sl3_Task` method to create a new `sl3_Task`, called `task`.
+- Method `make_sl3_Task()` created a new `sl3_Task`.
 
-- Here, we specified the underlying data, `cpp_imputed`, and vectors indicating
-  which varaibles to use as covariates and outcomes.
+- Specified the underlying data (`cpp_imputed`), as well as covariates and outcome.
 
-- We also specified an `outcome_type`, here "continuous", indicating if the outcome corresponds to continuous or categorical (or another type of) data.
---
-
-## `sl3_Task` Options
-
-- `make_sl3_Task` supports a range of options in order to facilitate the
-  articulation of more advanced specifics informative of the machine learning
-  problem.
-  
-- For example, we can specify the id, weights, and offset nodes.
+- Also specified an `outcome_type` ("continuous"). Can be "categorical" / "binomial" / "quasibinomial".
 
 ---
 
-# Setting up `sl3_Task`s II
+# `sl3_Task` Options
+
+- `make_sl3_Task()` has many options providing support for a wide range of ML problems.
+  
+- For example: 
+  - `id` - clustered / repeated-measures data
+  - `weights` - survey data
+  - `offset` - TMLE
+
+---
+
+# Setting up `sl3_Task` II
 
 Let's take a look at the `task` that we set up:
 
@@ -220,23 +223,23 @@ task
 
 # Learners I: Introduction
 
-- `Lrnr_base` is the base class for defining machine learning algorithms, as
-  well as fits for those algorithms to particular `sl3_Task`s.
+- `Lrnr_base` is the base class for defining ML algorithms.
+  - Saves the fits for those algorithms to particular `sl3_Task`s.
 
 --
 
-- Different machine learning algorithms are defined in classes that inherit from
+- Different ML algorithms are defined in classes that inherit from
   `Lrnr_base`.
   
 --
   
 - For instance, the `Lrnr_glm` class inherits from `Lrnr_base`, and defines a
-  learner that fits generalized linear models.
+  learner that fits GLMs.
   
 --
 
 - Learner objects can be constructed from their class definitions using the
-  `make_learner` function:
+  `make_learner()` function:
 
 ```{r}
 # make learner object
@@ -267,66 +270,86 @@ lrnr_glm_fit <- lrnr_glm$train(task)
 lrnr_glm_fit$is_trained
 ```
 
---
-
-- Here, we fit the learner to the CPP task we defined above. Both `lrnr_glm` and
+<!-- - Here, we fit the learner to the CPP task we defined above. Both `lrnr_glm` and
   `lrnr_glm_fit` are objects of class `Lrnr_glm`, although the former defines a
-  learner and the latter defines a fit of that learner.
-
---
-
-- We can distiguish between the learners and learner fits using the `is_trained`
-  field, which is true for fits but not for learners.
+  learner and the latter defines a fit of that learner. -->
+<!-- 
+- We can distinguish between the learners and learner fits using the `is_trained`
+  field, which is true for fits but not for learners. -->
 
 ---
 
 # Learners III: Prediction
 
-- Now that we've fit a learner, we can generate predictions using the `predict`
-  method:
+- Generate default predictions using `predict()` method:
 
 ```{r}
-# get learner predictions
-preds <- lrnr_glm_fit$predict(task)
+preds <- lrnr_glm_fit$predict()
 head(preds)
 ```
 
 --
 
-- Here, we specified `task` as the task for which we wanted to generate
+- Generate predictions for a given new task:
+
+```{r}
+preds <- lrnr_glm_fit$predict(task)
+head(preds)
+```
+
+<!-- - Here, we specified `task` as the task for which we wanted to generate
   predictions. If we had omitted this, we would have gotten the same predictions
   because `predict` defaults to using the task provided to `train` (called the
   training task). Alternatively, we could have provided a different task for
   which we want to generate predictions.
 
---
-
 - The final important learner method, `chain`, will be discussed later, when we
   discuss __learner composition__. As with `sl3_Task`, learners have a variety
-  of fields and methods we haven't discussed here.
+  of fields and methods we haven't discussed here. -->
 
 ---
 
 # Learners IV: Properties
 
-- Learners have _properties_ that indicate what features they support. You can
-  use `sl3_list_properties` to get a list of all properties supported by at
-  least one learner.
+- Learners have _properties_ that indicate what features they support. Use `sl3_list_properties()` to get a list of all properties supported by at least one learner.
 
+```{r}
+sl3_list_learners(c("binomial", "offset"))
+```
 --
 
-You can then use `sl3_list_learners` to find learners supporting any
-set of properties:
+- Use `sl3_list_learners()` to find learners supporting any set of properties:
 
 ```{r sl3-list-learner}
-sl3_list_properties()
-
 sl3_list_learners(c("binomial", "offset"))
 ```
 
+---
+
+# Learners V: Tuning Parameters
+
+- Learners can be instantiated without providing any additional parameters. We tried to provide sensible defaults for each learner.
+
+- You can modify the learners' behavior by instantiating learners with different parameters.
+
 --
 
-Defining a `sl3` learner that uses the `SL.glmnet` wrapper from `SuperLearner`:
+`sl3` Learners support some common parameters (where applicable):
+
+* `covariates`: subsets covariates before fitting. Allows
+  learners to be fit to the same task with different covariate subsets.
+
+* `outcome_type`: overrides the task `outcome_type`. Allows
+  learners to be fit to the same task with different `outcome_types`.
+
+* `...`: arbitrary parameters can be passed directly to the learner
+  method. See documentation for each learner.
+
+---
+
+# Compatibility with `SuperLearner` Package
+
+- Defining a `sl3` learner that uses the `SL.glmnet` wrapper from `SuperLearner`:
 
 ```{r SuperLearner Wrapper}
 lrnr_sl_glmnet <- make_learner(Lrnr_pkg_SuperLearner, "SL.glmnet")
@@ -341,20 +364,16 @@ lrnr_sl_glmnet <- make_learner(Lrnr_pkg_SuperLearner, "SL.glmnet")
 
 ---
 
-# Properties cont: Dependent Data
 
---
+# Dependent Data / Time-series
 
 - `sl3` supports univariate and multivariate time-series. 
 
-Using bsds dataset, we can make arbitrary size forecasts using one of the "timeseries" learners:
+- Using "bsds" example dataset, we can make arbitrary size forecasts using one of the "time-series" learners:
 
 ```{r sl3-ts, eval=FALSE}
-#load data
 data(bsds)
-
 task <- sl3_Task$new(bsds, covariates = c("cnt"), outcome = "cnt")
-
 #self exciting threshold autoregressive model
 tsDyn_learner <- Lrnr_tsDyn$new(learner="setar", m=1, model="TAR", n.ahead=5)
 fit_1 <- tsDyn_learner$train(task)
@@ -372,34 +391,6 @@ Examples can be found in the "examples" directory on github.
 - Currently in works: support for spatial data.
 
 ---
-
-# Learners V: Parameters
-
-- In general, learners can be instantiated without providing any additional
-  parameters.
-
---
-
-- We've tried to provide sensible defaults for each learner; however, if you
-  would like to modify the learners' behavior, you may do so by instantiating
-  learners with different parameters.
-
---
-
-`sl3` Learners support some common parameters that work with all learners for
-which they are applicable:
-
-* `covariates`: subsets covariates before fitting. This allows different
-  learners to be fit to the same task with different covariate subsets.
-
-* `outcome_type`: overrides the `task$outcome_type`. This allows different
-  learners to be fit to the same task with different outcome_types.
-
-* `...`: abitrary parameters typically passed directly to the internal learner
-  method. The documentation for each learner will direct to the appropriate
-  function documentation for the learner method.
-
----
 class: inverse, center, middle
 
 # Composing Learners in `sl3`
@@ -413,15 +404,12 @@ class: inverse, center, middle
 
 --
 
-- There are many ways in which a learner can define the task for the downstream
-  learner. The `chain` method defined by learners defines how this will work.
-  Let's look at the example of pre-screening variables.
+- Let's look at one example of chaining via pre-screening of covariates:
 
---
+  - Below, we generate a screener object based on the `SuperLearner` function
+  `screen.corP` and fit it to our task. 
 
-- Below, we generate a screener object based on the `SuperLearner` function
-  `screen.corP` and fit it to our task. Inspecting the fit, we see that it
-  selected a subset of covariates:
+  - Inspecting the fit, we see that it selected a subset of covariates:
 
 ```{r sl3-fit-screener, message=FALSE}
 screen_cor <- Lrnr_pkg_SuperLearner_screener$new("screen.corP")
@@ -433,7 +421,8 @@ print(screen_fit)
 
 # Pipelines II
 
-- Now, `chain` may be called on this learner fit to define a downstream task:
+- Next, we call `chain()` method to return a new task.
+- This will make the pre-screened data available to next learner.
 
 ```{r sl3-chain-screener}
 screened_task <- screen_fit$chain()
@@ -444,14 +433,13 @@ print(screened_task)
 
 # Pipelines III
 
-- As with `predict`, we can omit a task from the call to `chain`, in which case
+<!-- - As with `predict()` method, we can omit a task from the call to `chain()`, in which case
   the call defaults to using the same task that was used for training.
+ -->
 
---
-
-- We can see that the chained task reduces the covariates to the subset selected
-  by the screener. We can fit this new task using the `lrnr_glm` we defined
-  above:
+- We can see that the chained task reduced the covariates to the subset selected
+  by the screener. 
+- Can fit this new task using previously defined GLM learner `lrnr_glm`:
 
 ```{r sl3-glm-on-screened}
 screened_glm_fit <- lrnr_glm$train(screened_task)
@@ -459,17 +447,17 @@ screened_preds <- screened_glm_fit$predict()
 head(screened_preds)
 ```
 
---
-
-- The `Pipeline` class automates this process. It takes an arbitrary number of
-  learners and fits them sequentially, training and chaining each one in turn.
-  Since `Pipeline` is a learner like any other, it shares the same interface.
-
 ---
 
 # Pipelines IV
 
-- We can define a pipeline using `make_learner`, and use `train` and `predict`
+- The `Pipeline` class automates this process: 
+  - Takes an arbitrary number of learners and fits them sequentially, training and chaining each one in turn. 
+  - Since `Pipeline` is a learner like any other, it shares the same interface.
+
+--
+
+- Define a pipeline using `make_learner()`, and use `train` and `predict`
   just as we did before:
 
 ```{r sl3-define-pipeline}
@@ -490,9 +478,16 @@ head(sg_pipeline_preds)
 
 ```{r sl3-viz-pipeline, echo=FALSE}
 dt <- delayed_learner_train(sg_pipeline, task)
-plot(dt, color=FALSE, height="500px")
+plot(dt, color=FALSE, height="300px")
 ```
 
+- The concept of chaining is much more general.
+- There are many ways in which a learner can define the task for the downstream
+  learner.
+- The `chain()` method of each learner specifies how this works. 
+- Any type of pre and post processing of the data fits within the "pipeline" concept.
+- Just a few examples of pipelines:
+  - PCA (pre-processing) / TMLE / Super-Learner (discussed later)
 
 ---
 
@@ -504,8 +499,10 @@ plot(dt, color=FALSE, height="500px")
 
 --
 
-- Again, `Stack` is just a special learner and so has the same interface as all
-  other learners:
+- `Stack` is just a special learner and so has the same interface as all
+  other learners.
+- Here we define and fit a `stack` of two learners: simple `glm` learner and a previous pipeline.
+- Both are fit to same data.
 
 ```{r sl3-stack}
 stack <- make_learner(Stack, lrnr_glm, sg_pipeline)
@@ -514,14 +511,9 @@ stack_preds <- stack_fit$predict()
 head(stack_preds)
 ```
 
---
-
-- Above, we've defined and fit a `stack` comprised of a simple `glm` learner as
-  well as a pipeline that combines a screening algorithm with that same learner.
-
 ???
 
-- We could have included any abitrary set of learners and pipelines, the latter
+- We could have included any arbitrary set of learners and pipelines, the latter
   of which are themselves just learners.
 
 - We can see that the `predict` method now returns a matrix, with a column for
@@ -542,7 +534,7 @@ plot(dt, color=FALSE, height="500px")
 # But What About Cross-validation?
 
 _Almost forgot! CV is necessary in order to honestly evaluate our models and
-avoid overfitting. We provide facilities for easily doing this, based on the
+avoid over-fitting. We provide facilities for easily doing this, based on the
 [`origami` package](https://github.com/jeremyrcoyle/origami)._
 
 --
@@ -613,16 +605,15 @@ ml_fit <- metalearner$train(cv_task)
 
 --
 
-- Here, we used a special learner, `Lrnr_nnls`, for the meta-learning step. This
-  fits a non-negative least squares meta-learner. **Note that any learner can be
-  used as a meta-learner.**
+- Used special learner, `Lrnr_nnls`, for the meta-learning step. Fits a non-negative least squares meta-learner.
+- **Ay learner can be used as a meta-learner.**
 
 ---
 
 # Super Learner II: Pipelines
 
-- The Super Learner finally produced is defined as a pipeline with the learner
-  stack trained on the full data and the meta-learner trained on the
+- The Super Learner is just a pipeline: 
+  -  with a _stack_ of  _learners_ trained on full data and the _meta-learner_ trained on the
   validation-set predictions.
 
 --
@@ -723,7 +714,7 @@ plot(delayed_sl_fit, color = TRUE, height="500px")
   the [`future`](https://github.com/HenrikBengtsson/future) package.
 
 - *n.b.*, This feature is currently experimental and hasn't yet been throughly
-  tested on a range of parallel backends.
+  tested on a range of parallel back-ends.
 
 --
 
