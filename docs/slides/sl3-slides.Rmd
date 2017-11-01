@@ -341,6 +341,38 @@ lrnr_sl_glmnet <- make_learner(Lrnr_pkg_SuperLearner, "SL.glmnet")
 
 ---
 
+# Properties cont: Dependent Data
+
+--
+
+- `sl3` supports univariate and multivariate time-series. 
+
+Using bsds dataset, we can make arbitrary size forecasts using one of the "timeseries" learners:
+
+```{r sl3-ts, eval=FALSE}
+#load data
+data(bsds)
+
+task <- sl3_Task$new(bsds, covariates = c("cnt"), outcome = "cnt")
+
+#self exciting threshold autoregressive model
+tsDyn_learner <- Lrnr_tsDyn$new(learner="setar", m=1, model="TAR", n.ahead=5)
+fit_1 <- tsDyn_learner$train(task)
+fit_1$predict(task)
+```
+
+--
+
+- `sl3` also supports several different options for cross-validation with time-series data, and ensemble forecasting. 
+
+Examples can be found in the "examples" directory on github. 
+
+--
+
+- Currently in works: support for spatial data.
+
+---
+
 # Learners V: Parameters
 
 - In general, learners can be instantiated without providing any additional
