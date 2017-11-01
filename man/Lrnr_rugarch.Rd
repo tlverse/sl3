@@ -9,27 +9,23 @@
 Lrnr_rugarch
 }
 \value{
-\code{\link{Lrnr_base}} object with methods for training and prediction
+Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
 This learner supports autoregressive fractionally integrated moving average and
 various flavors of generalized autoregressive conditional heteroskedasticity models for univariate time-series.
 }
-\section{Fields}{
+\section{Parameters}{
 
 \describe{
 \item{\code{variance.model}}{List containing the variance model specification. This includes model, GARCH order, submodel, external regressors and variance tageting. Refer to \code{ugarchspec} for more information.}
-
 \item{\code{mean.model}}{List containing the mean model specification. This includes ARMA model, whether the mean should be included, and external regressors among others. Refer to \code{ugarchspec} for more information.}
-
-\item{\code{distribution.model}}{Conditional density to use for the innovations.}
-
-\item{\code{start.pars}}{List of staring parameters for the optimization routine.}
-
-\item{\code{fixed.pars}}{List of parameters which are to be kept fixed during the optimization.}
-
-\item{\code{n.ahead}}{The forecast horizon.}
-}}
+\item{\code{distribution.model="norm"}}{Conditional density to use for the innovations.}
+\item{\code{start.pars=list()}}{List of staring parameters for the optimization routine.}
+\item{\code{fixed.pars=list()}}{List of parameters which are to be kept fixed during the optimization.}
+\item{\code{n.ahead=NULL}}{The forecast horizon.}
+}
+}
 
 \seealso{
 Other Learners: \code{\link{Custom_chain}},
@@ -37,9 +33,20 @@ Other Learners: \code{\link{Custom_chain}},
   \code{\link{Lrnr_base}}, \code{\link{Lrnr_condensier}},
   \code{\link{Lrnr_cv}},
   \code{\link{Lrnr_define_interactions}},
-  \code{\link{Lrnr_expSmooth}}, \code{\link{Lrnr_sl}},
-  \code{\link{Lrnr_tsDyn}}, \code{\link{Pipeline}},
-  \code{\link{Stack}}
+  \code{\link{Lrnr_expSmooth}},
+  \code{\link{Lrnr_glm_fast}}, \code{\link{Lrnr_glmnet}},
+  \code{\link{Lrnr_glm}}, \code{\link{Lrnr_h2o_grid}},
+  \code{\link{Lrnr_independent_binomial}},
+  \code{\link{Lrnr_mean}}, \code{\link{Lrnr_nnls}},
+  \code{\link{Lrnr_optim}},
+  \code{\link{Lrnr_pkg_SuperLearner}},
+  \code{\link{Lrnr_randomForest}}, \code{\link{Lrnr_sl}},
+  \code{\link{Lrnr_solnp_density}},
+  \code{\link{Lrnr_solnp}},
+  \code{\link{Lrnr_subset_covariates}},
+  \code{\link{Lrnr_tsDyn}}, \code{\link{Lrnr_xgboost}},
+  \code{\link{Pipeline}}, \code{\link{Stack}},
+  \code{\link{define_h2o_X}},
+  \code{\link{undocumented_learner}}
 }
-\concept{Learners}
 \keyword{data}

@@ -1,27 +1,20 @@
-#' GLM Fits
+#' Generalized Linear Models
 #'
-#' This learner provides fitting procedures for generalized linear models by way
-#' of a wrapper relying on \code{stats::glm}.
-#'
+#' This learner provides fitting procedures for generalized linear models using \code{\link[stats]{glm.fit}}.
 #' @docType class
-#'
-#' @keywords data
-#'
-#' @return \code{\link{Lrnr_base}} object with methods for training and
-#'  prediction.
-#'
-#' @format \code{\link{R6Class}} object.
-#'
-#' @field family A \code{family} object from package \code{stats} describing the
-#'  error family of the model to be fit. See the documentation for the package
-#'  \code{stats} for details, or consult \code{stats::family} directly.
-#' @field ... Additional arguments.
-#'
 #' @importFrom R6 R6Class
-#' @importFrom stats glm predict family
-#'
 #' @export
-#
+#' @keywords data
+#' @return Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+#' @format \code{\link{R6Class}} object.
+#' @family Learners
+#' 
+#' @section Parameters:
+#' \describe{
+#'   \item{\code{...}}{Parameters passed to \code{\link[stats]{glm}} }
+#' }
+#' @template common_parameters
+#' @importFrom stats glm predict family
 Lrnr_glm <- R6Class(classname = "Lrnr_glm", inherit = Lrnr_base,
                     portable = TRUE, class = TRUE,
   public = list(

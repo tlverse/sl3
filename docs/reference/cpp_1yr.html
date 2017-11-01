@@ -39,7 +39,7 @@
   <body>
     <div class="container template-reference-topic">
       <header>
-      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -52,12 +52,6 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
-    <span class="fa fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -68,10 +62,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/custom_lrnrs.html">Defining New `sl3` Learners</a>
+      <a href="../articles/intro_sl3.html">Intro to sl3</a>
     </li>
     <li>
-      <a href="../articles/intro_sl3.html">Modern Machine Learning in R</a>
+      <a href="../articles/SuperLearner_Benchmarks.html">sl3 Benchmarks</a>
+    </li>
+    <li>
+      <a href="../slides/sl3-slides.html">sl3 Presentation</a>
+    </li>
+    <li>
+      <a href="../articles/custom_lrnrs.html">Defining Custom sl3 Learners</a>
     </li>
   </ul>
 </li>
@@ -118,19 +118,30 @@ See <code><a href='cpp.html'>?cpp</a></code> for the description of the variable
 #&gt; 3       1     366 14.5   79    79 23.23346  3.84  1.35  4.02  3.89      5    1
 #&gt; 6       2     366  8.4   73    73 15.76281 -1.27 -1.17 -0.96 -0.80      5    1
 #&gt; 14      7     366 12.6   79    79 20.18907  2.46  1.35  2.38  2.21      5    1
+#&gt; 18      8     366 11.3   81    81 17.22298  1.45  2.20  0.72  0.31      5    1
+#&gt; 23      9     366 10.7   77    77 18.04689  1.43  1.15  1.28  1.10      5    2
+#&gt; 30     11     366  9.0   78    78 14.79290 -0.64  0.93 -1.39 -1.63      5    1
 #&gt;       sex feedingn                 feeding gagebrth birthwt birthlen apgar1
 #&gt; 3    Male       90                 Unknown      287    4621       55      8
 #&gt; 6    Male       90                 Unknown      280    3345       51      8
 #&gt; 14   Male       90                 Unknown      287    3260       53      6
+#&gt; 18   Male        2 Exclusively formula fed      287    3629       53      9
+#&gt; 23 Female        2 Exclusively formula fed      287    3657       55      8
+#&gt; 30   Male       90                 Unknown      266    2835       51      9
 #&gt;    apgar5 mage mracen mrace mmaritn  mmarit meducyrs sesn          ses parity
 #&gt; 3       9   21      5 White       1 Married       12   50       Middle      1
 #&gt; 6       9   15      5 White       1 Married       NA   NA            .      0
 #&gt; 14      7   19      5 White       1 Married       12   75        Upper      0
+#&gt; 18      9   22      5 White       1 Married       12   63 Upper-middle      1
+#&gt; 23      9   23      5 White       1 Married       12   63 Upper-middle      2
+#&gt; 30      9   27      3 Black       1 Married       NA   NA            .      0
 #&gt;    gravida smoked mcignum comprisk
 #&gt; 3        1      0       0     none
 #&gt; 6        0      1      35     none
 #&gt; 14       0      0       0     none
-#&gt;  [ reached getOption("max.print") -- omitted 3 rows ]</div><div class='input'><span class='fu'>table</span>(<span class='no'>cpp_1yr</span><span class='kw'>[[</span><span class='st'>"agedays"</span>]])</div><div class='output co'>#&gt; 
+#&gt; 18       1      0       0     none
+#&gt; 23       2      0       0     none
+#&gt; 30       0      0       0         </div><div class='input'><span class='fu'>table</span>(<span class='no'>cpp_1yr</span><span class='kw'>[[</span><span class='st'>"agedays"</span>]])</div><div class='output co'>#&gt; 
 #&gt; 366 
 #&gt; 428 </div></pre>
   </div>

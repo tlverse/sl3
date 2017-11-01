@@ -8,6 +8,7 @@
 #' @keywords data
 #' @return Learner object with methods for training and prediction
 #' @format \code{\link{R6Class}} object.
+#' @template common_parameters
 #' @template Lrnr_base_extra
 #' @importFrom assertthat assert_that is.count is.flag
 #' @importFrom uuid UUIDgenerate

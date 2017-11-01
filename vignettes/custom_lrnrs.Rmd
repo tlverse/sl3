@@ -25,8 +25,8 @@ Learning in R"](intro_sl3.html) vignette is a good introduction to the `sl3`
 package and it's underlying architecture. The
 [`R6`](https://cran.r-project.org/web/packages/R6/vignettes/Introduction.html)
 documentation will help you understand how `R6` classes are defined. In
-addition, the help files for [`sl3_Task`](../help/sl3_Task) and
-[`Lrnr_base`](../help/Lrnr_base) are good resources for how those objects can be
+addition, the help files for [`sl3_Task`](https://jeremyrcoyle.github.io/sl3/reference/sl3_Task.html) and
+[`Lrnr_base`](https://jeremyrcoyle.github.io/sl3/reference/Lrnr_base.html) are good resources for how those objects can be
 used. If you're interested in defining learners that fit sub-learners, reading
 the documentation of the
 [`delayed`](https://jeremyrcoyle.github.io/delayed/articles/delayed.html)

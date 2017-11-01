@@ -1,8 +1,23 @@
-#' @importFrom assertthat assert_that is.count is.flag
-#' @importFrom origami make_folds cross_validate
-#' @importFrom data.table data.table
+#' SuperLearner Algorithm
+#'
+#' Learner that encapsulates the SuperLearner algorithm. Fits metalearner on cross-validated predictions from learners. Then forms a pipeline with the learners.
+#'
+#' @docType class
+#' @importFrom R6 R6Class
 #' @export
-#' @rdname undocumented_learner
+#' @keywords data
+#' @return Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+#' @format \code{\link{R6Class}} object.
+#' @family Learners
+#' @section Parameters:
+#' \describe{
+#'   \item{\code{learners}}{The "library" of learners to include}
+#'   \item{\code{metalearner}}{The metalearner to be fit on predictions from the library}
+#'   \item{\code{folds=NULL}}{An \code{origami} folds object. If \code{NULL}, folds from the task are used}
+#'   \item{\code{keep_extra=TRUE}}{Not used}
+#'   \item{\code{...}}{Not used}
+#' }  
+#' @template common_parameters
 Lrnr_sl <- R6Class(classname = "Lrnr_sl", inherit = Lrnr_base, portable = TRUE,
                    class = TRUE,
   public = list(

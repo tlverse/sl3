@@ -5,7 +5,6 @@
 ##' The remainder of this documentation is an example of how you might write documentation for your new learner.
 ##' This learner uses \code{\link[my_package]{my_ml_fun}} from \code{my_package} to fit my favorite machine learning algorithm.
 ##' 
-##' 
 ##' @docType class
 ##' @importFrom R6 R6Class
 ##' @export
@@ -15,7 +14,6 @@
 ##' @family Learners
 ##' 
 ##' @section Parameters:
-##'
 ##' \describe{
 ##'   \item{\code{param_1="default_1"}}{ This parameter does something.
 ##'   }
@@ -27,19 +25,15 @@
 ##' 
 ##' @section Methods:
 ##' \describe{
-##' \item{\code{special_function}}{
+##' \item{\code{special_function(arg_1)}}{
 ##'   My learner is special so it has a special function.
 ##'   
-##'   \emph{Usage:} \code{lrnr_template$special_function(arg_1)}
-##'   
-##'   \emph{Arguments:}
 ##'   \itemize{
 ##'     \item{\code{arg_1}: A very special argument.
 ##'    }
 ##'   }
 ##'   }
 ##' }
-##' 
 Lrnr_template <- R6Class(classname = "Lrnr_template", inherit = Lrnr_base,
                     portable = TRUE, class = TRUE,
 # Above, you should change Lrnr_template (in both the object name and the classname argument)

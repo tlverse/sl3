@@ -1,12 +1,9 @@
 ##' @section Constructor:
 ##' 
-##'   \emph{Usage:}
-##'   
 ##'   \code{make_sl3_Task(data, covariates, outcome = NULL, outcome_type = NULL, outcome_levels = NULL,
 ##'                       id = NULL, weights = NULL, offset = NULL, nodes = NULL, column_names = NULL,
 ##'                       row_index = NULL, folds = NULL)}
 ##'                      
-##'   \emph{Arguments:}
 ##'   \describe{
 ##'     \item{\code{data}}{A \code{data.frame} or \code{data.table} containing the underlying data
 ##'     }
@@ -33,24 +30,18 @@
 ##' @section Methods:
 ##'
 ##' \describe{
-##' \item{\code{add_interactions}}{
+##' \item{\code{add_interactions(interactions)}}{
 ##'   Adds interaction terms to task, returns a task with interaction terms added to covariate list.
 ##'
-##'   \emph{Usage:} \code{task$add_interactions(interactions)}
-##'                      
-##'   \emph{Arguments:}
 ##'   \itemize{
 ##'     \item{\code{interactions}: A list of lists, where each sublist describes one interaction term, listing the variables that comprise it
 ##'     }
 ##'   }
 ##'   }
 ##'   
-##' \item{\code{add_columns}}{
+##' \item{\code{add_columns(fit_uuid, new_data, global_cols=FALSE)}}{
 ##'   Add columns to internal data, returning an updated vector of \code{column_names}
-##'
-##'   \emph{Usage:} \code{task$add_columns(fit_uuid, new_data, global_cols=FALSE)}
-##'                      
-##'   \emph{Arguments:}
+##'   
 ##'   \itemize{
 ##'     \item{\code{fit_uuid}: A uuid character that is used to generate unique internal column names. 
 ##'     This prevents two added columns with the same name overwriting each other, provided they have different fit_uuid.
@@ -61,16 +52,11 @@
 ##'     }
 ##'   }
 ##'   }
-##' \item{\code{next_in_chain}}{
+##' \item{\code{next_in_chain(covariates=NULL, outcome=NULL, id=NULL, weights=NULL, 
+##'                                     offset=NULL, column_names=NULL, new_nodes=NULL, ...)}}{
 ##'   Used by learner$chain methods to generate a task with the same underlying data, but redefined nodes.
 ##'   Most of the parameter values are passed to the \code{sl3_Task} constructor, documented above. 
 ##'
-##'   \emph{Usage:} 
-##'   
-##'   \code{task$next_in_chain=function(covariates=NULL, outcome=NULL, id=NULL, weights=NULL, 
-##'                                     offset=NULL, column_names=NULL, new_nodes=NULL, ...)}
-##'   
-##'   \emph{Arguments:}
 ##'   \itemize{
 ##'     \item{\code{covariates}: An updated covariates character vector
 ##'     }
@@ -91,24 +77,18 @@
 ##'   }
 ##'   }
 ##'
-##' \item{\code{subset_task}}{
+##' \item{\code{subset_task(row_index)}}{
 ##'   Returns a task with rows subsetted using the \code{row_index} index vector
 ##'
-##'   \emph{Usage:} \code{task$subset_task(row_index)}
-##'                      
-##'   \emph{Arguments:}
 ##'   \itemize{
 ##'     \item{\code{row_index}: An index vector defining the subset
 ##'     }
 ##'   }
 ##'   }
 ##'   
-##' \item{\code{get_data}}{
+##' \item{\code{get_data(rows, columns)}}{
 ##'   Returns a \code{data.table} containing a subset of task data.
 ##'
-##'   \emph{Usage:} \code{task$get_data(rows, columns)}
-##'                      
-##'   \emph{Arguments:}
 ##'   \itemize{
 ##'     \item{\code{rows}: An index vector defining the rows to return
 ##'     }
@@ -118,24 +98,18 @@
 ##'     }
 ##'   }
 ##'   }
-##' \item{\code{has_node}}{
+##' \item{\code{has_node(node_name)}}{
 ##'   Returns true if the node is defined in the task
 ##'
-##'   \emph{Usage:} \code{task$has_node(node_name)}
-##'                      
-##'   \emph{Arguments:}
 ##'   \itemize{
 ##'     \item{\code{node_name}: The name of the node to look for
 ##'     }
 ##'   }
 ##'   }
 ##'   
-##' \item{\code{get_node}}{
+##' \item{\code{get_node(node_name, generator_fun=NULL)}}{
 ##'   Returns a ddta.table with the requested node's data
 ##'
-##'   \emph{Usage:} \code{task$get_node(node_name, generator_fun=NULL)}
-##'                      
-##'   \emph{Arguments:}
 ##'   \itemize{
 ##'     \item{\code{node_name}: The name of the node to look for
 ##'     }

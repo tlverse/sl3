@@ -14,10 +14,10 @@ R/`sl3`: modern Super Learning with pipelines
 What's `sl3`?
 -------------
 
-`sl3` is a modern implementation of the Super Learner algorithm of van der Laan, Polley, and Hubbard (2007). The Super Learner algorithm performs ensemble learning in one of two fashions:
+`sl3` is a modern implementation of the Super Learner algorithm of @vdl2007super. The Super Learner algorithm performs ensemble learning in one of two fashions:
 
 1.  The "discrete" Super Learner can be used to select the best prediction algorithm among a supplied library of learning algorithms ("learners" in the `sl3` nomenclature) -- that is, that algorithm which minimizes the cross-validated risk with respect to some appropriate loss function.
-2.  The "ensemble" Super Learner can be used to assign weights to specified learning algorithms (in a user-supplied library) in order to create a combination of these learners that minimizes the cross-validated risk with respect to an appropriate loss function. This notion of weighted combinations has also been called *stacked regression* (Breiman 1996).
+2.  The "ensemble" Super Learner can be used to assign weights to specified learning algorithms (in a user-supplied library) in order to create a combination of these learners that minimizes the cross-validated risk with respect to an appropriate loss function. This notion of weighted combinations has also been called *stacked regression* \[@breiman1996stacked\].
 
 ------------------------------------------------------------------------
 
@@ -48,6 +48,17 @@ If you encounter any bugs or have any specific feature requests, please [file an
 
 ------------------------------------------------------------------------
 
+Documentation
+-------------
+
+The best places to start are the vignettes:
+
+-   [Modern Machine Learning in R](https://jeremyrcoyle.github.io/sl3/articles/intro_sl3.html) `vignette("intro_sl3")`
+-   [Defining New sl3 Learners](https://jeremyrcoyle.github.io/sl3/articles/custom_lrnrs.html) `vignette("custom_lrnrs")`
+-   [SuperLearner Benchmarks](https://jeremyrcoyle.github.io/sl3/articles/SuperLearner_benchmarks.html) `vignette("SuperLearner_benchmarks")`
+
+------------------------------------------------------------------------
+
 Examples
 --------
 
@@ -55,61 +66,50 @@ Examples
 
 ``` r
 set.seed(49753)
-suppressMessages(library(data.table))
-library(dplyr)
+
+# packages we'll be using
+library(data.table)
 library(SuperLearner)
 #> Loading required package: nnls
 #> Super Learner
-#> Version: 2.0-23-9000
-#> Package created on 2017-07-20
+#> Version: 2.0-22
+#> Package created on 2017-07-18
 library(origami)
-#> origami: Generalized Cross-Validation Framework
-#> Version: 0.8.0
 library(sl3)
 
 # load example data set
-data(cpp)
-cpp <- cpp %>%
-  dplyr::filter(!is.na(haz)) %>%
-  mutate_all(funs(replace(., is.na(.), 0)))
+data(cpp_imputed)
 
-# use covariates of intest and the outcome to build a task object
+# here are the covariates we are interested in and, of course, the outcome
 covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
             "sexn")
-task <- sl3_Task$new(cpp, covariates = covars, outcome = "haz")
+outcome <- "haz"
+
+task <- make_sl3_Task(data = cpp_imputed, covariates = covars,
+                      outcome = outcome, outcome_type="continuous")
 
 # set up screeners and learners via built-in functions and pipelines
-slscreener <- Lrnr_pkg_SuperLearner_screener$new("screen.glmnet")
-glm_learner <- Lrnr_glm$new()
-screen_and_glm <- Pipeline$new(slscreener, glm_learner)
-SL.glmnet_learner <- Lrnr_pkg_SuperLearner$new(SL_wrapper = "SL.glmnet")
+slscreener <- make_learner(Lrnr_pkg_SuperLearner_screener, "screen.glmnet")
+glm_learner <- make_learner(Lrnr_glm)
+screen_and_glm <- make_learner(Pipeline, slscreener, glm_learner)
+lrnr_glmnet <- make_learner(Lrnr_glmnet)
 
 # stack learners into a model (including screeners and pipelines)
-learner_stack <- Stack$new(SL.glmnet_learner, glm_learner, screen_and_glm)
+learner_stack <- make_learner(Stack, lrnr_glmnet, glm_learner, screen_and_glm)
 stack_fit <- learner_stack$train(task)
 #> Loading required package: glmnet
 #> Loading required package: Matrix
-#> 
-#> Attaching package: 'Matrix'
-#> The following object is masked from 'package:tidyr':
-#> 
-#>     expand
 #> Loading required package: foreach
-#> 
-#> Attaching package: 'foreach'
-#> The following objects are masked from 'package:purrr':
-#> 
-#>     accumulate, when
 #> Loaded glmnet 2.0-13
 preds <- stack_fit$predict()
 head(preds)
-#>    Lrnr_pkg_SuperLearner_SL.glmnet   Lrnr_glm
-#> 1:                      0.35345519 0.36298498
-#> 2:                      0.35345519 0.36298498
-#> 3:                      0.24554305 0.25993072
-#> 4:                      0.24554305 0.25993072
-#> 5:                      0.24554305 0.25993072
-#> 6:                      0.02953193 0.05680264
+#>    Lrnr_glmnet_NULL_deviance_10_1_100   Lrnr_glm
+#> 1:                         0.35345519 0.36298498
+#> 2:                         0.35345519 0.36298498
+#> 3:                         0.24554305 0.25993072
+#> 4:                         0.24554305 0.25993072
+#> 5:                         0.24554305 0.25993072
+#> 6:                         0.02953193 0.05680264
 #>    Lrnr_pkg_SuperLearner_screener_screen.glmnet___Lrnr_glm
 #> 1:                                              0.36228209
 #> 2:                                              0.36228209
@@ -154,7 +154,3 @@ The contents of this repository are distributed under the GPL-3 license. See fil
 
 References
 ----------
-
-Breiman, Leo. 1996. “Stacked Regressions.” *Machine Learning* 24 (1). Springer: 49–64.
-
-van der Laan, Mark J., Eric C. Polley, and Alan E. Hubbard. 2007. “Super Learner.” *Statistical Applications in Genetics and Molecular Biology* 6 (1).

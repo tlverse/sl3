@@ -9,16 +9,15 @@
 ^\.travis\.yml$
 ^appveyor\.yml$
 ^codecov\.yml$
-
 # Files from building the Guide-to-SuperLearner.rmd vignette.
 ^SuperLearner.png$
 ^vignettes/[^/]*_cache
-
 # other miscellaneous non-CRAN files
 xgboost.model
 deploy.sh
 ^docs$
 ^README\.Rmd$
+^README-.*\.Rmd$
 ^README\.html$
 ^README-.*\.png$
 ^README-refs.bib$
@@ -27,3 +26,4 @@ deploy.sh
 ^Makefile$
 ^LICENSE$
 man-roxygen
+^_pkgdown\.yml$

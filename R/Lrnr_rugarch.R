@@ -6,17 +6,19 @@
 #' @importFrom R6 R6Class
 #' @export
 #' @keywords data
-#' @return \code{\link{Lrnr_base}} object with methods for training and prediction
+#' @return Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
 #' @format \code{\link{R6Class}} object.
-#' @field variance.model List containing the variance model specification. This includes model, GARCH order, submodel, external regressors and variance tageting. Refer to \code{ugarchspec} for more information.
-#' @field mean.model List containing the mean model specification. This includes ARMA model, whether the mean should be included, and external regressors among others. Refer to \code{ugarchspec} for more information.
-#' @field distribution.model Conditional density to use for the innovations.
-#' @field start.pars List of staring parameters for the optimization routine.
-#' @field fixed.pars List of parameters which are to be kept fixed during the optimization.
-#' @field n.ahead The forecast horizon.
-#'
 #' @family Learners
-#'
+#' 
+#' @section Parameters:
+#' \describe{
+#' \item{\code{variance.model}}{List containing the variance model specification. This includes model, GARCH order, submodel, external regressors and variance tageting. Refer to \code{ugarchspec} for more information.}
+#' \item{\code{mean.model}}{List containing the mean model specification. This includes ARMA model, whether the mean should be included, and external regressors among others. Refer to \code{ugarchspec} for more information.}
+#' \item{\code{distribution.model="norm"}}{Conditional density to use for the innovations.}
+#' \item{\code{start.pars=list()}}{List of staring parameters for the optimization routine.}
+#' \item{\code{fixed.pars=list()}}{List of parameters which are to be kept fixed during the optimization.}
+#' \item{\code{n.ahead=NULL}}{The forecast horizon.}
+#'}
 Lrnr_rugarch <- R6Class(classname = "Lrnr_rugarch", inherit = Lrnr_base, portable = TRUE, class = TRUE,
                         public = list(
                           initialize = function(variance.model=list(model = "sGARCH", garchOrder = c(1, 1),

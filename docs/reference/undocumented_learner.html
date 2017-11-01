@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Undocumented Learner — Lrnr_sl • sl3</title>
+<title>Undocumented Learner — undocumented_learner • sl3</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -39,7 +39,7 @@
   <body>
     <div class="container template-reference-topic">
       <header>
-      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -52,12 +52,6 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
-    <span class="fa fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -68,10 +62,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/custom_lrnrs.html">Defining New `sl3` Learners</a>
+      <a href="../articles/intro_sl3.html">Intro to sl3</a>
     </li>
     <li>
-      <a href="../articles/intro_sl3.html">Modern Machine Learning in R</a>
+      <a href="../articles/SuperLearner_Benchmarks.html">sl3 Benchmarks</a>
+    </li>
+    <li>
+      <a href="../slides/sl3-slides.html">sl3 Presentation</a>
+    </li>
+    <li>
+      <a href="../articles/custom_lrnrs.html">Defining Custom sl3 Learners</a>
     </li>
   </ul>
 </li>
@@ -102,11 +102,10 @@
     <p>We haven't documented this one yet.</p>
     
 
-    <pre class="usage"><span class='no'>Lrnr_sl</span></pre>
         
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>An object of class <code>R6ClassGenerator</code> of length 24.</p>
+    <p><code>R6Class</code> object.</p>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
@@ -126,9 +125,21 @@
   <code><a href='Lrnr_base.html'>Lrnr_base</a></code>, <code><a href='Lrnr_condensier.html'>Lrnr_condensier</a></code>,
   <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
   <code><a href='Lrnr_define_interactions.html'>Lrnr_define_interactions</a></code>,
-  <code><a href='Lrnr_expSmooth.html'>Lrnr_expSmooth</a></code>, <code><a href='Lrnr_rugarch.html'>Lrnr_rugarch</a></code>,
-  <code><a href='Lrnr_tsDyn.html'>Lrnr_tsDyn</a></code>, <code><a href='Pipeline.html'>Pipeline</a></code>,
-  <code><a href='Stack.html'>Stack</a></code></p>
+  <code><a href='Lrnr_expSmooth.html'>Lrnr_expSmooth</a></code>,
+  <code><a href='Lrnr_glm_fast.html'>Lrnr_glm_fast</a></code>, <code><a href='Lrnr_glmnet.html'>Lrnr_glmnet</a></code>,
+  <code><a href='Lrnr_glm.html'>Lrnr_glm</a></code>, <code><a href='Lrnr_h2o_grid.html'>Lrnr_h2o_grid</a></code>,
+  <code><a href='Lrnr_independent_binomial.html'>Lrnr_independent_binomial</a></code>,
+  <code><a href='Lrnr_mean.html'>Lrnr_mean</a></code>, <code><a href='Lrnr_nnls.html'>Lrnr_nnls</a></code>,
+  <code><a href='Lrnr_optim.html'>Lrnr_optim</a></code>,
+  <code><a href='SuperLearner_interface.html'>Lrnr_pkg_SuperLearner</a></code>,
+  <code><a href='Lrnr_randomForest.html'>Lrnr_randomForest</a></code>,
+  <code><a href='Lrnr_rugarch.html'>Lrnr_rugarch</a></code>, <code><a href='Lrnr_sl.html'>Lrnr_sl</a></code>,
+  <code><a href='Lrnr_solnp_density.html'>Lrnr_solnp_density</a></code>,
+  <code><a href='Lrnr_solnp.html'>Lrnr_solnp</a></code>,
+  <code><a href='Lrnr_subset_covariates.html'>Lrnr_subset_covariates</a></code>,
+  <code><a href='Lrnr_tsDyn.html'>Lrnr_tsDyn</a></code>, <code><a href='Lrnr_xgboost.html'>Lrnr_xgboost</a></code>,
+  <code><a href='Pipeline.html'>Pipeline</a></code>, <code><a href='Stack.html'>Stack</a></code>,
+  <code><a href='Lrnr_h2o_glm.html'>define_h2o_X</a></code></p>
     
 
   </div>

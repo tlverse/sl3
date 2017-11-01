@@ -3,29 +3,34 @@
 \docType{class}
 \name{Stack}
 \alias{Stack}
-\title{Learner Stacking
-A Stack is a special Learner that combines multiple other learners, "stacking" their predictions in columns.}
+\title{Learner Stacking}
 \format{\code{\link{R6Class}} object.}
 \usage{
 Stack
 }
 \value{
-\code{\link{Lrnr_base}} object with methods for training and prediction
+Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
-Learner Stacking
 A Stack is a special Learner that combines multiple other learners, "stacking" their predictions in columns.
 }
-\section{Fields}{
+\section{Parameters}{
 
 \describe{
-\item{\code{params}}{A list of learners to stack}
-}}
+\item{\code{...}}{Parameters should be individual \code{Learner}s.}
+}
+}
 
-\section{Methods}{
+\section{Common Parameters}{
+
+
+Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by \code{Lrnr_base}, and shared
+by all learners.
 
 \describe{
-\item{\code{new(...)}}{This method is used to create a stack of learners. Arguments should be indiviual \code{Learner}s.}
+  \item{\code{covariates}}{A character vector of covariates. The learner will use this to subset the covariates for any specified task}
+  \item{\code{outcome_type}}{A \code{\link{variable_type}} object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified}
+  \item{\code{...}}{All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating}
 }
 }
 
@@ -35,9 +40,20 @@ Other Learners: \code{\link{Custom_chain}},
   \code{\link{Lrnr_base}}, \code{\link{Lrnr_condensier}},
   \code{\link{Lrnr_cv}},
   \code{\link{Lrnr_define_interactions}},
-  \code{\link{Lrnr_expSmooth}}, \code{\link{Lrnr_rugarch}},
-  \code{\link{Lrnr_sl}}, \code{\link{Lrnr_tsDyn}},
-  \code{\link{Pipeline}}
+  \code{\link{Lrnr_expSmooth}},
+  \code{\link{Lrnr_glm_fast}}, \code{\link{Lrnr_glmnet}},
+  \code{\link{Lrnr_glm}}, \code{\link{Lrnr_h2o_grid}},
+  \code{\link{Lrnr_independent_binomial}},
+  \code{\link{Lrnr_mean}}, \code{\link{Lrnr_nnls}},
+  \code{\link{Lrnr_optim}},
+  \code{\link{Lrnr_pkg_SuperLearner}},
+  \code{\link{Lrnr_randomForest}},
+  \code{\link{Lrnr_rugarch}}, \code{\link{Lrnr_sl}},
+  \code{\link{Lrnr_solnp_density}},
+  \code{\link{Lrnr_solnp}},
+  \code{\link{Lrnr_subset_covariates}},
+  \code{\link{Lrnr_tsDyn}}, \code{\link{Lrnr_xgboost}},
+  \code{\link{Pipeline}}, \code{\link{define_h2o_X}},
+  \code{\link{undocumented_learner}}
 }
-\concept{Learners}
 \keyword{data}

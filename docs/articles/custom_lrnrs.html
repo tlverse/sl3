@@ -16,7 +16,7 @@
 </head>
 <body>
     <div class="container template-vignette">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <header><div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -29,12 +29,6 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="..//index.html">
-    <span class="fa fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -45,10 +39,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/custom_lrnrs.html">Defining New `sl3` Learners</a>
+      <a href="../articles/intro_sl3.html">Intro to sl3</a>
     </li>
     <li>
-      <a href="../articles/intro_sl3.html">Modern Machine Learning in R</a>
+      <a href="../articles/SuperLearner_Benchmarks.html">sl3 Benchmarks</a>
+    </li>
+    <li>
+      <a href="../slides/sl3-slides.html">sl3 Presentation</a>
+    </li>
+    <li>
+      <a href="../articles/custom_lrnrs.html">Defining Custom sl3 Learners</a>
     </li>
   </ul>
 </li>
@@ -75,7 +75,7 @@
       <h1>Defining New <code>sl3</code> Learners</h1>
                         <h4 class="author">Jeremy Coyle, <a href="https://nimahejazi.org">Nima Hejazi</a>, Ivana Malenica, Oleg Sofrygin</h4>
             
-            <h4 class="date">2017-10-29</h4>
+            <h4 class="date">2017-10-31</h4>
           </div>
 
     
@@ -85,7 +85,7 @@
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
 <p>This guide describes the process of implementing a learner class for a new machine learning algorithm. By writing a learner class for your favorite machine learning algorithm, you will be able to use it in all the places you could otherwise use any other <code>sl3</code> learners, including <code>Pipeline</code>s, <code>Stack</code>s, and Super Learner. We have done our best to streamline the process of creating new <code>sl3</code> learners.</p>
-<p>Before diving into defining a new learner, it will likely be helpful to read some background material. If you haven’t already read it, the <a href="intro_sl3.html">“Modern Machine Learning in R”</a> vignette is a good introduction to the <code>sl3</code> package and it’s underlying architecture. The <a href="https://cran.r-project.org/web/packages/R6/vignettes/Introduction.html"><code>R6</code></a> documentation will help you understand how <code>R6</code> classes are defined. In addition, the help files for <a href="../help/sl3_Task"><code>sl3_Task</code></a> and <a href="../help/Lrnr_base"><code>Lrnr_base</code></a> are good resources for how those objects can be used. If you’re interested in defining learners that fit sub-learners, reading the documentation of the <a href="https://jeremyrcoyle.github.io/delayed/articles/delayed.html"><code>delayed</code></a> package will be helpful.</p>
+<p>Before diving into defining a new learner, it will likely be helpful to read some background material. If you haven’t already read it, the <a href="intro_sl3.html">“Modern Machine Learning in R”</a> vignette is a good introduction to the <code>sl3</code> package and it’s underlying architecture. The <a href="https://cran.r-project.org/web/packages/R6/vignettes/Introduction.html"><code>R6</code></a> documentation will help you understand how <code>R6</code> classes are defined. In addition, the help files for <a href="https://jeremyrcoyle.github.io/sl3/reference/sl3_Task.html"><code>sl3_Task</code></a> and <a href="https://jeremyrcoyle.github.io/sl3/reference/Lrnr_base.html"><code>Lrnr_base</code></a> are good resources for how those objects can be used. If you’re interested in defining learners that fit sub-learners, reading the documentation of the <a href="https://jeremyrcoyle.github.io/delayed/articles/delayed.html"><code>delayed</code></a> package will be helpful.</p>
 <p>In the following sections, we introduce and review a template for a new <code>sl3</code> learner, describing the sections that can be used to define your new learner. This is followed by a discussion of the important task of documenting and testing your new learner. Finally, we conclude by explaining how you can add your learner to <code>sl3</code> so that others may make use of it.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sl3)
 <span class="kw">library</span>(knitr)</code></pre></div>
@@ -104,7 +104,6 @@
 ##' The remainder of this documentation is an example of how you might write documentation for your new learner.
 ##' This learner uses \code{\link[my_package]{my_ml_fun}} from \code{my_package} to fit my favorite machine learning algorithm.
 ##' 
-##' 
 ##' @docType class
 ##' @importFrom R6 R6Class
 ##' @export
@@ -114,7 +113,6 @@
 ##' @family Learners
 ##' 
 ##' @section Parameters:
-##'
 ##' \describe{
 ##'   \item{\code{param_1="default_1"}}{ This parameter does something.
 ##'   }
@@ -126,19 +124,15 @@
 ##' 
 ##' @section Methods:
 ##' \describe{
-##' \item{\code{special_function}}{
+##' \item{\code{special_function(arg_1)}}{
 ##'   My learner is special so it has a special function.
 ##'   
-##'   \emph{Usage:} \code{lrnr_template$special_function(arg_1)}
-##'   
-##'   \emph{Arguments:}
 ##'   \itemize{
 ##'     \item{\code{arg_1}: A very special argument.
 ##'    }
 ##'   }
 ##'   }
 ##' }
-##' 
 Lrnr_template &lt;-<span class="st"> </span><span class="kw">R6Class</span>(<span class="dt">classname =</span> <span class="st">"Lrnr_template"</span>, <span class="dt">inherit =</span> Lrnr_base,
                     <span class="dt">portable =</span> <span class="ot">TRUE</span>, <span class="dt">class =</span> <span class="ot">TRUE</span>,
 <span class="co"># Above, you should change Lrnr_template (in both the object name and the classname argument)</span>

@@ -39,7 +39,7 @@
   <body>
     <div class="container template-reference-topic">
       <header>
-      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -52,12 +52,6 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
-    <span class="fa fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -68,10 +62,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/custom_lrnrs.html">Defining New `sl3` Learners</a>
+      <a href="../articles/intro_sl3.html">Intro to sl3</a>
     </li>
     <li>
-      <a href="../articles/intro_sl3.html">Modern Machine Learning in R</a>
+      <a href="../articles/SuperLearner_Benchmarks.html">sl3 Benchmarks</a>
+    </li>
+    <li>
+      <a href="../slides/sl3-slides.html">sl3 Presentation</a>
+    </li>
+    <li>
+      <a href="../articles/custom_lrnrs.html">Defining Custom sl3 Learners</a>
     </li>
   </ul>
 </li>
@@ -110,49 +110,50 @@
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='Lrnr_base.html'>Lrnr_base</a></code> object with methods for training and prediction</p>
+    <p>Learner object with methods for training and prediction. See <code><a href='Lrnr_base.html'>Lrnr_base</a></code> for documentation on learners.</p>
     
-    <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
+    <h2 class="hasAnchor" id="parameters"><a class="anchor" href="#parameters"></a>Parameters</h2>
 
     
     <dl class='dl-horizontal'>
 <dt><code>learner</code></dt><dd><p>Available built-in time series models. Currently available are listed by with availableModels() function.</p></dd>
-    <dt><code>m</code></dt><dd><p>embedding dimension.</p></dd>
-    <dt><code>d</code></dt><dd><p>time delay.</p></dd>
-    <dt><code>include</code></dt><dd><p>Type of deterministic regressors to include.</p></dd>
-    <dt><code>type</code></dt><dd><p>Whether the variable is taken is level, difference or a mix as in the ADF test.</p></dd>
-    <dt><code>mL</code></dt><dd><p>autoregressive order for low regime.</p></dd>
-    <dt><code>mH</code></dt><dd><p>autoregressive order for high regime.</p></dd>
-    <dt><code>mM</code></dt><dd><p>autoregressive order for middle regime.</p></dd>
-    <dt><code>thDelay</code></dt><dd><p>Time delay for the threshold variable.</p></dd>
-    <dt><code>common</code></dt><dd><p>Indicates which elements are common to all regimes.</p></dd>
-    <dt><code>ML</code></dt><dd><p>vector of lags for order for low.</p></dd>
-    <dt><code>MM</code></dt><dd><p>vector of lags for order for middle.</p></dd>
-    <dt><code>MH</code></dt><dd><p>vector of lags for order for high.</p></dd>
-    <dt><code>nthresh</code></dt><dd><p>Threshold of the model.</p></dd>
-    <dt><code>trim</code></dt><dd><p>trimming parameter indicating the minimal percentage of observations in each regime.</p></dd>
-    <dt><code>sig</code></dt><dd><p>significance level for the tests to select the number of regimes.</p></dd>
-    <dt><code>control</code></dt><dd><p>further arguments to be passed as control list to optim.</p></dd>
-    <dt><code>r</code></dt><dd><p>Number of cointegrating relationships.</p></dd>
-    <dt><code>model</code></dt><dd><p>Model to estimate. Choices: VAR/VECM/TAR/MTAR.</p></dd>
-    <dt><code>I</code></dt><dd><p>For VAR only: whether in the VAR variables are to be taken in levels or as a difference.</p></dd>
-    <dt><code>beta</code></dt><dd><p>For VECM only: imposed cointegrating value.</p></dd>
-    <dt><code>estim</code></dt><dd><p>Type of estimator for the VECM (two-step approach or Johansen MLE).</p></dd>
-    <dt><code>exogen</code></dt><dd><p>Inclusion of exogenous variables.</p></dd>
-    <dt><code>LRinclude</code></dt><dd><p>Possibility to include in the long-run relationship and the ECT trend.</p></dd>
-    <dt><code>commonInter</code></dt><dd><p>Whether the deterministic regressors are regime specific.</p></dd>
-    <dt><code>mTh</code></dt><dd><p>combination of variables with same lag order for the transition variable.</p></dd>
-    <dt><code>gamma</code></dt><dd><p>prespecified threshold values.</p></dd>
-    <dt><code>dummyToBothRegimes</code></dt><dd><p>Whether the dummy in the one threshold model is applied to each regime.</p></dd>
-    <dt><code>max.iter</code></dt><dd><p>Number of iterations for the algorithm.</p></dd>
-    <dt><code>size</code></dt><dd><p>number of hidden units in the neural network.</p></dd>
-    <dt><code>lag</code></dt><dd><p>Number of lags to include in each regime.</p></dd>
-    <dt><code>n.ahead</code></dt><dd><p>The forecast horizon.</p></dd>
-    <dt><code>ngridBeta</code></dt><dd><p>number of elements to search for the cointegrating value.</p></dd>
-    <dt><code>ngridTh</code></dt><dd><p>number of elements to search for the threshold value.</p></dd>
-    <dt><code>th1</code></dt><dd><p>different possibilities to pre-specify an exact value, an interval or a central point for the search of the threshold.</p></dd>
-    <dt><code>th2</code></dt><dd><p>different possibilities to pre-specify an exact value or a central point for the search of the second threshold.</p></dd>
-    <dt><code>beta0</code></dt><dd><p>Additional regressors to include in the cointegrating relation.</p></dd>
+<dt><code>m=1</code></dt><dd><p>embedding dimension.</p></dd>
+<dt><code>size=1</code></dt><dd><p>number of hidden units in the neural network.</p></dd>
+<dt><code>lag=1</code></dt><dd><p>Number of lags to include in each regime.</p></dd>
+<dt><code>d=1</code></dt><dd><p>time delay.</p></dd>
+<dt><code>include="const"</code></dt><dd><p>Type of deterministic regressors to include.</p></dd>
+<dt><code>type="level"</code></dt><dd><p>Whether the variable is taken is level, difference or a mix as in the ADF test.</p></dd>
+<dt><code>n.ahead="null"</code></dt><dd><p>The forecast horizon.</p></dd>
+<dt><code>mL=m</code></dt><dd><p>autoregressive order for low regime.</p></dd>
+<dt><code>mH=m</code></dt><dd><p>autoregressive order for high regime.</p></dd>
+<dt><code>mM=NULL</code></dt><dd><p>autoregressive order for middle regime.</p></dd>
+<dt><code>thDelay=0</code></dt><dd><p>Delay Time delay for the threshold variable.</p></dd>
+<dt><code>common="none"</code></dt><dd><p>Indicates which elements are common to all regimes.</p></dd>
+<dt><code>ML=seq_len(mL)</code></dt><dd><p>vector of lags for order for low.</p></dd>
+<dt><code>MM=NULL</code></dt><dd><p>vector of lags for order for middle.</p></dd>
+<dt><code>MH=seq_len(mH)</code></dt><dd><p>vector of lags for order for high.</p></dd>
+<dt><code>nthresh=1</code></dt><dd><p>Threshold of the model.</p></dd>
+<dt><code>trim=0.15</code></dt><dd><p>trimming parameter indicating the minimal percentage of observations in each regime.</p></dd>
+<dt><code>sig=0.05</code></dt><dd><p>significance level for the tests to select the number of regimes.</p></dd>
+<dt><code>control=list()</code></dt><dd><p>further arguments to be passed as control list to optim.</p></dd>
+<dt><code>r=1</code></dt><dd><p>Number of cointegrating relationships.</p></dd>
+<dt><code>model="VAR"</code></dt><dd><p>Model to estimate. Choices: VAR/VECM/TAR/MTAR.</p></dd>
+<dt><code>I="level"</code></dt><dd><p>For VAR only: whether in the VAR variables are to be taken in levels or as a difference.</p></dd>
+<dt><code>beta=NULL</code></dt><dd><p>For VECM only: imposed cointegrating value.</p></dd>
+<dt><code>estim="2OLS"</code></dt><dd><p>Type of estimator for the VECM (two-step approach or Johansen MLE).</p></dd>
+<dt><code>exogen=NULL</code></dt><dd><p>Inclusion of exogenous variables.</p></dd>
+<dt><code>LRinclude="none"</code></dt><dd><p>Possibility to include in the long-run relationship and the ECT trend.</p></dd>
+<dt><code>commonInter=FALSE</code></dt><dd><p>Whether the deterministic regressors are regime specific.</p></dd>
+<dt><code>mTh=1</code></dt><dd><p>combination of variables with same lag order for the transition variable.</p></dd>
+<dt><code>gamma=NULL</code></dt><dd><p>prespecified threshold values.</p></dd>
+<dt><code>dummyToBothRegimes=TRUE</code></dt><dd><p>Whether the dummy in the one threshold model is applied to each regime.</p></dd>
+<dt><code>max.iter=2</code></dt><dd><p>Number of iterations for the algorithm.</p></dd>
+<dt><code>ngridBeta=50</code></dt><dd><p>Number of elements to search for the cointegrating value.</p></dd>
+<dt><code>ngridTh=50</code></dt><dd><p>Number of elements to search for the threshold value.</p></dd>
+<dt><code>th1</code></dt><dd><p>different possibilities to pre-specify an exact value, an interval or a central point for the search of the threshold.</p></dd>
+<dt><code>th2</code></dt><dd><p>different possibilities to pre-specify an exact value or a central point for the search of the second threshold.</p></dd>
+<dt><code>beta0=0</code></dt><dd><p>Additional regressors to include in the cointegrating relation.</p></dd>
+<dt><code>...</code></dt><dd><p>Not currently used.</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -162,9 +163,21 @@
   <code><a href='Lrnr_base.html'>Lrnr_base</a></code>, <code><a href='Lrnr_condensier.html'>Lrnr_condensier</a></code>,
   <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
   <code><a href='Lrnr_define_interactions.html'>Lrnr_define_interactions</a></code>,
-  <code><a href='Lrnr_expSmooth.html'>Lrnr_expSmooth</a></code>, <code><a href='Lrnr_rugarch.html'>Lrnr_rugarch</a></code>,
-  <code><a href='undocumented_learner.html'>Lrnr_sl</a></code>, <code><a href='Pipeline.html'>Pipeline</a></code>,
-  <code><a href='Stack.html'>Stack</a></code></p>
+  <code><a href='Lrnr_expSmooth.html'>Lrnr_expSmooth</a></code>,
+  <code><a href='Lrnr_glm_fast.html'>Lrnr_glm_fast</a></code>, <code><a href='Lrnr_glmnet.html'>Lrnr_glmnet</a></code>,
+  <code><a href='Lrnr_glm.html'>Lrnr_glm</a></code>, <code><a href='Lrnr_h2o_grid.html'>Lrnr_h2o_grid</a></code>,
+  <code><a href='Lrnr_independent_binomial.html'>Lrnr_independent_binomial</a></code>,
+  <code><a href='Lrnr_mean.html'>Lrnr_mean</a></code>, <code><a href='Lrnr_nnls.html'>Lrnr_nnls</a></code>,
+  <code><a href='Lrnr_optim.html'>Lrnr_optim</a></code>,
+  <code><a href='SuperLearner_interface.html'>Lrnr_pkg_SuperLearner</a></code>,
+  <code><a href='Lrnr_randomForest.html'>Lrnr_randomForest</a></code>,
+  <code><a href='Lrnr_rugarch.html'>Lrnr_rugarch</a></code>, <code><a href='Lrnr_sl.html'>Lrnr_sl</a></code>,
+  <code><a href='Lrnr_solnp_density.html'>Lrnr_solnp_density</a></code>,
+  <code><a href='Lrnr_solnp.html'>Lrnr_solnp</a></code>,
+  <code><a href='Lrnr_subset_covariates.html'>Lrnr_subset_covariates</a></code>,
+  <code><a href='Lrnr_xgboost.html'>Lrnr_xgboost</a></code>, <code><a href='Pipeline.html'>Pipeline</a></code>,
+  <code><a href='Stack.html'>Stack</a></code>, <code><a href='Lrnr_h2o_glm.html'>define_h2o_X</a></code>,
+  <code><a href='undocumented_learner.html'>undocumented_learner</a></code></p>
     
 
   </div>
@@ -176,7 +189,7 @@
 
       <li><a href="#value">Value</a></li>
 
-      <li><a href="#fields">Fields</a></li>
+      <li><a href="#parameters">Parameters</a></li>
 
       <li><a href="#see-also">See also</a></li>
           </ul>

@@ -16,7 +16,7 @@
 </head>
 <body>
     <div class="container template-vignette">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <header><div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -29,12 +29,6 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="/index.html">
-    <span class="fa fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -45,10 +39,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/custom_lrnrs.html">Defining New `sl3` Learners</a>
+      <a href="articles/intro_sl3.html">Intro to sl3</a>
     </li>
     <li>
-      <a href="articles/intro_sl3.html">Modern Machine Learning in R</a>
+      <a href="articles/SuperLearner_Benchmarks.html">sl3 Benchmarks</a>
+    </li>
+    <li>
+      <a href="slides/sl3-slides.html">sl3 Presentation</a>
+    </li>
+    <li>
+      <a href="articles/custom_lrnrs.html">Defining Custom sl3 Learners</a>
     </li>
   </ul>
 </li>
@@ -118,53 +118,58 @@ install.packages("sl3")
 <p>If you encounter any bugs or have any specific feature requests, please <a href="https://github.com/jeremyrcoyle/sl3/issues">file an issue</a>.</p>
 <hr>
 </div>
+<div id="documentation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#documentation" class="anchor"></a>Documentation</h2>
+<p>The best places to start are the vignettes:</p>
+<ul>
+<li>
+<a href="https://jeremyrcoyle.github.io/sl3/articles/intro_sl3.html">Modern Machine Learning in R</a> <code><a href="articles/intro_sl3.html">vignette("intro_sl3")</a></code>
+</li>
+<li>
+<a href="https://jeremyrcoyle.github.io/sl3/articles/custom_lrnrs.html">Defining New sl3 Learners</a> <code><a href="articles/custom_lrnrs.html">vignette("custom_lrnrs")</a></code>
+</li>
+<li>
+<a href="https://jeremyrcoyle.github.io/sl3/articles/SuperLearner_benchmarks.html">SuperLearner Benchmarks</a> <code>vignette("SuperLearner_benchmarks")</code>
+</li>
+</ul>
+<hr>
+</div>
 <div id="examples" class="section level2">
 <h2 class="hasAnchor">
 <a href="#examples" class="anchor"></a>Examples</h2>
 <p><code>sl3</code> makes the process of applying screening algorithms, learning algorithms, combining both types of algorithms into a stacked regression model, and cross-validating this whole process essentially trivial. The best way to understand this is to see the <code>sl3</code> package in action:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">49753</span>)
-<span class="kw">suppressMessages</span>(<span class="kw">library</span>(data.table))
-<span class="kw">library</span>(dplyr)
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: 'dplyr'</span>
-<span class="co">#&gt; The following objects are masked from 'package:data.table':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     between, first, last</span>
-<span class="co">#&gt; The following objects are masked from 'package:stats':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     filter, lag</span>
-<span class="co">#&gt; The following objects are masked from 'package:base':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     intersect, setdiff, setequal, union</span>
+
+<span class="co"># packages we'll be using</span>
+<span class="kw">library</span>(data.table)
 <span class="kw">library</span>(SuperLearner)
 <span class="co">#&gt; Loading required package: nnls</span>
 <span class="co">#&gt; Super Learner</span>
-<span class="co">#&gt; Version: 2.0-23-9000</span>
-<span class="co">#&gt; Package created on 2017-07-20</span>
+<span class="co">#&gt; Version: 2.0-22</span>
+<span class="co">#&gt; Package created on 2017-07-18</span>
 <span class="kw">library</span>(origami)
-<span class="co">#&gt; origami: Generalized Cross-Validation Framework</span>
-<span class="co">#&gt; Version: 0.8.0</span>
 <span class="kw">library</span>(sl3)
 
 <span class="co"># load example data set</span>
-<span class="kw">data</span>(cpp)
-cpp &lt;-<span class="st"> </span>cpp <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="op">!</span><span class="kw">is.na</span>(haz)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise_all.html">mutate_all</a></span>(<span class="kw"><a href="http://dplyr.tidyverse.org/reference/funs.html">funs</a></span>(<span class="kw">replace</span>(., <span class="kw">is.na</span>(.), <span class="dv">0</span>)))
+<span class="kw">data</span>(cpp_imputed)
 
-<span class="co"># use covariates of intest and the outcome to build a task object</span>
+<span class="co"># here are the covariates we are interested in and, of course, the outcome</span>
 covars &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">"apgar1"</span>, <span class="st">"apgar5"</span>, <span class="st">"parity"</span>, <span class="st">"gagebrth"</span>, <span class="st">"mage"</span>, <span class="st">"meducyrs"</span>,
             <span class="st">"sexn"</span>)
-task &lt;-<span class="st"> </span>sl3_Task<span class="op">$</span><span class="kw">new</span>(cpp, <span class="dt">covariates =</span> covars, <span class="dt">outcome =</span> <span class="st">"haz"</span>)
+outcome &lt;-<span class="st"> "haz"</span>
+
+task &lt;-<span class="st"> </span><span class="kw"><a href="reference/sl3_Task.html">make_sl3_Task</a></span>(<span class="dt">data =</span> cpp_imputed, <span class="dt">covariates =</span> covars,
+                      <span class="dt">outcome =</span> outcome, <span class="dt">outcome_type=</span><span class="st">"continuous"</span>)
 
 <span class="co"># set up screeners and learners via built-in functions and pipelines</span>
-slscreener &lt;-<span class="st"> </span>Lrnr_pkg_SuperLearner_screener<span class="op">$</span><span class="kw">new</span>(<span class="st">"screen.glmnet"</span>)
-glm_learner &lt;-<span class="st"> </span>Lrnr_glm<span class="op">$</span><span class="kw">new</span>()
-screen_and_glm &lt;-<span class="st"> </span>Pipeline<span class="op">$</span><span class="kw">new</span>(slscreener, glm_learner)
-SL.glmnet_learner &lt;-<span class="st"> </span>Lrnr_pkg_SuperLearner<span class="op">$</span><span class="kw">new</span>(<span class="dt">SL_wrapper =</span> <span class="st">"SL.glmnet"</span>)
+slscreener &lt;-<span class="st"> </span><span class="kw"><a href="reference/Lrnr_base.html">make_learner</a></span>(Lrnr_pkg_SuperLearner_screener, <span class="st">"screen.glmnet"</span>)
+glm_learner &lt;-<span class="st"> </span><span class="kw"><a href="reference/Lrnr_base.html">make_learner</a></span>(Lrnr_glm)
+screen_and_glm &lt;-<span class="st"> </span><span class="kw"><a href="reference/Lrnr_base.html">make_learner</a></span>(Pipeline, slscreener, glm_learner)
+lrnr_glmnet &lt;-<span class="st"> </span><span class="kw"><a href="reference/Lrnr_base.html">make_learner</a></span>(Lrnr_glmnet)
 
 <span class="co"># stack learners into a model (including screeners and pipelines)</span>
-learner_stack &lt;-<span class="st"> </span>Stack<span class="op">$</span><span class="kw">new</span>(SL.glmnet_learner, glm_learner, screen_and_glm)
+learner_stack &lt;-<span class="st"> </span><span class="kw"><a href="reference/Lrnr_base.html">make_learner</a></span>(Stack, lrnr_glmnet, glm_learner, screen_and_glm)
 stack_fit &lt;-<span class="st"> </span>learner_stack<span class="op">$</span><span class="kw">train</span>(task)
 <span class="co">#&gt; Loading required package: glmnet</span>
 <span class="co">#&gt; Loading required package: Matrix</span>
@@ -172,13 +177,13 @@ stack_fit &lt;-<span class="st"> </span>learner_stack<span class="op">$</span><s
 <span class="co">#&gt; Loaded glmnet 2.0-13</span>
 preds &lt;-<span class="st"> </span>stack_fit<span class="op">$</span><span class="kw">predict</span>()
 <span class="kw">head</span>(preds)
-<span class="co">#&gt;    Lrnr_pkg_SuperLearner_SL.glmnet   Lrnr_glm</span>
-<span class="co">#&gt; 1:                      0.35345519 0.36298498</span>
-<span class="co">#&gt; 2:                      0.35345519 0.36298498</span>
-<span class="co">#&gt; 3:                      0.24554305 0.25993072</span>
-<span class="co">#&gt; 4:                      0.24554305 0.25993072</span>
-<span class="co">#&gt; 5:                      0.24554305 0.25993072</span>
-<span class="co">#&gt; 6:                      0.02953193 0.05680264</span>
+<span class="co">#&gt;    Lrnr_glmnet_NULL_deviance_10_1_100   Lrnr_glm</span>
+<span class="co">#&gt; 1:                         0.35345519 0.36298498</span>
+<span class="co">#&gt; 2:                         0.35345519 0.36298498</span>
+<span class="co">#&gt; 3:                         0.24554305 0.25993072</span>
+<span class="co">#&gt; 4:                         0.24554305 0.25993072</span>
+<span class="co">#&gt; 5:                         0.24554305 0.25993072</span>
+<span class="co">#&gt; 6:                         0.02953193 0.05680264</span>
 <span class="co">#&gt;    Lrnr_pkg_SuperLearner_screener_screen.glmnet___Lrnr_glm</span>
 <span class="co">#&gt; 1:                                              0.36228209</span>
 <span class="co">#&gt; 2:                                              0.36228209</span>
@@ -211,6 +216,11 @@ preds &lt;-<span class="st"> </span>stack_fit<span class="op">$</span><span clas
 <a href="#license" class="anchor"></a>License</h2>
 <p>© 2017 <a href="https://github.com/jeremyrcoyle">Jeremy R. Coyle</a>, <a href="https://github.com/nhejazi">Nima S. Hejazi</a>, <a href="https://github.com/podTockom">Ivana Malenica</a>, <a href="https://github.com/osofr">Oleg Sofrygin</a></p>
 <p>The contents of this repository are distributed under the GPL-3 license. See file <code>LICENSE</code> for details.</p>
+<hr>
+</div>
+<div id="references" class="section level2">
+<h2 class="hasAnchor">
+<a href="#references" class="anchor"></a>References</h2>
 </div>
 </div>
 </div>

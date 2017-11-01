@@ -39,7 +39,7 @@
   <body>
     <div class="container template-reference-topic">
       <header>
-      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -52,12 +52,6 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
-    <span class="fa fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -68,10 +62,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/custom_lrnrs.html">Defining New `sl3` Learners</a>
+      <a href="../articles/intro_sl3.html">Intro to sl3</a>
     </li>
     <li>
-      <a href="../articles/intro_sl3.html">Modern Machine Learning in R</a>
+      <a href="../articles/SuperLearner_Benchmarks.html">sl3 Benchmarks</a>
+    </li>
+    <li>
+      <a href="../slides/sl3-slides.html">sl3 Presentation</a>
+    </li>
+    <li>
+      <a href="../articles/custom_lrnrs.html">Defining Custom sl3 Learners</a>
     </li>
   </ul>
 </li>
@@ -100,8 +100,7 @@
 
     
     <p>This learner provides fitting procedures for models with non-negative linear
-least squares, internally using the <code>nnls</code> package. For details on the
-fitting procedure, consult the documentation of the <code>nnls</code> package.</p>
+least squares, internally using the <code>nnls</code> package and <code><a href='http://www.rdocumentation.org/packages/nnls/topics/nnls'>nnls</a></code> function.</p>
     
 
     <pre class="usage"><span class='no'>Lrnr_nnls</span></pre>
@@ -112,15 +111,47 @@ fitting procedure, consult the documentation of the <code>nnls</code> package.</
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='Lrnr_base.html'>Lrnr_base</a></code> object with methods for training and
-prediction.</p>
+    <p>Learner object with methods for training and prediction. See <code><a href='Lrnr_base.html'>Lrnr_base</a></code> for documentation on learners.</p>
     
-    <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
+    <h2 class="hasAnchor" id="parameters"><a class="anchor" href="#parameters"></a>Parameters</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code>...</code></dt><dd><p>Additional arguments. Currently unused.</p></dd>
+<dt><code>...</code></dt><dd><p>Not used</p></dd>
 </dl>
+    
+    <h2 class="hasAnchor" id="common-parameters"><a class="anchor" href="#common-parameters"></a>Common Parameters</h2>
+
+    
+    <p>Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by <code>Lrnr_base</code>, and shared
+by all learners.</p><dl class='dl-horizontal'>
+  <dt><code>covariates</code></dt><dd><p>A character vector of covariates. The learner will use this to subset the covariates for any specified task</p></dd>
+  <dt><code>outcome_type</code></dt><dd><p>A <code><a href='variable_type.html'>variable_type</a></code> object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified</p></dd>
+  <dt><code>...</code></dt><dd><p>All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating</p></dd>
+</dl>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p>Other Learners: <code><a href='Custom_chain.html'>Custom_chain</a></code>,
+  <code><a href='Lrnr_HarmonicReg.html'>Lrnr_HarmonicReg</a></code>, <code><a href='Lrnr_arima.html'>Lrnr_arima</a></code>,
+  <code><a href='Lrnr_base.html'>Lrnr_base</a></code>, <code><a href='Lrnr_condensier.html'>Lrnr_condensier</a></code>,
+  <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
+  <code><a href='Lrnr_define_interactions.html'>Lrnr_define_interactions</a></code>,
+  <code><a href='Lrnr_expSmooth.html'>Lrnr_expSmooth</a></code>,
+  <code><a href='Lrnr_glm_fast.html'>Lrnr_glm_fast</a></code>, <code><a href='Lrnr_glmnet.html'>Lrnr_glmnet</a></code>,
+  <code><a href='Lrnr_glm.html'>Lrnr_glm</a></code>, <code><a href='Lrnr_h2o_grid.html'>Lrnr_h2o_grid</a></code>,
+  <code><a href='Lrnr_independent_binomial.html'>Lrnr_independent_binomial</a></code>,
+  <code><a href='Lrnr_mean.html'>Lrnr_mean</a></code>, <code><a href='Lrnr_optim.html'>Lrnr_optim</a></code>,
+  <code><a href='SuperLearner_interface.html'>Lrnr_pkg_SuperLearner</a></code>,
+  <code><a href='Lrnr_randomForest.html'>Lrnr_randomForest</a></code>,
+  <code><a href='Lrnr_rugarch.html'>Lrnr_rugarch</a></code>, <code><a href='Lrnr_sl.html'>Lrnr_sl</a></code>,
+  <code><a href='Lrnr_solnp_density.html'>Lrnr_solnp_density</a></code>,
+  <code><a href='Lrnr_solnp.html'>Lrnr_solnp</a></code>,
+  <code><a href='Lrnr_subset_covariates.html'>Lrnr_subset_covariates</a></code>,
+  <code><a href='Lrnr_tsDyn.html'>Lrnr_tsDyn</a></code>, <code><a href='Lrnr_xgboost.html'>Lrnr_xgboost</a></code>,
+  <code><a href='Pipeline.html'>Pipeline</a></code>, <code><a href='Stack.html'>Stack</a></code>,
+  <code><a href='Lrnr_h2o_glm.html'>define_h2o_X</a></code>,
+  <code><a href='undocumented_learner.html'>undocumented_learner</a></code></p>
     
 
   </div>
@@ -132,7 +163,11 @@ prediction.</p>
 
       <li><a href="#value">Value</a></li>
 
-      <li><a href="#fields">Fields</a></li>
+      <li><a href="#parameters">Parameters</a></li>
+
+      <li><a href="#common-parameters">Common Parameters</a></li>
+
+      <li><a href="#see-also">See also</a></li>
           </ul>
 
   </div>

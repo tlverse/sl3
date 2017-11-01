@@ -1,0 +1,127 @@
+/*
+@import url(https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700);
+@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700);
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,700);
+@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700);
+@import url(https://fonts.googleapis.com/css?family=Roboto+Mono:400,700);
+@import url(https://fonts.googleapis.com/css?family=Cabin:400,700);
+@import url(https://fonts.googleapis.com/css?family=Cabin+Condensed:400,700);
+*/
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans+Condensed:400,700);
+@import url(https://fonts.googleapis.com/css?family=Droid+Sans+Mono:400);
+
+/*
+Berkeley Blue: #003262
+Founder's Rock: #3B7EA1
+California Gold: #FDB515
+Medalist: #C4820E
+Wellman Tile: #D9661F
+Rose Garden: #EE1F60
+Golden Gate: #ED4E33
+South Hall: #6C3302
+Bay Fog: #DDD5C7
+Lawrence: #00B0DA
+Lap Lane: #00A598
+Pacific: #46535E
+Sather Gate: #B9D3B6
+Ion: #CFDD45
+Soybean: #859438
+Stone Pine: #584F29
+Grey: #EEEEEE
+Web Grey: #888888
+*/
+
+.fullscreen img {
+  min-height: 100%;
+  min-width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+.fullscreen .remark-slide-number {
+  display: none;
+}
+
+.remark-fading { z-index: 9; }
+.remark-slide-container {transition: opacity 0.25s ease-out;opacity: 0;}
+.remark-visible {transition: opacity 0.25s ease-out;opacity: 1;}
+
+.remark-code, .remark-inline-code { font-family: "Droid Sans Mono", 'Lucida Console', Monaco, monospace; }
+.remark-container {
+  background-color: #888888; /* webgrey */
+}
+.remark-slide-content {
+  background-color: #EEEEEE; /* grey */
+  /* background-image: url("assets/img/furley_bg_@2X.png"); */
+  background-size: contain;
+  padding-top: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-bottom: 10px;
+}
+
+.remark-slide-content > h1:first-of-type {
+  margin-top: 0px;
+}
+
+.inverse {
+  background-color: #46535E; /* pacific */
+  background-image: none;
+  color: #B9D3B6; /* sather gate */
+}
+.inverse h1 {
+  color: #FFF; /* white */
+}
+.inverse h2, .inverse h3 {
+  color: #DDD5C7 /* bayfog */
+}
+body {
+  font-family: "Open Sans", "Arial", sans-serif;
+}
+h1, h2, h3 {
+  font-family: "Open Sans Condensed", "Arial Narrow", sans-serif;
+}
+h1 {
+  color: #003262; /* berkeleyblue */
+  margin-bottom: 20px;
+}
+h2 {
+  color: #3B7EA1; /* foundersrock */
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+h3 {
+  color: #46535E; /* pacific */
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+blockquote {
+  color: #003262; /* berkeleyblue */
+  font-size: 1.25em;
+  font-style: italic;
+  padding: 0.25em 0.25em;
+}
+a, a > code {
+  color: #00A598; /* laplane */
+}
+.footnote {
+  padding-right: 3em;
+  font-size: 80%;
+}
+.title-slide {
+  background-image: url(figs/sealUC.png);
+  background-size: 17%;
+  background-repeat: no-repeat;
+/*  background-position: center bottom; */
+  background-position: 50% 96%
+}
+.title-slide .remark-slide-number {
+  display: none;
+}
+th, td {
+  border-bottom: 1px solid #ddd;
+}
+/*.remark-slide-scaler {
+  transform: scale(1) !important;
+} */

@@ -1,26 +1,30 @@
-#' Random Forest Models
+#' GLMs with Elastic Net Regularization
 #'
 #' This learner provides fitting procedures for elastic net models, using the
-#' \code{glmnet} package. For details on the fitting procedure, consult
-#' the documentation of the \code{glmnet} package.
+#' \code{glmnet} package, using \code{\link[glmnet]{cv.glmnet}} to select lambda.
+#'
 #'
 #' @docType class
-#'
-#' @keywords data
-#'
-#' @return \code{\link{Lrnr_base}} object with methods for training and
-#'  prediction.
-#'
-#' @format \code{\link{R6Class}} object.
-#'
-#' @field ... Additional arguments. Currently unused.
-#'
 #' @importFrom R6 R6Class
+#' @export
+#' @keywords data
+#' @return Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+#' @format \code{\link{R6Class}} object.
+#' @family Learners
+#' 
+#' @format \code{\link{R6Class}} object.
+#' @section Parameters:
+#' \describe{
+#'   \item{\code{lambda=NULL}}{A vector of lambda values to compare}
+#'   \item{\code{type.measure="deviance"}}{The loss to use when selecting lambda. Options documented in \code{\link[glmnet]{cv.glmnet}}}
+#'   \item{\code{nfolds=10}}{Number of folds to use for internal cross-validation}
+#'   \item{\code{alpha=1}}{The elastic net parameter. 0 is Ridge Regression, 1 is Lasso. Intermediate values are a combination. Documented in \code{\link[glmnet]{glmnet}}}
+#'   \item{\code{nlambda=100}}{The number of lambda values to compare. Comparing less values will speed up computation, but may decrease statistical performance. Documented in \code{\link[glmnet]{cv.glmnet}}}
+#'   \item{\code{...}}{Other parameters passed to \code{\link[glmnet]{cv.glmnet}} and \code{\link[glmnet]{glmnet}} }
+#' }
+#' @template common_parameters
 #' @importFrom stats predict
 #' @importFrom assertthat assert_that is.count is.flag
-#'
-#' @export
-#
 Lrnr_glmnet <- R6Class(classname = "Lrnr_glmnet",
                              inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
