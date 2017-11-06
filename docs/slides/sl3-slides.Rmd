@@ -606,7 +606,7 @@ ml_fit <- metalearner$train(cv_task)
 --
 
 - Used special learner, `Lrnr_nnls`, for the meta-learning step. Fits a non-negative least squares meta-learner.
-- **Ay learner can be used as a meta-learner.**
+- **Any learner can be used as a meta-learner.**
 
 ---
 

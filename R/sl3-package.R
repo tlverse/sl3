@@ -1,6 +1,7 @@
 #' @import R6
 #' @import data.table
 #' @import delayed
+#' @importFrom methods is
 NULL
 
 #' Undocumented Learner

@@ -278,6 +278,13 @@ head(sg_pipeline_preds)
 We see that the pipeline returns the same predictions as manually training `glm`
 on the chained task from the screening learner.
 
+We can visualize the pipeline we defined above:
+
+```{r sl3-viz-pipeline, echo=FALSE}
+dt <- delayed_learner_train(sg_pipeline, task)
+plot(dt, color=FALSE, height="300px")
+```
+
 ### Stacks
 
 Like `Pipeline`s, `Stack`s combine multiple learners. `Stack`s train learners
@@ -297,6 +304,16 @@ well as a pipeline that combines a screening algorithm with that same learner.
 We could have included any abitrary set of learners and pipelines, the latter of
 which are themselves just learners. We can see that the `predict` method now
 returns a matrix, with a column for each learner included in the stack.
+
+We can visualize the stack:
+
+
+```{r sl3-viz-stack, echo=FALSE}
+dt <- delayed_learner_train(stack, task)
+plot(dt, color=FALSE, height="500px")
+```
+
+We see one "branch" for each learner in the stack.
 
 ### Cross-validation
 

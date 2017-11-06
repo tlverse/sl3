@@ -9,7 +9,7 @@ navbar:
         - text: "Intro to sl3"
           href: articles/intro_sl3.html
         - text: "sl3 Benchmarks"
-          href: articles/SuperLearner_Benchmarks.html
+          href: articles/SuperLearner_benchmarks.html
         - text: "sl3 Presentation"
           href: slides/sl3-slides.html
         - text: "Defining Custom sl3 Learners"
