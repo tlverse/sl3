@@ -10,7 +10,7 @@
 Variable_Type
 
 variable_type(type = NULL, levels = NULL, bounds = NULL, x = NULL,
-  pcontinuous = 0.05)
+  pcontinuous = getOption("sl3.pcontinuous"))
 }
 \arguments{
 \item{type}{A type name}
