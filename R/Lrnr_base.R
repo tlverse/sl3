@@ -48,6 +48,11 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
                            # learners can override task outcome type
                            outcome_type <- self$params$outcome_type
                          }
+                         
+                         # make sure outcome type is a variable_type object
+                         if(is.character(outcome_type)){
+                           outcome_type <- variable_type(type = outcome_type, x = task$Y)
+                         } 
 
                          return(outcome_type)
                        },

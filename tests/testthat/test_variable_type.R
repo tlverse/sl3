@@ -58,3 +58,22 @@ test_that("outcome levels are binarized for outcome_type binomial",{
   expect_true(all(Y_binomial%in%c(0,1)))
   expect_equal(Y_binomial, as.numeric(task$Y==max(levels(task$Y))))
 })
+
+fglm_learner <- Lrnr_glm_fast$new(outcome_type = "continuous")
+test_that("outcome type can be passed to a task as a character", {
+  fglm_learner$train(task)
+})
+
+pcontinuous_default <- getOption("sl3.pcontinuous")
+test_that("pcontinuous uses sl3.pcontinuous option by default", {
+  options(sl3.pcontinuous=0)
+  type_1 <- variable_type(x=rep(rnorm(3),100))
+  expect_equal(type_1$type, "continuous")
+  
+  options(sl3.pcontinuous=1)
+  type_2 <- variable_type(x=rep(rnorm(3),100))
+  expect_equal(type_2$type, "categorical")
+  
+})
+
+options(sl3.pcontinuous=pcontinuous_default)
