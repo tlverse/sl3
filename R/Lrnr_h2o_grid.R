@@ -75,6 +75,9 @@ Lrnr_h2o_grid <- R6Class(classname = "Lrnr_h2o_grid", inherit = Lrnr_base,
       }
       
       args$distribution <- args$family
+      if (args$distribution %in% c("binomial", "quasibinomial")) {
+        args$distribution <- "bernoulli"
+      }
 
       h2o_data <- define_h2o_X(task, outcome_type)
 
