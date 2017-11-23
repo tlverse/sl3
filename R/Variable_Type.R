@@ -4,7 +4,7 @@ Variable_Type <- R6Class(classname = "Variable_Type",
                          portable = TRUE,
                          class = TRUE,
                          public = list(
-                           initialize = function(type = NULL, levels = NULL, bounds = NULL, x = NULL, pcontinuous = 0.05){
+                           initialize = function(type = NULL, levels = NULL, bounds = NULL, x = NULL, pcontinuous = getOption("sl3.pcontinuous")){
                              if(is.null(type)){
                                if(is.null(x)){
                                  stop("type not specified, and no x from which to infer it")
@@ -120,7 +120,7 @@ Variable_Type <- R6Class(classname = "Variable_Type",
 #' @param x data to use for inferring type if not specified
 #' @param pcontinuous if type inferred, proportion of unique observations above which variable is continuous
 #' @export
-variable_type <- function(type = NULL, levels = NULL, bounds = NULL, x = NULL, pcontinuous = 0.05){
+variable_type <- function(type = NULL, levels = NULL, bounds = NULL, x = NULL, pcontinuous = getOption("sl3.pcontinuous")){
   return(Variable_Type$new(type = type, levels = levels, bounds = bounds, x = x, pcontinuous = pcontinuous))
 }
 
