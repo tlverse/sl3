@@ -8,7 +8,7 @@ SuppressGivenWarnings <- function(expr, warningsToIgnore) {
 
 ################################################################################
 
-GetWarningsToSuppress <- function(update.step=FALSE) {
+GetWarningsToSuppress <- function(update.step =FALSE) {
   warnings.to.suppress <- c("glm.fit: fitted probabilities numerically 0 or 1 occurred",
                             "prediction from a rank-deficient fit may be misleading",
                             "non-integer #successes in a binomial glm!",
@@ -41,6 +41,7 @@ keep_only_fun_args <- function(Args, fun) {
 }
 
 ################################################################################
+
 #' Call with filtered argument list
 #'
 #' Call a function with a list of arguments, eliminating any that aren't
@@ -48,9 +49,12 @@ keep_only_fun_args <- function(Args, fun) {
 #'
 #' @param fun A \code{function} whose signature will be used to reduce the
 #' @param args A \code{list} of function arguments to use
-#' @param other_valid A \code{list} of function arguments names that are valid, but not formals of \code{fun}
-#' @param keep_all A \code{boolean} don't drop arguments, even if they aren't matched in either the function prototype or other_valid
+#' @param other_valid A \code{list} of function arguments names that are valid,
+#'  but not formals of \code{fun}
+#' @param keep_all A \code{boolean} don't drop arguments, even if they aren't
+#'  matched in either the function prototype or other_valid
 #' @keywords internal#
+#
 call_with_args <- function(fun, args, other_valid=list(), keep_all=FALSE) {
   if(!keep_all){
     formal_args <- names(formals(fun))
@@ -59,6 +63,7 @@ call_with_args <- function(fun, args, other_valid=list(), keep_all=FALSE) {
   }
   do.call(fun, args)
 }
+
 ################################################################################
 
 #' Replace an argument in \code{mainArgs} if it also appears in \code{userArgs}.
@@ -83,12 +88,18 @@ replace_add_user_args <- function(mainArgs, userArgs, fun) {
 }
 
 ################################################################################
+
 #' Estimate object size using serialization
-#' 
-#' Attempts to get a better estimate of object size than that returned by \code{\link{object.size}}
+#'
+#' Attempts to get a better estimate of object size than that returned by
+#' \code{\link{object.size}}
+#'
 #' @param obj the object to get the size of
+#'
 #' @return the size of \code{obj} in bytes
+#'
 #' @export
+#
 true_obj_size <- function(obj) {
     length(serialize(obj, NULL))
 }
@@ -96,7 +107,7 @@ true_obj_size <- function(obj) {
 ################################################################################
 
 reduce_fit_test <- function(learner_fit) {
-    # given a learner fit, sequentially drop components from the internal fit object,
+    # given learner fit, sequentially drop components from internal fit object,
     # keeping track of which components are needed for prediction
 
     # learner_fit = glm_fit
@@ -129,7 +140,7 @@ reduce_fit_test <- function(learner_fit) {
 
 ################################################################################
 
-subset_dt_cols = function(dt, cols) {
+subset_dt_cols <- function(dt, cols) {
   #setDF(dt)
   #subset = dt[,cols, drop = FALSE]
   #setDT(subset)
@@ -139,17 +150,20 @@ subset_dt_cols = function(dt, cols) {
 }
 
 ################################################################################
+
 #' Get all args of parent call (both specified and defaults) as list
 #'
 #' @return a list of all for the parent function call
+#'
 #' @export
-args_to_list <- function(){
+#
+args_to_list <- function() {
   parent <- sys.parent()
   call <- sys.call(parent)
   fn <- sys.function(parent)
 
   # get specified args
-  expanded <- match.call(fn, call, envir=parent.frame(2L))
+  expanded <- match.call(fn, call, envir = parent.frame(2L))
   args <- as.list(expanded[-1])
 
   # get default args
@@ -163,39 +177,57 @@ args_to_list <- function(){
 
   # evaluate args
   num_args <- length(all_args)
-  for(i in seq_len(num_args)){
-    if(!is.null(all_args[[i]])){
-      all_args[[i]]=eval(all_args[[i]], envir=all_args, enclos=parent.frame(2L))
+  for (i in seq_len(num_args)) {
+    if (!is.null(all_args[[i]])) {
+      all_args[[i]] <- eval(all_args[[i]], envir = all_args,
+                            enclos = parent.frame(2L))
     }
   }
   # evaled <- lapply(all_args, eval, envir=parent.frame(2L))
-
   return(all_args)
 }
 
-
+################################################################################
 
 #' dim that works for vectors too
-#' 
-#' \code{safe_dim} tries to get dimensions from \code{dim} and falls back on \code{length} if \code{dim} returns \code{NULL}
+#'
+#' \code{safe_dim} tries to get dimensions from \code{dim} and falls back on
+#' \code{length} if \code{dim} returns \code{NULL}
+#'
 #' @param x the object to get dimensions from
+#'
 #' @export
+#
 safe_dim <- function(x) {
   d <- dim(x)
   if (is.null(d)) {
     d <- length(x)
   }
-  
   return(d)
 }
 
+################################################################################
+
 #' Generate a file containing a template \code{sl3} Learner
-#' 
-#' Generates a template file that can be used to write a new \code{sl3} Learner. For more information, see the \href{../doc/custom_lrnrs.html}{Defining New Learners} vignette.
+#'
+#' Generates a template file that can be used to write a new \code{sl3} Learner.
+#' For more information, see the \href{../doc/custom_lrnrs.html}{Defining New
+#' Learners} vignette.
+#'
 #' @param file the path where the file should be written
-#' @return the return from \code{\link{file.copy}}. \code{TRUE} if writing the template was successful.
+#'
+#' @return the return from \code{\link{file.copy}}. \code{TRUE} if writing the
+#'  template was successful.
+#'
 #' @export
+#
 write_learner_template <- function(file){
-  template_file <- system.file("templates/Lrnr_template.R", package="sl3", mustWork = TRUE)
+  template_file <- system.file("templates/Lrnr_template.R", package = "sl3",
+                               mustWork = TRUE)
   file.copy(template_file, file)
 }
+
+################################################################################
+
+list_name <- list()
+
