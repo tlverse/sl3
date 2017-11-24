@@ -9,7 +9,9 @@ NULL
 #'
 #' @param o Option name (string).
 #' @param value Value to assign (optional)
+#'
 #' @export
+#'
 #' @examples \dontrun{
 #' sl3Options()
 #' sl3Options('sl3.verbose')
@@ -41,8 +43,10 @@ sl3Options <- function (o, value)  {
 }
 
 .onLoad <- function(libname, pkgname) {
-  # Runs when loaded but not attached to search() path; e.g., when a package just Imports (not Depends on) sl3
-  # Set options for the speed boost in v1.8.0 by avoiding 'default' arg of getOption(,default=)
+  # Runs when loaded but not attached to search() path; e.g., when a package
+  # just Imports (not Depends on) sl3
+  # Set options for the speed boost in v1.8.0 by avoiding 'default' arg of
+  # getOption(,default=)
   opts = list("sl3.verbose"    = FALSE,
               "sl3.file.path"  = tempdir(),
               "sl3.temp.dir"   = tempdir(),
@@ -65,12 +69,13 @@ sl3Options <- function (o, value)  {
   # Runs when attached to search() path such as by library() or require()
   if (interactive()) {
     v = packageVersion("sl3")
-    d = read.dcf(system.file("DESCRIPTION", package="sl3"), fields = c("Packaged", "Built"))
-    if(is.na(d[1])){
-      if(is.na(d[2])){
+    d = read.dcf(system.file("DESCRIPTION", package = "sl3"),
+                 fields = c("Packaged", "Built"))
+    if (is.na(d[1])) {
+      if (is.na(d[2])) {
         return() #neither field exists
-      } else{
-        d = unlist(strsplit(d[2], split="; "))[3]
+      } else {
+        d = unlist(strsplit(d[2], split = "; "))[3]
       }
     } else {
       d = d[1]
@@ -78,9 +83,12 @@ sl3Options <- function (o, value)  {
     # dev = as.integer(v[1,3])%%2 == 1  # version number odd => dev
     packageStartupMessage("sl3 ", v)
     # if (dev && (Sys.Date() - as.Date(d))>28)
-    #     packageStartupMessage("**********\nThis development version of sl3 was built more than 4 weeks ago. Please update.\n**********")
-    packageStartupMessage('Please note the package is in early stages of development. Check often for updates and report bugs at http://github.com/jeremyrcoyle/sl3.', '\n')
-    
+    #     packageStartupMessage("**********\nThis development version of sl3 was
+    # built more than 4 weeks ago. Please update.\n**********")
+    packageStartupMessage(paste("Please note the package is in early stages of."
+                                "development. Check often for updates and",
+                                "report bugs at",
+                                "http://github.com/jeremyrcoyle/sl3.", "\n"))
   }
 }
 

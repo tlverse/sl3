@@ -9,8 +9,10 @@ SuppressGivenWarnings <- function(expr, warningsToIgnore) {
 ################################################################################
 
 GetWarningsToSuppress <- function(update.step =FALSE) {
-  warnings.to.suppress <- c("glm.fit: fitted probabilities numerically 0 or 1 occurred",
-                            "prediction from a rank-deficient fit may be misleading",
+  warnings.to.suppress <- c(paste("glm.fit: fitted probabilities numerically 0",
+                                  "or 1 occurred"),
+                            paste("prediction from a rank-deficient fit may be",
+                                  "misleading"),
                             "non-integer #successes in a binomial glm!",
                             "the matrix is either rank-deficient or indefinite",
                             "glm.fit: algorithm did not converge")
@@ -48,18 +50,19 @@ keep_only_fun_args <- function(Args, fun) {
 #' matched in the function prototype
 #'
 #' @param fun A \code{function} whose signature will be used to reduce the
-#' @param args A \code{list} of function arguments to use
+#' @param args A \code{list} of function arguments to use.
 #' @param other_valid A \code{list} of function arguments names that are valid,
-#'  but not formals of \code{fun}
+#'   but not formals of \code{fun}.
 #' @param keep_all A \code{boolean} don't drop arguments, even if they aren't
-#'  matched in either the function prototype or other_valid
-#' @keywords internal#
+#'   matched in either the function prototype or other_valid.
+#'
+#' @keywords internal
 #
 call_with_args <- function(fun, args, other_valid=list(), keep_all=FALSE) {
-  if(!keep_all){
+  if (!keep_all) {
     formal_args <- names(formals(fun))
     all_valid <- c(formal_args, other_valid)
-    args <- args[which(names(args)%in%all_valid)]
+    args <- args[which(names(args) %in% all_valid)]
   }
   do.call(fun, args)
 }
@@ -229,5 +232,7 @@ write_learner_template <- function(file){
 
 ################################################################################
 
+# Miscellaneous setting that was the sole contents of a file "Untitled.R" prior
+# to commit b8cc1e5. Preserved here.
 list_name <- list()
 
