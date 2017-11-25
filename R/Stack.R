@@ -95,8 +95,8 @@ Stack <- R6Class(classname = "Stack",
       for (i in seq_along(errored_learners)) {
         message <- learner_errors[[i]]$message
         learner <- errored_learners[[i]]
-        warning(sprintf(paste("%s failed with message: %s. It will be removed",
-                              "from the stack", learner$name, message)))
+        warning(sprintf("%s failed with message: %s. It will be removed from",
+                        "the stack", learner$name, message))
       }
       if (all(is_error)) {
         stop("All learners in stack have failed")
