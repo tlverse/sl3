@@ -16,21 +16,27 @@ Lrnr_pkg_SuperLearner_method
 Lrnr_pkg_SuperLearner_screener
 }
 \value{
-Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+Learner object with methods for training and prediction. See
+\code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
-These learners provide an interface to the wrapper functions, screening algorithms, and
-combination methods provided by the \code{SuperLearner} package. These components add support
-for a range of algorithms not currently implemented natively in \code{sl3}.
+These learners provide an interface to the wrapper functions,
+screening algorithms, and combination methods provided by the
+\code{SuperLearner} package. These components add support for a range of
+algorithms not currently implemented natively in \code{sl3}.
 
-\code{Lrnr_pkg_SuperLearner} -- Interface for \code{SuperLearner} wrapper functions.
-Use \code{SuperLearner::listWrappers("SL")} for a list.
+\code{Lrnr_pkg_SuperLearner} - Interface for \code{SuperLearner}
+wrapper functions. Use \code{SuperLearner::listWrappers("SL")} for a list.
+
+Use \code{SuperLearner::listWrappers("method")} for a list of options.
+
+Use \code{SuperLearner::listWrappers("screen")} for a list of options.
 }
 \section{Parameters}{
 
 \describe{
-\item{\code{SL_wrapper}}{The wrapper function to use}
-\item{\code{...}}{Currently not used}
+\item{\code{SL_wrapper}}{The wrapper function to use.}
+\item{\code{...}}{Currently not used.}
 }
 }
 

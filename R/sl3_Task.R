@@ -88,7 +88,7 @@ sl3_Task <- R6Class(classname = "sl3_Task",
     },
 
     add_interactions = function(interactions) {
-      ##-----------------------------------------------------------------------
+      ##------------------------------------------------------------------------
       ## Add columns with interactions (by reference) to input design matrix
       ## (data.table). Used for training / predicting.
       ## returns the names of the added columns

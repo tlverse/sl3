@@ -9,25 +9,31 @@
 Lrnr_solnp
 }
 \value{
-Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+Learner object with methods for training and prediction. See
+\code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
 This meta-learner provides fitting procedures for any pairing of loss
-function and metalearner function, subject to constraints. The
-optimization problem is solved by making use of \code{\link[Rsolnp]{solnp}}, using
+function and metalearner function, subject to constraints. The optimization
+problem is solved by making use of \code{\link[Rsolnp]{solnp}}, using
 Lagrange multipliers. For further details, consult the documentation of the
 \code{Rsolnp} package.
 }
 \section{Parameters}{
 
 \describe{
-\item{\code{learner_function=metalearner_linear}}{A function(alpha, X) that takes a vector of covariates and a
-matrix of data and combines them into a vector of predictions. See \link{metalearners} for options.}
-\item{\code{loss_function=loss_squared_error}}{A function(pred, truth) that takes prediction and truth vectors and returns a loss vector. See \link{loss_functions} for options.}
-\item{\code{make_sparse=TRUE}}{If TRUE, zeros out small alpha values}
-\item{\code{convex_combination=TRUE}}{If TRUE, constrain alpha to sum to 1}
-\item{\code{init_0=FALSE}}{If TRUE, alpha is initialized to all 0's, useful for TMLE.
-Otherwise, it is initialized to equal weights summing to 1, useful for SuperLearner}
+\item{\code{learner_function=metalearner_linear}}{A function(alpha, X) that
+takes a vector of covariates and a matrix of data and combines them into
+a vector of predictions. See \link{metalearners} for options.}
+\item{\code{loss_function=loss_squared_error}}{A function(pred, truth) that
+takes prediction and truth vectors and returns a loss vector. See
+\link{loss_functions} for options.}
+\item{\code{make_sparse=TRUE}}{If TRUE, zeros out small alpha values.}
+\item{\code{convex_combination=TRUE}}{If \code{TRUE}, constrain alpha to
+sum to 1.}
+\item{\code{init_0=FALSE}}{If TRUE, alpha is initialized to all 0's, useful
+for TMLE. Otherwise, it is initialized to equal weights summing to 1,
+useful for SuperLearner.}
 \item{\code{...}}{Not currently used.}
 }
 }

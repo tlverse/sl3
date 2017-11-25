@@ -9,19 +9,22 @@
 Lrnr_xgboost
 }
 \value{
-Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+Learner object with methods for training and prediction. See
+\code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
 This learner provides fitting procedures for \code{xgboost} models, using the
-\code{xgboost} package, using the \code{\link[xgboost]{xgb.train}} function. Such models are classification and regression trees
-with extreme gradient boosting. For details on the fitting procedure, consult
-the documentation of the \code{xgboost} package.
+\code{xgboost} package, using the \code{\link[xgboost]{xgb.train}} function.
+Such models are classification and regression trees with extreme gradient
+boosting. For details on the fitting procedure, consult the documentation of
+the \code{xgboost} package.
 }
 \section{Parameters}{
 
 \describe{
-\item{\code{nrounds=20}}{Number of fitting iterations}
-\item{\code{...}}{Other parameters passed to \code{\link[xgboost]{xgb.train}}}
+\item{\code{nrounds=20}}{Number of fitting iterations.}
+\item{\code{...}}{Other parameters passed to
+\code{\link[xgboost]{xgb.train}}.}
 }
 }
 

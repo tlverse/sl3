@@ -9,23 +9,28 @@
 Lrnr_optim
 }
 \value{
-Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+Learner object with methods for training and prediction. See
+\code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
 This meta-learner provides fitting procedures for any pairing of loss
 function and metalearner function, subject to constraints. The
-optimization problem is solved by making use of \code{optim}, For further details,
-consult the documentation of \code{\link{optim}}
+optimization problem is solved by making use of \code{optim}, For further
+details, consult the documentation of \code{\link{optim}}.
 }
 \section{Parameters}{
 
 \describe{
-\item{\code{learner_function=metalearner_linear}}{A function(alpha, X) that takes a vector of covariates and a
-matrix of data and combines them into a vector of predictions. See \link{metalearners} for options.}
-\item{\code{loss_function=loss_squared_error}}{A function(pred, truth) that takes prediction and truth vectors and returns a loss vector. See \link{loss_functions} for options.}
-\item{\code{intercept=FALSE}}{If true, X includes an intercept term}
-\item{\code{init_0=FALSE}}{If true, alpha is initialized to all 0's, useful for TMLE.
-Otherwise, it is initialized to equal weights summing to 1, useful for SuperLearner}
+\item{\code{learner_function=metalearner_linear}}{A function(alpha, X) that
+takes a vector of covariates and a matrix of data and combines them into
+a vector of predictions. See \link{metalearners} for options.}
+\item{\code{loss_function=loss_squared_error}}{A function(pred, truth) that
+takes prediction and truth vectors and returns a loss vector. See
+\link{loss_functions} for options.}
+\item{\code{intercept=FALSE}}{If true, X includes an intercept term.}
+\item{\code{init_0=FALSE}}{If true, alpha is initialized to all 0's, useful
+for TMLE. Otherwise, it is initialized to equal weights summing to 1,
+useful for Super Learner.}
 \item{\code{...}}{Not currently used.}
 }
 }

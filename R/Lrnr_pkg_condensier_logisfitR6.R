@@ -1,17 +1,23 @@
 ## Allows us to use any learner in sl3 as a bin learner in condensier
-## This additional injection works when Lrnr_condensier$new(bin_estimator = Lrnr_base) is a learner from sl3 package.
-## In this, the sl3 learner 'Lrnr_base' object is injected into the wraper class below.
-## This R6 object then provides a communication link between the two packages (sl3 <-> condensier).
+## This additional injection works when Lrnr_condensier$new(bin_estimator =
+## Lrnr_base) is a learner from sl3 package.
+##
+## In this, the sl3 learner 'Lrnr_base' object is injected into the wraper class
+## below. This R6 object then provides a communication link between the two
+## packages (sl3 <-> condensier).
 
 #' sl3 Learner wrapper for condensier
 #'
-#' This wrapper allows the use of any \code{sl3} Learner as a Learner for \code{condensier}. 
-#' For details, see the \code{\link[condensier]{fit_density}} function.
+#' This wrapper allows the use of any \code{sl3} Learner as a Learner for
+#' \code{condensier}. For details, see the \code{\link[condensier]{fit_density}}
+#' function.
 #'
 #' @docType class
+#'
 #' @export
+#
 Lrnr_pkg_condensier_logisfitR6 <- R6Class("Lrnr_pkg_condensier_logisfitR6",
-  inherit = condensier::logisfitR6,
+                                          inherit = condensier::logisfitR6,
   public = list(
     lmclass = NULL,
     fitfunname = NULL,
@@ -33,20 +39,25 @@ Lrnr_pkg_condensier_logisfitR6 <- R6Class("Lrnr_pkg_condensier_logisfitR6",
       dataDT <- cbind(X_mat, Y = Y_vals)
       sl3_lrnr <- private$sl3_lrnr
       if (nrow(dataDT) > 0) {
-        task <- sl3_Task$new(dataDT, covariates=colnames(X_mat), outcome=colnames(dataDT)[ncol(dataDT)])
+        task <- sl3_Task$new(dataDT, covariates = colnames(X_mat),
+                             outcome = colnames(dataDT)[ncol(dataDT)])
         out <- capture.output(
           sl3_lrnr <- try(suppressWarnings(sl3_lrnr$train(task)))
         )
-        if (inherits(sl3_lrnr, "try-error") || inherits(sl3_lrnr$fit_object, "try-error")) { # if failed, use fall back learner
+        if (inherits(sl3_lrnr, "try-error") ||
+            inherits(sl3_lrnr$fit_object, "try-error")) {
+          # if failed, use fall back learner
           if (verbose) {
-            message(paste0("learner ", self$fitfunname ," failed, falling back on private$fallback_learner; "))
+            message(paste0("learner ", self$fitfunname,
+                           " failed, trying private$fallback_learner; "))
             if (inherits(sl3_lrnr, "Lrnr_base")) {
               print(sl3_lrnr$name)
             } else {
               print(sl3_lrnr)
             }
           }
-          sl3_lrnr <- private$fallback_learner$new(family = "binomial")$train(task)
+          sl3_lrnr <- private$fallback_learner$new(family =
+                                                   "binomial")$train(task)
         }
       }
       if (verbose) print(sl3_lrnr)
@@ -59,7 +70,8 @@ Lrnr_pkg_condensier_logisfitR6 <- R6Class("Lrnr_pkg_condensier_logisfitR6",
       assert_that(!is.null(X_mat)); assert_that(!is.null(datsum_obj$subset_idx))
       pAout <- rep.int(NA_real_, datsum_obj$n)
       if (sum(datsum_obj$subset_idx > 0)) {
-        new_task <- sl3_Task$new(X_mat, covariates=colnames(X_mat), outcome=NULL)
+        new_task <- sl3_Task$new(X_mat, covariates = colnames(X_mat),
+                                 outcome = NULL)
         ## Learner hasn't been trained,
         ## means we are making predictionsin for a last degenerate bin.
         ## These predictions play no role and aren't used.
@@ -72,8 +84,9 @@ Lrnr_pkg_condensier_logisfitR6 <- R6Class("Lrnr_pkg_condensier_logisfitR6",
       return(pAout)
     }
   ),
-private = list(
-  fallback_learner = Lrnr_glm_fast,
-  sl3_lrnr = NULL
+  private = list(
+    fallback_learner = Lrnr_glm_fast,
+    sl3_lrnr = NULL
   )
 )
+

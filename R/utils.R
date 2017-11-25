@@ -20,6 +20,7 @@ GetWarningsToSuppress <- function(update.step =FALSE) {
 }
 
 ################################################################################
+
 #' Streamline Function Arguments
 #'
 #' Reduce a list of function argsuments by taking a function body and returning

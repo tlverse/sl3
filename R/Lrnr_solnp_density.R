@@ -3,23 +3,32 @@
 #' This meta-learner provides fitting procedures for density estimation, finding
 #' convex combinations of candidate density estimators by minimizing the
 #' cross-validated negative log-likelihood loss of each candidate density. The
-#' optimization problem is solved by making use of \code{\link[Rsolnp]{solnp}}, using
-#' Lagrange multipliers. For further details, consult the documentation of the
-#' \code{Rsolnp} package.
+#' optimization problem is solved by making use of \code{\link[Rsolnp]{solnp}},
+#' using Lagrange multipliers. For further details, consult the documentation of
+#' the \code{Rsolnp} package.
 #'
 #' @docType class
+#'
 #' @importFrom R6 R6Class
+#'
 #' @export
+#'
 #' @keywords data
-#' @return Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+#'
+#' @return Learner object with methods for training and prediction. See
+#'  \code{\link{Lrnr_base}} for documentation on learners.
+#'
 #' @format \code{\link{R6Class}} object.
+#'
 #' @family Learners
-#' 
+#'
 #' @section Parameters:
 #' \describe{
 #'   \item{\code{...}}{Not currently used.}
 #' }
+#'
 #' @template common_parameters
+#
 Lrnr_solnp_density <- R6Class(classname = "Lrnr_solnp_density",
                               inherit = Lrnr_base, portable = TRUE,
                               class = TRUE,
@@ -29,9 +38,11 @@ Lrnr_solnp_density <- R6Class(classname = "Lrnr_solnp_density",
       super$initialize(params = params)
     }
   ),
+
   private = list(
     .covariates = NULL,
     .properties = "density",
+
     .train = function(task) {
       verbose = getOption("sl3.verbose")
       params <- self$params
@@ -52,6 +63,7 @@ Lrnr_solnp_density <- R6Class(classname = "Lrnr_solnp_density",
       fit_object$name <- "solnp"
       return(fit_object)
     },
+
     .predict = function(task = NULL) {
       verbose <- getOption("sl3.verbose")
       X <- task$X
@@ -64,13 +76,13 @@ Lrnr_solnp_density <- R6Class(classname = "Lrnr_solnp_density",
                                                 drop = FALSE, with = FALSE]) %*%
                                                 coef[!is.na(coef)])
         } else {
-          stop("all SL model coefficients are NA")
+          stop("all SL model coefficients are NA.")
         }
         setnames(predictions, "likelihood")
       }
       return(predictions)
     },
     .required_packages = c("Rsolnp")
-  ),
+  )
 )
 

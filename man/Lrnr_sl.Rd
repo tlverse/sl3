@@ -9,19 +9,24 @@
 Lrnr_sl
 }
 \value{
-Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+Learner object with methods for training and prediction. See
+\code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
-Learner that encapsulates the SuperLearner algorithm. Fits metalearner on cross-validated predictions from learners. Then forms a pipeline with the learners.
+Learner that encapsulates the Super Learner algorithm. Fits metalearner on
+cross-validated predictions from learners. Then forms a pipeline with the
+learners.
 }
 \section{Parameters}{
 
 \describe{
 \item{\code{learners}}{The "library" of learners to include}
-\item{\code{metalearner}}{The metalearner to be fit on predictions from the library}
-\item{\code{folds=NULL}}{An \code{origami} folds object. If \code{NULL}, folds from the task are used}
-\item{\code{keep_extra=TRUE}}{Not used}
-\item{\code{...}}{Not used}
+\item{\code{metalearner}}{The metalearner to be fit on predictions from the
+library.}
+\item{\code{folds=NULL}}{An \code{origami} folds object. If \code{NULL},
+folds from the task are used.}
+\item{\code{keep_extra=TRUE}}{Not used.}
+\item{\code{...}}{Not used.}
 }
 }
 
