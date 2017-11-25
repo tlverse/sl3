@@ -1,17 +1,21 @@
 md:
-	  r -e "rmarkdown::render('README.Rmd')"
+	Rscript -e "rmarkdown::render('README.Rmd', output_file = 'README.md')"
 
 site:
-	  r -e "pkgdown::build_site()"
+	Rscript -e "rmarkdown::render('README-norefs.Rmd', output_file = 'README.md')"
+	Rscript -e "pkgdown::build_site()"
 
 check:
-	  r -e "devtools::check()"
+	Rscript -e "devtools::check()"
 
 test:
-	  r -e "devtools::test()"
+	Rscript -e "devtools::test()"
 
 doc:
-	  r -e "devtools::document()"
+	Rscript -e "devtools::document()"
+
+build:
+	Rscript -e "devtools::build()"
 
 cov:
 	  r -e "covr::codecov()"

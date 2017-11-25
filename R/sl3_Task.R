@@ -281,8 +281,7 @@ sl3_Task <- R6Class(classname = "sl3_Task",
     },
 
     print = function() {
-      cat(sprintf(paste("A sl3 Task with %d observations and the following",
-                        "nodes:\n", self$nrow)))
+      cat(sprintf("A sl3 Task with %d obs and these nodes:\n", self$nrow))
       print(self$nodes)
     }
   ),

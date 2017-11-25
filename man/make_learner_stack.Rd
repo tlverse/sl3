@@ -4,8 +4,25 @@
 \alias{make_learner_stack}
 \title{Make a stack of sl3 learners}
 \usage{
-make_learner_stack(...)
+make_learner_stack(lrnrs_list)
+}
+\arguments{
+\item{lrnrs_list}{A \code{list} containing IDs for each of the learners to be
+built into the \code{Stack} to be produced. The IDs must be the full names
+of the learners. For example, to build a stack from \code{Lrnr_mean} and
+\code{Lrnr_xgboost}, simply input \code{list("Lrnr_mean", "Lrnr_xgboost")}
+for this argument.}
+}
+\value{
+An \code{sl3} \code{Stack} consisting of the learners passed in with
+the \code{list} argument to this function. This \code{Stack} has all of the
+standard methods associated with such objects.
 }
 \description{
-Make a stack of sl3 learners
+Produce a stack of learners by passing in a list with IDs for the learners.
+The resultant stack of learners may then be processed as normal.
+}
+\examples{
+sl_lrnrs_list <- list("Lrnr_mean", "Lrnr_xgboost")
+sl_stack <- make_learner_stack(sl_lrnrs_list)
 }

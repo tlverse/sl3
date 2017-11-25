@@ -1,5 +1,6 @@
 ---
-output: github_document
+output: rmarkdown::github_document
+bibliography: README-refs.bib
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -76,16 +77,6 @@ issue](https://github.com/jeremyrcoyle/sl3/issues).
 
 ---
 
-## Documentation
-
-The best places to start are the vignettes:
-
-* [Modern Machine Learning in R](https://jeremyrcoyle.github.io/sl3/articles/intro_sl3.html) `vignette("intro_sl3")`
-* [Defining New sl3 Learners](https://jeremyrcoyle.github.io/sl3/articles/custom_lrnrs.html) `vignette("custom_lrnrs")`
-* [SuperLearner Benchmarks](https://jeremyrcoyle.github.io/sl3/articles/SuperLearner_benchmarks.html) `vignette("SuperLearner_benchmarks")`
-
----
-
 ## Examples
 
 `sl3` makes the process of applying screening algorithms, learning algorithms,
@@ -95,32 +86,31 @@ understand this is to see the `sl3` package in action:
 
 ```{r sl3-simple-example}
 set.seed(49753)
-
-# packages we'll be using
-library(data.table)
+suppressMessages(library(data.table))
+library(dplyr)
 library(SuperLearner)
 library(origami)
 library(sl3)
 
 # load example data set
-data(cpp_imputed)
+data(cpp)
+cpp <- cpp %>%
+  dplyr::filter(!is.na(haz)) %>%
+  mutate_all(funs(replace(., is.na(.), 0)))
 
-# here are the covariates we are interested in and, of course, the outcome
+# use covariates of intest and the outcome to build a task object
 covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
             "sexn")
-outcome <- "haz"
-
-task <- make_sl3_Task(data = cpp_imputed, covariates = covars,
-                      outcome = outcome, outcome_type="continuous")
+task <- sl3_Task$new(cpp, covariates = covars, outcome = "haz")
 
 # set up screeners and learners via built-in functions and pipelines
-slscreener <- make_learner(Lrnr_pkg_SuperLearner_screener, "screen.glmnet")
-glm_learner <- make_learner(Lrnr_glm)
-screen_and_glm <- make_learner(Pipeline, slscreener, glm_learner)
-lrnr_glmnet <- make_learner(Lrnr_glmnet)
+slscreener <- Lrnr_pkg_SuperLearner_screener$new("screen.glmnet")
+glm_learner <- Lrnr_glm$new()
+screen_and_glm <- Pipeline$new(slscreener, glm_learner)
+SL.glmnet_learner <- Lrnr_pkg_SuperLearner$new(SL_wrapper = "SL.glmnet")
 
 # stack learners into a model (including screeners and pipelines)
-learner_stack <- make_learner(Stack, lrnr_glmnet, glm_learner, screen_and_glm)
+learner_stack <- Stack$new(SL.glmnet_learner, glm_learner, screen_and_glm)
 stack_fit <- learner_stack$train(task)
 preds <- stack_fit$predict()
 head(preds)
