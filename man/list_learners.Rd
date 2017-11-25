@@ -16,5 +16,6 @@ sl3_list_learners(properties = c())
 a vector of learner names that match the property list
 }
 \description{
-Lists learners in \code{sl3} (defined as objects that start with \code{Lrnr_} and inherit from \code{Lrnr_base})
+Lists learners in \code{sl3} (defined as objects that start with \code{Lrnr_}
+and inherit from \code{Lrnr_base})
 }

@@ -8,7 +8,8 @@
 data(density_dat)
 }
 \description{
-Simulated data with continuous exposure, used with examples of conditional density estimation.
+Simulated data with continuous exposure, used with examples of conditional
+density estimation.
 }
 \examples{
 data(density_dat)

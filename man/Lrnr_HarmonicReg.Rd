@@ -9,24 +9,24 @@
 Lrnr_HarmonicReg
 }
 \value{
-Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+Learner object with methods for training and prediction. See
+\code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
 This learner fits first harmonics in a Fourier expansion to one
-or more time series. Fourier decomposition uses \code{\link[forecast]{fourier}}, and the timeseries is fit using \code{\link[forecast]{tslm}}
+or more time series. Fourier decomposition relies on
+\code{\link[forecast]{fourier}}, and the time series is fit using
+\code{\link[forecast]{tslm}}
 }
 \section{Parameters}{
 
 \describe{
-\item{\code{Kparam}}{Maximum order of the fourier terms. Passed to \code{\link[forecast]{fourier}}
-}
-\item{\code{n.ahead=NULL}}{ The forecast horizon. If not specified, returns forecast of
-size \code{task$X}.
-}
-\item{\code{freq}}{The frequency of the time series
-}
-\item{\code{...}}{Not used.
-}
+\item{\code{Kparam}}{Maximum order of the fourier terms. Passed to
+\code{\link[forecast]{fourier}}.}
+\item{\code{n.ahead=NULL}}{ The forecast horizon. If not specified, returns
+forecast of size \code{task$X}.}
+\item{\code{freq}}{The frequency of the time series.}
+\item{\code{...}}{Not used.}
 }
 }
 
@@ -52,4 +52,5 @@ Other Learners: \code{\link{Custom_chain}},
   \code{\link{define_h2o_X}},
   \code{\link{undocumented_learner}}
 }
+\concept{Learners}
 \keyword{data}

@@ -7,15 +7,16 @@
 \source{
 \url{https://catalog.archives.gov/id/606622}
 
-Broman, Sarah. 'The collaborative perinatal project: an overview.' Handbook of longitudinal research 1 (1984): 185-227.
+Broman, Sarah. 'The collaborative perinatal project: an overview.' Handbook
+of longitudinal research 1 (1984): 185-227.
 }
 \usage{
 data(cpp_1yr)
 }
 \description{
-Subset of growth data from the collaborative perinatal project (CPP) at single time-point.
-The rows in original \code{cpp} data were subset for agedays==366.
-See \code{?cpp} for the description of the variables.
+Subset of growth data from the collaborative perinatal project (CPP) at
+single time-point. The rows in original \code{cpp} data were subset for
+agedays==366. See \code{?cpp} for the description of the variables.
 }
 \examples{
 data(cpp_1yr)

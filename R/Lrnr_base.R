@@ -239,7 +239,7 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
 
     .train = function(task) {
       stop(paste("Learner is meant to be abstract, you should instead use",
-                 "specific learners. See listLearners()")
+                 "specific learners. See listLearners()"))
     },
 
     .predict = function(task) {

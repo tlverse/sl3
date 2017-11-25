@@ -5,7 +5,9 @@
 \alias{cpp}
 \alias{cpp_imputed}
 \title{Subset of growth data from the collaborative perinatal project (CPP)}
-\format{A data frame with 1,912 repated-measures observations and 500 unique subjects:
+\format{A data frame with 1,912 repated-measures observations and 500 unique
+subjects:
+
 \describe{
 \item{subjid}{Subject ID}
 \item{agedays}{Age since birth at examination (days)}
@@ -44,15 +46,17 @@
 \source{
 \url{https://catalog.archives.gov/id/606622}
 
-Broman, Sarah. 'The collaborative perinatal project: an overview.' Handbook of longitudinal research 1 (1984): 185-227.
+Broman, Sarah. 'The collaborative perinatal project: an overview.' Handbook
+of longitudinal research 1 (1984): 185-227.
 }
 \usage{
 data(cpp)
 }
 \description{
-Subset of growth data from the collaborative perinatal project (CPP). \code{cpp_imputed}
-drops observations for which the \code{haz} column is \code{NA}, and imputes all other observations as 0.
-This is only for the purposes of simplifying testing and examples.
+Subset of growth data from the collaborative perinatal project (CPP).
+\code{cpp_imputed} drops observations for which the \code{haz} column is
+\code{NA}, and imputes all other observations as 0. This is only for the
+purposes of simplifying testing and examples.
 }
 \examples{
 data(cpp)

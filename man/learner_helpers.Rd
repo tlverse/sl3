@@ -25,15 +25,16 @@ learner_fit_chain(learner_fit, task = NULL)
 delayed_learner_fit_chain(learner_fit, task = NULL)
 }
 \arguments{
-\item{learner_class}{the learner class to instantiate}
+\item{learner_class}{The learner class to instantiate.}
 
-\item{...}{parameters with which to instantiate the learner}
+\item{...}{Parameters with which to instantiate the learner.}
 
-\item{learner}{a learner object to fit to the task}
+\item{learner}{A learner object to fit to the task.}
 
-\item{task}{the task to fit on}
+\item{task}{The task on which to fit.}
 
-\item{trained_sublearners}{any data obtained from a train_sublearners step}
+\item{trained_sublearners}{Any data obtained from a \code{train_sublearners}
+step.}
 
 \item{learner_fit}{a learner object that has already been fit}
 }

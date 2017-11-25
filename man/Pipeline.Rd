@@ -9,19 +9,24 @@
 Pipeline
 }
 \value{
-Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+Learner object with methods for training and prediction. See
+\code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
-A Pipeline of learners is a way to "chain" Learners together, where the output of one learner is used as output for the next learner.
-This can be used for things like screening, two stage machine learning methods, and Super Learning.
-A pipeline is fit by fitting the first \code{Learner}, calling \code{chain()} to create the next task,
-which becomes the training data for the next \code{Learner}.
-Similarly, for prediction, the predictions from the first \code{Learner} become the data to predict on for the next \code{Learner}.
+A Pipeline of learners is a way to "chain" Learners together, where the
+output of one learner is used as output for the next learner. This can be
+used for things like screening, two stage machine learning methods, and Super
+Learning. A pipeline is fit by fitting the first \code{Learner}, calling
+\code{chain()} to create the next task, which becomes the training data for
+the next \code{Learner}. Similarly, for prediction, the predictions from the
+first \code{Learner} become the data to predict on for the next
+\code{Learner}.
 }
 \section{Parameters}{
 
 \describe{
-\item{\code{...}}{Parameters should be individual \code{Learner}s, in the order they should be applied.}
+\item{\code{...}}{Parameters should be individual \code{Learner}s, in the
+order they should be applied.}
 }
 }
 
@@ -32,9 +37,9 @@ Individual learners have their own sets of parameters. Below is a list of shared
 by all learners.
 
 \describe{
-  \item{\code{covariates}}{A character vector of covariates. The learner will use this to subset the covariates for any specified task}
-  \item{\code{outcome_type}}{A \code{\link{variable_type}} object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified}
-  \item{\code{...}}{All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating}
+\item{\code{covariates}}{A character vector of covariates. The learner will use this to subset the covariates for any specified task}
+\item{\code{outcome_type}}{A \code{\link{variable_type}} object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified}
+\item{\code{...}}{All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating}
 }
 }
 
@@ -60,4 +65,5 @@ Other Learners: \code{\link{Custom_chain}},
   \code{\link{Stack}}, \code{\link{define_h2o_X}},
   \code{\link{undocumented_learner}}
 }
+\concept{Learners}
 \keyword{data}

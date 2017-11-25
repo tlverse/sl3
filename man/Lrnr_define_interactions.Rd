@@ -3,13 +3,14 @@
 \docType{class}
 \name{Lrnr_define_interactions}
 \alias{Lrnr_define_interactions}
-\title{Define interactions}
+\title{Define interactions terms}
 \format{\code{\link{R6Class}} object.}
 \usage{
 Lrnr_define_interactions
 }
 \value{
-Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+Learner object with methods for training and prediction. See
+\code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
 This learner adds interactions to its chained task
@@ -17,7 +18,8 @@ This learner adds interactions to its chained task
 \section{Parameters}{
 
 \describe{
-\item{\code{interactions}}{A list of lists, with each inner list containing the covariates to create an interaction for.}
+\item{\code{interactions}}{A list of lists, with each inner list containing
+the covariates to create an interaction for.}
 }
 }
 
@@ -42,4 +44,5 @@ Other Learners: \code{\link{Custom_chain}},
   \code{\link{define_h2o_X}},
   \code{\link{undocumented_learner}}
 }
+\concept{Learners}
 \keyword{data}

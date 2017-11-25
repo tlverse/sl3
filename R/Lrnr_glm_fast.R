@@ -98,8 +98,8 @@ Lrnr_glm_fast <- R6Class(classname = "Lrnr_glm_fast", inherit = Lrnr_base,
       if (inherits(fit_object, "try-error")) {
         # if failed, fall back on stats::glm
         if (verbose) {
-          message(paste("speedglm::speedglm.wfit failed, falling back on,"
-                        "stats:glm.fit; ", fit_object))
+          message(paste("speedglm::speedglm.wfit failed, falling back on",
+                        "stats:glm.fit;", fit_object))
         }
         args$ctrl <- glm.control(trace = FALSE)
         args$x <- args$X

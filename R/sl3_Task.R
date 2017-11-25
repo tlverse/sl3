@@ -26,7 +26,6 @@ sl3_Task <- R6Class(classname = "sl3_Task",
                     portable = TRUE,
                     class = TRUE,
   public = list(
-
     initialize = function(data, covariates, outcome = NULL, outcome_type = NULL,
                           outcome_levels = NULL, id = NULL, weights = NULL,
                           offset = NULL, nodes = NULL, column_names = NULL,
@@ -282,10 +281,12 @@ sl3_Task <- R6Class(classname = "sl3_Task",
     },
 
     print = function() {
-      cat(sprintf("A sl3 Task with %d observations and the following nodes:\n", self$nrow))
+      cat(sprintf(paste("A sl3 Task with %d observations and the following",
+                        "nodes:\n", self$nrow)))
       print(self$nodes)
     }
   ),
+
   active = list(
     raw_data = function() {
       return(private$.data)
@@ -314,7 +315,7 @@ sl3_Task <- R6Class(classname = "sl3_Task",
       return(X_dt)
     },
 
-    X_intercept = function()n{
+    X_intercept = function() {
       # returns X matrix with manually generated intercept column
       X_dt = self$X
 

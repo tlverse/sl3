@@ -73,7 +73,7 @@ Lrnr_h2o_grid <- R6Class(classname = "Lrnr_h2o_grid", inherit = Lrnr_base,
 
       connectH2O <- try(h2o::h2o.getConnection(), silent = TRUE)
       if (inherits(connectH2O, "try-error")) {
-        stop(paste("No active H2O cluster found, please initiate h2o cluster".
+        stop(paste("No active H2O cluster found, please initiate h2o cluster",
                    "first by running 'h2o::h2o.init()'"))
       }
 

@@ -10,5 +10,6 @@ safe_dim(x)
 \item{x}{the object to get dimensions from}
 }
 \description{
-\code{safe_dim} tries to get dimensions from \code{dim} and falls back on \code{length} if \code{dim} returns \code{NULL}
+\code{safe_dim} tries to get dimensions from \code{dim} and falls back on
+\code{length} if \code{dim} returns \code{NULL}
 }

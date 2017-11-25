@@ -14,10 +14,12 @@ Lrnr_h2o_glm
 \arguments{
 \item{task}{An object of type \code{Lrnr_base} as defined in this package.}
 
-\item{outcome_type}{An object of type \code{Variable_Tyoe} for use in formatting the outcome}
+\item{outcome_type}{An object of type \code{Variable_Tyoe} for use in
+formatting the outcome}
 }
 \value{
-Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+Learner object with methods for training and prediction. See
+\code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
 Definition of \code{h2o} type models. This function is for internal use only.
@@ -27,19 +29,22 @@ covariates if spec'ed in params.
 
 This learner provides faster fitting procedures for generalized linear models
 by using the \code{h2o} package and the \code{\link[h2o]{h2o.glm}} method.
-The h2o Platform fits GLMs in a computationally efficient manner. For details on the procedure,
-consult the documentation of the \code{h2o} package.
+The h2o Platform fits GLMs in a computationally efficient manner. For details
+on the procedure, consult the documentation of the \code{h2o} package.
 }
 \section{Parameters}{
 
 \describe{
-\item{\code{intercept=TRUE}}{If TRUE, and intercept term is included}
-\item{\code{standardize=TRUE}}{Standardize covariates to have mean=0 and SD=1}
-\item{\code{lambda=0}}{Lasso Parameter}
-\item{\code{max_iterations=100}}{Maximum number of iterations}
-\item{\code{ignore_const_columns=FALSE}}{If TRUE, drop constant covariate columns}
-\item{\code{missing_values_handling="Skip"}}{How to handle missing values}
-\item{\code{...}}{Other arguments passed to \code{\link[h2o]{h2o.glm}}}
+\item{\code{intercept=TRUE}}{If \code{TRUE}, and intercept term is
+included.}
+\item{\code{standardize=TRUE}}{Standardize covariates to have mean = 0 and
+SD = 1.}
+\item{\code{lambda=0}}{Lasso Parameter.}
+\item{\code{max_iterations=100}}{Maximum number of iterations.}
+\item{\code{ignore_const_columns=FALSE}}{If \code{TRUE}, drop constant
+covariate columns}
+\item{\code{missing_values_handling="Skip"}}{How to handle missing values.}
+\item{\code{...}}{Other arguments passed to \code{\link[h2o]{h2o.glm}}.}
 }
 }
 
@@ -50,9 +55,9 @@ Individual learners have their own sets of parameters. Below is a list of shared
 by all learners.
 
 \describe{
-  \item{\code{covariates}}{A character vector of covariates. The learner will use this to subset the covariates for any specified task}
-  \item{\code{outcome_type}}{A \code{\link{variable_type}} object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified}
-  \item{\code{...}}{All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating}
+\item{\code{covariates}}{A character vector of covariates. The learner will use this to subset the covariates for any specified task}
+\item{\code{outcome_type}}{A \code{\link{variable_type}} object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified}
+\item{\code{...}}{All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating}
 }
 }
 
@@ -78,4 +83,5 @@ Other Learners: \code{\link{Custom_chain}},
   \code{\link{Pipeline}}, \code{\link{Stack}},
   \code{\link{undocumented_learner}}
 }
+\concept{Learners}
 \keyword{data}
