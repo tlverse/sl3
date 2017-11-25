@@ -4,7 +4,7 @@
 \alias{make_learner_stack}
 \title{Make a stack of sl3 learners}
 \usage{
-make_learner_stack(lrnrs_list)
+make_learner_stack(lrnrs_list, lrnrs_args = list(list(NA)))
 }
 \arguments{
 \item{lrnrs_list}{A \code{list} containing IDs for each of the learners to be
@@ -12,6 +12,14 @@ built into the \code{Stack} to be produced. The IDs must be the full names
 of the learners. For example, to build a stack from \code{Lrnr_mean} and
 \code{Lrnr_xgboost}, simply input \code{list("Lrnr_mean", "Lrnr_xgboost")}
 for this argument.}
+
+\item{lrnrs_args}{A \code{list} of \code{list}s containing extra parameters
+to be used in constructing learners that end up in the \code{Stack}. If the
+default is not used, then the number of \code{list}s must be equivalent to
+the number of learners in the argument \code{lrnrs_list} above. In order to
+pass in no extra arguments for a learner yet provide extra arguments for
+other learners, construct a list containing \code{NA} for the former. See
+the examples below for details.}
 }
 \value{
 An \code{sl3} \code{Stack} consisting of the learners passed in with
@@ -23,6 +31,13 @@ Produce a stack of learners by passing in a list with IDs for the learners.
 The resultant stack of learners may then be processed as normal.
 }
 \examples{
+# constructing learners with default settings
 sl_lrnrs_list <- list("Lrnr_mean", "Lrnr_xgboost")
 sl_stack <- make_learner_stack(sl_lrnrs_list)
+
+# constructing learners with arguments passed in
+sl_lrnrs_list <- list("Lrnr_mean", "Lrnr_condensier")
+lrnrs_args_list <- list(list(NA), list(nbins = 5, bin_method = "equal.len",
+                                       pool = FALSE))
+sl_stack <- make_learner_stack(sl_lrnrs_list, lrnrs_args_list)
 }
