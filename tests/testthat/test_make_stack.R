@@ -50,8 +50,7 @@ sl_stack_condensier <- sl_stack$params$learners[[2]]
 sl_stack_condensier_fit <- sl_stack_condensier$train(task)
 sl_stack_condensier_fit_pred <- sl_stack_condensier_fit$predict()
 
-test_that(paste("Learner from automatic stack performs exactly the same as a",
-                "normally instantiated learner")), {
+test_that("Learner from automatic stack behaves same as a standard learner", {
   expect_equal(sl_stack_condensier_fit_pred, sl_condensier_fit_pred)
 })
 
