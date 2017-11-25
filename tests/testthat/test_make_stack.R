@@ -33,3 +33,25 @@ test_that("Automatic and manually made learner stacks produce same preds", {
   expect_equal(sl_stack_easy_fit_pred, sl_stack_manual_fit_pred)
 })
 
+
+# easily construct a Stack while passing in extra arguments to some learners
+sl_lrnrs_list <- list("Lrnr_mean", "Lrnr_condensier")
+lrnrs_args_list <- list(list(NA), list(nbins = 5, bin_method = "equal.len",
+                                       pool = FALSE))
+sl_stack <- make_learner_stack(sl_lrnrs_list, lrnrs_args_list)
+
+# create condensier manually, train, and compare predictions
+sl_condensier <- Lrnr_condensier$new(nbins = 5, bin_method = "equal.len",
+                                     pool = FALSE)
+sl_condensier_fit <- sl_condensier$train(task)
+sl_condensier_fit_pred <- sl_condensier_fit$predict()
+
+sl_stack_condensier <- sl_stack$params$learners[[2]]
+sl_stack_condensier_fit <- sl_stack_condensier$train(task)
+sl_stack_condensier_fit_pred <- sl_stack_condensier_fit$predict()
+
+test_that(paste("Learner from automatic stack performs exactly the same as a",
+                "normally instantiated learner")), {
+  expect_equal(sl_stack_condensier_fit_pred, sl_condensier_fit_pred)
+})
+
