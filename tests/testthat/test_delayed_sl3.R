@@ -23,7 +23,7 @@ nnls_metalearner <- make_learner(Lrnr_nnls)
 
 sl <- make_learner(Lrnr_sl, learners, nnls_metalearner)
 
-#sl3 sequential
+# sl3 sequential
 test <- delayed_learner_train(sl, task)
 system.time({
   sched <- Scheduler$new(test, SequentialJob)

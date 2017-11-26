@@ -40,7 +40,7 @@ make_learner_stack <- function(lrnrs_list,
 
   # pad lrnrs_args arguments with NULL if left as default
   if ((length(lrnrs_args) < length(lrnrs_list)) &
-      is.na(unlist(lrnrs_args[[1]]))) {
+    is.na(unlist(lrnrs_args[[1]]))) {
     lrnrs_args <- as.list(rep(NA, length(lrnrs_list)))
   }
 
@@ -51,8 +51,10 @@ make_learner_stack <- function(lrnrs_list,
     names(lrnr_eval) <- "learner_class"
     # pass in learner arguments if provided
     if (any(!is.na(unlist(lrnrs_args[[i]])))) {
-      make_lrnr_args <- unlist(list(lrnr_eval, lrnrs_args[[i]],
-                                    recursive = FALSE))
+      make_lrnr_args <- unlist(list(
+        lrnr_eval, lrnrs_args[[i]],
+        recursive = FALSE
+      ))
       lrnrs_list_in[[i]] <- do.call(make_learner, make_lrnr_args)
     } else {
       lrnrs_list_in[[i]] <- make_learner(lrnrs_list[[i]])
@@ -62,4 +64,3 @@ make_learner_stack <- function(lrnrs_list,
   out <- make_learner(Stack, lrnrs_list_in)
   return(out)
 }
-

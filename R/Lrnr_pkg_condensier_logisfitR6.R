@@ -16,14 +16,15 @@
 #'
 #' @export
 #
-Lrnr_pkg_condensier_logisfitR6 <- R6Class("Lrnr_pkg_condensier_logisfitR6",
-                                          inherit = condensier::logisfitR6,
+Lrnr_pkg_condensier_logisfitR6 <- R6Class(
+  "Lrnr_pkg_condensier_logisfitR6",
+  inherit = condensier::logisfitR6,
   public = list(
     lmclass = NULL,
     fitfunname = NULL,
 
     initialize = function(sl3_lrnr, ...) {
-      assert_that(is(sl3_lrnr,"Lrnr_base"))
+      assert_that(is(sl3_lrnr, "Lrnr_base"))
       self$lmclass <- paste0("sl3::", class(sl3_lrnr)[1L])
       self$fitfunname <- paste0("sl3::", class(sl3_lrnr)[1L], "$train")
       private$sl3_lrnr <- sl3_lrnr
@@ -39,25 +40,31 @@ Lrnr_pkg_condensier_logisfitR6 <- R6Class("Lrnr_pkg_condensier_logisfitR6",
       dataDT <- cbind(X_mat, Y = Y_vals)
       sl3_lrnr <- private$sl3_lrnr
       if (nrow(dataDT) > 0) {
-        task <- sl3_Task$new(dataDT, covariates = colnames(X_mat),
-                             outcome = colnames(dataDT)[ncol(dataDT)])
+        task <- sl3_Task$new(
+          dataDT, covariates = colnames(X_mat),
+          outcome = colnames(dataDT)[ncol(dataDT)]
+        )
         out <- capture.output(
           sl3_lrnr <- try(suppressWarnings(sl3_lrnr$train(task)))
         )
         if (inherits(sl3_lrnr, "try-error") ||
-            inherits(sl3_lrnr$fit_object, "try-error")) {
+          inherits(sl3_lrnr$fit_object, "try-error")) {
           # if failed, use fall back learner
           if (verbose) {
-            message(paste0("learner ", self$fitfunname,
-                           " failed, trying private$fallback_learner; "))
+            message(paste0(
+              "learner ", self$fitfunname,
+              " failed, trying private$fallback_learner; "
+            ))
             if (inherits(sl3_lrnr, "Lrnr_base")) {
               print(sl3_lrnr$name)
             } else {
               print(sl3_lrnr)
             }
           }
-          sl3_lrnr <- private$fallback_learner$new(family =
-                                                   "binomial")$train(task)
+          sl3_lrnr <- private$fallback_learner$new(
+            family =
+              "binomial"
+          )$train(task)
         }
       }
       if (verbose) print(sl3_lrnr)
@@ -67,11 +74,14 @@ Lrnr_pkg_condensier_logisfitR6 <- R6Class("Lrnr_pkg_condensier_logisfitR6",
     predict = function(datsum_obj, m.fit) {
       verbose <- getOption("sl3.verbose")
       X_mat <- datsum_obj$getXDT
-      assert_that(!is.null(X_mat)); assert_that(!is.null(datsum_obj$subset_idx))
+      assert_that(!is.null(X_mat))
+      assert_that(!is.null(datsum_obj$subset_idx))
       pAout <- rep.int(NA_real_, datsum_obj$n)
       if (sum(datsum_obj$subset_idx > 0)) {
-        new_task <- sl3_Task$new(X_mat, covariates = colnames(X_mat),
-                                 outcome = NULL)
+        new_task <- sl3_Task$new(
+          X_mat, covariates = colnames(X_mat),
+          outcome = NULL
+        )
         ## Learner hasn't been trained,
         ## means we are making predictionsin for a last degenerate bin.
         ## These predictions play no role and aren't used.
@@ -89,4 +99,3 @@ Lrnr_pkg_condensier_logisfitR6 <- R6Class("Lrnr_pkg_condensier_logisfitR6",
     sl3_lrnr = NULL
   )
 )
-

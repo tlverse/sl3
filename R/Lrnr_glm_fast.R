@@ -43,8 +43,9 @@
 #'
 #' @template common_parameters
 #
-Lrnr_glm_fast <- R6Class(classname = "Lrnr_glm_fast", inherit = Lrnr_base,
-                         portable = TRUE, class = TRUE,
+Lrnr_glm_fast <- R6Class(
+  classname = "Lrnr_glm_fast", inherit = Lrnr_base,
+  portable = TRUE, class = TRUE,
   public = list(
     initialize = function(intercept = TRUE, method = "Cholesky", ...) {
       super$initialize(params = args_to_list(), ...)
@@ -91,15 +92,19 @@ Lrnr_glm_fast <- R6Class(classname = "Lrnr_glm_fast", inherit = Lrnr_base,
       }
 
       SuppressGivenWarnings({
-        fit_object <- try(call_with_args(speedglm::speedglm.wfit, args),
-                          silent = TRUE)
+        fit_object <- try(
+          call_with_args(speedglm::speedglm.wfit, args),
+          silent = TRUE
+        )
       }, GetWarningsToSuppress())
 
       if (inherits(fit_object, "try-error")) {
         # if failed, fall back on stats::glm
         if (verbose) {
-          message(paste("speedglm::speedglm.wfit failed, falling back on",
-                        "stats:glm.fit;", fit_object))
+          message(paste(
+            "speedglm::speedglm.wfit failed, falling back on",
+            "stats:glm.fit;", fit_object
+          ))
         }
         args$ctrl <- glm.control(trace = FALSE)
         args$x <- args$X
@@ -134,7 +139,7 @@ Lrnr_glm_fast <- R6Class(classname = "Lrnr_glm_fast", inherit = Lrnr_base,
 
       if (self$fit_object$training_offset) {
         if (!is.null(self$params$transform_offset) &&
-            self$params$transform_offset) {
+          self$params$transform_offset) {
           offset <- self$fit_object$link_fun(task$offset)
         } else {
           offset <- task$offset
@@ -147,8 +152,10 @@ Lrnr_glm_fast <- R6Class(classname = "Lrnr_glm_fast", inherit = Lrnr_base,
       if (nrow(X) > 0) {
         coef <- private$.fit_object$coef
         if (!all(is.na(coef))) {
-          eta <- as.matrix(X[, which(!is.na(coef)), drop = FALSE,
-                           with = FALSE]) %*% coef[!is.na(coef)] + offset
+          eta <- as.matrix(X[
+            , which(!is.na(coef)), drop = FALSE,
+            with = FALSE
+          ]) %*% coef[!is.na(coef)] + offset
           predictions <- as.vector(private$.fit_object$linkinv_fun(eta))
         }
       }
@@ -157,4 +164,3 @@ Lrnr_glm_fast <- R6Class(classname = "Lrnr_glm_fast", inherit = Lrnr_base,
     .required_packages = c("speedglm")
   )
 )
-

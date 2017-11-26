@@ -33,13 +33,14 @@
 #'
 #' @template common_parameters
 #
-Lrnr_pkg_SuperLearner <- R6Class(classname = "Lrnr_pkg_SuperLearner",
-                                 inherit = Lrnr_base, portable = TRUE,
-                                 class = TRUE,
+Lrnr_pkg_SuperLearner <- R6Class(
+  classname = "Lrnr_pkg_SuperLearner",
+  inherit = Lrnr_base, portable = TRUE,
+  class = TRUE,
   public = list(
     initialize = function(SL_wrapper, ...) {
-      wrapper_fun = get(SL_wrapper)
-      params = list(wrapper_name = SL_wrapper, wrapper_fun = wrapper_fun, ...)
+      wrapper_fun <- get(SL_wrapper)
+      params <- list(wrapper_name = SL_wrapper, wrapper_fun = wrapper_fun, ...)
       super$initialize(params = params, ...)
     }
   ),
@@ -48,17 +49,19 @@ Lrnr_pkg_SuperLearner <- R6Class(classname = "Lrnr_pkg_SuperLearner",
     .properties = c("binomial", "continuous", "weights", "ids"),
     .train = function(task) {
       args <- self$params
-      wrapper = args$wrapper_fun
+      wrapper <- args$wrapper_fun
       # to minimize prediction costs (since we throw out predictions from here
       # anyways), newX is just a single row
-      newX = task$X[1, ]
+      newX <- task$X[1, ]
       outcome_type <- self$get_outcome_type(task)
 
       if (is.null(args$family)) {
         args$family <- outcome_type$glm_family(return_object = TRUE)
       }
-      fit_object <- wrapper(task$Y, task$X, newX, family = args$family,
-                            obsWeights = task$weights, id = task$id)$fit
+      fit_object <- wrapper(
+        task$Y, task$X, newX, family = args$family,
+        obsWeights = task$weights, id = task$id
+      )$fit
       return(fit_object)
     },
 
@@ -69,11 +72,12 @@ Lrnr_pkg_SuperLearner <- R6Class(classname = "Lrnr_pkg_SuperLearner",
       if (is.null(args$family)) {
         args$family <- outcome_type$glm_family(return_object = TRUE)
       }
-      predictions = stats::predict(private$.fit_object, newdata = task$X,
-                                   family = args$family)
+      predictions <- stats::predict(
+        private$.fit_object, newdata = task$X,
+        family = args$family
+      )
       return(predictions)
     },
     .required_packages = c("SuperLearner")
   )
 )
-

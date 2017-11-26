@@ -40,8 +40,9 @@
 #'
 #' @template common_parameters
 #
-Lrnr_glmnet <- R6Class(classname = "Lrnr_glmnet",
-                       inherit = Lrnr_base, portable = TRUE, class = TRUE,
+Lrnr_glmnet <- R6Class(
+  classname = "Lrnr_glmnet",
+  inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
     initialize = function(lambda = NULL, type.measure = "deviance", nfolds = 10,
                           alpha = 1, nlambda = 100, ...) {
@@ -62,9 +63,11 @@ Lrnr_glmnet <- R6Class(classname = "Lrnr_glmnet",
 
       if (args$family %in% "quasibinomial") {
         args$family <- "gaussian"
-        warning(paste("Lrnr_glmnet doesn't understand outcome_type =",
-                      "'quasibinomial'; fitting glmnet with family='gaussian'",
-                      "instead."))
+        warning(paste(
+          "Lrnr_glmnet doesn't understand outcome_type =",
+          "'quasibinomial'; fitting glmnet with family='gaussian'",
+          "instead."
+        ))
       }
 
       # specify data
@@ -79,17 +82,21 @@ Lrnr_glmnet <- R6Class(classname = "Lrnr_glmnet",
         args$offset <- task$offset
       }
 
-      fit_object <- call_with_args(glmnet::cv.glmnet, args,
-                                   names(formals(glmnet::glmnet)))
+      fit_object <- call_with_args(
+        glmnet::cv.glmnet, args,
+        names(formals(glmnet::glmnet))
+      )
       fit_object$glmnet.fit$call <- NULL
       return(fit_object)
     },
 
     .predict = function(task) {
       outcome_type <- private$.training_outcome_type
-      predictions <- stats::predict(private$.fit_object,
-                                    newx = as.matrix(task$X), type = "response",
-                                    s = "lambda.min")
+      predictions <- stats::predict(
+        private$.fit_object,
+        newx = as.matrix(task$X), type = "response",
+        s = "lambda.min"
+      )
 
       if (outcome_type$type == "categorical") {
         # predictions is a 3-dim matrix, convert to 2-dim matrix
@@ -103,4 +110,3 @@ Lrnr_glmnet <- R6Class(classname = "Lrnr_glmnet",
     .required_packages = c("glmnet")
   )
 )
-

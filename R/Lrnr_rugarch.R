@@ -37,17 +37,22 @@
 #'   \item{\code{n.ahead=NULL}}{The forecast horizon.}
 #' }
 #
-Lrnr_rugarch <- R6Class(classname = "Lrnr_rugarch", inherit = Lrnr_base,
-                        portable = TRUE, class = TRUE,
+Lrnr_rugarch <- R6Class(
+  classname = "Lrnr_rugarch", inherit = Lrnr_base,
+  portable = TRUE, class = TRUE,
   public = list(
     initialize = function(variance.model =
-                            list(model = "sGARCH", garchOrder = c(1, 1),
-                                 submodel = NULL, external.regressors = NULL,
-                                 variance.targeting = FALSE),
+                          list(
+                            model = "sGARCH", garchOrder = c(1, 1),
+                            submodel = NULL, external.regressors = NULL,
+                            variance.targeting = FALSE
+                          ),
                           mean.model =
-                            list(armaOrder = c(1, 1), include.mean = TRUE,
-                                 archm = FALSE, archpow = 1, arfima = FALSE,
-                                 external.regressors = NULL, archex = FALSE),
+                          list(
+                            armaOrder = c(1, 1), include.mean = TRUE,
+                            archm = FALSE, archpow = 1, arfima = FALSE,
+                            external.regressors = NULL, archex = FALSE
+                          ),
                           distribution.model = "norm", start.pars = list(),
                           fixed.pars = list(), n.ahead = NULL, ...) {
       params <- args_to_list()
@@ -72,11 +77,13 @@ Lrnr_rugarch <- R6Class(classname = "Lrnr_rugarch", inherit = Lrnr_base,
       params <- self$params
       n.ahead <- params[["n.ahead"]]
       if (is.null(n.ahead)) {
-        n.ahead = nrow(task$X)
+        n.ahead <- nrow(task$X)
       }
       # Give the same output as GLM
-      predictions <- rugarch::ugarchforecast(private$.fit_object, data = task$X,
-                                             n.ahead = n.ahead)
+      predictions <- rugarch::ugarchforecast(
+        private$.fit_object, data = task$X,
+        n.ahead = n.ahead
+      )
       predictions <- as.numeric(predictions@forecast$seriesFor)
       predictions <- structure(predictions, names = seq_len(n.ahead))
       return(predictions)
@@ -84,4 +91,3 @@ Lrnr_rugarch <- R6Class(classname = "Lrnr_rugarch", inherit = Lrnr_base,
     .required_packages = c("rugarch")
   )
 )
-

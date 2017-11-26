@@ -175,4 +175,3 @@ NULL
 #' head(density_dat)
 #
 NULL
-

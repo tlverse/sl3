@@ -26,8 +26,9 @@
 #'
 #' @template common_parameters
 #
-Lrnr_mean <- R6Class(classname = "Lrnr_mean", inherit = Lrnr_base,
-                     portable = TRUE, class = TRUE,
+Lrnr_mean <- R6Class(
+  classname = "Lrnr_mean", inherit = Lrnr_base,
+  portable = TRUE, class = TRUE,
   public = list(
     initialize = function(...) {
       params <- list(...)
@@ -49,8 +50,10 @@ Lrnr_mean <- R6Class(classname = "Lrnr_mean", inherit = Lrnr_base,
 
       if (outcome_type$type == "categorical") {
         y_levels <- outcome_type$levels
-        means <- sapply(y_levels,
-                        function(level) weighted.mean(y == level, weights))
+        means <- sapply(
+          y_levels,
+          function(level) weighted.mean(y == level, weights)
+        )
         fit_object <- list(mean = pack_predictions(matrix(means, nrow = 1)))
       } else {
         fit_object <- list(mean = weighted.mean(y, weights))
@@ -64,4 +67,3 @@ Lrnr_mean <- R6Class(classname = "Lrnr_mean", inherit = Lrnr_base,
     }
   )
 )
-

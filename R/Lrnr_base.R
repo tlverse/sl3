@@ -26,9 +26,10 @@
 #'
 #' @family Learners
 #
-Lrnr_base <- R6Class(classname = "Lrnr_base",
-                     portable = TRUE,
-                     class = TRUE,
+Lrnr_base <- R6Class(
+  classname = "Lrnr_base",
+  portable = TRUE,
+  class = TRUE,
   public = list(
     initialize = function(params = NULL, ...) {
       private$.load_packages()
@@ -45,7 +46,7 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
     subset_covariates = function(task) {
       # allows learners to use only a subset of covariates
       if ("covariates" %in% names(self$params) &&
-          !is.null(self$params[["covariates"]])) {
+        !is.null(self$params[["covariates"]])) {
         task_covariates <- task$nodes$covariates
         subset_covariates <- intersect(task_covariates, self$params$covariates)
         return(task$next_in_chain(covariates = subset_covariates))
@@ -72,32 +73,34 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
       assert_that(is(task, "sl3_Task"))
 
       # TODO: add error handling
-      subsetted_task = self$subset_covariates(task)
+      subsetted_task <- self$subset_covariates(task)
 
       if (!is.null(trained_sublearners)) {
-        fit_object = private$.train(subsetted_task, trained_sublearners)
+        fit_object <- private$.train(subsetted_task, trained_sublearners)
       } else {
-        fit_object = private$.train(subsetted_task)
+        fit_object <- private$.train(subsetted_task)
       }
-      new_object = self$clone() # copy parameters, and whatever else
+      new_object <- self$clone() # copy parameters, and whatever else
       new_object$set_train(fit_object, task)
       return(new_object)
     },
 
     set_train = function(fit_object, training_task) {
-      private$.fit_object = fit_object
+      private$.fit_object <- fit_object
       save_training <- getOption("sl3.save.training")
       if (is.null(save_training) || save_training) {
-        private$.training_task = training_task
+        private$.training_task <- training_task
       }
       private$.training_outcome_type <- self$get_outcome_type(training_task)
-      private$.fit_uuid = UUIDgenerate(use.time = TRUE)
+      private$.fit_uuid <- UUIDgenerate(use.time = TRUE)
     },
 
     assert_trained = function() {
       if (!self$is_trained) {
-        stop(paste("Learner has not yet been train to data.",
-                   "Call learner$train(task) first."))
+        stop(paste(
+          "Learner has not yet been train to data.",
+          "Call learner$train(task) first."
+        ))
       }
     },
 
@@ -105,13 +108,13 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
       self$assert_trained()
       if (is.null(task)) {
         task <- private$.training_task
-      } else{
+      } else {
         task <- task$next_in_chain(covariates <-
           private$.training_task$nodes$covariates)
       }
-      assert_that(is(task,"sl3_Task"))
-      subsetted_task = self$subset_covariates(task)
-      predictions = private$.predict(subsetted_task)
+      assert_that(is(task, "sl3_Task"))
+      subsetted_task <- self$subset_covariates(task)
+      predictions <- private$.predict(subsetted_task)
 
       ncols <- ncol(predictions)
       if (!is.null(ncols) && (ncols == 1)) {
@@ -128,9 +131,9 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
         task <- task$next_in_chain(covariates <-
           private$.training_task$nodes$covariates)
       }
-      assert_that(is(task,"sl3_Task"))
-      subsetted_task = self$subset_covariates(task)
-      next_task = private$.chain(subsetted_task)
+      assert_that(is(task, "sl3_Task"))
+      subsetted_task <- self$subset_covariates(task)
+      next_task <- private$.chain(subsetted_task)
       return(next_task)
     },
 
@@ -155,9 +158,9 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
 
     print = function() {
       print(self$name)
-      #print(self$params)
-      fit_object = private$.fit_object
-      if(!is.null(fit_object)) print(fit_object)
+      # print(self$params)
+      fit_object <- private$.fit_object
+      if (!is.null(fit_object)) print(fit_object)
     }
   ),
 
@@ -166,22 +169,22 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
       return(!is.null(private$.fit_object))
     },
     fit_object = function() {
-      fit_object = private$.fit_object
+      fit_object <- private$.fit_object
       return(fit_object)
     },
 
     name = function() {
       # TODO: allow custom names
-      if(is.null(private$.name)) {
-        params = self$params
+      if (is.null(private$.name)) {
+        params <- self$params
         if (length(params) > 0) {
           # TODO: sanitize further
-          atom_params = sapply(params, is.atomic)
-          params = params[atom_params]
+          atom_params <- sapply(params, is.atomic)
+          params <- params[atom_params]
         }
-        props = c(list(class(self)[1]), params)
-        name = paste(props, collapse = "_")
-        private$.name = name
+        props <- c(list(class(self)[1]), params)
+        name <- paste(props, collapse = "_")
+        private$.name <- name
       }
       return(private$.name)
     },
@@ -198,7 +201,7 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
       return(private$.params)
     },
 
-    training_task=function() {
+    training_task = function() {
       return(private$.training_task)
     },
 
@@ -233,34 +236,40 @@ Lrnr_base <- R6Class(classname = "Lrnr_base",
     .properties = list(),
 
     .train_sublearners = function(task) {
-      #train sublearners here
+      # train sublearners here
       return(NULL)
     },
 
     .train = function(task) {
-      stop(paste("Learner is meant to be abstract, you should instead use",
-                 "specific learners. See listLearners()"))
+      stop(paste(
+        "Learner is meant to be abstract, you should instead use",
+        "specific learners. See listLearners()"
+      ))
     },
 
     .predict = function(task) {
-      predictions = predict(private$.fit_object, newdata = task$X)
+      predictions <- predict(private$.fit_object, newdata = task$X)
       return(predictions)
     },
 
     .chain = function(task) {
-      predictions = self$predict(task)
-      predictions = as.data.table(predictions)
+      predictions <- self$predict(task)
+      predictions <- as.data.table(predictions)
       # Add predictions as new columns
-      new_col_names = task$add_columns(self$fit_uuid, predictions)
+      new_col_names <- task$add_columns(self$fit_uuid, predictions)
       # new_covariates = union(names(predictions),task$nodes$covariates)
-      return(task$next_in_chain(covariates = names(predictions),
-                                column_names = new_col_names))
+      return(task$next_in_chain(
+        covariates = names(predictions),
+        column_names = new_col_names
+      ))
     },
 
     .load_packages = function() {
       if (!is.null(private$.required_packages)) {
-        requirePackages(private$.required_packages, why = class(self)[1],
-                        default.method = "load")
+        requirePackages(
+          private$.required_packages, why = class(self)[1],
+          default.method = "load"
+        )
       }
     }
   )
@@ -280,4 +289,3 @@ make_learner <- function(learner_class, ...) {
   }
   learner_class$new(...)
 }
-

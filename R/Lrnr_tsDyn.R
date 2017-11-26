@@ -77,8 +77,9 @@
 #'   \item{\code{...}}{Not currently used.}
 #' }
 #
-Lrnr_tsDyn <- R6Class(classname = "Lrnr_tsDyn", inherit = Lrnr_base,
-                      portable = TRUE, class = TRUE,
+Lrnr_tsDyn <- R6Class(
+  classname = "Lrnr_tsDyn", inherit = Lrnr_base,
+  portable = TRUE, class = TRUE,
   public = list(
     initialize = function(learner, m = 1, size = 1, lag = 1, d = 1,
                           include = "const", type= "level", n.ahead = NULL,
@@ -91,10 +92,14 @@ Lrnr_tsDyn <- R6Class(classname = "Lrnr_tsDyn", inherit = Lrnr_base,
                           commonInter = FALSE, mTh = 1, gamma = NULL,
                           dummyToBothRegimes = TRUE, max.iter = 2,
                           ngridBeta = 50, ngridTh = 50,
-                          th1 = list(exact = NULL, int = c("from", "to"),
-                                     around = "val"),
-                          th2 = list(exact = NULL, int = c("from", "to"),
-                                     around = "val"),
+                          th1 = list(
+                            exact = NULL, int = c("from", "to"),
+                            around = "val"
+                          ),
+                          th2 = list(
+                            exact = NULL, int = c("from", "to"),
+                            around = "val"
+                          ),
                           beta0 = 0, ...) {
       params <- args_to_list()
       super$initialize(params = params)
@@ -107,16 +112,20 @@ Lrnr_tsDyn <- R6Class(classname = "Lrnr_tsDyn", inherit = Lrnr_base,
     .train = function(task) {
       args <- self$params
       learner <- args$learner
-      learner_fun <- get(learner, mode = "function",
-                         envir = asNamespace("tsDyn"))
+      learner_fun <- get(
+        learner, mode = "function",
+        envir = asNamespace("tsDyn")
+      )
       model <- args$model
       args$data <- args$x <- as.matrix(task$X)
 
       if (learner == "setar") {
         if (!model %in% c("TAR", "MTAR")) {
-          stop(paste("When trying to fit self exciting threshold",
-                     "autoregressive model, must specify model to be either",
-                     "TAR or MTAR."))
+          stop(paste(
+            "When trying to fit self exciting threshold",
+            "autoregressive model, must specify model to be either",
+            "TAR or MTAR."
+          ))
         }
       } else if (learner == "lineVar") {
         if (!model %in% c("VAR", "VECM")) {
@@ -124,8 +133,10 @@ Lrnr_tsDyn <- R6Class(classname = "Lrnr_tsDyn", inherit = Lrnr_base,
         }
       } else if (learner == "TVAR") {
         if (!model %in% c("TAR", "MTAR")) {
-          stop(paste("When trying to fit multivariate Threshold VAR model,",
-                     "must specify model to be either TAR or MTAR."))
+          stop(paste(
+            "When trying to fit multivariate Threshold VAR model,",
+            "must specify model to be either TAR or MTAR."
+          ))
         }
       }
       fit_object <- call_with_args(learner_fun, args)
@@ -134,17 +145,17 @@ Lrnr_tsDyn <- R6Class(classname = "Lrnr_tsDyn", inherit = Lrnr_base,
 
     .predict = function(task = NULL) {
       params <- self$params
-      n.ahead <- params[["n.ahead"]] 
+      n.ahead <- params[["n.ahead"]]
       learner <- params[["learner"]]
 
       if (is.null(n.ahead)) {
-        n.ahead = nrow(task$X)
+        n.ahead <- nrow(task$X)
       }
       if (learner == "TVAR") {
         stop("No forecast for multivariate Threshold VAR model implemented.")
       } else {
         predictions <- predict(private$.fit_object, n.ahead = n.ahead)
-        #Create output as in glm
+        # Create output as in glm
         predictions <- as.numeric(predictions)
         predictions <- structure(predictions, names = seq_len(n.ahead))
         return(predictions)
@@ -153,4 +164,3 @@ Lrnr_tsDyn <- R6Class(classname = "Lrnr_tsDyn", inherit = Lrnr_base,
     .required_packages = c("tsDyn", "mgcv")
   )
 )
-

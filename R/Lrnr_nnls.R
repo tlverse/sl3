@@ -27,8 +27,9 @@
 #'
 #' @template common_parameters
 #
-Lrnr_nnls <- R6Class(classname = "Lrnr_nnls", inherit = Lrnr_base,
-                     portable = TRUE, class = TRUE,
+Lrnr_nnls <- R6Class(
+  classname = "Lrnr_nnls", inherit = Lrnr_base,
+  portable = TRUE, class = TRUE,
   public = list(
     initialize = function(...) {
       params <- list(...)
@@ -42,7 +43,7 @@ Lrnr_nnls <- R6Class(classname = "Lrnr_nnls", inherit = Lrnr_base,
 
   active = list(
     fits = function() {
-      fit_object = private$.fit_object
+      fit_object <- private$.fit_object
       if (!is.null(fit_object)) {
         data.table::data.table(lrnrs = fit_object$lrnrs, weights = fit_object$x)
       } else {
@@ -68,4 +69,3 @@ Lrnr_nnls <- R6Class(classname = "Lrnr_nnls", inherit = Lrnr_base,
     .required_packages = c("nnls")
   ),
 )
-

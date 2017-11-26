@@ -24,13 +24,14 @@
 #'     the covariates to create an interaction for.}
 #' }
 #
-Lrnr_define_interactions <- R6Class(classname = "Lrnr_define_interactions",
-                                    inherit = Lrnr_base,
-                                    portable = TRUE,
-                                    class = TRUE,
+Lrnr_define_interactions <- R6Class(
+  classname = "Lrnr_define_interactions",
+  inherit = Lrnr_base,
+  portable = TRUE,
+  class = TRUE,
   public = list(
     initialize = function(interactions, ...) {
-      params = list(interactions = interactions, ...)
+      params <- list(interactions = interactions, ...)
       super$initialize(params = params, ...)
     }
   ),
@@ -40,8 +41,10 @@ Lrnr_define_interactions <- R6Class(classname = "Lrnr_define_interactions",
 
     .train = function(task) {
       new_task <- task$add_interactions(self$params$interactions)
-      interaction_names <- setdiff(new_task$nodes$covariates,
-                                   task$nodes$covariates)
+      interaction_names <- setdiff(
+        new_task$nodes$covariates,
+        task$nodes$covariates
+      )
       fit_object <- list(interaction_names = interaction_names)
       return(fit_object)
     },
@@ -51,8 +54,8 @@ Lrnr_define_interactions <- R6Class(classname = "Lrnr_define_interactions",
     },
 
     .chain = function(task = NULL) {
-      if(!identical(task,private$.training_task)) {
-        new_learners = task$add_interactions(self$params$interactions)
+      if (!identical(task, private$.training_task)) {
+        new_learners <- task$add_interactions(self$params$interactions)
       }
       covariates_and_interactions <-
         unique(c(task$nodes$covariates, private$.fit_object$interaction_names))
@@ -60,4 +63,3 @@ Lrnr_define_interactions <- R6Class(classname = "Lrnr_define_interactions",
     }
   )
 )
-

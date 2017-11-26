@@ -1,4 +1,4 @@
-#' Pipeline (chain) of learners. 
+#' Pipeline (chain) of learners.
 #'
 #' A Pipeline of learners is a way to "chain" Learners together, where the
 #' output of one learner is used as output for the next learner. This can be
@@ -33,18 +33,19 @@
 #'
 #' @template common_parameters
 #
-Pipeline <- R6Class(classname = "Pipeline",
-                    inherit= Lrnr_base,
-                    portable = TRUE,
-                    class = TRUE,
+Pipeline <- R6Class(
+  classname = "Pipeline",
+  inherit = Lrnr_base,
+  portable = TRUE,
+  class = TRUE,
   public = list(
     initialize = function(...) {
-      learners = list(...)
-      params = list(learners = learners)
+      learners <- list(...)
+      params <- list(learners = learners)
       learners_trained <- sapply(learners, `[[`, "is_trained")
 
       if (all(learners_trained)) {
-        #we've been passed a list of existing fits so we're already fit
+        # we've been passed a list of existing fits so we're already fit
         private$.fit_object <- list(learner_fits = learners)
         private$.training_task <- learners[[1]]$training_task
       }
@@ -62,27 +63,27 @@ Pipeline <- R6Class(classname = "Pipeline",
 
   active = list(
     name = function() {
-      learners = self$params$learners
-      learner_names = sapply(learners, function(learner) learner$name)
-      name = paste(learner_names, collapse = "___")
+      learners <- self$params$learners
+      learner_names <- sapply(learners, function(learner) learner$name)
+      name <- paste(learner_names, collapse = "___")
       return(name)
     }
   ),
 
   private = list(
     .train_sublearners = function(task) {
-      learners = self$params$learners
-      learner_names = sapply(learners, function(learner) learner$name)
-      learner_fits = as.list(rep(NA, length(learners)))
-      names(learner_fits) = learner_names
-      current_task = task
+      learners <- self$params$learners
+      learner_names <- sapply(learners, function(learner) learner$name)
+      learner_fits <- as.list(rep(NA, length(learners)))
+      names(learner_fits) <- learner_names
+      current_task <- task
 
       for (i in seq_along(learners)) {
-        current_learner = learners[[i]]
-        fit = delayed_learner_train(current_learner, current_task)
-        next_task = delayed_learner_fit_chain(fit, current_task)
-        learner_fits[[i]] = fit
-        current_task = next_task
+        current_learner <- learners[[i]]
+        fit <- delayed_learner_train(current_learner, current_task)
+        next_task <- delayed_learner_fit_chain(fit, current_task)
+        learner_fits[[i]] <- fit
+        current_task <- next_task
       }
       return(bundle_delayed(learner_fits))
     },
@@ -95,18 +96,17 @@ Pipeline <- R6Class(classname = "Pipeline",
     .predict = function(task) {
       # prediction is just chaining until you get to the last fit, and then
       # calling predict
-      learner_fits = private$.fit_object$learner_fits
-      next_task = task
+      learner_fits <- private$.fit_object$learner_fits
+      next_task <- task
 
       for (i in seq_along(learner_fits)) {
-        current_task = next_task
-        current_fit = learner_fits[[i]]
-        next_task = current_fit$base_chain(current_task)
+        current_task <- next_task
+        current_fit <- learner_fits[[i]]
+        next_task <- current_fit$base_chain(current_task)
       }
       # current_task is now the task for the last fit, so we can just do this
-      predictions = current_fit$base_predict(current_task)
+      predictions <- current_fit$base_predict(current_task)
       return(predictions)
     }
   )
 )
-

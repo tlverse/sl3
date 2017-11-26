@@ -38,9 +38,10 @@
 #'
 #' @template common_parameters
 #
-Lrnr_optim <- R6Class(classname = "Lrnr_optim",
-                              inherit = Lrnr_base, portable = TRUE,
-                              class = TRUE,
+Lrnr_optim <- R6Class(
+  classname = "Lrnr_optim",
+  inherit = Lrnr_base, portable = TRUE,
+  class = TRUE,
   public = list(
     initialize = function(learner_function = metalearner_linear,
                           loss_function = loss_squared_error,
@@ -51,11 +52,13 @@ Lrnr_optim <- R6Class(classname = "Lrnr_optim",
   ),
 
   private = list(
-    .properties = c("continuous", "binomial", "categorical", "weights",
-                    "offset"),
+    .properties = c(
+      "continuous", "binomial", "categorical", "weights",
+      "offset"
+    ),
 
     .train = function(task) {
-      verbose = getOption("sl3.verbose")
+      verbose <- getOption("sl3.verbose")
       params <- self$params
       learner_function <- params$learner_function
       loss_function <- params$loss_function
@@ -87,13 +90,13 @@ Lrnr_optim <- R6Class(classname = "Lrnr_optim",
 
       if (params$init_0) {
         init_alphas <- rep(0, p)
-      } else{
+      } else {
         init_alphas <- rep(1 / p, p)
       }
       fit_object <- optim(init_alphas, risk, method = "BFGS")
       coefs <- fit_object$par
       names(coefs) <- colnames(task$X)
- 
+
       fit_object$coefficients <- coefs
       fit_object$training_offset <- task$has_node("offset")
       fit_object$name <- "optim"
@@ -123,4 +126,3 @@ Lrnr_optim <- R6Class(classname = "Lrnr_optim",
     }
   )
 )
-

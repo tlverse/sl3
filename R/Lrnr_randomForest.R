@@ -35,14 +35,15 @@
 #'
 #' @template common_parameters
 #
-Lrnr_randomForest <- R6Class(classname = "Lrnr_randomForest",
-                             inherit = Lrnr_base, portable = TRUE, class = TRUE,
+Lrnr_randomForest <- R6Class(
+  classname = "Lrnr_randomForest",
+  inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
     initialize = function(ntree = 100,
-                    keep.forest = TRUE,
-                    nodesize = 5, maxnodes = NULL,
-                    importance = FALSE, ...) {
-      params = args_to_list()
+                          keep.forest = TRUE,
+                          nodesize = 5, maxnodes = NULL,
+                          importance = FALSE, ...) {
+      params <- args_to_list()
       super$initialize(params = params, ...)
     }
   ),
@@ -56,23 +57,28 @@ Lrnr_randomForest <- R6Class(classname = "Lrnr_randomForest",
       args$y <- outcome_type$format(task$Y)
 
       if (is.null(args$mtry)) {
-        args$mtry = floor(ncol(args$x))
+        args$mtry <- floor(ncol(args$x))
       }
       if (outcome_type$type == "binomial") {
         args$y <- factor(args$y, levels = c(0, 1))
       }
-      rf_fun <- getS3method("randomForest", "default",
-                            envir = getNamespace("randomForest"))
+      rf_fun <- getS3method(
+        "randomForest", "default",
+        envir = getNamespace("randomForest")
+      )
       fit_object <- call_with_args(rf_fun, args)
       return(fit_object)
     },
 
     .predict = function(task) {
       outcome_type <- private$.training_outcome_type
-      type <- ifelse(outcome_type$type %in% c("binomial","categorical"),
-                     "prob", "response")
-      predictions = stats::predict(private$.fit_object, newdata = task$X,
-                                   type = type)
+      type <- ifelse(outcome_type$type %in% c("binomial", "categorical"),
+        "prob", "response"
+      )
+      predictions <- stats::predict(
+        private$.fit_object, newdata = task$X,
+        type = type
+      )
       if (outcome_type$type == "binomial") {
         # extract p(Y=1)
         predictions <- predictions[, 2]
@@ -85,4 +91,3 @@ Lrnr_randomForest <- R6Class(classname = "Lrnr_randomForest",
     .required_packages = c("randomForest")
   )
 )
-

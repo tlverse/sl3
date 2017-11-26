@@ -7,18 +7,19 @@
 #'
 #' @export
 #
-Lrnr_pkg_SuperLearner_screener <- R6Class(classname =
-                                            "Lrnr_pkg_SuperLearner_screener",
-                                          inherit = Lrnr_base, portable = TRUE,
-                                          class = TRUE,
+Lrnr_pkg_SuperLearner_screener <- R6Class(
+  classname =
+    "Lrnr_pkg_SuperLearner_screener",
+  inherit = Lrnr_base, portable = TRUE,
+  class = TRUE,
   public = list(
     initialize = function(SL_wrapper, ...) {
       if (SL_wrapper == "All") {
-        wrapper_fun = NULL
+        wrapper_fun <- NULL
       } else {
-        wrapper_fun = get(SL_wrapper)
+        wrapper_fun <- get(SL_wrapper)
       }
-      params = list(wrapper_name = SL_wrapper, wrapper_fun = wrapper_fun, ...)
+      params <- list(wrapper_name = SL_wrapper, wrapper_fun = wrapper_fun, ...)
       super$initialize(params = params, ...)
     }
   ),
@@ -33,14 +34,16 @@ Lrnr_pkg_SuperLearner_screener <- R6Class(classname =
       if (is.null(args$family)) {
         args$family <- outcome_type$glm_family(return_object = TRUE)
       }
-      wrapper = args$wrapper_fun
+      wrapper <- args$wrapper_fun
       if (is.null(wrapper)) {
         selected <- task$nodes$covariates
       } else {
-        selected <- wrapper(task$Y, task$X, family = args$family,
-                            obsWeights = task$weights, id = task$id)
+        selected <- wrapper(
+          task$Y, task$X, family = args$family,
+          obsWeights = task$weights, id = task$id
+        )
       }
-      fit_object = list(selected = task$nodes$covariates[selected])
+      fit_object <- list(selected = task$nodes$covariates[selected])
       return(fit_object)
     },
 
@@ -54,4 +57,3 @@ Lrnr_pkg_SuperLearner_screener <- R6Class(classname =
     .required_packages = c("SuperLearner")
   )
 )
-

@@ -22,10 +22,11 @@
 #'    should be applied.}
 #' }
 #
-Custom_chain <- R6Class(classname = "Custom_chain",
-                        inherit = Lrnr_base,
-                        portable = TRUE,
-                        class = TRUE,
+Custom_chain <- R6Class(
+  classname = "Custom_chain",
+  inherit = Lrnr_base,
+  portable = TRUE,
+  class = TRUE,
   public = list(
     initialize = function(learner, chain_fun) {
       params <- args_to_list()
@@ -70,4 +71,3 @@ Custom_chain <- R6Class(classname = "Custom_chain",
 customize_chain <- function(learner, chain_fun) {
   return(make_learner(Custom_chain, learner, chain_fun))
 }
-

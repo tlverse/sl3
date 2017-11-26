@@ -26,4 +26,3 @@ print.packed_predictions <- function(x) {
 normalize_rows <- function(x) {
   sweep(x, 1, rowSums(x), "/")
 }
-

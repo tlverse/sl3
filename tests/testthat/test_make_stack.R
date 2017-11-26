@@ -2,8 +2,10 @@ context("test_make_stack.R -- Convenience function for building stacks.")
 
 # example data and sl3 task
 data(cpp_imputed)
-covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
-            "sexn")
+covars <- c(
+  "apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
+  "sexn"
+)
 outcome <- "haz"
 task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
 
@@ -36,13 +38,17 @@ test_that("Automatic and manually made learner stacks produce same preds", {
 
 # easily construct a Stack while passing in extra arguments to some learners
 sl_lrnrs_list <- list("Lrnr_mean", "Lrnr_condensier")
-lrnrs_args_list <- list(list(NA), list(nbins = 5, bin_method = "equal.len",
-                                       pool = FALSE))
+lrnrs_args_list <- list(list(NA), list(
+  nbins = 5, bin_method = "equal.len",
+  pool = FALSE
+))
 sl_stack <- make_learner_stack(sl_lrnrs_list, lrnrs_args_list)
 
 # create condensier manually, train, and compare predictions
-sl_condensier <- Lrnr_condensier$new(nbins = 5, bin_method = "equal.len",
-                                     pool = FALSE)
+sl_condensier <- Lrnr_condensier$new(
+  nbins = 5, bin_method = "equal.len",
+  pool = FALSE
+)
 sl_condensier_fit <- sl_condensier$train(task)
 sl_condensier_fit_pred <- sl_condensier_fit$predict()
 
@@ -53,4 +59,3 @@ sl_stack_condensier_fit_pred <- sl_stack_condensier_fit$predict()
 test_that("Learner from automatic stack behaves same as a standard learner", {
   expect_equal(sl_stack_condensier_fit_pred, sl_condensier_fit_pred)
 })
-

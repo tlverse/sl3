@@ -32,10 +32,11 @@
 #'   \item{\code{...}}{Not used.}
 #' }
 #
-Lrnr_HarmonicReg <- R6Class(classname = "Lrnr_HarmonicReg",
-                            inherit = Lrnr_base,
-                            portable = TRUE,
-                            class = TRUE,
+Lrnr_HarmonicReg <- R6Class(
+  classname = "Lrnr_HarmonicReg",
+  inherit = Lrnr_base,
+  portable = TRUE,
+  class = TRUE,
   public = list(
     initialize = function(Kparam, n.ahead = NULL, freq, ...) {
       params <- args_to_list()
@@ -58,7 +59,7 @@ Lrnr_HarmonicReg <- R6Class(classname = "Lrnr_HarmonicReg",
         stop("K must be not be greater than period/2")
       }
 
-      fourier_fit <- forecast::fourier(task_ts, K=Kparam)
+      fourier_fit <- forecast::fourier(task_ts, K = Kparam)
       fit_object <- forecast::tslm(task_ts~fourier_fit)
       return(fit_object)
     },
@@ -70,15 +71,17 @@ Lrnr_HarmonicReg <- R6Class(classname = "Lrnr_HarmonicReg",
       Kparam <- params[["Kparam"]]
 
       if (is.null(n.ahead)) {
-        n.ahead = nrow(task$X)
+        n.ahead <- nrow(task$X)
       }
 
       task_ts <- ts(task$X, frequency = freq)
-      fourier_fit <- data.frame(forecast::fourier(task_ts, K = Kparam,
-                                                  h = n.ahead))
+      fourier_fit <- data.frame(forecast::fourier(
+        task_ts, K = Kparam,
+        h = n.ahead
+      ))
       predictions <- forecast::forecast(private$.fit_object, fourier_fit)
 
-      #Create output as in glm
+      # Create output as in glm
       predictions <- as.numeric(predictions$mean)
       predictions <- structure(predictions, names = seq_len(n.ahead))
       return(predictions)
@@ -87,4 +90,3 @@ Lrnr_HarmonicReg <- R6Class(classname = "Lrnr_HarmonicReg",
     .required_packages = c("forecast")
   )
 )
-

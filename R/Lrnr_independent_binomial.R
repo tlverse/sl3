@@ -27,15 +27,16 @@
 #'
 #' @template common_parameters
 #
-Lrnr_independent_binomial <- R6Class(classname = "Lrnr_independent_binomial",
-                                     inherit = Lrnr_base, portable = TRUE,
-                                     class = TRUE,
+Lrnr_independent_binomial <- R6Class(
+  classname = "Lrnr_independent_binomial",
+  inherit = Lrnr_base, portable = TRUE,
+  class = TRUE,
   public = list(
     initialize = function(binomial_learner = NULL, ...) {
       if (is.null(binomial_learner)) {
         binomial_learner <- make_learner(Lrnr_glm_fast)
       }
-      params = list(binomial_learner=binomial_learner, ...)
+      params <- list(binomial_learner = binomial_learner, ...)
       super$initialize(params = params, ...)
     }
   ),
@@ -58,12 +59,18 @@ Lrnr_independent_binomial <- R6Class(classname = "Lrnr_independent_binomial",
 
       binomial_learner <- self$params$binomial_learner
 
-      #define bintask outcome as indicator of not being in the reference group
-      column_names <- task$add_columns(self$uuid,
-                                       data.table(binary_outcome =
-                                                  as.numeric(Y != reference)))
-      bintask <- task$next_in_chain(outcome = "binary_outcome",
-                                    column_names = column_names)
+      # define bintask outcome as indicator of not being in the reference group
+      column_names <- task$add_columns(
+        self$uuid,
+        data.table(
+          binary_outcome =
+            as.numeric(Y != reference)
+        )
+      )
+      bintask <- task$next_in_chain(
+        outcome = "binary_outcome",
+        column_names = column_names
+      )
       fit_object <- list()
       for (Y_level in others) {
         # subset task to data in this category and reference
@@ -91,4 +98,3 @@ Lrnr_independent_binomial <- R6Class(classname = "Lrnr_independent_binomial",
     .required_packages = c("randomForest")
   )
 )
-

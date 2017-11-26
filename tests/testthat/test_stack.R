@@ -15,11 +15,13 @@ glm_learner <- Lrnr_glm$new()
 glmnet_learner <- Lrnr_pkg_SuperLearner$new("SL.glmnet")
 stack <- Stack$new(glm_learner, glmnet_learner)
 stack2 <- Stack$new(stack)
-test_that("Stack$new copies original stack when learners is a Stack",
-          expect_equivalent(stack$params$learners,stack2$params$learners))
+test_that(
+  "Stack$new copies original stack when learners is a Stack",
+  expect_equivalent(stack$params$learners, stack2$params$learners)
+)
 
 # stack3 <- Stack$new(stack,glm_learner)
 # stack3$params$learners
-# 
+#
 # test_that("Stack$new combines existing stacks into itself",
 #           expect_length(stack3$params$learners,3))

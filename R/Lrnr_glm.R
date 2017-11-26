@@ -26,8 +26,9 @@
 #'
 #' @template common_parameters
 #
-Lrnr_glm <- R6Class(classname = "Lrnr_glm", inherit = Lrnr_base,
-                    portable = TRUE, class = TRUE,
+Lrnr_glm <- R6Class(
+  classname = "Lrnr_glm", inherit = Lrnr_base,
+  portable = TRUE, class = TRUE,
   public = list(
     initialize = function(...) {
       params <- args_to_list()
@@ -84,8 +85,10 @@ Lrnr_glm <- R6Class(classname = "Lrnr_glm", inherit = Lrnr_base,
       if (nrow(X) > 0) {
         coef <- private$.fit_object$coef
         if (!all(is.na(coef))) {
-          eta <- as.matrix(X[, which(!is.na(coef)), drop = FALSE,
-                           with = FALSE]) %*% coef[!is.na(coef)]
+          eta <- as.matrix(X[
+            , which(!is.na(coef)), drop = FALSE,
+            with = FALSE
+          ]) %*% coef[!is.na(coef)]
           predictions <- as.vector(private$.fit_object$linkinv_fun(eta))
         }
       }
@@ -93,4 +96,3 @@ Lrnr_glm <- R6Class(classname = "Lrnr_glm", inherit = Lrnr_base,
     }
   )
 )
-

@@ -18,5 +18,8 @@ build:
 	Rscript -e "devtools::build()"
 
 cov:
-	  r -e "covr::codecov()"
+	Rscript -e "covr::codecov()"
+
+style:
+	Rscript -e "styler::style_pkg()"
 

@@ -30,8 +30,9 @@
 #'
 #' @template common_parameters
 #
-Lrnr_xgboost <- R6Class(classname = "Lrnr_xgboost", inherit = Lrnr_base,
-                        portable = TRUE, class = TRUE,
+Lrnr_xgboost <- R6Class(
+  classname = "Lrnr_xgboost", inherit = Lrnr_base,
+  portable = TRUE, class = TRUE,
   public = list(
     initialize = function(nrounds = 20, ...) {
       params <- args_to_list()
@@ -40,8 +41,10 @@ Lrnr_xgboost <- R6Class(classname = "Lrnr_xgboost", inherit = Lrnr_base,
   ),
 
   private = list(
-    .properties = c("continuous", "binomial", "categorical", "weights",
-                    "offset"),
+    .properties = c(
+      "continuous", "binomial", "categorical", "weights",
+      "offset"
+    ),
 
     .train = function(task) {
       verbose <- getOption("sl3.verbose")
@@ -100,12 +103,14 @@ Lrnr_xgboost <- R6Class(classname = "Lrnr_xgboost", inherit = Lrnr_base,
         # Use it only for gbtree (not gblinear, i.e., glm -- not implemented)
         ntreelimit <- 0
         if (!is.null(fit_object[["best_ntreelimit"]]) &&
-            !(fit_object[["params"]][["booster"]] %in% "gblinear")) {
+          !(fit_object[["params"]][["booster"]] %in% "gblinear")) {
           ntreelimit <- fit_object[["best_ntreelimit"]]
         }
         # will generally return vector, needs to be put into data.table column
-        predictions <- stats::predict(fit_object, newdata = xgb_data,
-                                      ntreelimit = ntreelimit, reshape = TRUE)
+        predictions <- stats::predict(
+          fit_object, newdata = xgb_data,
+          ntreelimit = ntreelimit, reshape = TRUE
+        )
       }
       if (outcome_type$type == "categorical") {
         # pack predictions in a single column
@@ -117,4 +122,3 @@ Lrnr_xgboost <- R6Class(classname = "Lrnr_xgboost", inherit = Lrnr_base,
     .required_packages = c("xgboost")
   )
 )
-

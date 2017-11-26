@@ -76,9 +76,8 @@ loss_loglik_multinomial <- function(pred, truth) {
 #
 risk <- function(pred, truth, loss = loss_squared_error, weights = NULL) {
   if (is.null(weights)) {
-      weights <- rep(1, length(truth))
+    weights <- rep(1, length(truth))
   }
   risk <- weighted.mean(loss(truth, pred), weights)
   return(risk)
 }
-

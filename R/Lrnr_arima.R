@@ -34,10 +34,11 @@
 #'    forecast of size \code{task$X}.}
 #' }
 #
-Lrnr_arima <- R6Class(classname = "Lrnr_arima",
-                      inherit = Lrnr_base,
-                      portable = TRUE,
-                      class = TRUE,
+Lrnr_arima <- R6Class(
+  classname = "Lrnr_arima",
+  inherit = Lrnr_base,
+  portable = TRUE,
+  class = TRUE,
   public = list(
     initialize = function(order = NULL,
                           seasonal = list(order = c(0L, 0L, 0L), period = NA),
@@ -65,10 +66,12 @@ Lrnr_arima <- R6Class(classname = "Lrnr_arima",
       n.ahead <- params[["n.ahead"]]
 
       if (is.null(n.ahead)) {
-        n.ahead = nrow(task$X)
+        n.ahead <- nrow(task$X)
       }
-      predictions <- predict(private$.fit_object, newdata = task$X,
-                             type = "response", n.ahead = n.ahead)
+      predictions <- predict(
+        private$.fit_object, newdata = task$X,
+        type = "response", n.ahead = n.ahead
+      )
       # Create output as in glm
       predictions <- as.numeric(predictions$pred)
       predictions <- structure(predictions, names = seq_len(n.ahead))
@@ -77,4 +80,3 @@ Lrnr_arima <- R6Class(classname = "Lrnr_arima",
     .required_packages = c("forecast")
   )
 )
-

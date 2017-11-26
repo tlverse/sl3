@@ -1,5 +1,5 @@
 # from SuperLearner package
-trim_logit <- function (x, trim = 1e-05)  {
+trim_logit <- function(x, trim = 1e-05) {
   x[x < trim] <- trim
   x[x > (1 - trim)] <- (1 - trim)
   foo <- log(x / (1 - x))
@@ -43,4 +43,3 @@ metalearner_linear_multinomial <- function(alpha, X) {
   Y_pred <- normalize_rows(Y_pred)
   return(pack_predictions(Y_pred))
 }
-

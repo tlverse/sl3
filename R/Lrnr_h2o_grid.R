@@ -44,8 +44,9 @@
 #'
 #' @template common_parameters
 #
-Lrnr_h2o_grid <- R6Class(classname = "Lrnr_h2o_grid", inherit = Lrnr_base,
-                         portable = TRUE, class = TRUE,
+Lrnr_h2o_grid <- R6Class(
+  classname = "Lrnr_h2o_grid", inherit = Lrnr_base,
+  portable = TRUE, class = TRUE,
   public = list(
     initialize = function(algorithm, seed = 1, distribution = NULL,
                           intercept = TRUE, standardize = TRUE, lambda = 0L,
@@ -58,8 +59,10 @@ Lrnr_h2o_grid <- R6Class(classname = "Lrnr_h2o_grid", inherit = Lrnr_base,
   private = list(
     .classify = FALSE,
     .return_prediction_as_vector = TRUE,
-    .properties = c("continuous", "binomial", "categorical", "weights",
-                    "offset"),
+    .properties = c(
+      "continuous", "binomial", "categorical", "weights",
+      "offset"
+    ),
 
     .train = function(task) {
       verbose <- getOption("sl3.verbose")
@@ -73,8 +76,10 @@ Lrnr_h2o_grid <- R6Class(classname = "Lrnr_h2o_grid", inherit = Lrnr_base,
 
       connectH2O <- try(h2o::h2o.getConnection(), silent = TRUE)
       if (inherits(connectH2O, "try-error")) {
-        stop(paste("No active H2O cluster found, please initiate h2o cluster",
-                   "first by running 'h2o::h2o.init()'"))
+        stop(paste(
+          "No active H2O cluster found, please initiate h2o cluster",
+          "first by running 'h2o::h2o.init()'"
+        ))
       }
 
       outcome_type <- self$get_outcome_type(task)
@@ -83,7 +88,7 @@ Lrnr_h2o_grid <- R6Class(classname = "Lrnr_h2o_grid", inherit = Lrnr_base,
         args$family <- outcome_type$glm_family()
       }
 
-      if (inherits(args$family,"family")) {
+      if (inherits(args$family, "family")) {
         args$family <- args$family$family
       }
 
@@ -112,8 +117,10 @@ Lrnr_h2o_grid <- R6Class(classname = "Lrnr_h2o_grid", inherit = Lrnr_base,
       }
 
       if (!is.character(algorithm)) {
-        stop(paste("'algorithm' must be a string naming the 'algorithm' for",
-                   "'h2o.grid'"))
+        stop(paste(
+          "'algorithm' must be a string naming the 'algorithm' for",
+          "'h2o.grid'"
+        ))
       }
 
       if (algorithm %in% "pca") {
@@ -128,14 +135,16 @@ Lrnr_h2o_grid <- R6Class(classname = "Lrnr_h2o_grid", inherit = Lrnr_base,
       # Keep only the relevant algorithm args in mainArgs list:
       mainArgs <- keep_only_fun_args(args, fun = algo_fun)
 
-      #add back in args to h2o.grid
+      # add back in args to h2o.grid
       mainArgs[["algorithm"]] <- algorithm
       mainArgs[["search_criteria"]] <- args[["search_criteria"]]
       mainArgs[["hyper_params"]] <- args[["hyper_params"]]
 
       # Remove any args from mainArgs that also appear in hyper_params:
-      common_hyper_args <- intersect(names(mainArgs),
-                                     names(mainArgs$hyper_params))
+      common_hyper_args <- intersect(
+        names(mainArgs),
+        names(mainArgs$hyper_params)
+      )
       if (length(common_hyper_args) > 0) {
         mainArgs <- mainArgs[!(names(mainArgs) %in% common_hyper_args)]
       }
@@ -150,10 +159,12 @@ Lrnr_h2o_grid <- R6Class(classname = "Lrnr_h2o_grid", inherit = Lrnr_base,
       ## if dealing with classification then need to set outcome as factor:
       classify <- private$.classify ||
         (!is.null(mainArgs[["distribution"]]) &&
-         (mainArgs[["distribution"]] %in% "bernoulli"))
+          (mainArgs[["distribution"]] %in% "bernoulli"))
       outvar <- task$nodes$outcome
-      outfactors <- as.vector(h2o::h2o.unique(mainArgs[["training_frame"]][,
-                                              outvar]))
+      outfactors <- as.vector(h2o::h2o.unique(mainArgs[["training_frame"]][
+        ,
+        outvar
+      ]))
       if (classify) {
         mainArgs[["training_frame"]][, outvar] <-
           h2o::as.factor(mainArgs[["training_frame"]][, outvar])
@@ -174,7 +185,8 @@ Lrnr_h2o_grid <- R6Class(classname = "Lrnr_h2o_grid", inherit = Lrnr_base,
 
       if (verbose) {
         print(paste0("h2o grid object ID: ", fit_object@grid_id))
-        print("h2o grid models: "); print(fit_object)
+        print("h2o grid models: ")
+        print(fit_object)
       }
 
       h2o::h2o.show_progress()
@@ -193,8 +205,10 @@ Lrnr_h2o_grid <- R6Class(classname = "Lrnr_h2o_grid", inherit = Lrnr_base,
       X <- define_h2o_X(task)
 
       ## Put all model fits from the grid into a single list for easier access:
-      modelfits_all <- lapply(private$.fit_object@model_ids,
-                              function(model_id) h2o::h2o.getModel(model_id))
+      modelfits_all <- lapply(
+        private$.fit_object@model_ids,
+        function(model_id) h2o::h2o.getModel(model_id)
+      )
       modelfits_all[[1]]@model_id
 
       pAout_h2o <- NULL
@@ -205,8 +219,10 @@ Lrnr_h2o_grid <- R6Class(classname = "Lrnr_h2o_grid", inherit = Lrnr_base,
         }
         pAout_h2o <- h2o::h2o.cbind(pAout_h2o, pred)
       }
-      names(pAout_h2o) <- paste0(names(pAout_h2o), "_",
-                                 seq_along(modelfits_all))
+      names(pAout_h2o) <- paste0(
+        names(pAout_h2o), "_",
+        seq_along(modelfits_all)
+      )
       predictions <- data.table::as.data.table(pAout_h2o)
       h2o::h2o.show_progress()
       return(predictions)
@@ -221,12 +237,14 @@ Lrnr_h2o_grid <- R6Class(classname = "Lrnr_h2o_grid", inherit = Lrnr_base,
 #'
 #' @export
 #
-Lrnr_h2o_classifier <- R6Class(classname = "Lrnr_h2o_classifier",
-                               inherit = Lrnr_h2o_grid, portable = TRUE,
-                               class = TRUE,
+Lrnr_h2o_classifier <- R6Class(
+  classname = "Lrnr_h2o_classifier",
+  inherit = Lrnr_h2o_grid, portable = TRUE,
+  class = TRUE,
   private = list(
     .classify = TRUE,
-    .return_prediction_as_vector = FALSE),
+    .return_prediction_as_vector = FALSE
+  ),
 )
 
 #' \code{Lrnr_h2o_mutator} -- Mutate Grid Search Models with h2o
@@ -235,11 +253,12 @@ Lrnr_h2o_classifier <- R6Class(classname = "Lrnr_h2o_classifier",
 #'
 #' @export
 #
-Lrnr_h2o_mutator <- R6Class(classname = "Lrnr_h2o_mutator",
-                            inherit = Lrnr_h2o_grid, portable = TRUE,
-                            class = TRUE,
+Lrnr_h2o_mutator <- R6Class(
+  classname = "Lrnr_h2o_mutator",
+  inherit = Lrnr_h2o_grid, portable = TRUE,
+  class = TRUE,
   private = list(
     .classify = FALSE,
-    .return_prediction_as_vector = FALSE),
+    .return_prediction_as_vector = FALSE
+  ),
 )
-

@@ -2,9 +2,10 @@
 #'
 #' @export
 #
-Variable_Type <- R6Class(classname = "Variable_Type",
-                         portable = TRUE,
-                         class = TRUE,
+Variable_Type <- R6Class(
+  classname = "Variable_Type",
+  portable = TRUE,
+  class = TRUE,
   public = list(
     initialize = function(type = NULL, levels = NULL, bounds = NULL, x = NULL,
                           pcontinuous = getOption("sl3.pcontinuous")) {
@@ -19,28 +20,28 @@ Variable_Type <- R6Class(classname = "Variable_Type",
           type <- "constant"
         } else if (nunique == 2) {
           type <- "binomial"
-        } else if((nunique / length(x)) < pcontinuous) {
+        } else if ((nunique / length(x)) < pcontinuous) {
           type <- "categorical"
         } else {
           type <- "continuous"
         }
       }
-      private$.type = type
+      private$.type <- type
       if (type %in% c("binomial", "categorical") && is.null(levels)) {
         if (!is.null(x)) {
-          levels = get_levels(x)
-        } else if(type == "binomial") {
-          levels = c(0, 1)
+          levels <- get_levels(x)
+        } else if (type == "binomial") {
+          levels <- c(0, 1)
         } else
-          if (is.null(levels)) {
+        if (is.null(levels)) {
           stop(sprintf("levels or x must be specified for %s", type))
         }
       }
-      private$.levels = levels
+      private$.levels <- levels
       if (type == "quasibinomial" && is.null(bounds)) {
-        bounds = c(0, 1)
+        bounds <- c(0, 1)
       }
-      private$.bounds = bounds
+      private$.bounds <- bounds
     },
     print = function() {
       print(self$type)
@@ -48,23 +49,30 @@ Variable_Type <- R6Class(classname = "Variable_Type",
       print(self$bounds)
     },
     glm_family = function(return_object = FALSE) {
-      type = self$type
+      type <- self$type
       family <- switch(type, continuous = "gaussian", binomial = "binomial",
-                       quasibinomial = "quasibinomial",
-                       categorical = "multinomial", constant = "binomial",
-                       "unknown")
+        quasibinomial = "quasibinomial",
+        categorical = "multinomial", constant = "binomial",
+        "unknown"
+      )
       if (family == "unknown") {
         warning("No family for this outcome_type. Defaulting to gaussian")
         family <- "gaussian"
       }
       if (return_object) {
-        family_fun <- try({get(family, mode = "function",
-          envir = parent.frame())})
+        family_fun <- try({
+          get(
+            family, mode = "function",
+            envir = parent.frame()
+          )
+        })
         if (inherits(family_fun, "try-error")) {
-          stop(paste("Family object requested for family that does not have",
-                     "a generator.\n You're probably using an unsupported",
-                     "learner/outcome_type combination. Specify family",
-                     "manually."))
+          stop(paste(
+            "Family object requested for family that does not have",
+            "a generator.\n You're probably using an unsupported",
+            "learner/outcome_type combination. Specify family",
+            "manually."
+          ))
         } else {
           family <- family_fun()
         }
@@ -77,9 +85,11 @@ Variable_Type <- R6Class(classname = "Variable_Type",
         formatted <- as.numeric(x == max_level)
       } else if (self$type == "quasibinomial") {
         if (any(x < 0) || any(x > 1)) {
-          warning(paste("Detected 'Y' outside [0-1] range with 'quasibinomial'",
-                        "outcome_type -- beware, this will break most",
-                        "learners."))
+          warning(paste(
+            "Detected 'Y' outside [0-1] range with 'quasibinomial'",
+            "outcome_type -- beware, this will break most",
+            "learners."
+          ))
         }
         formatted <- x
       } else if (self$type == "categorical") {
@@ -121,7 +131,8 @@ Variable_Type <- R6Class(classname = "Variable_Type",
 #
 variable_type <- function(type = NULL, levels = NULL, bounds = NULL, x = NULL,
                           pcontinuous = getOption("sl3.pcontinuous")) {
-  return(Variable_Type$new(type = type, levels = levels, bounds = bounds, x = x,
-                           pcontinuous = pcontinuous))
+  return(Variable_Type$new(
+    type = type, levels = levels, bounds = bounds, x = x,
+    pcontinuous = pcontinuous
+  ))
 }
-

@@ -40,9 +40,10 @@
 #'
 #' @template common_parameters
 #
-Lrnr_solnp <- R6Class(classname = "Lrnr_solnp",
-                              inherit = Lrnr_base, portable = TRUE,
-                              class = TRUE,
+Lrnr_solnp <- R6Class(
+  classname = "Lrnr_solnp",
+  inherit = Lrnr_base, portable = TRUE,
+  class = TRUE,
   public = list(
     initialize = function(learner_function = metalearner_linear,
                           loss_function = loss_squared_error,
@@ -53,11 +54,13 @@ Lrnr_solnp <- R6Class(classname = "Lrnr_solnp",
     }
   ),
   private = list(
-    .properties = c("continuous", "binomial", "categorical", "weights",
-                    "offset"),
+    .properties = c(
+      "continuous", "binomial", "categorical", "weights",
+      "offset"
+    ),
 
     .train = function(task) {
-      verbose = getOption("sl3.verbose")
+      verbose <- getOption("sl3.verbose")
       params <- self$params
       learner_function <- params$learner_function
       loss_function <- params$loss_function
@@ -98,10 +101,12 @@ Lrnr_solnp <- R6Class(classname = "Lrnr_solnp",
       } else {
         init_alphas <- rep(1 / p, p)
       }
-      fit_object <- Rsolnp::solnp(init_alphas, risk,
-                                  eqfun = eq_fun, eqB = eqB,
-                                  LB = LB,
-                                  control = list(trace = 0))
+      fit_object <- Rsolnp::solnp(
+        init_alphas, risk,
+        eqfun = eq_fun, eqB = eqB,
+        LB = LB,
+        control = list(trace = 0)
+      )
       coefs <- fit_object$pars
       names(coefs) <- colnames(task$X)
 
@@ -132,4 +137,3 @@ Lrnr_solnp <- R6Class(classname = "Lrnr_solnp",
     .required_packages = c("Rsolnp")
   )
 )
-

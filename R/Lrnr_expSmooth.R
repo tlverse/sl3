@@ -65,10 +65,11 @@
 #'   \item{\code{freq=1}}{the number of observations per unit of time.}
 #' }
 #
-Lrnr_expSmooth <- R6Class(classname = "Lrnr_expSmooth",
-                          inherit = Lrnr_base,
-                          portable = TRUE,
-                          class = TRUE,
+Lrnr_expSmooth <- R6Class(
+  classname = "Lrnr_expSmooth",
+  inherit = Lrnr_base,
+  portable = TRUE,
+  class = TRUE,
   public = list(
     initialize = function(model = "ZZZ", damped = NULL, alpha = NULL,
                           beta = NULL, gamma = NULL, phi = NULL, lambda = NULL,
@@ -89,7 +90,7 @@ Lrnr_expSmooth <- R6Class(classname = "Lrnr_expSmooth",
 
     .train = function(task) {
       args <- self$params
-      args$y = ts(task$X, frequency = args$freq)
+      args$y <- ts(task$X, frequency = args$freq)
       if (args$model == "ZZZ") {
         fit_object <- forecast::ets(args$y)
       } else {
@@ -103,10 +104,10 @@ Lrnr_expSmooth <- R6Class(classname = "Lrnr_expSmooth",
       n.ahead <- params[["n.ahead"]]
 
       if (is.null(n.ahead)) {
-        n.ahead = nrow(task$X)
+        n.ahead <- nrow(task$X)
       }
       predictions <- forecast::forecast(private$.fit_object, h = n.ahead)
-      #Create output as in glm
+      # Create output as in glm
       predictions <- as.numeric(predictions$mean)
       predictions <- structure(predictions, names = seq_len(n.ahead))
       return(predictions)
@@ -114,4 +115,3 @@ Lrnr_expSmooth <- R6Class(classname = "Lrnr_expSmooth",
     .required_packages = c("forecast")
   )
 )
-

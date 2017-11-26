@@ -56,4 +56,3 @@ sl3_list_learners <- function(properties = c()) {
   matched_learners <- names(learners)[which(match_properties)]
   return(matched_learners)
 }
-

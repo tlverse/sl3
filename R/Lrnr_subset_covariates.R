@@ -25,12 +25,13 @@
 #'
 #' @template common_parameters
 #
-Lrnr_subset_covariates <- R6Class(classname = "Lrnr_subset_covariates",
-                                  inherit = Lrnr_base, portable = TRUE,
-                                  class = TRUE,
+Lrnr_subset_covariates <- R6Class(
+  classname = "Lrnr_subset_covariates",
+  inherit = Lrnr_base, portable = TRUE,
+  class = TRUE,
   public = list(
     initialize = function(...) {
-      params = list(...)
+      params <- list(...)
       super$initialize(...)
     }
   ),
@@ -42,14 +43,13 @@ Lrnr_subset_covariates <- R6Class(classname = "Lrnr_subset_covariates",
     },
 
     .predict = function(task = NULL) {
-    # nothing to do here: we're relying on Lrnr_base to subset covariates
+      # nothing to do here: we're relying on Lrnr_base to subset covariates
       return(task$X)
     },
 
     .chain = function(task = NULL) {
-    # nothing to do here: we're relying on Lrnr_base to subset covariates
+      # nothing to do here: we're relying on Lrnr_base to subset covariates
       return(task)
     }
   )
 )
-

@@ -17,13 +17,13 @@
 #'
 #' @export
 #
-define_h2o_X = function(task, outcome_type = NULL) {
+define_h2o_X <- function(task, outcome_type = NULL) {
   op <- options("h2o.use.data.table" = TRUE)
   # op <- options("datatable.verbose" = TRUE, "h2o.use.data.table" = TRUE)
   data <- task$data
 
   if (!is.null(outcome_type)) {
-    y_formatted <- outcome_type$format(task$Y) 
+    y_formatted <- outcome_type$format(task$Y)
     set(data, j = task$nodes$outcome, value = y_formatted)
   }
   X <- h2o::as.h2o(data)
@@ -69,8 +69,9 @@ define_h2o_X = function(task, outcome_type = NULL) {
 #'
 #' @template common_parameters
 #
-Lrnr_h2o_glm <- R6Class(classname = "Lrnr_h2o_glm", inherit = Lrnr_base,
-                        portable = TRUE, class = TRUE,
+Lrnr_h2o_glm <- R6Class(
+  classname = "Lrnr_h2o_glm", inherit = Lrnr_base,
+  portable = TRUE, class = TRUE,
   public = list(
     initialize = function(intercept = TRUE, standardize = TRUE, lambda = 0L,
                           max_iterations = 100, ignore_const_cols = FALSE,
@@ -80,10 +81,12 @@ Lrnr_h2o_glm <- R6Class(classname = "Lrnr_h2o_glm", inherit = Lrnr_base,
   ),
 
   private = list(
-    .properties = c("continuous", "binomial", "categorical", "weights",
-                    "offset"),
+    .properties = c(
+      "continuous", "binomial", "categorical", "weights",
+      "offset"
+    ),
     .train = function(task) {
-      verbose = getOption("sl3.verbose")
+      verbose <- getOption("sl3.verbose")
       args <- self$params
 
       outcome_type <- self$get_outcome_type(task)
@@ -98,8 +101,10 @@ Lrnr_h2o_glm <- R6Class(classname = "Lrnr_h2o_glm", inherit = Lrnr_base,
 
       connectH2O <- try(h2o::h2o.getConnection(), silent = TRUE)
       if (inherits(connectH2O, "try-error")) {
-        stop(paste("No active H2O cluster found, please initiate h2o cluster",
-                   "first by running 'h2o::h2o.init()'"))
+        stop(paste(
+          "No active H2O cluster found, please initiate h2o cluster",
+          "first by running 'h2o::h2o.init()'"
+        ))
       }
 
       h2o_data <- define_h2o_X(task, outcome_type)
@@ -127,16 +132,16 @@ Lrnr_h2o_glm <- R6Class(classname = "Lrnr_h2o_glm", inherit = Lrnr_base,
       ## assign the fitted coefficients in correct order (same as predictor
       ## order in x)
       ## NOT USED FOR NOW
-      #out_coef <- vector(mode = "numeric", length = length(x)+1)
-      #out_coef[] <- NA
-      #names(out_coef) <- c("Intercept", x)
-      #out_coef[names(fit_object@model$coefficients)] <-
-        #fit_object@model$coefficients
+      # out_coef <- vector(mode = "numeric", length = length(x)+1)
+      # out_coef[] <- NA
+      # names(out_coef) <- c("Intercept", x)
+      # out_coef[names(fit_object@model$coefficients)] <-
+      # fit_object@model$coefficients
       return(fit_object)
     },
 
     .predict = function(task = NULL) {
-      verbose = getOption("sl3.verbose")
+      verbose <- getOption("sl3.verbose")
       if (verbose) {
         h2o::h2o.show_progress()
       } else {
@@ -156,4 +161,3 @@ Lrnr_h2o_glm <- R6Class(classname = "Lrnr_h2o_glm", inherit = Lrnr_base,
     .required_packages = c("h2o")
   ),
 )
-

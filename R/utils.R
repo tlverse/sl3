@@ -1,6 +1,6 @@
-#if warning is in ignoreWarningList, ignore it; otherwise post it as usual
+# if warning is in ignoreWarningList, ignore it; otherwise post it as usual
 SuppressGivenWarnings <- function(expr, warningsToIgnore) {
-  h <- function (w) {
+  h <- function(w) {
     if (w$message %in% warningsToIgnore) invokeRestart("muffleWarning")
   }
   withCallingHandlers(expr, warning = h)
@@ -9,13 +9,19 @@ SuppressGivenWarnings <- function(expr, warningsToIgnore) {
 ################################################################################
 
 GetWarningsToSuppress <- function(update.step =FALSE) {
-  warnings.to.suppress <- c(paste("glm.fit: fitted probabilities numerically 0",
-                                  "or 1 occurred"),
-                            paste("prediction from a rank-deficient fit may be",
-                                  "misleading"),
-                            "non-integer #successes in a binomial glm!",
-                            "the matrix is either rank-deficient or indefinite",
-                            "glm.fit: algorithm did not converge")
+  warnings.to.suppress <- c(
+    paste(
+      "glm.fit: fitted probabilities numerically 0",
+      "or 1 occurred"
+    ),
+    paste(
+      "prediction from a rank-deficient fit may be",
+      "misleading"
+    ),
+    "non-integer #successes in a binomial glm!",
+    "the matrix is either rank-deficient or indefinite",
+    "glm.fit: algorithm did not converge"
+  )
   return(warnings.to.suppress)
 }
 
@@ -105,51 +111,51 @@ replace_add_user_args <- function(mainArgs, userArgs, fun) {
 #' @export
 #
 true_obj_size <- function(obj) {
-    length(serialize(obj, NULL))
+  length(serialize(obj, NULL))
 }
 
 ################################################################################
 
 reduce_fit_test <- function(learner_fit) {
-    # given learner fit, sequentially drop components from internal fit object,
-    # keeping track of which components are needed for prediction
+  # given learner fit, sequentially drop components from internal fit object,
+  # keeping track of which components are needed for prediction
 
-    # learner_fit = glm_fit
-    original_fit <- learner_fit$fit_object
-    task <- learner_fit$training_task
+  # learner_fit = glm_fit
+  original_fit <- learner_fit$fit_object
+  task <- learner_fit$training_task
 
-    original_size <- true_obj_size(original_fit)
-    original_predict <- learner_fit$predict()
+  original_size <- true_obj_size(original_fit)
+  original_predict <- learner_fit$predict()
 
-    components <- names(original_fit)
-    reduced <- learner_fit$clone()
-    reduced_fit <- original_fit
-    for (component in components) {
-        backup <- reduced_fit[component]
-        reduced_fit[component] <- NULL
-        reduced$set_train(reduced_fit, task)
-        reduced_predict <- NULL
-        try({
-            reduced_predict <- reduced$predict()
-        }, silent = TRUE)
-        if (!identical(original_predict, reduced_predict)) {
-            reduced_fit[component] <- backup
-        }
+  components <- names(original_fit)
+  reduced <- learner_fit$clone()
+  reduced_fit <- original_fit
+  for (component in components) {
+    backup <- reduced_fit[component]
+    reduced_fit[component] <- NULL
+    reduced$set_train(reduced_fit, task)
+    reduced_predict <- NULL
+    try({
+      reduced_predict <- reduced$predict()
+    }, silent = TRUE)
+    if (!identical(original_predict, reduced_predict)) {
+      reduced_fit[component] <- backup
     }
-    reduced_components <- names(reduced_fit)
-    reduced_size <- true_obj_size(reduced_fit)
-    reduction <- as.numeric(1 - reduced_size / original_size)
-    try()
+  }
+  reduced_components <- names(reduced_fit)
+  reduced_size <- true_obj_size(reduced_fit)
+  reduction <- as.numeric(1 - reduced_size / original_size)
+  try()
 }
 
 ################################################################################
 
 subset_dt_cols <- function(dt, cols) {
-  #setDF(dt)
-  #subset = dt[,cols, drop = FALSE]
-  #setDT(subset)
-  #setDT(dt)
-  #return(subset)
+  # setDF(dt)
+  # subset = dt[,cols, drop = FALSE]
+  # setDT(subset)
+  # setDT(dt)
+  # return(subset)
   return(dt[, cols, with = FALSE, drop = FALSE])
 }
 
@@ -183,8 +189,10 @@ args_to_list <- function() {
   num_args <- length(all_args)
   for (i in seq_len(num_args)) {
     if (!is.null(all_args[[i]])) {
-      all_args[[i]] <- eval(all_args[[i]], envir = all_args,
-                            enclos = parent.frame(2L))
+      all_args[[i]] <- eval(
+        all_args[[i]], envir = all_args,
+        enclos = parent.frame(2L)
+      )
     }
   }
   # evaled <- lapply(all_args, eval, envir=parent.frame(2L))
@@ -225,9 +233,11 @@ safe_dim <- function(x) {
 #'
 #' @export
 #
-write_learner_template <- function(file){
-  template_file <- system.file("templates/Lrnr_template.R", package = "sl3",
-                               mustWork = TRUE)
+write_learner_template <- function(file) {
+  template_file <- system.file(
+    "templates/Lrnr_template.R", package = "sl3",
+    mustWork = TRUE
+  )
   file.copy(template_file, file)
 }
 
@@ -236,4 +246,3 @@ write_learner_template <- function(file){
 # Miscellaneous setting that was the sole contents of a file "Untitled.R" prior
 # to commit b8cc1e5. Preserved here.
 list_name <- list()
-
