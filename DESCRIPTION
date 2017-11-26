@@ -51,7 +51,7 @@ Suggests:
     R.rsp,
     kerasR,
     keras,
-    tensorflow
+    reticulate
 Remotes:
     github::osofr/condensier,
     github::jeremyrcoyle/delayed

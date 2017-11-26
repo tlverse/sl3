@@ -20,6 +20,7 @@
 #' @field window Size of the sliding window input.
 #' @field activation The activation function to use.
 #' @field dense regular, densely-connected NN layer. Default is 1.
+#' @field dropout float between 0 and 1. Fraction of the input units to drop.
 #' 
 #' @importFrom assertthat assert_that is.count is.flag
 #'
@@ -37,10 +38,11 @@ Lrnr_lstm <- R6Class(classname = "Lrnr_lstm", inherit = Lrnr_base, portable = TR
                                                   n.ahead=1,
                                                   activation='linear',
                                                   dense=1,
+                                                  dropout=0,
                                                   ...) {
                               
                               params <- list(units=units, loss=loss, optimizer=optimizer,batch_size=batch_size,epochs=epochs,
-                                             window=window, activation=activation, dense=dense, ...)
+                                             window=window, activation=activation, dense=dense, dropout=dropout, ...)
                               super$initialize(params = params, ...)
                             }
                           ),
@@ -67,6 +69,7 @@ Lrnr_lstm <- R6Class(classname = "Lrnr_lstm", inherit = Lrnr_base, portable = TR
                               #Build the model
                               model<-Sequential()
                               model$add(LSTM(units=args$units, input_shape = c(num_steps, num_features)))
+                              model$add(Dropout(rate=args$dropout))
                               model$add(Dense(args$dense))
                               model$add(Activation(args$activation))
                               keras_compile(model, loss=args$loss, optimizer = args$optimizer)

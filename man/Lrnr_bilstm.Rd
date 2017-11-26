@@ -35,6 +35,8 @@ seasonal effects for time series, should be addressed before using this learner.
 \item{\code{activation}}{The activation function to use.}
 
 \item{\code{dense}}{regular, densely-connected NN layer. Default is 1.}
+
+\item{\code{dropout}}{float between 0 and 1. Fraction of the input units to drop.}
 }}
 
 \seealso{
