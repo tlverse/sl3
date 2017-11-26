@@ -67,15 +67,15 @@ Lrnr_lstm <- R6Class(classname = "Lrnr_lstm", inherit = Lrnr_base, portable = TR
                               num_features <- dim(args$x)[3] #features = ts
                               
                               #Build the model
-                              model<-Sequential()
-                              model$add(LSTM(units=args$units, input_shape = c(num_steps, num_features)))
-                              model$add(Dropout(rate=args$dropout))
-                              model$add(Dense(args$dense))
-                              model$add(Activation(args$activation))
-                              keras_compile(model, loss=args$loss, optimizer = args$optimizer)
+                              model<-kerasR::Sequential()
+                              model$add(kerasR::LSTM(units=args$units, input_shape = c(num_steps, num_features)))
+                              model$add(kerasR::Dropout(rate=args$dropout))
+                              model$add(kerasR::Dense(args$dense))
+                              model$add(kerasR::Activation(args$activation))
+                              kerasR::keras_compile(model, loss=args$loss, optimizer = args$optimizer)
                               
                               #Fit the model
-                              keras_fit(model, args$x, args$y, batch_size = args$batch_size, epochs = args$epochs)
+                              kerasR::keras_fit(model, args$x, args$y, batch_size = args$batch_size, epochs = args$epochs)
                               fit_object <- model
 
                               return(fit_object)
@@ -90,7 +90,7 @@ Lrnr_lstm <- R6Class(classname = "Lrnr_lstm", inherit = Lrnr_base, portable = TR
                               row.names(args$x)<-NULL
                               args$x<-kerasR::expand_dims(args$x, axis=2)
 
-                              predictions <- keras_predict(private$.fit_object, args$x, batch_size=args$batch_size)
+                              predictions <- kerasR::keras_predict(private$.fit_object, args$x, batch_size=args$batch_size)
                               
                               #Create output as in glm
                               predictions <- as.numeric(predictions)

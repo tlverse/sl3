@@ -68,16 +68,16 @@ Lrnr_bilstm <- R6Class(classname = "Lrnr_bilstm", inherit = Lrnr_base, portable 
                          num_features <- dim(args$x)[3] #features = ts
                          
                          #Build the model
-                         model<-Sequential()
-                         keras::bidirectional(model, LSTM(args$units,return_sequences = TRUE), input_shape = c(num_steps,num_features))
-                         model$add(Dropout(rate=args$dropout))
-                         model$add(Flatten())
-                         model$add(Dense(args$dense))
-                         model$add(Activation(args$activation))
-                         keras_compile(model, loss=args$loss, optimizer = args$optimizer)
+                         model<-kerasR::Sequential()
+                         keras::bidirectional(model, kerasR::LSTM(args$units,return_sequences = TRUE), input_shape = c(num_steps,num_features))
+                         model$add(kerasR::Dropout(rate=args$dropout))
+                         model$add(kerasR::Flatten())
+                         model$add(kerasR::Dense(args$dense))
+                         model$add(kerasR::Activation(args$activation))
+                         kerasR::keras_compile(model, loss=args$loss, optimizer = args$optimizer)
                          
                          #Fit the model
-                         keras_fit(model, args$x, args$y, batch_size = args$batch_size, 
+                         kerasR::keras_fit(model, args$x, args$y, batch_size = args$batch_size, 
                                    epochs = args$epochs)
                          fit_object <- model
                          
@@ -93,7 +93,7 @@ Lrnr_bilstm <- R6Class(classname = "Lrnr_bilstm", inherit = Lrnr_base, portable 
                          row.names(args$x)<-NULL
                          args$x<-kerasR::expand_dims(args$x, axis=2)
                          
-                         predictions <- keras_predict(private$.fit_object,args$x,batch_size=args$batch_size)
+                         predictions <- kerasR::keras_predict(private$.fit_object,args$x,batch_size=args$batch_size)
                          
                          #Create output as in glm
                          predictions <- as.numeric(predictions)
