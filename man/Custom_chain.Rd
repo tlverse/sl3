@@ -40,7 +40,8 @@ This function wraps a learner in such a way that the behavior of learner$chain i
 \seealso{
 Other Learners: \code{\link{Lrnr_HarmonicReg}},
   \code{\link{Lrnr_arima}}, \code{\link{Lrnr_base}},
-  \code{\link{Lrnr_condensier}}, \code{\link{Lrnr_cv}},
+  \code{\link{Lrnr_bilstm}}, \code{\link{Lrnr_condensier}},
+  \code{\link{Lrnr_cv}},
   \code{\link{Lrnr_define_interactions}},
   \code{\link{Lrnr_expSmooth}},
   \code{\link{Lrnr_glm_fast}}, \code{\link{Lrnr_glmnet}},

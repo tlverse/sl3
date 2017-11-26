@@ -49,7 +49,9 @@ Suggests:
     e1071,
     earth,
     R.rsp,
-    kerasR
+    kerasR,
+    keras,
+    tensorflow
 Remotes:
     github::osofr/condensier,
     github::jeremyrcoyle/delayed
