@@ -17,11 +17,9 @@ env:
 
 before_install: Rscript -e 'update.packages(ask = FALSE)'
   - sudo apt-get -y install python3-pip python-dev
-  - pip3 install numpy 
- 
-install:
-  - sudo pip3 install -U tensorflow
-  - sudo pip3 install -U keras
+  - sudo pip install numpy 
+  - sudo pip install tensorflow
+  - sudo pip install keras
 
 r_packages:
   - covr
