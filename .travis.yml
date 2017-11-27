@@ -4,41 +4,30 @@ sudo: required
 cache: packages
 warnings_are_errors: true
 r_check_args: ''
-
 r:
-  - release
-  - devel
-
-env:
-  global:
-    - RGL_USE_NULL=TRUE
-    - PKG_CFLAGS="-O3 -Wall -pedantic"
-    - secure: "nCJS8SflaaailfQ/QEt5wW36HBFMhti4KbMKOrcFSJ6wi9K7n8K6WzTjrZ+RfPMVZjsiSjNcWseGCnr+Yyl+yKW7jIm0ZDOAdMY3LCqTBlh6hrmReH2bto6qrlG1yXZYNWaIrPYXCOjDWJc/MU9F24g+MmppFl+n7O36caOLb96mLBGJXkoCo5Tuz9dCd4mFi4x9kw/hwFyrblgVEPsjHZiJDQlaU63dRNWomt3fEaIlhNPZTFWMuR7u2ciWoZpwgzbhcFDe9oMsYfu/nbZPEEIZgo6V6D3EwmeMm+NUy4LmIpNWmOMSkuFrywJuUErPEKevf2TIWDeykt84cuY/y6DXvJWGY1JRfXrxWoAfyybnUd+2Raby3sCGhBrAwSexUhIXpIR4quOfmgz7kIhwU2GRkifryWWFJHlmYaGoJtbl6xYS7PCxRt20yH9m1Ap7T4F+8oe3iqBaPrWGnqDoafy3iPz/fzqhb3xMjMM0C7mvOUNYLFFruXIaritn6iKlSdHEPuQ2scNSbjuI0YLUzS6I2kJbOBQwBipQzvWxY1EWjyQ3M/2BnusKjGn6qgpDEElYyPDEn/RncBbEMVqGH+Bm1J7MHV6aG8wMxRT/svGFJHyzngTDNU0Do25eCjQkDeBEUUFHEO7KGEkCSZKk6J/pyhNDzTr/Uc4ttmBBIv4="
-
+- release
+- devel
 before_install: Rscript -e 'update.packages(ask = FALSE)'
-  - sudo apt-get -y install python3-pip python-dev
-  - sudo pip install numpy 
-  - sudo pip install tensorflow
-  - sudo pip install keras
-
+- sudo apt-get -y install python3-pip python-dev
+- sudo pip install numpy 
+- sudo pip install tensorflow
+- sudo pip install keras
 r_packages:
-  - covr
-  - drat
-
+- covr
+- drat
 r_github_packages:
-  - jimhester/covr
-
+- jimhester/covr
 after_success:
-  - travis_wait Rscript -e 'covr::codecov()'
-  - test $TRAVIS_REPO_SLUG == "jeremyrcoyle/sl3" &&
-    test $TRAVIS_PULL_REQUEST == "false" &&
-    test $TRAVIS_BRANCH == "master" &&
-    bash deploy.sh
-
+- travis_wait Rscript -e 'covr::codecov()'
+- test $TRAVIS_PULL_REQUEST == "true" && test $TRAVIS_BRANCH == "master" && bash deploy.sh
 on_failure:
-  - ./travis-tool.sh dump_logs
-
+- "./travis-tool.sh dump_logs"
 notifications:
   email:
     on_success: change
     on_failure: change
+env:
+  global:
+  - RGL_USE_NULL=TRUE
+  - PKG_CFLAGS="-O3 -Wall -pedantic"
+- secure: IH0Tiyhb9aj5Rd/o44LiNf7L+mDTLhLHIVfv2iR8V7WKp5uT6QAvUzNvKLDhMwRfsNd9Wa9C67oXA6ROUoBkeyrETUT79BgZ+DG77EJ3i3XE153IHpGEFxW5gnEpFz4Sn6bS6qncfaKB2ocnJwByEfWCk2uMt5onBn7q5WAheuX0eeg6X3DJmJa+nTCAIQWRv/F0PLup5z0BTobAF2Qddp3KWug9WuWnyUPXJDLWww4IpU9V2P7DL9vsgwo/WqA59AbdPRqZbTCQh8kuJq2ETnQwfqwL6kofQnGeB/KNrIVLfvGucRQpZvF/7a1QDZvXd5RvQjBLS+8eoqb25bCSHtUr1UQI4Dpyf15LJThXksgPmm8pNdO7RYtjBENM0sD4eCyTwW/MXibGKCexgFlI0T4jwnyMpNOyZlefUolIjjjZh0e4wOpSY6kXSq9bz8EyloA0qcyfbJ5UKhwm9RVsXZCIbvSRtPyMoo8g8526Pbzs4eLND79mdQFy/2EhshCLnz/iH9QrNeNkWGbMHHUrkxChZWbP2LPt68PbYP3qPf3qbRmzamAjqO/hN4/xzls7/V23dW8aocHDSYi29R3UfKV69jgVYI3YXv7pUlxrqPNScpTZOxjAomZntWWGQVG6vhOyKuRc0z93X+zqaWdTUtVlcZKaEI+OPQeZWEFU9gY=
