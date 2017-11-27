@@ -48,7 +48,10 @@ Suggests:
     future,
     e1071,
     earth,
-    R.rsp
+    R.rsp,
+    kerasR,
+    keras,
+    reticulate
 Remotes:
     github::osofr/condensier,
     github::jeremyrcoyle/delayed
