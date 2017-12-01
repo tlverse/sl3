@@ -12,17 +12,21 @@ Custom_chain
 customize_chain(learner, chain_fun)
 }
 \arguments{
-\item{learner}{sl3 learner to modify}
+\item{learner}{A \code{sl3} learner to modify.}
 
-\item{chain_fun}{function with arguments learner and task that defines the new chain behavior}
+\item{chain_fun}{A function with arguments \code{learner} and \code{task}
+that defines the new chain behavior.}
 }
 \value{
-\code{\link{Lrnr_base}} object with methods for training and prediction
+\code{\link{Lrnr_base}} object with methods for training and
+prediction
 }
 \description{
 Customize chaining for a learner
 
-This function wraps a learner in such a way that the behavior of learner$chain is modified to use a new function definition. learner$train and learner$predict are unaffected
+This function wraps a learner in such a way that the behavior of
+\code{learner$chain} is modified to use a new function definition.
+\code{learner$train} and \code{learner$predict} are unaffected.
 }
 \section{Fields}{
 
@@ -33,7 +37,9 @@ This function wraps a learner in such a way that the behavior of learner$chain i
 \section{Methods}{
 
 \describe{
-\item{\code{new(...)}}{This method is used to create a pipeline of learners. Arguments should be indiviual \code{Learner}s, in the order they should be applied.}
+\item{\code{new(...)}}{This method is used to create a pipeline of
+learners. Arguments should be indiviual \code{Learner}s, in the order they
+should be applied.}
 }
 }
 

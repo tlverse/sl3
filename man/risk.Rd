@@ -7,13 +7,13 @@
 risk(pred, truth, loss = loss_squared_error, weights = NULL)
 }
 \arguments{
-\item{pred}{a vector of predicted values}
+\item{pred}{A vector of predicted values.}
 
-\item{truth}{a vector of true values}
+\item{truth}{A vector of true values.}
 
-\item{loss}{a loss function. For options, see \link{loss_functions}.}
+\item{loss}{A loss function. For options, see \link{loss_functions}.}
 
-\item{weights, }{a vector of weights}
+\item{weights}{A vector of weights.}
 }
 \description{
 Estimates a risk for a given set of predictions and loss function.

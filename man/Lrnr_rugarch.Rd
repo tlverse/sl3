@@ -9,20 +9,30 @@
 Lrnr_rugarch
 }
 \value{
-Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+Learner object with methods for training and prediction. See
+\code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
-This learner supports autoregressive fractionally integrated moving average and
-various flavors of generalized autoregressive conditional heteroskedasticity models for univariate time-series.
+This learner supports autoregressive fractionally integrated moving average
+and various flavors of generalized autoregressive conditional
+heteroskedasticity models for univariate time-series.
 }
 \section{Parameters}{
 
 \describe{
-\item{\code{variance.model}}{List containing the variance model specification. This includes model, GARCH order, submodel, external regressors and variance tageting. Refer to \code{ugarchspec} for more information.}
-\item{\code{mean.model}}{List containing the mean model specification. This includes ARMA model, whether the mean should be included, and external regressors among others. Refer to \code{ugarchspec} for more information.}
-\item{\code{distribution.model="norm"}}{Conditional density to use for the innovations.}
-\item{\code{start.pars=list()}}{List of staring parameters for the optimization routine.}
-\item{\code{fixed.pars=list()}}{List of parameters which are to be kept fixed during the optimization.}
+\item{\code{variance.model}}{List containing variance model specification.
+This includes model, GARCH order, submodel, external regressors and
+variance tageting. Refer to \code{ugarchspec} for more information.}
+\item{\code{mean.model}}{List containing the mean model specification. This
+includes ARMA model, whether the mean should be included, and external
+regressors among others. Refer to \code{ugarchspec} for more
+information.}
+\item{\code{distribution.model="norm"}}{Conditional density to use for the
+innovations.}
+\item{\code{start.pars=list()}}{List of staring parameters for the
+optimization routine.}
+\item{\code{fixed.pars=list()}}{List of parameters which are to be kept
+fixed during the optimization.}
 \item{\code{n.ahead=NULL}}{The forecast horizon.}
 }
 }

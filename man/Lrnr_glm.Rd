@@ -9,15 +9,17 @@
 Lrnr_glm
 }
 \value{
-Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+Learner object with methods for training and prediction. See
+\code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
-This learner provides fitting procedures for generalized linear models using \code{\link[stats]{glm.fit}}.
+This learner provides fitting procedures for generalized linear models using
+\code{\link[stats]{glm.fit}}.
 }
 \section{Parameters}{
 
 \describe{
-\item{\code{...}}{Parameters passed to \code{\link[stats]{glm}} }
+\item{\code{...}}{Parameters passed to \code{\link[stats]{glm}}.}
 }
 }
 

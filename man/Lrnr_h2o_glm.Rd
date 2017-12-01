@@ -14,10 +14,12 @@ Lrnr_h2o_glm
 \arguments{
 \item{task}{An object of type \code{Lrnr_base} as defined in this package.}
 
-\item{outcome_type}{An object of type \code{Variable_Tyoe} for use in formatting the outcome}
+\item{outcome_type}{An object of type \code{Variable_Tyoe} for use in
+formatting the outcome}
 }
 \value{
-Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+Learner object with methods for training and prediction. See
+\code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
 Definition of \code{h2o} type models. This function is for internal use only.
@@ -27,19 +29,22 @@ covariates if spec'ed in params.
 
 This learner provides faster fitting procedures for generalized linear models
 by using the \code{h2o} package and the \code{\link[h2o]{h2o.glm}} method.
-The h2o Platform fits GLMs in a computationally efficient manner. For details on the procedure,
-consult the documentation of the \code{h2o} package.
+The h2o Platform fits GLMs in a computationally efficient manner. For details
+on the procedure, consult the documentation of the \code{h2o} package.
 }
 \section{Parameters}{
 
 \describe{
-\item{\code{intercept=TRUE}}{If TRUE, and intercept term is included}
-\item{\code{standardize=TRUE}}{Standardize covariates to have mean=0 and SD=1}
-\item{\code{lambda=0}}{Lasso Parameter}
-\item{\code{max_iterations=100}}{Maximum number of iterations}
-\item{\code{ignore_const_columns=FALSE}}{If TRUE, drop constant covariate columns}
-\item{\code{missing_values_handling="Skip"}}{How to handle missing values}
-\item{\code{...}}{Other arguments passed to \code{\link[h2o]{h2o.glm}}}
+\item{\code{intercept=TRUE}}{If \code{TRUE}, and intercept term is
+included.}
+\item{\code{standardize=TRUE}}{Standardize covariates to have mean = 0 and
+SD = 1.}
+\item{\code{lambda=0}}{Lasso Parameter.}
+\item{\code{max_iterations=100}}{Maximum number of iterations.}
+\item{\code{ignore_const_columns=FALSE}}{If \code{TRUE}, drop constant
+covariate columns}
+\item{\code{missing_values_handling="Skip"}}{How to handle missing values.}
+\item{\code{...}}{Other arguments passed to \code{\link[h2o]{h2o.glm}}.}
 }
 }
 

@@ -9,7 +9,8 @@
 Lrnr_pkg_condensier_logisfitR6
 }
 \description{
-This wrapper allows the use of any \code{sl3} Learner as a Learner for \code{condensier}.
-For details, see the \code{\link[condensier]{fit_density}} function.
+This wrapper allows the use of any \code{sl3} Learner as a Learner for
+\code{condensier}. For details, see the \code{\link[condensier]{fit_density}}
+function.
 }
 \keyword{datasets}

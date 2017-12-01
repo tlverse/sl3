@@ -6,15 +6,17 @@
 \title{Undocumented Learner}
 \format{\code{\link{R6Class}} object.}
 \value{
-\code{\link{Lrnr_base}} object with methods for training and prediction
+\code{\link{Lrnr_base}} object with methods for training and
+prediction.
 }
 \description{
-We haven't documented this one yet.
+We haven't documented this one yet. Feel free to contribute!
 }
 \section{Fields}{
 
 \describe{
-\item{\code{params}}{A list of parameters needed to fully specify the learner. This includes things like model hyperparameters.}
+\item{\code{params}}{A list of parameters needed to fully specify the learner. This
+includes things like model hyperparameters.}
 }}
 
 \seealso{

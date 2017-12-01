@@ -9,19 +9,24 @@
 Pipeline
 }
 \value{
-Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+Learner object with methods for training and prediction. See
+\code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
-A Pipeline of learners is a way to "chain" Learners together, where the output of one learner is used as output for the next learner.
-This can be used for things like screening, two stage machine learning methods, and Super Learning.
-A pipeline is fit by fitting the first \code{Learner}, calling \code{chain()} to create the next task,
-which becomes the training data for the next \code{Learner}.
-Similarly, for prediction, the predictions from the first \code{Learner} become the data to predict on for the next \code{Learner}.
+A Pipeline of learners is a way to "chain" Learners together, where the
+output of one learner is used as output for the next learner. This can be
+used for things like screening, two stage machine learning methods, and Super
+Learning. A pipeline is fit by fitting the first \code{Learner}, calling
+\code{chain()} to create the next task, which becomes the training data for
+the next \code{Learner}. Similarly, for prediction, the predictions from the
+first \code{Learner} become the data to predict on for the next
+\code{Learner}.
 }
 \section{Parameters}{
 
 \describe{
-\item{\code{...}}{Parameters should be individual \code{Learner}s, in the order they should be applied.}
+\item{\code{...}}{Parameters should be individual \code{Learner}s, in the
+order they should be applied.}
 }
 }
 

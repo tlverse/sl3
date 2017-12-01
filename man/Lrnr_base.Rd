@@ -12,16 +12,19 @@ Lrnr_base
 make_learner(learner_class, ...)
 }
 \arguments{
-\item{learner_class}{the learner class to instantiate}
+\item{learner_class}{The learner class to instantiate.}
 
-\item{...}{parameters with which to instantiate the learner. See Parameters section below.}
+\item{...}{Parameters with which to instantiate the learner. See Parameters
+section below.}
 }
 \value{
 Learner object with methods for training and prediction
 }
 \description{
-Generally this base learner class shouldn't be instantiated. It's intended to be an abstract class, although abstract classes aren't explicitly supported by R6.
-All learners support the methods and fields documented below. For more information on a particular learner, see its help file.
+Generally this base learner class shouldn't be instantiated. It's intended to
+be an abstract class, although abstract classes aren't explicitly supported
+by \code{R6}. All learners support the methods and fields documented below.
+For more information on a particular learner, see its help file.
 }
 \section{Common Parameters}{
 

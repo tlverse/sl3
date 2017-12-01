@@ -9,7 +9,8 @@
 Lrnr_cv
 }
 \value{
-Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+Learner object with methods for training and prediction. See
+\code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
 A wrapper around any learner that generates cross-validate predictions
@@ -18,7 +19,8 @@ A wrapper around any learner that generates cross-validate predictions
 
 \describe{
 \item{\code{learner}}{The learner to wrap}
-\item{\code{folds=NULL}}{An \code{origami} folds object. If \code{NULL}, folds from the task are used}
+\item{\code{folds=NULL}}{An \code{origami} folds object. If \code{NULL},
+folds from the task are used}
 }
 }
 

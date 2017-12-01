@@ -1,24 +1,35 @@
 #' Non-negative Linear Least Squares
 #'
 #' This learner provides fitting procedures for models with non-negative linear
-#' least squares, internally using the \code{nnls} package and \code{\link[nnls]{nnls}} function.
+#' least squares, internally using the \code{nnls} package and
+#' \code{\link[nnls]{nnls}} function.
 #'
 #' @docType class
+#'
 #' @importFrom R6 R6Class
+#' @importFrom assertthat assert_that is.count is.flag
+#'
 #' @export
+#'
 #' @keywords data
-#' @return Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+#'
+#' @return Learner object with methods for both training and prediction. See
+#'  \code{\link{Lrnr_base}} for documentation on learners.
+#'
 #' @format \code{\link{R6Class}} object.
+#'
 #' @family Learners
-#' 
+#'
 #' @section Parameters:
 #' \describe{
-#'   \item{\code{...}}{Not used}
+#'   \item{\code{...}}{Not used.}
 #' }
+#'
 #' @template common_parameters
-#' @importFrom assertthat assert_that is.count is.flag
-Lrnr_nnls <- R6Class(classname = "Lrnr_nnls", inherit = Lrnr_base,
-                     portable = TRUE, class = TRUE,
+#
+Lrnr_nnls <- R6Class(
+  classname = "Lrnr_nnls", inherit = Lrnr_base,
+  portable = TRUE, class = TRUE,
   public = list(
     initialize = function(...) {
       params <- list(...)
@@ -29,9 +40,10 @@ Lrnr_nnls <- R6Class(classname = "Lrnr_nnls", inherit = Lrnr_base,
       print(self$fits)
     }
   ),
+
   active = list(
     fits = function() {
-      fit_object = private$.fit_object
+      fit_object <- private$.fit_object
       if (!is.null(fit_object)) {
         data.table::data.table(lrnrs = fit_object$lrnrs, weights = fit_object$x)
       } else {
@@ -39,6 +51,7 @@ Lrnr_nnls <- R6Class(classname = "Lrnr_nnls", inherit = Lrnr_base,
       }
     }
   ),
+
   private = list(
     .properties = c("continuous"),
     .train = function(task) {
@@ -48,6 +61,7 @@ Lrnr_nnls <- R6Class(classname = "Lrnr_nnls", inherit = Lrnr_base,
       fit_object$lrnrs <- names(task$X)
       return(fit_object)
     },
+
     .predict = function(task = NULL) {
       predictions <- as.matrix(task$X) %*% coef(private$.fit_object)
       return(predictions)
@@ -55,4 +69,3 @@ Lrnr_nnls <- R6Class(classname = "Lrnr_nnls", inherit = Lrnr_base,
     .required_packages = c("nnls")
   ),
 )
-

@@ -9,19 +9,22 @@
 Lrnr_glm_fast
 }
 \value{
-Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+Learner object with methods for training and prediction. See
+\code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
 This learner provides faster fitting procedures for generalized linear models
-using the \code{speedglm} package. Arguments passed to \code{\link[speedglm]{speedglm.wfit}}.
-Uses \code{\link[stats]{glm.fit}} as a fallback if \code{\link[speedglm]{speedglm.wfit}} fails.
+using the \code{speedglm} package. Arguments are passed to
+\code{\link[speedglm]{speedglm.wfit}}. Uses \code{\link[stats]{glm.fit}} as a
+fallback if \code{\link[speedglm]{speedglm.wfit}} fails.
 }
 \section{Parameters}{
 
 \describe{
 \item{\code{intercept=TRUE}}{If \code{TRUE}, an intercept term is included}
 \item{\code{method="Cholesky"}}{The matrix decomposition method to use}
-\item{\code{...}}{Other parameters passed to \code{\link[speedglm]{speedglm.wfit}} }
+\item{\code{...}}{Other parameters to be passed to
+\code{\link[speedglm]{speedglm.wfit}}.}
 }
 }
 

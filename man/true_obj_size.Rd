@@ -13,5 +13,6 @@ true_obj_size(obj)
 the size of \code{obj} in bytes
 }
 \description{
-Attempts to get a better estimate of object size than that returned by \code{\link{object.size}}
+Attempts to get a better estimate of object size than that returned by
+\code{\link{object.size}}
 }

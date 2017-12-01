@@ -9,7 +9,8 @@
 Lrnr_subset_covariates
 }
 \value{
-Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+Learner object with methods for training and prediction. See
+\code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
 This learner provides fitting procedures for subsetting covariates. It is a

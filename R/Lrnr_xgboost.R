@@ -1,69 +1,82 @@
 #' xgboost: eXtreme Gradient Boosting
 #'
 #' This learner provides fitting procedures for \code{xgboost} models, using the
-#' \code{xgboost} package, using the \code{\link[xgboost]{xgb.train}} function. Such models are classification and regression trees
-#' with extreme gradient boosting. For details on the fitting procedure, consult
-#' the documentation of the \code{xgboost} package.
+#' \code{xgboost} package, using the \code{\link[xgboost]{xgb.train}} function.
+#' Such models are classification and regression trees with extreme gradient
+#' boosting. For details on the fitting procedure, consult the documentation of
+#' the \code{xgboost} package.
+#'
 #' @docType class
+#'
 #' @importFrom R6 R6Class
+#'
 #' @export
+#'
 #' @keywords data
-#' @return Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+#'
+#' @return Learner object with methods for training and prediction. See
+#'  \code{\link{Lrnr_base}} for documentation on learners.
+#'
 #' @format \code{\link{R6Class}} object.
+#'
 #' @family Learners
-#' 
+#'
 #' @section Parameters:
 #' \describe{
-#'   \item{\code{nrounds=20}}{Number of fitting iterations}
-#'   \item{\code{...}}{Other parameters passed to \code{\link[xgboost]{xgb.train}}}
+#'   \item{\code{nrounds=20}}{Number of fitting iterations.}
+#'   \item{\code{...}}{Other parameters passed to
+#'     \code{\link[xgboost]{xgb.train}}.}
 #' }
+#'
 #' @template common_parameters
-Lrnr_xgboost <- R6Class(classname = "Lrnr_xgboost", inherit = Lrnr_base,
-                        portable = TRUE, class = TRUE,
+#
+Lrnr_xgboost <- R6Class(
+  classname = "Lrnr_xgboost", inherit = Lrnr_base,
+  portable = TRUE, class = TRUE,
   public = list(
     initialize = function(nrounds = 20, ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
-  }),
+    }
+  ),
+
   private = list(
-    .properties = c("continuous", "binomial", "categorical", "weights", "offset"),
+    .properties = c(
+      "continuous", "binomial", "categorical", "weights",
+      "offset"
+    ),
+
     .train = function(task) {
       verbose <- getOption("sl3.verbose")
       args <- self$params
       outcome_type <- self$get_outcome_type(task)
 
       Xmat <- as.matrix(task$X)
-
       if (is.integer(Xmat)) {
         Xmat[, 1] <- as.numeric(Xmat[, 1])
       }
-
       Y <- outcome_type$format(task$Y)
-
-      if(outcome_type$type=="categorical"){
-        Y <- as.numeric(Y)-1
+      if (outcome_type$type == "categorical") {
+        Y <- as.numeric(Y) - 1
       }
-
       args$data <- try(xgboost::xgb.DMatrix(Xmat, label = Y))
 
-      if(task$has_node("weights")){
+      if (task$has_node("weights")) {
         try(xgboost::setinfo(args$data, "weight", task$weights))
       }
-
-      if(task$has_node("offset")){
+      if (task$has_node("offset")) {
         try(xgboost::setinfo(args$data, "base_margin", task$offset))
       }
-
       args$verbose <- as.integer(verbose)
       args$print_every_n <- 1000
       args$watchlist <- list(train = args$data)
-      
-      if(is.null(args$objective)){
-        if(outcome_type$type=="binomial"){
+
+      if (is.null(args$objective)) {
+        if (outcome_type$type == "binomial") {
           args$objective <- "binary:logistic"
-        } else if(outcome_type$type=="quasibinomial"){
+        } else if (outcome_type$type == "quasibinomial") {
           args$objective <- "reg:logistic"
-        } else if(outcome_type$type=="categorical"){
+        } else if (outcome_type$type == "categorical") {
           args$objective <- "multi:softprob"
           args$num_class <- length(outcome_type$levels)
         }
@@ -71,12 +84,12 @@ Lrnr_xgboost <- R6Class(classname = "Lrnr_xgboost", inherit = Lrnr_base,
       fit_object <- call_with_args(xgboost::xgb.train, args, keep_all = TRUE)
       return(fit_object)
     },
+
     .predict = function(task = NULL) {
       outcome_type <- private$.training_outcome_type
       verbose <- getOption("sl3.verbose")
 
       Xmat <- as.matrix(task$X)
-
       if (is.integer(Xmat)) {
         Xmat[, 1] <- as.numeric(Xmat[, 1])
       }
@@ -90,15 +103,16 @@ Lrnr_xgboost <- R6Class(classname = "Lrnr_xgboost", inherit = Lrnr_base,
         # Use it only for gbtree (not gblinear, i.e., glm -- not implemented)
         ntreelimit <- 0
         if (!is.null(fit_object[["best_ntreelimit"]]) &&
-            !(fit_object[["params"]][["booster"]] %in% "gblinear")) {
+          !(fit_object[["params"]][["booster"]] %in% "gblinear")) {
           ntreelimit <- fit_object[["best_ntreelimit"]]
         }
         # will generally return vector, needs to be put into data.table column
-        predictions <- stats::predict(fit_object, newdata = xgb_data,
-                                      ntreelimit = ntreelimit, reshape=TRUE)
+        predictions <- stats::predict(
+          fit_object, newdata = xgb_data,
+          ntreelimit = ntreelimit, reshape = TRUE
+        )
       }
-
-      if(outcome_type$type == "categorical"){
+      if (outcome_type$type == "categorical") {
         # pack predictions in a single column
         predictions <- pack_predictions(predictions)
       }
@@ -108,4 +122,3 @@ Lrnr_xgboost <- R6Class(classname = "Lrnr_xgboost", inherit = Lrnr_base,
     .required_packages = c("xgboost")
   )
 )
-

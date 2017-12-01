@@ -10,8 +10,11 @@ write_learner_template(file)
 \item{file}{the path where the file should be written}
 }
 \value{
-the return from \code{\link{file.copy}}. \code{TRUE} if writing the template was successful.
+the return from \code{\link{file.copy}}. \code{TRUE} if writing the
+template was successful.
 }
 \description{
-Generates a template file that can be used to write a new \code{sl3} Learner. For more information, see the \href{../doc/custom_lrnrs.html}{Defining New Learners} vignette.
+Generates a template file that can be used to write a new \code{sl3} Learner.
+For more information, see the \href{../doc/custom_lrnrs.html}{Defining New
+Learners} vignette.
 }

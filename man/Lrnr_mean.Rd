@@ -3,13 +3,14 @@
 \docType{class}
 \name{Lrnr_mean}
 \alias{Lrnr_mean}
-\title{Intercept Model Fits}
+\title{Fitting Intercept Models}
 \format{\code{\link{R6Class}} object.}
 \usage{
 Lrnr_mean
 }
 \value{
-Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+Learner object with methods for training and prediction. See
+\code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
 This learner provides fitting procedures for intercept models. Such models
@@ -18,7 +19,7 @@ predict the outcome variable simply as the mean of the outcome vector.
 \section{Parameters}{
 
 \describe{
-\item{\code{...}}{Not used}
+\item{\code{...}}{Not used.}
 }
 }
 

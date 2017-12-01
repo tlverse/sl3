@@ -9,10 +9,12 @@
 Stack
 }
 \value{
-Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+Learner object with methods for training and prediction. See
+\code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
-A Stack is a special Learner that combines multiple other learners, "stacking" their predictions in columns.
+A Stack is a special Learner that combines multiple other learners,
+"stacking" their predictions in columns.
 }
 \section{Parameters}{
 

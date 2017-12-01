@@ -9,16 +9,18 @@
 Lrnr_nnls
 }
 \value{
-Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+Learner object with methods for both training and prediction. See
+\code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
 This learner provides fitting procedures for models with non-negative linear
-least squares, internally using the \code{nnls} package and \code{\link[nnls]{nnls}} function.
+least squares, internally using the \code{nnls} package and
+\code{\link[nnls]{nnls}} function.
 }
 \section{Parameters}{
 
 \describe{
-\item{\code{...}}{Not used}
+\item{\code{...}}{Not used.}
 }
 }
 

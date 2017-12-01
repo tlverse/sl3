@@ -1,1 +1,0 @@
-list_name = list()

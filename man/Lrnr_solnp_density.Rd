@@ -9,15 +9,16 @@
 Lrnr_solnp_density
 }
 \value{
-Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+Learner object with methods for training and prediction. See
+\code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
 This meta-learner provides fitting procedures for density estimation, finding
 convex combinations of candidate density estimators by minimizing the
 cross-validated negative log-likelihood loss of each candidate density. The
-optimization problem is solved by making use of \code{\link[Rsolnp]{solnp}}, using
-Lagrange multipliers. For further details, consult the documentation of the
-\code{Rsolnp} package.
+optimization problem is solved by making use of \code{\link[Rsolnp]{solnp}},
+using Lagrange multipliers. For further details, consult the documentation of
+the \code{Rsolnp} package.
 }
 \section{Parameters}{
 

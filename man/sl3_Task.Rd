@@ -12,13 +12,16 @@ sl3_Task
 make_sl3_Task(...)
 }
 \arguments{
-\item{...}{Passes all arguments to the constructor. See documentation for the Constructor below.}
+\item{...}{Passes all arguments to the constructor. See documentation for the
+Constructor below.}
 }
 \value{
 \code{sl3_Task} object
 }
 \description{
-A thin wrapper around a \code{data.table} containing the data. Contains metadata about the particular machine learning problem, including which variables are to be used as covariates and outcomes.
+A thin wrapper around a \code{data.table} containing the data. Contains
+metadata about the particular machine learning problem, including which
+variables are to be used as covariates and outcomes.
 }
 \section{Constructor}{
 

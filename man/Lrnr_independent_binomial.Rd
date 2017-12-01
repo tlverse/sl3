@@ -9,16 +9,18 @@
 Lrnr_independent_binomial
 }
 \value{
-Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+Learner object with methods for training and prediction. See
+\code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
-This learner provides converts a binomial learner into a multinomial learner using a series of independent binomials.
-The procedure is modeled on \url{https://en.wikipedia.org/wiki/Multinomial_logistic_regression#As_a_set_of_independent_binary_regressions}
+This learner provides converts a binomial learner into a multinomial learner
+using a series of independent binomials. The procedure is modeled on
+\url{https://en.wikipedia.org/wiki/Multinomial_logistic_regression#As_a_set_of_independent_binary_regressions}
 }
 \section{Parameters}{
 
 \describe{
-\item{\code{binomial_learner}}{The learner to wrap}
+\item{\code{binomial_learner}}{The learner to wrap.}
 }
 }
 

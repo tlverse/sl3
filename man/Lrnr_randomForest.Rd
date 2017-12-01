@@ -9,21 +9,27 @@
 Lrnr_randomForest
 }
 \value{
-Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+Learner object with methods for training and prediction. See
+\code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
 This learner provides fitting procedures for random forest models, using the
-\code{randomForest} package, using the \code{\link[randomForest]{randomForest}} function.
+\code{randomForest} package, using \code{\link[randomForest]{randomForest}}
+function.
 }
 \section{Parameters}{
 
 \describe{
 \item{\code{ntree=100}}{Number of trees in forest}
-\item{\code{keep.forest=TRUE}}{If \code{TRUE}, forest is stored, which is required for prediction.}
-\item{\code{nodesize=5}}{Minimum number of observations in terminal (leaf) nodes}
-\item{\code{maxnodes=NULL}}{Maximum number of terminal (leaf) nodes in each tree}
-\item{\code{importance=FALSE}}{Store variable importance information}
-\item{\code{...}}{Other parameters passed to \code{\link[randomForest]{randomForest}}}
+\item{\code{keep.forest=TRUE}}{If \code{TRUE}, forest is stored, which is
+required for prediction.}
+\item{\code{nodesize=5}}{Minimum number of observations in terminal (leaf)
+nodes.}
+\item{\code{maxnodes=NULL}}{Maximum number of terminal (leaf) nodes in each
+tree.}
+\item{\code{importance=FALSE}}{Store variable importance information.}
+\item{\code{...}}{Other parameters passed to
+\code{\link[randomForest]{randomForest}}.}
 }
 }
 
