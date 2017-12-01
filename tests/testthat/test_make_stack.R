@@ -11,8 +11,7 @@ task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
 
 
 # create stack of models with convenience function
-sl_lrnrs_list <- list("Lrnr_mean", "Lrnr_glm_fast", "Lrnr_xgboost")
-sl_stack_easy <- make_learner_stack(sl_lrnrs_list)
+sl_stack_easy <- make_learner_stack("Lrnr_mean", "Lrnr_glm_fast", "Lrnr_xgboost")
 
 
 # manually create each learner
@@ -37,12 +36,10 @@ test_that("Automatic and manually made learner stacks produce same preds", {
 
 
 # easily construct a Stack while passing in extra arguments to some learners
-sl_lrnrs_list <- list("Lrnr_mean", "Lrnr_condensier")
-lrnrs_args_list <- list(list(NA), list(
-  nbins = 5, bin_method = "equal.len",
-  pool = FALSE
-))
-sl_stack <- make_learner_stack(sl_lrnrs_list, lrnrs_args_list)
+sl_stack <- make_learner_stack(
+  "Lrnr_mean",
+  list("Lrnr_condensier", nbins = 5, bin_method = "equal.len", pool = FALSE)
+)
 
 # create condensier manually, train, and compare predictions
 sl_condensier <- Lrnr_condensier$new(

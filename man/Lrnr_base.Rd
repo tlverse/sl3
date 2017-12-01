@@ -33,9 +33,9 @@ Individual learners have their own sets of parameters. Below is a list of shared
 by all learners.
 
 \describe{
-\item{\code{covariates}}{A character vector of covariates. The learner will use this to subset the covariates for any specified task}
-\item{\code{outcome_type}}{A \code{\link{variable_type}} object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified}
-\item{\code{...}}{All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating}
+  \item{\code{covariates}}{A character vector of covariates. The learner will use this to subset the covariates for any specified task}
+  \item{\code{outcome_type}}{A \code{\link{variable_type}} object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified}
+  \item{\code{...}}{All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating}
 }
 }
 
@@ -44,76 +44,76 @@ by all learners.
 
 \describe{
 \item{\code{train(task)}}{
-Trains learner to a task using \code{delayed}. Returns a fit object
+  Trains learner to a task using \code{delayed}. Returns a fit object
 
-\itemize{
-\item{\code{task}: The task to use for training
-}
-}
-}
-
+  \itemize{
+    \item{\code{task}: The task to use for training
+    }
+  }
+  }
+  
 \item{\code{base_train(task, trained_sublearners = NULL)}}{
-Trains learner to a task. Returns a fit object
+  Trains learner to a task. Returns a fit object
 
-\itemize{
-\item{\code{task}: The task to use for training
-}
-\item{\code{trained_sublearners}: Any sublearners previous trained. Almost always \code{NULL}
-}
-}
-}
-
+  \itemize{
+    \item{\code{task}: The task to use for training
+    }
+    \item{\code{trained_sublearners}: Any sublearners previous trained. Almost always \code{NULL}
+    }
+  }
+  }
+  
 \item{\code{predict(task=NULL)}}{
-Generates predictions using \code{delayed}. Returns a prediction vector or matrix.
+  Generates predictions using \code{delayed}. Returns a prediction vector or matrix.
 
-\itemize{
-\item{\code{task}: The task to use for prediction. If no task is provided, it will use the task used for training.
-}
-}
-}
-
+  \itemize{
+    \item{\code{task}: The task to use for prediction. If no task is provided, it will use the task used for training.
+    }
+  }
+  }
+   
 \item{\code{base_predict(task=NULL)}}{
-Generates predictions. Returns a prediction vector or matrix.
+  Generates predictions. Returns a prediction vector or matrix.
 
-\itemize{
-\item{\code{task}: The task to use for prediction. If no task is provided, it will use the task used for training.
-}
-}
-}
-
+  \itemize{
+    \item{\code{task}: The task to use for prediction. If no task is provided, it will use the task used for training.
+    }
+  }
+  }
+   
 \item{\code{chain(task=NULL)}}{
-Generates a chained task using \code{delayed}
+  Generates a chained task using \code{delayed}
 
-\itemize{
-\item{\code{task}: The task to use for chaining If no task is provided, it will use the task used for training.
-}
-}
-}
-
+  \itemize{
+    \item{\code{task}: The task to use for chaining If no task is provided, it will use the task used for training.
+    }
+  }
+  }
+   
 \item{\code{base_chain(task=NULL)}}{
-Generates a chained task
+  Generates a chained task
 
-\itemize{
-\item{\code{task}: The task to use for chaining If no task is provided, it will use the task used for training.
-}
-}
-}
+  \itemize{
+    \item{\code{task}: The task to use for chaining If no task is provided, it will use the task used for training.
+    }
+  }
+  }
 }
 }
 
 \section{Fields}{
 
 \describe{
-\item{\code{is_trained}}{\code{TRUE} if this is a learner fit, not an untrained learner}
-\item{\code{fit_object}}{The internal fit object}
-\item{\code{name}}{The learner name}
-\item{\code{learner_uuid}}{A unique identifier of this learner, but common to all fits of this learner}
-\item{\code{fit_uuid}}{A unique identifier of this learner fit. \code{NULL} if this is an untrained learner}
-\item{\code{params}}{A list of learner parameters, as specified on construction}
-\item{\code{training_task}}{The task used for training. \code{NULL} if this is an untrained learner}
-\item{\code{training_outcome_type}}{The outcome_type of the task used for training. \code{NULL} if this is an untrained learner}
-\item{\code{properties}}{The properties supported by this learner}
-\item{\code{coefficients}}{Fit coefficients, if this learner has coefficients. \code{NULL} otherwise, or if this is an untrained learner}
+  \item{\code{is_trained}}{\code{TRUE} if this is a learner fit, not an untrained learner}
+  \item{\code{fit_object}}{The internal fit object}
+  \item{\code{name}}{The learner name}
+  \item{\code{learner_uuid}}{A unique identifier of this learner, but common to all fits of this learner}
+  \item{\code{fit_uuid}}{A unique identifier of this learner fit. \code{NULL} if this is an untrained learner}   
+  \item{\code{params}}{A list of learner parameters, as specified on construction}   
+  \item{\code{training_task}}{The task used for training. \code{NULL} if this is an untrained learner}   
+  \item{\code{training_outcome_type}}{The outcome_type of the task used for training. \code{NULL} if this is an untrained learner}   
+  \item{\code{properties}}{The properties supported by this learner}   
+  \item{\code{coefficients}}{Fit coefficients, if this learner has coefficients. \code{NULL} otherwise, or if this is an untrained learner}  
 }
 }
 
@@ -124,46 +124,46 @@ These methods are primiarily for internal use only. They're not recommended for 
 
 \describe{
 \item{\code{subset_covariates(task)}}{
-Returns a task with covariates subsetted using the \code{covariates} parameter.
+  Returns a task with covariates subsetted using the \code{covariates} parameter.
 
-\itemize{
-\item{\code{task}: The task to subset
-}
-}
-}
-
+  \itemize{
+    \item{\code{task}: The task to subset
+    }
+  }
+  }
+  
 \item{\code{get_outcome_type(task)}}{
-Mediates between the task outcome_type and parameter outcome_type. If a parameter outcome_type was specified, returns that. Otherwise,
-returns the task$outcome_type.
+  Mediates between the task outcome_type and parameter outcome_type. If a parameter outcome_type was specified, returns that. Otherwise,
+  returns the task$outcome_type.
 
-\itemize{
-\item{\code{task}: The task for which to determine the outcome_type
-}
-}
-}
+  \itemize{
+    \item{\code{task}: The task for which to determine the outcome_type
+    }
+  }
+  }
 
 \item{\code{train_sublearners(task)}}{
-Trains sublearners to a task using \code{delayed}. Returns a delayed sublearner fit.
+  Trains sublearners to a task using \code{delayed}. Returns a delayed sublearner fit.
 
-\itemize{
-\item{\code{task}: The task to use for training
-}
-}
-}
-
+  \itemize{
+    \item{\code{task}: The task to use for training
+    }
+  }
+  }
+  
 \item{\code{set_train(fit_object, training_task)}}{
-Converts a learner to a learner fit.
+  Converts a learner to a learner fit.
 
-\itemize{
-\item{\code{fit_object}: The fit object generated by a call to \code{private$.train}
-}
-\item{\code{training_task}: The task used for training
-}
-}
-}
-
+  \itemize{
+    \item{\code{fit_object}: The fit object generated by a call to \code{private$.train}
+    }
+    \item{\code{training_task}: The task used for training
+    }
+  }
+  }
+  
 \item{\code{assert_trained()}}{
-Throws an error if this learner does not have a \code{fit_object}
+  Throws an error if this learner does not have a \code{fit_object}
 }
 }
 }
@@ -190,5 +190,4 @@ Other Learners: \code{\link{Custom_chain}},
   \code{\link{define_h2o_X}},
   \code{\link{undocumented_learner}}
 }
-\concept{Learners}
 \keyword{data}
