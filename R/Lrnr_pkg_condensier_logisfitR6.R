@@ -6,6 +6,8 @@
 ## below. This R6 object then provides a communication link between the two
 ## packages (sl3 <-> condensier).
 
+##  NEED TO UPDATE THIS BASE CLASS FROM CONDENSIER TO ADD WEIGHTS
+
 #' sl3 Learner wrapper for condensier
 #'
 #' This wrapper allows the use of any \code{sl3} Learner as a Learner for

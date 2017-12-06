@@ -87,6 +87,7 @@ Lrnr_condensier <- R6Class(
       args <- self$params
       args$X <- task$nodes$covariates
       args$Y <- task$nodes$outcome
+      #args$weights <- task$nodes$weights
       args$input_data <- task$data
       fit_object <- call_with_args(condensier::fit_density, args)
       return(fit_object)
