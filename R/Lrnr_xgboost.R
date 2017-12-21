@@ -97,7 +97,7 @@ Lrnr_xgboost <- R6Class(
       xgb_data <- try(xgboost::xgb.DMatrix(Xmat))
       
       if (task$has_node("offset")) {
-        try(xgboost::setinfo(args$data, "base_margin", task$offset))
+        try(xgboost::setinfo(xgb_data, "base_margin", task$offset))
       }
       fit_object <- private$.fit_object
       predictions <- rep.int(list(numeric()), 1)
