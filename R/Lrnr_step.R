@@ -1,15 +1,12 @@
-
-  #' both ways step regression
-  #'
-  #' This learner provides fitting procedures for generalized linear models using
-  #' \code{\link[stats]{glm.fit}}.
-  #'
-  #' @docType class
-  #'
-  #' @importFrom R6 R6Class
-  #' @importFrom stats glm predict family
-  #'
-#' 
+#' both ways step regression
+#'
+#' This learner provides fitting procedures for generalized linear models using
+#'
+#' @docType class
+#'
+#' @importFrom R6 R6Class
+#'
+#' @export
 #'
 #' @keywords data
 #'
