@@ -70,7 +70,7 @@ Lrnr_step <- R6Class(
       args$ctrl <- glm.control(trace = FALSE)
       SuppressGivenWarnings({
         fit.glm <- sl3:::call_with_args(stats::glm, args)
-        fit_object <- stats::step(fit.glm, direction = "both", trace = 0, k = 2) 
+        fit_object <- stats::step(fit.glm, direction = "both", trace = 0, k = 2, offset = args$offset) 
         }, GetWarningsToSuppress())
       
       fit_object$linear.predictors <- NULL
