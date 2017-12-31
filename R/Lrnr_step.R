@@ -9,7 +9,7 @@
   #' @importFrom R6 R6Class
   #' @importFrom stats glm predict family
   #'
-#' @export
+#' 
 #'
 #' @keywords data
 #'
