@@ -86,9 +86,9 @@ Lrnr_glm <- R6Class(
         coef <- private$.fit_object$coef
         if (!all(is.na(coef))) {
           eta <- as.matrix(X[
-            , which(!is.na(coef))], drop = FALSE,
+            , which(!is.na(coef)), drop = FALSE,
             with = FALSE
-          ) %*% coef[!is.na(coef)]
+          ]) %*% coef[!is.na(coef)]
           eta = eta + task$offset
           predictions <- as.vector(private$.fit_object$linkinv_fun(eta))
         }
