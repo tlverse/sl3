@@ -81,7 +81,6 @@ Lrnr_step <- R6Class(
       fit_object$fitted.values <- NULL
       fit_object$effects <- NULL
       fit_object$qr <- NULL
-      linkinv_fun = binomial()$linkinv_fun
       fit_object$linkinv_fun <- linkinv_fun
       
       return(fit_object)
