@@ -1,6 +1,5 @@
 #' Computationally Efficient hal9001
 #'
-#' This learner uses \code{\link[hal9001]{fit_hal}} from \code{hal9001} to fit my favorite machine learning algorithm.
 #' The procedure uses a custom C++ implementation to generate a design
 #'  matrix (consisting of basis functions corresponding to covariates and
 #'  interactions of covariates) and remove duplicate columns of indicators. The
