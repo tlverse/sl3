@@ -3,7 +3,7 @@
 \docType{class}
 \name{Lrnr_hal9001}
 \alias{Lrnr_hal9001}
-\title{Template of a \code{sl3} Learner.}
+\title{Computationally Efficient hal9001}
 \format{\code{\link{R6Class}} object.}
 \usage{
 Lrnr_hal9001
@@ -12,33 +12,26 @@ Lrnr_hal9001
 Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
-This is a template for defining a new learner.
-This can be copied to a new file using \code{\link{write_learner_template}}.
-The remainder of this documentation is an example of how you might write documentation for your new learner.
 This learner uses \code{\link[hal9001]{fit_hal}} from \code{hal9001} to fit my favorite machine learning algorithm.
+The procedure uses a custom C++ implementation to generate a design
+matrix (consisting of basis functions corresponding to covariates and
+interactions of covariates) and remove duplicate columns of indicators. The
+LASSO regression is fit to this (usually) very wide matrix using either a
+custom implementation (based on the \code{origami} package) or by a call to
+\code{cv.glmnet} from the \code{glmnet} package.
 }
 \section{Parameters}{
 
 \describe{
-\item{\code{param_1="default_1"}}{ This parameter does something.
+\item{\code{degrees="degrees"}}{ The highest order of interaction terms for which the basis functions ought to be generated. The default (\code{NULL}) corresponds to generating basis functions for the full dimensionality of the input matrix.
 }
-\item{\code{param_2="default_2"}}{ This parameter does something else.
+\item{\code{fit_type="fit_type"}}{ The specific routine to be called when fitting the LASSO regression in a cross-validated manner. Choosing the \code{glmnet} option will result in a call to \code{cv.glmnet} while \code{origami} will produce a (faster) call to a custom routine based on the \code{origami} package.
+}
+\item{\code{n_folds="n_folds"}}{ Integer for the number of folds to be used when splitting the data for cross-validation. This defaults to 10 as this is the convention for v-fold cross-validation.
+}
+\item{\code{use_min="use_min"}}{ Determines which lambda is selected from \code{cv.glmnet}. \code{TRUE} corresponds to \code{"lambda.min"} and \code{FALSE} corresponds to \code{"lambda.1se"}.
 }
 \item{\code{...}}{ Other parameters passed directly to \code{\link[hal9001]{fit_hal}}. See its documentation for details.
-}
-}
-}
-
-\section{Methods}{
-
-\describe{
-\item{\code{special_function(arg_1)}}{
-My learner is special so it has a special function.
-
-\itemize{
-\item{\code{arg_1}: A very special argument.
-}
-}
 }
 }
 }
