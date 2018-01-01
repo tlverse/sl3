@@ -5,9 +5,9 @@
 ##' The remainder of this documentation is an example of how you might write documentation for your new learner.
 ##' This learner uses \code{\link[my_package]{my_ml_fun}} from \code{my_package} to fit my favorite machine learning algorithm.
 ##'
-##' @docType class
-##' @importFrom R6 R6Class
-##' @export
+#' @docType class
+#' @importFrom R6 R6Class
+#' @export
 ##' @keywords data
 ##' @return Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
 ##' @format \code{\link{R6Class}} object.
