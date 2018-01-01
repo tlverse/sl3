@@ -1,39 +1,39 @@
-##' Template of a \code{sl3} Learner.
-##'
-##' This is a template for defining a new learner.
-##' This can be copied to a new file using \code{\link{write_learner_template}}.
-##' The remainder of this documentation is an example of how you might write documentation for your new learner.
-##' This learner uses \code{\link[my_package]{my_ml_fun}} from \code{my_package} to fit my favorite machine learning algorithm.
-##'
+#' Template of a \code{sl3} Learner.
+#'
+#' This is a template for defining a new learner.
+#' This can be copied to a new file using \code{\link{write_learner_template}}.
+#' The remainder of this documentation is an example of how you might write documentation for your new learner.
+#' This learner uses \code{\link[my_package]{my_ml_fun}} from \code{my_package} to fit my favorite machine learning algorithm.
+#'
 #' @docType class
 #' @importFrom R6 R6Class
 #' @export
-##' @keywords data
-##' @return Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
-##' @format \code{\link{R6Class}} object.
-##' @family Learners
-##'
-##' @section Parameters:
-##' \describe{
-##'   \item{\code{param_1="default_1"}}{ This parameter does something.
-##'   }
-##'   \item{\code{param_2="default_2"}}{ This parameter does something else.
-##'   }
-##'   \item{\code{...}}{ Other parameters passed directly to \code{\link[my_package]{my_ml_fun}}. See its documentation for details.
-##'   }
-##' }
-##'
-##' @section Methods:
-##' \describe{
-##' \item{\code{special_function(arg_1)}}{
-##'   My learner is special so it has a special function.
-##'
-##'   \itemize{
-##'     \item{\code{arg_1}: A very special argument.
-##'    }
-##'   }
-##'   }
-##' }
+#' @keywords data
+#' @return Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+#' @format \code{\link{R6Class}} object.
+#' @family Learners
+#'
+#' @section Parameters:
+#' \describe{
+#'   \item{\code{param_1="default_1"}}{ This parameter does something.
+#'   }
+#'   \item{\code{param_2="default_2"}}{ This parameter does something else.
+#'   }
+#'   \item{\code{...}}{ Other parameters passed directly to \code{\link[my_package]{my_ml_fun}}. See its documentation for details.
+#'   }
+#' }
+#'
+#' @section Methods:
+#' \describe{
+#' \item{\code{special_function(arg_1)}}{
+#'   My learner is special so it has a special function.
+#'
+#'   \itemize{
+#'     \item{\code{arg_1}: A very special argument.
+#'    }
+#'   }
+#'   }
+#' }
 Lrnr_hal9001 <- R6Class(classname = "Lrnr_hal9001", inherit = Lrnr_base,
                     portable = TRUE, class = TRUE,
 # Above, you should change Lrnr_hal9001 (in both the object name and the classname argument)
