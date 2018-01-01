@@ -3,7 +3,7 @@
 #' This is a template for defining a new learner.
 #' This can be copied to a new file using \code{\link{write_learner_template}}.
 #' The remainder of this documentation is an example of how you might write documentation for your new learner.
-#' This learner uses \code{\link[my_package]{my_ml_fun}} from \code{my_package} to fit my favorite machine learning algorithm.
+#' This learner uses \code{\link[hal9001]{fit_hal}} from \code{hal9001} to fit my favorite machine learning algorithm.
 #'
 #' @docType class
 #' @importFrom R6 R6Class
@@ -19,7 +19,7 @@
 #'   }
 #'   \item{\code{param_2="default_2"}}{ This parameter does something else.
 #'   }
-#'   \item{\code{...}}{ Other parameters passed directly to \code{\link[my_package]{my_ml_fun}}. See its documentation for details.
+#'   \item{\code{...}}{ Other parameters passed directly to \code{\link[hal9001]{fit_hal}}. See its documentation for details.
 #'   }
 #' }
 #'
@@ -83,6 +83,7 @@ Lrnr_hal9001 <- R6Class(classname = "Lrnr_hal9001", inherit = Lrnr_base,
       # what these arguments are called depends on the learner you are wrapping
       args$X <- as.matrix(task$X_intercept)
       args$Y <- outcome_type$format(task$Y)
+      args$YOLO <- FALSE
 
       # only add arguments on weights and offset
       # if those were specified when the task was generated
@@ -114,8 +115,10 @@ Lrnr_hal9001 <- R6Class(classname = "Lrnr_hal9001", inherit = Lrnr_base,
       # self$training_task
       # self$training_outcome_type
       # self$fit_object
+      X <- task$X_intercept
+      predictions <- rep.int(NA, nrow(X))
+      if (nrow(X) > 0) predictions <- stats::predict(self$fit_object, new_data = X)
 
-      predictions <- stats::predict(self$fit_object, task$X)
       return(predictions)
     }
   )

@@ -15,7 +15,7 @@ Learner object with methods for training and prediction. See \code{\link{Lrnr_ba
 This is a template for defining a new learner.
 This can be copied to a new file using \code{\link{write_learner_template}}.
 The remainder of this documentation is an example of how you might write documentation for your new learner.
-This learner uses \code{\link[my_package]{my_ml_fun}} from \code{my_package} to fit my favorite machine learning algorithm.
+This learner uses \code{\link[hal9001]{fit_hal}} from \code{hal9001} to fit my favorite machine learning algorithm.
 }
 \section{Parameters}{
 
@@ -24,7 +24,7 @@ This learner uses \code{\link[my_package]{my_ml_fun}} from \code{my_package} to 
 }
 \item{\code{param_2="default_2"}}{ This parameter does something else.
 }
-\item{\code{...}}{ Other parameters passed directly to \code{\link[my_package]{my_ml_fun}}. See its documentation for details.
+\item{\code{...}}{ Other parameters passed directly to \code{\link[hal9001]{fit_hal}}. See its documentation for details.
 }
 }
 }
