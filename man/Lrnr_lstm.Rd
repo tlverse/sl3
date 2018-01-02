@@ -50,7 +50,7 @@ Other Learners: \code{\link{Custom_chain}},
   \code{\link{Lrnr_glm}}, \code{\link{Lrnr_h2o_grid}},
   \code{\link{Lrnr_independent_binomial}},
   \code{\link{Lrnr_mean}}, \code{\link{Lrnr_nnls}},
-  \code{\link{Lrnr_optim}},
+  \code{\link{Lrnr_optim}}, \code{\link{Lrnr_pca}},
   \code{\link{Lrnr_pkg_SuperLearner}},
   \code{\link{Lrnr_randomForest}},
   \code{\link{Lrnr_rugarch}}, \code{\link{Lrnr_sl}},
@@ -62,4 +62,5 @@ Other Learners: \code{\link{Custom_chain}},
   \code{\link{define_h2o_X}},
   \code{\link{undocumented_learner}}
 }
+\concept{Learners}
 \keyword{data}
