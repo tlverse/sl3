@@ -69,9 +69,6 @@ Lrnr_pca <- R6Class(
       predictions <- as.data.table(preds_pca)
       return(predictions)
     },
-    .chain = function(task = NULL) {
-      return(task)
-    },
     .required_packages = c("stats", "data.table")
   )
 )
