@@ -1,4 +1,4 @@
-context("test_multinomial_learners.R -- multinomial learners in a Super Learner")
+context("test-multinomial_learners.R -- multinomial learners in Super Learner")
 library(origami)
 
 g0 <- function(W) {

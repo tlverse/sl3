@@ -137,4 +137,3 @@ Lrnr_solnp <- R6Class(
     .required_packages = c("Rsolnp")
   )
 )
-

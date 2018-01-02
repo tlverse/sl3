@@ -1,4 +1,4 @@
-context("test_zzz_h2o.R -- h2o learners")
+context("test-zzz_h2o.R -- h2o learners")
 
 if (FALSE) {
   setwd("..")
@@ -13,8 +13,6 @@ if (FALSE) {
 }
 
 
-library(testthat)
-library(sl3)
 library(h2o)
 h2o.init(nthread = 1)
 Sys.sleep(3)
@@ -24,7 +22,10 @@ Sys.sleep(3)
 set.seed(1)
 
 data(cpp_imputed)
-covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")
+covars <- c(
+  "apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
+  "sexn"
+)
 outcome <- "haz"
 cpp_imputed <- cpp_imputed[1:150, ]
 task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
@@ -50,7 +51,10 @@ test_learner <- function(learner, task, ...) {
   ))
   # test learner chaining
   chained_task <- fit_obj$chain()
-  test_that("Chaining returns a task", expect_true(is(chained_task, "sl3_Task")))
+  test_that("Chaining returns a task", expect_true(is(
+    chained_task,
+    "sl3_Task"
+  )))
   test_that("Chaining returns the correct number of rows", expect_equal(
     nrow(chained_task$X),
     nrow(task$X)
@@ -273,10 +277,10 @@ test_that("stack$predict plays nicely when Learner$predict() is a grid of predic
     fglm_learner
   )
 
-  h2o_gbm_grid <- Lrnr_h2o_grid$new(algorithm = "gbm", hyper_params = list(ntrees = c(
-    10,
-    20
-  )))
+  h2o_gbm_grid <- Lrnr_h2o_grid$new(
+    algorithm = "gbm",
+    hyper_params = list(ntrees = c(10, 20))
+  )
 
   SL.glmnet_learner <- Lrnr_pkg_SuperLearner$new(SL_wrapper = "SL.glmnet")
 
@@ -295,7 +299,10 @@ test_that("stack$predict plays nicely when Learner$predict() is a grid of predic
 test_that("check Lrnr_h2o_mutator returns matrices of mutated predictors", {
   h2o::h2o.no_progress()
   ## regular GLM
-  pca_lrnr <- Lrnr_h2o_mutator$new(algorithm = "pca", k = 4, impute_missing = TRUE)
+  pca_lrnr <- Lrnr_h2o_mutator$new(
+    algorithm = "pca", k = 4,
+    impute_missing = TRUE
+  )
   pca_fit <- pca_lrnr$train(task)
   preds <- pca_fit$predict()
   expect_true(ncol(preds) == 4L)

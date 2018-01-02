@@ -1,6 +1,4 @@
-library(sl3)
-library(testthat)
-context("test_define_interactions.R -- Lrnr_define_interactions")
+context("test-define_interactions.R -- Lrnr_define_interactions")
 
 data(cpp_imputed)
 covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")

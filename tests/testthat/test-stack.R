@@ -1,13 +1,13 @@
-library(testthat)
-context("test_stack.R -- Basic stack functionality")
-
-library(sl3)
+context("test-stack.R -- Basic stack functionality")
 library(origami)
 library(SuperLearner)
 
 
 data(cpp_imputed)
-covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")
+covars <- c(
+  "apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
+  "sexn"
+)
 outcome <- "haz"
 task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
 

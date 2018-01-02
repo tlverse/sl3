@@ -1,10 +1,11 @@
-context("test_stack_broken.R -- Stack robustness to sub-learner errors")
-
-library(sl3)
+context("test-stack_broken.R -- Stack robustness to sub-learner errors")
 library(R6)
 
 data(cpp_imputed)
-covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")
+covars <- c(
+  "apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
+  "sexn"
+)
 outcome <- "haz"
 task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
 
@@ -68,7 +69,10 @@ test_that("Lrnr_sl propagates errors to full refit", {
 test_that("Lrnr_sl works even when a library learner breaks only sometimes", {
   set.seed(1)
   prob_broken_learner <- Lrnr_broken$new(pbreak = 0.1)
-  prob_broken_sl <- Lrnr_sl$new(list(prob_broken_learner, glm_learner), glm_learner)
+  prob_broken_sl <- Lrnr_sl$new(
+    list(prob_broken_learner, glm_learner),
+    glm_learner
+  )
   prob_broken_sl_fit <- prob_broken_sl$train(task)
   prob_broken_sl_fit$predict()
 })

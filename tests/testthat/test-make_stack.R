@@ -1,4 +1,4 @@
-context("test_make_stack.R -- Convenience function for building stacks.")
+context("test-make_stack.R -- Convenience function for building stacks.")
 
 # example data and sl3 task
 data(cpp_imputed)

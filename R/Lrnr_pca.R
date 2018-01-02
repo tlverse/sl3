@@ -1,4 +1,4 @@
-#' Principal Components Analysis
+#' Principal Component Analysis and Regression
 #'
 #' This learner provides facilities for performing principal components analysis
 #' (PCA) to reduce the dimensionality of a data set to a pre-specified value.
@@ -72,4 +72,3 @@ Lrnr_pca <- R6Class(
     .required_packages = c("stats", "data.table")
   )
 )
-
