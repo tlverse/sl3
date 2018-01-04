@@ -34,20 +34,30 @@ Lrnr_mean <- R6Class(
       params <- list(...)
       super$initialize(params = params, ...)
     },
-
+    
     print = function() {
       print(self$name)
     }
   ),
-
+  
   private = list(
     .properties = c("continuous", "binomial", "categorical", "weights","offset"),
-
+    
     .train = function(task) {
       outcome_type <- self$get_outcome_type(task)
       y <- outcome_type$format(task$Y)
       weights <- task$weights
-
+      args <- self$params
+      outcome_type <- self$get_outcome_type(task)
+      
+      if (is.null(args$family)) {
+        args$family <- outcome_type$glm_family(return_object = TRUE)
+      }
+      
+      if (task$has_node("weights")) {
+        args$weights <- task$weights
+      }
+      
       if (outcome_type$type == "categorical") {
         y_levels <- outcome_type$levels
         means <- sapply(
@@ -56,19 +66,29 @@ Lrnr_mean <- R6Class(
         )
         fit_object <- list(mean = pack_predictions(matrix(means, nrow = 1)))
       } else {
-        fit_object <- list(mean = weighted.mean(y, weights))
-        
+        if (task$has_node("offset")) {
+          fit_object = glm(Y~1, data = data, offset = task$offset, family = args$family, 
+                           weights = weights)
+        } else {
+          fit_object = glm(Y~1, data = data, family = args$family, weights = weights)
+        }
       }
+      fit_object$linkinv_fun = args$family$linkinv
       return(fit_object)
     },
     
     .predict = function(task = NULL) {
-      if (task$has_node("offset")) {
-        predictions <- rep(private$.fit_object$mean-mean(task$offset), task$nrow)+task$offset
-      } else {
+      if (outcome_type$type == "categorical") {
         predictions <- rep(private$.fit_object$mean, task$nrow)
+      } else {
+        if (task$has_node("offset")) {
+          data = as.data.frame(task$X)
+          predictions <- plogis(stats::predict(fit, data = data) + task$offset)
+        } else {
+          predictions <- plogis(stats::predict(fit, data = data))
+        }
       }
-      return(predictions)
     }
+    return(predictions)
   )
 )
