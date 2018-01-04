@@ -19,7 +19,10 @@
 #'
 #' @section Parameters:
 #' \describe{
-#'   \item{\code{...}}{Parameters passed to \code{\link[stats]{glm}}.}
+#'   \item{\code{direction = "both"}}{Direction of search}
+#'   \item{\code{k=2}}{Penalty on complexity, default is AIC}
+#'   \item{\code{...}}{Other parameters passed to
+#'     \code{\link[MASS]{stepAIC}}.}
 #' }
 #'
 #' @template common_parameters
