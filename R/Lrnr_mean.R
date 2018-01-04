@@ -88,7 +88,8 @@ Lrnr_mean <- R6Class(
           predictions <- plogis(stats::predict(fit, data = data))
         }
       }
+      
+      return(predictions)
     }
-    return(predictions)
   )
 )
