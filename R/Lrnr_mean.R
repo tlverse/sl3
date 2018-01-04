@@ -82,8 +82,9 @@ Lrnr_mean <- R6Class(
       if (outcome_type$type == "categorical") {
         predictions <- rep(private$.fit_object$mean, task$nrow)
       } else {
+        fit = private$.fit_object
+        data = as.data.frame(task$X)
         if (task$has_node("offset")) {
-          data = as.data.frame(task$X)
           predictions <- plogis(stats::predict(fit, data = data) + task$offset)
         } else {
           predictions <- plogis(stats::predict(fit, data = data))
