@@ -28,7 +28,7 @@ Lrnr_step <- R6Class(
   classname = "Lrnr_step", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(direction = "both", k = 2) {
+    initialize = function(direction = "both", k = 2, ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }
@@ -54,7 +54,7 @@ Lrnr_step <- R6Class(
       
       if (task$has_node("offset")) {
         args$offset <- task$offset
-        g0 <- glm(Y ~ 1, data = data, offset = qlogis(offset), family = binomial())
+        g0 <- glm(Y ~ 1, data = data, offset = task$offset, family = binomial())
       } else {
         g0 <- glm(Y ~ 1, data = data, family = binomial())
       }
@@ -76,10 +76,9 @@ Lrnr_step <- R6Class(
       args$formula = formula("Y~.")  
       args$ctrl <- glm.control(trace = FALSE)
       SuppressGivenWarnings({
-        fit_step = MASS::stepAIC(g0, scope = list(upper = upper, lower = lower), 
+        fit_object = MASS::stepAIC(g0, scope = list(upper = upper, lower = lower), 
                                  direction = "both", k = 2, trace = 0, 
                                  steps = 30)
-        fit_object <- stats::step(fit.glm, direction = "both", trace = 0, k = 2, offset = args$offset) 
         }, GetWarningsToSuppress())
       
       fit_object$linear.predictors <- NULL
@@ -109,7 +108,7 @@ Lrnr_step <- R6Class(
         
         if (!all(is.na(coef))) {
           eta <- as.matrix(X[
-            , names(coefs)[2:d], drop = FALSE,
+            , c("intercept",names(coefs)[2:d]), drop = FALSE,
             with = FALSE
             ]) %*% coefs
           if (task$has_node("offset")) {

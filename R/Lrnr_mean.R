@@ -57,13 +57,17 @@ Lrnr_mean <- R6Class(
         fit_object <- list(mean = pack_predictions(matrix(means, nrow = 1)))
       } else {
         fit_object <- list(mean = weighted.mean(y, weights))
-      
+        
       }
       return(fit_object)
     },
-
+    
     .predict = function(task = NULL) {
-      predictions <- rep(private$.fit_object$mean-mean(task$offset), task$nrow)+task$offset
+      if (task$has_node("offset")) {
+        predictions <- rep(private$.fit_object$mean-mean(task$offset), task$nrow)+task$offset
+      } else {
+        predictions <- rep(private$.fit_object$mean, task$nrow)
+      }
       return(predictions)
     }
   )
