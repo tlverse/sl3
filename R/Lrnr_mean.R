@@ -85,7 +85,7 @@ Lrnr_mean <- R6Class(
         fit = private$.fit_object
         data = as.data.frame(task$X)
         if (task$has_node("offset")) {
-          predictions <- fit$linkinv_fun(rep(fit$coef[1], nrow(X)) + task$offset)
+          predictions <- fit$linkinv_fun(rep(fit$coefficients[1], nrow(data)) + task$offset)
         } else {
           predictions <- fit$linkinv_fun(stats::predict(fit, data = data))
         }
