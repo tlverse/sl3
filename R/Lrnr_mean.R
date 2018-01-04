@@ -85,9 +85,9 @@ Lrnr_mean <- R6Class(
         fit = private$.fit_object
         data = as.data.frame(task$X)
         if (task$has_node("offset")) {
-          predictions <- plogis(stats::predict(fit, data = data) + task$offset)
+          predictions <- fit$linkinv_fun(stats::predict(fit, data = data) + task$offset)
         } else {
-          predictions <- plogis(stats::predict(fit, data = data))
+          predictions <- fit$linkinv_fun(stats::predict(fit, data = data))
         }
       }
       
