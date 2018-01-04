@@ -78,6 +78,7 @@ Lrnr_mean <- R6Class(
     },
     
     .predict = function(task = NULL) {
+      outcome_type <- self$get_outcome_type(task)
       if (outcome_type$type == "categorical") {
         predictions <- rep(private$.fit_object$mean, task$nrow)
       } else {
