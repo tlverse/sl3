@@ -22,7 +22,7 @@ Imports:
     stats,
     delayed,
     utils,
-    methods
+    methods,
 Suggests:
     testthat,
     knitr,
@@ -51,7 +51,8 @@ Suggests:
     R.rsp,
     kerasR,
     keras,
-    reticulate
+    reticulate,
+    MASS
 Remotes:
     github::osofr/condensier,
     github::jeremyrcoyle/delayed
