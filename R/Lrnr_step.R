@@ -28,7 +28,7 @@ Lrnr_step <- R6Class(
   classname = "Lrnr_step", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(...) {
+    initialize = function(direction = "both", k = 2) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }
@@ -54,8 +54,11 @@ Lrnr_step <- R6Class(
       
       if (task$has_node("offset")) {
         args$offset <- task$offset
+        g0 <- glm(Y ~ 1, data = data, offset = qlogis(offset), family = binomial())
+      } else {
+        g0 <- glm(Y ~ 1, data = data, family = binomial())
       }
-
+      
       Xmat <- as.matrix(task$X)
       if (is.integer(Xmat)) {
         Xmat[, 1] <- as.numeric(Xmat[, 1])
@@ -64,12 +67,18 @@ Lrnr_step <- R6Class(
       if (outcome_type$type == "categorical") {
         Y <- as.numeric(Y) - 1
       }
+      
+      upper <- formula(paste("~", paste(colnames(Xmat), collapse = "+")))
+      lower <- formula("~1")
+      
       args$data <- as.data.frame(cbind(Xmat, Y))
 
       args$formula = formula("Y~.")  
       args$ctrl <- glm.control(trace = FALSE)
       SuppressGivenWarnings({
-        fit.glm <- sl3:::call_with_args(stats::glm, args)
+        fit_step = MASS::stepAIC(g0, scope = list(upper = upper, lower = lower), 
+                                 direction = "both", k = 2, trace = 0, 
+                                 steps = 30)
         fit_object <- stats::step(fit.glm, direction = "both", trace = 0, k = 2, offset = args$offset) 
         }, GetWarningsToSuppress())
       
@@ -91,13 +100,18 @@ Lrnr_step <- R6Class(
       X <- task$X_intercept
       predictions <- rep.int(NA, nrow(X))
       if (nrow(X) > 0) {
-        coef <- private$.fit_object$coef
-        coef <- fit_object$coef
+        
+        coefs <- private$.fit_object$coef
+        d = length(coefs)
+        nms = names(coefs)
+        coefs[2:d] = coefs[2:d][order(nms[2:d])]
+        names(coefs)[2:d] = nms[2:d][order(nms[2:d])]
+        
         if (!all(is.na(coef))) {
           eta <- as.matrix(X[
-            , which(!is.na(coef)), drop = FALSE,
+            , names(coefs)[2:d], drop = FALSE,
             with = FALSE
-            ]) %*% coef[!is.na(coef)]
+            ]) %*% coefs
           if (task$has_node("offset")) {
             eta = eta + task$offset
           }
