@@ -52,6 +52,7 @@ Lrnr_step <- R6Class(
         args$weights <- task$weights
       }
       
+      # As it turns out, this setting is what causes offset use
       if (task$has_node("offset")) {
         args$offset <- task$offset
         g0 <- glm(Y ~ 1, data = data, offset = task$offset, family = binomial())
@@ -100,15 +101,16 @@ Lrnr_step <- R6Class(
       predictions <- rep.int(NA, nrow(X))
       if (nrow(X) > 0) {
         
+        # handling the ordering of coefs and cols in X. step coeffs have intercept
+        # first then ordered by selection
         coefs <- private$.fit_object$coef
-        d = length(coefs)
-        nms = names(coefs)
-        coefs[2:d] = coefs[2:d][order(nms[2:d])]
-        names(coefs)[2:d] = nms[2:d][order(nms[2:d])]
+        names(coefs)[1] = "intercept"
+        coefs = coefs[order(names(coefs))]
+        names(coefs) = names(coefs)[order(names(coefs))]
         
         if (!all(is.na(coef))) {
           eta <- as.matrix(X[
-            , c("intercept",names(coefs)[2:d]), drop = FALSE,
+            , names(coefs), drop = FALSE,
             with = FALSE
             ]) %*% coefs
           if (task$has_node("offset")) {

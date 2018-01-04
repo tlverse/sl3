@@ -57,7 +57,7 @@ Lrnr_mean <- R6Class(
       if (task$has_node("weights")) {
         args$weights <- task$weights
       }
-      
+      #if categorical leave as it was but otherwise just do an intercept regression
       if (outcome_type$type == "categorical") {
         y_levels <- outcome_type$levels
         means <- sapply(
@@ -79,6 +79,7 @@ Lrnr_mean <- R6Class(
     
     .predict = function(task = NULL) {
       outcome_type <- self$get_outcome_type(task)
+      #if categorical leave as it was, otherwise use fit_object info
       if (outcome_type$type == "categorical") {
         predictions <- rep(private$.fit_object$mean, task$nrow)
       } else {
@@ -87,9 +88,10 @@ Lrnr_mean <- R6Class(
         if (task$has_node("offset")) {
           predictions <- fit$linkinv_fun(rep(fit$coefficients, nrow(data)) + task$offset)
         } else {
-          predictions <- fit$linkinv_fun(stats::predict(fit, data = data))
+          predictions <- fit$linkinv_fun(rep(fit$coefficients, nrow(data)))
         }
       }
+      # nullifying annoying looking names
       names(predictions) = NULL
       return(predictions)
     }
