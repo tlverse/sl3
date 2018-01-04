@@ -1,6 +1,6 @@
 #' both ways step regression
 #'
-#' This learner provides fitting procedures for generalized linear models using
+#' This learner does step regression
 #'
 #' @docType class
 #'
