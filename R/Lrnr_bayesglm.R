@@ -1,7 +1,7 @@
 #' Generalized Linear Models
 #'
-#' This learner provides fitting procedures for generalized linear models using
-#' \code{\link[stats]{glm.fit}}.
+#' This learner provides fitting procedures for bayes glm 
+#' \code{\link[stats]{bayesglm.fit}}.
 #'
 #' @docType class
 #'
@@ -26,8 +26,8 @@
 #'
 #' @template common_parameters
 #
-Lrnr_glm <- R6Class(
-  classname = "Lrnr_glm", inherit = Lrnr_base,
+Lrnr_bayesglm <- R6Class(
+  classname = "Lrnr_bayesglm", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
   public = list(
     initialize = function(...) {
@@ -60,9 +60,9 @@ Lrnr_glm <- R6Class(
         args$offset <- task$offset
       }
 
-      args$ctrl <- glm.control(trace = FALSE)
+      # args$ctrl <- glm.control(trace = FALSE)
       SuppressGivenWarnings({
-        fit_object <- call_with_args(stats::glm.fit, args)
+        fit_object <- call_with_args(arm::bayesglm.fit, args)
       }, GetWarningsToSuppress())
 
       fit_object$linear.predictors <- NULL
@@ -83,7 +83,7 @@ Lrnr_glm <- R6Class(
       X <- task$X_intercept
       predictions <- rep.int(NA, nrow(X))
       if (nrow(X) > 0) {
-        coef <- private$.fit_object$coef
+        coef <- private$.fit_object$coefficients
         if (!all(is.na(coef))) {
           eta <- as.matrix(X[
             , which(!is.na(coef)), drop = FALSE,

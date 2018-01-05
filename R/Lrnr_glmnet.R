@@ -87,17 +87,25 @@ Lrnr_glmnet <- R6Class(
         names(formals(glmnet::glmnet))
       )
       fit_object$glmnet.fit$call <- NULL
+      fit_object$linkinv_fun = outcome_type$glm_family(return_object = TRUE)$linkinv
       return(fit_object)
     },
 
     .predict = function(task) {
       outcome_type <- private$.training_outcome_type
-      predictions <- stats::predict(
-        private$.fit_object,
-        newx = as.matrix(task$X), type = "response",
-        s = "lambda.min"
-      )
-
+      X <- task$X_intercept
+      predictions = rep(NA, nrow(X))
+      if (nrow(X) > 0) {
+        coefs <- stats::coef(private$.fit_object)[,1]
+        if (!all(is.na(coefs))) {
+          eta <- as.matrix(X) %*% coefs
+           if (task$has_node("offset")) {
+            eta = eta + task$offset
+          }
+          predictions <- as.vector(private$.fit_object$linkinv_fun(eta))
+        }
+      }
+      
       if (outcome_type$type == "categorical") {
         # predictions is a 3-dim matrix, convert to 2-dim matrix
         dim(predictions) <- dim(predictions)[1:2]
