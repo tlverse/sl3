@@ -96,7 +96,7 @@ Lrnr_glmnet <- R6Class(
       X <- task$X_intercept
       predictions = rep(NA, nrow(X))
       if (nrow(X) > 0) {
-        coefs <- stats::coef(private$.fit_object)
+        coefs <- stats::coef(private$.fit_object)[,1]
         if (!all(is.na(coefs))) {
           eta <- as.matrix(X) %*% coefs
            if (task$has_node("offset")) {
