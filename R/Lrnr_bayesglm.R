@@ -97,6 +97,7 @@ Lrnr_bayesglm <- R6Class(
         }
       }
       return(predictions)
-    }
+    },
+    .required_packages = c("arm")
   )
 )
