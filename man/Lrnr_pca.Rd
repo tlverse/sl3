@@ -3,7 +3,7 @@
 \docType{class}
 \name{Lrnr_pca}
 \alias{Lrnr_pca}
-\title{Principal Components Analysis}
+\title{Principal Component Analysis and Regression}
 \format{\code{\link{R6Class}} object.}
 \usage{
 Lrnr_pca
@@ -29,7 +29,7 @@ reduction. For convenience, this defaults to two (2) components.}
 data matrix should be centered before performing PCA. This defaults to
 \code{TRUE} since that is the recommended practice. Consider consulting
 the documentation of \code{prcomp} for details.}
-\item{\code{scale}}{A \code{logical} value indicating whether the input
+\item{\code{scale.}}{A \code{logical} value indicating whether the input
 data matrix should be scaled (to unit variance) before performing PCA.
 Consider consulting the documentation of \code{prcomp} for details.}
 \item{\code{...}}{Other optional parameters to be passed to \code{prcomp}.

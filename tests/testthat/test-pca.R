@@ -28,9 +28,13 @@ out_stack <- fit_stack$predict()
 ncomp <- 3
 cpp_pca <- cpp_imputed %>%
   dplyr::select(covars) %>%
-  prcomp(x = ., center = TRUE, scale. = TRUE)
+  prcomp(x = ., center = TRUE, scale. = FALSE)
 cpp_pca_rotated <- cpp_pca$x[, seq_len(ncomp)]
 pcr_cpp <- glm(cpp_imputed$haz ~ -1 + cpp_pca_rotated)
 pcr_preds <- predict(pcr_cpp) %>%
   as.numeric()
+
+# check whether these values match cpp_pca -- they should!
+pca_from_stack <- fit_stack$fit_object$learner_fits[[1]]$fit_object$learner_fits[[1]]
+
 
