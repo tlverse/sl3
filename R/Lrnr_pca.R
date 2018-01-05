@@ -30,7 +30,7 @@
 #'     data matrix should be centered before performing PCA. This defaults to
 #'     \code{TRUE} since that is the recommended practice. Consider consulting
 #'     the documentation of \code{prcomp} for details.}
-#'   \item{\code{scale}}{A \code{logical} value indicating whether the input
+#'   \item{\code{scale.}}{A \code{logical} value indicating whether the input
 #'     data matrix should be scaled (to unit variance) before performing PCA.
 #      This defaults to \code{TRUE} since that is the recommended practice.
 #'     Consider consulting the documentation of \code{prcomp} for details.}
@@ -46,14 +46,14 @@ Lrnr_pca <- R6Class(
   portable = TRUE,
   class = TRUE,
   public = list(
-    initialize = function(n_comp = 2, center = TRUE, scale = TRUE, ...) {
+    initialize = function(n_comp = 2, center = TRUE, scale. = TRUE, ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }
   ),
 
   private = list(
-    .properties = c("continuous", "binomial", "preprocessing"),
+    .properties = c("preprocessing"),
 
     .train = function(task) {
       verbose <- getOption("sl3.verbose")
@@ -72,3 +72,4 @@ Lrnr_pca <- R6Class(
     .required_packages = c("stats", "data.table")
   )
 )
+
