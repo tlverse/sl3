@@ -58,7 +58,7 @@ Lrnr_glmnet <- R6Class(
       outcome_type <- self$get_outcome_type(task)
 
       if (is.null(args$family)) {
-        args$family <- outcome_type$glm_family()
+        args$family <- outcome_type$glm_family(return_object = TRUE)
       }
 
       if (args$family %in% "quasibinomial") {
