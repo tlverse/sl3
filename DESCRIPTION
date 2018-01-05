@@ -52,7 +52,8 @@ Suggests:
     kerasR,
     keras,
     reticulate,
-    MASS
+    MASS,
+    arm
 Remotes:
     github::osofr/condensier,
     github::jeremyrcoyle/delayed
