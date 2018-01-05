@@ -95,7 +95,7 @@ Lrnr_glmnet <- R6Class(
       outcome_type <- private$.training_outcome_type
       X <- task$X_intercept
       if (nrow(X) > 0) {
-        coef <- coef(private$.fit_object)
+        coef <- stats::coef(private$.fit_object)
         if (!all(is.na(coef))) {
           eta <- as.matrix(X[
             , which(!is.na(coef)), drop = FALSE,
