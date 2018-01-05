@@ -94,6 +94,7 @@ Lrnr_glmnet <- R6Class(
     .predict = function(task) {
       outcome_type <- private$.training_outcome_type
       X <- task$X_intercept
+      predictions = rep(NA, nrow(X))
       if (nrow(X) > 0) {
         coefs <- stats::coef(private$.fit_object)
         if (!all(is.na(coefs))) {
