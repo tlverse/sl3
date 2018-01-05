@@ -26,7 +26,7 @@
 #'
 #' @template common_parameters
 #
-Lrnr_glm <- R6Class(
+Lrnr_bayesglm <- R6Class(
   classname = "Lrnr_bayesglm", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
   public = list(
