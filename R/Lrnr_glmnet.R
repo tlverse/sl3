@@ -95,14 +95,10 @@ Lrnr_glmnet <- R6Class(
       outcome_type <- private$.training_outcome_type
       X <- task$X_intercept
       if (nrow(X) > 0) {
-        coef <- stats::coef(private$.fit_object)
-        if (!all(is.na(coef))) {
-          eta <- as.matrix(X[
-            , which(!is.na(coef)), drop = FALSE,
-            with = FALSE
-            ]) %*% coef[!is.na(coef)]
-          
-          if (task$has_node("offset")) {
+        coefs <- stats::coef(private$.fit_object)
+        if (!all(is.na(coefs))) {
+          eta <- as.matrix(X) %*% coefs
+           if (task$has_node("offset")) {
             eta = eta + task$offset
           }
           predictions <- as.vector(private$.fit_object$linkinv_fun(eta))
