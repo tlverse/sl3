@@ -53,7 +53,8 @@ Suggests:
     keras,
     reticulate,
     MASS,
-    arm
+    arm,
+    hal
 Remotes:
     github::osofr/condensier,
     github::jeremyrcoyle/delayed
