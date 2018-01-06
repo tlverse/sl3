@@ -50,13 +50,13 @@ Lrnr_hal <- R6Class(
       # specify data
       args$X <- as.matrix(task$X)
       args$Y <- outcome_type$format(task$Y)
-      args$newX = NULL,
-      args$verbose = FALSE,
-      args$obsWeights = rep(1, length(Y)),
-      args$nfolds = ifelse(length(Y) <= 100, 20, 10),
-      args$nlambda = 100,
-      args$useMin = TRUE,
-      args$debug = TRUE,
+      args$newX = NULL
+      args$verbose = FALSE
+      args$obsWeights = rep(1, length(args$Y))
+      args$nfolds = ifelse(length(args$Y) <= 100, 20, 10)
+      args$nlambda = 100
+      args$useMin = TRUE
+      args$debug = TRUE
       args$parallel = FALSE
 
       if (task$has_node("weights")) {
