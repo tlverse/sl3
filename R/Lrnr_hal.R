@@ -97,8 +97,11 @@ Lrnr_hal <- R6Class(
                                  chunks = 10000,
                                  offset = task$offset)
         } else {
+          # The next two lines insure if you fit with an offset you need not use one
+          # as opposed to setting an offset to all 0's'
           fittypoo = private$.fit_object
           fittypoo$object$glmnet.fit$offset = FALSE
+          
           predictions <- predict(fittypoo,
                                  newdata = newX,
                                  bigDesign = FALSE,
