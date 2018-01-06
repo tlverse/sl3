@@ -88,7 +88,7 @@ Lrnr_hal <- R6Class(
     .predict = function(task = NULL) {
       verbose <- getOption("sl3.verbose")
       newX <- as.matrix(task$X)
-      predictions <- rep.int(NA, nrow(X))
+      predictions <- rep.int(NA, nrow(newX))
       if (nrow(newX) > 0) {
         if (task$has_node("offset")) {
           predictions <- predict(private$.fit_object,
