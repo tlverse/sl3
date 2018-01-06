@@ -25,7 +25,7 @@
 #'
 #' @template common_parameters
 #
-Lrnr_glm <- R6Class(
+Lrnr_hal <- R6Class(
   classname = "Lrnr_hal", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
   public = list(
