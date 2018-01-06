@@ -111,7 +111,7 @@ Lrnr_step <- R6Class(
         coefs = coefs[order(names(coefs))]
         names(coefs) = names(coefs)[order(names(coefs))]
         
-        if (!all(is.na(coef))) {
+        if (!all(is.na(coefs))) {
           eta <- as.matrix(X[
             , names(coefs), drop = FALSE,
             with = FALSE
