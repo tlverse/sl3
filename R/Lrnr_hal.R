@@ -97,7 +97,9 @@ Lrnr_hal <- R6Class(
                                  chunks = 10000,
                                  offset = task$offset)
         } else {
-          predictions <- predict(private$.fit_object,
+          fittypoo = private$.fit_object
+          fittypoo$object$glmnet.fit$offset = FALSE
+          predictions <- predict(fittypoo,
                                  newdata = newX,
                                  bigDesign = FALSE,
                                  chunks = 10000
