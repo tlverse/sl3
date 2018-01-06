@@ -25,20 +25,6 @@
 #'
 #' @template common_parameters
 #
-hal <- function(Y,
-                X,
-                newX = NULL,
-                verbose = FALSE,
-                obsWeights = rep(1, length(Y)),
-                nfolds = ifelse(length(Y) <= 100, 20, 10),
-                nlambda = 100,
-                useMin = TRUE,
-                debug = TRUE,
-                parallel = FALSE,
-                family = gaussian(),
-                offset = NULL,
-                ... # allow extra arguments with no death
-)
 Lrnr_glm <- R6Class(
   classname = "Lrnr_hal", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
