@@ -91,13 +91,13 @@ Lrnr_hal <- R6Class(
       predictions <- rep.int(NA, nrow(X))
       if (nrow(X) > 0) {
         if (task$has_node("offset")) {
-          predictions <- predict(fit_object,
+          predictions <- predict(private$.fit_object,
                                  newdata = newX,
                                  bigDesign = FALSE,
                                  chunks = 10000,
                                  offset = task$offset)
         } else {
-          predictions <- predict(fit_object,
+          predictions <- predict(private$.fit_object,
                                  newdata = newX,
                                  bigDesign = FALSE,
                                  chunks = 10000
