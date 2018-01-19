@@ -58,7 +58,7 @@ Lrnr_glm_fast <- R6Class(
     .properties = c("continuous", "binomial", "weights", "offset"),
 
     .train = function(task) {
-      verbose <- getOption("sl3.verbose")
+      verbose <- getOption("sl3.transform.offset")
       args <- self$params
       outcome_type <- self$get_outcome_type(task)
 
@@ -84,11 +84,7 @@ Lrnr_glm_fast <- R6Class(
       }
 
       if (task$has_node("offset")) {
-        if (!is.null(args$transform_offset) && args$transform_offset) {
-          args$offset <- link_fun(task$offset)
-        } else {
-          args$offset <- task$offset
-        }
+          args$offset <- task$offset_transformed(link_fun)
       }
 
       SuppressGivenWarnings({
@@ -136,27 +132,22 @@ Lrnr_glm_fast <- R6Class(
       } else {
         X <- task$X
       }
-
-      if (self$fit_object$training_offset) {
-        if (!is.null(self$params$transform_offset) &&
-          self$params$transform_offset) {
-          offset <- self$fit_object$link_fun(task$offset)
-        } else {
-          offset <- task$offset
-        }
-      } else {
-        offset <- rep(0, nrow(X))
-      }
-
+      
       predictions <- rep.int(NA, nrow(X))
       if (nrow(X) > 0) {
-        coef <- private$.fit_object$coef
+        coef <- self$fit_object$coef
         if (!all(is.na(coef))) {
           eta <- as.matrix(X[
             , which(!is.na(coef)), drop = FALSE,
             with = FALSE
-          ]) %*% coef[!is.na(coef)] + offset
-          predictions <- as.vector(private$.fit_object$linkinv_fun(eta))
+          ]) %*% coef[!is.na(coef)]
+          
+          if (self$fit_object$training_offset) {
+            offset <- task$offset_transformed(self$fit_object$link_fun, for_prediction = TRUE)
+            eta <- eta + offset
+          } 
+          
+          predictions <- as.vector(self$fit_object$linkinv_fun(eta))
         }
       }
       return(predictions)
