@@ -49,7 +49,7 @@ Lrnr_glm <- R6Class(
       family_name <- args$family$family
       linkinv_fun <- args$family$linkinv
       link_fun <- args$family$linkfun
-      
+
       # specify data
       args$x <- as.matrix(task$X_intercept)
       args$y <- outcome_type$format(task$Y)
@@ -80,32 +80,32 @@ Lrnr_glm <- R6Class(
       fit_object$training_offset <- task$has_node("offset")
       return(fit_object)
     },
-    .predict = function(task){
-    verbose <- getOption("sl3.verbose")
-    if (self$params$intercept) {
-      X <- task$X_intercept
-    } else {
-      X <- task$X
-    }
-    
-    predictions <- rep.int(NA, nrow(X))
-    if (nrow(X) > 0) {
-      coef <- self$fit_object$coef
-      if (!all(is.na(coef))) {
-        eta <- as.matrix(X[
-          , which(!is.na(coef)), drop = FALSE,
-          with = FALSE
-          ]) %*% coef[!is.na(coef)]
-        
-        if (self$fit_object$training_offset) {
-          offset <- task$offset_transformed(self$fit_object$link_fun, for_prediction = TRUE)
-          eta <- eta + offset
-        } 
-        
-        predictions <- as.vector(self$fit_object$linkinv_fun(eta))
+    .predict = function(task) {
+      verbose <- getOption("sl3.verbose")
+      if (self$params$intercept) {
+        X <- task$X_intercept
+      } else {
+        X <- task$X
       }
-    }
-    return(predictions)
+
+      predictions <- rep.int(NA, nrow(X))
+      if (nrow(X) > 0) {
+        coef <- self$fit_object$coef
+        if (!all(is.na(coef))) {
+          eta <- as.matrix(X[
+            , which(!is.na(coef)), drop = FALSE,
+            with = FALSE
+          ]) %*% coef[!is.na(coef)]
+
+          if (self$fit_object$training_offset) {
+            offset <- task$offset_transformed(self$fit_object$link_fun, for_prediction = TRUE)
+            eta <- eta + offset
+          }
+
+          predictions <- as.vector(self$fit_object$linkinv_fun(eta))
+        }
+      }
+      return(predictions)
     }
   )
 )

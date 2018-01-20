@@ -50,7 +50,7 @@ Lrnr_xgboost <- R6Class(
       verbose <- getOption("sl3.verbose")
       args <- self$params
       outcome_type <- self$get_outcome_type(task)
-      
+
       Xmat <- as.matrix(task$X)
       if (is.integer(Xmat)) {
         Xmat[, 1] <- as.numeric(Xmat[, 1])
@@ -66,14 +66,14 @@ Lrnr_xgboost <- R6Class(
       }
       if (task$has_node("offset")) {
         if (outcome_type$type == "categorical") {
-          # todo: fix 
+          # todo: fix
           stop("offsets not yet supported for outcome_type='categorical'")
         }
-        
+
         family <- outcome_type$glm_family(return_object = TRUE)
         link_fun <- args$family$linkfun
         offset <- task$offset_transformed(link_fun)
-        try(xgboost::setinfo(args$data, "base_margin",offset))
+        try(xgboost::setinfo(args$data, "base_margin", offset))
       } else {
         link_fun <- NULL
       }
@@ -92,10 +92,10 @@ Lrnr_xgboost <- R6Class(
         }
       }
       fit_object <- call_with_args(xgboost::xgb.train, args, keep_all = TRUE)
-      
+
       fit_object$training_offset <- task$has_node("offset")
       fit_object$link_fun <- link_fun
-      
+
       return(fit_object)
     },
 
@@ -109,12 +109,12 @@ Lrnr_xgboost <- R6Class(
       }
 
       xgb_data <- try(xgboost::xgb.DMatrix(Xmat))
-      
+
       if (self$fit_object$training_offset) {
         offset <- task$offset_transformed(self$fit_object$link_fun, for_prediction = TRUE)
         xgboost::setinfo(xgb_data, "base_margin", offset)
-      } 
-      
+      }
+
       fit_object <- private$.fit_object
       predictions <- rep.int(list(numeric()), 1)
 

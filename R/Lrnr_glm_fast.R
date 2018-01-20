@@ -84,7 +84,7 @@ Lrnr_glm_fast <- R6Class(
       }
 
       if (task$has_node("offset")) {
-          args$offset <- task$offset_transformed(link_fun)
+        args$offset <- task$offset_transformed(link_fun)
       }
 
       SuppressGivenWarnings({
@@ -132,7 +132,7 @@ Lrnr_glm_fast <- R6Class(
       } else {
         X <- task$X
       }
-      
+
       predictions <- rep.int(NA, nrow(X))
       if (nrow(X) > 0) {
         coef <- self$fit_object$coef
@@ -141,12 +141,12 @@ Lrnr_glm_fast <- R6Class(
             , which(!is.na(coef)), drop = FALSE,
             with = FALSE
           ]) %*% coef[!is.na(coef)]
-          
+
           if (self$fit_object$training_offset) {
             offset <- task$offset_transformed(self$fit_object$link_fun, for_prediction = TRUE)
             eta <- eta + offset
-          } 
-          
+          }
+
           predictions <- as.vector(self$fit_object$linkinv_fun(eta))
         }
       }
