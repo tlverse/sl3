@@ -41,12 +41,22 @@ Lrnr_mean <- R6Class(
   ),
 
   private = list(
-    .properties = c("continuous", "binomial", "categorical", "weights"),
+    .properties = c("continuous", "binomial", "categorical", "weights", "offset"),
 
     .train = function(task) {
       outcome_type <- self$get_outcome_type(task)
       y <- outcome_type$format(task$Y)
       weights <- task$weights
+
+      if (task$has_node("offset")) {
+        offset <- task$offset
+        if (outcome_type$type == "categorical") {
+          # todo: fix
+          stop("offsets not yet supported for outcome_type='categorical'")
+        }
+      } else {
+        offset <- rep(0, task$nrow)
+      }
 
       if (outcome_type$type == "categorical") {
         y_levels <- outcome_type$levels
@@ -56,13 +66,21 @@ Lrnr_mean <- R6Class(
         )
         fit_object <- list(mean = pack_predictions(matrix(means, nrow = 1)))
       } else {
-        fit_object <- list(mean = weighted.mean(y, weights))
+        fit_object <- list(mean = weighted.mean(y - offset, weights))
       }
+
+      fit_object$training_offset <- task$has_node("offset")
+
       return(fit_object)
     },
 
     .predict = function(task = NULL) {
       predictions <- rep(private$.fit_object$mean, task$nrow)
+
+      if (self$fit_object$training_offset) {
+        offset <- task$offset_transformed(NULL, for_prediction = TRUE)
+        predictions <- predictions + offset
+      }
       return(predictions)
     }
   )
