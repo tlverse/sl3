@@ -128,7 +128,8 @@ Lrnr_sl <- R6Class(
         fold_max_risk = fold_max_risk
       )
       if (!is.null(coefs)) {
-        risk_dt[match(learner, names(coefs)), coefficients := coefs]
+        # risk_dt[match(learner, names(coefs)), coefficients := coefs]
+        risk_dt[, coefficients := c(coefs, NA)]
       }
       return(risk_dt)
     }

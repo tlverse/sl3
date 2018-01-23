@@ -6,6 +6,10 @@ get_levels <- function(x) {
   }
 }
 
+#' Pack multidimensional predictions into a vector (and unpack again)
+#' @rdname pack_predictions
+#' @param pred_matrix a matrix of prediciton values
+#' @export
 pack_predictions <- function(pred_matrix) {
   packed <- apply(pred_matrix, 1, function(row) {
     packed_row <- list(row)
@@ -15,6 +19,9 @@ pack_predictions <- function(pred_matrix) {
   return(as.matrix(packed))
 }
 
+#' @rdname pack_predictions
+#' @param x a packed prediction list
+#' @export
 unpack_predictions <- function(x) {
   do.call(rbind, lapply(x, `[[`, 1))
 }
