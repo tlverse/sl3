@@ -254,7 +254,7 @@ sl3_Task <- R6Class(
       return(new_task)
     },
 
-    get_data = function(rows = NULL, columns) {
+    get_data = function(rows = NULL, columns, expand_factors = FALSE) {
       if (missing(rows)) {
         rows <- private$.row_index
       }
@@ -266,9 +266,13 @@ sl3_Task <- R6Class(
       } else {
         subset <- private$.data[, true_columns, with = FALSE]
       }
-
+      
       if (ncol(subset) > 0) {
         data.table::setnames(subset, true_columns, columns)
+      }
+      
+      if(expand_factors){
+        subset <- dt_expand_factors(subset)
       }
       return(subset)
     },
@@ -277,7 +281,7 @@ sl3_Task <- R6Class(
       node_var <- private$.nodes[[node_name]]
       return(!is.null(node_var))
     },
-    get_node = function(node_name, generator_fun = NULL) {
+    get_node = function(node_name, generator_fun = NULL, expand_factors = FALSE) {
       if (missing(generator_fun)) {
         generator_fun <- function(node_name, n) {
           stop(sprintf("Node %s not specified", node_name))
@@ -288,7 +292,7 @@ sl3_Task <- R6Class(
       if (is.null(node_var)) {
         return(generator_fun(node_name, self$nrow))
       } else {
-        data_col <- self$get_data(, node_var)
+        data_col <- self$get_data(, node_var, expand_factors)
 
         if (ncol(data_col) == 1) {
           return(unlist(data_col, use.names = FALSE))
@@ -342,7 +346,7 @@ sl3_Task <- R6Class(
 
     X = function() {
       covariates <- private$.nodes$covariates
-      X_dt <- self$get_data(, covariates)
+      X_dt <- self$get_data(, covariates, expand_factors = TRUE)
       return(X_dt)
     },
 
