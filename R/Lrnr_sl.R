@@ -99,14 +99,15 @@ Lrnr_sl <- R6Class(
           origami::validation(losses), weighted.mean,
           origami::validation(weight)
         )
-        return(list(risks = as.data.frame(risks)))
+        return(as.data.frame(risks))
       }
       # TODO: this ignores weights, square errors are also incorrect
-      fold_risks <- origami::cross_validate(
+      fold_risks <- lapply(cv_meta_task$folds,
         validation_means,
-        cv_meta_task$folds, losses,
+        losses,
         cv_meta_task$weights
-      )$risks
+      )
+      fold_risks <- rbindlist(fold_risks)
       fold_mean_risk <- apply(fold_risks, 2, mean)
       fold_min_risk <- apply(fold_risks, 2, min)
       fold_max_risk <- apply(fold_risks, 2, max)
