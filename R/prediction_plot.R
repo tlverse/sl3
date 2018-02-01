@@ -10,7 +10,7 @@ prediction_plot <- function(learner_fit){
   
   if(outcome_type$type=="continuous"){
     pred_data <- data.table(pred=predictions, obs=observed)
-    pred_plot <- ggplot(pred_data, aes(x=obs, y=pred))+geom_point()+
+    pred_plot <- ggplot(pred_data, aes(x=obs, y=pred))+geom_point()+geom_abline()+
       xlab("Observed")+ylab("Predicted")+theme_bw()+geom_smooth(se=FALSE)
   } else {
     unpacked <- unpack_predictions(predictions)
