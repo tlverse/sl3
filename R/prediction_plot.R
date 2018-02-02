@@ -18,7 +18,11 @@ prediction_plot <- function(learner_fit){
     setnames(unpacked, outcome_type$levels)
     set(unpacked, , "observed", observed)
     long <- melt.data.table(unpacked, id=c("observed"), measure=outcome_type$levels, variable="category")
-    cutoffs <- sort(unique(long$value)) #todo: do something smarter for big data
+    if(nrow(long)>1e4){
+      cutoffs <- seq(from=0, to=1, length=1000)
+    } else {
+      cutoffs <- sort(unique(long$value)) #todo: do something smarter for big data
+    }
     long[ , accurate:=category==observed]
     all_auc_data <- lapply(cutoffs, function(cutoff){
       auc_data <- long[, list(positive_rate=mean(value>cutoff), cutoff=cutoff), by=list(observed, accurate)]
