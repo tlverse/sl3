@@ -5,7 +5,13 @@ prediction_plot <- function(learner_fit){
   outcome_type <- training_task$outcome_type
   
   #todo: make these cv predictions
-  predictions <- learner_fit$predict()
+  if(!is.null(learner_fit$fit_object$cv_meta_fit)){
+    predictions <- learner_fit$fit_object$cv_meta_fit$predict()
+  } else {
+    warning("Not a Lrnr_sl, using resubstiution predictions.")
+    predictions <- learner_fit$predict()  
+  }
+  
   observed <- training_task$Y
   
   if(outcome_type$type=="continuous"){
@@ -18,18 +24,14 @@ prediction_plot <- function(learner_fit){
     setnames(unpacked, outcome_type$levels)
     set(unpacked, , "observed", observed)
     long <- melt.data.table(unpacked, id=c("observed"), measure=outcome_type$levels, variable="category")
-    if(nrow(long)>1e4){
-      cutoffs <- seq(from=0, to=1, length=1000)
-    } else {
-      cutoffs <- sort(unique(long$value)) #todo: do something smarter for big data
-    }
+    cutoffs <- seq(from=0, to=1, length=1000)
     long[ , accurate:=category==observed]
     all_auc_data <- lapply(cutoffs, function(cutoff){
       auc_data <- long[, list(positive_rate=mean(value>cutoff), cutoff=cutoff), by=list(observed, accurate)]
     })
     auc_data <- rbindlist(all_auc_data)
     wide <- dcast(auc_data, cutoff+observed~accurate, value.var="positive_rate")
-    pred_plot <- ggplot(wide, aes(x=`FALSE`, y=`TRUE`, color=observed))+geom_line()+
+    pred_plot <- ggplot(wide[order(`TRUE`)], aes(x=`FALSE`, y=`TRUE`, color=observed))+geom_step(direction="vh")+
       geom_segment(data=data.table(1), x=0,y=0,xend=1,yend=1, color="black")+
       theme_bw()+theme(legend.position="bottom")+
       xlab("False Positive Rate")+ylab("True Positive Rate")+scale_color_discrete("Observed")+coord_equal()
