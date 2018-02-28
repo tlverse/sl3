@@ -229,7 +229,7 @@ ggplot(results, aes(y=test, x=elapsed, color=factor(native), shape=factor(parall
   xlab("Time (seconds) -- log scale")+ylab("Test")+theme_bw()+
   scale_shape_discrete("Parallel Computation")+scale_color_discrete("Native Learners")+
   scale_x_continuous(trans = log2_trans(), breaks=breaks)+ annotation_logticks(base=2, sides="b")  
-
+save(results, file="benchmark_results.rdata")
 ```
 
 We can see that using the native learners results in about a 4x speedup relative to the legacy wrappers. This can be at least partially explained by the fact that legacy `SL.randomForest` wrapper uses `randomForest.formula` for continuous data, which resorts to using the `model.matrix` function, known to be slow on large datasets. Improvements to the legacy wrappers would probably reduce or eliminate this difference. 

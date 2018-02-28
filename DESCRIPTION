@@ -22,7 +22,8 @@ Imports:
     stats,
     delayed,
     utils,
-    methods
+    methods,
+    ggplot2
 Suggests:
     testthat,
     knitr,

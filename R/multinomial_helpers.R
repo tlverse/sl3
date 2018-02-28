@@ -44,7 +44,7 @@ normalize_rows <- function(x) {
 #' @rdname factors_to_indicators
 #' @export
 factor_to_indicators <- function(x, ind_ref_mat=NULL) {
-  x_vals <- sl3:::get_levels(x)
+  x_vals <- get_levels(x)
   if(is.null(ind_ref_mat)){
     ind_ref_mat <- sapply(x_vals[-1], function(x_val) as.numeric(x_val == x_vals))
   }
