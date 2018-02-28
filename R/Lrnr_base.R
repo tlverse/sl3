@@ -133,7 +133,12 @@ Lrnr_base <- R6Class(
       }
       assert_that(is(task, "sl3_Task"))
       subsetted_task <- self$subset_covariates(task)
-      next_task <- private$.chain(subsetted_task)
+      # use custom chain function if provided
+      if (!is.null(private$.custom_chain)) {
+        next_task <- private$.custom_chain(subsetted_task)
+      } else {
+        next_task <- private$.chain(subsetted_task)
+      }
       return(next_task)
     },
 
@@ -161,6 +166,10 @@ Lrnr_base <- R6Class(
       # print(self$params)
       fit_object <- private$.fit_object
       if (!is.null(fit_object)) print(fit_object)
+    },
+
+    custom_chain = function(new_chain_fun = NULL) {
+      private$.custom_chain <- new_chain_fun
     }
   ),
 
@@ -234,6 +243,7 @@ Lrnr_base <- R6Class(
     .params = NULL,
     .required_packages = NULL,
     .properties = list(),
+    .custom_chain = NULL,
 
     .train_sublearners = function(task) {
       # train sublearners here

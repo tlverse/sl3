@@ -5,6 +5,9 @@ site:
 	Rscript -e "rmarkdown::render('README-norefs.Rmd', output_file = 'README.md')"
 	Rscript -e "pkgdown::build_site()"
 
+fastcheck:
+	Rscript -e "devtools::check(build_args = '--no-build-vignettes')"
+
 check:
 	Rscript -e "devtools::check()"
 

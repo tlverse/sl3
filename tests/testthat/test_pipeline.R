@@ -28,7 +28,10 @@ chain_y <- function(learner, task) {
   # add predictions as new column
   new_col_names <- task$add_columns(learner$fit_uuid, pred_dt)
   # prediction becomes outcome
-  return(task$next_in_chain(outcome = names(pred_dt), column_names = new_col_names))
+  return(task$next_in_chain(
+    outcome = names(pred_dt),
+    column_names = new_col_names
+  ))
 }
 
 glm_outcome <- customize_chain(glm_learner, chain_y)
