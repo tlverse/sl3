@@ -4,12 +4,12 @@
 \alias{risk}
 \title{Risk Esimation}
 \usage{
-risk(pred, truth, loss = loss_squared_error, weights = NULL)
+risk(pred, observed, loss = loss_squared_error, weights = NULL)
 }
 \arguments{
 \item{pred}{A vector of predicted values.}
 
-\item{truth}{A vector of true values.}
+\item{observed}{A vector of observed values.}
 
 \item{loss}{A loss function. For options, see \link{loss_functions}.}
 

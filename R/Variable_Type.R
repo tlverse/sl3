@@ -20,7 +20,7 @@ Variable_Type <- R6Class(
           type <- "constant"
         } else if (nunique == 2) {
           type <- "binomial"
-        } else if ((nunique / length(x)) < pcontinuous) {
+        } else if (((nunique / length(x)) < pcontinuous) && (nunique <20)) {
           type <- "categorical"
         } else {
           type <- "continuous"
