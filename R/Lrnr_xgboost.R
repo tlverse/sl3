@@ -66,8 +66,7 @@ Lrnr_xgboost <- R6Class(
       }
       if (task$has_node("offset")) {
         if (outcome_type$type == "categorical") {
-          # todo: fix
-          stop("offsets not yet supported for outcome_type='categorical'")
+          stop("offsets not supported for outcome_type='categorical'")
         }
 
         family <- outcome_type$glm_family(return_object = TRUE)
