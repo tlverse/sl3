@@ -137,7 +137,7 @@ sl3_native <- Lrnr_sl$new(list(random_forest, lrnr_glmnet, glm_fast), nnls_lrnr)
 
 #### `sl3` Parallelization Options
 
-`sl3` uses the [delayed](https://github.com/jeremyrcoyle/delayed) package to parallelize training tasks. Delayed, in turn, uses the [future](https://github.com/HenrikBengtsson/future) package to support a range of parallel back-ends. We test several of these, for both the legacy wrappers and native learners.
+`sl3` uses the [delayed](https://github.com/tlverse/delayed) package to parallelize training tasks. Delayed, in turn, uses the [future](https://github.com/HenrikBengtsson/future) package to support a range of parallel back-ends. We test several of these, for both the legacy wrappers and native learners.
 
 First, sequential evaluation (no parallelization):
 ```{r eval_sequential, echo=TRUE, results="hide", message=FALSE}
