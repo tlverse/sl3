@@ -110,7 +110,7 @@ range of options in order to facilitate the proper articulation of more advanced
 specifics potentially informative of the machine learning problem of interest.
 For example, we can specify the `id`, `weights`, and `offset` nodes listed
 above. These additional features are documented in the help for
-[`sl3_Task`](https://jeremyrcoyle.github.io/sl3/reference/sl3_Task.html).
+[`sl3_Task`](https://sl3.tlverse.org/reference/sl3_Task.html).
 
 ## Learners
 
@@ -165,7 +165,7 @@ we want to generate predictions.
 The final important learner method, `chain`, will be discussed below, in the
 section on __learner composition__. As with `sl3_Task`, learners have a variety
 of fields and methods we haven't discussed here. More information on these is
-available in the help for [`Lrnr_base`](https://jeremyrcoyle.github.io/sl3/reference/Lrnr_base.html).
+available in the help for [`Lrnr_base`](https://sl3.tlverse.org/reference/Lrnr_base.html).
 
 ### Finding Learners
 
@@ -420,7 +420,7 @@ the [`future`](https://github.com/HenrikBengtsson/future) package. For more
 information on specifying `future` `plan`s for parallelization, see the
 documentation of the [`future`](https://github.com/HenrikBengtsson/future)
 package. Performance comparisons can be found in the ["SuperLearner
-Benchmarks"](https://jeremyrcoyle.github.io/sl3/articles/SuperLearner_benchmarks.html) vignette that accompanies this
+Benchmarks"](https://sl3.tlverse.org/articles/SuperLearner_benchmarks.html) vignette that accompanies this
 package. This feature is currently experimental and hasn't yet been throughly
 tested on a range of parallel backends.
 

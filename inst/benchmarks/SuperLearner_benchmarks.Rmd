@@ -137,7 +137,7 @@ sl3_native <- Lrnr_sl$new(list(random_forest, lrnr_glmnet, glm_fast), nnls_lrnr)
 
 #### `sl3` Parallelization Options
 
-`sl3` uses the [delayed](https://github.com/jeremyrcoyle/delayed) package to parallelize training tasks. Delayed, in turn, uses the [future](https://github.com/HenrikBengtsson/future) package to support a range of parallel back-ends. We test several of these, for both the legacy wrappers and native learners.
+`sl3` uses the [delayed](https://github.com/tlverse/delayed) package to parallelize training tasks. Delayed, in turn, uses the [future](https://github.com/HenrikBengtsson/future) package to support a range of parallel back-ends. We test several of these, for both the legacy wrappers and native learners.
 
 First, sequential evaluation (no parallelization):
 ```{r eval_sequential, echo=TRUE, results="hide", message=FALSE}
@@ -229,7 +229,7 @@ ggplot(results, aes(y=test, x=elapsed, color=factor(native), shape=factor(parall
   xlab("Time (seconds) -- log scale")+ylab("Test")+theme_bw()+
   scale_shape_discrete("Parallel Computation")+scale_color_discrete("Native Learners")+
   scale_x_continuous(trans = log2_trans(), breaks=breaks)+ annotation_logticks(base=2, sides="b")  
-
+save(results, file="benchmark_results.rdata")
 ```
 
 We can see that using the native learners results in about a 4x speedup relative to the legacy wrappers. This can be at least partially explained by the fact that legacy `SL.randomForest` wrapper uses `randomForest.formula` for continuous data, which resorts to using the `model.matrix` function, known to be slow on large datasets. Improvements to the legacy wrappers would probably reduce or eliminate this difference. 

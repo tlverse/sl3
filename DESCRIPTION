@@ -22,7 +22,8 @@ Imports:
     stats,
     delayed,
     utils,
-    methods
+    methods,
+    ggplot2
 Suggests:
     testthat,
     knitr,
@@ -54,10 +55,10 @@ Suggests:
     reticulate
 Remotes:
     github::osofr/condensier,
-    github::jeremyrcoyle/delayed
+    github::tlverse/delayed
 License: GPL-3
-URL: https://github.com/jeremyrcoyle/sl3
-BugReports: https://github.com/jeremyrcoyle/sl3/issues
+URL: https://sl3.tlverse.org
+BugReports: https://github.com/tlverse/sl3/issues
 Encoding: UTF-8
 LazyData: yes
 LazyLoad: yes

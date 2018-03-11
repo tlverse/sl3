@@ -25,11 +25,11 @@ Learning in R"](intro_sl3.html) vignette is a good introduction to the `sl3`
 package and it's underlying architecture. The
 [`R6`](https://cran.r-project.org/web/packages/R6/vignettes/Introduction.html)
 documentation will help you understand how `R6` classes are defined. In
-addition, the help files for [`sl3_Task`](https://jeremyrcoyle.github.io/sl3/reference/sl3_Task.html) and
-[`Lrnr_base`](https://jeremyrcoyle.github.io/sl3/reference/Lrnr_base.html) are good resources for how those objects can be
+addition, the help files for [`sl3_Task`](https://sl3.tlverse.org/reference/sl3_Task.html) and
+[`Lrnr_base`](https://sl3.tlverse.org/reference/Lrnr_base.html) are good resources for how those objects can be
 used. If you're interested in defining learners that fit sub-learners, reading
 the documentation of the
-[`delayed`](https://jeremyrcoyle.github.io/delayed/articles/delayed.html)
+[`delayed`](https://delayed.tlverse.org/articles/delayed.html)
 package will be helpful.
 
 In the following sections, we introduce and review a template for a new `sl3`
@@ -259,7 +259,7 @@ This will make it possible for other `sl3` users to use and build on your work.
 Make sure to add any R packages listed in `.required_packages` to the
 `Suggests:` field of the `DESCRIPTION` file of the `sl3` package. Once this is
 done, please submit a __Pull Request__ to the `sl3` package [on
-GitHub](https://github.com/jeremyrcoyle/sl3) to request that your learned be
+GitHub](https://github.com/tlverse/sl3) to request that your learned be
 added. If you've never made a "Pull Request" before, see this helpful
 guide: https://yangsu.github.io/pull-request-tutorial/.
 

@@ -111,7 +111,8 @@ Lrnr_xgboost <- R6Class(
       xgb_data <- try(xgboost::xgb.DMatrix(Xmat))
 
       if (self$fit_object$training_offset) {
-        offset <- task$offset_transformed(self$fit_object$link_fun, for_prediction = TRUE)
+        offset <- task$offset_transformed(self$fit_object$link_fun,
+                                          for_prediction = TRUE)
         xgboost::setinfo(xgb_data, "base_margin", offset)
       }
 
