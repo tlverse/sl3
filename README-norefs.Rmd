@@ -149,7 +149,7 @@ After using the `sl3` R package, please cite the following:
             Learning}},
           year  = {2017},
           howpublished = {\url{https://github.com/jeremyrcoyle/sl3}},
-          url = {http://dx.doi.org/DOI_HERE},
+          url = {https://doi.org/DOI_HERE},
           doi = {DOI_HERE}
         }
 
