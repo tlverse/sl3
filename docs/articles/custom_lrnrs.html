@@ -6,17 +6,26 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Defining New <code>sl3</code> Learners • sl3</title>
-<!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<![endif]--><!-- Google analytics --><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-115145808-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
 </head>
 <body>
     <div class="container template-vignette">
-      <header><div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -24,10 +33,16 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">sl3</a>
+      <a class="navbar-brand" href="../index.html"></a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
+<li>
+  <a href="http://tlverse.org">tlverse</a>
+</li>
+<li>
+  <a href="../index.html">sl3</a>
+</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -53,14 +68,7 @@
   </ul>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/jeremyrcoyle/sl3">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
-      </ul>
+<ul class="nav navbar-nav navbar-right"></ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -75,7 +83,7 @@
       <h1>Defining New <code>sl3</code> Learners</h1>
                         <h4 class="author">Jeremy Coyle, <a href="https://nimahejazi.org">Nima Hejazi</a>, Ivana Malenica, Oleg Sofrygin</h4>
             
-            <h4 class="date">2017-11-06</h4>
+            <h4 class="date">2018-03-08</h4>
           </div>
 
     
@@ -85,10 +93,11 @@
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
 <p>This guide describes the process of implementing a learner class for a new machine learning algorithm. By writing a learner class for your favorite machine learning algorithm, you will be able to use it in all the places you could otherwise use any other <code>sl3</code> learners, including <code>Pipeline</code>s, <code>Stack</code>s, and Super Learner. We have done our best to streamline the process of creating new <code>sl3</code> learners.</p>
-<p>Before diving into defining a new learner, it will likely be helpful to read some background material. If you haven’t already read it, the <a href="intro_sl3.html">“Modern Machine Learning in R”</a> vignette is a good introduction to the <code>sl3</code> package and it’s underlying architecture. The <a href="https://cran.r-project.org/web/packages/R6/vignettes/Introduction.html"><code>R6</code></a> documentation will help you understand how <code>R6</code> classes are defined. In addition, the help files for <a href="https://jeremyrcoyle.github.io/sl3/reference/sl3_Task.html"><code>sl3_Task</code></a> and <a href="https://jeremyrcoyle.github.io/sl3/reference/Lrnr_base.html"><code>Lrnr_base</code></a> are good resources for how those objects can be used. If you’re interested in defining learners that fit sub-learners, reading the documentation of the <a href="https://jeremyrcoyle.github.io/delayed/articles/delayed.html"><code>delayed</code></a> package will be helpful.</p>
+<p>Before diving into defining a new learner, it will likely be helpful to read some background material. If you haven’t already read it, the <a href="intro_sl3.html">“Modern Machine Learning in R”</a> vignette is a good introduction to the <code>sl3</code> package and it’s underlying architecture. The <a href="https://cran.r-project.org/web/packages/R6/vignettes/Introduction.html"><code>R6</code></a> documentation will help you understand how <code>R6</code> classes are defined. In addition, the help files for <a href="https://sl3.tlverse.org/reference/sl3_Task.html"><code>sl3_Task</code></a> and <a href="https://sl3.tlverse.org/reference/Lrnr_base.html"><code>Lrnr_base</code></a> are good resources for how those objects can be used. If you’re interested in defining learners that fit sub-learners, reading the documentation of the <a href="https://delayed.tlverse.org/articles/delayed.html"><code>delayed</code></a> package will be helpful.</p>
 <p>In the following sections, we introduce and review a template for a new <code>sl3</code> learner, describing the sections that can be used to define your new learner. This is followed by a discussion of the important task of documenting and testing your new learner. Finally, we conclude by explaining how you can add your learner to <code>sl3</code> so that others may make use of it.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sl3)
 <span class="kw">library</span>(knitr)</code></pre></div>
+<pre><code>## Warning: package 'knitr' was built under R version 3.4.3</code></pre>
 </div>
 <div id="learner-template" class="section level2">
 <h2 class="hasAnchor">
@@ -304,7 +313,7 @@ Lrnr_template &lt;-<span class="st"> </span><span class="kw">R6Class</span>(<spa
 <h2 class="hasAnchor">
 <a href="#submitting-your-learner-to-sl3" class="anchor"></a>Submitting your Learner to <code>sl3</code>
 </h2>
-<p>Once you’ve implemented your new learner (and made sure that it has quality documentation and unit tests), please consider adding it to the <code>sl3</code> project. This will make it possible for other <code>sl3</code> users to use and build on your work. Make sure to add any R packages listed in <code>.required_packages</code> to the <code>Suggests:</code> field of the <code>DESCRIPTION</code> file of the <code>sl3</code> package. Once this is done, please submit a <strong>Pull Request</strong> to the <code>sl3</code> package <a href="https://github.com/jeremyrcoyle/sl3">on GitHub</a> to request that your learned be added. If you’ve never made a “Pull Request” before, see this helpful guide: <a href="https://yangsu.github.io/pull-request-tutorial/" class="uri">https://yangsu.github.io/pull-request-tutorial/</a>.</p>
+<p>Once you’ve implemented your new learner (and made sure that it has quality documentation and unit tests), please consider adding it to the <code>sl3</code> project. This will make it possible for other <code>sl3</code> users to use and build on your work. Make sure to add any R packages listed in <code>.required_packages</code> to the <code>Suggests:</code> field of the <code>DESCRIPTION</code> file of the <code>sl3</code> package. Once this is done, please submit a <strong>Pull Request</strong> to the <code>sl3</code> package <a href="https://github.com/tlverse/sl3">on GitHub</a> to request that your learned be added. If you’ve never made a “Pull Request” before, see this helpful guide: <a href="https://yangsu.github.io/pull-request-tutorial/" class="uri">https://yangsu.github.io/pull-request-tutorial/</a>.</p>
 <p>From the <code>sl3</code> team, thanks for your interest in extending <code>sl3</code>!</p>
 </div>
 </div>

@@ -41,23 +41,23 @@ Lrnr_mean <- R6Class(
   ),
   
   private = list(
-    .properties = c("continuous", "binomial", "categorical", "weights","offset"),
-    
+
+    .properties = c("continuous", "binomial", "categorical", "weights", "offset"),
+
     .train = function(task) {
       outcome_type <- self$get_outcome_type(task)
       y <- outcome_type$format(task$Y)
       weights <- task$weights
-      args <- self$params
-      outcome_type <- self$get_outcome_type(task)
-      
-      if (is.null(args$family)) {
-        args$family <- outcome_type$glm_family(return_object = TRUE)
+
+      if (task$has_node("offset")) {
+        offset <- task$offset
+        if (outcome_type$type == "categorical") {
+          stop("offsets not supported for outcome_type='categorical'")
+        }
+      } else {
+        offset <- rep(0, task$nrow)
       }
-      
-      if (task$has_node("weights")) {
-        args$weights <- task$weights
-      }
-      # if categorical leave as it was but otherwise just do an intercept regression
+
       if (outcome_type$type == "categorical") {
         y_levels <- outcome_type$levels
         means <- sapply(
@@ -66,33 +66,23 @@ Lrnr_mean <- R6Class(
         )
         fit_object <- list(mean = pack_predictions(matrix(means, nrow = 1)))
       } else {
-        if (task$has_node("offset")) {
-          fit_object = glm(Y~1, data = data, offset = task$offset, family = args$family, 
-                           weights = weights)
-        } else {
-          fit_object = glm(Y~1, data = data, family = args$family, weights = weights)
-        }
+
+        fit_object <- list(mean = weighted.mean(y - offset, weights))
       }
-      fit_object$linkinv_fun = args$family$linkinv
+
+      fit_object$training_offset <- task$has_node("offset")
+
       return(fit_object)
     },
     
     .predict = function(task = NULL) {
-      outcome_type <- self$get_outcome_type(task)
-      # if categorical leave as it was, otherwise use fit_object info
-      if (outcome_type$type == "categorical") {
-        predictions <- rep(private$.fit_object$mean, task$nrow)
-      } else {
-        fit = private$.fit_object
-        data = as.data.frame(task$X)
-        if (task$has_node("offset")) {
-          predictions <- fit$linkinv_fun(rep(fit$coefficients, nrow(data)) + task$offset)
-        } else {
-          predictions <- fit$linkinv_fun(rep(fit$coefficients, nrow(data)))
-        }
+
+      predictions <- rep(private$.fit_object$mean, task$nrow)
+
+      if (self$fit_object$training_offset) {
+        offset <- task$offset_transformed(NULL, for_prediction = TRUE)
+        predictions <- predictions + offset
       }
-      # nullifying annoying looking names
-      names(predictions) = NULL
       return(predictions)
     }
   )

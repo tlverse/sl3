@@ -58,7 +58,7 @@ sl3_Task <- R6Class(
       }
 
       # verify nodes are contained in dataset
-      all_nodes <- unlist(nodes[c("covariates", "outcome", "id", "weights")])
+      all_nodes <- unlist(nodes)
       missing_cols <- setdiff(all_nodes, names(column_names))
 
       assert_that(
@@ -188,15 +188,15 @@ sl3_Task <- R6Class(
           new_nodes$outcome <- outcome
         }
 
-        if (!is.null(id)) {
+        if (!missing(id)) {
           new_nodes$id <- id
         }
 
-        if (!is.null(weights)) {
+        if (!missing(weights)) {
           new_nodes$weights <- weights
         }
 
-        if (!is.null(offset)) {
+        if (!missing(offset)) {
           new_nodes$offset <- offset
         }
       }
@@ -204,10 +204,7 @@ sl3_Task <- R6Class(
       if (is.null(column_names)) {
         column_names <- private$.column_names
       }
-      all_nodes <- unlist(new_nodes[c(
-        "covariates", "outcome", "id", "weights",
-        "offset"
-      )])
+      all_nodes <- unlist(new_nodes)
 
       # verify nodes are contained in dataset
       missing_cols <- setdiff(all_nodes, names(column_names))
@@ -257,7 +254,7 @@ sl3_Task <- R6Class(
       return(new_task)
     },
 
-    get_data = function(rows = NULL, columns) {
+    get_data = function(rows = NULL, columns, expand_factors = FALSE) {
       if (missing(rows)) {
         rows <- private$.row_index
       }
@@ -269,9 +266,13 @@ sl3_Task <- R6Class(
       } else {
         subset <- private$.data[, true_columns, with = FALSE]
       }
-
+      
       if (ncol(subset) > 0) {
         data.table::setnames(subset, true_columns, columns)
+      }
+      
+      if(expand_factors){
+        subset <- dt_expand_factors(subset)
       }
       return(subset)
     },
@@ -280,7 +281,7 @@ sl3_Task <- R6Class(
       node_var <- private$.nodes[[node_name]]
       return(!is.null(node_var))
     },
-    get_node = function(node_name, generator_fun = NULL) {
+    get_node = function(node_name, generator_fun = NULL, expand_factors = FALSE) {
       if (missing(generator_fun)) {
         generator_fun <- function(node_name, n) {
           stop(sprintf("Node %s not specified", node_name))
@@ -291,7 +292,7 @@ sl3_Task <- R6Class(
       if (is.null(node_var)) {
         return(generator_fun(node_name, self$nrow))
       } else {
-        data_col <- self$get_data(, node_var)
+        data_col <- self$get_data(, node_var, expand_factors)
 
         if (ncol(data_col) == 1) {
           return(unlist(data_col, use.names = FALSE))
@@ -299,6 +300,20 @@ sl3_Task <- R6Class(
           return(data_col)
         }
       }
+    },
+    offset_transformed = function(link_fun = NULL, for_prediction = FALSE) {
+      if (self$has_node("offset")) {
+        offset <- self$offset
+
+        # transform if sl3.transform.offset is true and link_fun was provided
+        if (getOption("sl3.transform.offset") && !is.null(link_fun)) {
+          offset <- link_fun(offset)
+        }
+      } else {
+        # if task has no offset, return NULL or a zero offset as is appropriate
+        stop("Trained with offsets but predict method called on task without.")
+      }
+      return(offset)
     },
 
     print = function() {
@@ -331,7 +346,7 @@ sl3_Task <- R6Class(
 
     X = function() {
       covariates <- private$.nodes$covariates
-      X_dt <- self$get_data(, covariates)
+      X_dt <- self$get_data(, covariates, expand_factors = TRUE)
       return(X_dt)
     },
 
@@ -343,8 +358,13 @@ sl3_Task <- R6Class(
         intercept <- rep(1, self$nrow)
         X_dt <- self$data[, list(intercept = intercept)]
       } else {
+        old_ncol <- ncol(X_dt)
         X_dt[, intercept := 1]
+
+        # make intercept first column
+        setcolorder(X_dt, c(old_ncol + 1, seq_len(old_ncol)))
       }
+
       return(X_dt)
     },
 

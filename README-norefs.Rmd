@@ -80,9 +80,9 @@ issue](https://github.com/jeremyrcoyle/sl3/issues).
 
 The best places to start are the vignettes:
 
-* [Modern Machine Learning in R](https://jeremyrcoyle.github.io/sl3/articles/intro_sl3.html) `vignette("intro_sl3")`
-* [Defining New sl3 Learners](https://jeremyrcoyle.github.io/sl3/articles/custom_lrnrs.html) `vignette("custom_lrnrs")`
-* [SuperLearner Benchmarks](https://jeremyrcoyle.github.io/sl3/articles/SuperLearner_benchmarks.html) `vignette("SuperLearner_benchmarks")`
+* [Modern Machine Learning in R](https://sl3.tlverse.org/articles/intro_sl3.html) `vignette("intro_sl3")`
+* [Defining New sl3 Learners](https://sl3.tlverse.org/articles/custom_lrnrs.html) `vignette("custom_lrnrs")`
+* [SuperLearner Benchmarks](https://sl3.tlverse.org/articles/SuperLearner_benchmarks.html) `vignette("SuperLearner_benchmarks")`
 
 ---
 
@@ -149,7 +149,7 @@ After using the `sl3` R package, please cite the following:
             Learning}},
           year  = {2017},
           howpublished = {\url{https://github.com/jeremyrcoyle/sl3}},
-          url = {http://dx.doi.org/DOI_HERE},
+          url = {https://doi.org/DOI_HERE},
           doi = {DOI_HERE}
         }
 

@@ -203,7 +203,7 @@ sl3_native &lt;- Lrnr_sl$new(list(random_forest, lrnr_glmnet, glm_fast), nnls_lr
 </div>
 <div id="sl3-parallelization-options" class="section level4">
 <h4><code>sl3</code> Parallelization Options</h4>
-<p><code>sl3</code> uses the <a href="https://github.com/jeremyrcoyle/delayed">delayed</a> package to parallelize training tasks. Delayed, in turn, uses the <a href="https://github.com/HenrikBengtsson/future">future</a> package to support a range of parallel back-ends. We test several of these, for both the legacy wrappers and native learners.</p>
+<p><code>sl3</code> uses the <a href="https://github.com/tlverse/delayed">delayed</a> package to parallelize training tasks. Delayed, in turn, uses the <a href="https://github.com/HenrikBengtsson/future">future</a> package to support a range of parallel back-ends. We test several of these, for both the legacy wrappers and native learners.</p>
 <p>First, sequential evaluation (no parallelization):</p>
 <pre class="r"><code>plan(sequential)
 test &lt;- delayed_learner_train(sl3_legacy, task)
