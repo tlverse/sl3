@@ -63,7 +63,7 @@ Install the most recent *stable release* from GitHub via
 [`devtools`](https://www.rstudio.com/products/rpackages/devtools/):
 
 ``` r
-devtools::install_github("jeremyrcoyle/sl3")
+devtools::install_github("tlverse/sl3")
 ```
 
 -----
@@ -71,7 +71,7 @@ devtools::install_github("jeremyrcoyle/sl3")
 ## Issues
 
 If you encounter any bugs or have any specific feature requests, please
-[file an issue](https://github.com/jeremyrcoyle/sl3/issues).
+[file an issue](https://github.com/tlverse/sl3/issues).
 
 -----
 
@@ -158,8 +158,8 @@ stacked regression models and the cross-validation of pipelines that
 make up such models, as well as the variety of other applications in
 which the Super Learner algorithm plays a role. To that end,
 contributions are very welcome, though we ask that interested
-contributors consult our [`contribution
-guidelines`](https://github.com/jeremyrcoyle/sl3/blob/master/CONTRIBUTING.md)
+contributors consult our [contribution
+guidelines](https://github.com/jeremyrcoyle/sl3/blob/master/CONTRIBUTING.md)
 prior to submitting a pull request.
 
 -----
@@ -167,13 +167,13 @@ prior to submitting a pull request.
 After using the `sl3` R package, please cite the following:
 
 ``` 
-    @misc{coyle2017sl3,
+    @misc{coyle2018sl3,
       author = {Coyle, Jeremy R and Hejazi, Nima S and Malenica, Ivana and
         Sofrygin, Oleg},
       title = {{sl3}: Modern Pipelines for Machine Learning and {Super
         Learning}},
-      year  = {2017},
-      howpublished = {\url{https://github.com/jeremyrcoyle/sl3}},
+      year  = {2018},
+      howpublished = {\url{https://github.com/tlverse/sl3}},
       url = {https://doi.org/DOI_HERE},
       doi = {DOI_HERE}
     }
@@ -183,7 +183,7 @@ After using the `sl3` R package, please cite the following:
 
 ## License
 
-© 2017 [Jeremy R. Coyle](https://github.com/jeremyrcoyle), [Nima S.
+© 2017-2018 [Jeremy R. Coyle](https://github.com/jeremyrcoyle), [Nima S.
 Hejazi](https://github.com/nhejazi), [Ivana
 Malenica](https://github.com/podTockom), [Oleg
 Sofrygin](https://github.com/osofr)
