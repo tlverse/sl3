@@ -139,7 +139,8 @@ Stack <- R6Class(
       }
       ## remove the initial seeded column by reference
       data.table::set(
-        learner_preds, j = "init_seed_preds_to_delete",
+        learner_preds,
+        j = "init_seed_preds_to_delete",
         value = NULL
       )
       return(learner_preds)

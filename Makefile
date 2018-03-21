@@ -23,6 +23,9 @@ build:
 buildfast:
 	Rscript -e "devtools::build(vignettes = FALSE)"
 
+coverage:
+	Rscript -e "covr::codecov()"
+
 style:
 	Rscript -e "styler::style_pkg()"
 

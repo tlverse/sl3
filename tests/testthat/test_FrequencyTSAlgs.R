@@ -28,10 +28,10 @@ test_that("Lrnr_HarmonicReg gives expected values", {
   HarReg_preds <- HarReg_fit$predict(task)
 
   bsds_cnt <- ts(bsds$cnt, frequency = 105)
-  HarReg_fit_2 <- forecast::tslm(bsds_cnt~fourier(bsds_cnt, K = 7))
+  HarReg_fit_2 <- forecast::tslm(bsds_cnt ~ fourier(bsds_cnt, K = 7))
   HarReg_preds_2 <- forecast::forecast(HarReg_fit_2, data.frame(forecast::fourier(bsds_cnt, K = 7, h = 1)))
   HarReg_preds_2 <- as.numeric(HarReg_preds_2$mean)
   HarReg_preds_2 <- structure(HarReg_preds_2, names = 1)
 
-  expect_true(sum(HarReg_preds - HarReg_preds_2) < 10 ^ (-10))
+  expect_true(sum(HarReg_preds - HarReg_preds_2) < 10^(-10))
 })
