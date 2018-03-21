@@ -17,7 +17,7 @@
 #' @export
 #
 loss_squared_error <- function(pred, observed) {
-  out <- (pred - observed) ^ 2
+  out <- (pred - observed)^2
   return(out)
 }
 

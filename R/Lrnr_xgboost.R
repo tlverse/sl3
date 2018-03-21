@@ -112,7 +112,8 @@ Lrnr_xgboost <- R6Class(
 
       if (self$fit_object$training_offset) {
         offset <- task$offset_transformed(self$fit_object$link_fun,
-                                          for_prediction = TRUE)
+          for_prediction = TRUE
+        )
         xgboost::setinfo(xgb_data, "base_margin", offset)
       }
 
@@ -129,7 +130,8 @@ Lrnr_xgboost <- R6Class(
         }
         # will generally return vector, needs to be put into data.table column
         predictions <- stats::predict(
-          fit_object, newdata = xgb_data,
+          fit_object,
+          newdata = xgb_data,
           ntreelimit = ntreelimit, reshape = TRUE
         )
       }

@@ -46,9 +46,9 @@ Lrnr_solnp <- R6Class(
   class = TRUE,
   public = list(
     initialize = function(learner_function = metalearner_linear,
-                          loss_function = loss_squared_error,
-                          make_sparse = TRUE, convex_combination = TRUE,
-                          init_0 = FALSE, tol=1e-5, ...) {
+                              loss_function = loss_squared_error,
+                              make_sparse = TRUE, convex_combination = TRUE,
+                              init_0 = FALSE, tol=1e-5, ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }
@@ -65,7 +65,7 @@ Lrnr_solnp <- R6Class(
       learner_function <- params$learner_function
       loss_function <- params$loss_function
       outcome_type <- self$get_outcome_type(task)
-      
+
       # specify data
       X <- as.matrix(task$X)
       Y <- outcome_type$format(task$Y)
@@ -75,7 +75,7 @@ Lrnr_solnp <- R6Class(
       } else {
         offset <- NULL
       }
-      
+
       weights <- task$weights
       risk <- function(alphas) {
         if (!is.null(offset)) {

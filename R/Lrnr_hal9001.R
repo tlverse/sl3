@@ -55,10 +55,10 @@ Lrnr_hal9001 <- R6Class(
   portable = TRUE, class = TRUE,
   public = list(
     initialize = function(degrees = NULL,
-                          fit_type = "glmnet",
-                          n_folds = 10,
-                          use_min = TRUE,
-                          ...) {
+                              fit_type = "glmnet",
+                              n_folds = 10,
+                              use_min = TRUE,
+                              ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }
@@ -97,4 +97,3 @@ Lrnr_hal9001 <- R6Class(
     .required_packages = c("hal9001")
   )
 )
-
