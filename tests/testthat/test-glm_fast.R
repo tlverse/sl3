@@ -53,7 +53,7 @@ test_that("Lrnr_glm_fast trains on a subset of covariates (predictors)", {
   # print(glm.fit)
   glm_preds_3 <- as.vector(predict(glm.fit))
 
-  expect_true(sum(fglm_preds_3 - glm_preds_3) < 10 ^ (-10))
+  expect_true(sum(fglm_preds_3 - glm_preds_3) < 10^(-10))
   expect_true(all.equal(as.vector(glm_preds_3), as.vector(fglm_preds_3)))
 })
 

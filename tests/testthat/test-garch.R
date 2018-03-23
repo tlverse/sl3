@@ -33,7 +33,7 @@ test_that("Lrnr_rugarch gives expected values with no model specification", {
   garch_preds_2 <- as.numeric(garch_preds_2@forecast$seriesFor)
   garch_preds_2 <- structure(garch_preds_2, names = 1)
 
-  expect_true(sum(garch_preds - garch_preds_2) < 10 ^ (-10))
+  expect_true(sum(garch_preds - garch_preds_2) < 10^(-10))
   expect_true(all.equal(garch_preds, garch_preds_2))
 })
 
@@ -55,7 +55,7 @@ test_that("Lrnr_rugarch gives expected values with higher order ARMA and GARCH",
   garch_preds_2 <- as.numeric(garch_preds_2@forecast$seriesFor)
   garch_preds_2 <- structure(garch_preds_2, names = 1)
 
-  expect_true(sum(garch_preds - garch_preds_2) < 10 ^ (-10))
+  expect_true(sum(garch_preds - garch_preds_2) < 10^(-10))
   expect_true(all.equal(garch_preds, garch_preds_2))
 })
 
@@ -70,8 +70,8 @@ test_that("Lrnr_rugarch gives expected values when ran with a fixed parameter", 
   garch_preds_2 <- as.numeric(garch_preds_2@forecast$seriesFor)
   garch_preds_2 <- structure(garch_preds_2, names = 1)
 
-  expect_true(sum(garch_fit$fit_object@model$pars[9] - 0.86) < 10 ^ (-10))
-  expect_true(sum(garch_preds - garch_preds_2) < 10 ^ (-10))
+  expect_true(sum(garch_fit$fit_object@model$pars[9] - 0.86) < 10^(-10))
+  expect_true(sum(garch_preds - garch_preds_2) < 10^(-10))
   expect_true(all.equal(garch_preds, garch_preds_2))
 })
 
@@ -98,6 +98,6 @@ test_that("Lrnr_rugarch gives expected values with external regressors", {
   garch_preds_2 <- as.numeric(garch_preds_2@forecast$seriesFor)
   garch_preds_2 <- structure(garch_preds_2, names = 1)
 
-  expect_true(sum(garch_preds - garch_preds_2) < 10 ^ (-10))
+  expect_true(sum(garch_preds - garch_preds_2) < 10^(-10))
   expect_true(all.equal(garch_preds, garch_preds_2))
 })

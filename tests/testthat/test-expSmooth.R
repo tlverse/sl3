@@ -40,7 +40,8 @@ test_that("Automatic Lrnr_expSmooth gives expected values", {
   expect_equal(expSmooth_preds_2, expSmooth_preds)
 
   expect_equal(
-    expSmooth_preds, expSmooth_preds_2, tolerance = 1e-10,
+    expSmooth_preds, expSmooth_preds_2,
+    tolerance = 1e-10,
     scale = 1
   )
 })

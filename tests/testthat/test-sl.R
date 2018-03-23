@@ -10,11 +10,13 @@ covars <- c(
 )
 outcome <- "haz"
 task <- sl3_Task$new(
-  data.table::copy(cpp_imputed), covariates = covars,
+  data.table::copy(cpp_imputed),
+  covariates = covars,
   outcome = outcome
 )
 task2 <- sl3_Task$new(
-  data.table::copy(cpp_imputed), covariates = covars,
+  data.table::copy(cpp_imputed),
+  covariates = covars,
   outcome = outcome
 )
 

@@ -4,7 +4,7 @@
 # R/`sl3`: modern Super Learning with pipelines
 
 [![Travis-CI Build
-Status](https://travis-ci.org/jeremyrcoyle/sl3.svg?branch=master)](https://travis-ci.org/jeremyrcoyle/sl3)
+Status](https://travis-ci.org/tlverse/sl3.svg?branch=master)](https://travis-ci.org/tlverse/sl3)
 [![Build
 status](https://ci.appveyor.com/api/projects/status/25reu5wdhrwj9qgy?svg=true)](https://ci.appveyor.com/project/jeremyrcoyle/sl3)
 [![Coverage
@@ -63,7 +63,7 @@ Install the most recent *stable release* from GitHub via
 [`devtools`](https://www.rstudio.com/products/rpackages/devtools/):
 
 ``` r
-devtools::install_github("jeremyrcoyle/sl3")
+devtools::install_github("tlverse/sl3")
 ```
 
 -----
@@ -71,7 +71,7 @@ devtools::install_github("jeremyrcoyle/sl3")
 ## Issues
 
 If you encounter any bugs or have any specific feature requests, please
-[file an issue](https://github.com/jeremyrcoyle/sl3/issues).
+[file an issue](https://github.com/tlverse/sl3/issues).
 
 -----
 
@@ -86,14 +86,25 @@ best way to understand this is to see the `sl3` package in action:
 set.seed(49753)
 suppressMessages(library(data.table))
 library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:data.table':
+#> 
+#>     between, first, last
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
 library(SuperLearner)
 #> Loading required package: nnls
 #> Super Learner
 #> Version: 2.0-23-9000
-#> Package created on 2017-11-07
+#> Package created on 2017-11-29
 library(origami)
 #> origami: Generalized Cross-Validation Framework
-#> Version: 0.8.2
+#> Version: 1.0.0
 library(sl3)
 
 # load example data set
@@ -118,34 +129,24 @@ learner_stack <- Stack$new(SL.glmnet_learner, glm_learner, screen_and_glm)
 stack_fit <- learner_stack$train(task)
 #> Loading required package: glmnet
 #> Loading required package: Matrix
-#> 
-#> Attaching package: 'Matrix'
-#> The following object is masked from 'package:tidyr':
-#> 
-#>     expand
 #> Loading required package: foreach
-#> 
-#> Attaching package: 'foreach'
-#> The following objects are masked from 'package:purrr':
-#> 
-#>     accumulate, when
 #> Loaded glmnet 2.0-13
 preds <- stack_fit$predict()
 head(preds)
-#>    Lrnr_pkg_SuperLearner_SL.glmnet   Lrnr_glm
-#> 1:                      0.35345519 0.36298498
-#> 2:                      0.35345519 0.36298498
-#> 3:                      0.24554305 0.25993072
-#> 4:                      0.24554305 0.25993072
-#> 5:                      0.24554305 0.25993072
-#> 6:                      0.02953193 0.05680264
-#>    Lrnr_pkg_SuperLearner_screener_screen.glmnet___Lrnr_glm
-#> 1:                                              0.36228209
-#> 2:                                              0.36228209
-#> 3:                                              0.25870995
-#> 4:                                              0.25870995
-#> 5:                                              0.25870995
-#> 6:                                              0.05600958
+#>    Lrnr_pkg_SuperLearner_SL.glmnet Lrnr_glm_TRUE
+#> 1:                      0.35345519    0.36298498
+#> 2:                      0.35345519    0.36298498
+#> 3:                      0.24554305    0.25993072
+#> 4:                      0.24554305    0.25993072
+#> 5:                      0.24554305    0.25993072
+#> 6:                      0.02953193    0.05680264
+#>    Lrnr_pkg_SuperLearner_screener_screen.glmnet___Lrnr_glm_TRUE
+#> 1:                                                   0.36228209
+#> 2:                                                   0.36228209
+#> 3:                                                   0.25870995
+#> 4:                                                   0.25870995
+#> 5:                                                   0.25870995
+#> 6:                                                   0.05600958
 ```
 
 -----
@@ -157,8 +158,8 @@ stacked regression models and the cross-validation of pipelines that
 make up such models, as well as the variety of other applications in
 which the Super Learner algorithm plays a role. To that end,
 contributions are very welcome, though we ask that interested
-contributors consult our [`contribution
-guidelines`](https://github.com/jeremyrcoyle/sl3/blob/master/CONTRIBUTING.md)
+contributors consult our [contribution
+guidelines](https://github.com/jeremyrcoyle/sl3/blob/master/CONTRIBUTING.md)
 prior to submitting a pull request.
 
 -----
@@ -166,14 +167,14 @@ prior to submitting a pull request.
 After using the `sl3` R package, please cite the following:
 
 ``` 
-    @misc{coyle2017sl3,
+    @misc{coyle2018sl3,
       author = {Coyle, Jeremy R and Hejazi, Nima S and Malenica, Ivana and
         Sofrygin, Oleg},
       title = {{sl3}: Modern Pipelines for Machine Learning and {Super
         Learning}},
-      year  = {2017},
-      howpublished = {\url{https://github.com/jeremyrcoyle/sl3}},
-      url = {http://dx.doi.org/DOI_HERE},
+      year  = {2018},
+      howpublished = {\url{https://github.com/tlverse/sl3}},
+      url = {https://doi.org/DOI_HERE},
       doi = {DOI_HERE}
     }
 ```
@@ -182,7 +183,7 @@ After using the `sl3` R package, please cite the following:
 
 ## License
 
-© 2017 [Jeremy R. Coyle](https://github.com/jeremyrcoyle), [Nima S.
+© 2017-2018 [Jeremy R. Coyle](https://github.com/jeremyrcoyle), [Nima S.
 Hejazi](https://github.com/nhejazi), [Ivana
 Malenica](https://github.com/podTockom), [Oleg
 Sofrygin](https://github.com/osofr)
@@ -194,9 +195,21 @@ See file `LICENSE` for details.
 
 ## References
 
+<div id="refs" class="references">
+
+<div id="ref-breiman1996stacked">
+
 Breiman, Leo. 1996. “Stacked Regressions.” *Machine Learning* 24 (1).
 Springer:49–64.
+
+</div>
+
+<div id="ref-vdl2007super">
 
 van der Laan, Mark J., Eric C. Polley, and Alan E. Hubbard. 2007. “Super
 Learner.” *Statistical Applications in Genetics and Molecular Biology* 6
 (1).
+
+</div>
+
+</div>

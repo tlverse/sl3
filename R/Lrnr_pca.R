@@ -72,4 +72,3 @@ Lrnr_pca <- R6Class(
     .required_packages = c("stats", "data.table")
   )
 )
-

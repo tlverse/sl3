@@ -3,7 +3,7 @@
 #' Loss functions for use in evaluating learner fits
 #'
 #' @param pred A vector of predicted values
-#' @param truth A vector of true values
+#' @param observed A vector of observed values
 #'
 #' @return A vector of loss values
 #'
@@ -16,20 +16,20 @@
 #'
 #' @export
 #
-loss_squared_error <- function(pred, truth) {
-  out <- (pred - truth) ^ 2
+loss_squared_error <- function(pred, observed) {
+  out <- (pred - observed)^2
   return(out)
 }
 
 # NEGATIVE LOG-LIKELIHOOD LOSS
 #
-# assumes pred is p(Y = truth); therefore, truth is not actually used
+# assumes pred is p(Y = observed); therefore, observed is not actually used
 #
 #' @rdname loss_functions
 #'
 #' @export
 #
-loss_loglik_true_cat <- function(pred, truth) {
+loss_loglik_true_cat <- function(pred, observed) {
   out <- -log(pred)
   return(out)
 }
@@ -40,8 +40,8 @@ loss_loglik_true_cat <- function(pred, truth) {
 #'
 #' @export
 #
-loss_loglik_binomial <- function(pred, truth) {
-  out <- -1 * ifelse(truth == 1, log(pred), log(1 - pred))
+loss_loglik_binomial <- function(pred, observed) {
+  out <- -1 * ifelse(observed == 1, log(pred), log(1 - pred))
   return(out)
 }
 
@@ -53,9 +53,9 @@ loss_loglik_binomial <- function(pred, truth) {
 #'
 #' @export
 #
-loss_loglik_multinomial <- function(pred, truth) {
+loss_loglik_multinomial <- function(pred, observed) {
   # make index matrix
-  index_mat <- cbind(seq_along(truth), truth)
+  index_mat <- cbind(seq_along(observed), observed)
   unpacked <- unpack_predictions(pred)
   class_liks <- log(unpacked[index_mat])
   return(-1 * class_liks)
@@ -66,7 +66,7 @@ loss_loglik_multinomial <- function(pred, truth) {
 #' Estimates a risk for a given set of predictions and loss function.
 #'
 #' @param pred A vector of predicted values.
-#' @param truth A vector of true values.
+#' @param observed A vector of observed values.
 #' @param loss A loss function. For options, see \link{loss_functions}.
 #' @param weights A vector of weights.
 #'
@@ -74,10 +74,10 @@ loss_loglik_multinomial <- function(pred, truth) {
 #'
 #' @export
 #
-risk <- function(pred, truth, loss = loss_squared_error, weights = NULL) {
+risk <- function(pred, observed, loss = loss_squared_error, weights = NULL) {
   if (is.null(weights)) {
-    weights <- rep(1, length(truth))
+    weights <- rep(1, length(observed))
   }
-  risk <- weighted.mean(loss(truth, pred), weights)
+  risk <- weighted.mean(loss(observed, pred), weights)
   return(risk)
 }

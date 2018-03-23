@@ -60,7 +60,7 @@ Lrnr_HarmonicReg <- R6Class(
       }
 
       fourier_fit <- forecast::fourier(task_ts, K = Kparam)
-      fit_object <- forecast::tslm(task_ts~fourier_fit)
+      fit_object <- forecast::tslm(task_ts ~ fourier_fit)
       return(fit_object)
     },
 
@@ -76,7 +76,8 @@ Lrnr_HarmonicReg <- R6Class(
 
       task_ts <- ts(task$X, frequency = freq)
       fourier_fit <- data.frame(forecast::fourier(
-        task_ts, K = Kparam,
+        task_ts,
+        K = Kparam,
         h = n.ahead
       ))
       predictions <- forecast::forecast(private$.fit_object, fourier_fit)

@@ -1,6 +1,7 @@
 ---
-output: rmarkdown::github_document
-bibliography: README-refs.bib
+output:
+  rmarkdown::github_document
+bibliography: "`r here::here('README-refs.bib')`"
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -15,7 +16,7 @@ knitr::opts_chunk$set(
 
 # R/`sl3`: modern Super Learning with pipelines
 
-[![Travis-CI Build Status](https://travis-ci.org/jeremyrcoyle/sl3.svg?branch=master)](https://travis-ci.org/jeremyrcoyle/sl3)
+[![Travis-CI Build Status](https://travis-ci.org/tlverse/sl3.svg?branch=master)](https://travis-ci.org/tlverse/sl3)
 [![Build status](https://ci.appveyor.com/api/projects/status/25reu5wdhrwj9qgy?svg=true)](https://ci.appveyor.com/project/jeremyrcoyle/sl3)
 [![Coverage Status](https://img.shields.io/codecov/c/github/jeremyrcoyle/sl3/master.svg)](https://codecov.io/github/jeremyrcoyle/sl3?branch=master)
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](http://www.repostatus.org/badges/latest/wip.svg)](http://www.repostatus.org/#wip)
@@ -65,7 +66,7 @@ Install the most recent _stable release_ from GitHub via
 [`devtools`](https://www.rstudio.com/products/rpackages/devtools/):
 
 ```{r gh-master-installation, eval = FALSE}
-devtools::install_github("jeremyrcoyle/sl3")
+devtools::install_github("tlverse/sl3")
 ```
 
 ---
@@ -73,7 +74,7 @@ devtools::install_github("jeremyrcoyle/sl3")
 ## Issues
 
 If you encounter any bugs or have any specific feature requests, please [file an
-issue](https://github.com/jeremyrcoyle/sl3/issues).
+issue](https://github.com/tlverse/sl3/issues).
 
 ---
 
@@ -124,22 +125,22 @@ It is our hope that `sl3` will grow to be widely used for creating stacked
 regression models and the cross-validation of pipelines that make up such
 models, as well as the variety of other applications in which the Super Learner
 algorithm plays a role. To that end, contributions are very welcome, though we
-ask that interested contributors consult our [`contribution
-guidelines`](https://github.com/jeremyrcoyle/sl3/blob/master/CONTRIBUTING.md)
+ask that interested contributors consult our [contribution
+guidelines](https://github.com/jeremyrcoyle/sl3/blob/master/CONTRIBUTING.md)
 prior to submitting a pull request.
 
 ---
 
 After using the `sl3` R package, please cite the following:
 
-        @misc{coyle2017sl3,
+        @misc{coyle2018sl3,
           author = {Coyle, Jeremy R and Hejazi, Nima S and Malenica, Ivana and
             Sofrygin, Oleg},
           title = {{sl3}: Modern Pipelines for Machine Learning and {Super
             Learning}},
-          year  = {2017},
-          howpublished = {\url{https://github.com/jeremyrcoyle/sl3}},
-          url = {http://dx.doi.org/DOI_HERE},
+          year  = {2018},
+          howpublished = {\url{https://github.com/tlverse/sl3}},
+          url = {https://doi.org/DOI_HERE},
           doi = {DOI_HERE}
         }
 
@@ -147,7 +148,7 @@ After using the `sl3` R package, please cite the following:
 
 ## License
 
-&copy; 2017 [Jeremy R. Coyle](https://github.com/jeremyrcoyle), [Nima S.
+&copy; 2017-2018 [Jeremy R. Coyle](https://github.com/jeremyrcoyle), [Nima S.
 Hejazi](https://github.com/nhejazi), [Ivana
 Malenica](https://github.com/podTockom), [Oleg
 Sofrygin](https://github.com/osofr)

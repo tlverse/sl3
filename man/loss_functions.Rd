@@ -8,18 +8,18 @@
 \alias{loss_loglik_multinomial}
 \title{Loss Function Definitions}
 \usage{
-loss_squared_error(pred, truth)
+loss_squared_error(pred, observed)
 
-loss_loglik_true_cat(pred, truth)
+loss_loglik_true_cat(pred, observed)
 
-loss_loglik_binomial(pred, truth)
+loss_loglik_binomial(pred, observed)
 
-loss_loglik_multinomial(pred, truth)
+loss_loglik_multinomial(pred, observed)
 }
 \arguments{
 \item{pred}{A vector of predicted values}
 
-\item{truth}{A vector of true values}
+\item{observed}{A vector of observed values}
 }
 \value{
 A vector of loss values

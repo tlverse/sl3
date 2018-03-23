@@ -99,8 +99,7 @@ Stack <- R6Class(
         message <- learner_errors[[i]]$message
         learner <- errored_learners[[i]]
         warning(sprintf(
-          "%s failed with message: %s. It will be removed from",
-          "the stack", learner$name, message
+          "%s failed with message: %s. It will be removed from the stack", learner$name, message
         ))
       }
       if (all(is_error)) {
@@ -140,7 +139,8 @@ Stack <- R6Class(
       }
       ## remove the initial seeded column by reference
       data.table::set(
-        learner_preds, j = "init_seed_preds_to_delete",
+        learner_preds,
+        j = "init_seed_preds_to_delete",
         value = NULL
       )
       return(learner_preds)

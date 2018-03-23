@@ -31,7 +31,8 @@ outcome <- "haz"
 # cpp <- cpp[1:150, ]
 # sl3_Task$debug("initialize")
 task <- sl3_Task$new(
-  cpp, covariates = covars, outcome = outcome,
+  cpp,
+  covariates = covars, outcome = outcome,
   outcome_type = "fake_outcome_type"
 )
 test_that(
@@ -58,7 +59,8 @@ test_that(
 )
 
 task <- sl3_Task$new(
-  cpp, covariates = covars, outcome = outcome,
+  cpp,
+  covariates = covars, outcome = outcome,
   outcome_type = "categorical"
 )
 test_that(
@@ -68,7 +70,8 @@ test_that(
 
 
 task <- sl3_Task$new(
-  cpp, covariates = covars, outcome = outcome,
+  cpp,
+  covariates = covars, outcome = outcome,
   outcome_type = "continuous", outcome_levels = 1:3
 )
 test_that(
@@ -77,7 +80,8 @@ test_that(
 )
 
 task <- sl3_Task$new(
-  cpp, covariates = covars, outcome = outcome,
+  cpp,
+  covariates = covars, outcome = outcome,
   outcome_type = "categorical"
 )
 Y_categorical <- task$outcome_type$format(task$Y)

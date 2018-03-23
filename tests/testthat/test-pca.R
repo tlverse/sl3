@@ -6,16 +6,20 @@ h2o.init()
 
 # data
 data(cpp_imputed)
-covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
-            "sexn")
+covars <- c(
+  "apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
+  "sexn"
+)
 outcome <- "haz"
 task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
 
 # define learners
 fglm_learner <- Lrnr_glm_fast$new(intercept = FALSE)
 pca_learner <- Lrnr_pca$new(n_comp = 3, center = TRUE, scale. = TRUE)
-pca_h2o <- Lrnr_h2o_mutator$new(algorithm = "pca", k = 3,
-                                impute_missing = TRUE)
+pca_h2o <- Lrnr_h2o_mutator$new(
+  algorithm = "pca", k = 3,
+  impute_missing = TRUE
+)
 pca_to_glm <- Pipeline$new(pca_learner, fglm_learner)
 pca_to_glm_h2o <- Pipeline$new(pca_h2o, fglm_learner)
 
@@ -36,5 +40,3 @@ pcr_preds <- predict(pcr_cpp) %>%
 
 # check whether these values match cpp_pca -- they should!
 pca_from_stack <- fit_stack$fit_object$learner_fits[[1]]$fit_object$learner_fits[[1]]
-
-

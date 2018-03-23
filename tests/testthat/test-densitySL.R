@@ -21,7 +21,8 @@ test_that("Super Learner for densities works", {
   data(density_dat)
   ## Define 3 density estimators (candidate learners) using sl3 package:
   task_1 <- sl3_Task$new(
-    density_dat, covariates = c("W1", "W2", "W3"),
+    density_dat,
+    covariates = c("W1", "W2", "W3"),
     outcome = "sA",
     folds = make_folds(
       V = 5,
@@ -30,7 +31,8 @@ test_that("Super Learner for densities works", {
   )
   newdata <- density_dat[1:5, c("W1", "W2", "W3", "sA")]
   new_task <- sl3_Task$new(
-    newdata, covariates = c("W1", "W2", "W3"),
+    newdata,
+    covariates = c("W1", "W2", "W3"),
     outcome = "sA"
   )
 

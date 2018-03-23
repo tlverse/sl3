@@ -95,7 +95,7 @@ test_that("Lrnr_h2o_glm trains based on a subset of covariates (predictors) and 
   glm.fit <- glm(haz ~ apgar1 + apgar5 + parity + apgar1:apgar5, data = cpp_imputed, family = stats::gaussian())
   # print(glm.fit)
   glm_preds_3 <- as.vector(predict(glm.fit))
-  expect_true(sum(h2oGLM_preds_3 - glm_preds_3) < 10 ^ (-10))
+  expect_true(sum(h2oGLM_preds_3 - glm_preds_3) < 10^(-10))
   expect_true(all.equal(as.vector(glm_preds_3), as.vector(h2oGLM_preds_3[[1]])))
 })
 

@@ -1,3 +1,5 @@
+utils::globalVariables(c("self"))
+
 #' SuperLearner Algorithm
 #'
 #' Learner that encapsulates the Super Learner algorithm. Fits metalearner on
@@ -37,7 +39,7 @@ Lrnr_sl <- R6Class(
   class = TRUE,
   public = list(
     initialize = function(learners, metalearner, folds = NULL,
-                          keep_extra = TRUE, ...) {
+                              keep_extra = TRUE, ...) {
       # kludge to deal with stack as learners
       if (inherits(learners, "Stack")) {
         learners <- learners$params$learners
@@ -97,14 +99,16 @@ Lrnr_sl <- R6Class(
           origami::validation(losses), weighted.mean,
           origami::validation(weight)
         )
-        return(list(risks = as.data.frame(risks)))
+        return(as.data.frame(risks))
       }
       # TODO: this ignores weights, square errors are also incorrect
-      fold_risks <- origami::cross_validate(
+      fold_risks <- lapply(
+        cv_meta_task$folds,
         validation_means,
-        cv_meta_task$folds, losses,
+        losses,
         cv_meta_task$weights
-      )$risks
+      )
+      fold_risks <- rbindlist(fold_risks)
       fold_mean_risk <- apply(fold_risks, 2, mean)
       fold_min_risk <- apply(fold_risks, 2, min)
       fold_max_risk <- apply(fold_risks, 2, max)
@@ -126,7 +130,8 @@ Lrnr_sl <- R6Class(
         fold_max_risk = fold_max_risk
       )
       if (!is.null(coefs)) {
-        risk_dt[match(learner, names(coefs)), coefficients := coefs]
+        # risk_dt[match(learner, names(coefs)), coefficients := coefs]
+        risk_dt[, coefficients := c(coefs, NA)]
       }
       return(risk_dt)
     }
@@ -157,6 +162,7 @@ Lrnr_sl <- R6Class(
       learners <- self$params$learners
       learner_stack <- do.call(Stack$new, learners)
       cv_stack <- Lrnr_cv$new(learner_stack, folds = folds)
+      cv_stack$custom_chain(drop_offsets_chain)
 
       # fit stack on CV data
       cv_fit <- delayed_learner_train(cv_stack, task)
@@ -202,3 +208,26 @@ Lrnr_sl <- R6Class(
     }
   )
 )
+
+#' Chain while dropping offsetes
+#'
+#' Allows the dropping of offsets when calling the chain method. This is simply
+#' a modified version of the chain method found in \code{Lrnr_base}. INTERNAL
+#' USE ONLY.
+#'
+#' @param task An object of class \code{sl3_Task}.
+#'
+#' @keywords internal
+#
+drop_offsets_chain <- function(task) {
+  predictions <- self$predict(task)
+  predictions <- as.data.table(predictions)
+  # Add predictions as new columns
+  new_col_names <- task$add_columns(self$fit_uuid, predictions)
+  # new_covariates = union(names(predictions),task$nodes$covariates)
+  return(task$next_in_chain(
+    covariates = names(predictions),
+    column_names = new_col_names,
+    offset = NULL
+  ))
+}
