@@ -1,7 +1,7 @@
 ---
 title: "SuperLearner Benchmarks"
-author: "Jeremy Coyle"
-date: "10/5/2017"
+author: "Jeremy Coyle and Nima Hejazi"
+date: "03/22/2018"
 output: html_document
 ---
 
@@ -171,7 +171,7 @@ time_sl3_native_sequential <- system.time({
 
 Next, multicore parallelization:
 ```{r eval_multicore, echo=TRUE, results="hide", message=FALSE}
-plan(multicore, workers=cpus_physical)
+plan(multicore, workers = cpus_physical)
 test <- delayed_learner_train(sl3_legacy, task)
 time_sl3_legacy_multicore <- system.time({
   sched <- Scheduler$new(test, FutureJob, nworkers = cpus_physical,
