@@ -20,7 +20,9 @@ library(scales)
 
 ## Introduction
 
-This document consists of some simple benchmarks for various choices of SuperLearner implementation, wrapper functions, and parallelization schemes. The purpose of this document is two-fold: 
+This document consists of some simple benchmarks for various choices of
+Super Learner implementation, wrapper functions, and parallelization schemes.
+The purpose of this document is two-fold: 
 
 1. Compare the computational performance of these methods
 2. Illustrate the use of these different methods
@@ -33,23 +35,23 @@ This document consists of some simple benchmarks for various choices of SuperLea
 ```{r systemInfo, echo=FALSE, results="asis"}
 uname <- system("uname -a", intern = TRUE)
 os <- sub(" .*", "", uname)
-if(os=="Darwin"){
+if (os == "Darwin") {
   cpu_model <- system("sysctl -n machdep.cpu.brand_string", intern = TRUE)
   cpus_physical <- as.numeric(system("sysctl -n hw.physicalcpu", intern = TRUE))
   cpus_logical <- as.numeric(system("sysctl -n hw.logicalcpu", intern = TRUE))
   cpu_clock <- system("sysctl -n hw.cpufrequency_max", intern = TRUE)
   memory <- system("sysctl -n hw.memsize", intern = TRUE)
-} else if(os=="Linux"){
+} else if (os == "Linux") {
   cpu_model <- system("lscpu | grep 'Model name'", intern = TRUE)
-  cpu_model <- gsub("Model name:[[:blank:]]*","", cpu_model)
+  cpu_model <- gsub("Model name:[[:blank:]]*", "", cpu_model)
   cpus_logical <- system("lscpu | grep '^CPU(s)'", intern = TRUE)
   cpus_logical <- as.numeric(gsub("^.*:[[:blank:]]*","", cpus_logical))
   tpc <- system("lscpu | grep '^Thread(s) per core'", intern = TRUE)
-  tpc <- as.numeric(gsub("^.*:[[:blank:]]*","", tpc))
-  cpus_physical <- cpus_logical/tpc
-  cpu_clock <- as.numeric(gsub("GHz","",gsub("^.*@","",cpu_model)))*10^9
+  tpc <- as.numeric(gsub("^.*:[[:blank:]]*", "", tpc))
+  cpus_physical <- cpus_logical / tpc
+  cpu_clock <- as.numeric(gsub("GHz", "", gsub("^.*@", "", cpu_model)))*10^9
   memory <- system("cat /proc/meminfo | grep '^MemTotal'", intern = TRUE)
-  memory <- as.numeric(gsub("kB","",gsub("^.*:","",memory)))*2^10
+  memory <- as.numeric(gsub("kB", "", gsub("^.*:", "", memory)))*2^10
 } else {
   stop("unsupported OS")
 }
@@ -64,15 +66,15 @@ if(os=="Darwin"){
 ### Test Data
 
 ```{r data_setup, echo=TRUE, results="hide"}
-n=1e4
+n = 1e4
 data(cpp_imputed)
-cpp_big <- cpp_imputed[sample(nrow(cpp_imputed),n,replace=T),]
-covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")
+cpp_big <- cpp_imputed[sample(nrow(cpp_imputed), n, replace = TRUE), ]
+covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
+            "sexn")
 outcome <- "haz"
 
-
-task <- sl3_Task$new(cpp_big, covariates = covars, outcome = outcome, outcome_type="continuous")
-
+task <- sl3_Task$new(cpp_big, covariates = covars, outcome = outcome,
+                     outcome_type = "continuous")
 ```
 
 * Number of observations: `r nrow(task$X)`
@@ -83,48 +85,56 @@ task <- sl3_Task$new(cpp_big, covariates = covars, outcome = outcome, outcome_ty
 
 #### Legacy `SuperLearner`
 
-The legacy [SuperLearner](https://github.com/ecpolley/SuperLearner/) package serves as a suitable baseline. We can fit it sequentially (no parallelization):
+The legacy [SuperLearner](https://github.com/ecpolley/SuperLearner/) package
+serves as a suitable baseline. We can fit it sequentially (no parallelization):
 
 ```{r legacy_SuperLearner_sequential, echo=TRUE, message=FALSE}
 time_SuperLearner_sequential <- system.time({
   SuperLearner(task$Y, as.data.frame(task$X), newX = NULL, family = gaussian(), 
-               SL.library=c("SL.glmnet","SL.randomForest","SL.glm"),
+               SL.library = c("SL.glmnet", "SL.randomForest", "SL.speedglm"),
                method = "method.NNLS", id = NULL, verbose = FALSE,
                control = list(), cvControl = list(), obsWeights = NULL, 
                env = parent.frame())
 })
 ```
 
-We can also fit it using multicore parallelization, using the `mcSuperLearner` function.
+We can also fit it using multicore parallelization, using the `mcSuperLearner`
+function.
 ```{r legacy_SuperLearner_multicore, echo=TRUE, message=FALSE}
-options(mc.cores=cpus_physical)
+options(mc.cores = cpus_physical)
 time_SuperLearner_multicore <- system.time({
-  mcSuperLearner(task$Y, as.data.frame(task$X), newX = NULL, family = gaussian(), 
-               SL.library=c("SL.glmnet","SL.randomForest","SL.glm"),
-               method = "method.NNLS", id = NULL, verbose = FALSE,
-               control = list(), cvControl = list(), obsWeights = NULL, 
-               env = parent.frame())
+  mcSuperLearner(task$Y, as.data.frame(task$X), newX = NULL,
+                 family = gaussian(), 
+                 SL.library = c("SL.glmnet", "SL.randomForest", "SL.speedglm"),
+                 method = "method.NNLS", id = NULL, verbose = FALSE,
+                 control = list(), cvControl = list(), obsWeights = NULL, 
+                 env = parent.frame())
 })
 ```
 
-The `SuperLearner` package supports a number of other parallelization schemes, although these weren't tested here.
+The `SuperLearner` package supports a number of other parallelization schemes,
+although these weren't tested here.
 
 #### `sl3` with Legacy `SuperLearner` Wrappers
 
-To maximize comparability with the legacy implementation, we can use `sl3` with the `SuperLearner` wrappers, so that the actual computation used to train the learners is identical:
+To maximize comparability with the legacy implementation, we can use `sl3` with
+the `SuperLearner` wrappers, so that the actual computation used to train the
+learners is identical:
 ```{r sl3_legacy_setup, echo=TRUE}
 sl_glmnet <- Lrnr_pkg_SuperLearner$new("SL.glmnet")
 sl_random_forest <- Lrnr_pkg_SuperLearner$new("SL.randomForest")
-sl_glm <- Lrnr_pkg_SuperLearner$new("SL.glm")
+sl_speedglm <- Lrnr_pkg_SuperLearner$new("SL.speedglm")
 nnls_lrnr <- Lrnr_nnls$new()
 
-sl3_legacy <- Lrnr_sl$new(list(sl_random_forest, sl_glmnet, sl_glm), nnls_lrnr)
+sl3_legacy <- Lrnr_sl$new(list(sl_random_forest, sl_glmnet, sl_speedglm),
+                          nnls_lrnr)
 ```
 
 
 #### `sl3` with Native Learners
 
-We can also use native `sl3` learners, which have been rewritten to be performant on large sample sizes:
+We can also use native `sl3` learners, which have been rewritten to be
+performant on large sample sizes:
 
 ```{r sl3_native_setup, echo=TRUE}
 lrnr_glmnet <- Lrnr_glmnet$new()
@@ -137,7 +147,11 @@ sl3_native <- Lrnr_sl$new(list(random_forest, lrnr_glmnet, glm_fast), nnls_lrnr)
 
 #### `sl3` Parallelization Options
 
-`sl3` uses the [delayed](https://github.com/tlverse/delayed) package to parallelize training tasks. Delayed, in turn, uses the [future](https://github.com/HenrikBengtsson/future) package to support a range of parallel back-ends. We test several of these, for both the legacy wrappers and native learners.
+`sl3` uses the [delayed](https://github.com/tlverse/delayed) package to
+parallelize training tasks. Delayed, in turn, uses the 
+[future](https://github.com/HenrikBengtsson/future) package to support a range
+of parallel back-ends. We test several of these, for both the legacy wrappers
+and native learners.
 
 First, sequential evaluation (no parallelization):
 ```{r eval_sequential, echo=TRUE, results="hide", message=FALSE}
@@ -160,46 +174,54 @@ Next, multicore parallelization:
 plan(multicore, workers=cpus_physical)
 test <- delayed_learner_train(sl3_legacy, task)
 time_sl3_legacy_multicore <- system.time({
-  sched <- Scheduler$new(test, FutureJob, nworkers=cpus_physical, verbose = FALSE)
+  sched <- Scheduler$new(test, FutureJob, nworkers = cpus_physical,
+                         verbose = FALSE)
   cv_fit <- sched$compute()
 })
 
 test <- delayed_learner_train(sl3_native, task)
 time_sl3_native_multicore <- system.time({
-  sched <- Scheduler$new(test, FutureJob, nworkers=cpus_physical, verbose = FALSE)
+  sched <- Scheduler$new(test, FutureJob, nworkers = cpus_physical
+                         verbose = FALSE)
   cv_fit <- sched$compute()
 })
 ```
 
-We also test multicore parallelization with [hyper-threading](https://en.wikipedia.org/wiki/Hyper-threading) -- we use a number of workers equal to the number of logical, not physical, cores:
+We also test multicore parallelization with 
+[hyper-threading](https://en.wikipedia.org/wiki/Hyper-threading) -- we use a
+number of workers equal to the number of logical, not physical, cores:
 
 ```{r eval_multicore_ht, echo=TRUE, results="hide", message=FALSE}
-plan(multicore, workers=cpus_logical)
+plan(multicore, workers = cpus_logical)
 test <- delayed_learner_train(sl3_legacy, task)
 time_sl3_legacy_multicore_ht <- system.time({
-  sched <- Scheduler$new(test, FutureJob, nworkers=cpus_logical, verbose = FALSE)
+  sched <- Scheduler$new(test, FutureJob, nworkers = cpus_logical,
+                         verbose = FALSE)
   cv_fit <- sched$compute()
 })
 
 test <- delayed_learner_train(sl3_native, task)
 time_sl3_native_multicore_ht <- system.time({
-  sched <- Scheduler$new(test, FutureJob, nworkers=cpus_logical, verbose = FALSE)
+  sched <- Scheduler$new(test, FutureJob, nworkers = cpus_logical,
+                         verbose = FALSE)
   cv_fit <- sched$compute()
 })
 ```
 
 Finally, we test parallelization using multisession:
 ```{r eval_multisession, echo=TRUE, results="hide", message=FALSE}
-plan(multisession, workers=cpus_physical)
+plan(multisession, workers = cpus_physical)
 test <- delayed_learner_train(sl3_legacy, task)
 time_sl3_legacy_multisession <- system.time({
-  sched <- Scheduler$new(test, FutureJob, nworkers=cpus_physical, verbose = FALSE)
+  sched <- Scheduler$new(test, FutureJob, nworkers = cpus_physical,
+                         verbose = FALSE)
   cv_fit <- sched$compute()
 })
 
 test <- delayed_learner_train(sl3_native, task)
 time_sl3_native_multisession <- system.time({
-  sched <- Scheduler$new(test, FutureJob, nworkers=cpus_physical, verbose = FALSE)
+  sched <- Scheduler$new(test, FutureJob, nworkers = cpus_physical,
+                         verbose = FALSE)
   cv_fit <- sched$compute()
 })
 
@@ -220,23 +242,45 @@ test <- rownames(results)
 results <- as.data.table(results)
 
 invisible(results[, test := gsub("time_", "", test)])
-invisible(results[, native:=str_detect(test, "native")])
-invisible(results[, parallel:=!str_detect(test, "sequential")])
+invisible(results[, native := str_detect(test, "native")])
+invisible(results[, parallel := !str_detect(test, "sequential")])
 results <- results[order(results$elapsed)]
-invisible(results[, test := factor(test,levels=test)])
-breaks=2^(-20:20)
-ggplot(results, aes(y=test, x=elapsed, color=factor(native), shape=factor(parallel)))+geom_point(size=3)+
-  xlab("Time (seconds) -- log scale")+ylab("Test")+theme_bw()+
-  scale_shape_discrete("Parallel Computation")+scale_color_discrete("Native Learners")+
-  scale_x_continuous(trans = log2_trans(), breaks=breaks)+ annotation_logticks(base=2, sides="b")  
-save(results, file="benchmark_results.rdata")
+invisible(results[, test := factor(test, levels = test)])
+breaks = 2^(-20:20)
+ggplot(results, aes(y = test, x = elapsed, color = factor(native),
+                    shape = factor(parallel))) + geom_point(size = 3) +
+  xlab("Time (seconds) -- log scale") + ylab("Test") + theme_bw() +
+  scale_shape_discrete("Parallel Computation") +
+  scale_color_discrete("Native Learners") +
+  scale_x_continuous(trans = log2_trans(), breaks = breaks) +
+  annotation_logticks(base = 2, sides = "b")  
+save(results, file = "benchmark_results.rdata")
 ```
 
-We can see that using the native learners results in about a 4x speedup relative to the legacy wrappers. This can be at least partially explained by the fact that legacy `SL.randomForest` wrapper uses `randomForest.formula` for continuous data, which resorts to using the `model.matrix` function, known to be slow on large datasets. Improvements to the legacy wrappers would probably reduce or eliminate this difference. 
+We can see that using the native learners results in about a 4x speedup relative
+to the legacy wrappers. This can be at least partially explained by the fact
+that legacy `SL.randomForest` wrapper uses `randomForest.formula` for continuous
+data, which resorts to using the `model.matrix` function, known to be slow on
+large datasets. Improvements to the legacy wrappers would probably reduce or
+eliminate this difference. 
 
-We can also see that multicore parallelization for the legacy `SuperLearner` function results in another 4x speedup on this system. Relative to that, the `sl3_legacy_multicore` test results in almost an additional 2x speedup. This can be explained by the use of delayed parallelization. While `mcSuperLearner` parallelizes simply across the $V$ cross-validation folds, `delayed` allows `sl3` to parallelize across all training tasks that comprise the SuperLearner, which is a total of $(V+1)*n_{learners}$ training tasks, $n_{learners}$ is the number of learners in the library (here 4), and $(V+1)$ is one more than the number of cross-validation folds, accounting for the re-fit to the full data typically implemented in the `SuperLearner` algorithm. We don't see a substantial difference between the three parallelization schems for sl3. 
+We can also see that multicore parallelization for the legacy `SuperLearner`
+function results in another 4x speedup on this system. Relative to that, the 
+`sl3_legacy_multicore` test results in almost an additional 2x speedup. This can
+be explained by the use of delayed parallelization. While `mcSuperLearner`
+parallelizes simply across the $V$ cross-validation folds, `delayed` allows
+`sl3` to parallelize across all training tasks that comprise the SuperLearner,
+which is a total of $(V+1)*n_{learners}$ training tasks, $n_{learners}$ is the
+number of learners in the library (here 4), and $(V+1)$ is one more than the
+number of cross-validation folds, accounting for the re-fit to the full data
+typically implemented in the `SuperLearner` algorithm. We don't see a
+substantial difference between the three parallelization schems for sl3. 
 
-These effects appear multiplicative, resulting in the fastest implementation, `sl3_improved_multicore_ht` (`sl3` with native learners and hyper-threaded multicore parallelization), being about 32x faster than the slowest, `SuperLearner_sequential` (Legacy `SuperLearner` without parallelization). This is a dramatic improvement in the time required to run this SuperLearner.
+These effects appear multiplicative, resulting in the fastest implementation, 
+`sl3_improved_multicore_ht` (`sl3` with native learners and hyper-threaded
+multicore parallelization), being about 32x faster than the slowest,
+`SuperLearner_sequential` (Legacy `SuperLearner` without parallelization). This
+is a dramatic improvement in the time required to run this SuperLearner.
 
 ## Session Information
 
