@@ -51,19 +51,3 @@ test_that("Lrnr_hal9001 produces prediction similar to standard hal9001", {
   expect_equal(hal_lrnr_preds, expected = hal_fit_preds, tolerance = 1e-15)
 })
 
-test_that("Lrnr_hal9001 in Lrnr_sl works like SL.hal9001 in SuperLearner", {
-  set.seed(67391)
-  sl3_hal_fit <- sl3_hal$train(task)
-  sl3_hal_preds <- sl3_hal_fit$predict()
-
-  set.seed(67391)
-  suppressMessages(
-    sl_hal <- SuperLearner(
-      X = as.matrix(task$X), Y = task$Y,
-      SL.library = "SL.hal9001"
-    )
-  )
-  sl_hal_preds <- as.numeric(predict(sl_hal)$pred)
-
-  expect_equal(sl3_hal_preds, expected = sl_hal_preds, tolerance = 0.3)
-})
