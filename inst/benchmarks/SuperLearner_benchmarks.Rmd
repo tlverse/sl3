@@ -1,7 +1,8 @@
 ---
-title: "SuperLearner Benchmarks"
-author: "Jeremy Coyle and Nima Hejazi"
-date: "03/22/2018"
+title: "Super Learner Benchmarks"
+author: "[Jeremy Coyle](https://github.com/jeremyrcoyle) and [Nima
+  Hejazi](https://nimahejazi.org)"
+date: "`r Sys.Date()`"
 output: html_document
 ---
 
@@ -22,7 +23,7 @@ library(scales)
 
 This document consists of some simple benchmarks for various choices of
 Super Learner implementation, wrapper functions, and parallelization schemes.
-The purpose of this document is two-fold: 
+The purpose of this document is two-fold:
 
 1. Compare the computational performance of these methods
 2. Illustrate the use of these different methods
