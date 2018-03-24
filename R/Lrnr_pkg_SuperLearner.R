@@ -59,7 +59,8 @@ Lrnr_pkg_SuperLearner <- R6Class(
         args$family <- outcome_type$glm_family(return_object = TRUE)
       }
       fit_object <- wrapper(
-        task$Y, task$X, newX, family = args$family,
+        task$Y, task$X, newX,
+        family = args$family,
         obsWeights = task$weights, id = task$id
       )$fit
       return(fit_object)
@@ -73,7 +74,8 @@ Lrnr_pkg_SuperLearner <- R6Class(
         args$family <- outcome_type$glm_family(return_object = TRUE)
       }
       predictions <- stats::predict(
-        private$.fit_object, newdata = task$X,
+        private$.fit_object,
+        newdata = task$X,
         family = args$family
       )
       return(predictions)

@@ -22,8 +22,6 @@ that defines the new chain behavior.}
 prediction
 }
 \description{
-Customize chaining for a learner
-
 This function wraps a learner in such a way that the behavior of
 \code{learner$chain} is modified to use a new function definition.
 \code{learner$train} and \code{learner$predict} are unaffected.
@@ -52,6 +50,7 @@ Other Learners: \code{\link{Lrnr_HarmonicReg}},
   \code{\link{Lrnr_expSmooth}},
   \code{\link{Lrnr_glm_fast}}, \code{\link{Lrnr_glmnet}},
   \code{\link{Lrnr_glm}}, \code{\link{Lrnr_h2o_grid}},
+  \code{\link{Lrnr_hal9001}},
   \code{\link{Lrnr_independent_binomial}},
   \code{\link{Lrnr_lstm}}, \code{\link{Lrnr_mean}},
   \code{\link{Lrnr_nnls}}, \code{\link{Lrnr_optim}},
@@ -66,4 +65,5 @@ Other Learners: \code{\link{Lrnr_HarmonicReg}},
   \code{\link{define_h2o_X}},
   \code{\link{undocumented_learner}}
 }
+\concept{Learners}
 \keyword{data}

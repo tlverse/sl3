@@ -43,7 +43,8 @@ Lrnr_pkg_condensier_logisfitR6 <- R6Class(
       sl3_lrnr <- private$sl3_lrnr
       if (nrow(dataDT) > 0) {
         task <- sl3_Task$new(
-          dataDT, covariates = colnames(X_mat),
+          dataDT,
+          covariates = colnames(X_mat),
           outcome = colnames(dataDT)[ncol(dataDT)]
         )
         out <- capture.output(
@@ -81,7 +82,8 @@ Lrnr_pkg_condensier_logisfitR6 <- R6Class(
       pAout <- rep.int(NA_real_, datsum_obj$n)
       if (sum(datsum_obj$subset_idx > 0)) {
         new_task <- sl3_Task$new(
-          X_mat, covariates = colnames(X_mat),
+          X_mat,
+          covariates = colnames(X_mat),
           outcome = NULL
         )
         ## Learner hasn't been trained,

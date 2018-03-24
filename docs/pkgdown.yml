@@ -1,0 +1,7 @@
+urls:
+  reference: http://sl3.tlverse.org/reference
+  article: http://sl3.tlverse.org/articles
+articles:
+  custom_lrnrs: custom_lrnrs.html
+  intro_sl3: intro_sl3.html
+

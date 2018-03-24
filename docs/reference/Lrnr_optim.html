@@ -11,8 +11,8 @@
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -34,12 +34,24 @@
 <![endif]-->
 
 
+<!-- Google analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-115145808-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
   </head>
 
   <body>
     <div class="container template-reference-topic">
       <header>
-      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -47,11 +59,17 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">sl3</a>
+      <a class="navbar-brand" href="../index.html"></a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="http://tlverse.org">tlverse</a>
+</li>
+<li>
+  <a href="../index.html">sl3</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -78,12 +96,7 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/jeremyrcoyle/sl3">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
+        
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -101,8 +114,8 @@
     
     <p>This meta-learner provides fitting procedures for any pairing of loss
 function and metalearner function, subject to constraints. The
-optimization problem is solved by making use of <code>optim</code>, For further details,
-consult the documentation of <code>optim</code></p>
+optimization problem is solved by making use of <code>optim</code>, For further
+details, consult the documentation of <code>optim</code>.</p>
     
 
     <pre class="usage"><span class='no'>Lrnr_optim</span></pre>
@@ -113,18 +126,23 @@ consult the documentation of <code>optim</code></p>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Learner object with methods for training and prediction. See <code><a href='Lrnr_base.html'>Lrnr_base</a></code> for documentation on learners.</p>
+    <p>Learner object with methods for training and prediction. See
+<code><a href='Lrnr_base.html'>Lrnr_base</a></code> for documentation on learners.</p>
     
     <h2 class="hasAnchor" id="parameters"><a class="anchor" href="#parameters"></a>Parameters</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code>learner_function=metalearner_linear</code></dt><dd><p>A function(alpha, X) that takes a vector of covariates and a
-matrix of data and combines them into a vector of predictions. See <a href='metalearners.html'>metalearners</a> for options.</p></dd>
-<dt><code>loss_function=loss_squared_error</code></dt><dd><p>A function(pred, truth) that takes prediction and truth vectors and returns a loss vector. See <a href='loss_functions.html'>loss_functions</a> for options.</p></dd>
-<dt><code>intercept=FALSE</code></dt><dd><p>If true, X includes an intercept term</p></dd>
-<dt><code>init_0=FALSE</code></dt><dd><p>If true, alpha is initialized to all 0's, useful for TMLE.
-Otherwise, it is initialized to equal weights summing to 1, useful for SuperLearner</p></dd>
+<dt><code>learner_function=metalearner_linear</code></dt><dd><p>A function(alpha, X) that
+takes a vector of covariates and a matrix of data and combines them into
+a vector of predictions. See <a href='metalearners.html'>metalearners</a> for options.</p></dd>
+<dt><code>loss_function=loss_squared_error</code></dt><dd><p>A function(pred, truth) that
+takes prediction and truth vectors and returns a loss vector. See
+<a href='loss_functions.html'>loss_functions</a> for options.</p></dd>
+<dt><code>intercept=FALSE</code></dt><dd><p>If true, X includes an intercept term.</p></dd>
+<dt><code>init_0=FALSE</code></dt><dd><p>If true, alpha is initialized to all 0's, useful
+for TMLE. Otherwise, it is initialized to equal weights summing to 1,
+useful for Super Learner.</p></dd>
 <dt><code>...</code></dt><dd><p>Not currently used.</p></dd>
 </dl>
     
@@ -133,23 +151,24 @@ Otherwise, it is initialized to equal weights summing to 1, useful for SuperLear
     
     <p>Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by <code>Lrnr_base</code>, and shared
 by all learners.</p><dl class='dl-horizontal'>
-  <dt><code>covariates</code></dt><dd><p>A character vector of covariates. The learner will use this to subset the covariates for any specified task</p></dd>
-  <dt><code>outcome_type</code></dt><dd><p>A <code><a href='variable_type.html'>variable_type</a></code> object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified</p></dd>
-  <dt><code>...</code></dt><dd><p>All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating</p></dd>
+<dt><code>covariates</code></dt><dd><p>A character vector of covariates. The learner will use this to subset the covariates for any specified task</p></dd>
+<dt><code>outcome_type</code></dt><dd><p>A <code><a href='variable_type.html'>variable_type</a></code> object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified</p></dd>
+<dt><code>...</code></dt><dd><p>All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <p>Other Learners: <code><a href='Custom_chain.html'>Custom_chain</a></code>,
   <code><a href='Lrnr_HarmonicReg.html'>Lrnr_HarmonicReg</a></code>, <code><a href='Lrnr_arima.html'>Lrnr_arima</a></code>,
-  <code><a href='Lrnr_base.html'>Lrnr_base</a></code>, <code><a href='Lrnr_condensier.html'>Lrnr_condensier</a></code>,
-  <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
+  <code><a href='Lrnr_base.html'>Lrnr_base</a></code>, <code><a href='Lrnr_bilstm.html'>Lrnr_bilstm</a></code>,
+  <code><a href='Lrnr_condensier.html'>Lrnr_condensier</a></code>, <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
   <code><a href='Lrnr_define_interactions.html'>Lrnr_define_interactions</a></code>,
   <code><a href='Lrnr_expSmooth.html'>Lrnr_expSmooth</a></code>,
   <code><a href='Lrnr_glm_fast.html'>Lrnr_glm_fast</a></code>, <code><a href='Lrnr_glmnet.html'>Lrnr_glmnet</a></code>,
   <code><a href='Lrnr_glm.html'>Lrnr_glm</a></code>, <code><a href='Lrnr_h2o_grid.html'>Lrnr_h2o_grid</a></code>,
   <code><a href='Lrnr_independent_binomial.html'>Lrnr_independent_binomial</a></code>,
-  <code><a href='Lrnr_mean.html'>Lrnr_mean</a></code>, <code><a href='Lrnr_nnls.html'>Lrnr_nnls</a></code>,
+  <code><a href='Lrnr_lstm.html'>Lrnr_lstm</a></code>, <code><a href='Lrnr_mean.html'>Lrnr_mean</a></code>,
+  <code><a href='Lrnr_nnls.html'>Lrnr_nnls</a></code>,
   <code><a href='SuperLearner_interface.html'>Lrnr_pkg_SuperLearner</a></code>,
   <code><a href='Lrnr_randomForest.html'>Lrnr_randomForest</a></code>,
   <code><a href='Lrnr_rugarch.html'>Lrnr_rugarch</a></code>, <code><a href='Lrnr_sl.html'>Lrnr_sl</a></code>,

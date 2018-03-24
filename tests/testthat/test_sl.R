@@ -22,7 +22,7 @@ sl1_fit <- sl1$train(task)
 sl1_risk <- sl1_fit$cv_risk(loss_squared_error)
 
 expected_learners <- c(
-  "Lrnr_glm", "Lrnr_pkg_SuperLearner_SL.glmnet", "Lrnr_subset_covariates_c(\"apgar1\", \"apgar5\")_apgar1",
+  "Lrnr_glm_TRUE", "Lrnr_pkg_SuperLearner_SL.glmnet", "Lrnr_subset_covariates_c(\"apgar1\", \"apgar5\")_apgar1",
   "Lrnr_subset_covariates_c(\"apgar1\", \"apgar5\")_apgar5"
 )
 test_that("sl1_fit is based on the right learners", expect_equal(sl1_fit$fit_object$cv_meta_task$nodes$covariates, expected_learners))

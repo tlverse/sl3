@@ -190,7 +190,8 @@ args_to_list <- function() {
   for (i in seq_len(num_args)) {
     if (!is.null(all_args[[i]])) {
       all_args[[i]] <- eval(
-        all_args[[i]], envir = all_args,
+        all_args[[i]],
+        envir = all_args,
         enclos = parent.frame(2L)
       )
     }
@@ -235,7 +236,8 @@ safe_dim <- function(x) {
 #
 write_learner_template <- function(file) {
   template_file <- system.file(
-    "templates/Lrnr_template.R", package = "sl3",
+    "templates/Lrnr_template.R",
+    package = "sl3",
     mustWork = TRUE
   )
   file.copy(template_file, file)

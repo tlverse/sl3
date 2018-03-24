@@ -48,6 +48,7 @@ Other Learners: \code{\link{Custom_chain}},
   \code{\link{Lrnr_expSmooth}},
   \code{\link{Lrnr_glm_fast}}, \code{\link{Lrnr_glmnet}},
   \code{\link{Lrnr_glm}}, \code{\link{Lrnr_h2o_grid}},
+  \code{\link{Lrnr_hal9001}},
   \code{\link{Lrnr_independent_binomial}},
   \code{\link{Lrnr_lstm}}, \code{\link{Lrnr_mean}},
   \code{\link{Lrnr_nnls}}, \code{\link{Lrnr_optim}},
@@ -62,4 +63,5 @@ Other Learners: \code{\link{Custom_chain}},
   \code{\link{define_h2o_X}},
   \code{\link{undocumented_learner}}
 }
+\concept{Learners}
 \keyword{data}

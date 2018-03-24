@@ -1,7 +1,16 @@
+title: sl3
+url: http://sl3.tlverse.org
+template:
+  params:
+    bootswatch: flatly
+    ganalytics: UA-115145808-1
 navbar:
-  title: "sl3"
-  type: inverse
+  title: ""
   left:
+    - text: "tlverse"
+      href: http://tlverse.org
+    - text: "sl3"
+      href: "index.html"
     - text: "Reference"
       href: "reference/index.html"
     - text: Articles

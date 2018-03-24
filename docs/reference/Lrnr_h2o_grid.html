@@ -11,8 +11,8 @@
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -34,12 +34,24 @@
 <![endif]-->
 
 
+<!-- Google analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-115145808-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
   </head>
 
   <body>
     <div class="container template-reference-topic">
       <header>
-      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -47,11 +59,17 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">sl3</a>
+      <a class="navbar-brand" href="../index.html"></a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="http://tlverse.org">tlverse</a>
+</li>
+<li>
+  <a href="../index.html">sl3</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -78,12 +96,7 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/jeremyrcoyle/sl3">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
+        
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -99,14 +112,11 @@
     </div>
 
     
-    <p><code>Lrnr_h2o_grid</code> -- This learner provides facilities for fitting various types of models with
-support for grid search over the hyperparameter space of such models, using
-an interface to the H2O platform. For details on the procedures available and
-any limitations, consult the documentation of the <code>h2o</code> package.
-
-    <code>Lrnr_h2o_classifier</code> -- Classification Models with h2o
-
-    <code>Lrnr_h2o_mutator</code> -- Mutate Grid Search Models with h2o</p>
+    <p><code>Lrnr_h2o_grid</code> - This learner provides facilities for fitting various
+types of models with support for grid search over the hyperparameter space of
+such models, using an interface to the H2O platform. For details on the
+procedures available and any limitations, consult the documentation of the
+<code>h2o</code> package.</p>
     
 
     <pre class="usage"><span class='no'>Lrnr_h2o_grid</span>
@@ -121,22 +131,30 @@ any limitations, consult the documentation of the <code>h2o</code> package.
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Learner object with methods for training and prediction. See <code><a href='Lrnr_base.html'>Lrnr_base</a></code> for documentation on learners.</p>
+    <p>Learner object with methods for training and prediction. See
+<code><a href='Lrnr_base.html'>Lrnr_base</a></code> for documentation on learners.</p>
     
     <h2 class="hasAnchor" id="parameters"><a class="anchor" href="#parameters"></a>Parameters</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code>algorithm</code></dt><dd><p>An h2o ML algorithm. See <a href='http://docs.h2o.ai/h2o/latest-stable/h2o-docs/data-science.html#'>http://docs.h2o.ai/h2o/latest-stable/h2o-docs/data-science.html#</a> for a list.</p></dd>
-<dt><code>seed=1</code></dt><dd><p>RNG see to use when fitting</p></dd>
-<dt><code>distribution=NULL</code></dt><dd><p>Specifies the loss function for GBM, Deep Learning, and XGBoost</p></dd>
-<dt><code>intercept=TRUE</code></dt><dd><p>If TRUE, and intercept term is included</p></dd>
-<dt><code>standardize=TRUE</code></dt><dd><p>Standardize covariates to have mean=0 and SD=1</p></dd>
-<dt><code>lambda=0</code></dt><dd><p>Lasso Parameter</p></dd>
-<dt><code>max_iterations=100</code></dt><dd><p>Maximum number of iterations</p></dd>
-<dt><code>ignore_const_columns=FALSE</code></dt><dd><p>If TRUE, drop constant covariate columns</p></dd>
-<dt><code>missing_values_handling="Skip"</code></dt><dd><p>How to handle missing values</p></dd>
-<dt><code>...</code></dt><dd><p>Other arguments passed to the h2o algorithm of choice. See <a href='http://docs.h2o.ai/h2o/latest-stable/h2o-docs/parameters.html'>http://docs.h2o.ai/h2o/latest-stable/h2o-docs/parameters.html</a> for a list.</p></dd>
+<dt><code>algorithm</code></dt><dd><p>An h2o ML algorithm. For a list, please see
+<a href='http://docs.h2o.ai/h2o/latest-stable/h2o-docs/data-science.html#'>http://docs.h2o.ai/h2o/latest-stable/h2o-docs/data-science.html#</a>.</p></dd>
+<dt><code>seed=1</code></dt><dd><p>RNG see to use when fitting.</p></dd>
+<dt><code>distribution=NULL</code></dt><dd><p>Specifies the loss function for GBM, Deep
+Learning, and XGBoost.</p></dd>
+<dt><code>intercept=TRUE</code></dt><dd><p>If <code>TRUE</code>, and intercept term is
+included.</p></dd>
+<dt><code>standardize=TRUE</code></dt><dd><p>Standardize covariates to have mean = 0 and
+SD = 1.</p></dd>
+<dt><code>lambda=0</code></dt><dd><p>Lasso Parameter.</p></dd>
+<dt><code>max_iterations=100</code></dt><dd><p>Maximum number of iterations.</p></dd>
+<dt><code>ignore_const_columns=FALSE</code></dt><dd><p>If <code>TRUE</code>, drop constant
+covariate columns</p></dd>
+<dt><code>missing_values_handling="Skip"</code></dt><dd><p>How to handle missing values.</p></dd>
+<dt><code>...</code></dt><dd><p>Other arguments passed to the h2o algorithm of choice.
+See <a href='http://docs.h2o.ai/h2o/latest-stable/h2o-docs/parameters.html'>http://docs.h2o.ai/h2o/latest-stable/h2o-docs/parameters.html</a>
+for a list.</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="common-parameters"><a class="anchor" href="#common-parameters"></a>Common Parameters</h2>
@@ -144,24 +162,24 @@ any limitations, consult the documentation of the <code>h2o</code> package.
     
     <p>Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by <code>Lrnr_base</code>, and shared
 by all learners.</p><dl class='dl-horizontal'>
-  <dt><code>covariates</code></dt><dd><p>A character vector of covariates. The learner will use this to subset the covariates for any specified task</p></dd>
-  <dt><code>outcome_type</code></dt><dd><p>A <code><a href='variable_type.html'>variable_type</a></code> object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified</p></dd>
-  <dt><code>...</code></dt><dd><p>All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating</p></dd>
+<dt><code>covariates</code></dt><dd><p>A character vector of covariates. The learner will use this to subset the covariates for any specified task</p></dd>
+<dt><code>outcome_type</code></dt><dd><p>A <code><a href='variable_type.html'>variable_type</a></code> object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified</p></dd>
+<dt><code>...</code></dt><dd><p>All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <p>Other Learners: <code><a href='Custom_chain.html'>Custom_chain</a></code>,
   <code><a href='Lrnr_HarmonicReg.html'>Lrnr_HarmonicReg</a></code>, <code><a href='Lrnr_arima.html'>Lrnr_arima</a></code>,
-  <code><a href='Lrnr_base.html'>Lrnr_base</a></code>, <code><a href='Lrnr_condensier.html'>Lrnr_condensier</a></code>,
-  <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
+  <code><a href='Lrnr_base.html'>Lrnr_base</a></code>, <code><a href='Lrnr_bilstm.html'>Lrnr_bilstm</a></code>,
+  <code><a href='Lrnr_condensier.html'>Lrnr_condensier</a></code>, <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
   <code><a href='Lrnr_define_interactions.html'>Lrnr_define_interactions</a></code>,
   <code><a href='Lrnr_expSmooth.html'>Lrnr_expSmooth</a></code>,
   <code><a href='Lrnr_glm_fast.html'>Lrnr_glm_fast</a></code>, <code><a href='Lrnr_glmnet.html'>Lrnr_glmnet</a></code>,
   <code><a href='Lrnr_glm.html'>Lrnr_glm</a></code>,
   <code><a href='Lrnr_independent_binomial.html'>Lrnr_independent_binomial</a></code>,
-  <code><a href='Lrnr_mean.html'>Lrnr_mean</a></code>, <code><a href='Lrnr_nnls.html'>Lrnr_nnls</a></code>,
-  <code><a href='Lrnr_optim.html'>Lrnr_optim</a></code>,
+  <code><a href='Lrnr_lstm.html'>Lrnr_lstm</a></code>, <code><a href='Lrnr_mean.html'>Lrnr_mean</a></code>,
+  <code><a href='Lrnr_nnls.html'>Lrnr_nnls</a></code>, <code><a href='Lrnr_optim.html'>Lrnr_optim</a></code>,
   <code><a href='SuperLearner_interface.html'>Lrnr_pkg_SuperLearner</a></code>,
   <code><a href='Lrnr_randomForest.html'>Lrnr_randomForest</a></code>,
   <code><a href='Lrnr_rugarch.html'>Lrnr_rugarch</a></code>, <code><a href='Lrnr_sl.html'>Lrnr_sl</a></code>,

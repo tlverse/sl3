@@ -41,8 +41,8 @@ Lrnr_arima <- R6Class(
   class = TRUE,
   public = list(
     initialize = function(order = NULL,
-                          seasonal = list(order = c(0L, 0L, 0L), period = NA),
-                          n.ahead = NULL, ...) {
+                              seasonal = list(order = c(0L, 0L, 0L), period = NA),
+                              n.ahead = NULL, ...) {
       super$initialize(params = args_to_list(), ...)
     }
   ),
@@ -69,7 +69,8 @@ Lrnr_arima <- R6Class(
         n.ahead <- nrow(task$X)
       }
       predictions <- predict(
-        private$.fit_object, newdata = task$X,
+        private$.fit_object,
+        newdata = task$X,
         type = "response", n.ahead = n.ahead
       )
       # Create output as in glm
