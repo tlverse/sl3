@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>List sl3 Learners — sl3_list_properties • sl3</title>
+<title>/Users/nimahejazi/git/sl3/cran-comments.md • sl3</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -22,16 +22,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
-<link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
-<script src="../pkgdown.js"></script>
+<link href="pkgdown.css" rel="stylesheet">
+<script src="jquery.sticky-kit.min.js"></script>
+<script src="pkgdown.js"></script>
   
   
-<meta property="og:title" content="List sl3 Learners — sl3_list_properties" />
-
-<meta property="og:description" content="Lists learners in sl3 (defined as objects that start with Lrnr_
-and inherit from Lrnr_base)" />
-<meta name="twitter:card" content="summary" />
+<meta property="og:title" content="/Users/nimahejazi/git/sl3/cran-comments.md" />
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -56,7 +52,7 @@ and inherit from Lrnr_base)" />
   </head>
 
   <body>
-    <div class="container template-reference-topic">
+    <div class="container template-title-body">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -66,7 +62,7 @@ and inherit from Lrnr_base)" />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html"></a>
+      <a class="navbar-brand" href="index.html"></a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -74,10 +70,10 @@ and inherit from Lrnr_base)" />
   <a href="http://tlverse.org">tlverse</a>
 </li>
 <li>
-  <a href="../index.html">sl3</a>
+  <a href="index.html">sl3</a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -87,16 +83,16 @@ and inherit from Lrnr_base)" />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/intro_sl3.html">Intro to sl3</a>
+      <a href="articles/intro_sl3.html">Intro to sl3</a>
     </li>
     <li>
-      <a href="../articles/SuperLearner_benchmarks.html">sl3 Benchmarks</a>
+      <a href="articles/SuperLearner_benchmarks.html">sl3 Benchmarks</a>
     </li>
     <li>
-      <a href="../slides/sl3-slides.html">sl3 Presentation</a>
+      <a href="slides/sl3-slides.html">sl3 Presentation</a>
     </li>
     <li>
-      <a href="../articles/custom_lrnrs.html">Defining Custom sl3 Learners</a>
+      <a href="articles/custom_lrnrs.html">Defining Custom sl3 Learners</a>
     </li>
   </ul>
 </li>
@@ -113,45 +109,39 @@ and inherit from Lrnr_base)" />
       </header>
 
       <div class="row">
-  <div class="col-md-9 contents">
+  <div class="contents col-md-12">
     <div class="page-header">
-    <h1>List sl3 Learners</h1>
+      <h1>/Users/nimahejazi/git/sl3/cran-comments.md</h1>
     </div>
 
-    
-    <p>Lists learners in <code>sl3</code> (defined as objects that start with <code>Lrnr_</code>
-and inherit from <code>Lrnr_base</code>)</p>
-    
 
-    <pre class="usage"><span class='fu'>sl3_list_properties</span>()
-
-<span class='fu'>sl3_list_learners</span>(<span class='kw'>properties</span> <span class='kw'>=</span> <span class='fu'>c</span>())</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>properties</th>
-      <td><p>a vector of properties that learners must match to be returned</p></td>
-    </tr>
-    </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>a vector of learner names that match the property list</p>
-    
-
-  </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-          </ul>
-
-  </div>
+<div class="section level2">
+<h2>Test environments</h2>
+<ul>
+<li>local OS X install, R 3.4.0</li>
+<li>ubuntu 12.04 (on travis-ci), R 3.4.0</li>
+<li>windows (on appveyor), R 3.4.0</li>
+</ul>
 </div>
+<div class="section level2">
+<h2>R CMD check results</h2>
+<p>There were no ERRORs or WARNINGs</p>
+<p>There was 1 NOTE:</p>
+<ul>
+<li>checking CRAN incoming feasibility … NOTE Maintainer: ‘Jeremy Coyle <a href="mailto:jeremyrcoyle@gmail.com">jeremyrcoyle@gmail.com</a>’</li>
+</ul>
+<p>New submission</p>
+</div>
+<div class="section level2">
+<h2>Downstream dependencies</h2>
+<p>There are no known downstream dependencies. This is a new CRAN submission.</p>
+</div>
+
+
+  </div>
+
+</div>
+
 
       <footer>
       <div class="copyright">

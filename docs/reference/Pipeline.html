@@ -18,6 +18,8 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -25,6 +27,17 @@
 <script src="../pkgdown.js"></script>
   
   
+<meta property="og:title" content="Pipeline (chain) of learners. — Pipeline" />
+
+<meta property="og:description" content="A Pipeline of learners is a way to "chain" Learners together, where the
+output of one learner is used as output for the next learner. This can be
+used for things like screening, two stage machine learning methods, and Super
+Learning. A pipeline is fit by fitting the first Learner, calling
+chain() to create the next task, which becomes the training data for
+the next Learner. Similarly, for prediction, the predictions from the
+first Learner become the data to predict on for the next
+Learner." />
+<meta name="twitter:card" content="summary" />
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -161,9 +174,11 @@ by all learners.</p><dl class='dl-horizontal'>
   <code><a href='Lrnr_expSmooth.html'>Lrnr_expSmooth</a></code>,
   <code><a href='Lrnr_glm_fast.html'>Lrnr_glm_fast</a></code>, <code><a href='Lrnr_glmnet.html'>Lrnr_glmnet</a></code>,
   <code><a href='Lrnr_glm.html'>Lrnr_glm</a></code>, <code><a href='Lrnr_h2o_grid.html'>Lrnr_h2o_grid</a></code>,
+  <code><a href='Lrnr_hal9001.html'>Lrnr_hal9001</a></code>,
   <code><a href='Lrnr_independent_binomial.html'>Lrnr_independent_binomial</a></code>,
   <code><a href='Lrnr_lstm.html'>Lrnr_lstm</a></code>, <code><a href='Lrnr_mean.html'>Lrnr_mean</a></code>,
   <code><a href='Lrnr_nnls.html'>Lrnr_nnls</a></code>, <code><a href='Lrnr_optim.html'>Lrnr_optim</a></code>,
+  <code><a href='Lrnr_pca.html'>Lrnr_pca</a></code>,
   <code><a href='SuperLearner_interface.html'>Lrnr_pkg_SuperLearner</a></code>,
   <code><a href='Lrnr_randomForest.html'>Lrnr_randomForest</a></code>,
   <code><a href='Lrnr_rugarch.html'>Lrnr_rugarch</a></code>, <code><a href='Lrnr_sl.html'>Lrnr_sl</a></code>,
@@ -200,7 +215,7 @@ by all learners.</p><dl class='dl-horizontal'>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
@@ -208,3 +223,4 @@ by all learners.</p><dl class='dl-horizontal'>
 
   </body>
 </html>
+
