@@ -94,7 +94,7 @@ time_SuperLearner_sequential <- system.time({
   SuperLearner(task$Y, as.data.frame(task$X), newX = NULL, family = gaussian(), 
                SL.library = c("SL.glmnet", "SL.randomForest", "SL.speedglm"),
                method = "method.NNLS", id = NULL, verbose = FALSE,
-               control = list(), cvControl = list(), obsWeights = NULL, 
+               control = list(), cvControl = list(), obsWeights = NULL,
                env = parent.frame())
 })
 ```
@@ -105,10 +105,10 @@ function.
 options(mc.cores = cpus_physical)
 time_SuperLearner_multicore <- system.time({
   mcSuperLearner(task$Y, as.data.frame(task$X), newX = NULL,
-                 family = gaussian(), 
+                 family = gaussian(),
                  SL.library = c("SL.glmnet", "SL.randomForest", "SL.speedglm"),
                  method = "method.NNLS", id = NULL, verbose = FALSE,
-                 control = list(), cvControl = list(), obsWeights = NULL, 
+                 control = list(), cvControl = list(), obsWeights = NULL,
                  env = parent.frame())
 })
 ```
@@ -149,7 +149,7 @@ sl3_native <- Lrnr_sl$new(list(random_forest, lrnr_glmnet, glm_fast), nnls_lrnr)
 #### `sl3` Parallelization Options
 
 `sl3` uses the [delayed](https://github.com/tlverse/delayed) package to
-parallelize training tasks. Delayed, in turn, uses the 
+parallelize training tasks. Delayed, in turn, uses the
 [future](https://github.com/HenrikBengtsson/future) package to support a range
 of parallel back-ends. We test several of these, for both the legacy wrappers
 and native learners.
@@ -182,13 +182,13 @@ time_sl3_legacy_multicore <- system.time({
 
 test <- delayed_learner_train(sl3_native, task)
 time_sl3_native_multicore <- system.time({
-  sched <- Scheduler$new(test, FutureJob, nworkers = cpus_physical
+  sched <- Scheduler$new(test, FutureJob, nworkers = cpus_physical,
                          verbose = FALSE)
   cv_fit <- sched$compute()
 })
 ```
 
-We also test multicore parallelization with 
+We also test multicore parallelization with
 [hyper-threading](https://en.wikipedia.org/wiki/Hyper-threading) -- we use a
 number of workers equal to the number of logical, not physical, cores:
 
@@ -232,9 +232,9 @@ time_sl3_native_multisession <- system.time({
 ## Results
 ```{r results, echo=FALSE}
 
-results <- rbind(time_sl3_legacy_sequential, time_sl3_legacy_multicore, 
+results <- rbind(time_sl3_legacy_sequential, time_sl3_legacy_multicore,
                  time_sl3_legacy_multicore_ht, time_sl3_legacy_multisession,
-                 time_sl3_native_sequential, time_sl3_native_multicore, 
+                 time_sl3_native_sequential, time_sl3_native_multicore,
                  time_sl3_native_multicore_ht, time_sl3_native_multisession,
                  time_SuperLearner_sequential, time_SuperLearner_multicore
                 )
@@ -254,7 +254,7 @@ ggplot(results, aes(y = test, x = elapsed, color = factor(native),
   scale_shape_discrete("Parallel Computation") +
   scale_color_discrete("Native Learners") +
   scale_x_continuous(trans = log2_trans(), breaks = breaks) +
-  annotation_logticks(base = 2, sides = "b")  
+  annotation_logticks(base = 2, sides = "b")
 save(results, file = "benchmark_results.rdata")
 ```
 
@@ -263,10 +263,10 @@ to the legacy wrappers. This can be at least partially explained by the fact
 that legacy `SL.randomForest` wrapper uses `randomForest.formula` for continuous
 data, which resorts to using the `model.matrix` function, known to be slow on
 large datasets. Improvements to the legacy wrappers would probably reduce or
-eliminate this difference. 
+eliminate this difference.
 
 We can also see that multicore parallelization for the legacy `SuperLearner`
-function results in another 4x speedup on this system. Relative to that, the 
+function results in another 4x speedup on this system. Relative to that, the
 `sl3_legacy_multicore` test results in almost an additional 2x speedup. This can
 be explained by the use of delayed parallelization. While `mcSuperLearner`
 parallelizes simply across the $V$ cross-validation folds, `delayed` allows
@@ -275,9 +275,9 @@ which is a total of $(V+1)*n_{learners}$ training tasks, $n_{learners}$ is the
 number of learners in the library (here 4), and $(V+1)$ is one more than the
 number of cross-validation folds, accounting for the re-fit to the full data
 typically implemented in the `SuperLearner` algorithm. We don't see a
-substantial difference between the three parallelization schems for sl3. 
+substantial difference between the three parallelization schems for sl3.
 
-These effects appear multiplicative, resulting in the fastest implementation, 
+These effects appear multiplicative, resulting in the fastest implementation,
 `sl3_improved_multicore_ht` (`sl3` with native learners and hyper-threaded
 multicore parallelization), being about 32x faster than the slowest,
 `SuperLearner_sequential` (Legacy `SuperLearner` without parallelization). This
