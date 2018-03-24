@@ -34,13 +34,27 @@ pcr_cpp <- glm(cpp_imputed$haz ~ -1 + cpp_pca_rotated)
 pcr_preds <- predict(pcr_cpp) %>%
   as.numeric()
 
-### ARGUMENT "scale." not being passed by Lrnr_pca properly
-
 test_that("PCA computed by Lrnr_pca matches stats::prcomp exactly.", {
   all.equal(pca_from_pipe, cpp_pca)
 })
 
 test_that("Regression on PCs matches between Pipeline and manual invocation.", {
   all.equal(out_pcr_fit, pcr_preds)
+})
+
+test_that("Arguments are passed to prcomp correctly by Lrnr_pca", {
+  # pass some arguments to prcomp via Lrnr_pca
+  pca_sl3 <- Lrnr_pca$new(n_comp = ncomp, retx = FALSE, center = TRUE,
+                          scale. = FALSE)
+  pcr_pipe_sl3 <- Pipeline$new(pca_sl3, glm_fast)
+  pcr_pipe_sl3_fit <- pcr_pipe_sl3$train(task)
+  pca_from_pipe <- pcr_pipe_sl3_fit$fit_object$learner_fits[[1]]$fit_object
+
+  # do the same thing with prcomp
+  cpp_pca <- cpp_imputed %>%
+    dplyr::select(covars) %>%
+    stats::prcomp(x = ., retx = FALSE, center = TRUE, scale. = FALSE)
+
+  expect_equal(pca_from_pipe, cpp_pca)
 })
 

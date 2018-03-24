@@ -64,7 +64,10 @@ Lrnr_pca <- R6Class(
       fit_args$x <- task$X
 
       # remove n_comp argument before calling stats::prcomp
-      fit_object <- call_with_args(stats::prcomp, fit_args)
+      fit_object <- call_with_args(stats::prcomp, fit_args,
+                                   other_valid = list("retx", "center",
+                                                      "scale.", "tol", "rank.")
+                                  )
       return(fit_object)
     },
     .predict = function(task = NULL) {
