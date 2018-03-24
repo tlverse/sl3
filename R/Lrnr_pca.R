@@ -46,7 +46,10 @@ Lrnr_pca <- R6Class(
   portable = TRUE,
   class = TRUE,
   public = list(
-    initialize = function(n_comp = 2, center = TRUE, scale. = TRUE, ...) {
+    initialize = function(n_comp = 2,
+                          center = TRUE,
+                          scale. = TRUE,
+                          ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }
@@ -57,18 +60,20 @@ Lrnr_pca <- R6Class(
 
     .train = function(task) {
       verbose <- getOption("sl3.verbose")
-      fit_args <- self$params
+      fit_args <- self$params[names(self$params) != "n_comp"]
       fit_args$x <- task$X
-      fit_args <- fit_args[names(fit_args) != "n_comp"]
-      fit_object <- call_with_args(prcomp, fit_args)
+
+      # remove n_comp argument before calling stats::prcomp
+      fit_object <- call_with_args(stats::prcomp, fit_args)
       return(fit_object)
     },
     .predict = function(task = NULL) {
+      # note that n_comp is an argument not defined in stats::prcomp
       dim_args <- self$params[names(self$params) == "n_comp"]
       preds_pca <- private$.fit_object$x[, seq_len(unlist(dim_args))]
-      predictions <- as.data.table(preds_pca)
+      predictions <- preds_pca
       return(predictions)
     },
-    .required_packages = c("stats", "data.table")
+    .required_packages = c("stats")
   )
 )
