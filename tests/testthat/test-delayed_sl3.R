@@ -1,8 +1,7 @@
+context("test-delayed_sl3.R -- manually delay learner fit")
 library(delayed)
-library(testthat)
 library(SuperLearner)
 library(future)
-context("test_delayed_sl3.R -- manually delay learner fit")
 
 plan(sequential)
 

@@ -1,9 +1,10 @@
 #' Long short-term memory Recurrent Neural Network (LSTM)
 #'
-#' This learner supports long short-term memory recurrent neural network algorithm.
-#' In order to use this learner, you will need keras Python module 2.0.0 or higher.
-#' Note that all preprocessing, such as differencing and
-#' seasonal effects for time series, should be addressed before using this learner.
+#' This learner supports long short-term memory recurrent neural network
+#' algorithm. In order to use this learner, you will need keras Python module
+#' 2.0.0 or higher. Note that all preprocessing, such as differencing and
+#' seasonal effects for time series, should be addressed before using this
+#' learner.
 #'
 #' @docType class
 #' @importFrom R6 R6Class
@@ -42,8 +43,9 @@ Lrnr_lstm <- R6Class(
                               dropout=0,
                               ...) {
       params <- list(
-        units = units, loss = loss, optimizer = optimizer, batch_size = batch_size, epochs = epochs,
-        window = window, activation = activation, dense = dense, dropout = dropout, ...
+        units = units, loss = loss, optimizer = optimizer,
+        batch_size = batch_size, epochs = epochs, window = window,
+        activation = activation, dense = dense, dropout = dropout, ...
       )
       super$initialize(params = params, ...)
     }
@@ -78,7 +80,10 @@ Lrnr_lstm <- R6Class(
       kerasR::keras_compile(model, loss = args$loss, optimizer = args$optimizer)
 
       # Fit the model
-      kerasR::keras_fit(model, args$x, args$y, batch_size = args$batch_size, epochs = args$epochs)
+      kerasR::keras_fit(model, args$x, args$y,
+        batch_size = args$batch_size,
+        epochs = args$epochs
+      )
       fit_object <- model
 
       return(fit_object)
@@ -93,11 +98,13 @@ Lrnr_lstm <- R6Class(
       row.names(args$x) <- NULL
       args$x <- kerasR::expand_dims(args$x, axis = 2)
 
-      predictions <- kerasR::keras_predict(private$.fit_object, args$x, batch_size = args$batch_size)
+      predictions <- kerasR::keras_predict(private$.fit_object, args$x,
+        batch_size = args$batch_size
+      )
 
       # Create output as in glm
       predictions <- as.numeric(predictions)
-      predictions <- structure(predictions, names = 1:length(predictions))
+      predictions <- structure(predictions, names = seq_len(predictions))
 
       return(predictions)
     },

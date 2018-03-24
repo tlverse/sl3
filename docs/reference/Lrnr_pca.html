@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Fitting Intercept Models — Lrnr_mean • sl3</title>
+<title>Principal Component Analysis and Regression — Lrnr_pca • sl3</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -27,10 +27,13 @@
 <script src="../pkgdown.js"></script>
   
   
-<meta property="og:title" content="Fitting Intercept Models — Lrnr_mean" />
+<meta property="og:title" content="Principal Component Analysis and Regression — Lrnr_pca" />
 
-<meta property="og:description" content="This learner provides fitting procedures for intercept models. Such models
-predict the outcome variable simply as the mean of the outcome vector." />
+<meta property="og:description" content="This learner provides facilities for performing principal components analysis
+(PCA) to reduce the dimensionality of a data set to a pre-specified value.
+For further details, consult the documentation of prcomp from the core
+package stats. This learner object is primarily intended for use with
+other learners as part of a pre-processing pipeline." />
 <meta name="twitter:card" content="summary" />
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
@@ -115,15 +118,18 @@ predict the outcome variable simply as the mean of the outcome vector." />
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Fitting Intercept Models</h1>
+    <h1>Principal Component Analysis and Regression</h1>
     </div>
 
     
-    <p>This learner provides fitting procedures for intercept models. Such models
-predict the outcome variable simply as the mean of the outcome vector.</p>
+    <p>This learner provides facilities for performing principal components analysis
+(PCA) to reduce the dimensionality of a data set to a pre-specified value.
+For further details, consult the documentation of <code>prcomp</code> from the core
+package <code>stats</code>. This learner object is primarily intended for use with
+other learners as part of a pre-processing pipeline.</p>
     
 
-    <pre class="usage"><span class='no'>Lrnr_mean</span></pre>
+    <pre class="usage"><span class='no'>Lrnr_pca</span></pre>
         
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
@@ -138,7 +144,18 @@ predict the outcome variable simply as the mean of the outcome vector.</p>
 
     
     <dl class='dl-horizontal'>
-<dt><code>...</code></dt><dd><p>Not used.</p></dd>
+<dt><code>n_comp</code></dt><dd><p>A <code>numeric</code> value indicating the number of
+components to be produced as a result of the PCA dimensionality
+reduction. For convenience, this defaults to two (2) components.</p></dd>
+<dt><code>center</code></dt><dd><p>A <code>logical</code> value indicating whether the input
+data matrix should be centered before performing PCA. This defaults to
+<code>TRUE</code> since that is the recommended practice. Consider consulting
+the documentation of <code>prcomp</code> for details.</p></dd>
+<dt><code>scale.</code></dt><dd><p>A <code>logical</code> value indicating whether the input
+data matrix should be scaled (to unit variance) before performing PCA.
+Consider consulting the documentation of <code>prcomp</code> for details.</p></dd>
+<dt><code>...</code></dt><dd><p>Other optional parameters to be passed to <code>prcomp</code>.
+Consider consulting the documentation of <code>prcomp</code> for details.</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="common-parameters"><a class="anchor" href="#common-parameters"></a>Common Parameters</h2>
@@ -163,8 +180,8 @@ by all learners.</p><dl class='dl-horizontal'>
   <code><a href='Lrnr_glm.html'>Lrnr_glm</a></code>, <code><a href='Lrnr_h2o_grid.html'>Lrnr_h2o_grid</a></code>,
   <code><a href='Lrnr_hal9001.html'>Lrnr_hal9001</a></code>,
   <code><a href='Lrnr_independent_binomial.html'>Lrnr_independent_binomial</a></code>,
-  <code><a href='Lrnr_lstm.html'>Lrnr_lstm</a></code>, <code><a href='Lrnr_nnls.html'>Lrnr_nnls</a></code>,
-  <code><a href='Lrnr_optim.html'>Lrnr_optim</a></code>, <code><a href='Lrnr_pca.html'>Lrnr_pca</a></code>,
+  <code><a href='Lrnr_lstm.html'>Lrnr_lstm</a></code>, <code><a href='Lrnr_mean.html'>Lrnr_mean</a></code>,
+  <code><a href='Lrnr_nnls.html'>Lrnr_nnls</a></code>, <code><a href='Lrnr_optim.html'>Lrnr_optim</a></code>,
   <code><a href='SuperLearner_interface.html'>Lrnr_pkg_SuperLearner</a></code>,
   <code><a href='Lrnr_randomForest.html'>Lrnr_randomForest</a></code>,
   <code><a href='Lrnr_rugarch.html'>Lrnr_rugarch</a></code>, <code><a href='Lrnr_sl.html'>Lrnr_sl</a></code>,

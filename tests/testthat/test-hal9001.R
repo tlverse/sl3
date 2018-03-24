@@ -50,4 +50,3 @@ test_that("Lrnr_hal9001 produces prediction similar to standard hal9001", {
 
   expect_equal(hal_lrnr_preds, expected = hal_fit_preds, tolerance = 1e-15)
 })
-

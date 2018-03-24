@@ -1,4 +1,4 @@
-context("test_FrequencyTSAlgs.R -- Lrnr_HarmonicReg")
+context("test-FrequencyTSAlgs.R -- Lrnr_HarmonicReg")
 
 if (FALSE) {
   setwd("..")
@@ -12,8 +12,6 @@ if (FALSE) {
   install("sl3", build_vignettes = FALSE, dependencies = FALSE) # INSTALL W/ devtools:
 }
 
-library(testthat)
-library(sl3)
 set.seed(1)
 
 data(bsds)

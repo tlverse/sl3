@@ -1,4 +1,4 @@
-context("test_glm_fast.R -- Lrnr_glm_fast")
+context("test-glm_fast.R -- Lrnr_glm_fast")
 
 if (FALSE) {
   setwd("..")
@@ -12,8 +12,6 @@ if (FALSE) {
   install("sl3", build_vignettes = FALSE, dependencies = FALSE) # INSTALL W/ devtools:
 }
 
-library(testthat)
-library(sl3)
 # library(data.table) library(origami)
 library(SuperLearner)
 set.seed(1)

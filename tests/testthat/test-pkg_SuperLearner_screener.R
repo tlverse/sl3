@@ -1,4 +1,4 @@
-context("test_pkg_SuperLearner_screener.R -- SL.screen wrapper")
+context("test-pkg_SuperLearner_screener.R -- SL.screen wrapper")
 
 if (FALSE) {
   setwd("..")
@@ -11,7 +11,6 @@ if (FALSE) {
   install("sl3", build_vignettes = FALSE, dependencies = FALSE) # INSTALL W/ devtools:
 }
 
-library(sl3)
 # library(data.table)
 library(origami)
 library(SuperLearner)

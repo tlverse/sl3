@@ -1,7 +1,4 @@
-context("test_learners_reg.R -- General testing for continuous regression")
-
-library(sl3)
-library(testthat)
+context("test-learners_reg.R -- General testing for continuous regression")
 
 # define test dataset
 data(mtcars)

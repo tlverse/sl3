@@ -1,8 +1,6 @@
-context("test_densitySL.R -- Lrnr_condensier in a SuperLearner")
-
-require(condensier)
-require(origami)
-require(sl3)
+context("test-densitySL.R -- Lrnr_condensier in a SuperLearner")
+library(condensier)
+library(origami)
 
 test_that("Super Learner for densities works", {
   ## Simulation code for the original density_dat

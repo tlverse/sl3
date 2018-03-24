@@ -1,4 +1,4 @@
-context("test_binomial_learners.R -- binomial learners in a Super Learner")
+context("test-binomial_learners.R -- binomial learners in a Super Learner")
 library(origami)
 
 

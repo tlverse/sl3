@@ -1,4 +1,4 @@
-context("test_keras.R -- time series methods")
+context("test-keras.R -- time series methods")
 
 if (FALSE) {
   setwd("..")
@@ -12,8 +12,6 @@ if (FALSE) {
   install("sl3", build_vignettes = FALSE, dependencies = FALSE) # INSTALL W/ devtools:
 }
 
-library(testthat)
-library(sl3)
 library(reticulate)
 set.seed(1)
 

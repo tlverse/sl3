@@ -1,4 +1,4 @@
-context("test_variable_types.R -- Variable Type Handling")
+context("test-variable_types.R -- Variable Type Handling")
 
 
 # guess variable type
@@ -21,13 +21,20 @@ test_that(
 # forcing outcome_type
 data(cpp)
 cpp <- cpp[!is.na(cpp[, "haz"]), ]
-covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")
+covars <- c(
+  "apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
+  "sexn"
+)
 cpp[is.na(cpp)] <- 0
 # cpp <- cpp[sample(nrow(cpp),10000,replace=T),]
 outcome <- "haz"
 # cpp <- cpp[1:150, ]
 # sl3_Task$debug("initialize")
-task <- sl3_Task$new(cpp, covariates = covars, outcome = outcome, outcome_type = "fake_outcome_type")
+task <- sl3_Task$new(
+  cpp,
+  covariates = covars, outcome = outcome,
+  outcome_type = "fake_outcome_type"
+)
 test_that(
   "outcome_type can be forced",
   expect_equal(task$outcome_type$type, "fake_outcome_type")
@@ -51,20 +58,32 @@ test_that(
   expect_true(chained_task$outcome_type$type != "fake_outcome_type")
 )
 
-task <- sl3_Task$new(cpp, covariates = covars, outcome = outcome, outcome_type = "categorical")
+task <- sl3_Task$new(
+  cpp,
+  covariates = covars, outcome = outcome,
+  outcome_type = "categorical"
+)
 test_that(
   "forcing outcome_type='categorical' generates outcome_levels",
   expect_equal(task$outcome_type$levels, sort(unique(cpp$haz)))
 )
 
 
-task <- sl3_Task$new(cpp, covariates = covars, outcome = outcome, outcome_type = "continuous", outcome_levels = 1:3)
+task <- sl3_Task$new(
+  cpp,
+  covariates = covars, outcome = outcome,
+  outcome_type = "continuous", outcome_levels = 1:3
+)
 test_that(
   "outcome_levels can be forced",
   expect_equal(task$outcome_type$levels, 1:3)
 )
 
-task <- sl3_Task$new(cpp, covariates = covars, outcome = outcome, outcome_type = "categorical")
+task <- sl3_Task$new(
+  cpp,
+  covariates = covars, outcome = outcome,
+  outcome_type = "categorical"
+)
 Y_categorical <- task$outcome_type$format(task$Y)
 test_that(
   "outcome levels are passed as factor levels from format_Y",

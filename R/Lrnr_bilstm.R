@@ -1,9 +1,10 @@
 #' Bidirectional Long short-term memory Recurrent Neural Network (LSTM)
 #'
-#' This learner supports bidirectinal long short-term memory recurrent neural network algorithm.
-#' In order to use this learner, you will need keras Python module 2.0.0 or higher.
-#' Note that all preprocessing, such as differencing and
-#' seasonal effects for time series, should be addressed before using this learner.
+#' This learner supports bidirectinal long short-term memory recurrent neural
+#' network algorithm. In order to use this learner, you will need keras Python
+#' module 2.0.0 or higher. Note that all preprocessing, such as differencing and
+#' seasonal effects for time series, should be addressed before using this
+#' learner.
 #'
 #' @docType class
 #' @importFrom R6 R6Class
@@ -42,8 +43,9 @@ Lrnr_bilstm <- R6Class(
                               dropout=0,
                               ...) {
       params <- list(
-        units = units, loss = loss, optimizer = optimizer, batch_size = batch_size, epochs = epochs,
-        window = window, activation = activation, dense = dense, dropout = dropout, ...
+        units = units, loss = loss, optimizer = optimizer,
+        batch_size = batch_size, epochs = epochs, window = window,
+        activation = activation, dense = dense, dropout = dropout, ...
       )
       super$initialize(params = params, ...)
     }
@@ -60,7 +62,10 @@ Lrnr_bilstm <- R6Class(
       )))
       row.names(args$x) <- NULL
 
-      args$y <- data.frame(sapply((args$window + 1):(dim(task$X)[1]), function(x) task$X[x]))
+      args$y <- data.frame(sapply(
+        (args$window + 1):(dim(task$X)[1]),
+        function(x) task$X[x]
+      ))
       names(args$y) <- NULL
 
       args$x <- kerasR::expand_dims(args$x, axis = 2)
@@ -72,7 +77,11 @@ Lrnr_bilstm <- R6Class(
 
       # Build the model
       model <- kerasR::Sequential()
-      keras::bidirectional(model, kerasR::LSTM(args$units, return_sequences = TRUE), input_shape = c(num_steps, num_features))
+      keras::bidirectional(model, kerasR::LSTM(args$units,
+        return_sequences = TRUE
+      ),
+      input_shape = c(num_steps, num_features)
+      )
       model$add(kerasR::Dropout(rate = args$dropout))
       model$add(kerasR::Flatten())
       model$add(kerasR::Dense(args$dense))
@@ -99,11 +108,13 @@ Lrnr_bilstm <- R6Class(
       row.names(args$x) <- NULL
       args$x <- kerasR::expand_dims(args$x, axis = 2)
 
-      predictions <- kerasR::keras_predict(private$.fit_object, args$x, batch_size = args$batch_size)
+      predictions <- kerasR::keras_predict(private$.fit_object, args$x,
+        batch_size = args$batch_size
+      )
 
       # Create output as in glm
       predictions <- as.numeric(predictions)
-      predictions <- structure(predictions, names = 1:length(predictions))
+      predictions <- structure(predictions, names = seq_len(predictions))
 
       return(predictions)
     },
