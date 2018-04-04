@@ -1,13 +1,10 @@
-##' Template of a \code{sl3} Learner.
+##' Rpart for \code{sl3} Learner.
 ##'
-##' This is a template for defining a new learner.
-##' This can be copied to a new file using \code{\link{write_learner_template}}. 
-##' The remainder of this documentation is an example of how you might write documentation for your new learner.
 ##' This learner uses \code{\link[rpart]{rpart}} from \code{rpart} to fit my favorite machine learning algorithm.
 ##' 
 ##' @docType class
 ##' @importFrom R6 R6Class
-##' @importFrom rpart rpart
+##' @importFrom stats predict
 ##' @export
 ##' @keywords data
 ##' @return Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
@@ -16,10 +13,7 @@
 ##' 
 ##' @section Parameters:
 ##' \describe{
-##'   \item{\code{param_1="default_1"}}{ This parameter does something.
-##'   }
-##'   \item{\code{param_2="default_2"}}{ This parameter does something else.
-##'   }
+##'   \item{\code{param_1="formula"}}{ formula for rpart to fit
 ##'   \item{\code{...}}{ Other parameters passed directly to \code{\link[rpart]{rpart}}. See its documentation for details.
 ##'   }
 ##' }
@@ -85,6 +79,10 @@ Lrnr_rpart <- R6Class(classname = "Lrnr_rpart", inherit = Lrnr_base,
       
       # only add arguments on weights and offset 
       # if those were specified when the task was generated
+      if(outcome_type$type=="binary"){
+        args$y <- factor(y, levels=c(0,1))
+      }
+      
       if(task$has_node("weights")){
         args$weights <- task$weights
       }
@@ -97,22 +95,7 @@ Lrnr_rpart <- R6Class(classname = "Lrnr_rpart", inherit = Lrnr_base,
       # with the argument list you constructed
       fit_object <- call_with_args(rpart::rpart, args)
       
-      
-      #### NOTE: specifiy variables that are returned  what you want to return 
-      fit_object$frame <- NULL
-      fit_object$where <- NULL
-      fit_object$call <- NULL
-      #fit_object$terms ???
-      fit_object$splits <- NULL
-      fit_object$csplit <- NULL
-      fit_object$method <- NULL
-      fit_object$cptable <- NULL
-      fit_object$variable.importance <- NULL
-      #fit_object$functions<- ???
-      fit_object$ordered <- NULL
-      #fit_object$na.action <- ???
-        
-      
+    
       # return the fit object, which will be stored
       # in a learner object and returned from the call
       # to learner$predict
@@ -125,7 +108,7 @@ Lrnr_rpart <- R6Class(classname = "Lrnr_rpart", inherit = Lrnr_base,
       self$training_outcome_type
       self$fit_object
       
-      predictions <- predict(self$fit_object, task$X)
+      predictions <- stats::predict(self$fit_object, task$X)
       return(predictions)
     }
   )
