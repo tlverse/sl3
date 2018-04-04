@@ -73,7 +73,7 @@ Lrnr_rpart <- R6Class(classname = "Lrnr_rpart", inherit = Lrnr_base,
       
       # add task data to the argument list
       # what these arguments are called depends on the learner you are wrapping
-      x <- task$X
+      x <- as.matrix(task$X)
       y <- outcome_type$format(task$Y)
       args$formula <- y~x
       
