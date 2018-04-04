@@ -65,9 +65,10 @@ Lrnr_ranger <- R6Class(
     .predict = function(task) {
       predictions <- stats::predict(
         private$.fit_object, data = task$X,
-        type = type
+        type = "response"
       )
-      return(predictions[, 1])
+      preds <- predictions[, 1]
+      return(preds)
     },
   )
 )
