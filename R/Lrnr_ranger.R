@@ -33,8 +33,8 @@
 #' @template common_parameters
 #'
 Lrnr_ranger <- R6Class(
-  classname = "Lrnr_ranger",
-  inherit = Lrnr_base, portable = TRUE, class = TRUE,
+  classname = "Lrnr_ranger", inherit = Lrnr_base,
+  portable = TRUE, class = TRUE,
   public = list(
     initialize = function(num.trees = 500,
                           write.forest = TRUE,
@@ -46,6 +46,7 @@ Lrnr_ranger <- R6Class(
 
   private = list(
     .properties = c("continuous", "binomial", "categorical"),
+
     .train = function(task) {
       args <- self$params
       outcome_type <- self$get_outcome_type(task)
@@ -59,22 +60,21 @@ Lrnr_ranger <- R6Class(
       if (is.null(args$mtry)) {
         args$mtry <- floor(ncol(x))
       }
-      ranger_fun <- getS3method(
-        "ranger", "default",
-        envir = getNamespace("ranger")
-      )
+      ranger_fun <- getS3method("ranger", "default",
+      envir = getNamespace("ranger")
+    )
       fit_object <- call_with_args(ranger_fun, args)
       return(fit_object)
     },
-
+    
     .predict = function(task) {
       predictions <- stats::predict(
         private$.fit_object, data = task$X,
         type = "response"
       )
-      preds <- predictions[, 1]
+      preds <- predictions[,1]
       return(preds)
     },
-    .required_packages = c("ranger"),
+    .required_packages = c("ranger")
   )
 )
