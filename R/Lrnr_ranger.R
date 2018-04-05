@@ -56,6 +56,9 @@ Lrnr_ranger <- R6Class(
       }
       args$formula <- y ~ x
       args$data <- cbind(y,x)
+      if (is.null(args$mtry)) {
+        args$mtry <- floor(ncol(x))
+      }
       ranger_fun <- getS3method(
         "ranger", "default",
         envir = getNamespace("ranger")
