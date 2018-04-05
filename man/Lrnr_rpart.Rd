@@ -3,7 +3,7 @@
 \docType{class}
 \name{Lrnr_rpart}
 \alias{Lrnr_rpart}
-\title{Template of a \code{sl3} Learner.}
+\title{Rpart for \code{sl3} Learner.}
 \format{\code{\link{R6Class}} object.}
 \usage{
 Lrnr_rpart
@@ -12,23 +12,8 @@ Lrnr_rpart
 Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
-This is a template for defining a new learner.
-This can be copied to a new file using \code{\link{write_learner_template}}.
-The remainder of this documentation is an example of how you might write documentation for your new learner.
 This learner uses \code{\link[rpart]{rpart}} from \code{rpart} to fit my favorite machine learning algorithm.
 }
-\section{Parameters}{
-
-\describe{
-\item{\code{param_1="default_1"}}{ This parameter does something.
-}
-\item{\code{param_2="default_2"}}{ This parameter does something else.
-}
-\item{\code{...}}{ Other parameters passed directly to \code{\link[rpart]{rpart}}. See its documentation for details.
-}
-}
-}
-
 \section{Methods}{
 
 \describe{
