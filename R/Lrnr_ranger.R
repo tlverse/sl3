@@ -46,15 +46,15 @@ Lrnr_ranger <- R6Class(
 
   private = list(
     .properties = c("continuous", "binomial", "categorical"),
-    .required_packages = c("ranger"),
     .train = function(task) {
       args <- self$params
       outcome_type <- self$get_outcome_type(task)
-      args$x <- task$X
-      args$y <- outcome_type$format(task$Y)
+      x <- as.matrix(task$X)
+      y <- outcome_type$format(task$Y)
       if (outcome_type$type == "binomial") {
-        args$y <- factor(args$y, levels = c(0, 1))
+        y <- factor(y, levels = c(0, 1))
       }
+      args$formula <- y ~ x
       ranger_fun <- getS3method(
         "ranger", "default",
         envir = getNamespace("ranger")
@@ -70,5 +70,6 @@ Lrnr_ranger <- R6Class(
       preds <- predictions[, 1]
       return(preds)
     },
+    .required_packages = c("ranger"),
   )
 )
