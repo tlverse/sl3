@@ -58,9 +58,6 @@ Lrnr_ranger <- R6Class(
       dat <- data.frame(y,x)
       colnames(dat) <- names
       args$data <- dat
-      if (is.null(args$mtry)) {
-        args$mtry <- floor(ncol(x))
-      }
       fit_object <- call_with_args(ranger::ranger, args)
       return(fit_object)
     },
