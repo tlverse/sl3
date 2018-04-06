@@ -47,12 +47,6 @@ Lrnr_ranger <- R6Class(
 
     .train = function(task) {
       args <- self$params
-      outcome_type <- self$get_outcome_type(task)
-      x <- task$X
-      y <- outcome_type$format(task$Y)
-      if (outcome_type$type == "binomial") {
-        y <- factor(y, levels = c(0, 1))
-      }
       dat <- cbind(task$Y,task$X)
       colnames(dat)[1] <- task$nodes$outcome
       args$data <- dat
