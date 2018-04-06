@@ -50,13 +50,13 @@ Lrnr_ranger <- R6Class(
     .train = function(task) {
       args <- self$params
       outcome_type <- self$get_outcome_type(task)
-      x <- data.frame(task$X)
+      x <- task$X
       y <- outcome_type$format(task$Y)
       if (outcome_type$type == "binomial") {
         y <- factor(y, levels = c(0, 1))
       }
       args$formula <- y ~ .
-      args$data <- cbind(y,x)
+      args$data <- data.frame(cbind(y,x))
       if (is.null(args$mtry)) {
         args$mtry <- floor(ncol(x))
       }
