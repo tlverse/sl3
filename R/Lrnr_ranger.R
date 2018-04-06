@@ -66,7 +66,7 @@ Lrnr_ranger <- R6Class(
         private$.fit_object, data = task$X,
         type = "response"
       )
-      preds <- predictions[,1]
+      preds <- predictions[1]
       return(preds)
     },
     .required_packages = c("ranger")
