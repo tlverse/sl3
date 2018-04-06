@@ -53,9 +53,8 @@ Lrnr_ranger <- R6Class(
       if (outcome_type$type == "binomial") {
         y <- factor(y, levels = c(0, 1))
       }
-      dat <- data.frame(cbind(task$Y,task$X))
-      col_names <- c(task$nodes$outcome,task$nodes$covariates)
-      colnames(dat) <- col_names
+      dat <- cbind(task$Y,task$X)
+      colnames(dat)[1] <- task$nodes$outcome
       args$data <- dat
       args$dependent.variable.name <- task$nodes$outcome
       fit_object <- call_with_args(ranger::ranger, args)
