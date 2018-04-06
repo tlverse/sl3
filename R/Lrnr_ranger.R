@@ -53,8 +53,7 @@ Lrnr_ranger <- R6Class(
       if (outcome_type$type == "binomial") {
         y <- factor(y, levels = c(0, 1))
       }
-      args$formula <- y ~ .
-      args$data <- cbind(y,x)
+      args$formula <- y ~ x
       if (is.null(args$mtry)) {
         args$mtry <- floor(ncol(x))
       }
