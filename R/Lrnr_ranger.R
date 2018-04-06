@@ -57,7 +57,7 @@ Lrnr_ranger <- R6Class(
       dat <- data.frame(y,x)
       colnames(dat) <- names
       args$data <- dat
-      args$dependent.variable.name <- names[1]
+      args$dependent.variable.name <- name(self$params$outcome)
       fit_object <- call_with_args(ranger::ranger, args)
       return(fit_object)
     },
