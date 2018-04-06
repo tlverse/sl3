@@ -47,7 +47,9 @@ Lrnr_ranger <- R6Class(
 
     .train = function(task) {
       args <- self$params
-      dat <- cbind(task$Y,task$X)
+      outcome_type <- self$get_outcome_type(task)
+      Y <- outcome_type$format(task$Y)
+      dat <- cbind(Y,task$X)
       colnames(dat)[1] <- task$nodes$outcome
       args$data <- dat
       args$dependent.variable.name <- task$nodes$outcome
