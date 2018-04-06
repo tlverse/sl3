@@ -48,14 +48,14 @@ Lrnr_ranger <- R6Class(
     .train = function(task) {
       args <- self$params
       outcome_type <- self$get_outcome_type(task)
-      names <- c(self$params$outcome,self$params$covariates)
+      nam <- c(self$params$outcome,self$params$covariates)
       x <- task$X
       y <- outcome_type$format(task$Y)
       if (outcome_type$type == "binomial") {
         y <- factor(y, levels = c(0, 1))
       }
       dat <- data.frame(y,x)
-      colnames(dat) <- names
+      colnames(dat) <- nam
       args$data <- dat
       args$dependent.variable.name <- names(self$params$outcome)
       fit_object <- call_with_args(ranger::ranger, args)
