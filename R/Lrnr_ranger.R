@@ -48,7 +48,7 @@ Lrnr_ranger <- R6Class(
     .train = function(task) {
       args <- self$params
       outcome_type <- self$get_outcome_type(task)
-      nam <- (task$nodes$outcome,task$nodes$covariates)
+      nam <- c(task$nodes$outcome,task$nodes$covariates)
       nam <- names(nam)
       x <- task$X
       y <- outcome_type$format(task$Y)
