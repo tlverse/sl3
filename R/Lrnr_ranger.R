@@ -60,10 +60,7 @@ Lrnr_ranger <- R6Class(
       if (is.null(args$mtry)) {
         args$mtry <- floor(ncol(x))
       }
-      ranger_fun <- getS3method("ranger", "default",
-      envir = getNamespace("ranger")
-    )
-      fit_object <- call_with_args(ranger_fun, args)
+      fit_object <- call_with_args(ranger::ranger, args)
       return(fit_object)
     },
 
