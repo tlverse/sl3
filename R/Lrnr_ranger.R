@@ -25,7 +25,6 @@
 #'   \item{\code{write.forest=TRUE}}{If \code{TRUE}, forest is stored, which is
 #'     required for prediction. Set to FALSE to reduce memory usage if no
 #'     prediction intended.}
-#'   \item{\code{importance=FALSE}}{Store variable importance information.}
 #'   \item{\code{...}}{Other parameters passed to
 #'     \code{\link[ranger]{ranger}}.}
 #' }
@@ -37,8 +36,7 @@ Lrnr_ranger <- R6Class(
   portable = TRUE, class = TRUE,
   public = list(
     initialize = function(num.trees = 500,
-                          write.forest = TRUE,
-                          importance = FALSE, ...) {
+                          write.forest = TRUE, ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }
