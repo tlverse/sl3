@@ -54,7 +54,7 @@ Lrnr_ranger <- R6Class(
         y <- factor(y, levels = c(0, 1))
       }
       args$formula <- y ~ .
-      args$data <- data.frame(cbind(y,x))
+      args$data <- cbind(y,x)
       if (is.null(args$mtry)) {
         args$mtry <- floor(ncol(x))
       }
