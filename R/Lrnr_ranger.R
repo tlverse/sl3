@@ -50,7 +50,7 @@ Lrnr_ranger <- R6Class(
     .train = function(task) {
       args <- self$params
       outcome_type <- self$get_outcome_type(task)
-      x <- as.matrix(task$X)
+      x <- data.frame(task$X)
       y <- outcome_type$format(task$Y)
       if (outcome_type$type == "binomial") {
         y <- factor(y, levels = c(0, 1))
@@ -66,7 +66,7 @@ Lrnr_ranger <- R6Class(
       fit_object <- call_with_args(ranger_fun, args)
       return(fit_object)
     },
-    
+
     .predict = function(task) {
       predictions <- stats::predict(
         private$.fit_object, data = task$X,
