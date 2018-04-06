@@ -54,10 +54,10 @@ Lrnr_ranger <- R6Class(
       if (outcome_type$type == "binomial") {
         y <- factor(y, levels = c(0, 1))
       }
-      args$formula <- y ~ .
       dat <- data.frame(y,x)
       colnames(dat) <- names
       args$data <- dat
+      args$dependent.variable.name <- names[1]
       fit_object <- call_with_args(ranger::ranger, args)
       return(fit_object)
     },
