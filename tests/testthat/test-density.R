@@ -1,6 +1,4 @@
-library(sl3)
-library(testthat)
-context("test_density.R -- Lrnr_condensier")
+context("test-density.R -- Lrnr_condensier")
 
 # define test dataset
 data(mtcars)

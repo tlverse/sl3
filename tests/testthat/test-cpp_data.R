@@ -1,4 +1,4 @@
-context("test_cpp_data.R -- cpp data and subsets")
+context("test-cpp_data.R -- cpp data and subsets")
 
 if (FALSE) {
   setwd("..")
@@ -32,9 +32,6 @@ notrun.save.cpp.data <- function() {
   save(cpp_imputed, compress = TRUE, file = "./data/cpp_imputed.rda", compression_level = 9)
   resaveRdaFiles("./data/cpp_imputed.rda", compress = "bzip2")
 }
-
-library(testthat)
-library(sl3)
 
 data(cpp)
 data(cpp_1yr)

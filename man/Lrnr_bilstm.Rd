@@ -12,10 +12,11 @@ Lrnr_bilstm
 \code{\link{Lrnr_base}} object with methods for training and prediction
 }
 \description{
-This learner supports bidirectinal long short-term memory recurrent neural network algorithm.
-In order to use this learner, you will need keras Python module 2.0.0 or higher.
-Note that all preprocessing, such as differencing and
-seasonal effects for time series, should be addressed before using this learner.
+This learner supports bidirectinal long short-term memory recurrent neural
+network algorithm. In order to use this learner, you will need keras Python
+module 2.0.0 or higher. Note that all preprocessing, such as differencing and
+seasonal effects for time series, should be addressed before using this
+learner.
 }
 \section{Fields}{
 
@@ -52,6 +53,7 @@ Other Learners: \code{\link{Custom_chain}},
   \code{\link{Lrnr_independent_binomial}},
   \code{\link{Lrnr_lstm}}, \code{\link{Lrnr_mean}},
   \code{\link{Lrnr_nnls}}, \code{\link{Lrnr_optim}},
+  \code{\link{Lrnr_pca}},
   \code{\link{Lrnr_pkg_SuperLearner}},
   \code{\link{Lrnr_randomForest}},
   \code{\link{Lrnr_rugarch}}, \code{\link{Lrnr_sl}},

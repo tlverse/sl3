@@ -1,8 +1,5 @@
-context("test_cv.R -- Cross-validation fold handling")
-library(sl3)
-library(testthat)
+context("test-cv.R -- Cross-validation fold handling")
 library(origami)
-
 
 
 data(cpp_imputed)

@@ -1,4 +1,4 @@
-context("test_args_to_list.R -- args_to_list")
+context("test-args_to_list.R -- args_to_list")
 
 my_function <- function(arg1="default_1", arg2="default_2", ...) {
   return(args_to_list())

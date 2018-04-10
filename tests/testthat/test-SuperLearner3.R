@@ -1,4 +1,4 @@
-context("test_SuperLearner3.R -- Replicate legacy SuperLearner interface")
+context("test-SuperLearner3.R -- Replicate legacy SuperLearner interface")
 
 library(devtools)
 library(SuperLearner)

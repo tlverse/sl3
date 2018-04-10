@@ -1,7 +1,4 @@
-library(testthat)
-context("test_pipeline.R -- Basic pipeline functionality")
-
-library(sl3)
+context("test-pipeline.R -- Basic pipeline functionality")
 library(origami)
 library(SuperLearner)
 library(data.table)
