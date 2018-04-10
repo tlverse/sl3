@@ -39,13 +39,15 @@ Lrnr_pkg_condensier_logisfitR6 <- R6Class(
       if (verbose) print(paste("calling ", self$fitfunname))
       X_mat <- datsum_obj$getXDT
       Y_vals <- datsum_obj$getY
-      dataDT <- cbind(X_mat, Y = Y_vals)
+      wts <- datsum_obj$getweights
+      dataDT <- cbind(X_mat, weights = wts, Y = Y_vals)
       sl3_lrnr <- private$sl3_lrnr
       if (nrow(dataDT) > 0) {
         task <- sl3_Task$new(
           dataDT,
           covariates = colnames(X_mat),
-          outcome = colnames(dataDT)[ncol(dataDT)]
+          outcome = colnames(dataDT)[ncol(dataDT)],
+          weights = weights
         )
         out <- capture.output(
           sl3_lrnr <- try(suppressWarnings(sl3_lrnr$train(task)))
