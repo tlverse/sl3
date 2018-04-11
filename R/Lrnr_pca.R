@@ -47,9 +47,9 @@ Lrnr_pca <- R6Class(
   class = TRUE,
   public = list(
     initialize = function(n_comp = 2,
-                          center = TRUE,
-                          scale. = TRUE,
-                          ...) {
+                              center = TRUE,
+                              scale. = TRUE,
+                              ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }
@@ -65,15 +65,19 @@ Lrnr_pca <- R6Class(
 
       # remove n_comp argument before calling stats::prcomp
       fit_object <- call_with_args(stats::prcomp, fit_args,
-                                   other_valid = list("retx", "center",
-                                                      "scale.", "tol", "rank.")
-                                  )
+        other_valid = list(
+          "retx", "center",
+          "scale.", "tol", "rank."
+        )
+      )
       return(fit_object)
     },
     .predict = function(task = NULL) {
       # note that n_comp is an argument not defined in stats::prcomp
       dim_args <- self$params[names(self$params) == "n_comp"]
-      preds_pca <- private$.fit_object$x[, seq_len(unlist(dim_args))]
+      preds_rotations <-
+        private$.fit_object$rotation[, seq_len(unlist(dim_args))]
+      preds_pca <- as.matrix(task$X) %*% preds_rotations
       predictions <- preds_pca
       return(predictions)
     },

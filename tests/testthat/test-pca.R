@@ -44,8 +44,10 @@ test_that("Regression on PCs matches between Pipeline and manual invocation.", {
 
 test_that("Arguments are passed to prcomp correctly by Lrnr_pca", {
   # pass some arguments to prcomp via Lrnr_pca
-  pca_sl3 <- Lrnr_pca$new(n_comp = ncomp, retx = FALSE, center = TRUE,
-                          scale. = FALSE)
+  pca_sl3 <- Lrnr_pca$new(
+    n_comp = ncomp, retx = FALSE, center = TRUE,
+    scale. = FALSE
+  )
   pcr_pipe_sl3 <- Pipeline$new(pca_sl3, glm_fast)
   pcr_pipe_sl3_fit <- pcr_pipe_sl3$train(task)
   pca_from_pipe <- pcr_pipe_sl3_fit$fit_object$learner_fits[[1]]$fit_object
@@ -57,4 +59,3 @@ test_that("Arguments are passed to prcomp correctly by Lrnr_pca", {
 
   expect_equal(pca_from_pipe, cpp_pca)
 })
-
