@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Convert Factors to indicators — factor_to_indicators • sl3</title>
+<title>Predict Class from Predicted Probabilities — predict_classes • sl3</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -27,10 +27,10 @@
 <script src="../pkgdown.js"></script>
   
   
-<meta property="og:title" content="Convert Factors to indicators — factor_to_indicators" />
+<meta property="og:title" content="Predict Class from Predicted Probabilities — predict_classes" />
 
-<meta property="og:description" content="replicates the functionality of model.matrix, but faster
-Replicates the functionality of model.matrix, but faster" />
+<meta property="og:description" content="Returns the most likely class label for each row of predicted class
+probabilities" />
 <meta name="twitter:card" content="summary" />
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
@@ -115,34 +115,29 @@ Replicates the functionality of model.matrix, but faster" />
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Convert Factors to indicators</h1>
+    <h1>Predict Class from Predicted Probabilities</h1>
     </div>
 
     
-    <p>replicates the functionality of model.matrix, but faster</p>
-<p>Replicates the functionality of <code>model.matrix</code>, but faster</p>
+    <p>Returns the most likely class label for each row of predicted class
+probabilities</p>
     
 
-    <pre class="usage"><span class='fu'>factor_to_indicators</span>(<span class='no'>x</span>, <span class='kw'>ind_ref_mat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
-
-<span class='fu'>dt_expand_factors</span>(<span class='no'>dt</span>)</pre>
+    <pre class="usage"><span class='fu'>predict_classes</span>(<span class='no'>predictions</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>the factor to expand</p></td>
-    </tr>
-    <tr>
-      <th>ind_ref_mat</th>
-      <td><p>a matrix used for expansion, if NULL generated automatically</p></td>
-    </tr>
-    <tr>
-      <th>dt</th>
-      <td><p>the dt to expand</p></td>
+      <th>predictions</th>
+      <td><p>the nxc matrix where each row are predicted probabilities
+for one observation for each of c classes.</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>a vector of length n, the predicted class labels as a factor variable</p>
     
 
   </div>
@@ -150,7 +145,9 @@ Replicates the functionality of model.matrix, but faster" />
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
 
   </div>
 </div>

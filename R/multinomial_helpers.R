@@ -55,7 +55,7 @@ factor_to_indicators <- function(x, ind_ref_mat=NULL) {
 
 #' Convert Factors to indicators
 #'
-#' replicates the functionality of model.matrix, but faster
+#' Replicates the functionality of \code{model.matrix}, but faster
 #'
 #' @param dt the dt to expand
 #' @rdname factors_to_indicators
@@ -72,15 +72,18 @@ dt_expand_factors <- function(dt) {
 }
 
 #' Predict Class from Predicted Probabilities
-#' 
-#' Returns the most likely class label for each row of predicted class probabilities
-#' @param predictions the nxc matrix where each row are predicted probabilities for 
-#' one observation for each of c classes
+#'
+#' Returns the most likely class label for each row of predicted class
+#' probabilities
+#'
+#' @param predictions the nxc matrix where each row are predicted probabilities
+#'  for one observation for each of c classes.
 #' @return a vector of length n, the predicted class labels as a factor variable
-predict_classes <- function(predictions){
+#' @export
+predict_classes <- function(predictions) {
   class_names <- colnames(predictions)
   pred_classes <- class_names[apply(predictions, 1, which.max)]
-  pred_classes <- factor(pred_classes, levels=class_names)
-  
+  pred_classes <- factor(pred_classes, levels = class_names)
+
   return(pred_classes)
 }

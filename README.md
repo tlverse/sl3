@@ -130,7 +130,7 @@ stack_fit <- learner_stack$train(task)
 #> Loading required package: glmnet
 #> Loading required package: Matrix
 #> Loading required package: foreach
-#> Loaded glmnet 2.0-13
+#> Loaded glmnet 2.0-16
 preds <- stack_fit$predict()
 head(preds)
 #>    Lrnr_pkg_SuperLearner_SL.glmnet Lrnr_glm_TRUE
