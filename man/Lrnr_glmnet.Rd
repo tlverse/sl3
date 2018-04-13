@@ -31,6 +31,9 @@ is Lasso. Intermediate values are a combination. Documented in
 \item{\code{nlambda=100}}{The number of lambda values to compare. Comparing
 less values will speed up computation, but may decrease statistical
 performance. Documented in \code{\link[glmnet]{cv.glmnet}}.}
+\item{\code{use_min=TRUE}}{If TRUE, use lambda=cv_fit$lambda.min for prediction,
+otherwise use lambda=cv_fit$lambda.1se.
+the distinction is clarified in \code{\link[glmnet]{cv.glmnet}}.}
 \item{\code{...}}{Other parameters to be passed to
 \code{\link[glmnet]{cv.glmnet}} and \code{\link[glmnet]{glmnet}}.}
 }
@@ -43,9 +46,9 @@ Individual learners have their own sets of parameters. Below is a list of shared
 by all learners.
 
 \describe{
-\item{\code{covariates}}{A character vector of covariates. The learner will use this to subset the covariates for any specified task}
-\item{\code{outcome_type}}{A \code{\link{variable_type}} object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified}
-\item{\code{...}}{All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating}
+  \item{\code{covariates}}{A character vector of covariates. The learner will use this to subset the covariates for any specified task}
+  \item{\code{outcome_type}}{A \code{\link{variable_type}} object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified}
+  \item{\code{...}}{All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating}
 }
 }
 
@@ -73,5 +76,4 @@ Other Learners: \code{\link{Custom_chain}},
   \code{\link{define_h2o_X}},
   \code{\link{undocumented_learner}}
 }
-\concept{Learners}
 \keyword{data}

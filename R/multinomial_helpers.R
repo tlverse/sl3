@@ -70,3 +70,17 @@ dt_expand_factors <- function(dt) {
   })
   as.data.table(raw)
 }
+
+#' Predict Class from Predicted Probabilities
+#' 
+#' Returns the most likely class label for each row of predicted class probabilities
+#' @param predictions the nxc matrix where each row are predicted probabilities for 
+#' one observation for each of c classes
+#' @return a vector of length n, the predicted class labels as a factor variable
+predict_classes <- function(predictions){
+  class_names <- colnames(predictions)
+  pred_classes <- class_names[apply(predictions, 1, which.max)]
+  pred_classes <- factor(pred_classes, levels=class_names)
+  
+  return(pred_classes)
+}
