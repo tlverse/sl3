@@ -34,7 +34,7 @@
 #'   \item{\code{nlambda=100}}{The number of lambda values to compare. Comparing
 #'     less values will speed up computation, but may decrease statistical
 #'     performance. Documented in \code{\link[glmnet]{cv.glmnet}}.}
-#'   \item{\code{use_min=TRUE}}{If TRUE, use lambda=cv_fit$lambda.min for prediction, 
+#'   \item{\code{use_min=TRUE}}{If TRUE, use lambda=cv_fit$lambda.min for prediction,
 #'     otherwise use lambda=cv_fit$lambda.1se.
 #'     the distinction is clarified in \code{\link[glmnet]{cv.glmnet}}.}
 #'   \item{\code{...}}{Other parameters to be passed to
@@ -95,10 +95,10 @@ Lrnr_glmnet <- R6Class(
 
     .predict = function(task) {
       outcome_type <- private$.training_outcome_type
-      if(self$params$use_min){
-        lambda = "lambda.min"
+      if (self$params$use_min) {
+        lambda <- "lambda.min"
       } else {
-        lambda = "lambda.1se"
+        lambda <- "lambda.1se"
       }
       predictions <- stats::predict(
         private$.fit_object,

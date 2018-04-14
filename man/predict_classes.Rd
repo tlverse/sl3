@@ -7,12 +7,13 @@
 predict_classes(predictions)
 }
 \arguments{
-\item{predictions}{the nxc matrix where each row are predicted probabilities for
-one observation for each of c classes}
+\item{predictions}{the nxc matrix where each row are predicted probabilities
+for one observation for each of c classes.}
 }
 \value{
 a vector of length n, the predicted class labels as a factor variable
 }
 \description{
-Returns the most likely class label for each row of predicted class probabilities
+Returns the most likely class label for each row of predicted class
+probabilities
 }

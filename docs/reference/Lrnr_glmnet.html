@@ -151,6 +151,9 @@ is Lasso. Intermediate values are a combination. Documented in
 <dt><code>nlambda=100</code></dt><dd><p>The number of lambda values to compare. Comparing
 less values will speed up computation, but may decrease statistical
 performance. Documented in <code><a href='http://www.rdocumentation.org/packages/glmnet/topics/cv.glmnet'>cv.glmnet</a></code>.</p></dd>
+<dt><code>use_min=TRUE</code></dt><dd><p>If TRUE, use lambda=cv_fit$lambda.min for prediction,
+otherwise use lambda=cv_fit$lambda.1se.
+the distinction is clarified in <code><a href='http://www.rdocumentation.org/packages/glmnet/topics/cv.glmnet'>cv.glmnet</a></code>.</p></dd>
 <dt><code>...</code></dt><dd><p>Other parameters to be passed to
 <code><a href='http://www.rdocumentation.org/packages/glmnet/topics/cv.glmnet'>cv.glmnet</a></code> and <code><a href='http://www.rdocumentation.org/packages/glmnet/topics/glmnet'>glmnet</a></code>.</p></dd>
 </dl>
