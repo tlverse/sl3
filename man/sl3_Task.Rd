@@ -26,32 +26,32 @@ variables are to be used as covariates and outcomes.
 \section{Constructor}{
 
 
-\code{make_sl3_Task(data, covariates, outcome = NULL, outcome_type = NULL, outcome_levels = NULL,
+  \code{make_sl3_Task(data, covariates, outcome = NULL, outcome_type = NULL, outcome_levels = NULL,
                       id = NULL, weights = NULL, offset = NULL, nodes = NULL, column_names = NULL,
                       row_index = NULL, folds = NULL)}
-
-\describe{
-\item{\code{data}}{A \code{data.frame} or \code{data.table} containing the underlying data
-}
-\item{\code{covariates}}{A character vector of variable names that define the set of covariates
-}
-\item{\code{outcome}}{A character vector of variable names that define the set of outcomes. Usually just one variable, although some learners support multivariate outcomes. Use \code{sl3_list_learners("multivariate_outcome")} to find such learners.
-}
-\item{\code{outcome_type}}{A \code{Variable_type} object that defines the variable type of the outcome. Alternatively, a character specifying such a type. See \code{\link{variable_type}} for details on defining variable types.
-}
-\item{\code{outcome_levels}}{A vector of levels expected for the outcome variable. If \code{outcome_type} is a character, this will be used to construct an appropriate \code{\link{variable_type}} object.
-}
-\item{\code{id}}{A character indicating which variable (if any) to be used as an observation "id", for learners that support clustered observations. Use \code{sl3_list_learners("id")} to find such learners.
-}
-\item{\code{weights}}{A character indicating which variable (if any) to be used as observation weights, for learners that support that. Use \code{sl3_list_learners("weights")} to find such learners.
-}
-\item{\code{offset}}{A character indicating which variable (if any) to be used as an observation "id", for methods that support clustered observations.  Use \code{sl3_list_learners("offset")} to find such learners.
-}
-\item{\code{nodes}}{A list of character vectors as nodes. This will override the \code{covariates}, \code{outcome}, \code{id}, \code{weights}, and \code{offset} arguments if specified, and is an alternative way to specify those arguments.
-}
-\item{\code{column_names}}{A named list of characters that maps between column names in \code{data} and how those variables are referenced in \code{sl3_Task} functions.
-}
-}
+                     
+  \describe{
+    \item{\code{data}}{A \code{data.frame} or \code{data.table} containing the underlying data
+    }
+    \item{\code{covariates}}{A character vector of variable names that define the set of covariates
+    }
+    \item{\code{outcome}}{A character vector of variable names that define the set of outcomes. Usually just one variable, although some learners support multivariate outcomes. Use \code{sl3_list_learners("multivariate_outcome")} to find such learners.
+    }
+    \item{\code{outcome_type}}{A \code{Variable_type} object that defines the variable type of the outcome. Alternatively, a character specifying such a type. See \code{\link{variable_type}} for details on defining variable types.
+    }
+    \item{\code{outcome_levels}}{A vector of levels expected for the outcome variable. If \code{outcome_type} is a character, this will be used to construct an appropriate \code{\link{variable_type}} object.
+    }
+    \item{\code{id}}{A character indicating which variable (if any) to be used as an observation "id", for learners that support clustered observations. Use \code{sl3_list_learners("id")} to find such learners.
+    }
+    \item{\code{weights}}{A character indicating which variable (if any) to be used as observation weights, for learners that support that. Use \code{sl3_list_learners("weights")} to find such learners.
+    }
+    \item{\code{offset}}{A character indicating which variable (if any) to be used as an observation "id", for methods that support clustered observations.  Use \code{sl3_list_learners("offset")} to find such learners.
+    }
+    \item{\code{nodes}}{A list of character vectors as nodes. This will override the \code{covariates}, \code{outcome}, \code{id}, \code{weights}, and \code{offset} arguments if specified, and is an alternative way to specify those arguments.
+    }
+    \item{\code{column_names}}{A named list of characters that maps between column names in \code{data} and how those variables are referenced in \code{sl3_Task} functions. 
+    }
+    }
 }
 
 \section{Methods}{
@@ -59,92 +59,92 @@ variables are to be used as covariates and outcomes.
 
 \describe{
 \item{\code{add_interactions(interactions)}}{
-Adds interaction terms to task, returns a task with interaction terms added to covariate list.
+  Adds interaction terms to task, returns a task with interaction terms added to covariate list.
 
-\itemize{
-\item{\code{interactions}: A list of lists, where each sublist describes one interaction term, listing the variables that comprise it
-}
-}
-}
-
+  \itemize{
+    \item{\code{interactions}: A list of lists, where each sublist describes one interaction term, listing the variables that comprise it
+    }
+  }
+  }
+  
 \item{\code{add_columns(fit_uuid, new_data, global_cols=FALSE)}}{
-Add columns to internal data, returning an updated vector of \code{column_names}
-
-\itemize{
-\item{\code{fit_uuid}: A uuid character that is used to generate unique internal column names.
-This prevents two added columns with the same name overwriting each other, provided they have different fit_uuid.
-}
-\item{\code{new_data}: A data.table containing the columns to add
-}
-\item{\code{global_cols}: If true, don't use the fit_uuid to make unique column names
-}
-}
-}
+  Add columns to internal data, returning an updated vector of \code{column_names}
+  
+  \itemize{
+    \item{\code{fit_uuid}: A uuid character that is used to generate unique internal column names. 
+    This prevents two added columns with the same name overwriting each other, provided they have different fit_uuid.
+    }
+    \item{\code{new_data}: A data.table containing the columns to add
+    }
+    \item{\code{global_cols}: If true, don't use the fit_uuid to make unique column names
+    }
+  }
+  }
 \item{\code{next_in_chain(covariates=NULL, outcome=NULL, id=NULL, weights=NULL, 
                                     offset=NULL, column_names=NULL, new_nodes=NULL, ...)}}{
-Used by learner$chain methods to generate a task with the same underlying data, but redefined nodes.
-Most of the parameter values are passed to the \code{sl3_Task} constructor, documented above.
+  Used by learner$chain methods to generate a task with the same underlying data, but redefined nodes.
+  Most of the parameter values are passed to the \code{sl3_Task} constructor, documented above. 
 
-\itemize{
-\item{\code{covariates}: An updated covariates character vector
-}
-\item{\code{outcome}: An updated outcome character vector
-}
-\item{\code{id}: An updated id character value
-}
-\item{\code{weights}: An updated weights character value
-}
-\item{\code{offset}: An updated offset character value
-}
-\item{\code{column_names}: An updated column_names character vector
-}
-\item{\code{new_nodes}: An updated list of node names
-}
-\item{\code{...}: Other arguments passed to the \code{sl3_Task} constructor for the new task
-}
-}
-}
+  \itemize{
+    \item{\code{covariates}: An updated covariates character vector
+    }
+    \item{\code{outcome}: An updated outcome character vector
+    }
+    \item{\code{id}: An updated id character value
+    }
+    \item{\code{weights}: An updated weights character value
+    }
+    \item{\code{offset}: An updated offset character value
+    }
+    \item{\code{column_names}: An updated column_names character vector
+    }
+    \item{\code{new_nodes}: An updated list of node names
+    }
+    \item{\code{...}: Other arguments passed to the \code{sl3_Task} constructor for the new task
+    }
+  }
+  }
 
 \item{\code{subset_task(row_index)}}{
-Returns a task with rows subsetted using the \code{row_index} index vector
+  Returns a task with rows subsetted using the \code{row_index} index vector
 
-\itemize{
-\item{\code{row_index}: An index vector defining the subset
-}
-}
-}
-
+  \itemize{
+    \item{\code{row_index}: An index vector defining the subset
+    }
+  }
+  }
+  
 \item{\code{get_data(rows, columns)}}{
-Returns a \code{data.table} containing a subset of task data.
+  Returns a \code{data.table} containing a subset of task data.
 
-\itemize{
-\item{\code{rows}: An index vector defining the rows to return
-}
-}
-\itemize{
-\item{\code{columns}: A character vector of columns to return.
-}
-}
-}
+  \itemize{
+    \item{\code{rows}: An index vector defining the rows to return
+    }
+  }
+  \itemize{
+    \item{\code{columns}: A character vector of columns to return. 
+    }
+  }
+  }
 \item{\code{has_node(node_name)}}{
-Returns true if the node is defined in the task
+  Returns true if the node is defined in the task
 
-\itemize{
-\item{\code{node_name}: The name of the node to look for
-}
-}
-}
-
+  \itemize{
+    \item{\code{node_name}: The name of the node to look for
+    }
+  }
+  }
+  
 \item{\code{get_node(node_name, generator_fun=NULL)}}{
-Returns a ddta.table with the requested node's data
+  Returns a ddta.table with the requested node's data
 
-\itemize{
-\item{\code{node_name}: The name of the node to look for
-}
-\item{\code{generator_fun}: A \code{function(node_name, n)} that can generate the node if it was not specified in the task.
-}
-}
-}
+  \itemize{
+    \item{\code{node_name}: The name of the node to look for
+    }
+    \item{\code{generator_fun}: A \code{function(node_name, n)} that can generate the node if it was not specified in the task.
+    }
+  }
+  }
 
 }
 }
@@ -152,20 +152,20 @@ Returns a ddta.table with the requested node's data
 \section{Fields}{
 
 \describe{
-\item{\code{raw_data}}{Internal representation of the data}
-\item{\code{data}}{Formatted task data}
-\item{\code{nrow}}{Number of observations}
-\item{\code{nodes}}{A list of node variables}
-\item{\code{X}}{a data.table containing the covariates}
-\item{\code{X}}{a data.table containing the covariates and an intercept term}
-\item{\code{Y}}{a vector containing the outcomes}
-\item{\code{offsets}}{a vector containing the offset. Will return an error if the offset wasn't specified on construction}
-\item{\code{weights}}{a vector containing the observation weights. If weights aren't specified on construction, weights will default to 1}
-\item{\code{id}}{a vector containing the observation units. If the ids aren't specified on construction, id will return seq_len(nrow)}
-\item{\code{folds}}{An origami fold object, as generated by \code{\link[origami]{make_folds}}, specifying a cross-validation scheme}
-\item{\code{uuid}}{A unique identifier of this task}
-\item{\code{column_names}}{The named list mapping variable names to internal column names}
-\item{\code{outcome_type}}{A \code{\link{variable_type}} object specifying the type of the outcome}
+  \item{\code{raw_data}}{Internal representation of the data}
+  \item{\code{data}}{Formatted task data}
+  \item{\code{nrow}}{Number of observations}
+  \item{\code{nodes}}{A list of node variables}
+  \item{\code{X}}{a data.table containing the covariates}
+  \item{\code{X}}{a data.table containing the covariates and an intercept term}
+  \item{\code{Y}}{a vector containing the outcomes}
+  \item{\code{offsets}}{a vector containing the offset. Will return an error if the offset wasn't specified on construction}
+  \item{\code{weights}}{a vector containing the observation weights. If weights aren't specified on construction, weights will default to 1}
+  \item{\code{id}}{a vector containing the observation units. If the ids aren't specified on construction, id will return seq_len(nrow)}
+  \item{\code{folds}}{An origami fold object, as generated by \code{\link[origami]{make_folds}}, specifying a cross-validation scheme}
+  \item{\code{uuid}}{A unique identifier of this task}
+  \item{\code{column_names}}{The named list mapping variable names to internal column names}
+  \item{\code{outcome_type}}{A \code{\link{variable_type}} object specifying the type of the outcome}
 }
 }
 

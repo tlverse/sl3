@@ -44,10 +44,10 @@ Lrnr_pkg_condensier_logisfitR6 <- R6Class(
       sl3_lrnr <- private$sl3_lrnr
       if (nrow(dataDT) > 0) {
         task <- sl3_Task$new(
-          dataDT,
+          data = dataDT,
           covariates = colnames(X_mat),
           outcome = colnames(dataDT)[ncol(dataDT)],
-          weights = weights
+          weights = "weights"
         )
         out <- capture.output(
           sl3_lrnr <- try(suppressWarnings(sl3_lrnr$train(task)))
