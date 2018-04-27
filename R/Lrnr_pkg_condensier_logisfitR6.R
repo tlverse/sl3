@@ -66,10 +66,7 @@ Lrnr_pkg_condensier_logisfitR6 <- R6Class(
               print(sl3_lrnr)
             }
           }
-          sl3_lrnr <- private$fallback_learner$new(
-            family =
-              "binomial"
-          )$train(task)
+          sl3_lrnr <- private$fallback_learner$new()$train(task)
         }
       }
       if (verbose) print(sl3_lrnr)
