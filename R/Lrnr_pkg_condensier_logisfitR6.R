@@ -6,6 +6,8 @@
 ## below. This R6 object then provides a communication link between the two
 ## packages (sl3 <-> condensier).
 
+##  NEED TO UPDATE THIS BASE CLASS FROM CONDENSIER TO ADD WEIGHTS
+
 #' sl3 Learner wrapper for condensier
 #'
 #' This wrapper allows the use of any \code{sl3} Learner as a Learner for
@@ -37,13 +39,19 @@ Lrnr_pkg_condensier_logisfitR6 <- R6Class(
       if (verbose) print(paste("calling ", self$fitfunname))
       X_mat <- datsum_obj$getXDT
       Y_vals <- datsum_obj$getY
-      dataDT <- cbind(X_mat, Y = Y_vals)
+      # capture weights conditionally
+      if (!is.null(wts <- datsum_obj$getweights)) {
+        dataDT <- cbind(X_mat, weights = wts, Y = Y_vals)
+      } else {
+        dataDT <- cbind(X_mat, Y = Y_vals)
+      }
       sl3_lrnr <- private$sl3_lrnr
       if (nrow(dataDT) > 0) {
         task <- sl3_Task$new(
-          dataDT,
+          data = dataDT,
           covariates = colnames(X_mat),
-          outcome = colnames(dataDT)[ncol(dataDT)]
+          outcome = colnames(dataDT)[ncol(dataDT)],
+          weights = if (!is.null(wts)) "weights"
         )
         out <- capture.output(
           sl3_lrnr <- try(suppressWarnings(sl3_lrnr$train(task)))
@@ -62,10 +70,7 @@ Lrnr_pkg_condensier_logisfitR6 <- R6Class(
               print(sl3_lrnr)
             }
           }
-          sl3_lrnr <- private$fallback_learner$new(
-            family =
-              "binomial"
-          )$train(task)
+          sl3_lrnr <- private$fallback_learner$new()$train(task)
         }
       }
       if (verbose) print(sl3_lrnr)
