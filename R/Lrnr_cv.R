@@ -176,7 +176,7 @@ Lrnr_cv <- R6Class(
         fold_predictions, `[[`,
         "predictions"
       ))
-      predictions <- aorder(predictions, order(index))
+      # predictions <- aorder(predictions, order(index))
       return(predictions)
     },
     .required_packages = c("origami")
