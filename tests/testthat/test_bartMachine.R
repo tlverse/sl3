@@ -14,15 +14,6 @@ if (FALSE) {
 
 library(testthat)
 library(sl3)
-library(R6)
-library(assertthat)
-library(uuid)
-
-options("java.home"="/Library/Java/JavaVirtualMachines/jdk-9.0.4.jdk/Contents/Home/lib/")
-Sys.setenv(LD_LIBRARY_PATH='$JAVA_HOME/server')
-dyn.load('/Library/Java/JavaVirtualMachines/jdk-9.0.4.jdk/Contents/Home/lib/server/libjvm.dylib')
-library(rJava)
-library(bartMachine)
 
 ##generate Friedman data
 set.seed(11)
