@@ -34,7 +34,8 @@ forecast of size \code{task$X}.}
 
 \seealso{
 Other Learners: \code{\link{Custom_chain}},
-  \code{\link{Lrnr_HarmonicReg}}, \code{\link{Lrnr_base}},
+  \code{\link{Lrnr_HarmonicReg}},
+  \code{\link{Lrnr_bartMachine}}, \code{\link{Lrnr_base}},
   \code{\link{Lrnr_bilstm}}, \code{\link{Lrnr_condensier}},
   \code{\link{Lrnr_cv}},
   \code{\link{Lrnr_define_interactions}},

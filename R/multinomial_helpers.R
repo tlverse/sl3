@@ -55,7 +55,11 @@ factor_to_indicators <- function(x, ind_ref_mat=NULL) {
 
 #' Convert Factors to indicators
 #'
+<<<<<<< HEAD
 #' Replicates the functionality of \code{model.matrix}, but faster
+=======
+#' replicates the functionality of model.matrix, but faster
+>>>>>>> master
 #'
 #' @param dt the dt to expand
 #' @rdname factors_to_indicators

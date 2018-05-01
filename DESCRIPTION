@@ -58,7 +58,14 @@ Suggests:
     kerasR,
     keras,
     reticulate,
+<<<<<<< HEAD
     hal9001
+=======
+    rJava,
+    bartMachine,
+    hal9001,
+    devel
+>>>>>>> master
 Remotes:
     github::osofr/condensier,
     github::tlverse/delayed,
