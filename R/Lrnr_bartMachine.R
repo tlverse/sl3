@@ -35,7 +35,7 @@
 #'   posterior distribution of f(x).}
 #'   \item{\code{alpha}}{Base hyperparameter in tree prior for whether a node is
 #'   nonterminal or not.}
-#'   \item{\code{beta}}{Power hyperparameter in tree prior for whether a node is
+#'   \item{\code{beta}}{Power hyperparameter in tree prior for whether a node s
 #'   nonterminal or not.}
 #'   \item{\code{k}}{For regression, k determines the prior probability that E(Y|X) is
 #'   contained in the interval (y_{min}, y_{max}), based on a normal
