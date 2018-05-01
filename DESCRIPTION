@@ -52,7 +52,9 @@ Suggests:
     R.rsp,
     kerasR,
     keras,
-    reticulate
+    reticulate,
+    rJava,
+    bartMachine
 Remotes:
     github::osofr/condensier,
     github::tlverse/delayed
