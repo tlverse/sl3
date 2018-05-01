@@ -58,10 +58,12 @@ fit_lrn_1 <- lrn_1$base_train(task)
 
 ## w/ speedglm:
 system.time(res_speedglm <- test_learner_dens(Lrnr_condensier, task))
-system.time(res_speedglm <- test_learner_dens(Lrnr_condensier, task, covariates = c(
-  "cyl",
-  "disp"
-)))
+system.time(res_speedglm <- test_learner_dens(Lrnr_condensier, task,
+  covariates = c(
+    "cyl",
+    "disp"
+  )
+))
 # cbind(res_speedglm, mtcars) regular GLM:
 system.time(res_GLM <- test_learner_dens(Lrnr_condensier, task, nbins = 6, bin_estimator = Lrnr_glm$new(family = binomial())))
 # cbind(res_GLM, mtcars) original speedglm learner class from condensier:

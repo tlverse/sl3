@@ -80,13 +80,16 @@ Lrnr_condensier <- R6Class(
   ),
 
   private = list(
-    .properties = c("density", "continuous"),
+    .properties = c("density", "continuous", "weights"),
     .covariates = NULL,
     .train = function(task) {
       verbose <- getOption("sl3.verbose")
       args <- self$params
       args$X <- task$nodes$covariates
       args$Y <- task$nodes$outcome
+      if (task$has_node("weights")) {
+        args$weights <- task$weights
+      }
       args$input_data <- task$data
       fit_object <- call_with_args(condensier::fit_density, args)
       return(fit_object)
