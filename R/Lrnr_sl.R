@@ -39,7 +39,7 @@ Lrnr_sl <- R6Class(
   class = TRUE,
   public = list(
     initialize = function(learners, metalearner, folds = NULL,
-                          keep_extra = TRUE, ...) {
+                              keep_extra = TRUE, ...) {
       # kludge to deal with stack as learners
       if (inherits(learners, "Stack")) {
         learners <- learners$params$learners
@@ -102,7 +102,8 @@ Lrnr_sl <- R6Class(
         return(as.data.frame(risks))
       }
       # TODO: this ignores weights, square errors are also incorrect
-      fold_risks <- lapply(cv_meta_task$folds,
+      fold_risks <- lapply(
+        cv_meta_task$folds,
         validation_means,
         losses,
         cv_meta_task$weights
@@ -230,4 +231,3 @@ drop_offsets_chain <- function(task) {
     offset = NULL
   ))
 }
-

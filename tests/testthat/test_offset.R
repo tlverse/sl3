@@ -34,12 +34,14 @@ Anode <- "A"
 task <- sl3_Task$new(data, covariates = Wnodes, outcome = Anode)
 
 offset_task <- sl3_Task$new(
-  data, covariates = Wnodes, outcome = Anode,
+  data,
+  covariates = Wnodes, outcome = Anode,
   offset = "offset"
 )
 
 newoffset_task <- sl3_Task$new(
-  data_newoffset, covariates = Wnodes,
+  data_newoffset,
+  covariates = Wnodes,
   outcome = Anode, offset = "offset"
 )
 
@@ -57,7 +59,8 @@ glm_fit <- glm(A ~ W1 + W2 + W3 + W4, data, family = binomial())
 expect_equivalent(coef(glm_fit), coef(fit))
 
 glm_offset_fit <- glm(
-  A ~ W1 + W2 + W3 + W4, data, family = binomial(),
+  A ~ W1 + W2 + W3 + W4, data,
+  family = binomial(),
   offset = qlogis(data$offset)
 )
 expect_equivalent(coef(glm_offset_fit), coef(offset_fit))
@@ -103,7 +106,8 @@ offset_learner_stack <- make_learner_stack(
 
 offset_learners <- offset_learner_stack$params$learners
 lapply(
-  offset_learners, test_learner_offset_support, task = task,
+  offset_learners, test_learner_offset_support,
+  task = task,
   offset_task = offset_task, newoffset_task = newoffset_task
 )
 

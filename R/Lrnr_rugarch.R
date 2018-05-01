@@ -42,19 +42,19 @@ Lrnr_rugarch <- R6Class(
   portable = TRUE, class = TRUE,
   public = list(
     initialize = function(variance.model =
-                          list(
-                            model = "sGARCH", garchOrder = c(1, 1),
-                            submodel = NULL, external.regressors = NULL,
-                            variance.targeting = FALSE
-                          ),
-                          mean.model =
-                          list(
-                            armaOrder = c(1, 1), include.mean = TRUE,
-                            archm = FALSE, archpow = 1, arfima = FALSE,
-                            external.regressors = NULL, archex = FALSE
-                          ),
-                          distribution.model = "norm", start.pars = list(),
-                          fixed.pars = list(), n.ahead = NULL, ...) {
+                                list(
+                                  model = "sGARCH", garchOrder = c(1, 1),
+                                  submodel = NULL, external.regressors = NULL,
+                                  variance.targeting = FALSE
+                                ),
+                              mean.model =
+                                list(
+                                  armaOrder = c(1, 1), include.mean = TRUE,
+                                  archm = FALSE, archpow = 1, arfima = FALSE,
+                                  external.regressors = NULL, archex = FALSE
+                                ),
+                              distribution.model = "norm", start.pars = list(),
+                              fixed.pars = list(), n.ahead = NULL, ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }
@@ -81,7 +81,8 @@ Lrnr_rugarch <- R6Class(
       }
       # Give the same output as GLM
       predictions <- rugarch::ugarchforecast(
-        private$.fit_object, data = task$X,
+        private$.fit_object,
+        data = task$X,
         n.ahead = n.ahead
       )
       predictions <- as.numeric(predictions@forecast$seriesFor)

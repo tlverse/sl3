@@ -28,7 +28,8 @@ Lrnr_pkg_SuperLearner_method <- R6Class(
       Y <- task$Y
 
       fit_object <- method$computeCoef(
-        X, Y, names(X), verbose = FALSE,
+        X, Y, names(X),
+        verbose = FALSE,
         obsWeights = task$weights
       )
       return(fit_object)

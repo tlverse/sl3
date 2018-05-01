@@ -40,9 +40,9 @@ Lrnr_randomForest <- R6Class(
   inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
     initialize = function(ntree = 100,
-                          keep.forest = TRUE,
-                          nodesize = 5, maxnodes = NULL,
-                          importance = FALSE, ...) {
+                              keep.forest = TRUE,
+                              nodesize = 5, maxnodes = NULL,
+                              importance = FALSE, ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }
@@ -76,7 +76,8 @@ Lrnr_randomForest <- R6Class(
         "prob", "response"
       )
       predictions <- stats::predict(
-        private$.fit_object, newdata = task$X,
+        private$.fit_object,
+        newdata = task$X,
         type = type
       )
       if (outcome_type$type == "binomial") {

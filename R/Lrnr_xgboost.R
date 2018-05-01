@@ -127,7 +127,8 @@ Lrnr_xgboost <- R6Class(
         }
         # will generally return vector, needs to be put into data.table column
         predictions <- stats::predict(
-          fit_object, newdata = xgb_data,
+          fit_object,
+          newdata = xgb_data,
           ntreelimit = ntreelimit, reshape = TRUE
         )
       }

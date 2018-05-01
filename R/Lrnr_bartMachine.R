@@ -1,6 +1,6 @@
 #' BART Machine Learner
 #'
-#' This learner implements Bayesian Additive Regression Trees, using the 
+#' This learner implements Bayesian Additive Regression Trees, using the
 #' \code{bartMachine} packahe
 #'
 #' @docType class
@@ -51,7 +51,7 @@
 #'   classification.}
 #'   \item{\code{verbose }}{Prints information about progress of the algorithm to the
 #'   screen.}
-#'   
+#'
 #' }
 #'
 #' @template common_parameters
@@ -62,43 +62,44 @@ Lrnr_bartMachine <- R6Class(
   inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
     initialize = function(num_trees = 50, num_burn_in = 250, verbose = F,
-                          alpha = 0.95, beta = 2, k = 2, q = 0.9, nu = 3,
-                          num_iterations_after_burn_in = 1000, 
-                          prob_rule_class = 0.5, ...) {
+                              alpha = 0.95, beta = 2, k = 2, q = 0.9, nu = 3,
+                              num_iterations_after_burn_in = 1000,
+                              prob_rule_class = 0.5, ...) {
       super$initialize(params = args_to_list(), ...)
     }
   ),
-  
+
   private = list(
     .properties = c("continuous", "binomial", "categorical", "weights"),
-    
+
     .train = function(task) {
       args <- self$params
       outcome_type <- self$get_outcome_type(task)
-    
+
       # specify data
       args$X <- as.data.frame(task$X)
       args$y <- outcome_type$format(task$Y)
-      
+
       if (task$has_node("weights")) {
         args$weights <- task$weights
       }
-      
+
       if (task$has_node("offset")) {
         args$offset <- task$offset
       }
-      
+
       fit_object <- call_with_args(bartMachine::bartMachine, args)
-      
+
       return(fit_object)
     },
-    
+
     .predict = function(task) {
-      #outcome_type <- private$.training_outcome_type
+      # outcome_type <- private$.training_outcome_type
       predictions <- stats::predict(
         private$.fit_object,
-        new_data = data.frame(task$X))
-      
+        new_data = data.frame(task$X)
+      )
+
       return(predictions)
     },
     .required_packages = c("rJava", "bartMachine")
