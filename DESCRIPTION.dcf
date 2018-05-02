@@ -1,0 +1,77 @@
+Package: sl3
+Title: Pipelines for Machine Learning and Super Learning
+Version: 1.0.0
+Authors@R: c(
+    person("Jeremy", "Coyle", email = "jeremyrcoyle@gmail.com",
+           role = c("aut", "cre", "cph")),
+    person("Nima", "Hejazi", email = "nh@nimahejazi.org", role = "aut"),
+    person("Oleg", "Sofrygin", email="oleg.sofrygin@gmail.com", role = "aut"),
+    person("Ivana", "Malenica", email = "imalenica@berkeley.edu", role = "aut")
+  )
+Maintainer: Jeremy Coyle <jeremyrcoyle@gmail.com>
+Description: Implements the super learner prediction method and contains a
+    library of prediction algorithms to be used in the super learner.
+Depends: R (>= 2.14.0)
+Imports:
+    data.table,
+    assertthat,
+    origami,
+    R6,
+    uuid,
+    BBmisc,
+    stats,
+    delayed,
+    utils,
+    methods,
+    ggplot2
+Suggests:
+    testthat,
+    knitr,
+    rmarkdown,
+    glmnet,
+    devtools,
+    dplyr,
+    drat,
+    rgl,
+    condensier,
+    cvAUC,
+    forecast,
+    nloptr,
+    rugarch,
+    nnls,
+    tsDyn,
+    Rsolnp,
+    xgboost,
+    speedglm,
+    randomForest,
+    SuperLearner,
+    h2o,
+    future,
+    e1071,
+    earth,
+    R.rsp,
+    kerasR,
+    keras,
+    reticulate,
+    MASS,
+    arm,
+    hal
+    rJava,
+    bartMachine,
+    hal9001,
+    devel
+Remotes:
+    github::osofr/condensier,
+    github::tlverse/delayed,
+    github::jeremyrcoyle/hal9001
+License: GPL-3
+URL: https://sl3.tlverse.org
+BugReports: https://github.com/tlverse/sl3/issues
+Encoding: UTF-8
+LazyData: yes
+LazyLoad: yes
+VignetteBuilder:
+    knitr,
+    R.rsp
+RoxygenNote: 6.0.1.9000
+Roxygen: list(markdown = TRUE)
