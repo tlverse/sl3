@@ -26,9 +26,9 @@ the covariates to create an interaction for.}
 \seealso{
 Other Learners: \code{\link{Custom_chain}},
   \code{\link{Lrnr_HarmonicReg}}, \code{\link{Lrnr_arima}},
-  \code{\link{Lrnr_base}}, \code{\link{Lrnr_bilstm}},
-  \code{\link{Lrnr_condensier}}, \code{\link{Lrnr_cv}},
-  \code{\link{Lrnr_expSmooth}},
+  \code{\link{Lrnr_bartMachine}}, \code{\link{Lrnr_base}},
+  \code{\link{Lrnr_bilstm}}, \code{\link{Lrnr_condensier}},
+  \code{\link{Lrnr_cv}}, \code{\link{Lrnr_expSmooth}},
   \code{\link{Lrnr_glm_fast}}, \code{\link{Lrnr_glmnet}},
   \code{\link{Lrnr_glm}}, \code{\link{Lrnr_h2o_grid}},
   \code{\link{Lrnr_independent_binomial}},

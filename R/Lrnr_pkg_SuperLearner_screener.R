@@ -39,7 +39,8 @@ Lrnr_pkg_SuperLearner_screener <- R6Class(
         selected <- task$nodes$covariates
       } else {
         selected <- wrapper(
-          task$Y, task$X, family = args$family,
+          task$Y, task$X,
+          family = args$family,
           obsWeights = task$weights, id = task$id
         )
       }

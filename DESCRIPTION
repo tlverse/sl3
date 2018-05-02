@@ -53,12 +53,20 @@ Suggests:
     kerasR,
     keras,
     reticulate,
+
     MASS,
     arm,
     hal
+
+    rJava,
+    bartMachine,
+    hal9001,
+    devel
+
 Remotes:
     github::osofr/condensier,
-    github::tlverse/delayed
+    github::tlverse/delayed,
+    github::jeremyrcoyle/hal9001
 License: GPL-3
 URL: https://sl3.tlverse.org
 BugReports: https://github.com/tlverse/sl3/issues
