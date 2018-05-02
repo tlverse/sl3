@@ -53,16 +53,13 @@ Suggests:
     kerasR,
     keras,
     reticulate,
-
     MASS,
     arm,
-    hal
-
+    hal,
     rJava,
     bartMachine,
     hal9001,
     devel
-
 Remotes:
     github::osofr/condensier,
     github::tlverse/delayed,
