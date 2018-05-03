@@ -48,11 +48,7 @@ Lrnr_glmnet <- R6Class(
   inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
     initialize = function(lambda = NULL, type.measure = "deviance", nfolds = 10,
-<<<<<<< HEAD
                               alpha = 1, nlambda = 100, use_min = TRUE, ...) {
-=======
-                              alpha = 1, nlambda = 100, ...) {
->>>>>>> master
       super$initialize(params = args_to_list(), ...)
     }
   ),
