@@ -69,4 +69,3 @@ prd_rpart <- predict(fit_rpart)
 test_that("Lrnr_rpart predictions match those from rpart", {
   expect_equal(prd_lrnr_rpart, prd_rpart)
 })
-

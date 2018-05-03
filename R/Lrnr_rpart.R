@@ -39,17 +39,18 @@
 #'   }
 #'   }
 #' }
-Lrnr_rpart <- R6Class(classname = "Lrnr_rpart", inherit = Lrnr_base,
-                    portable = TRUE, class = TRUE,
-# Above, you should change Lrnr_template (in both the object name and the classname argument)
-# to a name that indicates what your learner does
+Lrnr_rpart <- R6Class(
+  classname = "Lrnr_rpart", inherit = Lrnr_base,
+  portable = TRUE, class = TRUE,
+  # Above, you should change Lrnr_template (in both the object name and the classname argument)
+  # to a name that indicates what your learner does
   public = list(
     # you can define default parameter values here
     # if possible, your learner should define defaults for all required parameters
     initialize = function(model = FALSE,
-                          x = FALSE,
-                          y = FALSE,
-                          ...) {
+                              x = FALSE,
+                              y = FALSE,
+                              ...) {
       # this captures all parameters to initialize and saves them as self$params
       params <- args_to_list()
       super$initialize(params = params, ...)
@@ -114,4 +115,3 @@ Lrnr_rpart <- R6Class(classname = "Lrnr_rpart", inherit = Lrnr_base,
     .required_packages = c("rpart")
   )
 )
-
