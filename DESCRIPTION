@@ -49,6 +49,7 @@ Suggests:
     xgboost,
     speedglm,
     randomForest,
+    ranger,
     SuperLearner,
     h2o,
     future,
