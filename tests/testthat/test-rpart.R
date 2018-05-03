@@ -2,6 +2,7 @@ context("test-Lrnr_rpart.R -- General testing for Rpart")
 
 library(sl3)
 library(testthat)
+library(rpart)
 
 # define test dataset
 data(mtcars)
@@ -56,16 +57,16 @@ options(op)
 test_learner(Lrnr_rpart, task)
 test_learner(Lrnr_rpart, task2)
 
-## instantiate Lrnr_rpart, train on task, and predict on task
-lrnr_rpart <- Lrnr_rpart$new()
-fit_lrnr_rpart <- lrnr_rpart$train(task)
-prd_lrnr_rpart <- fit_lrnr_rpart$predict()
-
-## fit rpart using the data from the task
-fit_rpart <- rpart(mpg ~ ., data = task$data)
-prd_rpart <- predict(fit_rpart)
-
-## test equivalence of prediction from Lrnr_rpart and rpart::rpart
 test_that("Lrnr_rpart predictions match those from rpart", {
+  ## instantiate Lrnr_rpart, train on task, and predict on task
+  lrnr_rpart <- Lrnr_rpart$new()
+  fit_lrnr_rpart <- lrnr_rpart$train(task)
+  prd_lrnr_rpart <- fit_lrnr_rpart$predict()
+
+  ## fit rpart using the data from the task
+  fit_rpart <- rpart(mpg ~ ., data = task$data)
+  prd_rpart <- predict(fit_rpart)
+
+  ## test equivalence of prediction from Lrnr_rpart and rpart::rpart
   expect_equal(prd_lrnr_rpart, prd_rpart)
 })

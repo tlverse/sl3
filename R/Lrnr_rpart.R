@@ -4,13 +4,18 @@
 #' recursive partioning and regression trees.
 #'
 #' @docType class
+#'
 #' @importFrom R6 R6Class
-#' @importFrom stats predict as.formula
+#'
 #' @export
+#'
 #' @keywords data
+#'
 #' @return Learner object with methods for training and prediction. See
 #'  \code{\link{Lrnr_base}} for documentation on learners.
+#'
 #' @format \code{\link{R6Class}} object.
+#'
 #' @family Learners
 #'
 #' @section Parameters:
