@@ -57,7 +57,7 @@ Lrnr_nnls <- R6Class(
     .train = function(task) {
       x <- task$X
       y <- task$Y
-      wts <- task$weights
+      wts <- task$data[,task$weights]
       fit_object <- nnls::nnls(sqrt(wts)*as.matrix(x), sqrt(wts)*y)
       fit_object$lrnrs <- names(task$X)
       return(fit_object)
