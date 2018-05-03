@@ -62,9 +62,9 @@ Other Learners: \code{\link{Lrnr_HarmonicReg}},
   \code{\link{Lrnr_solnp_density}},
   \code{\link{Lrnr_solnp}},
   \code{\link{Lrnr_subset_covariates}},
-  \code{\link{Lrnr_tsDyn}}, \code{\link{Lrnr_xgboost}},
-  \code{\link{Pipeline}}, \code{\link{Stack}},
-  \code{\link{define_h2o_X}},
+  \code{\link{Lrnr_svm}}, \code{\link{Lrnr_tsDyn}},
+  \code{\link{Lrnr_xgboost}}, \code{\link{Pipeline}},
+  \code{\link{Stack}}, \code{\link{define_h2o_X}},
   \code{\link{undocumented_learner}}
 }
 \concept{Learners}

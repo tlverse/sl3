@@ -41,16 +41,18 @@
 #'     should allow for probability predictions (default: \code{FALSE}).}
 #'   \item{\code{...}}{Other parameters passed to \code{\link[e1071]{svm}}.
 #'     See its documentation for details.}
+#' }
 #
-Lrnr_svm <- R6Class(classname = "Lrnr_svm", inherit = Lrnr_base,
-                    portable = TRUE, class = TRUE,
+Lrnr_svm <- R6Class(
+  classname = "Lrnr_svm", inherit = Lrnr_base,
+  portable = TRUE, class = TRUE,
   public = list(
-     initialize = function(scale = TRUE,
-                           type = NULL,
-                           kernel = "radial",
-                           fitted = TRUE,
-                           probability = FALSE,
-                           ...) {
+    initialize = function(scale = TRUE,
+                              type = NULL,
+                              kernel = "radial",
+                              fitted = TRUE,
+                              probability = FALSE,
+                              ...) {
       # this captures all parameters to initialize and saves them as self$params
       params <- args_to_list()
       super$initialize(params = params, ...)
@@ -83,7 +85,6 @@ Lrnr_svm <- R6Class(classname = "Lrnr_svm", inherit = Lrnr_base,
         }
       }
 
-      browser()
       # add task data to the argument list
       # what these arguments are called depends on the learner you are wrapping
       args$x <- as.matrix(task$X)
@@ -99,7 +100,9 @@ Lrnr_svm <- R6Class(classname = "Lrnr_svm", inherit = Lrnr_base,
 
       # call a function that fits your algorithm
       # with the argument list you constructed
-      fit_object <- call_with_args(e1071::svm, args)
+      fit_object <- call_with_args(e1071::svm, args,
+        other_valid = list("type", "y")
+      )
       return(fit_object)
     },
 
@@ -108,10 +111,11 @@ Lrnr_svm <- R6Class(classname = "Lrnr_svm", inherit = Lrnr_base,
       # get predictions
       predictions <- stats::predict(
         private$.fit_object,
-        newdata = task$X)
+        newdata = task$X
+      )
+      predictions <- as.numeric(predictions)
       return(predictions)
     },
-    .required_packages = c('e1071')
+    .required_packages = c("e1071")
   ),
 )
-

@@ -64,8 +64,10 @@ test_that("Lrnr_svm predictions match those from svm", {
   prd_lrnr_svm <- fit_lrnr_svm$predict()
 
   ## fit svm using the data from the task
-  fit_svm <- svm(x = task$X, y = task$Y, scale = TRUE, kernel = "radial",
-                 fitted = FALSE, probability = TRUE)
+  fit_svm <- svm(
+    x = task$X, y = task$Y, scale = TRUE, kernel = "radial",
+    fitted = TRUE, probability = FALSE
+  )
   prd_svm <- as.numeric(predict(fit_svm, newdata = task$X))
 
   ## test equivalence of prediction from Lrnr_svm and svm::svm
