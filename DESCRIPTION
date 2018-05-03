@@ -60,7 +60,8 @@ Suggests:
     reticulate,
     hal9001,
     rJava,
-    bartMachine
+    bartMachine,
+    rpart
 Remotes:
     github::osofr/condensier,
     github::tlverse/delayed,

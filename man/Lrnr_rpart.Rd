@@ -3,17 +3,36 @@
 \docType{class}
 \name{Lrnr_rpart}
 \alias{Lrnr_rpart}
-\title{Rpart for \code{sl3} Learner.}
+\title{Learner for Recursive Partitioning and Regression Trees.}
 \format{\code{\link{R6Class}} object.}
 \usage{
 Lrnr_rpart
 }
 \value{
-Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
+Learner object with methods for training and prediction. See
+\code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
-This learner uses \code{\link[rpart]{rpart}} from \code{rpart} to fit my favorite machine learning algorithm.
+This learner uses \code{\link[rpart]{rpart}} from \code{rpart} to fit
+recursive partioning and regression trees.
 }
+\section{Parameters}{
+
+\describe{
+\item{\code{model}}{If logical: keep a copy of the model frame in the
+result?
+}
+\item{\code{x}}{Whether to keep a copy of the x matrix in the result.
+}
+\item{\code{y}}{Whether to keep a copy of the dependent variable in the
+result.
+}
+\item{\code{...}}{ Other parameters to be passed directly to
+\code{\link[rpart]{rpart}}. See its documentation for details.
+}
+}
+}
+
 \section{Methods}{
 
 \describe{
