@@ -33,19 +33,6 @@ tree.}
 }
 }
 
-\section{Common Parameters}{
-
-
-Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by \code{Lrnr_base}, and shared
-by all learners.
-
-\describe{
-\item{\code{covariates}}{A character vector of covariates. The learner will use this to subset the covariates for any specified task}
-\item{\code{outcome_type}}{A \code{\link{variable_type}} object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified}
-\item{\code{...}}{All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating}
-}
-}
-
 \seealso{
 Other Learners: \code{\link{Custom_chain}},
   \code{\link{Lrnr_HarmonicReg}}, \code{\link{Lrnr_arima}},
@@ -62,8 +49,9 @@ Other Learners: \code{\link{Custom_chain}},
   \code{\link{Lrnr_nnls}}, \code{\link{Lrnr_optim}},
   \code{\link{Lrnr_pca}},
   \code{\link{Lrnr_pkg_SuperLearner}},
-  \code{\link{Lrnr_rpart}}, \code{\link{Lrnr_rugarch}},
-  \code{\link{Lrnr_sl}}, \code{\link{Lrnr_solnp_density}},
+  \code{\link{Lrnr_ranger}}, \code{\link{Lrnr_rpart}},
+  \code{\link{Lrnr_rugarch}}, \code{\link{Lrnr_sl}},
+  \code{\link{Lrnr_solnp_density}},
   \code{\link{Lrnr_solnp}},
   \code{\link{Lrnr_subset_covariates}},
   \code{\link{Lrnr_tsDyn}}, \code{\link{Lrnr_xgboost}},

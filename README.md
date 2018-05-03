@@ -200,7 +200,7 @@ See file `LICENSE` for details.
 <div id="ref-breiman1996stacked">
 
 Breiman, Leo. 1996. “Stacked Regressions.” *Machine Learning* 24 (1).
-Springer:49–64.
+Springer: 49–64.
 
 </div>
 

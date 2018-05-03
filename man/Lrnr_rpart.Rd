@@ -33,20 +33,6 @@ result.
 }
 }
 
-\section{Methods}{
-
-\describe{
-\item{\code{special_function(arg_1)}}{
-My learner is special so it has a special function.
-
-\itemize{
-\item{\code{arg_1}: A very special argument.
-}
-}
-}
-}
-}
-
 \seealso{
 Other Learners: \code{\link{Custom_chain}},
   \code{\link{Lrnr_HarmonicReg}}, \code{\link{Lrnr_arima}},
@@ -64,8 +50,8 @@ Other Learners: \code{\link{Custom_chain}},
   \code{\link{Lrnr_pca}},
   \code{\link{Lrnr_pkg_SuperLearner}},
   \code{\link{Lrnr_randomForest}},
-  \code{\link{Lrnr_rugarch}}, \code{\link{Lrnr_sl}},
-  \code{\link{Lrnr_solnp_density}},
+  \code{\link{Lrnr_ranger}}, \code{\link{Lrnr_rugarch}},
+  \code{\link{Lrnr_sl}}, \code{\link{Lrnr_solnp_density}},
   \code{\link{Lrnr_solnp}},
   \code{\link{Lrnr_subset_covariates}},
   \code{\link{Lrnr_tsDyn}}, \code{\link{Lrnr_xgboost}},

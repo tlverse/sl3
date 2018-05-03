@@ -32,23 +32,10 @@
 #'     \code{\link[rpart]{rpart}}. See its documentation for details.
 #'   }
 #' }
-#'
-#' @section Methods:
-#' \describe{
-#' \item{\code{special_function(arg_1)}}{
-#'   My learner is special so it has a special function.
-#'
-#'   \itemize{
-#'     \item{\code{arg_1}: A very special argument.
-#'    }
-#'   }
-#'   }
-#' }
+#
 Lrnr_rpart <- R6Class(
   classname = "Lrnr_rpart", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
-  # Above, you should change Lrnr_template (in both the object name and the classname argument)
-  # to a name that indicates what your learner does
   public = list(
     # you can define default parameter values here
     # if possible, your learner should define defaults for all required parameters
