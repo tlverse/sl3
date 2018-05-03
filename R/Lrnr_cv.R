@@ -156,7 +156,7 @@ Lrnr_cv <- R6Class(
       # }
       # doing train and predict like this is stupid, but that's the paradigm
       # (for now!)
-      folds <- private$.fit_object$folds
+      folds <- task$folds
       fold_fits <- private$.fit_object$fold_fits
 
       cv_predict <- function(fold, fold_fits, task) {

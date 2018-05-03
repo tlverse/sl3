@@ -55,7 +55,7 @@ Suggests:
     reticulate,
     MASS,
     arm,
-    hal,
+    hal
     rJava,
     bartMachine,
     hal9001,

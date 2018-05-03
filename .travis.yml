@@ -15,11 +15,11 @@ before_install: Rscript -e 'update.packages(ask = FALSE)'
   - sudo pip install keras
   
 r_packages:
-  - devtools
   - covr
   - drat
   
 r_github_packages:
+  - r-lib/devtools
   - jimhester/covr
   
 after_success:

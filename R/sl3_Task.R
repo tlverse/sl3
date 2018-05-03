@@ -28,9 +28,9 @@ sl3_Task <- R6Class(
   class = TRUE,
   public = list(
     initialize = function(data, covariates, outcome = NULL, outcome_type = NULL,
-                          outcome_levels = NULL, id = NULL, weights = NULL,
-                          offset = NULL, nodes = NULL, column_names = NULL,
-                          row_index = NULL, folds = NULL) {
+                              outcome_levels = NULL, id = NULL, weights = NULL,
+                              offset = NULL, nodes = NULL, column_names = NULL,
+                              row_index = NULL, folds = NULL) {
 
       # process data
       assert_that(is.data.frame(data) | is.data.table(data))
@@ -175,8 +175,8 @@ sl3_Task <- R6Class(
     },
 
     next_in_chain = function(covariates = NULL, outcome = NULL, id = NULL,
-                             weights = NULL, offset = NULL, column_names = NULL,
-                             new_nodes = NULL, ...) {
+                                 weights = NULL, offset = NULL, column_names = NULL,
+                                 new_nodes = NULL, ...) {
       if (is.null(new_nodes)) {
         new_nodes <- self$nodes
 
@@ -229,7 +229,8 @@ sl3_Task <- R6Class(
         new_outcome_type <- NULL
       }
       new_task$initialize(
-        private$.data, nodes = new_nodes,
+        private$.data,
+        nodes = new_nodes,
         folds = private$.folds, column_names = column_names,
         row_index = private$.row_index,
         outcome_type = new_outcome_type, ...
@@ -245,7 +246,8 @@ sl3_Task <- R6Class(
       }
       new_task <- self$clone()
       new_task$initialize(
-        private$.data, nodes = private$.nodes,
+        private$.data,
+        nodes = private$.nodes,
         folds = self$folds,
         column_names = private$.column_names,
         row_index = row_index,
@@ -266,12 +268,12 @@ sl3_Task <- R6Class(
       } else {
         subset <- private$.data[, true_columns, with = FALSE]
       }
-      
+
       if (ncol(subset) > 0) {
         data.table::setnames(subset, true_columns, columns)
       }
-      
-      if(expand_factors){
+
+      if (expand_factors) {
         subset <- dt_expand_factors(subset)
       }
       return(subset)

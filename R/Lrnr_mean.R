@@ -34,13 +34,14 @@ Lrnr_mean <- R6Class(
       params <- list(...)
       super$initialize(params = params, ...)
     },
-
+    
     print = function() {
       print(self$name)
     }
   ),
-
+  
   private = list(
+
     .properties = c("continuous", "binomial", "categorical", "weights", "offset"),
 
     .train = function(task) {
@@ -65,6 +66,7 @@ Lrnr_mean <- R6Class(
         )
         fit_object <- list(mean = pack_predictions(matrix(means, nrow = 1)))
       } else {
+
         fit_object <- list(mean = weighted.mean(y - offset, weights))
       }
 
@@ -72,8 +74,9 @@ Lrnr_mean <- R6Class(
 
       return(fit_object)
     },
-
+    
     .predict = function(task = NULL) {
+
       predictions <- rep(private$.fit_object$mean, task$nrow)
 
       if (self$fit_object$training_offset) {

@@ -138,7 +138,8 @@ Lrnr_glm_fast <- R6Class(
         coef <- self$fit_object$coef
         if (!all(is.na(coef))) {
           eta <- as.matrix(X[
-            , which(!is.na(coef)), drop = FALSE,
+            , which(!is.na(coef)),
+            drop = FALSE,
             with = FALSE
           ]) %*% coef[!is.na(coef)]
 

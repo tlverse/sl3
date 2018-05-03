@@ -277,7 +277,8 @@ Lrnr_base <- R6Class(
     .load_packages = function() {
       if (!is.null(private$.required_packages)) {
         requirePackages(
-          private$.required_packages, why = class(self)[1],
+          private$.required_packages,
+          why = class(self)[1],
           default.method = "load"
         )
       }
