@@ -1,8 +1,8 @@
-#' Ranger
+#' Ranger - A Fast Implementation of Random Forests
 #'
 #' This learner provides fitting procedures for a fast implementation of Random
 #' Forests, particularly suited for high dimensional data, using the
-#' \code{ranger} package, using \code{\link[ranger]{ranger}} function.
+#' \code{ranger} package, using the function \code{\link[ranger]{ranger}}.
 #'
 #' @docType class
 #'
@@ -21,22 +21,22 @@
 #'
 #' @section Parameters:
 #' \describe{
-#'   \item{\code{num.trees=500}}{Number of trees in forest}
-#'   \item{\code{write.forest=TRUE}}{If \code{TRUE}, forest is stored, which is
-#'     required for prediction. Set to FALSE to reduce memory usage if no
-#'     prediction intended.}
-#'   \item{\code{...}}{Other parameters passed to
-#'     \code{\link[ranger]{ranger}}.}
+#'   \item{\code{num.trees = 500}}{Number of trees to be used in growing the
+#'     forest.}
+#'   \item{\code{write.forest = TRUE}}{If \code{TRUE}, forest is stored, which
+#'     is required for prediction. Set to \code{FALSE} to reduce memory usage if
+#'     no prediction is intended.}
+#'   \item{\code{...}}{Other parameters passed to \code{\link[ranger]{ranger}}.
+#'     See its documentation for details.}
 #' }
-#'
-#' @template common_parameters
-#'
+#
 Lrnr_ranger <- R6Class(
   classname = "Lrnr_ranger", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
   public = list(
     initialize = function(num.trees = 500,
-                          write.forest = TRUE, ...) {
+                              write.forest = TRUE,
+                              ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }
@@ -47,9 +47,9 @@ Lrnr_ranger <- R6Class(
 
     .train = function(task) {
       args <- self$params
-      dat <- cbind(task$Y,task$X)
-      colnames(dat)[1] <- task$nodes$outcome
-      args$data <- dat
+      data_in <- cbind(task$Y, task$X)
+      colnames(data_in)[1] <- task$nodes$outcome
+      args$data <- data_in
       args$dependent.variable.name <- task$nodes$outcome
       fit_object <- call_with_args(ranger::ranger, args)
       return(fit_object)
@@ -57,10 +57,12 @@ Lrnr_ranger <- R6Class(
 
     .predict = function(task) {
       predictions <- stats::predict(
-        private$.fit_object, data = task$X,
+        private$.fit_object,
+        data = task$X,
         type = "response"
       )
-      preds <- predictions[1]
+      # extract numeric predictions from custom class ranger.prediction
+      preds <- predictions[[1]]
       return(preds)
     },
     .required_packages = c("ranger")

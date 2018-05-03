@@ -33,20 +33,6 @@ result.
 }
 }
 
-\section{Methods}{
-
-\describe{
-\item{\code{special_function(arg_1)}}{
-My learner is special so it has a special function.
-
-\itemize{
-\item{\code{arg_1}: A very special argument.
-}
-}
-}
-}
-}
-
 \seealso{
 Other Learners: \code{\link{Custom_chain}},
   \code{\link{Lrnr_HarmonicReg}}, \code{\link{Lrnr_arima}},

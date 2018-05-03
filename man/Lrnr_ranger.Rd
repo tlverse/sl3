@@ -3,7 +3,7 @@
 \docType{class}
 \name{Lrnr_ranger}
 \alias{Lrnr_ranger}
-\title{Ranger}
+\title{Ranger - A Fast Implementation of Random Forests}
 \format{\code{\link{R6Class}} object.}
 \usage{
 Lrnr_ranger
@@ -15,30 +15,18 @@ Learner object with methods for training and prediction. See
 \description{
 This learner provides fitting procedures for a fast implementation of Random
 Forests, particularly suited for high dimensional data, using the
-\code{ranger} package, using \code{\link[ranger]{ranger}} function.
+\code{ranger} package, using the function \code{\link[ranger]{ranger}}.
 }
 \section{Parameters}{
 
 \describe{
-\item{\code{num.trees=500}}{Number of trees in forest}
-\item{\code{write.forest=TRUE}}{If \code{TRUE}, forest is stored, which is
-required for prediction. Set to FALSE to reduce memory usage if no
-prediction intended.}
-\item{\code{...}}{Other parameters passed to
-\code{\link[ranger]{ranger}}.}
-}
-}
-
-\section{Common Parameters}{
-
-
-Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by \code{Lrnr_base}, and shared
-by all learners.
-
-\describe{
-\item{\code{covariates}}{A character vector of covariates. The learner will use this to subset the covariates for any specified task}
-\item{\code{outcome_type}}{A \code{\link{variable_type}} object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified}
-\item{\code{...}}{All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating}
+\item{\code{num.trees = 500}}{Number of trees to be used in growing the
+forest.}
+\item{\code{write.forest = TRUE}}{If \code{TRUE}, forest is stored, which
+is required for prediction. Set to \code{FALSE} to reduce memory usage if
+no prediction is intended.}
+\item{\code{...}}{Other parameters passed to \code{\link[ranger]{ranger}}.
+See its documentation for details.}
 }
 }
 
