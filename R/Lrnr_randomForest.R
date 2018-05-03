@@ -32,8 +32,6 @@
 #'   \item{\code{...}}{Other parameters passed to
 #'     \code{\link[randomForest]{randomForest}}.}
 #' }
-#'
-#' @template common_parameters
 #
 Lrnr_randomForest <- R6Class(
   classname = "Lrnr_randomForest",
