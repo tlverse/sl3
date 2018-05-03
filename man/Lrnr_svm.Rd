@@ -13,7 +13,7 @@ Learner object with methods for training and prediction. See
 \code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
-This learner uses \code{\link[svm]{svm}} from \code{e1071} to fit a support
+This learner uses \code{\link[e1071]{svm}} from \code{e1071} to fit a support
 vector machine (SVM).
 }
 \section{Parameters}{

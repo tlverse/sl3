@@ -1,6 +1,6 @@
 #' Support Vector Machines
 #'
-#' This learner uses \code{\link[svm]{svm}} from \code{e1071} to fit a support
+#' This learner uses \code{\link[e1071]{svm}} from \code{e1071} to fit a support
 #' vector machine (SVM).
 #'
 #' @docType class
