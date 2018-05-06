@@ -48,6 +48,7 @@ Suggests:
     earth,
     forecast,
     glmnet,
+    grf,
     hal9001,
     h2o,
     keras,

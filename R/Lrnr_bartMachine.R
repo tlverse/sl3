@@ -1,7 +1,7 @@
 #' BART Machine Learner
 #'
 #' This learner implements Bayesian Additive Regression Trees, using the
-#' \code{bartMachine} packahe
+#' \code{bartMachine} package.
 #'
 #' @docType class
 #'
