@@ -67,7 +67,8 @@ Suggests:
 Remotes:
     github::tlverse/delayed,
     github::osofr/condensier,
-    github::jeremyrcoyle/hal9001
+    github::jeremyrcoyle/hal9001,
+    github::vdorie/dbarts
 License: GPL-3
 URL: https://sl3.tlverse.org
 BugReports: https://github.com/tlverse/sl3/issues
