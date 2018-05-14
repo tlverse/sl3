@@ -22,6 +22,8 @@
 #' \describe{
 #'   \item{\code{interactions}}{A list of lists, with each inner list containing
 #'     the covariates to create an interaction for.}
+#'   \item{\code{warn_on_existing}: If TRUE, produce a warning if there is already 
+#'   a column with a name matching this interaction term.}
 #' }
 #
 Lrnr_define_interactions <- R6Class(
@@ -30,8 +32,8 @@ Lrnr_define_interactions <- R6Class(
   portable = TRUE,
   class = TRUE,
   public = list(
-    initialize = function(interactions, ...) {
-      params <- list(interactions = interactions, ...)
+    initialize = function(interactions, warn_on_existing = TRUE, ...) {
+      params <- args_to_list()
       super$initialize(params = params, ...)
     }
   ),
@@ -40,12 +42,7 @@ Lrnr_define_interactions <- R6Class(
     .properties = c("preprocessing"),
 
     .train = function(task) {
-      new_task <- task$add_interactions(self$params$interactions)
-      interaction_names <- setdiff(
-        new_task$nodes$covariates,
-        task$nodes$covariates
-      )
-      fit_object <- list(interaction_names = interaction_names)
+      fit_object <- list(interaction_names = self$params$interactions)
       return(fit_object)
     },
 
@@ -54,12 +51,9 @@ Lrnr_define_interactions <- R6Class(
     },
 
     .chain = function(task = NULL) {
-      if (!identical(task, private$.training_task)) {
-        new_learners <- task$add_interactions(self$params$interactions)
-      }
-      covariates_and_interactions <-
-        unique(c(task$nodes$covariates, private$.fit_object$interaction_names))
-      return(task$next_in_chain(covariates = covariates_and_interactions))
+      new_task <- task$add_interactions(self$params$interactions, self$params$warn_on_existing)
+
+      return(new_task)
     }
   )
 )

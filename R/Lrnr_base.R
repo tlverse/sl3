@@ -108,10 +108,8 @@ Lrnr_base <- R6Class(
       self$assert_trained()
       if (is.null(task)) {
         task <- private$.training_task
-      } else {
-        task <- task$next_in_chain(covariates <-
-          private$.training_task$nodes$covariates)
       }
+      
       assert_that(is(task, "sl3_Task"))
       subsetted_task <- self$subset_covariates(task)
       predictions <- private$.predict(subsetted_task)
@@ -127,10 +125,8 @@ Lrnr_base <- R6Class(
       self$assert_trained()
       if (is.null(task)) {
         task <- private$.training_task
-      } else {
-        task <- task$next_in_chain(covariates <-
-          private$.training_task$nodes$covariates)
       }
+      
       assert_that(is(task, "sl3_Task"))
       subsetted_task <- self$subset_covariates(task)
       # use custom chain function if provided
