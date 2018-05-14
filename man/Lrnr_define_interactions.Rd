@@ -20,6 +20,8 @@ This learner adds interactions to its chained task
 \describe{
 \item{\code{interactions}}{A list of lists, with each inner list containing
 the covariates to create an interaction for.}
+\item{\code{warn_on_existing}: If TRUE, produce a warning if there is already
+a column with a name matching this interaction term.}
 }
 }
 

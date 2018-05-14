@@ -25,7 +25,6 @@
 #'   \item{\code{warn_on_existing}: If TRUE, produce a warning if there is already 
 #'   a column with a name matching this interaction term.}
 #' }
-#
 Lrnr_define_interactions <- R6Class(
   classname = "Lrnr_define_interactions",
   inherit = Lrnr_base,
