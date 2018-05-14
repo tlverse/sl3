@@ -36,9 +36,7 @@ sl3_Task <- R6Class(
       assert_that(is.data.frame(data) | is.data.table(data))
       private$.data <- data
 
-      if (!inherits(data, "data.table")) {
-        setDT(private$.data)
-      }
+      setDT(private$.data)
 
       # process column_names
       if (is.null(column_names)) {
@@ -96,14 +94,12 @@ sl3_Task <- R6Class(
       invisible(self)
     },
 
-    add_interactions = function(interactions) {
+    add_interactions = function(interactions, warn_on_existing = TRUE) {
       ## ------------------------------------------------------------------------
       ## Add columns with interactions (by reference) to input design matrix
       ## (data.table). Used for training / predicting.
       ## returns the names of the added columns
       ## ------------------------------------------------------------------------
-      data.table::setDF(private$.data)
-      data.table::setDT(private$.data)
 
       prod.DT <- function(x) {
         y <- x[[1]]
@@ -124,11 +120,13 @@ sl3_Task <- R6Class(
         }
 
         if (name %in% old_names) {
-          # this column is already defined, so warn but don't recalculate
-          warning(sprintf(
-            "Interaction column %s is already defined, so skipping",
-            name
-          ))
+          if(warn_on_existing){
+            # this column is already defined, so warn but don't recalculate
+            warning(sprintf(
+              "Interaction column %s is already defined, so skipping",
+              name
+            ))
+          }
         } else if (all(interact %in% old_names)) {
           private$.data[, (name) := prod.DT(.SD), .SD = interact]
         }
@@ -143,8 +141,7 @@ sl3_Task <- R6Class(
     },
 
     add_columns = function(fit_uuid, new_data, global_cols = FALSE) {
-      data <- private$.data
-      current_cols <- names(data)
+      current_cols <- names(private$.data)
 
       if (!(is.data.frame(new_data) | is.data.table(new_data))) {
         new_data <- as.data.table(new_data)
@@ -165,9 +162,9 @@ sl3_Task <- R6Class(
       column_names[original_names] <- col_names
 
       if (is.null(private$.row_index)) {
-        set(data, j = col_names, value = new_data)
+        set(private$.data, j = col_names, value = new_data)
       } else {
-        set(data, i = private$.row_index, j = col_names, value = new_data)
+        set(private$.data, i = private$.row_index, j = col_names, value = new_data)
       }
 
       # return an updated column_names map
