@@ -51,6 +51,7 @@
 #'   \item{\code{samples_per_cluster}}{If sampling by cluster, the number of observations to be
 #'   sampled from each cluster. Must be less than the size of the smallest cluster.
 #'   If set to NULL software will set this value to the size of the smallest cluster.}
+#'   \item{\code{q}}{Vector of quantiles used to predict. Can be different than the vector of quantiles used for training.}
 #'
 #' }
 #'
@@ -66,7 +67,7 @@ Lrnr_grf <- R6Class(
                               mtry = NULL, num.trees = 2000, num.threads = NULL,
                               min.node.size = NULL, honesty = TRUE, alpha = 0.05,
                               imbalance.penalty = 0, seed = NULL, clusters = NULL,
-                              samples_per_cluster = NULL, ...) {
+                              samples_per_cluster = NULL, q=0.5, ...) {
       super$initialize(params = args_to_list(), ...)
     }
   ),
@@ -97,9 +98,12 @@ Lrnr_grf <- R6Class(
 
     .predict = function(task) {
       # outcome_type <- private$.training_outcome_type
+      q <- private$.params$q
+
       predictions <- stats::predict(
         private$.fit_object,
-        new_data = data.frame(task$X)
+        new_data = data.frame(task$X),
+        quantiles = q
       )
 
       return(predictions)

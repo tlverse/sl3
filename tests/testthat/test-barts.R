@@ -71,7 +71,7 @@ data <- cbind.data.frame(y, x)
 task <- sl3_Task$new(data, covariates = covars, outcome = outcome)
 
 test_that("Lrnr_dbarts works", {
-  dbart_learner <- Lrnr_dbarts$new()
+  dbart_learner <- Lrnr_dbarts$new(ndpost = 1)
   dbart_fit <- dbart_learner$train(task)
   mean_pred_sl3 <- mean(dbart_fit$predict(task))
 

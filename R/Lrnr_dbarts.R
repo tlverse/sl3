@@ -115,10 +115,10 @@ Lrnr_dbarts <- R6Class(
     },
 
     .predict = function(task) {
-      predictions <- stats::predict(
+      predictions <- t(stats::predict(
         private$.fit_object,
         data.frame(task$X)
-      )
+      ))
 
       return(predictions)
     },

@@ -120,7 +120,7 @@ sl3_Task <- R6Class(
         }
 
         if (name %in% old_names) {
-          if(warn_on_existing){
+          if (warn_on_existing) {
             # this column is already defined, so warn but don't recalculate
             warning(sprintf(
               "Interaction column %s is already defined, so skipping",
