@@ -30,11 +30,13 @@
 ##' @section Methods:
 ##'
 ##' \describe{
-##' \item{\code{add_interactions(interactions)}}{
+##' \item{\code{add_interactions(interactions, warn_on_existing = TRUE)}}{
 ##'   Adds interaction terms to task, returns a task with interaction terms added to covariate list.
 ##'
 ##'   \itemize{
 ##'     \item{\code{interactions}: A list of lists, where each sublist describes one interaction term, listing the variables that comprise it
+##'     }
+##'     \item{\code{warn_on_existing}: If TRUE, produce a warning if there is already a column with a name matching this interaction term
 ##'     }
 ##'   }
 ##'   }

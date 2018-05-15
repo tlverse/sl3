@@ -19,7 +19,9 @@ This learner adds interactions to its chained task
 
 \describe{
 \item{\code{interactions}}{A list of lists, with each inner list containing
-the covariates to create an interaction for.}
+the covariates from which to create interaction terms.}
+\item{\code{warn_on_existing}}{If \code{TRUE}, produce a warning if there
+is already a column with a name matching this given interaction term.}
 }
 }
 
@@ -28,8 +30,8 @@ Other Learners: \code{\link{Custom_chain}},
   \code{\link{Lrnr_HarmonicReg}}, \code{\link{Lrnr_arima}},
   \code{\link{Lrnr_bartMachine}}, \code{\link{Lrnr_base}},
   \code{\link{Lrnr_bilstm}}, \code{\link{Lrnr_condensier}},
-  \code{\link{Lrnr_cv}}, \code{\link{Lrnr_dBart}},
-  \code{\link{Lrnr_dbarts}}, \code{\link{Lrnr_expSmooth}},
+  \code{\link{Lrnr_cv}}, \code{\link{Lrnr_dbarts}},
+  \code{\link{Lrnr_expSmooth}},
   \code{\link{Lrnr_glm_fast}}, \code{\link{Lrnr_glmnet}},
   \code{\link{Lrnr_glm}}, \code{\link{Lrnr_grf}},
   \code{\link{Lrnr_h2o_grid}}, \code{\link{Lrnr_hal9001}},
@@ -49,4 +51,5 @@ Other Learners: \code{\link{Custom_chain}},
   \code{\link{Stack}}, \code{\link{define_h2o_X}},
   \code{\link{undocumented_learner}}
 }
+\concept{Learners}
 \keyword{data}
