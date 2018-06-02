@@ -64,6 +64,7 @@ Suggests:
     SuperLearner,
     tsDyn,
     xgboost,
+    dbarts,
     gam (>= 1.15.0)
 Remotes:
     github::tlverse/delayed,

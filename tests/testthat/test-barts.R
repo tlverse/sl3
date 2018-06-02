@@ -1,32 +1,28 @@
 context("test barts: bartMachine and dbart")
 
+library(dbarts)
+
 if (FALSE) {
   setwd("..")
   getwd()
   library("devtools")
   document()
-  load_all("./") # load all R files in /R and datasets in /data. Ignores NAMESPACE:
-  # devtools::check() # runs full check
+  # load all R files in /R and datasets in /data. Ignores NAMESPACE:
+  load_all("./")
   setwd("..")
-  install("sl3", build_vignettes = FALSE, dependencies = FALSE) # INSTALL W/ devtools:
+  install("sl3", build_vignettes = FALSE,
+          dependencies = FALSE) # INSTALL W/ devtools:
 }
 
-library(testthat)
-library(sl3)
-
-generateFriedmanData <- function() {
+set.seed(99)
+generateFriedmanData <- function(n = 100, sigma = 1.0) {
   f <- function(x) {
-    10 * sin(pi * x[, 1] * x[, 2]) + 20 * (x[, 3] - 0.5)^2 + 10 * x[, 4] + 5 * x[, 5]
+    10 * sin(pi * x[, 1] * x[, 2]) + 20 * (x[, 3] - 0.5)^2 +
+      10 * x[, 4] + 5 * x[, 5]
   }
-
-  set.seed(99)
-  sigma <- 1.0
-  n <- 100
-
   x <- matrix(runif(n * 10), n, 10)
   y <- rnorm(n, f(x), sigma)
-
-  list(x = x, y = y)
+  return(list(x = x, y = y))
 }
 
 ## generate Friedman data
@@ -57,7 +53,6 @@ generateFriedmanData <- function() {
 # })
 
 set.seed(11)
-
 testData <- generateFriedmanData()
 x <- data.frame(testData$x)
 names(x) <- paste("Covs", seq_along(1:ncol(x)), sep = "_")
@@ -67,13 +62,12 @@ covars <- names(x)
 outcome <- names(y)
 
 data <- cbind.data.frame(y, x)
-
 task <- sl3_Task$new(data, covariates = covars, outcome = outcome)
 
 test_that("Lrnr_dbarts works", {
   dbart_learner <- Lrnr_dbarts$new(ndpost = 1)
   dbart_fit <- dbart_learner$train(task)
   mean_pred_sl3 <- mean(dbart_fit$predict(task))
-
   expect_true(mean_pred_sl3 < 20)
 })
+
