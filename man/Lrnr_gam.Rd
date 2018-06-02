@@ -19,6 +19,8 @@ efficiently fit generalized additive models.
 \section{Parameters}{
 
 \describe{
+\item{\code{deg_plynm}}{...}
+\item{\code{lim_cntns}}{...}
 \item{\code{start}}{Starting values for the parameters in the additive
 predictor.}
 \item{\code{etastart}}{Starting values for the additive predictor.}

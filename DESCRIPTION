@@ -63,7 +63,8 @@ Suggests:
     speedglm,
     SuperLearner,
     tsDyn,
-    xgboost
+    xgboost,
+    gam (>= 1.15.0)
 Remotes:
     github::tlverse/delayed,
     github::osofr/condensier,

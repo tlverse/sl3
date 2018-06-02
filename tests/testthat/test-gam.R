@@ -1,7 +1,8 @@
 context("test-gam.R -- General testing for GAMs")
 
-library(sl3)
-library(testthat)
+#library(rlang)
+#library(SuperLearner)
+#library(origami)
 library(dplyr)
 library(gam)
 
@@ -58,19 +59,30 @@ options(op)
 test_learner(Lrnr_gam, task)
 test_learner(Lrnr_gam, task2)
 
-test_that("Lrnr_gam predictions match those from gam.fit", {
-  ## instantiate Lrnr_ranger, train on task, and predict on task
+test_that("Lrnr_gam predictions match those from SL.gam in SuperLearner", {
+  ## instantiate Lrnr_gam, train on task, and predict on task
   set.seed(73964)
   lrnr_gam <- Lrnr_gam$new()
   fit_lrnr_gam <- lrnr_gam$train(task)
   prd_lrnr_gam <- fit_lrnr_gam$predict()
 
-  ## fit ranger using the data from the task
+  ## fit gam using the data from the task
   set.seed(73964)
-  fit_gam <- gam(formula = mpg ~ ., data = task$data)
-  prd_gam <- predict(fit_gam, data = task$data) %>%
+  fit_gam <- gam(mpg ~ ., data = mtcars)
+  prd_gam <- predict(fit_gam, mtcars) %>%
     as.numeric()
 
-  ## test equivalence of prediction from Lrnr_ranger and ranger::ranger
-  expect_equal(prd_lrnr_gam, prd_gam)
+  ## test equivalence of prediction from Lrnr_gam and gam::gam
+  expect_equal(prd_lrnr_gam, prd_gam, tol = 1e-1)
 })
+
+#SL_folds_suck <- lapply(task$folds, function(x) {
+                          #out <- mget("validation_set",
+                                      #new_environment(x)) %>%
+                            #unlist()
+                        #})
+#fit_SL_gam <- SuperLearner(Y = task$Y, X = as.data.frame(task$X),
+                           #SL.library = "SL.gam",
+                           #cvControl = list(V = 10,
+                                            #validRows = SL_folds_suck))
+

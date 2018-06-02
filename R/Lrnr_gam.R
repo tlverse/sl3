@@ -20,6 +20,8 @@
 #'
 #' @section Parameters:
 #' \describe{
+#'   \item{\code{deg_plynm}}{...}
+#'   \item{\code{lim_cntns}}{...}
 #'   \item{\code{start}}{Starting values for the parameters in the additive
 #'     predictor.}
 #'   \item{\code{etastart}}{Starting values for the additive predictor.}
@@ -32,9 +34,8 @@ Lrnr_gam <- R6Class(classname = "Lrnr_gam",
                     portable = TRUE,
                     class = TRUE,
   public = list(
-    initialize = function(start = NULL,
-                          etastart = NULL,
-                          mustart = NULL,
+    initialize = function(deg_plynm = 2,
+                          lim_cntns = 4,
                           ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
@@ -55,7 +56,31 @@ Lrnr_gam <- R6Class(classname = "Lrnr_gam",
 
       # add task data to the argument list
       # what these arguments are called depends on the learner you are wrapping
-      args$formula <- as.formula("task$Y ~ as.matrix(task$X)")
+      lim_cntns <- args$lim_cntns
+      deg_plynm <- args$deg_plynm
+      Y_name <- task$nodes$outcome
+      X_cntns <- apply(task$X, 2, function(x) (length(unique(x)) > lim_cntns))
+      gam_model_form_core <- paste(Y_name, "~",
+                                   paste(paste("s(",
+                                               colnames(as.matrix(task$X)[,
+                                                        X_cntns, drop = FALSE]),
+                                               ",", deg_plynm, ")", sep = ""),
+                                         collapse = "+"))
+      if (sum(!X_cntns) > 0) {
+        gam_model <- as.formula(paste(gam_model_form_core, "+",
+                                      paste(colnames(as.matrix(task$X)[,
+                                                     !X_cntns, drop = FALSE]),
+                                            collapse = "+")))
+      } else {
+        gam_model <- as.formula(gam_model_form_core)
+      }
+      if (sum(!X_cntns) == length(X_cntns)) {
+        gam_model <- as.formula(paste(Y_name, "~", paste(colnames(task$X),
+                                                    collapse = "+"), sep = ""))
+      }
+      # above adapted from SL.gam in SuperLearner -- could use some revision
+      args$formula <- gam_model
+      args$data <- task$data
 
       # Sets family of distributon and appropriate linkage function
       # based on outcome_type if not specified by user
@@ -71,7 +96,8 @@ Lrnr_gam <- R6Class(classname = "Lrnr_gam",
         args$offset <- task$offset
       }
 
-      args$ctrl <- gam::gam.control(trace = FALSE)
+      # extra arguments to control how the GAM is fit
+      args$control <- gam::gam.control(maxit = 50, bf.maxit = 50)
 
       # perform model fitting with gam::gam.fit
       SuppressGivenWarnings({
@@ -82,7 +108,6 @@ Lrnr_gam <- R6Class(classname = "Lrnr_gam",
       # returned from the call to learner$predict
       # NOTE: Lrnr_glm sets the following to NULL -- doing the same for Lrnr_gam
       fit_object$additive.predictors <- NULL
-      fit_object$weights <- NULL
       fit_object$prior.weights <- NULL
       fit_object$y <- NULL
       fit_object$residuals <- NULL
@@ -104,3 +129,4 @@ Lrnr_gam <- R6Class(classname = "Lrnr_gam",
     .required_packages = c("gam")
   )
 )
+
