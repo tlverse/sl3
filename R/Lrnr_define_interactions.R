@@ -50,8 +50,10 @@ Lrnr_define_interactions <- R6Class(
     },
 
     .chain = function(task = NULL) {
-      new_task <- task$add_interactions(self$params$interactions,
-                                        self$params$warn_on_existing)
+      new_task <- task$add_interactions(
+        self$params$interactions,
+        self$params$warn_on_existing
+      )
 
       return(new_task)
     }

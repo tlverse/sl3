@@ -29,14 +29,15 @@
 #'   \item{\code{...}}{Extra parameters passed to \code{\link[gam]{gam.fit}}.}
 #' }
 #
-Lrnr_gam <- R6Class(classname = "Lrnr_gam",
-                    inherit = Lrnr_base,
-                    portable = TRUE,
-                    class = TRUE,
+Lrnr_gam <- R6Class(
+  classname = "Lrnr_gam",
+  inherit = Lrnr_base,
+  portable = TRUE,
+  class = TRUE,
   public = list(
     initialize = function(deg_plynm = 2,
-                          lim_cntns = 4,
-                          ...) {
+                              lim_cntns = 4,
+                              ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }
@@ -60,23 +61,36 @@ Lrnr_gam <- R6Class(classname = "Lrnr_gam",
       deg_plynm <- args$deg_plynm
       Y_name <- task$nodes$outcome
       X_cntns <- apply(task$X, 2, function(x) (length(unique(x)) > lim_cntns))
-      gam_model_form_core <- paste(Y_name, "~",
-                                   paste(paste("s(",
-                                               colnames(as.matrix(task$X)[,
-                                                        X_cntns, drop = FALSE]),
-                                               ",", deg_plynm, ")", sep = ""),
-                                         collapse = "+"))
+      gam_model_base <- paste(
+        Y_name, "~",
+        paste(paste("s(",
+          colnames(as.matrix(task$X)[,
+            X_cntns,
+            drop = FALSE
+          ]),
+          ",", deg_plynm, ")",
+          sep = ""
+        ),
+        collapse = "+"
+        )
+      )
       if (sum(!X_cntns) > 0) {
-        gam_model <- as.formula(paste(gam_model_form_core, "+",
-                                      paste(colnames(as.matrix(task$X)[,
-                                                     !X_cntns, drop = FALSE]),
-                                            collapse = "+")))
+        gam_model <- as.formula(paste(
+          gam_model_base, "+",
+          paste(colnames(as.matrix(task$X)[,
+            !X_cntns,
+            drop = FALSE
+          ]),
+          collapse = "+"
+          )
+        ))
       } else {
-        gam_model <- as.formula(gam_model_form_core)
+        gam_model <- as.formula(gam_model_base)
       }
       if (sum(!X_cntns) == length(X_cntns)) {
         gam_model <- as.formula(paste(Y_name, "~", paste(colnames(task$X),
-                                                    collapse = "+"), sep = ""))
+          collapse = "+"
+        ), sep = ""))
       }
       # above adapted from SL.gam in SuperLearner -- could use some revision
       args$formula <- gam_model
@@ -129,4 +143,3 @@ Lrnr_gam <- R6Class(classname = "Lrnr_gam",
     .required_packages = c("gam")
   )
 )
-
