@@ -45,4 +45,5 @@ Other Learners: \code{\link{Custom_chain}},
   \code{\link{Lrnr_xgboost}}, \code{\link{Pipeline}},
   \code{\link{Stack}}, \code{\link{define_h2o_X}}
 }
+\concept{Learners}
 \keyword{data}
