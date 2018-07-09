@@ -147,7 +147,6 @@ sl3_Task <- R6Class(
         new_data <- as.data.table(new_data)
       }
 
-      setDT(new_data)
       col_names <- names(new_data)
       original_names <- copy(col_names)
 
