@@ -10,8 +10,10 @@ if (FALSE) {
   # load all R files in /R and datasets in /data. Ignores NAMESPACE:
   load_all("./")
   setwd("..")
-  install("sl3", build_vignettes = FALSE,
-          dependencies = FALSE) # INSTALL W/ devtools:
+  install("sl3",
+    build_vignettes = FALSE,
+    dependencies = FALSE
+  ) # INSTALL W/ devtools:
 }
 
 set.seed(99)
@@ -70,4 +72,3 @@ test_that("Lrnr_dbarts works", {
   mean_pred_sl3 <- mean(dbart_fit$predict(task))
   expect_true(mean_pred_sl3 < 20)
 })
-

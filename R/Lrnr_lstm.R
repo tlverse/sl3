@@ -31,16 +31,16 @@
 Lrnr_lstm <- R6Class(
   classname = "Lrnr_lstm", inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(units=4,
-                              loss="mean_squared_error",
-                              optimizer="adam",
+    initialize = function(units = 4,
+                              loss = "mean_squared_error",
+                              optimizer = "adam",
                               batch_size = 1,
                               epochs = 500,
-                              window=5,
-                              n.ahead=1,
-                              activation="linear",
-                              dense=1,
-                              dropout=0,
+                              window = 5,
+                              n.ahead = 1,
+                              activation = "linear",
+                              dense = 1,
+                              dropout = 0,
                               ...) {
       params <- list(
         units = units, loss = loss, optimizer = optimizer,

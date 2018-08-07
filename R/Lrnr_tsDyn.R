@@ -82,7 +82,7 @@ Lrnr_tsDyn <- R6Class(
   portable = TRUE, class = TRUE,
   public = list(
     initialize = function(learner, m = 1, size = 1, lag = 1, d = 1,
-                              include = "const", type= "level", n.ahead = NULL,
+                              include = "const", type = "level", n.ahead = NULL,
                               mL = m, mH = m, mM = NULL, thDelay = 0,
                               common = "none", ML = seq_len(mL), MM = NULL,
                               MH = seq_len(mH), nthresh = 1, trim = 0.15,

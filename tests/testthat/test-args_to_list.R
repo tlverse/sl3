@@ -1,6 +1,6 @@
 context("test-args_to_list.R -- args_to_list")
 
-my_function <- function(arg1="default_1", arg2="default_2", ...) {
+my_function <- function(arg1 = "default_1", arg2 = "default_2", ...) {
   return(args_to_list())
 }
 
@@ -35,7 +35,7 @@ test_that("arguments are evaluated in the correct (calling) environment", {
 })
 
 test_that("argument defaults can depend on previous arguments", {
-  my_function_defaults <- function(arg1=1, arg2=arg1) {
+  my_function_defaults <- function(arg1 = 1, arg2 = arg1) {
     return(args_to_list())
   }
 

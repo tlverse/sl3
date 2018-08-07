@@ -19,10 +19,10 @@ sl1 <- make_learner(Lrnr_sl, learners, glm_learner)
 
 sl_fit <- sl1$train(task)
 
-fold1_predict <- sl_fit$predict_fold(task,1)
-validation_predict <- sl_fit$predict_fold(task,0)
-expect_false(all(fold1_predict==validation_predict))
-expect_true(any(fold1_predict==validation_predict))
+fold1_predict <- sl_fit$predict_fold(task, 1)
+validation_predict <- sl_fit$predict_fold(task, 0)
+expect_false(all(fold1_predict == validation_predict))
+expect_true(any(fold1_predict == validation_predict))
 
 glm_fit <- glm_learner$train(task)
-expect_warning(glm_fold1_predict <- glm_fit$predict_fold(task,1))
+expect_warning(glm_fold1_predict <- glm_fit$predict_fold(task, 1))
