@@ -166,6 +166,10 @@ Lrnr_base <- R6Class(
 
     custom_chain = function(new_chain_fun = NULL) {
       private$.custom_chain <- new_chain_fun
+    },
+    predict_fold = function(task, fold_number){
+      warning(self$name, " is not a cv-aware learner, so self$predict_fold reverts to self$predict")
+      self$predict(task)
     }
   ),
 
