@@ -133,11 +133,9 @@ Lrnr_gam <- R6Class(
 
     # .predict takes a task and returns predictions from that task
     .predict = function(task = NULL) {
-      self$training_task
-      self$training_outcome_type
-      self$fit_object
-
-      predictions <- predict(self$fit_object, task$X)
+      training_covs <- self$training_task$nodes$covariates
+      newdata <- task$X[,training_covs, with=FALSE]
+      predictions <- predict(self$fit_object, newdata)
       return(as.numeric(predictions))
     },
     .required_packages = c("gam")
