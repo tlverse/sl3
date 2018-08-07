@@ -134,6 +134,10 @@ Lrnr_sl <- R6Class(
         risk_dt[, coefficients := c(coefs, NA)]
       }
       return(risk_dt)
+    },
+    predict_fold = function(task, fold_number=0){
+      meta_task <- self$fit_object$cv_fit$chain_fold(task,fold_number)
+      meta_predictions <- self$fit_object$cv_meta_fit$predict(meta_task)
     }
   ),
 
@@ -149,7 +153,7 @@ Lrnr_sl <- R6Class(
   ),
 
   private = list(
-    .properties = c("wrapper"),
+    .properties = c("wrapper", "cv"),
 
     .train_sublearners = function(task) {
       # prefer folds from params, but default to folds from task

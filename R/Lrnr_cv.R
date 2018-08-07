@@ -62,6 +62,24 @@ Lrnr_cv <- R6Class(
       print("Lrnr_cv")
       print(self$params$learner)
       # todo: check if fit
+    },
+    predict_fold = function(task, fold_number=0){
+      if(fold_number!=0){
+        fold_fit <- self$fit_object$fold_fits[[fold_number]]
+        return(fold_fit$predict(task))
+      } else{
+        return(self$predict(task))
+      }
+    },
+    chain_fold = function(task, fold_number = 0){
+      predictions <- self$predict_fold(task, fold_number)
+      # Add predictions as new columns
+      new_col_names <- task$add_columns(self$fit_uuid, predictions)
+      # new_covariates = union(names(predictions),task$nodes$covariates)
+      return(task$next_in_chain(
+        covariates = names(predictions),
+        column_names = new_col_names
+      ))
     }
   ),
 
@@ -72,7 +90,7 @@ Lrnr_cv <- R6Class(
   ),
 
   private = list(
-    .properties = c("wrapper"),
+    .properties = c("wrapper", "cv"),
 
     .train_sublearners = function(task) {
       # prefer folds from params, but default to folds from task
@@ -156,7 +174,7 @@ Lrnr_cv <- R6Class(
       # }
       # doing train and predict like this is stupid, but that's the paradigm
       # (for now!)
-      folds <- private$.fit_object$folds
+      folds <- task$folds
       fold_fits <- private$.fit_object$fold_fits
 
       cv_predict <- function(fold, fold_fits, task) {
