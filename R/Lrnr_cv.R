@@ -63,15 +63,15 @@ Lrnr_cv <- R6Class(
       print(self$params$learner)
       # todo: check if fit
     },
-    predict_fold = function(task, fold_number=0){
-      if(fold_number!=0){
+    predict_fold = function(task, fold_number = 0) {
+      if (fold_number != 0) {
         fold_fit <- self$fit_object$fold_fits[[fold_number]]
         return(fold_fit$predict(task))
-      } else{
+      } else {
         return(self$predict(task))
       }
     },
-    chain_fold = function(task, fold_number = 0){
+    chain_fold = function(task, fold_number = 0) {
       predictions <- self$predict_fold(task, fold_number)
       # Add predictions as new columns
       new_col_names <- task$add_columns(self$fit_uuid, predictions)

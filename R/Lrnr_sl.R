@@ -135,8 +135,8 @@ Lrnr_sl <- R6Class(
       }
       return(risk_dt)
     },
-    predict_fold = function(task, fold_number=0){
-      meta_task <- self$fit_object$cv_fit$chain_fold(task,fold_number)
+    predict_fold = function(task, fold_number = 0) {
+      meta_task <- self$fit_object$cv_fit$chain_fold(task, fold_number)
       meta_predictions <- self$fit_object$cv_meta_fit$predict(meta_task)
     }
   ),

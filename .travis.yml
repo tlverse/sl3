@@ -7,12 +7,12 @@ env:
   global:
   - RGL_USE_NULL=TRUE
   - PKG_CFLAGS="-O3 -Wall -pedantic"
-  - secure: IH0Tiyhb9aj5Rd/o44LiNf7L+mDTLhLHIVfv2iR8V7WKp5uT6QAvUzNvKLDhMwRfsNd9Wa9C67oXA6ROUoBkeyrETUT79BgZ+DG77EJ3i3XE153IHpGEFxW5gnEpFz4Sn6bS6qncfaKB2ocnJwByEfWCk2uMt5onBn7q5WAheuX0eeg6X3DJmJa+nTCAIQWRv/F0PLup5z0BTobAF2Qddp3KWug9WuWnyUPXJDLWww4IpU9V2P7DL9vsgwo/WqA59AbdPRqZbTCQh8kuJq2ETnQwfqwL6kofQnGeB/KNrIVLfvGucRQpZvF/7a1QDZvXd5RvQjBLS+8eoqb25bCSHtUr1UQI4Dpyf15LJThXksgPmm8pNdO7RYtjBENM0sD4eCyTwW/MXibGKCexgFlI0T4jwnyMpNOyZlefUolIjjjZh0e4wOpSY6kXSq9bz8EyloA0qcyfbJ5UKhwm9RVsXZCIbvSRtPyMoo8g8526Pbzs4eLND79mdQFy/2EhshCLnz/iH9QrNeNkWGbMHHUrkxChZWbP2LPt68PbYP3qPf3qbRmzamAjqO/hN4/xzls7/V23dW8aocHDSYi29R3UfKV69jgVYI3YXv7pUlxrqPNScpTZOxjAomZntWWGQVG6vhOyKuRc0z93X+zqaWdTUtVlcZKaEI+OPQeZWEFU9gY=
 
 language: r
 sudo: required
 cache: packages
 
+cran: "http://cran.rstudio.com"
 warnings_are_errors: true
 r_build_args: '--no-manual'
 r_check_args: '--no-build-vignettes --no-manual'
@@ -22,29 +22,53 @@ r:
   - devel
 
 before_install:
-  - Rscript -e 'update.packages(ask = FALSE)'
   - sudo apt-get -y install python3-pip python-dev
-  - sudo pip install numpy
-  - sudo pip install tensorflow
-  - sudo pip install keras
+  - sudo pip install numpy tensorflow keras
+
+r_binary_packages:
+  - survival
+  - xml
+  - RCurl
+  - curl
+  - openssl
+  - git2r
+  - jsonlite
+  - quantreg
+  - dplyr
+  - stringi
+  - ddalpha
+  - prodlim
+  - data.table
+  - RhpcBLASctl
+  - matrixStats
+  - devtools
+  - kernlab
+  - e1071
+  - gam
+  - gbm
+  - party
+  - ranger
+  - xgboost
 
 r_packages:
   - covr
-  - devtools
   - drat
 
-r_github_packages:
-  - r-lib/devtools
-  - jimhester/covr
-  - eddelbuettel/drat
-  - osofr/condensier
-  - tlverse/delayed
-  - tlverse/origami
-  - jeremyrcoyle/hal9001
+script:
+  - Rscript -e "devtools::install_github(c('osofr/condensier',
+                                           'tlverse/delayed',
+                                           'tlverse/origami',
+                                           'jeremyrcoyle/hal9001'),
+                                           upgrade_dependencies = FALSE)"
+
+#r_github_packages:
+  #- osofr/condensier
+  #- tlverse/delayed
+  #- tlverse/origami
+  #- jeremyrcoyle/hal9001
 
 after_success:
   - travis_wait 80 Rscript -e 'covr::codecov()'
-  - test $TRAVIS_PULL_REQUEST == "true" && test $TRAVIS_BRANCH == "master" && bash deploy.sh
 
 _failure:
   - "./travis-tool.sh dump_logs"

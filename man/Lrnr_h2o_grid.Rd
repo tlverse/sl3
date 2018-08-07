@@ -24,6 +24,10 @@ types of models with support for grid search over the hyperparameter space of
 such models, using an interface to the H2O platform. For details on the
 procedures available and any limitations, consult the documentation of the
 \code{h2o} package.
+
+\code{Lrnr_h2o_classifier} -- Classification Models with h2o
+
+\code{Lrnr_h2o_mutator} -- Mutate Grid Search Models with h2o
 }
 \section{Parameters}{
 
@@ -55,9 +59,9 @@ Individual learners have their own sets of parameters. Below is a list of shared
 by all learners.
 
 \describe{
-\item{\code{covariates}}{A character vector of covariates. The learner will use this to subset the covariates for any specified task}
-\item{\code{outcome_type}}{A \code{\link{variable_type}} object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified}
-\item{\code{...}}{All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating}
+  \item{\code{covariates}}{A character vector of covariates. The learner will use this to subset the covariates for any specified task}
+  \item{\code{outcome_type}}{A \code{\link{variable_type}} object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified}
+  \item{\code{...}}{All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating}
 }
 }
 
@@ -88,6 +92,5 @@ Other Learners: \code{\link{Custom_chain}},
   \code{\link{Stack}}, \code{\link{define_h2o_X}},
   \code{\link{undocumented_learner}}
 }
-\concept{Learners}
 \keyword{data}
 \keyword{datasets}

@@ -48,7 +48,7 @@ Lrnr_solnp <- R6Class(
     initialize = function(learner_function = metalearner_linear,
                               loss_function = loss_squared_error,
                               make_sparse = TRUE, convex_combination = TRUE,
-                              init_0 = FALSE, tol=1e-5, ...) {
+                              init_0 = FALSE, tol = 1e-5, ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }
