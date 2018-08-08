@@ -19,5 +19,5 @@ dt_expand_factors(dt)
 \description{
 replicates the functionality of model.matrix, but faster
 
-replicates the functionality of model.matrix, but faster
+Replicates the functionality of \code{model.matrix}, but faster
 }

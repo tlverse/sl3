@@ -18,6 +18,8 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -25,6 +27,13 @@
 <script src="../pkgdown.js"></script>
   
   
+<meta property="og:title" content="Subset of growth data from the collaborative perinatal project (CPP) — cpp" />
+
+<meta property="og:description" content="Subset of growth data from the collaborative perinatal project (CPP).
+cpp_imputed drops observations for which the haz column is
+NA, and imputes all other observations as 0. This is only for the
+purposes of simplifying testing and examples." />
+<meta name="twitter:card" content="summary" />
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -172,30 +181,19 @@ of longitudinal research 1 (1984): 185-227.</p>
 #&gt; 1      1       1  4.621   55    55 15.27603  2.38  2.61  0.19  1.35      5    1
 #&gt; 2      1     123  8.760   NA    NA       NA  1.99    NA    NA    NA      5    1
 #&gt; 3      1     366 14.500   79    79 23.23346  3.84  1.35  4.02  3.89      5    1
-#&gt; 4      2       1  3.345   51    51 12.86044  0.06  0.50 -0.64 -0.43      5    1
-#&gt; 5      2     123  4.340   NA    NA       NA -3.99    NA    NA    NA      5    1
-#&gt; 6      2     366  8.400   73    73 15.76281 -1.27 -1.17 -0.96 -0.80      5    1
 #&gt;    sex feedingn feeding gagebrth birthwt birthlen apgar1 apgar5 mage mracen
 #&gt; 1 Male       90 Unknown      287    4621       55      8      9   21      5
 #&gt; 2 Male       90 Unknown      287    4621       55      8      9   21      5
 #&gt; 3 Male       90 Unknown      287    4621       55      8      9   21      5
-#&gt; 4 Male       90 Unknown      280    3345       51      8      9   15      5
-#&gt; 5 Male       90 Unknown      280    3345       51      8      9   15      5
-#&gt; 6 Male       90 Unknown      280    3345       51      8      9   15      5
 #&gt;   mrace mmaritn  mmarit meducyrs sesn          ses parity gravida smoked
 #&gt; 1 White       1 Married       12   50       Middle      1       1      0
 #&gt; 2 White       1 Married       12   50       Middle      1       1      0
 #&gt; 3 White       1 Married       12   50       Middle      1       1      0
-#&gt; 4 White       1 Married       NA   NA            .      0       0      1
-#&gt; 5 White       1 Married       NA   NA            .      0       0      1
-#&gt; 6 White       1 Married       NA   NA            .      0       0      1
 #&gt;   mcignum comprisk
 #&gt; 1       0     none
 #&gt; 2       0     none
 #&gt; 3       0     none
-#&gt; 4      35     none
-#&gt; 5      35     none
-#&gt; 6      35     none</div></pre>
+#&gt;  [ reached getOption("max.print") -- omitted 3 rows ]</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -217,7 +215,7 @@ of longitudinal research 1 (1984): 185-227.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
@@ -225,3 +223,4 @@ of longitudinal research 1 (1984): 185-227.</p>
 
   </body>
 </html>
+

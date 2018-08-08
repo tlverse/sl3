@@ -39,7 +39,7 @@ Lrnr_sl <- R6Class(
   class = TRUE,
   public = list(
     initialize = function(learners, metalearner, folds = NULL,
-                          keep_extra = TRUE, ...) {
+                              keep_extra = TRUE, ...) {
       # kludge to deal with stack as learners
       if (inherits(learners, "Stack")) {
         learners <- learners$params$learners
@@ -102,7 +102,8 @@ Lrnr_sl <- R6Class(
         return(as.data.frame(risks))
       }
       # TODO: this ignores weights, square errors are also incorrect
-      fold_risks <- lapply(cv_meta_task$folds,
+      fold_risks <- lapply(
+        cv_meta_task$folds,
         validation_means,
         losses,
         cv_meta_task$weights
@@ -133,6 +134,10 @@ Lrnr_sl <- R6Class(
         risk_dt[, coefficients := c(coefs, NA)]
       }
       return(risk_dt)
+    },
+    predict_fold = function(task, fold_number = 0) {
+      meta_task <- self$fit_object$cv_fit$chain_fold(task, fold_number)
+      meta_predictions <- self$fit_object$cv_meta_fit$predict(meta_task)
     }
   ),
 
@@ -148,7 +153,7 @@ Lrnr_sl <- R6Class(
   ),
 
   private = list(
-    .properties = c("wrapper"),
+    .properties = c("wrapper", "cv"),
 
     .train_sublearners = function(task) {
       # prefer folds from params, but default to folds from task
@@ -230,4 +235,3 @@ drop_offsets_chain <- function(task) {
     offset = NULL
   ))
 }
-

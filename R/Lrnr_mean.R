@@ -51,7 +51,8 @@ Lrnr_mean <- R6Class(
       if (task$has_node("offset")) {
         offset <- task$offset
         if (outcome_type$type == "categorical") {
-          stop("offsets not supported for outcome_type='categorical'")
+          # todo: fix
+          stop("offsets not yet supported for outcome_type='categorical'")
         }
       } else {
         offset <- rep(0, task$nrow)

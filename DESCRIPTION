@@ -1,16 +1,21 @@
 Package: sl3
 Title: Pipelines for Machine Learning and Super Learning
-Version: 1.0.0
+Version: 1.1.0
 Authors@R: c(
     person("Jeremy", "Coyle", email = "jeremyrcoyle@gmail.com",
-           role = c("aut", "cre", "cph")),
-    person("Nima", "Hejazi", email = "nh@nimahejazi.org", role = "aut"),
-    person("Oleg", "Sofrygin", email="oleg.sofrygin@gmail.com", role = "aut"),
-    person("Ivana", "Malenica", email = "imalenica@berkeley.edu", role = "aut")
+           role = c("aut", "cre", "cph"),
+           comment = c(ORCID = "0000-0002-9874-6649")),
+    person("Nima", "Hejazi", email = "nh@nimahejazi.org",
+           role = "aut",
+           comment = c(ORCID = "0000-0002-7127-2789")),
+    person("Oleg", "Sofrygin", email="oleg.sofrygin@gmail.com",
+           role = "aut"),
+    person("Ivana", "Malenica", email = "imalenica@berkeley.edu",
+           role = "aut")
   )
 Maintainer: Jeremy Coyle <jeremyrcoyle@gmail.com>
-Description: Implements the super learner prediction method and contains a
-    library of prediction algorithms to be used in the super learner.
+Description: Modern implementation of the Super Learner prediction algorithm,
+    alongside a framework for general-purpose machine learning with pipelines.
 Depends: R (>= 2.14.0)
 Imports:
     data.table,
@@ -25,37 +30,47 @@ Imports:
     methods,
     ggplot2
 Suggests:
-    testthat,
-    knitr,
-    rmarkdown,
-    glmnet,
     devtools,
     dplyr,
     drat,
+    future,
+    knitr,
+    reticulate,
     rgl,
+    rJava,
+    rmarkdown,
+    R.rsp,
+    testthat,
+    bartMachine,
     condensier,
     cvAUC,
-    forecast,
-    nloptr,
-    rugarch,
-    nnls,
-    tsDyn,
-    Rsolnp,
-    xgboost,
-    speedglm,
-    randomForest,
-    SuperLearner,
-    h2o,
-    future,
     e1071,
     earth,
-    R.rsp,
-    kerasR,
+    forecast,
+    glmnet,
+    grf,
+    hal9001,
+    h2o,
     keras,
-    reticulate
+    kerasR,
+    nloptr,
+    nnls,
+    randomForest,
+    ranger,
+    rpart,
+    Rsolnp,
+    rugarch,
+    speedglm,
+    SuperLearner,
+    tsDyn,
+    xgboost,
+    dbarts,
+    gam (>= 1.15.0)
 Remotes:
+    github::tlverse/delayed,
     github::osofr/condensier,
-    github::tlverse/delayed
+    github::jeremyrcoyle/hal9001,
+    github::vdorie/dbarts
 License: GPL-3
 URL: https://sl3.tlverse.org
 BugReports: https://github.com/tlverse/sl3/issues

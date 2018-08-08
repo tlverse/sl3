@@ -8,7 +8,7 @@ Variable_Type <- R6Class(
   class = TRUE,
   public = list(
     initialize = function(type = NULL, levels = NULL, bounds = NULL, x = NULL,
-                          pcontinuous = getOption("sl3.pcontinuous")) {
+                              pcontinuous = getOption("sl3.pcontinuous")) {
       if (is.null(type)) {
         if (is.null(x)) {
           stop("type not specified, and no x from which to infer it")
@@ -20,7 +20,7 @@ Variable_Type <- R6Class(
           type <- "constant"
         } else if (nunique == 2) {
           type <- "binomial"
-        } else if (((nunique / length(x)) < pcontinuous) && (nunique <20)) {
+        } else if ((is.factor(x)) || (((nunique / length(x)) < pcontinuous) && (nunique < 20))) {
           type <- "categorical"
         } else {
           type <- "continuous"
@@ -62,7 +62,8 @@ Variable_Type <- R6Class(
       if (return_object) {
         family_fun <- try({
           get(
-            family, mode = "function",
+            family,
+            mode = "function",
             envir = parent.frame()
           )
         })

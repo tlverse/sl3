@@ -1,28 +1,53 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-R/`sl3`: modern Super Learning with pipelines
-=============================================
 
-[![Travis-CI Build Status](https://travis-ci.org/tlverse/sl3.svg?branch=master)](https://travis-ci.org/tlverse/sl3) [![Build status](https://ci.appveyor.com/api/projects/status/25reu5wdhrwj9qgy?svg=true)](https://ci.appveyor.com/project/jeremyrcoyle/sl3) [![Coverage Status](https://img.shields.io/codecov/c/github/jeremyrcoyle/sl3/master.svg)](https://codecov.io/github/jeremyrcoyle/sl3?branch=master) [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](http://www.repostatus.org/badges/latest/wip.svg)](http://www.repostatus.org/#wip) [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0) [![Join the chat at https://gitter.im/sl3-Rpkg/Lobby](https://badges.gitter.im/sl3-Rpkg/Lobby.svg)](https://gitter.im/sl3-Rpkg/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+# R/`sl3`: modern Super Learning with pipelines
 
-> A modern implementation of the Super Learner algorithm for ensemble learning and model stacking
+[![Travis-CI Build
+Status](https://travis-ci.org/tlverse/sl3.svg?branch=master)](https://travis-ci.org/tlverse/sl3)
+[![Build
+status](https://ci.appveyor.com/api/projects/status/25reu5wdhrwj9qgy?svg=true)](https://ci.appveyor.com/project/jeremyrcoyle/sl3)
+[![Coverage
+Status](https://img.shields.io/codecov/c/github/jeremyrcoyle/sl3/master.svg)](https://codecov.io/github/jeremyrcoyle/sl3?branch=master)
+[![Project Status: WIP – Initial development is in progress, but there
+has not yet been a stable, usable release suitable for the
+public.](http://www.repostatus.org/badges/latest/wip.svg)](http://www.repostatus.org/#wip)
+[![License: GPL
+v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
+[![Join the chat at
+https://gitter.im/sl3-Rpkg/Lobby](https://badges.gitter.im/sl3-Rpkg/Lobby.svg)](https://gitter.im/sl3-Rpkg/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-**Authors:** [Jeremy Coyle](https://github.com/jeremyrcoyle), [Nima Hejazi](https://github.com/nhejazi), [Ivana Malenica](https://github.com/podTockom), [Oleg Sofrygin](https://github.com/osofr)
+> A modern implementation of the Super Learner algorithm for ensemble
+> learning and model stacking
 
-------------------------------------------------------------------------
+**Authors:** [Jeremy Coyle](https://github.com/jeremyrcoyle), [Nima
+Hejazi](https://github.com/nhejazi), [Ivana
+Malenica](https://github.com/podTockom), [Oleg
+Sofrygin](https://github.com/osofr)
 
-What's `sl3`?
--------------
+-----
 
-`sl3` is a modern implementation of the Super Learner algorithm of @vdl2007super. The Super Learner algorithm performs ensemble learning in one of two fashions:
+## What’s `sl3`?
 
-1.  The "discrete" Super Learner can be used to select the best prediction algorithm among a supplied library of learning algorithms ("learners" in the `sl3` nomenclature) -- that is, that algorithm which minimizes the cross-validated risk with respect to some appropriate loss function.
-2.  The "ensemble" Super Learner can be used to assign weights to specified learning algorithms (in a user-supplied library) in order to create a combination of these learners that minimizes the cross-validated risk with respect to an appropriate loss function. This notion of weighted combinations has also been called *stacked regression* \[@breiman1996stacked\].
+`sl3` is a modern implementation of the Super Learner algorithm of van
+der Laan, Polley, and Hubbard (2007). The Super Learner algorithm
+performs ensemble learning in one of two fashions:
 
-------------------------------------------------------------------------
+1.  The “discrete” Super Learner can be used to select the best
+    prediction algorithm among a supplied library of learning algorithms
+    (“learners” in the `sl3` nomenclature) – that is, that algorithm
+    which minimizes the cross-validated risk with respect to some
+    appropriate loss function.
+2.  The “ensemble” Super Learner can be used to assign weights to
+    specified learning algorithms (in a user-supplied library) in order
+    to create a combination of these learners that minimizes the
+    cross-validated risk with respect to an appropriate loss function.
+    This notion of weighted combinations has also been called *stacked
+    regression* (Breiman 1996).
 
-Installation
-------------
+-----
+
+## Installation
 
 <!--
 For standard use, we recommend installing the package from
@@ -33,25 +58,29 @@ For standard use, we recommend installing the package from
 install.packages("sl3")
 ```
 -->
-Install the most recent *stable release* from GitHub via [`devtools`](https://www.rstudio.com/products/rpackages/devtools/):
+
+Install the most recent *stable release* from GitHub via
+[`devtools`](https://www.rstudio.com/products/rpackages/devtools/):
 
 ``` r
-devtools::install_github("jeremyrcoyle/sl3")
+devtools::install_github("tlverse/sl3")
 ```
 
-------------------------------------------------------------------------
+-----
 
-Issues
-------
+## Issues
 
-If you encounter any bugs or have any specific feature requests, please [file an issue](https://github.com/jeremyrcoyle/sl3/issues).
+If you encounter any bugs or have any specific feature requests, please
+[file an issue](https://github.com/tlverse/sl3/issues).
 
-------------------------------------------------------------------------
+-----
 
-Examples
---------
+## Examples
 
-`sl3` makes the process of applying screening algorithms, learning algorithms, combining both types of algorithms into a stacked regression model, and cross-validating this whole process essentially trivial. The best way to understand this is to see the `sl3` package in action:
+`sl3` makes the process of applying screening algorithms, learning
+algorithms, combining both types of algorithms into a stacked regression
+model, and cross-validating this whole process essentially trivial. The
+best way to understand this is to see the `sl3` package in action:
 
 ``` r
 set.seed(49753)
@@ -71,8 +100,8 @@ library(dplyr)
 library(SuperLearner)
 #> Loading required package: nnls
 #> Super Learner
-#> Version: 2.0-22
-#> Package created on 2017-07-18
+#> Version: 2.0-23-9000
+#> Package created on 2017-11-29
 library(origami)
 #> origami: Generalized Cross-Validation Framework
 #> Version: 1.0.0
@@ -101,7 +130,7 @@ stack_fit <- learner_stack$train(task)
 #> Loading required package: glmnet
 #> Loading required package: Matrix
 #> Loading required package: foreach
-#> Loaded glmnet 2.0-13
+#> Loaded glmnet 2.0-16
 preds <- stack_fit$predict()
 head(preds)
 #>    Lrnr_pkg_SuperLearner_SL.glmnet Lrnr_glm_TRUE
@@ -120,23 +149,67 @@ head(preds)
 #> 6:                                                   0.05600958
 ```
 
-------------------------------------------------------------------------
+-----
 
-Contributions
--------------
+## Contributions
 
-It is our hope that `sl3` will grow to be widely used for creating stacked regression models and the cross-validation of pipelines that make up such models, as well as the variety of other applications in which the Super Learner algorithm plays a role. To that end, contributions are very welcome, though we ask that interested contributors consult our [`contribution guidelines`](https://github.com/jeremyrcoyle/sl3/blob/master/CONTRIBUTING.md) prior to submitting a pull request.
+It is our hope that `sl3` will grow to be widely used for creating
+stacked regression models and the cross-validation of pipelines that
+make up such models, as well as the variety of other applications in
+which the Super Learner algorithm plays a role. To that end,
+contributions are very welcome, though we ask that interested
+contributors consult our [contribution
+guidelines](https://github.com/jeremyrcoyle/sl3/blob/master/CONTRIBUTING.md)
+prior to submitting a pull request.
 
-------------------------------------------------------------------------
+-----
 
-License
--------
+After using the `sl3` R package, please cite the following:
 
-© 2017 [Jeremy R. Coyle](https://github.com/jeremyrcoyle), [Nima S. Hejazi](https://github.com/nhejazi), [Ivana Malenica](https://github.com/podTockom), [Oleg Sofrygin](https://github.com/osofr)
+``` 
+    @misc{coyle2018sl3,
+      author = {Coyle, Jeremy R and Hejazi, Nima S and Malenica, Ivana and
+        Sofrygin, Oleg},
+      title = {{sl3}: Modern Pipelines for Machine Learning and {Super
+        Learning}},
+      year  = {2018},
+      howpublished = {\url{https://github.com/tlverse/sl3}},
+      url = {https://doi.org/DOI_HERE},
+      doi = {DOI_HERE}
+    }
+```
 
-The contents of this repository are distributed under the GPL-3 license. See file `LICENSE` for details.
+-----
 
-------------------------------------------------------------------------
+## License
 
-References
-----------
+© 2017-2018 [Jeremy R. Coyle](https://github.com/jeremyrcoyle), [Nima S.
+Hejazi](https://github.com/nhejazi), [Ivana
+Malenica](https://github.com/podTockom), [Oleg
+Sofrygin](https://github.com/osofr)
+
+The contents of this repository are distributed under the GPL-3 license.
+See file `LICENSE` for details.
+
+-----
+
+## References
+
+<div id="refs" class="references">
+
+<div id="ref-breiman1996stacked">
+
+Breiman, Leo. 1996. “Stacked Regressions.” *Machine Learning* 24 (1).
+Springer: 49–64.
+
+</div>
+
+<div id="ref-vdl2007super">
+
+van der Laan, Mark J., Eric C. Polley, and Alan E. Hubbard. 2007. “Super
+Learner.” *Statistical Applications in Genetics and Molecular Biology* 6
+(1).
+
+</div>
+
+</div>

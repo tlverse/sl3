@@ -108,10 +108,8 @@ Lrnr_base <- R6Class(
       self$assert_trained()
       if (is.null(task)) {
         task <- private$.training_task
-      } else {
-        task <- task$next_in_chain(covariates <-
-          private$.training_task$nodes$covariates)
       }
+
       assert_that(is(task, "sl3_Task"))
       subsetted_task <- self$subset_covariates(task)
       predictions <- private$.predict(subsetted_task)
@@ -127,10 +125,8 @@ Lrnr_base <- R6Class(
       self$assert_trained()
       if (is.null(task)) {
         task <- private$.training_task
-      } else {
-        task <- task$next_in_chain(covariates <-
-          private$.training_task$nodes$covariates)
       }
+
       assert_that(is(task, "sl3_Task"))
       subsetted_task <- self$subset_covariates(task)
       # use custom chain function if provided
@@ -170,6 +166,10 @@ Lrnr_base <- R6Class(
 
     custom_chain = function(new_chain_fun = NULL) {
       private$.custom_chain <- new_chain_fun
+    },
+    predict_fold = function(task, fold_number) {
+      warning(self$name, " is not a cv-aware learner, so self$predict_fold reverts to self$predict")
+      self$predict(task)
     }
   ),
 
@@ -277,7 +277,8 @@ Lrnr_base <- R6Class(
     .load_packages = function() {
       if (!is.null(private$.required_packages)) {
         requirePackages(
-          private$.required_packages, why = class(self)[1],
+          private$.required_packages,
+          why = class(self)[1],
           default.method = "load"
         )
       }

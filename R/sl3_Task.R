@@ -28,17 +28,15 @@ sl3_Task <- R6Class(
   class = TRUE,
   public = list(
     initialize = function(data, covariates, outcome = NULL, outcome_type = NULL,
-                          outcome_levels = NULL, id = NULL, weights = NULL,
-                          offset = NULL, nodes = NULL, column_names = NULL,
-                          row_index = NULL, folds = NULL) {
+                              outcome_levels = NULL, id = NULL, weights = NULL,
+                              offset = NULL, nodes = NULL, column_names = NULL,
+                              row_index = NULL, folds = NULL) {
 
       # process data
       assert_that(is.data.frame(data) | is.data.table(data))
       private$.data <- data
 
-      if (!inherits(data, "data.table")) {
-        setDT(private$.data)
-      }
+      setDT(private$.data)
 
       # process column_names
       if (is.null(column_names)) {
@@ -96,14 +94,12 @@ sl3_Task <- R6Class(
       invisible(self)
     },
 
-    add_interactions = function(interactions) {
+    add_interactions = function(interactions, warn_on_existing = TRUE) {
       ## ------------------------------------------------------------------------
       ## Add columns with interactions (by reference) to input design matrix
       ## (data.table). Used for training / predicting.
       ## returns the names of the added columns
       ## ------------------------------------------------------------------------
-      data.table::setDF(private$.data)
-      data.table::setDT(private$.data)
 
       prod.DT <- function(x) {
         y <- x[[1]]
@@ -124,11 +120,13 @@ sl3_Task <- R6Class(
         }
 
         if (name %in% old_names) {
-          # this column is already defined, so warn but don't recalculate
-          warning(sprintf(
-            "Interaction column %s is already defined, so skipping",
-            name
-          ))
+          if (warn_on_existing) {
+            # this column is already defined, so warn but don't recalculate
+            warning(sprintf(
+              "Interaction column %s is already defined, so skipping",
+              name
+            ))
+          }
         } else if (all(interact %in% old_names)) {
           private$.data[, (name) := prod.DT(.SD), .SD = interact]
         }
@@ -143,14 +141,12 @@ sl3_Task <- R6Class(
     },
 
     add_columns = function(fit_uuid, new_data, global_cols = FALSE) {
-      data <- private$.data
-      current_cols <- names(data)
+      current_cols <- names(private$.data)
 
       if (!(is.data.frame(new_data) | is.data.table(new_data))) {
         new_data <- as.data.table(new_data)
       }
 
-      setDT(new_data)
       col_names <- names(new_data)
       original_names <- copy(col_names)
 
@@ -165,9 +161,9 @@ sl3_Task <- R6Class(
       column_names[original_names] <- col_names
 
       if (is.null(private$.row_index)) {
-        set(data, j = col_names, value = new_data)
+        set(private$.data, j = col_names, value = new_data)
       } else {
-        set(data, i = private$.row_index, j = col_names, value = new_data)
+        set(private$.data, i = private$.row_index, j = col_names, value = new_data)
       }
 
       # return an updated column_names map
@@ -175,8 +171,8 @@ sl3_Task <- R6Class(
     },
 
     next_in_chain = function(covariates = NULL, outcome = NULL, id = NULL,
-                             weights = NULL, offset = NULL, column_names = NULL,
-                             new_nodes = NULL, ...) {
+                                 weights = NULL, offset = NULL, column_names = NULL,
+                                 new_nodes = NULL, ...) {
       if (is.null(new_nodes)) {
         new_nodes <- self$nodes
 
@@ -229,7 +225,8 @@ sl3_Task <- R6Class(
         new_outcome_type <- NULL
       }
       new_task$initialize(
-        private$.data, nodes = new_nodes,
+        private$.data,
+        nodes = new_nodes,
         folds = private$.folds, column_names = column_names,
         row_index = private$.row_index,
         outcome_type = new_outcome_type, ...
@@ -245,7 +242,8 @@ sl3_Task <- R6Class(
       }
       new_task <- self$clone()
       new_task$initialize(
-        private$.data, nodes = private$.nodes,
+        private$.data,
+        nodes = private$.nodes,
         folds = self$folds,
         column_names = private$.column_names,
         row_index = row_index,
@@ -266,12 +264,12 @@ sl3_Task <- R6Class(
       } else {
         subset <- private$.data[, true_columns, with = FALSE]
       }
-      
+
       if (ncol(subset) > 0) {
         data.table::setnames(subset, true_columns, columns)
       }
-      
-      if(expand_factors){
+
+      if (expand_factors) {
         subset <- dt_expand_factors(subset)
       }
       return(subset)

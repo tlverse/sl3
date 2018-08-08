@@ -6,6 +6,7 @@ init:
         $ErrorActionPreference = "Stop"
         Invoke-WebRequest http://raw.github.com/krlmlr/r-appveyor/master/scripts/appveyor-tool.ps1 -OutFile "..\appveyor-tool.ps1"
         Import-Module '..\appveyor-tool.ps1'
+
 install:
   ps: Bootstrap
 
@@ -16,7 +17,7 @@ cache:
 branches:
   only:
     - master
-    - develop
+    - devel
 
 environment:
   global:
@@ -25,6 +26,11 @@ environment:
 
 build_script:
   - travis-tool.sh install_deps
+  - travis-tool.sh install_github tlverse/delayed
+  - travis-tool.sh install_github tlverse/origami
+  - travis-tool.sh install_github osofr/condensier
+  - travis-tool.sh install_github benkeser/halplus
+  - travis-tool.sh install_github jeremyrcoyle/hal9001
 
 test_script:
   - travis-tool.sh run_tests
@@ -62,3 +68,4 @@ notifications:
    on_build_success: false
    on_build_failure: true
    on_build_status_changed: true
+

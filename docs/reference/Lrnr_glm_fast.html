@@ -18,6 +18,8 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -25,6 +27,13 @@
 <script src="../pkgdown.js"></script>
   
   
+<meta property="og:title" content="Computationally Efficient GLMs — Lrnr_glm_fast" />
+
+<meta property="og:description" content="This learner provides faster fitting procedures for generalized linear models
+using the speedglm package. Arguments are passed to
+speedglm.wfit. Uses glm.fit as a
+fallback if speedglm.wfit fails." />
+<meta name="twitter:card" content="summary" />
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -144,32 +153,36 @@ fallback if <code><a href='http://www.rdocumentation.org/packages/speedglm/topic
     
     <p>Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by <code>Lrnr_base</code>, and shared
 by all learners.</p><dl class='dl-horizontal'>
-  <dt><code>covariates</code></dt><dd><p>A character vector of covariates. The learner will use this to subset the covariates for any specified task</p></dd>
-  <dt><code>outcome_type</code></dt><dd><p>A <code><a href='variable_type.html'>variable_type</a></code> object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified</p></dd>
-  <dt><code>...</code></dt><dd><p>All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating</p></dd>
+<dt><code>covariates</code></dt><dd><p>A character vector of covariates. The learner will use this to subset the covariates for any specified task</p></dd>
+<dt><code>outcome_type</code></dt><dd><p>A <code><a href='variable_type.html'>variable_type</a></code> object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified</p></dd>
+<dt><code>...</code></dt><dd><p>All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <p>Other Learners: <code><a href='Custom_chain.html'>Custom_chain</a></code>,
   <code><a href='Lrnr_HarmonicReg.html'>Lrnr_HarmonicReg</a></code>, <code><a href='Lrnr_arima.html'>Lrnr_arima</a></code>,
-  <code><a href='Lrnr_base.html'>Lrnr_base</a></code>, <code><a href='Lrnr_bilstm.html'>Lrnr_bilstm</a></code>,
-  <code><a href='Lrnr_condensier.html'>Lrnr_condensier</a></code>, <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
+  <code><a href='Lrnr_bartMachine.html'>Lrnr_bartMachine</a></code>, <code><a href='Lrnr_base.html'>Lrnr_base</a></code>,
+  <code><a href='Lrnr_bilstm.html'>Lrnr_bilstm</a></code>, <code><a href='Lrnr_condensier.html'>Lrnr_condensier</a></code>,
+  <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
   <code><a href='Lrnr_define_interactions.html'>Lrnr_define_interactions</a></code>,
   <code><a href='Lrnr_expSmooth.html'>Lrnr_expSmooth</a></code>, <code><a href='Lrnr_glmnet.html'>Lrnr_glmnet</a></code>,
   <code><a href='Lrnr_glm.html'>Lrnr_glm</a></code>, <code><a href='Lrnr_h2o_grid.html'>Lrnr_h2o_grid</a></code>,
+  <code><a href='Lrnr_hal9001.html'>Lrnr_hal9001</a></code>,
   <code><a href='Lrnr_independent_binomial.html'>Lrnr_independent_binomial</a></code>,
   <code><a href='Lrnr_lstm.html'>Lrnr_lstm</a></code>, <code><a href='Lrnr_mean.html'>Lrnr_mean</a></code>,
   <code><a href='Lrnr_nnls.html'>Lrnr_nnls</a></code>, <code><a href='Lrnr_optim.html'>Lrnr_optim</a></code>,
+  <code><a href='Lrnr_pca.html'>Lrnr_pca</a></code>,
   <code><a href='SuperLearner_interface.html'>Lrnr_pkg_SuperLearner</a></code>,
   <code><a href='Lrnr_randomForest.html'>Lrnr_randomForest</a></code>,
+  <code><a href='Lrnr_ranger.html'>Lrnr_ranger</a></code>, <code><a href='Lrnr_rpart.html'>Lrnr_rpart</a></code>,
   <code><a href='Lrnr_rugarch.html'>Lrnr_rugarch</a></code>, <code><a href='Lrnr_sl.html'>Lrnr_sl</a></code>,
   <code><a href='Lrnr_solnp_density.html'>Lrnr_solnp_density</a></code>,
   <code><a href='Lrnr_solnp.html'>Lrnr_solnp</a></code>,
   <code><a href='Lrnr_subset_covariates.html'>Lrnr_subset_covariates</a></code>,
-  <code><a href='Lrnr_tsDyn.html'>Lrnr_tsDyn</a></code>, <code><a href='Lrnr_xgboost.html'>Lrnr_xgboost</a></code>,
-  <code><a href='Pipeline.html'>Pipeline</a></code>, <code><a href='Stack.html'>Stack</a></code>,
-  <code><a href='Lrnr_h2o_glm.html'>define_h2o_X</a></code>,
+  <code><a href='Lrnr_svm.html'>Lrnr_svm</a></code>, <code><a href='Lrnr_tsDyn.html'>Lrnr_tsDyn</a></code>,
+  <code><a href='Lrnr_xgboost.html'>Lrnr_xgboost</a></code>, <code><a href='Pipeline.html'>Pipeline</a></code>,
+  <code><a href='Stack.html'>Stack</a></code>, <code><a href='Lrnr_h2o_glm.html'>define_h2o_X</a></code>,
   <code><a href='undocumented_learner.html'>undocumented_learner</a></code></p>
     
 
@@ -198,7 +211,7 @@ by all learners.</p><dl class='dl-horizontal'>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
@@ -206,3 +219,4 @@ by all learners.</p><dl class='dl-horizontal'>
 
   </body>
 </html>
+
