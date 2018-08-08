@@ -26,6 +26,8 @@ environment:
 
 build_script:
   - travis-tool.sh install_deps
+  - travis-tool.sh install_github r-lib/devtools
+  - travis-tool.sh install_github RDatatable/data.table
   - travis-tool.sh install_github tlverse/delayed
   - travis-tool.sh install_github tlverse/origami
   - travis-tool.sh install_github osofr/condensier
