@@ -21,12 +21,15 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Base Class for all sl3 Learners. — Lrnr_base" />
 
 <meta property="og:description" content="Generally this base learner class shouldn't be instantiated. It's intended to
@@ -34,6 +37,9 @@ be an abstract class, although abstract classes aren't explicitly supported
 by R6. All learners support the methods and fields documented below.
 For more information on a particular learner, see its help file." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -43,16 +49,14 @@ For more information on a particular learner, see its help file." />
 <![endif]-->
 
 
-<!-- Google analytics -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-115145808-1"></script>
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  ga('create', 'UA-115145808-1', 'auto');
-  ga('send', 'pageview');
-
+  gtag('config', 'UA-115145808-1');
 </script>
 
   </head>
@@ -68,8 +72,12 @@ For more information on a particular learner, see its help file." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html"></a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">sl3</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -107,6 +115,7 @@ For more information on a particular learner, see its help file." />
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -114,24 +123,28 @@ For more information on a particular learner, see its help file." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Base Class for all sl3 Learners.</h1>
+    
+    <div class="hidden name"><code>Lrnr_base.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Generally this base learner class shouldn't be instantiated. It's intended to
 be an abstract class, although abstract classes aren't explicitly supported
 by <code>R6</code>. All learners support the methods and fields documented below.
 For more information on a particular learner, see its help file.</p>
     
+    </div>
 
     <pre class="usage"><span class='no'>Lrnr_base</span>
 
 <span class='fu'>make_learner</span>(<span class='no'>learner_class</span>, <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -157,10 +170,11 @@ section below.</p></td>
 
     
     <p>Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by <code>Lrnr_base</code>, and shared
-by all learners.</p><dl class='dl-horizontal'>
-<dt><code>covariates</code></dt><dd><p>A character vector of covariates. The learner will use this to subset the covariates for any specified task</p></dd>
-<dt><code>outcome_type</code></dt><dd><p>A <code><a href='variable_type.html'>variable_type</a></code> object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified</p></dd>
-<dt><code>...</code></dt><dd><p>All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating</p></dd>
+by all learners.</p>
+<dl class='dl-horizontal'>
+  <dt><code>covariates</code></dt><dd><p>A character vector of covariates. The learner will use this to subset the covariates for any specified task</p></dd>
+  <dt><code>outcome_type</code></dt><dd><p>A <code><a href='variable_type.html'>variable_type</a></code> object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified</p></dd>
+  <dt><code>...</code></dt><dd><p>All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="user-methods"><a class="anchor" href="#user-methods"></a>User Methods</h2>
@@ -198,28 +212,29 @@ by all learners.</p><dl class='dl-horizontal'>
 
     
     <dl class='dl-horizontal'>
-<dt><code>is_trained</code></dt><dd><p><code>TRUE</code> if this is a learner fit, not an untrained learner</p></dd>
-<dt><code>fit_object</code></dt><dd><p>The internal fit object</p></dd>
-<dt><code>name</code></dt><dd><p>The learner name</p></dd>
-<dt><code>learner_uuid</code></dt><dd><p>A unique identifier of this learner, but common to all fits of this learner</p></dd>
-<dt><code>fit_uuid</code></dt><dd><p>A unique identifier of this learner fit. <code>NULL</code> if this is an untrained learner</p></dd>
-<dt><code>params</code></dt><dd><p>A list of learner parameters, as specified on construction</p></dd>
-<dt><code>training_task</code></dt><dd><p>The task used for training. <code>NULL</code> if this is an untrained learner</p></dd>
-<dt><code>training_outcome_type</code></dt><dd><p>The outcome_type of the task used for training. <code>NULL</code> if this is an untrained learner</p></dd>
-<dt><code>properties</code></dt><dd><p>The properties supported by this learner</p></dd>
-<dt><code>coefficients</code></dt><dd><p>Fit coefficients, if this learner has coefficients. <code>NULL</code> otherwise, or if this is an untrained learner</p></dd>
+  <dt><code>is_trained</code></dt><dd><p><code>TRUE</code> if this is a learner fit, not an untrained learner</p></dd>
+  <dt><code>fit_object</code></dt><dd><p>The internal fit object</p></dd>
+  <dt><code>name</code></dt><dd><p>The learner name</p></dd>
+  <dt><code>learner_uuid</code></dt><dd><p>A unique identifier of this learner, but common to all fits of this learner</p></dd>
+  <dt><code>fit_uuid</code></dt><dd><p>A unique identifier of this learner fit. <code>NULL</code> if this is an untrained learner</p></dd>   
+  <dt><code>params</code></dt><dd><p>A list of learner parameters, as specified on construction</p></dd>   
+  <dt><code>training_task</code></dt><dd><p>The task used for training. <code>NULL</code> if this is an untrained learner</p></dd>   
+  <dt><code>training_outcome_type</code></dt><dd><p>The outcome_type of the task used for training. <code>NULL</code> if this is an untrained learner</p></dd>   
+  <dt><code>properties</code></dt><dd><p>The properties supported by this learner</p></dd>   
+  <dt><code>coefficients</code></dt><dd><p>Fit coefficients, if this learner has coefficients. <code>NULL</code> otherwise, or if this is an untrained learner</p></dd>  
 </dl>
     
     <h2 class="hasAnchor" id="internal-methods"><a class="anchor" href="#internal-methods"></a>Internal Methods</h2>
 
     
-    <p>These methods are primiarily for internal use only. They're not recommended for public consumption.</p><dl class='dl-horizontal'>
+    <p>These methods are primiarily for internal use only. They're not recommended for public consumption.</p>
+<dl class='dl-horizontal'>
 <dt><code>subset_covariates(task)</code></dt><dd><p>Returns a task with covariates subsetted using the <code>covariates</code> parameter.
     <ul>
 <li><p><code>task</code>: The task to subset</p></li>
 </ul></p></dd>
     <dt><code>get_outcome_type(task)</code></dt><dd><p>Mediates between the task outcome_type and parameter outcome_type. If a parameter outcome_type was specified, returns that. Otherwise,
-returns the task$outcome_type.
+  returns the task$outcome_type.
     <ul>
 <li><p><code>task</code>: The task for which to determine the outcome_type</p></li>
 </ul></p></dd>
@@ -237,16 +252,16 @@ returns the task$outcome_type.
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>Other Learners: <code><a href='Custom_chain.html'>Custom_chain</a></code>,
+    <div class='dont-index'><p>Other Learners: <code><a href='Custom_chain.html'>Custom_chain</a></code>,
   <code><a href='Lrnr_HarmonicReg.html'>Lrnr_HarmonicReg</a></code>, <code><a href='Lrnr_arima.html'>Lrnr_arima</a></code>,
   <code><a href='Lrnr_bartMachine.html'>Lrnr_bartMachine</a></code>,
   <code><a href='Lrnr_bilstm.html'>Lrnr_bilstm</a></code>, <code><a href='Lrnr_condensier.html'>Lrnr_condensier</a></code>,
-  <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
+  <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>, <code><a href='Lrnr_dbarts.html'>Lrnr_dbarts</a></code>,
   <code><a href='Lrnr_define_interactions.html'>Lrnr_define_interactions</a></code>,
   <code><a href='Lrnr_expSmooth.html'>Lrnr_expSmooth</a></code>,
   <code><a href='Lrnr_glm_fast.html'>Lrnr_glm_fast</a></code>, <code><a href='Lrnr_glmnet.html'>Lrnr_glmnet</a></code>,
-  <code><a href='Lrnr_glm.html'>Lrnr_glm</a></code>, <code><a href='Lrnr_h2o_grid.html'>Lrnr_h2o_grid</a></code>,
-  <code><a href='Lrnr_hal9001.html'>Lrnr_hal9001</a></code>,
+  <code><a href='Lrnr_glm.html'>Lrnr_glm</a></code>, <code><a href='Lrnr_grf.html'>Lrnr_grf</a></code>,
+  <code><a href='Lrnr_h2o_grid.html'>Lrnr_h2o_grid</a></code>, <code><a href='Lrnr_hal9001.html'>Lrnr_hal9001</a></code>,
   <code><a href='Lrnr_independent_binomial.html'>Lrnr_independent_binomial</a></code>,
   <code><a href='Lrnr_lstm.html'>Lrnr_lstm</a></code>, <code><a href='Lrnr_mean.html'>Lrnr_mean</a></code>,
   <code><a href='Lrnr_nnls.html'>Lrnr_nnls</a></code>, <code><a href='Lrnr_optim.html'>Lrnr_optim</a></code>,
@@ -261,7 +276,7 @@ returns the task$outcome_type.
   <code><a href='Lrnr_svm.html'>Lrnr_svm</a></code>, <code><a href='Lrnr_tsDyn.html'>Lrnr_tsDyn</a></code>,
   <code><a href='Lrnr_xgboost.html'>Lrnr_xgboost</a></code>, <code><a href='Pipeline.html'>Pipeline</a></code>,
   <code><a href='Stack.html'>Stack</a></code>, <code><a href='Lrnr_h2o_glm.html'>define_h2o_X</a></code>,
-  <code><a href='undocumented_learner.html'>undocumented_learner</a></code></p>
+  <code><a href='undocumented_learner.html'>undocumented_learner</a></code></p></div>
     
 
   </div>
@@ -299,6 +314,8 @@ returns the task$outcome_type.
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

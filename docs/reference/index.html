@@ -21,13 +21,19 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Function reference" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -37,16 +43,14 @@
 <![endif]-->
 
 
-<!-- Google analytics -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-115145808-1"></script>
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  ga('create', 'UA-115145808-1', 'auto');
-  ga('send', 'pageview');
-
+  gtag('config', 'UA-115145808-1');
 </script>
 
   </head>
@@ -62,8 +66,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html"></a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">sl3</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -101,6 +109,7 @@
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -108,784 +117,804 @@
       
       </header>
 
-      <div class="row">
-  <div class="col-md-9">
+<div class="row">
+  <div class="contents col-md-9">
     <div class="page-header">
-      <h1>
-        Reference
-        <small>version&nbsp;1.0.0</small>
-      </h1>
+      <h1>Reference</h1>
     </div>
 
-    <div class="contents">
-      <table class="ref-index">
+    <table class="ref-index">
 
-      <colgroup>
-        <col class="alias" />
-        <col class="title" />
-      </colgroup>
+    <colgroup>
+      
+      <col class="alias" />
+      <col class="title" />
+    </colgroup>
 
-      <tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-defining-a-task" class="hasAnchor"><a href="#section-defining-a-task" class="anchor"></a>Defining A Task</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="sl3_Task.html">sl3_Task</a></code> <code><a href="sl3_Task.html">make_sl3_Task</a></code> </p>
-          </td>
-          <td><p>Define a Machine Learning Task</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="variable_type.html">Variable_Type</a></code> <code><a href="variable_type.html">variable_type</a></code> </p>
-          </td>
-          <td><p>Specify variable type</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-finding-learners" class="hasAnchor"><a href="#section-finding-learners" class="anchor"></a>Finding Learners</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="list_learners.html">sl3_list_properties</a></code> <code><a href="list_learners.html">sl3_list_learners</a></code> </p>
-          </td>
-          <td><p>List sl3 Learners</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-sl-learners" class="hasAnchor"><a href="#section-sl-learners" class="anchor"></a>sl3 Learners</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_HarmonicReg.html">Lrnr_HarmonicReg</a></code> </p>
-          </td>
-          <td><p>Harmonic Regression</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_arima.html">Lrnr_arima</a></code> </p>
-          </td>
-          <td><p>Univariate ARIMA Models</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_bartMachine.html">Lrnr_bartMachine</a></code> </p>
-          </td>
-          <td><p>BART Machine Learner</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_base.html">Lrnr_base</a></code> <code><a href="Lrnr_base.html">make_learner</a></code> </p>
-          </td>
-          <td><p>Base Class for all sl3 Learners.</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_bilstm.html">Lrnr_bilstm</a></code> </p>
-          </td>
-          <td><p>Bidirectional Long short-term memory Recurrent Neural Network (LSTM)</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_condensier.html">Lrnr_condensier</a></code> </p>
-          </td>
-          <td><p>Conditional Density Estimation</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_cv.html">Lrnr_cv</a></code> </p>
-          </td>
-          <td><p>Fit/Predict a learner with Cross Validation</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_define_interactions.html">Lrnr_define_interactions</a></code> </p>
-          </td>
-          <td><p>Define interactions terms</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_expSmooth.html">Lrnr_expSmooth</a></code> </p>
-          </td>
-          <td><p>Exponential Smoothing</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_glm.html">Lrnr_glm</a></code> </p>
-          </td>
-          <td><p>Generalized Linear Models</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_glm_fast.html">Lrnr_glm_fast</a></code> </p>
-          </td>
-          <td><p>Computationally Efficient GLMs</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_glmnet.html">Lrnr_glmnet</a></code> </p>
-          </td>
-          <td><p>GLMs with Elastic Net Regularization</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_h2o_glm.html">define_h2o_X</a></code> <code><a href="Lrnr_h2o_glm.html">Lrnr_h2o_glm</a></code> </p>
-          </td>
-          <td><p>h2o Model Definition</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_h2o_grid.html">Lrnr_h2o_grid</a></code> <code><a href="Lrnr_h2o_grid.html">Lrnr_h2o_classifier</a></code> <code><a href="Lrnr_h2o_grid.html">Lrnr_h2o_mutator</a></code> </p>
-          </td>
-          <td><p>Grid Search Models with h2o</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_hal9001.html">Lrnr_hal9001</a></code> </p>
-          </td>
-          <td><p>The Scalable Highly Adaptive LASSO</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_independent_binomial.html">Lrnr_independent_binomial</a></code> </p>
-          </td>
-          <td><p>Classification from Binomial Regression</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_lstm.html">Lrnr_lstm</a></code> </p>
-          </td>
-          <td><p>Long short-term memory Recurrent Neural Network (LSTM)</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_mean.html">Lrnr_mean</a></code> </p>
-          </td>
-          <td><p>Fitting Intercept Models</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_nnls.html">Lrnr_nnls</a></code> </p>
-          </td>
-          <td><p>Non-negative Linear Least Squares</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_optim.html">Lrnr_optim</a></code> </p>
-          </td>
-          <td><p>Optimize Metalearner according to Loss Function using optim</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_pca.html">Lrnr_pca</a></code> </p>
-          </td>
-          <td><p>Principal Component Analysis and Regression</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_pkg_condensier_logisfitR6.html">Lrnr_pkg_condensier_logisfitR6</a></code> </p>
-          </td>
-          <td><p>sl3 Learner wrapper for condensier</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_randomForest.html">Lrnr_randomForest</a></code> </p>
-          </td>
-          <td><p>Random Forests</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_ranger.html">Lrnr_ranger</a></code> </p>
-          </td>
-          <td><p>Ranger - A Fast Implementation of Random Forests</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_rpart.html">Lrnr_rpart</a></code> </p>
-          </td>
-          <td><p>Learner for Recursive Partitioning and Regression Trees.</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_rugarch.html">Lrnr_rugarch</a></code> </p>
-          </td>
-          <td><p>Univariate GARCH Models</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_sl.html">Lrnr_sl</a></code> </p>
-          </td>
-          <td><p>SuperLearner Algorithm</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_solnp.html">Lrnr_solnp</a></code> </p>
-          </td>
-          <td><p>Nonlinear Optimization via Augmented Lagrange</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_solnp_density.html">Lrnr_solnp_density</a></code> </p>
-          </td>
-          <td><p>Nonlinear Optimization via Augmented Lagrange</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_subset_covariates.html">Lrnr_subset_covariates</a></code> </p>
-          </td>
-          <td><p>Learner with Covariate Subsetting</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_svm.html">Lrnr_svm</a></code> </p>
-          </td>
-          <td><p>Support Vector Machines</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_tsDyn.html">Lrnr_tsDyn</a></code> </p>
-          </td>
-          <td><p>Nonlinear Time Series Analysis</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_xgboost.html">Lrnr_xgboost</a></code> </p>
-          </td>
-          <td><p>xgboost: eXtreme Gradient Boosting</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="SuperLearner_interface.html">Lrnr_pkg_SuperLearner</a></code> <code><a href="SuperLearner_interface.html">Lrnr_pkg_SuperLearner_method</a></code> <code><a href="SuperLearner_interface.html">Lrnr_pkg_SuperLearner_screener</a></code> </p>
-          </td>
-          <td><p>Use SuperLearner Wrappers, Screeners, and Methods, in sl3</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-composing-learners" class="hasAnchor"><a href="#section-composing-learners" class="anchor"></a>Composing Learners</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Pipeline.html">Pipeline</a></code> </p>
-          </td>
-          <td><p>Pipeline (chain) of learners.</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Stack.html">Stack</a></code> </p>
-          </td>
-          <td><p>Learner Stacking</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Custom_chain.html">Custom_chain</a></code> <code><a href="Custom_chain.html">customize_chain</a></code> </p>
-          </td>
-          <td><p>Customize chaining for a learner</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-loss-functions" class="hasAnchor"><a href="#section-loss-functions" class="anchor"></a>Loss functions</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="loss_functions.html">loss_squared_error</a></code> <code><a href="loss_functions.html">loss_loglik_true_cat</a></code> <code><a href="loss_functions.html">loss_loglik_binomial</a></code> <code><a href="loss_functions.html">loss_loglik_multinomial</a></code> </p>
-          </td>
-          <td><p>Loss Function Definitions</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="risk.html">risk</a></code> </p>
-          </td>
-          <td><p>Risk Esimation</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-metalearner-functions" class="hasAnchor"><a href="#section-metalearner-functions" class="anchor"></a>Metalearner functions</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="metalearners.html">metalearner_logistic_binomial</a></code> <code><a href="metalearners.html">metalearner_linear</a></code> <code><a href="metalearners.html">metalearner_linear_multinomial</a></code> </p>
-          </td>
-          <td><p>Combine predictions from multiple learners</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-helpful-for-defining-learners" class="hasAnchor"><a href="#section-helpful-for-defining-learners" class="anchor"></a>Helpful for Defining Learners</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="write_learner_template.html">write_learner_template</a></code> </p>
-          </td>
-          <td><p>Generate a file containing a template <code>sl3</code> Learner</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="args_to_list.html">args_to_list</a></code> </p>
-          </td>
-          <td><p>Get all args of parent call (both specified and defaults) as list</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="call_with_args.html">call_with_args</a></code> </p>
-          </td>
-          <td><p>Call with filtered argument list</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="true_obj_size.html">true_obj_size</a></code> </p>
-          </td>
-          <td><p>Estimate object size using serialization</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="safe_dim.html">safe_dim</a></code> </p>
-          </td>
-          <td><p>dim that works for vectors too</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="learner_helpers.html">delayed_make_learner</a></code> <code><a href="learner_helpers.html">learner_train</a></code> <code><a href="learner_helpers.html">delayed_learner_train</a></code> <code><a href="learner_helpers.html">learner_fit_predict</a></code> <code><a href="learner_helpers.html">delayed_learner_fit_predict</a></code> <code><a href="learner_helpers.html">learner_fit_chain</a></code> <code><a href="learner_helpers.html">delayed_learner_fit_chain</a></code> </p>
-          </td>
-          <td><p>Learner helpers</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-sample-datasets" class="hasAnchor"><a href="#section-sample-datasets" class="anchor"></a>Sample Datasets</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="cpp.html">data</a></code> </p>
-          </td>
-          <td><p>Subset of growth data from the collaborative perinatal project (CPP)</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="cpp_1yr.html">data</a></code> </p>
-          </td>
-          <td><p>Subset of growth data from the collaborative perinatal project (CPP)</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="bsds.html">data</a></code> </p>
-          </td>
-          <td><p>Bicycle sharing time series dataset</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="density_dat.html">data</a></code> </p>
-          </td>
-          <td><p>Simulated data with continuous exposure</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-miscellaneous" class="hasAnchor"><a href="#section-miscellaneous" class="anchor"></a>Miscellaneous</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="sl3Options.html">sl3Options</a></code> </p>
-          </td>
-          <td><p>Querying/setting a single <code>sl3</code> option</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-index" class="hasAnchor"><a href="#section-index" class="anchor"></a>Index</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Custom_chain.html">Custom_chain</a></code> <code><a href="Custom_chain.html">customize_chain</a></code> </p>
-          </td>
-          <td><p>Customize chaining for a learner</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_HarmonicReg.html">Lrnr_HarmonicReg</a></code> </p>
-          </td>
-          <td><p>Harmonic Regression</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_arima.html">Lrnr_arima</a></code> </p>
-          </td>
-          <td><p>Univariate ARIMA Models</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_bartMachine.html">Lrnr_bartMachine</a></code> </p>
-          </td>
-          <td><p>BART Machine Learner</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_base.html">Lrnr_base</a></code> <code><a href="Lrnr_base.html">make_learner</a></code> </p>
-          </td>
-          <td><p>Base Class for all sl3 Learners.</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_bilstm.html">Lrnr_bilstm</a></code> </p>
-          </td>
-          <td><p>Bidirectional Long short-term memory Recurrent Neural Network (LSTM)</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_condensier.html">Lrnr_condensier</a></code> </p>
-          </td>
-          <td><p>Conditional Density Estimation</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_cv.html">Lrnr_cv</a></code> </p>
-          </td>
-          <td><p>Fit/Predict a learner with Cross Validation</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_define_interactions.html">Lrnr_define_interactions</a></code> </p>
-          </td>
-          <td><p>Define interactions terms</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_expSmooth.html">Lrnr_expSmooth</a></code> </p>
-          </td>
-          <td><p>Exponential Smoothing</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_glm.html">Lrnr_glm</a></code> </p>
-          </td>
-          <td><p>Generalized Linear Models</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_glm_fast.html">Lrnr_glm_fast</a></code> </p>
-          </td>
-          <td><p>Computationally Efficient GLMs</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_glmnet.html">Lrnr_glmnet</a></code> </p>
-          </td>
-          <td><p>GLMs with Elastic Net Regularization</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_h2o_glm.html">define_h2o_X</a></code> <code><a href="Lrnr_h2o_glm.html">Lrnr_h2o_glm</a></code> </p>
-          </td>
-          <td><p>h2o Model Definition</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_h2o_grid.html">Lrnr_h2o_grid</a></code> <code><a href="Lrnr_h2o_grid.html">Lrnr_h2o_classifier</a></code> <code><a href="Lrnr_h2o_grid.html">Lrnr_h2o_mutator</a></code> </p>
-          </td>
-          <td><p>Grid Search Models with h2o</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_hal9001.html">Lrnr_hal9001</a></code> </p>
-          </td>
-          <td><p>The Scalable Highly Adaptive LASSO</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_independent_binomial.html">Lrnr_independent_binomial</a></code> </p>
-          </td>
-          <td><p>Classification from Binomial Regression</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_lstm.html">Lrnr_lstm</a></code> </p>
-          </td>
-          <td><p>Long short-term memory Recurrent Neural Network (LSTM)</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_mean.html">Lrnr_mean</a></code> </p>
-          </td>
-          <td><p>Fitting Intercept Models</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_nnls.html">Lrnr_nnls</a></code> </p>
-          </td>
-          <td><p>Non-negative Linear Least Squares</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_optim.html">Lrnr_optim</a></code> </p>
-          </td>
-          <td><p>Optimize Metalearner according to Loss Function using optim</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_pca.html">Lrnr_pca</a></code> </p>
-          </td>
-          <td><p>Principal Component Analysis and Regression</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_pkg_condensier_logisfitR6.html">Lrnr_pkg_condensier_logisfitR6</a></code> </p>
-          </td>
-          <td><p>sl3 Learner wrapper for condensier</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_randomForest.html">Lrnr_randomForest</a></code> </p>
-          </td>
-          <td><p>Random Forests</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_ranger.html">Lrnr_ranger</a></code> </p>
-          </td>
-          <td><p>Ranger - A Fast Implementation of Random Forests</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_rpart.html">Lrnr_rpart</a></code> </p>
-          </td>
-          <td><p>Learner for Recursive Partitioning and Regression Trees.</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_rugarch.html">Lrnr_rugarch</a></code> </p>
-          </td>
-          <td><p>Univariate GARCH Models</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_sl.html">Lrnr_sl</a></code> </p>
-          </td>
-          <td><p>SuperLearner Algorithm</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_solnp.html">Lrnr_solnp</a></code> </p>
-          </td>
-          <td><p>Nonlinear Optimization via Augmented Lagrange</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_solnp_density.html">Lrnr_solnp_density</a></code> </p>
-          </td>
-          <td><p>Nonlinear Optimization via Augmented Lagrange</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_subset_covariates.html">Lrnr_subset_covariates</a></code> </p>
-          </td>
-          <td><p>Learner with Covariate Subsetting</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_svm.html">Lrnr_svm</a></code> </p>
-          </td>
-          <td><p>Support Vector Machines</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_tsDyn.html">Lrnr_tsDyn</a></code> </p>
-          </td>
-          <td><p>Nonlinear Time Series Analysis</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Lrnr_xgboost.html">Lrnr_xgboost</a></code> </p>
-          </td>
-          <td><p>xgboost: eXtreme Gradient Boosting</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Pipeline.html">Pipeline</a></code> </p>
-          </td>
-          <td><p>Pipeline (chain) of learners.</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Stack.html">Stack</a></code> </p>
-          </td>
-          <td><p>Learner Stacking</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="SuperLearner_interface.html">Lrnr_pkg_SuperLearner</a></code> <code><a href="SuperLearner_interface.html">Lrnr_pkg_SuperLearner_method</a></code> <code><a href="SuperLearner_interface.html">Lrnr_pkg_SuperLearner_screener</a></code> </p>
-          </td>
-          <td><p>Use SuperLearner Wrappers, Screeners, and Methods, in sl3</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="args_to_list.html">args_to_list</a></code> </p>
-          </td>
-          <td><p>Get all args of parent call (both specified and defaults) as list</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="bsds.html">data</a></code> </p>
-          </td>
-          <td><p>Bicycle sharing time series dataset</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="cpp.html">data</a></code> </p>
-          </td>
-          <td><p>Subset of growth data from the collaborative perinatal project (CPP)</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="cpp_1yr.html">data</a></code> </p>
-          </td>
-          <td><p>Subset of growth data from the collaborative perinatal project (CPP)</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="density_dat.html">data</a></code> </p>
-          </td>
-          <td><p>Simulated data with continuous exposure</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="factors_to_indicators.html">factor_to_indicators</a></code> <code><a href="factors_to_indicators.html">dt_expand_factors</a></code> </p>
-          </td>
-          <td><p>Convert Factors to indicators</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="learner_helpers.html">delayed_make_learner</a></code> <code><a href="learner_helpers.html">learner_train</a></code> <code><a href="learner_helpers.html">delayed_learner_train</a></code> <code><a href="learner_helpers.html">learner_fit_predict</a></code> <code><a href="learner_helpers.html">delayed_learner_fit_predict</a></code> <code><a href="learner_helpers.html">learner_fit_chain</a></code> <code><a href="learner_helpers.html">delayed_learner_fit_chain</a></code> </p>
-          </td>
-          <td><p>Learner helpers</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="list_learners.html">sl3_list_properties</a></code> <code><a href="list_learners.html">sl3_list_learners</a></code> </p>
-          </td>
-          <td><p>List sl3 Learners</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="loss_functions.html">loss_squared_error</a></code> <code><a href="loss_functions.html">loss_loglik_true_cat</a></code> <code><a href="loss_functions.html">loss_loglik_binomial</a></code> <code><a href="loss_functions.html">loss_loglik_multinomial</a></code> </p>
-          </td>
-          <td><p>Loss Function Definitions</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="make_learner_stack.html">make_learner_stack</a></code> </p>
-          </td>
-          <td><p>Make a stack of sl3 learners</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="metalearners.html">metalearner_logistic_binomial</a></code> <code><a href="metalearners.html">metalearner_linear</a></code> <code><a href="metalearners.html">metalearner_linear_multinomial</a></code> </p>
-          </td>
-          <td><p>Combine predictions from multiple learners</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="pack_predictions.html">pack_predictions</a></code> <code><a href="pack_predictions.html">unpack_predictions</a></code> </p>
-          </td>
-          <td><p>Pack multidimensional predictions into a vector (and unpack again)</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="predict_classes.html">predict_classes</a></code> </p>
-          </td>
-          <td><p>Predict Class from Predicted Probabilities</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="prediction_plot.html">prediction_plot</a></code> </p>
-          </td>
-          <td><p>Plot predicted and true values for diganostic purposes</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="risk.html">risk</a></code> </p>
-          </td>
-          <td><p>Risk Esimation</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="safe_dim.html">safe_dim</a></code> </p>
-          </td>
-          <td><p>dim that works for vectors too</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="sl3Options.html">sl3Options</a></code> </p>
-          </td>
-          <td><p>Querying/setting a single <code>sl3</code> option</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="sl3_Task.html">sl3_Task</a></code> <code><a href="sl3_Task.html">make_sl3_Task</a></code> </p>
-          </td>
-          <td><p>Define a Machine Learning Task</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="true_obj_size.html">true_obj_size</a></code> </p>
-          </td>
-          <td><p>Estimate object size using serialization</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="undocumented_learner.html">undocumented_learner</a></code> </p>
-          </td>
-          <td><p>Undocumented Learner</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="variable_type.html">Variable_Type</a></code> <code><a href="variable_type.html">variable_type</a></code> </p>
-          </td>
-          <td><p>Specify variable type</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="write_learner_template.html">write_learner_template</a></code> </p>
-          </td>
-          <td><p>Generate a file containing a template <code>sl3</code> Learner</p></td>
-        </tr>
-      </tbody>
-      </table>
-    </div>
+    <tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-defining-a-task" class="hasAnchor"><a href="#section-defining-a-task" class="anchor"></a>Defining A Task</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="sl3_Task.html">sl3_Task</a></code> <code><a href="sl3_Task.html">make_sl3_Task()</a></code> </p>
+        </td>
+        <td><p>Define a Machine Learning Task</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="variable_type.html">Variable_Type</a></code> <code><a href="variable_type.html">variable_type()</a></code> </p>
+        </td>
+        <td><p>Specify variable type</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-finding-learners" class="hasAnchor"><a href="#section-finding-learners" class="anchor"></a>Finding Learners</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="list_learners.html">sl3_list_properties()</a></code> <code><a href="list_learners.html">sl3_list_learners()</a></code> </p>
+        </td>
+        <td><p>List sl3 Learners</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-sl-learners" class="hasAnchor"><a href="#section-sl-learners" class="anchor"></a>sl3 Learners</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="Lrnr_HarmonicReg.html">Lrnr_HarmonicReg</a></code> </p>
+        </td>
+        <td><p>Harmonic Regression</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_arima.html">Lrnr_arima</a></code> </p>
+        </td>
+        <td><p>Univariate ARIMA Models</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_bartMachine.html">Lrnr_bartMachine</a></code> </p>
+        </td>
+        <td><p>BART Machine Learner</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_base.html">Lrnr_base</a></code> <code><a href="Lrnr_base.html">make_learner()</a></code> </p>
+        </td>
+        <td><p>Base Class for all sl3 Learners.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_bilstm.html">Lrnr_bilstm</a></code> </p>
+        </td>
+        <td><p>Bidirectional Long short-term memory Recurrent Neural Network (LSTM)</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_condensier.html">Lrnr_condensier</a></code> </p>
+        </td>
+        <td><p>Conditional Density Estimation</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_cv.html">Lrnr_cv</a></code> </p>
+        </td>
+        <td><p>Fit/Predict a learner with Cross Validation</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_dbarts.html">Lrnr_dbarts</a></code> </p>
+        </td>
+        <td><p>Discrete Bayesian Additive Regression Tree sampler</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_define_interactions.html">Lrnr_define_interactions</a></code> </p>
+        </td>
+        <td><p>Define interactions terms</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_expSmooth.html">Lrnr_expSmooth</a></code> </p>
+        </td>
+        <td><p>Exponential Smoothing</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_glm.html">Lrnr_glm</a></code> </p>
+        </td>
+        <td><p>Generalized Linear Models</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_glm_fast.html">Lrnr_glm_fast</a></code> </p>
+        </td>
+        <td><p>Computationally Efficient GLMs</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_glmnet.html">Lrnr_glmnet</a></code> </p>
+        </td>
+        <td><p>GLMs with Elastic Net Regularization</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_grf.html">Lrnr_grf</a></code> </p>
+        </td>
+        <td><p>Generalized Random Forests Learner</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_h2o_glm.html">define_h2o_X()</a></code> <code><a href="Lrnr_h2o_glm.html">Lrnr_h2o_glm</a></code> </p>
+        </td>
+        <td><p>h2o Model Definition</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_h2o_grid.html">Lrnr_h2o_grid</a></code> <code><a href="Lrnr_h2o_grid.html">Lrnr_h2o_classifier</a></code> <code><a href="Lrnr_h2o_grid.html">Lrnr_h2o_mutator</a></code> </p>
+        </td>
+        <td><p>Grid Search Models with h2o</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_hal9001.html">Lrnr_hal9001</a></code> </p>
+        </td>
+        <td><p>The Scalable Highly Adaptive LASSO</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_independent_binomial.html">Lrnr_independent_binomial</a></code> </p>
+        </td>
+        <td><p>Classification from Binomial Regression</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_lstm.html">Lrnr_lstm</a></code> </p>
+        </td>
+        <td><p>Long short-term memory Recurrent Neural Network (LSTM)</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_mean.html">Lrnr_mean</a></code> </p>
+        </td>
+        <td><p>Fitting Intercept Models</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_nnls.html">Lrnr_nnls</a></code> </p>
+        </td>
+        <td><p>Non-negative Linear Least Squares</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_optim.html">Lrnr_optim</a></code> </p>
+        </td>
+        <td><p>Optimize Metalearner according to Loss Function using optim</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_pca.html">Lrnr_pca</a></code> </p>
+        </td>
+        <td><p>Principal Component Analysis and Regression</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_pkg_condensier_logisfitR6.html">Lrnr_pkg_condensier_logisfitR6</a></code> </p>
+        </td>
+        <td><p>sl3 Learner wrapper for condensier</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_randomForest.html">Lrnr_randomForest</a></code> </p>
+        </td>
+        <td><p>Random Forests</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_ranger.html">Lrnr_ranger</a></code> </p>
+        </td>
+        <td><p>Ranger - A Fast Implementation of Random Forests</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_rpart.html">Lrnr_rpart</a></code> </p>
+        </td>
+        <td><p>Learner for Recursive Partitioning and Regression Trees.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_rugarch.html">Lrnr_rugarch</a></code> </p>
+        </td>
+        <td><p>Univariate GARCH Models</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_sl.html">Lrnr_sl</a></code> </p>
+        </td>
+        <td><p>SuperLearner Algorithm</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_solnp.html">Lrnr_solnp</a></code> </p>
+        </td>
+        <td><p>Nonlinear Optimization via Augmented Lagrange</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_solnp_density.html">Lrnr_solnp_density</a></code> </p>
+        </td>
+        <td><p>Nonlinear Optimization via Augmented Lagrange</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_subset_covariates.html">Lrnr_subset_covariates</a></code> </p>
+        </td>
+        <td><p>Learner with Covariate Subsetting</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_svm.html">Lrnr_svm</a></code> </p>
+        </td>
+        <td><p>Support Vector Machines</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_tsDyn.html">Lrnr_tsDyn</a></code> </p>
+        </td>
+        <td><p>Nonlinear Time Series Analysis</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_xgboost.html">Lrnr_xgboost</a></code> </p>
+        </td>
+        <td><p>xgboost: eXtreme Gradient Boosting</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="SuperLearner_interface.html">Lrnr_pkg_SuperLearner</a></code> <code><a href="SuperLearner_interface.html">Lrnr_pkg_SuperLearner_method</a></code> <code><a href="SuperLearner_interface.html">Lrnr_pkg_SuperLearner_screener</a></code> </p>
+        </td>
+        <td><p>Use SuperLearner Wrappers, Screeners, and Methods, in sl3</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-composing-learners" class="hasAnchor"><a href="#section-composing-learners" class="anchor"></a>Composing Learners</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="Pipeline.html">Pipeline</a></code> </p>
+        </td>
+        <td><p>Pipeline (chain) of learners.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Stack.html">Stack</a></code> </p>
+        </td>
+        <td><p>Learner Stacking</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Custom_chain.html">Custom_chain</a></code> <code><a href="Custom_chain.html">customize_chain()</a></code> </p>
+        </td>
+        <td><p>Customize chaining for a learner</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-loss-functions" class="hasAnchor"><a href="#section-loss-functions" class="anchor"></a>Loss functions</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="loss_functions.html">loss_squared_error()</a></code> <code><a href="loss_functions.html">loss_loglik_true_cat()</a></code> <code><a href="loss_functions.html">loss_loglik_binomial()</a></code> <code><a href="loss_functions.html">loss_loglik_multinomial()</a></code> </p>
+        </td>
+        <td><p>Loss Function Definitions</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="risk.html">risk()</a></code> </p>
+        </td>
+        <td><p>Risk Esimation</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-metalearner-functions" class="hasAnchor"><a href="#section-metalearner-functions" class="anchor"></a>Metalearner functions</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="metalearners.html">metalearner_logistic_binomial()</a></code> <code><a href="metalearners.html">metalearner_linear()</a></code> <code><a href="metalearners.html">metalearner_linear_multinomial()</a></code> </p>
+        </td>
+        <td><p>Combine predictions from multiple learners</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-helpful-for-defining-learners" class="hasAnchor"><a href="#section-helpful-for-defining-learners" class="anchor"></a>Helpful for Defining Learners</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="write_learner_template.html">write_learner_template()</a></code> </p>
+        </td>
+        <td><p>Generate a file containing a template <code>sl3</code> Learner</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="args_to_list.html">args_to_list()</a></code> </p>
+        </td>
+        <td><p>Get all args of parent call (both specified and defaults) as list</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="call_with_args.html">call_with_args()</a></code> </p>
+        </td>
+        <td><p>Call with filtered argument list</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="true_obj_size.html">true_obj_size()</a></code> </p>
+        </td>
+        <td><p>Estimate object size using serialization</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="safe_dim.html">safe_dim()</a></code> </p>
+        </td>
+        <td><p>dim that works for vectors too</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="learner_helpers.html">delayed_make_learner()</a></code> <code><a href="learner_helpers.html">learner_train()</a></code> <code><a href="learner_helpers.html">delayed_learner_train()</a></code> <code><a href="learner_helpers.html">learner_fit_predict()</a></code> <code><a href="learner_helpers.html">delayed_learner_fit_predict()</a></code> <code><a href="learner_helpers.html">learner_fit_chain()</a></code> <code><a href="learner_helpers.html">delayed_learner_fit_chain()</a></code> </p>
+        </td>
+        <td><p>Learner helpers</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-sample-datasets" class="hasAnchor"><a href="#section-sample-datasets" class="anchor"></a>Sample Datasets</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="cpp.html">cpp</a></code> </p>
+        </td>
+        <td><p>Subset of growth data from the collaborative perinatal project (CPP)</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="cpp_1yr.html">cpp_1yr</a></code> </p>
+        </td>
+        <td><p>Subset of growth data from the collaborative perinatal project (CPP)</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="bsds.html">bsds</a></code> </p>
+        </td>
+        <td><p>Bicycle sharing time series dataset</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="density_dat.html">density_dat</a></code> </p>
+        </td>
+        <td><p>Simulated data with continuous exposure</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-miscellaneous" class="hasAnchor"><a href="#section-miscellaneous" class="anchor"></a>Miscellaneous</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="sl3Options.html">sl3Options()</a></code> </p>
+        </td>
+        <td><p>Querying/setting a single <code>sl3</code> option</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-index" class="hasAnchor"><a href="#section-index" class="anchor"></a>Index</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="Custom_chain.html">Custom_chain</a></code> <code><a href="Custom_chain.html">customize_chain()</a></code> </p>
+        </td>
+        <td><p>Customize chaining for a learner</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_HarmonicReg.html">Lrnr_HarmonicReg</a></code> </p>
+        </td>
+        <td><p>Harmonic Regression</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_arima.html">Lrnr_arima</a></code> </p>
+        </td>
+        <td><p>Univariate ARIMA Models</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_bartMachine.html">Lrnr_bartMachine</a></code> </p>
+        </td>
+        <td><p>BART Machine Learner</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_base.html">Lrnr_base</a></code> <code><a href="Lrnr_base.html">make_learner()</a></code> </p>
+        </td>
+        <td><p>Base Class for all sl3 Learners.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_bilstm.html">Lrnr_bilstm</a></code> </p>
+        </td>
+        <td><p>Bidirectional Long short-term memory Recurrent Neural Network (LSTM)</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_condensier.html">Lrnr_condensier</a></code> </p>
+        </td>
+        <td><p>Conditional Density Estimation</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_cv.html">Lrnr_cv</a></code> </p>
+        </td>
+        <td><p>Fit/Predict a learner with Cross Validation</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_dbarts.html">Lrnr_dbarts</a></code> </p>
+        </td>
+        <td><p>Discrete Bayesian Additive Regression Tree sampler</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_define_interactions.html">Lrnr_define_interactions</a></code> </p>
+        </td>
+        <td><p>Define interactions terms</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_expSmooth.html">Lrnr_expSmooth</a></code> </p>
+        </td>
+        <td><p>Exponential Smoothing</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_glm.html">Lrnr_glm</a></code> </p>
+        </td>
+        <td><p>Generalized Linear Models</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_glm_fast.html">Lrnr_glm_fast</a></code> </p>
+        </td>
+        <td><p>Computationally Efficient GLMs</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_glmnet.html">Lrnr_glmnet</a></code> </p>
+        </td>
+        <td><p>GLMs with Elastic Net Regularization</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_grf.html">Lrnr_grf</a></code> </p>
+        </td>
+        <td><p>Generalized Random Forests Learner</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_h2o_glm.html">define_h2o_X()</a></code> <code><a href="Lrnr_h2o_glm.html">Lrnr_h2o_glm</a></code> </p>
+        </td>
+        <td><p>h2o Model Definition</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_h2o_grid.html">Lrnr_h2o_grid</a></code> <code><a href="Lrnr_h2o_grid.html">Lrnr_h2o_classifier</a></code> <code><a href="Lrnr_h2o_grid.html">Lrnr_h2o_mutator</a></code> </p>
+        </td>
+        <td><p>Grid Search Models with h2o</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_hal9001.html">Lrnr_hal9001</a></code> </p>
+        </td>
+        <td><p>The Scalable Highly Adaptive LASSO</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_independent_binomial.html">Lrnr_independent_binomial</a></code> </p>
+        </td>
+        <td><p>Classification from Binomial Regression</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_lstm.html">Lrnr_lstm</a></code> </p>
+        </td>
+        <td><p>Long short-term memory Recurrent Neural Network (LSTM)</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_mean.html">Lrnr_mean</a></code> </p>
+        </td>
+        <td><p>Fitting Intercept Models</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_nnls.html">Lrnr_nnls</a></code> </p>
+        </td>
+        <td><p>Non-negative Linear Least Squares</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_optim.html">Lrnr_optim</a></code> </p>
+        </td>
+        <td><p>Optimize Metalearner according to Loss Function using optim</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_pca.html">Lrnr_pca</a></code> </p>
+        </td>
+        <td><p>Principal Component Analysis and Regression</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_pkg_condensier_logisfitR6.html">Lrnr_pkg_condensier_logisfitR6</a></code> </p>
+        </td>
+        <td><p>sl3 Learner wrapper for condensier</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_randomForest.html">Lrnr_randomForest</a></code> </p>
+        </td>
+        <td><p>Random Forests</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_ranger.html">Lrnr_ranger</a></code> </p>
+        </td>
+        <td><p>Ranger - A Fast Implementation of Random Forests</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_rpart.html">Lrnr_rpart</a></code> </p>
+        </td>
+        <td><p>Learner for Recursive Partitioning and Regression Trees.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_rugarch.html">Lrnr_rugarch</a></code> </p>
+        </td>
+        <td><p>Univariate GARCH Models</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_sl.html">Lrnr_sl</a></code> </p>
+        </td>
+        <td><p>SuperLearner Algorithm</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_solnp.html">Lrnr_solnp</a></code> </p>
+        </td>
+        <td><p>Nonlinear Optimization via Augmented Lagrange</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_solnp_density.html">Lrnr_solnp_density</a></code> </p>
+        </td>
+        <td><p>Nonlinear Optimization via Augmented Lagrange</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_subset_covariates.html">Lrnr_subset_covariates</a></code> </p>
+        </td>
+        <td><p>Learner with Covariate Subsetting</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_svm.html">Lrnr_svm</a></code> </p>
+        </td>
+        <td><p>Support Vector Machines</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_tsDyn.html">Lrnr_tsDyn</a></code> </p>
+        </td>
+        <td><p>Nonlinear Time Series Analysis</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Lrnr_xgboost.html">Lrnr_xgboost</a></code> </p>
+        </td>
+        <td><p>xgboost: eXtreme Gradient Boosting</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Pipeline.html">Pipeline</a></code> </p>
+        </td>
+        <td><p>Pipeline (chain) of learners.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Stack.html">Stack</a></code> </p>
+        </td>
+        <td><p>Learner Stacking</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="SuperLearner_interface.html">Lrnr_pkg_SuperLearner</a></code> <code><a href="SuperLearner_interface.html">Lrnr_pkg_SuperLearner_method</a></code> <code><a href="SuperLearner_interface.html">Lrnr_pkg_SuperLearner_screener</a></code> </p>
+        </td>
+        <td><p>Use SuperLearner Wrappers, Screeners, and Methods, in sl3</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="args_to_list.html">args_to_list()</a></code> </p>
+        </td>
+        <td><p>Get all args of parent call (both specified and defaults) as list</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="bsds.html">bsds</a></code> </p>
+        </td>
+        <td><p>Bicycle sharing time series dataset</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="cpp.html">cpp</a></code> </p>
+        </td>
+        <td><p>Subset of growth data from the collaborative perinatal project (CPP)</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="cpp_1yr.html">cpp_1yr</a></code> </p>
+        </td>
+        <td><p>Subset of growth data from the collaborative perinatal project (CPP)</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="density_dat.html">density_dat</a></code> </p>
+        </td>
+        <td><p>Simulated data with continuous exposure</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="factors_to_indicators.html">factor_to_indicators()</a></code> <code><a href="factors_to_indicators.html">dt_expand_factors()</a></code> </p>
+        </td>
+        <td><p>Convert Factors to indicators</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="learner_helpers.html">delayed_make_learner()</a></code> <code><a href="learner_helpers.html">learner_train()</a></code> <code><a href="learner_helpers.html">delayed_learner_train()</a></code> <code><a href="learner_helpers.html">learner_fit_predict()</a></code> <code><a href="learner_helpers.html">delayed_learner_fit_predict()</a></code> <code><a href="learner_helpers.html">learner_fit_chain()</a></code> <code><a href="learner_helpers.html">delayed_learner_fit_chain()</a></code> </p>
+        </td>
+        <td><p>Learner helpers</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="list_learners.html">sl3_list_properties()</a></code> <code><a href="list_learners.html">sl3_list_learners()</a></code> </p>
+        </td>
+        <td><p>List sl3 Learners</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="loss_functions.html">loss_squared_error()</a></code> <code><a href="loss_functions.html">loss_loglik_true_cat()</a></code> <code><a href="loss_functions.html">loss_loglik_binomial()</a></code> <code><a href="loss_functions.html">loss_loglik_multinomial()</a></code> </p>
+        </td>
+        <td><p>Loss Function Definitions</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="make_learner_stack.html">make_learner_stack()</a></code> </p>
+        </td>
+        <td><p>Make a stack of sl3 learners</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="metalearners.html">metalearner_logistic_binomial()</a></code> <code><a href="metalearners.html">metalearner_linear()</a></code> <code><a href="metalearners.html">metalearner_linear_multinomial()</a></code> </p>
+        </td>
+        <td><p>Combine predictions from multiple learners</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="pack_predictions.html">pack_predictions()</a></code> <code><a href="pack_predictions.html">unpack_predictions()</a></code> </p>
+        </td>
+        <td><p>Pack multidimensional predictions into a vector (and unpack again)</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="predict_classes.html">predict_classes()</a></code> </p>
+        </td>
+        <td><p>Predict Class from Predicted Probabilities</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="prediction_plot.html">prediction_plot()</a></code> </p>
+        </td>
+        <td><p>Plot predicted and true values for diganostic purposes</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="risk.html">risk()</a></code> </p>
+        </td>
+        <td><p>Risk Esimation</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="safe_dim.html">safe_dim()</a></code> </p>
+        </td>
+        <td><p>dim that works for vectors too</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="sl3Options.html">sl3Options()</a></code> </p>
+        </td>
+        <td><p>Querying/setting a single <code>sl3</code> option</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="sl3_Task.html">sl3_Task</a></code> <code><a href="sl3_Task.html">make_sl3_Task()</a></code> </p>
+        </td>
+        <td><p>Define a Machine Learning Task</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="true_obj_size.html">true_obj_size()</a></code> </p>
+        </td>
+        <td><p>Estimate object size using serialization</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="undocumented_learner.html">undocumented_learner</a></code> </p>
+        </td>
+        <td><p>Undocumented Learner</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="variable_type.html">Variable_Type</a></code> <code><a href="variable_type.html">variable_type()</a></code> </p>
+        </td>
+        <td><p>Specify variable type</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="write_learner_template.html">write_learner_template()</a></code> </p>
+        </td>
+        <td><p>Generate a file containing a template <code>sl3</code> Learner</p></td>
+      </tr>
+    </tbody>
+    </table>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -916,6 +945,8 @@
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

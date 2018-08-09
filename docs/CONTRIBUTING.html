@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>/Users/nimahejazi/git/sl3/CONTRIBUTING.md • sl3</title>
+<title>Contributing to sl3 development • sl3</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -21,13 +21,19 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="pkgdown.css" rel="stylesheet">
-<script src="jquery.sticky-kit.min.js"></script>
 <script src="pkgdown.js"></script>
-  
-  
-<meta property="og:title" content="/Users/nimahejazi/git/sl3/CONTRIBUTING.md" />
+
+
+
+<meta property="og:title" content="Contributing to sl3 development" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -37,16 +43,14 @@
 <![endif]-->
 
 
-<!-- Google analytics -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-115145808-1"></script>
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  ga('create', 'UA-115145808-1', 'auto');
-  ga('send', 'pageview');
-
+  gtag('config', 'UA-115145808-1');
 </script>
 
   </head>
@@ -62,8 +66,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html"></a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="index.html">sl3</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -101,6 +109,7 @@
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -108,22 +117,23 @@
       
       </header>
 
-      <div class="row">
-  <div class="contents col-md-12">
+<div class="row">
+  <div class="contents col-md-9">
     <div class="page-header">
-      <h1>/Users/nimahejazi/git/sl3/CONTRIBUTING.md</h1>
+      <h1>Contributing to sl3 development</h1>
     </div>
 
-<div class="section level1">
-<h1>Contributing to <code>sl3</code> development</h1>
+<div id="contributing-to-sl3-development" class="section level1">
+
 <p>We, the authors of the <code>sl3</code> R package, use the same guide as is used for contributing to the development of the popular <code>ggplot2</code> R package. This document is simply a formal re-statement of that fact.</p>
 <p>The goal of this guide is to help you get up and contributing to <code>sl3</code> as quickly as possible. The guide is divided into two main pieces:</p>
 <ul>
 <li>Filing a bug report or feature request in an issue.</li>
 <li>Suggesting a change via a pull request.</li>
 </ul>
-<div class="section level2">
-<h2>Issues</h2>
+<div id="issues" class="section level2">
+<h2 class="hasAnchor">
+<a href="#issues" class="anchor"></a>Issues</h2>
 <p>When filing an issue, the most important thing is to include a minimal reproducible example so that we can quickly verify the problem, and then figure out how to fix it. There are three things you need to include to make your example reproducible: required packages, data, code.</p>
 <ol>
 <li><p><strong>Packages</strong> should be loaded at the top of the script, so it’s easy to see which ones the example needs.</p></li>
@@ -148,8 +158,9 @@
 <p>You can check you have actually made a reproducible example by starting up a fresh R session and pasting your script in.</p>
 <p>(Unless you’ve been specifically asked for it, please don’t include the output of <code>sessionInfo()</code>.)</p>
 </div>
-<div class="section level2">
-<h2>Pull requests</h2>
+<div id="pull-requests" class="section level2">
+<h2 class="hasAnchor">
+<a href="#pull-requests" class="anchor"></a>Pull requests</h2>
 <p>To contribute a change to <code>sl3</code>, you follow these steps:</p>
 <ol>
 <li>Create a branch in git and make your changes.</li>
@@ -193,6 +204,8 @@
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

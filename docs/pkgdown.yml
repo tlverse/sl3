@@ -1,15 +1,9 @@
-pandoc: '2.2'
-pkgdown: 0.1.0.9000
-pkgdown_sha: 17f683717d0a1547f13a08a259b34c58927452d6
+pandoc: 2.2.1
+pkgdown: 1.1.0
+pkgdown_sha: ~
 articles:
-  SuperLearner_benchmarks.html: SuperLearner_benchmarks.html
-  SuperLearner_benchmarks.html.asis: SuperLearner_benchmarks.html.asis
-  SuperLearner_benchmarks_old.html: SuperLearner_benchmarks_old.html
   custom_lrnrs: custom_lrnrs.html
-  custom_lrnrs.html: custom_lrnrs.html
   intro_sl3: intro_sl3.html
-  intro_sl3.html: intro_sl3.html
-  intro_sl3_refs.bib: intro_sl3_refs.bib
 urls:
   reference: http://sl3.tlverse.org/reference
   article: http://sl3.tlverse.org/articles

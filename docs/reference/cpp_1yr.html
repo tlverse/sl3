@@ -21,18 +21,24 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Subset of growth data from the collaborative perinatal project (CPP) — cpp_1yr" />
 
 <meta property="og:description" content="Subset of growth data from the collaborative perinatal project (CPP) at
 single time-point. The rows in original cpp data were subset for
 agedays==366. See ?cpp for the description of the variables." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -42,16 +48,14 @@ agedays==366. See ?cpp for the description of the variables." />
 <![endif]-->
 
 
-<!-- Google analytics -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-115145808-1"></script>
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  ga('create', 'UA-115145808-1', 'auto');
-  ga('send', 'pageview');
-
+  gtag('config', 'UA-115145808-1');
 </script>
 
   </head>
@@ -67,8 +71,12 @@ agedays==366. See ?cpp for the description of the variables." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html"></a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">sl3</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -106,6 +114,7 @@ agedays==366. See ?cpp for the description of the variables." />
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -113,17 +122,21 @@ agedays==366. See ?cpp for the description of the variables." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Subset of growth data from the collaborative perinatal project (CPP)</h1>
+    
+    <div class="hidden name"><code>cpp_1yr.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Subset of growth data from the collaborative perinatal project (CPP) at
 single time-point. The rows in original <code>cpp</code> data were subset for
 agedays==366. See <code><a href='cpp.html'>?cpp</a></code> for the description of the variables.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>data</span>(<span class='no'>cpp_1yr</span>)</pre>
         
@@ -140,19 +153,30 @@ of longitudinal research 1 (1984): 185-227.</p>
 #&gt; 3       1     366 14.5   79    79 23.23346  3.84  1.35  4.02  3.89      5    1
 #&gt; 6       2     366  8.4   73    73 15.76281 -1.27 -1.17 -0.96 -0.80      5    1
 #&gt; 14      7     366 12.6   79    79 20.18907  2.46  1.35  2.38  2.21      5    1
+#&gt; 18      8     366 11.3   81    81 17.22298  1.45  2.20  0.72  0.31      5    1
+#&gt; 23      9     366 10.7   77    77 18.04689  1.43  1.15  1.28  1.10      5    2
+#&gt; 30     11     366  9.0   78    78 14.79290 -0.64  0.93 -1.39 -1.63      5    1
 #&gt;       sex feedingn                 feeding gagebrth birthwt birthlen apgar1
 #&gt; 3    Male       90                 Unknown      287    4621       55      8
 #&gt; 6    Male       90                 Unknown      280    3345       51      8
 #&gt; 14   Male       90                 Unknown      287    3260       53      6
+#&gt; 18   Male        2 Exclusively formula fed      287    3629       53      9
+#&gt; 23 Female        2 Exclusively formula fed      287    3657       55      8
+#&gt; 30   Male       90                 Unknown      266    2835       51      9
 #&gt;    apgar5 mage mracen mrace mmaritn  mmarit meducyrs sesn          ses parity
 #&gt; 3       9   21      5 White       1 Married       12   50       Middle      1
 #&gt; 6       9   15      5 White       1 Married       NA   NA            .      0
 #&gt; 14      7   19      5 White       1 Married       12   75        Upper      0
+#&gt; 18      9   22      5 White       1 Married       12   63 Upper-middle      1
+#&gt; 23      9   23      5 White       1 Married       12   63 Upper-middle      2
+#&gt; 30      9   27      3 Black       1 Married       NA   NA            .      0
 #&gt;    gravida smoked mcignum comprisk
 #&gt; 3        1      0       0     none
 #&gt; 6        0      1      35     none
 #&gt; 14       0      0       0     none
-#&gt;  [ reached getOption("max.print") -- omitted 3 rows ]</div><div class='input'><span class='fu'>table</span>(<span class='no'>cpp_1yr</span><span class='kw'>[[</span><span class='st'>"agedays"</span>]])</div><div class='output co'>#&gt; 
+#&gt; 18       1      0       0     none
+#&gt; 23       2      0       0     none
+#&gt; 30       0      0       0         </div><div class='input'><span class='fu'>table</span>(<span class='no'>cpp_1yr</span><span class='kw'>[[</span><span class='st'>"agedays"</span>]])</div><div class='output co'>#&gt; 
 #&gt; 366 
 #&gt; 428 </div></pre>
   </div>
@@ -179,6 +203,8 @@ of longitudinal research 1 (1984): 185-227.</p>
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

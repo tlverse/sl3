@@ -21,12 +21,15 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Subset of growth data from the collaborative perinatal project (CPP) — cpp" />
 
 <meta property="og:description" content="Subset of growth data from the collaborative perinatal project (CPP).
@@ -34,6 +37,9 @@ cpp_imputed drops observations for which the haz column is
 NA, and imputes all other observations as 0. This is only for the
 purposes of simplifying testing and examples." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -43,16 +49,14 @@ purposes of simplifying testing and examples." />
 <![endif]-->
 
 
-<!-- Google analytics -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-115145808-1"></script>
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  ga('create', 'UA-115145808-1', 'auto');
-  ga('send', 'pageview');
-
+  gtag('config', 'UA-115145808-1');
 </script>
 
   </head>
@@ -68,8 +72,12 @@ purposes of simplifying testing and examples." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html"></a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">sl3</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -107,6 +115,7 @@ purposes of simplifying testing and examples." />
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -114,25 +123,30 @@ purposes of simplifying testing and examples." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Subset of growth data from the collaborative perinatal project (CPP)</h1>
+    
+    <div class="hidden name"><code>cpp.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Subset of growth data from the collaborative perinatal project (CPP).
 <code>cpp_imputed</code> drops observations for which the <code>haz</code> column is
 <code>NA</code>, and imputes all other observations as 0. This is only for the
 purposes of simplifying testing and examples.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>data</span>(<span class='no'>cpp</span>)</pre>
         
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
     <p>A data frame with 1,912 repated-measures observations and 500 unique
-subjects:</p><dl class='dl-horizontal'>
+subjects:</p>
+<dl class='dl-horizontal'>
 <dt>subjid</dt><dd><p>Subject ID</p></dd>
 <dt>agedays</dt><dd><p>Age since birth at examination (days)</p></dd>
 <dt>wtkg</dt><dd><p>Weight (kg)</p></dd>
@@ -181,19 +195,30 @@ of longitudinal research 1 (1984): 185-227.</p>
 #&gt; 1      1       1  4.621   55    55 15.27603  2.38  2.61  0.19  1.35      5    1
 #&gt; 2      1     123  8.760   NA    NA       NA  1.99    NA    NA    NA      5    1
 #&gt; 3      1     366 14.500   79    79 23.23346  3.84  1.35  4.02  3.89      5    1
+#&gt; 4      2       1  3.345   51    51 12.86044  0.06  0.50 -0.64 -0.43      5    1
+#&gt; 5      2     123  4.340   NA    NA       NA -3.99    NA    NA    NA      5    1
+#&gt; 6      2     366  8.400   73    73 15.76281 -1.27 -1.17 -0.96 -0.80      5    1
 #&gt;    sex feedingn feeding gagebrth birthwt birthlen apgar1 apgar5 mage mracen
 #&gt; 1 Male       90 Unknown      287    4621       55      8      9   21      5
 #&gt; 2 Male       90 Unknown      287    4621       55      8      9   21      5
 #&gt; 3 Male       90 Unknown      287    4621       55      8      9   21      5
+#&gt; 4 Male       90 Unknown      280    3345       51      8      9   15      5
+#&gt; 5 Male       90 Unknown      280    3345       51      8      9   15      5
+#&gt; 6 Male       90 Unknown      280    3345       51      8      9   15      5
 #&gt;   mrace mmaritn  mmarit meducyrs sesn          ses parity gravida smoked
 #&gt; 1 White       1 Married       12   50       Middle      1       1      0
 #&gt; 2 White       1 Married       12   50       Middle      1       1      0
 #&gt; 3 White       1 Married       12   50       Middle      1       1      0
+#&gt; 4 White       1 Married       NA   NA            .      0       0      1
+#&gt; 5 White       1 Married       NA   NA            .      0       0      1
+#&gt; 6 White       1 Married       NA   NA            .      0       0      1
 #&gt;   mcignum comprisk
 #&gt; 1       0     none
 #&gt; 2       0     none
 #&gt; 3       0     none
-#&gt;  [ reached getOption("max.print") -- omitted 3 rows ]</div></pre>
+#&gt; 4      35     none
+#&gt; 5      35     none
+#&gt; 6      35     none</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -220,6 +245,8 @@ of longitudinal research 1 (1984): 185-227.</p>
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>
