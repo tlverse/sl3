@@ -41,15 +41,15 @@ SuperLearner3 <- function(Y, X, newX = NULL, family = gaussian(), SL.library,
   covariates <- copy(names(task_data))
 
   # TODO: check if these columns already exist in X
-  set(task_data, j = "Y", value = Y)
+  safe_set(task_data, j = "Y", value = Y)
   if (!is.null(obsWeights)) {
-    set(task_data, j = "weights", value = obsWeights)
+    safe_set(task_data, j = "weights", value = obsWeights)
     weightvar <- "weights"
   } else {
     weightvar <- NULL
   }
   if (!is.null(id)) {
-    set(task_data, j = "id", value = id)
+    safe_set(task_data, j = "id", value = id)
     idvar <- "id"
   } else {
     idvar <- NULL

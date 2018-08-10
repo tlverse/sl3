@@ -24,7 +24,7 @@ define_h2o_X <- function(task, outcome_type = NULL) {
 
   if (!is.null(outcome_type)) {
     y_formatted <- outcome_type$format(task$Y)
-    set(data, j = task$nodes$outcome, value = y_formatted)
+    safe_set(data, j = task$nodes$outcome, value = y_formatted)
   }
   X <- h2o::as.h2o(data)
   options(op)

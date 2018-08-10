@@ -161,9 +161,9 @@ sl3_Task <- R6Class(
       column_names[original_names] <- col_names
 
       if (is.null(private$.row_index)) {
-        set(private$.data, j = col_names, value = new_data)
+        safe_set(private$.data, j = col_names, value = new_data)
       } else {
-        set(private$.data, i = private$.row_index, j = col_names, value = new_data)
+        safe_set(private$.data, i = private$.row_index, j = col_names, value = new_data)
       }
 
       # return an updated column_names map
