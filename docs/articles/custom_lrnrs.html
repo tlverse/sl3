@@ -87,7 +87,7 @@
       <h1>Defining New <code>sl3</code> Learners</h1>
                         <h4 class="author">Jeremy Coyle, <a href="https://nimahejazi.org">Nima Hejazi</a>, Ivana Malenica, Oleg Sofrygin</h4>
             
-            <h4 class="date">2018-08-08</h4>
+            <h4 class="date">2018-08-11</h4>
       
       
       <div class="hidden name"><code>custom_lrnrs.Rmd</code></div>
@@ -254,9 +254,9 @@
 <p>This field defines properties supported by your learner. This may include different outcome types that are supported, offsets and weights, amongst many other possibilities. To see a list of all properties supported/used by at least one learner, you may invoke <code>sl3_list_properties</code>:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="../reference/list_learners.html">sl3_list_properties</a></span>()</a></code></pre></div>
 <pre><code>##  [1] "binomial"             "categorical"          "continuous"          
-##  [4] "density"              "ids"                  "multivariate_outcome"
-##  [7] "offset"               "preprocessing"        "timeseries"          
-## [10] "weights"              "wrapper"</code></pre>
+##  [4] "cv"                   "density"              "ids"                 
+##  [7] "multivariate_outcome" "offset"               "preprocessing"       
+## [10] "timeseries"           "weights"              "wrapper"</code></pre>
 </div>
 <div id="private-required_packages" class="section level3">
 <h3 class="hasAnchor">
