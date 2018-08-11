@@ -61,12 +61,14 @@ Lrnr_independent_binomial <- R6Class(
 
       # define bintask outcome as indicator of not being in the reference group
       column_names <- task$add_columns(
-        self$uuid,
+        
         data.table(
           binary_outcome =
             as.numeric(Y != reference)
-        )
+        ),
+        self$uuid
       )
+      
       bintask <- task$next_in_chain(
         outcome = "binary_outcome",
         column_names = column_names

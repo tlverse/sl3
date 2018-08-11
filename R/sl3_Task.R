@@ -33,14 +33,18 @@ sl3_Task <- R6Class(
                               row_index = NULL, folds = NULL) {
 
       # process data
-      assert_that(is.data.frame(data) | is.data.table(data))
-      private$.data <- data
-
-      setDT(private$.data)
-
+      if(inherits(data,"Shared_Data")){
+        # we already have a Shared_Data object, so just store it
+        private$.shared_data <- data
+      } else {
+        # we have some other data object, so construct a Shared_Data object
+        # and store it (this will copy the data)
+        private$.shared_data <- Shared_Data$new(data)
+      }
+    
       # process column_names
       if (is.null(column_names)) {
-        column_names <- as.list(names(data))
+        column_names <- as.list(private$.shared_data$column_names)
         names(column_names) <- column_names
       }
 
@@ -109,62 +113,36 @@ sl3_Task <- R6Class(
         return(y)
       }
 
-      old_names <- names(private$.data)
+      old_names <- self$column_names
       interaction_names <- names(interactions)
-      for (i in seq_along(interactions)) {
-        interact <- interactions[[i]]
-        name <- interaction_names[i]
-
-        if (is.null(name) || is.na(name)) {
-          name <- interaction_names[i] <- paste0(interact, collapse = "_")
-        }
-
-        if (name %in% old_names) {
-          if (warn_on_existing) {
-            # this column is already defined, so warn but don't recalculate
-            warning(sprintf(
-              "Interaction column %s is already defined, so skipping",
-              name
-            ))
-          }
-        } else if (all(interact %in% old_names)) {
-          private$.data[, (name) := prod.DT(.SD), .SD = interact]
-        }
+      if(is.null(interaction_names)){
+        interaction_names <- sapply(interactions, paste0, collapse = "_")
       }
-
-
-      interaction_names <- intersect(interaction_names, names(private$.data))
-      # drop interactions that didn't get made
-      private$.column_names[interaction_names] <- interaction_names
-      new_covariates <- c(self$nodes$covariates, interaction_names)
-      return(self$next_in_chain(covariates = new_covariates))
+      
+      is_new <- !(interaction_names%in%old_names)
+      
+      interaction_data <- lapply(interactions[is_new], function(interaction){
+        self$X[, prod.DT(.SD), .SD = interaction]
+      })
+      
+      if(any(!is_new)){
+        warning("The following interactions already exist:", 
+                paste0(interaction_names[!is_new],collapse=", "))
+      }
+      
+      setDT(interaction_data)
+      setnames(interaction_data, interaction_names[is_new])
+      interaction_columns <- self$add_columns(interaction_data)
+      
+      new_covariates <- c(self$nodes$covariates, interaction_names[is_new])
+      return(self$next_in_chain(covariates = new_covariates, column_names = interaction_columns))
     },
 
-    add_columns = function(fit_uuid, new_data, global_cols = FALSE) {
-      current_cols <- names(private$.data)
-
-      if (!(is.data.frame(new_data) | is.data.table(new_data))) {
-        new_data <- as.data.table(new_data)
-      }
-
-      col_names <- names(new_data)
-      original_names <- copy(col_names)
-
-      if (!global_cols) {
-        # by default prepend column names with fit_uuid to prevent column name
-        # conflicts for multiple fits from same learner
-        col_names <- paste(fit_uuid, original_names, sep = "_")
-        # setnames(new_data, original_names, col_names)
-      }
-
+    add_columns = function(new_data, column_uuid=uuid::UUIDgenerate()) {
+      new_col_map <- private$.shared_data$add_columns(new_data, column_uuid, private$.row_index)
+      
       column_names <- private$.column_names
-      column_names[original_names] <- col_names
-
-      if (is.null(private$.row_index)) {
-        safe_set(private$.data, j = col_names, value = new_data)
-      } else {
-        safe_set(private$.data, i = private$.row_index, j = col_names, value = new_data)
-      }
+      column_names[names(new_col_map)] <- new_col_map
 
       # return an updated column_names map
       return(column_names)
@@ -225,7 +203,7 @@ sl3_Task <- R6Class(
         new_outcome_type <- NULL
       }
       new_task$initialize(
-        private$.data,
+        private$.shared_data,
         nodes = new_nodes,
         folds = private$.folds, column_names = column_names,
         row_index = private$.row_index,
@@ -242,7 +220,7 @@ sl3_Task <- R6Class(
       }
       new_task <- self$clone()
       new_task$initialize(
-        private$.data,
+        private$.shared_data,
         nodes = private$.nodes,
         folds = self$folds,
         column_names = private$.column_names,
@@ -259,11 +237,7 @@ sl3_Task <- R6Class(
 
       true_columns <- unlist(private$.column_names[columns])
 
-      if (!is.null(rows)) {
-        subset <- private$.data[rows, true_columns, with = FALSE]
-      } else {
-        subset <- private$.data[, true_columns, with = FALSE]
-      }
+      subset <- private$.shared_data$get_data(rows, true_columns)
 
       if (ncol(subset) > 0) {
         data.table::setnames(subset, true_columns, columns)
@@ -321,8 +295,8 @@ sl3_Task <- R6Class(
   ),
 
   active = list(
-    raw_data = function() {
-      return(private$.data)
+    internal_data = function() {
+      return(private$.shared_data)
     },
 
     data = function() {
@@ -332,7 +306,7 @@ sl3_Task <- R6Class(
 
     nrow = function() {
       if (is.null(private$.row_index)) {
-        return(nrow(private$.data))
+        return(private$.shared_data$nrow)
       } else {
         return(length(private$.row_index))
       }
@@ -415,7 +389,7 @@ sl3_Task <- R6Class(
   ),
 
   private = list(
-    .data = NULL,
+    .shared_data = NULL,
     .nodes = NULL,
     .X = NULL,
     .folds = NULL,
