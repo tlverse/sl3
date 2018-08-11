@@ -12,7 +12,6 @@ covariates <- c(
 outcome <- "mpg"
 task <- sl3_Task$new(mtcars, covariates = covariates, outcome = outcome)
 
-
 test_that("task$X returns appropriate data", {
   X <- task$X
   expect_equal(dim(X), c(nrow(mtcars), length(covariates)))
@@ -45,13 +44,13 @@ test_that("task subsetting works", {
 
   # modifying a subset modifies the original
   column_map <- subsetted_2$add_columns(
-    "test_fit",
-    new_data = data.table(data = 1:2)
+    data.table(data = 1:2),
+    "test_fit"
   )
   new_col_name <- tail(column_map, 1)[[1]]
 
   # extra column from original
-  new_column <- task$raw_data[[new_col_name]]
+  new_column <- unlist(task$internal_data$get_data(NULL,new_col_name), use.names = FALSE)
   expect_equal(new_column[expected_rows], 1:2)
 })
 
@@ -67,21 +66,17 @@ test_that("task errors for empty Y", {
 
 
 test_that("two chained tasks can have the same column name without conflicts", {
-  new_data1 <- task$data[, test_col := 1]
-  column_names1 <- task$add_columns(
-    fit_uuid = UUIDgenerate(),
-    new_data = new_data1
-  )
+  new_data1 <- data.table(test_col = 1)
+  column_names1 <- task$add_columns(new_data1)
+  
   chained1 <- task$next_in_chain(
     covariates = "test_col",
     column_names = column_names1
   )
 
-  new_data2 <- task$data[, test_col := 2]
-  column_names2 <- task$add_columns(
-    fit_uuid = UUIDgenerate(),
-    new_data = new_data2
-  )
+  new_data2 <- data.table(test_col = 2)
+  column_names2 <- task$add_columns(new_data2)
+  
   chained2 <- task$next_in_chain(
     covariates = "test_col",
     column_names = column_names2

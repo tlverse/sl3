@@ -20,11 +20,11 @@
 define_h2o_X <- function(task, outcome_type = NULL) {
   op <- options("h2o.use.data.table" = TRUE)
   # op <- options("datatable.verbose" = TRUE, "h2o.use.data.table" = TRUE)
-  data <- task$data
+  data <- task$X
 
   if (!is.null(outcome_type)) {
     y_formatted <- outcome_type$format(task$Y)
-    safe_set(data, j = task$nodes$outcome, value = y_formatted)
+    data[,(task$nodes$outcome):=y_formatted]
   }
   X <- h2o::as.h2o(data)
   options(op)
