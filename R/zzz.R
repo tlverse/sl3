@@ -94,7 +94,7 @@ sl3Options <- function(o, value) {
     # built more than 4 weeks ago. Please update.\n**********")
     packageStartupMessage(paste(
       "Please note the package is under active",
-      "development. Check often for updates and",
+      "development.\nCheck often for updates and",
       "report bugs at",
       "https://github.com/tlverse/sl3.", "\n"
     ))
