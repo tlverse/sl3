@@ -6,7 +6,7 @@
 [![Travis-CI Build
 Status](https://travis-ci.org/tlverse/sl3.svg?branch=master)](https://travis-ci.org/tlverse/sl3)
 [![Build
-status](https://ci.appveyor.com/api/projects/status/25reu5wdhrwj9qgy?svg=true)](https://ci.appveyor.com/project/jeremyrcoyle/sl3)
+status](https://ci.appveyor.com/api/projects/status/lfv64jnygnmx6txi?svg=true)](https://ci.appveyor.com/project/jeremyrcoyle/sl3)
 [![Coverage
 Status](https://img.shields.io/codecov/c/github/jeremyrcoyle/sl3/master.svg)](https://codecov.io/github/jeremyrcoyle/sl3?branch=master)
 [![Project Status: Active – The project has reached a stable, usable
@@ -101,8 +101,8 @@ library(dplyr)
 library(SuperLearner)
 #> Loading required package: nnls
 #> Super Learner
-#> Version: 2.0-23
-#> Package created on 2018-03-09
+#> Version: 2.0-24
+#> Package created on 2018-08-10
 library(origami)
 #> origami: Generalized Cross-Validation Framework
 #> Version: 1.0.0
@@ -175,8 +175,9 @@ After using the `sl3` R package, please cite the following:
         Learning}},
       year  = {2018},
       howpublished = {\url{https://github.com/tlverse/sl3}},
-      url = {https://doi.org/DOI_HERE},
-      doi = {DOI_HERE}
+      note = {{R} package version 1.1.0},
+      url = {https://doi.org/10.5281/zenodo.1342294},
+      doi = {10.5281/zenodo.1342294}
     }
 ```
 
