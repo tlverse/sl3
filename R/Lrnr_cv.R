@@ -74,7 +74,7 @@ Lrnr_cv <- R6Class(
     chain_fold = function(task, fold_number = 0) {
       predictions <- self$predict_fold(task, fold_number)
       # Add predictions as new columns
-      new_col_names <- task$add_columns(self$fit_uuid, predictions)
+      new_col_names <- task$add_columns(predictions, self$fit_uuid)
       # new_covariates = union(names(predictions),task$nodes$covariates)
       return(task$next_in_chain(
         covariates = names(predictions),
