@@ -134,11 +134,11 @@ Stack <- R6Class(
           current_names <- paste0(learner_names[i], "_", names(current_preds))
           stopifnot(length(current_names) == safe_dim(current_preds)[2])
         }
-        data.table::set(learner_preds, j = current_names, value = current_preds)
+        set(learner_preds, j = current_names, value = current_preds)
         invisible(NULL)
       }
       ## remove the initial seeded column by reference
-      data.table::set(
+      set(
         learner_preds,
         j = "init_seed_preds_to_delete",
         value = NULL

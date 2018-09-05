@@ -33,7 +33,8 @@ prediction_plot <- function(learner_fit) {
     unpacked <- unpack_predictions(predictions)
     unpacked <- as.data.table(unpacked)
     setnames(unpacked, outcome_type$levels)
-    set(unpacked, , "observed", observed)
+    unpacked[,observed:=observed]
+    
     long <- melt.data.table(unpacked, id.vars = c("observed"), measure.vars = outcome_type$levels, variable.name = "category")
     cutoffs <- seq(from = 0, to = 1, length = 1000)
     long[, accurate := category == observed]

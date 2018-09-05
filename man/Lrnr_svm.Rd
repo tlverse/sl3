@@ -70,5 +70,4 @@ Other Learners: \code{\link{Custom_chain}},
   \code{\link{define_h2o_X}},
   \code{\link{undocumented_learner}}
 }
-\concept{Learners}
 \keyword{data}

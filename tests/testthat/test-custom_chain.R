@@ -24,7 +24,7 @@ chain_custom <- function(task) {
   setnames(pred_dt, names(pred_dt), self$name)
 
   # add predictions as new column
-  new_col_names <- task$add_columns(self$fit_uuid, pred_dt)
+  new_col_names <- task$add_columns(pred_dt, self$fit_uuid)
   # prediction becomes outcome
   return(task$next_in_chain(
     outcome = names(pred_dt),
