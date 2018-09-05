@@ -266,7 +266,7 @@ Lrnr_base <- R6Class(
       predictions <- self$predict(task)
       predictions <- as.data.table(predictions)
       # Add predictions as new columns
-      new_col_names <- task$add_columns(self$fit_uuid, predictions)
+      new_col_names <- task$add_columns(predictions, self$fit_uuid)
       # new_covariates = union(names(predictions),task$nodes$covariates)
       return(task$next_in_chain(
         covariates = names(predictions),

@@ -23,7 +23,7 @@ task_2 <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
 glm <- make_learner(Lrnr_glm)
 fit <- glm$train(task)
 
-test_that("making two tasks from the same data and chaining lworks", {
+test_that("making two tasks from the same data and chaining works", {
   chained <- fit$chain(task)
   chained_2 <- fit$chain(task_2)
   expect_is(chained, "sl3_Task")
