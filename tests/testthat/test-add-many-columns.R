@@ -9,16 +9,9 @@ outcome <- "haz"
 
 task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
 
-Rprof(tmp <- tempfile())
-
 for(i in 1:1e4){
     new_data <- data.table(A=rnorm(task$nrow))
     z <- task$add_columns(new_data)
 }
 
-
-Rprof()
-summaryRprof(tmp)
-unlink(tmp)
-
-test_that("columns were added successful", expect_gt(ncol(task$raw_data),1e4))
+test_that("columns were added successful", expect_gt(ncol(task$internal_data$raw_data),1e4))
