@@ -8,12 +8,12 @@ Status](https://travis-ci.org/tlverse/sl3.svg?branch=master)](https://travis-ci.
 [![Build
 status](https://ci.appveyor.com/api/projects/status/lfv64jnygnmx6txi?svg=true)](https://ci.appveyor.com/project/jeremyrcoyle/sl3)
 [![Coverage
-Status](https://img.shields.io/codecov/c/github/jeremyrcoyle/sl3/master.svg)](https://codecov.io/github/jeremyrcoyle/sl3?branch=master)
+Status](https://img.shields.io/codecov/c/github/tlverse/sl3/master.svg)](https://codecov.io/github/tlverse/sl3?branch=master)
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![License: GPL
-v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
+v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1342294.svg)](https://doi.org/10.5281/zenodo.1342294)
 [![Join the chat at
 https://gitter.im/sl3-Rpkg/Lobby](https://badges.gitter.im/sl3-Rpkg/Lobby.svg)](https://gitter.im/sl3-Rpkg/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -34,17 +34,19 @@ Sofrygin](https://github.com/osofr)
 der Laan, Polley, and Hubbard (2007). The Super Learner algorithm
 performs ensemble learning in one of two fashions:
 
-1.  The “discrete” Super Learner can be used to select the best
-    prediction algorithm among a supplied library of learning algorithms
-    (“learners” in the `sl3` nomenclature) – that is, that algorithm
-    which minimizes the cross-validated risk with respect to some
-    appropriate loss function.
-2.  The “ensemble” Super Learner can be used to assign weights to
-    specified learning algorithms (in a user-supplied library) in order
-    to create a combination of these learners that minimizes the
-    cross-validated risk with respect to an appropriate loss function.
-    This notion of weighted combinations has also been called *stacked
-    regression* (Breiman 1996).
+1.  The *discrete* Super Learner can be used to select the best
+    prediction algorithm from among a supplied library of machine
+    learning algorithms (“learners” in the `sl3` nomenclature) – that
+    is, the discrete Super Learner is the single learning algorithm that
+    minimizes the cross-validated risk with respect to an appropriate
+    loss function.
+2.  The *ensemble* Super Learner can be used to assign weights to a set
+    of specified learning algorithms (from a user-supplied library of
+    such algorithms) so as to create a combination of these learners
+    that minimizes the cross-validated risk with respect to an
+    appropriate loss function. This notion of weighted combinations has
+    also been referred to as *stacked regression* (Breiman 1996) and
+    *stacked generalization* (Wolpert 1992).
 
 -----
 
@@ -211,6 +213,13 @@ Springer: 49–64.
 van der Laan, Mark J., Eric C. Polley, and Alan E. Hubbard. 2007. “Super
 Learner.” *Statistical Applications in Genetics and Molecular Biology* 6
 (1).
+
+</div>
+
+<div id="ref-wolpert1992stacked">
+
+Wolpert, David H. 1992. “Stacked Generalization.” *Neural Networks* 5
+(2). Elsevier: 241–59.
 
 </div>
 
