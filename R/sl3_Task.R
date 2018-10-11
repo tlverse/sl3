@@ -33,7 +33,7 @@ sl3_Task <- R6Class(
                               row_index = NULL, folds = NULL) {
 
       # process data
-      if(inherits(data,"Shared_Data")){
+      if (inherits(data, "Shared_Data")) {
         # we already have a Shared_Data object, so just store it
         private$.shared_data <- data
       } else {
@@ -41,7 +41,7 @@ sl3_Task <- R6Class(
         # and store it (this will copy the data)
         private$.shared_data <- Shared_Data$new(data)
       }
-    
+
       # process column_names
       if (is.null(column_names)) {
         column_names <- as.list(private$.shared_data$column_names)
@@ -115,32 +115,34 @@ sl3_Task <- R6Class(
 
       old_names <- self$column_names
       interaction_names <- names(interactions)
-      if(is.null(interaction_names)){
+      if (is.null(interaction_names)) {
         interaction_names <- sapply(interactions, paste0, collapse = "_")
       }
-      
-      is_new <- !(interaction_names%in%old_names)
-      
-      interaction_data <- lapply(interactions[is_new], function(interaction){
+
+      is_new <- !(interaction_names %in% old_names)
+
+      interaction_data <- lapply(interactions[is_new], function(interaction) {
         self$X[, prod.DT(.SD), .SD = interaction]
       })
-      
-      if(any(!is_new)){
-        warning("The following interactions already exist:", 
-                paste0(interaction_names[!is_new],collapse=", "))
+
+      if (any(!is_new)) {
+        warning(
+          "The following interactions already exist:",
+          paste0(interaction_names[!is_new], collapse = ", ")
+        )
       }
-      
+
       setDT(interaction_data)
       setnames(interaction_data, interaction_names[is_new])
       interaction_columns <- self$add_columns(interaction_data)
-      
+
       new_covariates <- c(self$nodes$covariates, interaction_names[is_new])
       return(self$next_in_chain(covariates = new_covariates, column_names = interaction_columns))
     },
 
-    add_columns = function(new_data, column_uuid=uuid::UUIDgenerate()) {
+    add_columns = function(new_data, column_uuid = uuid::UUIDgenerate()) {
       new_col_map <- private$.shared_data$add_columns(new_data, column_uuid, private$.row_index)
-      
+
       column_names <- private$.column_names
       column_names[names(new_col_map)] <- new_col_map
 

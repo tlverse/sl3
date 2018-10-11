@@ -94,3 +94,12 @@ delayed_learner_fit_chain <- function(learner_fit, task = NULL) {
   chain_delayed$name <- "chain"
   return(chain_delayed)
 }
+
+
+sl3_delayed_job_type <- function() {
+  if (getOption("sl3.enable.future")) {
+    return(delayed::FutureJob)
+  } else {
+    return(delayed::SequentialJob)
+  }
+}
