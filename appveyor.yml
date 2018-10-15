@@ -32,6 +32,7 @@ build_script:
   - travis-tool.sh install_github jimhester/covr
   - travis-tool.sh install_github tlverse/delayed
   - travis-tool.sh install_github tlverse/origami
+  - travis-tool.sh install_github osofr/simcausal
   - travis-tool.sh install_github osofr/condensier
   - travis-tool.sh install_github benkeser/halplus
   - travis-tool.sh install_github tlverse/hal9001
