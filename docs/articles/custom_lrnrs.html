@@ -87,7 +87,7 @@
       <h1>Defining New <code>sl3</code> Learners</h1>
                         <h4 class="author">Jeremy Coyle, <a href="https://nimahejazi.org">Nima Hejazi</a>, Ivana Malenica, Oleg Sofrygin</h4>
             
-            <h4 class="date">2018-10-10</h4>
+            <h4 class="date">2018-10-15</h4>
       
       
       <div class="hidden name"><code>custom_lrnrs.Rmd</code></div>
@@ -102,130 +102,130 @@
 <p>This guide describes the process of implementing a learner class for a new machine learning algorithm. By writing a learner class for your favorite machine learning algorithm, you will be able to use it in all the places you could otherwise use any other <code>sl3</code> learners, including <code>Pipeline</code>s, <code>Stack</code>s, and Super Learner. We have done our best to streamline the process of creating new <code>sl3</code> learners.</p>
 <p>Before diving into defining a new learner, it will likely be helpful to read some background material. If you haven’t already read it, the <a href="intro_sl3.html">“Modern Machine Learning in R”</a> vignette is a good introduction to the <code>sl3</code> package and it’s underlying architecture. The <a href="https://cran.r-project.org/web/packages/R6/vignettes/Introduction.html"><code>R6</code></a> documentation will help you understand how <code>R6</code> classes are defined. In addition, the help files for <a href="https://sl3.tlverse.org/reference/sl3_Task.html"><code>sl3_Task</code></a> and <a href="https://sl3.tlverse.org/reference/Lrnr_base.html"><code>Lrnr_base</code></a> are good resources for how those objects can be used. If you’re interested in defining learners that fit sub-learners, reading the documentation of the <a href="https://delayed.tlverse.org/articles/delayed.html"><code>delayed</code></a> package will be helpful.</p>
 <p>In the following sections, we introduce and review a template for a new <code>sl3</code> learner, describing the sections that can be used to define your new learner. This is followed by a discussion of the important task of documenting and testing your new learner. Finally, we conclude by explaining how you can add your learner to <code>sl3</code> so that others may make use of it.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sl3)
-<span class="kw">library</span>(knitr)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(sl3)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(knitr)</a></code></pre></div>
 </div>
 <div id="learner-template" class="section level2">
 <h2 class="hasAnchor">
 <a href="#learner-template" class="anchor"></a>Learner Template</h2>
 <p><code>sl3</code> provides a template of a learner for use in defining new learners. You can make a copy of the template to work on by invoking <code>write_learner_template</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Not run:
-<span class="kw"><a href="../reference/write_learner_template.html">write_learner_template</a></span>(<span class="st">"path/to/write/Learner_template.R"</span>)</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">## Not run:</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw"><a href="../reference/write_learner_template.html">write_learner_template</a></span>(<span class="st">"path/to/write/Learner_template.R"</span>)</a></code></pre></div>
 <p>Let’s take a look at that template:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">##' Template of a \code{sl3} Learner.
-##'
-##' This is a template for defining a new learner.
-##' This can be copied to a new file using \code{\link{write_learner_template}}. 
-##' The remainder of this documentation is an example of how you might write documentation for your new learner.
-##' This learner uses \code{\link[my_package]{my_ml_fun}} from \code{my_package} to fit my favorite machine learning algorithm.
-##' 
-##' @docType class
-##' @importFrom R6 R6Class
-##' @export
-##' @keywords data
-##' @return Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
-##' @format \code{\link{R6Class}} object.
-##' @family Learners
-##' 
-##' @section Parameters:
-##' \describe{
-##'   \item{\code{param_1="default_1"}}{ This parameter does something.
-##'   }
-##'   \item{\code{param_2="default_2"}}{ This parameter does something else.
-##'   }
-##'   \item{\code{...}}{ Other parameters passed directly to \code{\link[my_package]{my_ml_fun}}. See its documentation for details.
-##'   }
-##' }
-##' 
-##' @section Methods:
-##' \describe{
-##' \item{\code{special_function(arg_1)}}{
-##'   My learner is special so it has a special function.
-##'   
-##'   \itemize{
-##'     \item{\code{arg_1}: A very special argument.
-##'    }
-##'   }
-##'   }
-##' }
-Lrnr_template &lt;-<span class="st"> </span><span class="kw">R6Class</span>(<span class="dt">classname =</span> <span class="st">"Lrnr_template"</span>, <span class="dt">inherit =</span> Lrnr_base,
-                    <span class="dt">portable =</span> <span class="ot">TRUE</span>, <span class="dt">class =</span> <span class="ot">TRUE</span>,
-<span class="co"># Above, you should change Lrnr_template (in both the object name and the classname argument)</span>
-<span class="co"># to a name that indicates what your learner does</span>
-  <span class="dt">public =</span> <span class="kw">list</span>(
-    
-    <span class="co"># you can define default parameter values here</span>
-    <span class="co"># if possible, your learner should define defaults for all required parameters</span>
-    <span class="dt">initialize =</span> <span class="cf">function</span>(<span class="dt">param_1=</span><span class="st">"default_1"</span>, <span class="dt">param_2=</span><span class="st">"default_2"</span>, ...) {
-      <span class="co"># this captures all parameters to initialize and saves them as self$params  </span>
-      params &lt;-<span class="st"> </span><span class="kw"><a href="../reference/args_to_list.html">args_to_list</a></span>()
-      super<span class="op">$</span><span class="kw">initialize</span>(<span class="dt">params =</span> params, ...)
-    },
-    
-    <span class="co"># you can define public functions that allow your learner to do special things here</span>
-    <span class="co"># for instance glm learner might return prediction standard errors</span>
-    <span class="dt">special_function =</span> <span class="cf">function</span>(arg_<span class="dv">1</span>){
-      
-    }
-  ),
-  <span class="dt">private =</span> <span class="kw">list</span>(
-    <span class="co"># list properties your learner supports here. </span>
-    <span class="co"># Use sl3_list_properties() for a list of options</span>
-    <span class="dt">.properties =</span> <span class="kw">c</span>(<span class="st">""</span>),
-    
-    <span class="co"># list any packages required for your learner here.</span>
-    <span class="dt">.required_packages =</span> <span class="kw">c</span>(<span class="st">"my_package"</span>),
-    
-    <span class="co"># .train takes task data and returns a fit object that can be used to generate predictions</span>
-    <span class="dt">.train =</span> <span class="cf">function</span>(task) {
-      <span class="co"># generate an argument list from the parameters that were</span>
-      <span class="co"># captured when your learner was initialized.</span>
-      <span class="co"># this allows users to pass arguments directly to your ml function</span>
-      args &lt;-<span class="st"> </span>self<span class="op">$</span>params
-      
-      
-      <span class="co"># get outcome variable type</span>
-      <span class="co"># prefering learner$params$outcome_type first, then task$outcome_type</span>
-      outcome_type &lt;-<span class="st"> </span>self<span class="op">$</span><span class="kw">get_outcome_type</span>(task)
-      <span class="co"># should pass something on to your learner indicating outcome_type</span>
-      <span class="co"># e.g. family or objective</span>
-      
-      <span class="co"># add task data to the argument list</span>
-      <span class="co"># what these arguments are called depends on the learner you are wrapping</span>
-      args<span class="op">$</span>x &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(task<span class="op">$</span>X_intercept)
-      args<span class="op">$</span>y &lt;-<span class="st"> </span>outcome_type<span class="op">$</span><span class="kw">format</span>(task<span class="op">$</span>Y)
-      
-      <span class="co"># only add arguments on weights and offset </span>
-      <span class="co"># if those were specified when the task was generated</span>
-      <span class="cf">if</span>(task<span class="op">$</span><span class="kw">has_node</span>(<span class="st">"weights"</span>)){
-        args<span class="op">$</span>weights &lt;-<span class="st"> </span>task<span class="op">$</span>weights
-      }
-      
-      <span class="cf">if</span>(task<span class="op">$</span><span class="kw">has_node</span>(<span class="st">"offset"</span>)){
-        args<span class="op">$</span>offset &lt;-<span class="st"> </span>task<span class="op">$</span>offset
-      }
-      
-      <span class="co"># call a function that fits your algorithm</span>
-      <span class="co"># with the argument list you constructed</span>
-      fit_object &lt;-<span class="st"> </span><span class="kw"><a href="../reference/call_with_args.html">call_with_args</a></span>(my_ml_fun, args)
-      
-      <span class="co"># return the fit object, which will be stored</span>
-      <span class="co"># in a learner object and returned from the call</span>
-      <span class="co"># to learner$predict</span>
-      <span class="kw">return</span>(fit_object)
-    },
-    
-    <span class="co"># .predict takes a task and returns predictions from that task</span>
-    <span class="dt">.predict =</span> <span class="cf">function</span>(<span class="dt">task =</span> <span class="ot">NULL</span>) {
-      self<span class="op">$</span>training_task
-      self<span class="op">$</span>training_outcome_type
-      self<span class="op">$</span>fit_object
-      
-      predictions &lt;-<span class="st"> </span><span class="kw">predict</span>(self<span class="op">$</span>fit_object, task<span class="op">$</span>X)
-      <span class="kw">return</span>(predictions)
-    }
-  )
-)</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">##' Template of a \code{sl3} Learner.</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">##'</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">##' This is a template for defining a new learner.</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">##' This can be copied to a new file using \code{\link{write_learner_template}}. </a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">##' The remainder of this documentation is an example of how you might write documentation for your new learner.</a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">##' This learner uses \code{\link[my_package]{my_ml_fun}} from \code{my_package} to fit my favorite machine learning algorithm.</a>
+<a class="sourceLine" id="cb3-7" data-line-number="7">##' </a>
+<a class="sourceLine" id="cb3-8" data-line-number="8">##' @docType class</a>
+<a class="sourceLine" id="cb3-9" data-line-number="9">##' @importFrom R6 R6Class</a>
+<a class="sourceLine" id="cb3-10" data-line-number="10">##' @export</a>
+<a class="sourceLine" id="cb3-11" data-line-number="11">##' @keywords data</a>
+<a class="sourceLine" id="cb3-12" data-line-number="12">##' @return Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.</a>
+<a class="sourceLine" id="cb3-13" data-line-number="13">##' @format \code{\link{R6Class}} object.</a>
+<a class="sourceLine" id="cb3-14" data-line-number="14">##' @family Learners</a>
+<a class="sourceLine" id="cb3-15" data-line-number="15">##' </a>
+<a class="sourceLine" id="cb3-16" data-line-number="16">##' @section Parameters:</a>
+<a class="sourceLine" id="cb3-17" data-line-number="17">##' \describe{</a>
+<a class="sourceLine" id="cb3-18" data-line-number="18">##'   \item{\code{param_1="default_1"}}{ This parameter does something.</a>
+<a class="sourceLine" id="cb3-19" data-line-number="19">##'   }</a>
+<a class="sourceLine" id="cb3-20" data-line-number="20">##'   \item{\code{param_2="default_2"}}{ This parameter does something else.</a>
+<a class="sourceLine" id="cb3-21" data-line-number="21">##'   }</a>
+<a class="sourceLine" id="cb3-22" data-line-number="22">##'   \item{\code{...}}{ Other parameters passed directly to \code{\link[my_package]{my_ml_fun}}. See its documentation for details.</a>
+<a class="sourceLine" id="cb3-23" data-line-number="23">##'   }</a>
+<a class="sourceLine" id="cb3-24" data-line-number="24">##' }</a>
+<a class="sourceLine" id="cb3-25" data-line-number="25">##' </a>
+<a class="sourceLine" id="cb3-26" data-line-number="26">##' @section Methods:</a>
+<a class="sourceLine" id="cb3-27" data-line-number="27">##' \describe{</a>
+<a class="sourceLine" id="cb3-28" data-line-number="28">##' \item{\code{special_function(arg_1)}}{</a>
+<a class="sourceLine" id="cb3-29" data-line-number="29">##'   My learner is special so it has a special function.</a>
+<a class="sourceLine" id="cb3-30" data-line-number="30">##'   </a>
+<a class="sourceLine" id="cb3-31" data-line-number="31">##'   \itemize{</a>
+<a class="sourceLine" id="cb3-32" data-line-number="32">##'     \item{\code{arg_1}: A very special argument.</a>
+<a class="sourceLine" id="cb3-33" data-line-number="33">##'    }</a>
+<a class="sourceLine" id="cb3-34" data-line-number="34">##'   }</a>
+<a class="sourceLine" id="cb3-35" data-line-number="35">##'   }</a>
+<a class="sourceLine" id="cb3-36" data-line-number="36">##' }</a>
+<a class="sourceLine" id="cb3-37" data-line-number="37">Lrnr_template &lt;-<span class="st"> </span><span class="kw">R6Class</span>(<span class="dt">classname =</span> <span class="st">"Lrnr_template"</span>, <span class="dt">inherit =</span> Lrnr_base,</a>
+<a class="sourceLine" id="cb3-38" data-line-number="38">                    <span class="dt">portable =</span> <span class="ot">TRUE</span>, <span class="dt">class =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb3-39" data-line-number="39"><span class="co"># Above, you should change Lrnr_template (in both the object name and the classname argument)</span></a>
+<a class="sourceLine" id="cb3-40" data-line-number="40"><span class="co"># to a name that indicates what your learner does</span></a>
+<a class="sourceLine" id="cb3-41" data-line-number="41">  <span class="dt">public =</span> <span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb3-42" data-line-number="42">    </a>
+<a class="sourceLine" id="cb3-43" data-line-number="43">    <span class="co"># you can define default parameter values here</span></a>
+<a class="sourceLine" id="cb3-44" data-line-number="44">    <span class="co"># if possible, your learner should define defaults for all required parameters</span></a>
+<a class="sourceLine" id="cb3-45" data-line-number="45">    <span class="dt">initialize =</span> <span class="cf">function</span>(<span class="dt">param_1=</span><span class="st">"default_1"</span>, <span class="dt">param_2=</span><span class="st">"default_2"</span>, ...) {</a>
+<a class="sourceLine" id="cb3-46" data-line-number="46">      <span class="co"># this captures all parameters to initialize and saves them as self$params  </span></a>
+<a class="sourceLine" id="cb3-47" data-line-number="47">      params &lt;-<span class="st"> </span><span class="kw"><a href="../reference/args_to_list.html">args_to_list</a></span>()</a>
+<a class="sourceLine" id="cb3-48" data-line-number="48">      super<span class="op">$</span><span class="kw">initialize</span>(<span class="dt">params =</span> params, ...)</a>
+<a class="sourceLine" id="cb3-49" data-line-number="49">    },</a>
+<a class="sourceLine" id="cb3-50" data-line-number="50">    </a>
+<a class="sourceLine" id="cb3-51" data-line-number="51">    <span class="co"># you can define public functions that allow your learner to do special things here</span></a>
+<a class="sourceLine" id="cb3-52" data-line-number="52">    <span class="co"># for instance glm learner might return prediction standard errors</span></a>
+<a class="sourceLine" id="cb3-53" data-line-number="53">    <span class="dt">special_function =</span> <span class="cf">function</span>(arg_<span class="dv">1</span>){</a>
+<a class="sourceLine" id="cb3-54" data-line-number="54">      </a>
+<a class="sourceLine" id="cb3-55" data-line-number="55">    }</a>
+<a class="sourceLine" id="cb3-56" data-line-number="56">  ),</a>
+<a class="sourceLine" id="cb3-57" data-line-number="57">  <span class="dt">private =</span> <span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb3-58" data-line-number="58">    <span class="co"># list properties your learner supports here. </span></a>
+<a class="sourceLine" id="cb3-59" data-line-number="59">    <span class="co"># Use sl3_list_properties() for a list of options</span></a>
+<a class="sourceLine" id="cb3-60" data-line-number="60">    <span class="dt">.properties =</span> <span class="kw">c</span>(<span class="st">""</span>),</a>
+<a class="sourceLine" id="cb3-61" data-line-number="61">    </a>
+<a class="sourceLine" id="cb3-62" data-line-number="62">    <span class="co"># list any packages required for your learner here.</span></a>
+<a class="sourceLine" id="cb3-63" data-line-number="63">    <span class="dt">.required_packages =</span> <span class="kw">c</span>(<span class="st">"my_package"</span>),</a>
+<a class="sourceLine" id="cb3-64" data-line-number="64">    </a>
+<a class="sourceLine" id="cb3-65" data-line-number="65">    <span class="co"># .train takes task data and returns a fit object that can be used to generate predictions</span></a>
+<a class="sourceLine" id="cb3-66" data-line-number="66">    <span class="dt">.train =</span> <span class="cf">function</span>(task) {</a>
+<a class="sourceLine" id="cb3-67" data-line-number="67">      <span class="co"># generate an argument list from the parameters that were</span></a>
+<a class="sourceLine" id="cb3-68" data-line-number="68">      <span class="co"># captured when your learner was initialized.</span></a>
+<a class="sourceLine" id="cb3-69" data-line-number="69">      <span class="co"># this allows users to pass arguments directly to your ml function</span></a>
+<a class="sourceLine" id="cb3-70" data-line-number="70">      args &lt;-<span class="st"> </span>self<span class="op">$</span>params</a>
+<a class="sourceLine" id="cb3-71" data-line-number="71">      </a>
+<a class="sourceLine" id="cb3-72" data-line-number="72">      </a>
+<a class="sourceLine" id="cb3-73" data-line-number="73">      <span class="co"># get outcome variable type</span></a>
+<a class="sourceLine" id="cb3-74" data-line-number="74">      <span class="co"># prefering learner$params$outcome_type first, then task$outcome_type</span></a>
+<a class="sourceLine" id="cb3-75" data-line-number="75">      outcome_type &lt;-<span class="st"> </span>self<span class="op">$</span><span class="kw">get_outcome_type</span>(task)</a>
+<a class="sourceLine" id="cb3-76" data-line-number="76">      <span class="co"># should pass something on to your learner indicating outcome_type</span></a>
+<a class="sourceLine" id="cb3-77" data-line-number="77">      <span class="co"># e.g. family or objective</span></a>
+<a class="sourceLine" id="cb3-78" data-line-number="78">      </a>
+<a class="sourceLine" id="cb3-79" data-line-number="79">      <span class="co"># add task data to the argument list</span></a>
+<a class="sourceLine" id="cb3-80" data-line-number="80">      <span class="co"># what these arguments are called depends on the learner you are wrapping</span></a>
+<a class="sourceLine" id="cb3-81" data-line-number="81">      args<span class="op">$</span>x &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(task<span class="op">$</span>X_intercept)</a>
+<a class="sourceLine" id="cb3-82" data-line-number="82">      args<span class="op">$</span>y &lt;-<span class="st"> </span>outcome_type<span class="op">$</span><span class="kw">format</span>(task<span class="op">$</span>Y)</a>
+<a class="sourceLine" id="cb3-83" data-line-number="83">      </a>
+<a class="sourceLine" id="cb3-84" data-line-number="84">      <span class="co"># only add arguments on weights and offset </span></a>
+<a class="sourceLine" id="cb3-85" data-line-number="85">      <span class="co"># if those were specified when the task was generated</span></a>
+<a class="sourceLine" id="cb3-86" data-line-number="86">      <span class="cf">if</span>(task<span class="op">$</span><span class="kw">has_node</span>(<span class="st">"weights"</span>)){</a>
+<a class="sourceLine" id="cb3-87" data-line-number="87">        args<span class="op">$</span>weights &lt;-<span class="st"> </span>task<span class="op">$</span>weights</a>
+<a class="sourceLine" id="cb3-88" data-line-number="88">      }</a>
+<a class="sourceLine" id="cb3-89" data-line-number="89">      </a>
+<a class="sourceLine" id="cb3-90" data-line-number="90">      <span class="cf">if</span>(task<span class="op">$</span><span class="kw">has_node</span>(<span class="st">"offset"</span>)){</a>
+<a class="sourceLine" id="cb3-91" data-line-number="91">        args<span class="op">$</span>offset &lt;-<span class="st"> </span>task<span class="op">$</span>offset</a>
+<a class="sourceLine" id="cb3-92" data-line-number="92">      }</a>
+<a class="sourceLine" id="cb3-93" data-line-number="93">      </a>
+<a class="sourceLine" id="cb3-94" data-line-number="94">      <span class="co"># call a function that fits your algorithm</span></a>
+<a class="sourceLine" id="cb3-95" data-line-number="95">      <span class="co"># with the argument list you constructed</span></a>
+<a class="sourceLine" id="cb3-96" data-line-number="96">      fit_object &lt;-<span class="st"> </span><span class="kw"><a href="../reference/call_with_args.html">call_with_args</a></span>(my_ml_fun, args)</a>
+<a class="sourceLine" id="cb3-97" data-line-number="97">      </a>
+<a class="sourceLine" id="cb3-98" data-line-number="98">      <span class="co"># return the fit object, which will be stored</span></a>
+<a class="sourceLine" id="cb3-99" data-line-number="99">      <span class="co"># in a learner object and returned from the call</span></a>
+<a class="sourceLine" id="cb3-100" data-line-number="100">      <span class="co"># to learner$predict</span></a>
+<a class="sourceLine" id="cb3-101" data-line-number="101">      <span class="kw">return</span>(fit_object)</a>
+<a class="sourceLine" id="cb3-102" data-line-number="102">    },</a>
+<a class="sourceLine" id="cb3-103" data-line-number="103">    </a>
+<a class="sourceLine" id="cb3-104" data-line-number="104">    <span class="co"># .predict takes a task and returns predictions from that task</span></a>
+<a class="sourceLine" id="cb3-105" data-line-number="105">    <span class="dt">.predict =</span> <span class="cf">function</span>(<span class="dt">task =</span> <span class="ot">NULL</span>) {</a>
+<a class="sourceLine" id="cb3-106" data-line-number="106">      self<span class="op">$</span>training_task</a>
+<a class="sourceLine" id="cb3-107" data-line-number="107">      self<span class="op">$</span>training_outcome_type</a>
+<a class="sourceLine" id="cb3-108" data-line-number="108">      self<span class="op">$</span>fit_object</a>
+<a class="sourceLine" id="cb3-109" data-line-number="109">      </a>
+<a class="sourceLine" id="cb3-110" data-line-number="110">      predictions &lt;-<span class="st"> </span><span class="kw">predict</span>(self<span class="op">$</span>fit_object, task<span class="op">$</span>X)</a>
+<a class="sourceLine" id="cb3-111" data-line-number="111">      <span class="kw">return</span>(predictions)</a>
+<a class="sourceLine" id="cb3-112" data-line-number="112">    }</a>
+<a class="sourceLine" id="cb3-113" data-line-number="113">  )</a>
+<a class="sourceLine" id="cb3-114" data-line-number="114">)</a></code></pre></div>
 <p>The template has comments indicating where details specific to the learner you’re trying to implement should be filled in. In the next section, we will discuss those details further.</p>
 </div>
 <div id="defining-your-learner" class="section level2">
@@ -252,7 +252,7 @@ Lrnr_template &lt;-<span class="st"> </span><span class="kw">R6Class</span>(<spa
 <a href="#private-properties" class="anchor"></a><code>private$.properties</code>
 </h3>
 <p>This field defines properties supported by your learner. This may include different outcome types that are supported, offsets and weights, amongst many other possibilities. To see a list of all properties supported/used by at least one learner, you may invoke <code>sl3_list_properties</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/list_learners.html">sl3_list_properties</a></span>()</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="../reference/list_learners.html">sl3_list_properties</a></span>()</a></code></pre></div>
 <pre><code>##  [1] "binomial"             "categorical"          "continuous"          
 ##  [4] "cv"                   "density"              "ids"                 
 ##  [7] "multivariate_outcome" "offset"               "preprocessing"       
@@ -304,7 +304,7 @@ Lrnr_template &lt;-<span class="st"> </span><span class="kw">R6Class</span>(<spa
 <p>If, like these learners, your learner depends on sub-learners, you have two options:</p>
 <ol style="list-style-type: decimal">
 <li>Don’t worry about parallelizing sub-learners. Simply implement <code>private$.train</code> as discussed above, being sure to call <code>sublearner$base_train</code> and not <code>sublearner$train</code>, to avoid nesting calls to <code>delayed</code>, which may result in sub-optimal performance.</li>
-<li>Implement <code>private$.train_sublearners(task)</code> and <code>private$.train(task,    trained_sublearners)</code>, to parallelize sub-learners using <code>delayed</code>. We suggest reviewing the implementations of the <code>Stack</code>, <code>Pipeline</code>, <code>Lrnr_cv</code> and <code>Lrnr_sl</code> to get a better understanding of how to implement parallelized sub-learners.</li>
+<li>Implement <code>private$.train_sublearners(task)</code> and <code>private$.train(task, trained_sublearners)</code>, to parallelize sub-learners using <code>delayed</code>. We suggest reviewing the implementations of the <code>Stack</code>, <code>Pipeline</code>, <code>Lrnr_cv</code> and <code>Lrnr_sl</code> to get a better understanding of how to implement parallelized sub-learners.</li>
 </ol>
 <p>In either case, you should be careful to call <code>sublearner$base_predict</code> and <code>sublearner$base_chain</code>, instead of <code>sublearner$predict</code> and <code>sublearner$chain</code>, except in the context of the <code>private$.train_sublearners</code> function, where you should use <code>delayed_learner_fit_predict</code> and <code>delayed_learner_fit_chain</code>.</p>
 </div>

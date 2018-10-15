@@ -4,7 +4,7 @@
 \alias{drop_offsets_chain}
 \title{Chain while dropping offsetes}
 \usage{
-drop_offsets_chain(task)
+drop_offsets_chain(self, task)
 }
 \arguments{
 \item{task}{An object of class \code{sl3_Task}.}

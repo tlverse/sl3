@@ -17,7 +17,7 @@ task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
 glm_learner <- Lrnr_glm$new()
 
 #### custom chain
-chain_custom <- function(task) {
+chain_custom <- function(self, task) {
   preds <- self$predict(task)
   pred_dt <- data.table(preds)
 

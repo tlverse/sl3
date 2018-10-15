@@ -26,26 +26,31 @@ before_install:
   - sudo pip install numpy tensorflow keras
 
 r_packages:
+  - devtools
   - covr
   - drat
 
 script:
-  - Rscript -e "devtools::install_github(c('osofr/condensier',
-                                           'tlverse/delayed',
-                                           'tlverse/origami',
-                                           'jeremyrcoyle/hal9001'),
-                                           upgrade_dependencies = FALSE)"
+  #- Rscript -e "devtools::install_github(c('osofr/condensier',
+                                           #'tlverse/delayed',
+                                           #'tlverse/origami',
+                                           #'tlverse/hal9001'),
+                                           #upgrade_dependencies = FALSE)"
 
-#r_github_packages:
-  #- osofr/condensier
-  #- tlverse/delayed
-  #- tlverse/origami
-  #- jeremyrcoyle/hal9001
+r_github_packages:
+  - r-lib/devtools@2d012d1
+  - r-lib/sessioninfo
+  - jimhester/covr
+  - osofr/simcausal
+  - osofr/condensier
+  - tlverse/delayed
+  - tlverse/origami
+  - tlverse/hal9001
 
 after_success:
   - travis_wait 80 Rscript -e 'covr::codecov()'
 
-_failure:
+on_failure:
   - "./travis-tool.sh dump_logs"
 
 notifications:
