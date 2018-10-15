@@ -131,7 +131,7 @@ Lrnr_base <- R6Class(
       subsetted_task <- self$subset_covariates(task)
       # use custom chain function if provided
       if (!is.null(private$.custom_chain)) {
-        next_task <- private$.custom_chain(subsetted_task)
+        next_task <- private$.custom_chain(self, subsetted_task)
       } else {
         next_task <- private$.chain(subsetted_task)
       }
@@ -144,17 +144,18 @@ Lrnr_base <- R6Class(
 
     train = function(task) {
       delayed_fit <- delayed_learner_train(self, task)
-      return(delayed_fit$compute())
+
+      return(delayed_fit$compute(job_type = sl3_delayed_job_type()))
     },
 
     predict = function(task = NULL) {
       delayed_preds <- delayed_learner_fit_predict(self, task)
-      return(delayed_preds$compute())
+      return(delayed_preds$compute(job_type = sl3_delayed_job_type()))
     },
 
     chain = function(task = NULL) {
       delayed_chained <- delayed_learner_fit_chain(self, task)
-      return(delayed_chained$compute())
+      return(delayed_chained$compute(job_type = sl3_delayed_job_type()))
     },
 
     print = function() {

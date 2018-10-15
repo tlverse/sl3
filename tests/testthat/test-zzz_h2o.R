@@ -324,7 +324,7 @@ test_that("check Lrnr_h2o_mutator returns matrices of mutated predictors", {
 #     Lrnr_h2o_mutator$new(algorithm = "pca", k = 3, impute_missing = TRUE),
 #     Lrnr_glm_fast$new()
 #   )
-# 
+#
 #   # fit only pca pipeline
 #   pca_to_glm_fit <- pca_to_glm$train(task)
 #   task$data
@@ -332,7 +332,7 @@ test_that("check Lrnr_h2o_mutator returns matrices of mutated predictors", {
 #   learner_stack <- Stack$new(fglm_learner, screen_and_glm, pca_to_glm)
 #   stack_fit <- learner_stack$train(task)
 #   preds <- stack_fit$predict()
-#   
+#
 # })
 
 h2o.shutdown(prompt = FALSE)
