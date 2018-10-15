@@ -17,25 +17,30 @@ cache:
 branches:
   only:
     - master
-    - devel
 
 environment:
   global:
     WARNINGS_ARE_ERRORS: 0
+    R_ARCH: x64
     USE_RTOOLS: true
 
 build_script:
   - travis-tool.sh install_deps
-  - travis-tool.sh install_github r-lib/devtools
+  - travis-tool.sh install_github r-lib/devtools@2d012d1
+  - travis-tool.sh install_github r-lib/sessioninfo
   - travis-tool.sh install_github RDatatable/data.table
+  - travis-tool.sh install_github jimhester/covr
   - travis-tool.sh install_github tlverse/delayed
   - travis-tool.sh install_github tlverse/origami
   - travis-tool.sh install_github osofr/condensier
   - travis-tool.sh install_github benkeser/halplus
-  - travis-tool.sh install_github jeremyrcoyle/hal9001
+  - travis-tool.sh install_github tlverse/hal9001
 
 test_script:
   - travis-tool.sh run_tests
+
+on_success:
+  - Rscript -e "covr::codecov(line_exclusions = list('R/plots.R'))"
 
 on_failure:
   - 7z a failure.zip *.Rcheck\*
