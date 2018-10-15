@@ -4,7 +4,7 @@ data(cpp_imputed)
 covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")
 outcome <- "haz"
 task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
-interactions = list(c("apgar1", "parity"), c("apgar5", "parity"))
+interactions <- list(c("apgar1", "parity"), c("apgar5", "parity"))
 make_inter <- Lrnr_define_interactions$new(interactions = list(c("apgar1", "parity"), c("apgar5", "parity")), warn_on_existing = FALSE)
 fit_inter <- make_inter$train(task)
 task_with_interactions <- fit_inter$base_chain()

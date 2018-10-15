@@ -223,7 +223,7 @@ Lrnr_sl <- R6Class(
 #'
 #' @keywords internal
 #
-drop_offsets_chain <- function(task) {
+drop_offsets_chain <- function(self, task) {
   predictions <- self$predict(task)
   predictions <- as.data.table(predictions)
   # Add predictions as new columns
