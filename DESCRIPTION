@@ -31,7 +31,6 @@ Imports:
     ggplot2
 Suggests:
     devtools,
-    dplyr,
     drat,
     future,
     knitr,

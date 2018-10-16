@@ -118,6 +118,7 @@ Lrnr_tsDyn <- R6Class(
         envir = asNamespace("tsDyn")
       )
       model <- args$model
+      lag <- stats::lag
       args$data <- args$x <- as.matrix(task$X)
 
       if (learner == "setar") {

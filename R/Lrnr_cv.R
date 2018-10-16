@@ -17,7 +17,7 @@ aorder <- function(mat, index, along = 1) {
 #'
 #' @importFrom R6 R6Class
 #' @importFrom assertthat assert_that is.count is.flag
-#' @importFrom origami training validation fold_index
+#' @importFrom origami training validation fold_index cross_validate
 #'
 #' @export
 #'
@@ -185,15 +185,9 @@ Lrnr_cv <- R6Class(
         list(index = index, predictions = predictions)
       }
 
-      # fold_predictions = cross_validate(cv_predict, folds, fold_fits, task,
-      # future.globals = FALSE)
-      # don't use cross_validate as it will call future_lapply
-      fold_predictions <- lapply(folds, cv_predict, fold_fits, task)
-      index <- unlist(lapply(fold_predictions, `[[`, "index"))
-      predictions <- data.table::rbindlist(lapply(
-        fold_predictions, `[[`,
-        "predictions"
-      ))
+      fold_predictions = cross_validate(cv_predict, folds, fold_fits, task, use_future = FALSE)
+      index <- fold_predictions$index
+      predictions <- as.data.table(fold_predictions$predictions)
       predictions <- aorder(predictions, order(index))
       return(predictions)
     },
