@@ -118,9 +118,8 @@ Lrnr_tsDyn <- R6Class(
         envir = asNamespace("tsDyn")
       )
       model <- args$model
-      lag <- stats::lag
       args$data <- args$x <- as.matrix(task$X)
-
+      
       if (learner == "setar") {
         if (!model %in% c("TAR", "MTAR")) {
           stop(paste(
@@ -141,7 +140,14 @@ Lrnr_tsDyn <- R6Class(
           ))
         }
       }
+      
+      # kludge for tsDyn (https://groups.google.com/forum/#!topic/tsdyn/qgvR7mEqf64)
+      attach(list(lag=stats::lag), name = "stats_lag_kludge", warn.conflicts = FALSE)
+                           
+                           
       fit_object <- call_with_args(learner_fun, args)
+      
+      detach("stats_lag_kludge")
       return(fit_object)
     },
 

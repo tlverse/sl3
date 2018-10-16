@@ -6,6 +6,7 @@
 \alias{debug_predict}
 \alias{debugonce_predict}
 \alias{sl3_debug_mode}
+\alias{undebug_learner}
 \title{Helper functions to debug sl3 Learners}
 \usage{
 debug_train(learner, once = FALSE)
@@ -17,6 +18,8 @@ debug_predict(learner, once = FALSE)
 debugonce_predict(learner)
 
 sl3_debug_mode(enabled = TRUE)
+
+undebug_learner(learner)
 }
 \arguments{
 \item{learner}{the learner to debug}

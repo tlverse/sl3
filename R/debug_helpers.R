@@ -42,3 +42,18 @@ debugonce_predict <- function(learner) {
 sl3_debug_mode <- function(enabled = TRUE) {
   options(sl3.enable.future = !enabled)
 }
+
+#' @rdname debug_helpers
+#' @export
+undebug_learner <- function(learner){
+  undebug_if_debugged <- function(fun){
+    if(isdebugged(fun)){
+      undebug(fun)
+    }
+  }
+
+  undebug_if_debugged(learner$.__enclos_env__$private$.train)  
+  undebug_if_debugged(learner$.__enclos_env__$private$.train_sublearners)
+  undebug_if_debugged(learner$.__enclos_env__$private$.predict)
+
+}
