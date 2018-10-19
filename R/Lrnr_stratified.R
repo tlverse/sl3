@@ -70,9 +70,9 @@ Lrnr_stratified <- R6Class(
       X_new <- as.matrix(task$X)
       variable_stratify_stratas_new <- unique(X_new[, variable_stratify])
       if (
-        any(
-          sort(variable_stratify_stratas_new) != sort(variable_stratify_stratas)
-        )
+        length(
+          setdiff(variable_stratify_stratas_new, variable_stratify_stratas)
+          ) > 0
       ) {
         stop("There is new strata in the prdiction data that is not present in
           training data!")
