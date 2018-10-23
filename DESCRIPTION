@@ -42,6 +42,7 @@ Suggests:
     R.rsp,
     testthat,
     bartMachine,
+    simcausal
     condensier,
     cvAUC,
     e1071,
@@ -68,6 +69,7 @@ Suggests:
     gam (>= 1.15.0)
 Remotes:
     github::tlverse/delayed,
+    github::osofr/simcausal,
     github::osofr/condensier,
     github::jeremyrcoyle/hal9001,
     github::vdorie/dbarts
