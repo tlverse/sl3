@@ -1,4 +1,4 @@
-#' stratify fit by one variable
+#' Stratify learner fits by a single variable
 #'
 #' @docType class
 #' @importFrom R6 R6Class
@@ -37,6 +37,14 @@ Lrnr_stratified <- R6Class(
       super$initialize(params = params, ...)
     }
   ),
+  active = list(
+    name = function() {
+      name <- paste("strat", self$params$variable_stratify,
+        self$params$lrnr$name,
+        sep = "_"
+      )
+    }
+  ),
   private = list(
     .properties = c("continuous", "binomial"),
 
@@ -53,8 +61,8 @@ Lrnr_stratified <- R6Class(
         # remove the `variable_stratify` from the sub task
         sub_task <- sub_task$next_in_chain(
           covariates = sub_task$nodes$covariates[
-              sub_task$nodes$covariates != args$variable_stratify
-            ]
+            sub_task$nodes$covariates != args$variable_stratify
+          ]
         )
         # WILSON: I assume the `variable_stratify` is a numeric multinomial
         # factor. since there is no dict object in R
@@ -72,29 +80,32 @@ Lrnr_stratified <- R6Class(
       if (
         length(
           setdiff(variable_stratify_stratas_new, variable_stratify_stratas)
-          ) > 0
+        ) > 0
       ) {
         stop("There is new strata in the prdiction data that is not present in
           training data!")
       }
 
       prediction_df_dict <- list()
+
       for (strata in variable_stratify_stratas) {
         index_subtask <- which(X_new[, variable_stratify] == strata)
         # construct subtask
         sub_task <- task$subset_task(row_index = index_subtask)
         sub_task <- sub_task$next_in_chain(
           covariates = sub_task$nodes$covariates[
-              sub_task$nodes$covariates != variable_stratify
-            ]
+            sub_task$nodes$covariates != variable_stratify
+          ]
         )
         # predict on the subtask
         prediction_subtask <- learner_fit_predict(
-            lrnr_dict[[as.character(strata)]],
-            sub_task
-          )
-        prediction_df <- data.frame(prediction = prediction_subtask,
-                                    original_index = index_subtask)
+          lrnr_dict[[as.character(strata)]],
+          sub_task
+        )
+        prediction_df <- data.frame(
+          prediction = prediction_subtask,
+          original_index = index_subtask
+        )
         prediction_df_dict[[as.character(strata)]] <- prediction_df
       }
       prediction_df_dict <- do.call(rbind, prediction_df_dict)

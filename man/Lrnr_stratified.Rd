@@ -3,7 +3,7 @@
 \docType{class}
 \name{Lrnr_stratified}
 \alias{Lrnr_stratified}
-\title{stratify fit by one variable}
+\title{Stratify learner fits by a single variable}
 \format{\code{\link{R6Class}} object.}
 \usage{
 Lrnr_stratified
@@ -13,7 +13,7 @@ Learner object with methods for training and prediction. See
 \code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
-stratify fit by one variable
+Stratify learner fits by a single variable
 }
 \section{Parameters}{
 
