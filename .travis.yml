@@ -28,7 +28,7 @@ r_packages:
 - drat
 script: 
 r_github_packages:
-- r-lib/devtools@2d012d1
+- r-lib/devtools
 - r-lib/sessioninfo
 - jimhester/covr
 - osofr/simcausal
