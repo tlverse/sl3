@@ -42,7 +42,7 @@ Suggests:
     R.rsp,
     testthat,
     bartMachine,
-    simcausal
+    simcausal,
     condensier,
     cvAUC,
     e1071,
