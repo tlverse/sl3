@@ -32,7 +32,6 @@ Imports:
     stringr
 Suggests:
     devtools,
-    dplyr,
     drat,
     future,
     knitr,
