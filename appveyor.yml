@@ -23,6 +23,8 @@ environment:
     WARNINGS_ARE_ERRORS: 0
     R_ARCH: x64
     USE_RTOOLS: true
+    GITHUB_PAT:
+      secure: Nu6c5CmcVdYHDUVGej5ZIXGKOXVPBwqUwjrLV8d6UlbUaAtYuUhgpNuv9oLztAQQ
 
 build_script:
   - travis-tool.sh install_deps
