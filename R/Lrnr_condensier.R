@@ -7,6 +7,7 @@
 #' @docType class
 #'
 #' @importFrom R6 R6Class
+#' @importFrom stringr str_extract str_remove
 #'
 #' @export
 #'
@@ -76,6 +77,30 @@ Lrnr_condensier <- R6Class(
           Lrnr_pkg_condensier_logisfitR6$new(sl3_lrnr = bin_estimator)
       }
       super$initialize(params = params, ...)
+    }
+  ),
+
+  active = list(
+    name = function() {
+      # TODO: allow custom names
+      if (is.null(private$.name)) {
+        params <- self$params
+        if (length(params) > 0) {
+          # TODO: sanitize further
+          atom_params <- sapply(params, is.atomic)
+          bin_lrnr_name <- str_remove(str_extract(params$bin_estimator$lmclass,
+                                                  "::.+"), "::")
+          if (is.na(bin_lrnr_name)) {
+            bin_lrnr_name <- params$bin_estimator$lmclass
+          }
+          params <- params[atom_params]
+          params$bin_estimator <- bin_lrnr_name
+        }
+        props <- c(list(class(self)[1]), params)
+        name <- paste(props, collapse = "_")
+        private$.name <- name
+      }
+      return(private$.name)
     }
   ),
 

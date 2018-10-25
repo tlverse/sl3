@@ -28,7 +28,8 @@ Imports:
     delayed,
     utils,
     methods,
-    ggplot2
+    ggplot2,
+    stringr
 Suggests:
     devtools,
     dplyr,
