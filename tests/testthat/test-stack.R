@@ -31,8 +31,9 @@ dens_bin10_glm <- Lrnr_condensier$new(
   nbins = 10, bin_estimator = glm_learner,
   bin_method = "dhist"
 )
-sl_dens <- Lrnr_sl$new(
-  learners = list(dens_bin10_glm, dens_bin10_glm),
-  metalearner = Lrnr_solnp_density$new()
-)
-sl_fit <- sl_dens$train(data)
+# check that stack gives unique names to input learners
+stack_dens <- Stack$new(dens_bin10_glm, dens_bin10_glm)
+stack_lrnr_names <- as.character(stack_dens$print())
+test_that("Repetitive names of learners in stack differ after creation", {
+  expect_false(stack_lrnr_names[1] == stack_lrnr_names[2])
+})

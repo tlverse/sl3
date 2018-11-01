@@ -215,7 +215,7 @@ sl3_Task <- R6Class(
     },
 
     subset_task = function(row_index) {
-      if(is.logical(row_index)){
+      if (is.logical(row_index)) {
         row_index <- which(row_index)
       }
       old_row_index <- private$.row_index
