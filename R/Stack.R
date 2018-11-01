@@ -44,12 +44,10 @@ Stack <- R6Class(
           learners <- learners[[1]]
         }
       }
+      # catch learner names and make unique if there's repetition
       learner_names <- sapply(learners, `[[`, "name")
       if (any(duplicated(learner_names))) {
-        warning(paste(
-          "Stack has learners with identical names. This is",
-          "unsupported and might lead to errors."
-        ))
+        learner_names <- make.unique(learner_names, sep = "_")
       }
       params <- list(learners = learners)
       super$initialize(params = params)

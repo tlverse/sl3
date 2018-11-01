@@ -25,3 +25,14 @@ test_that(
 #
 # test_that("Stack$new combines existing stacks into itself",
 #           expect_length(stack3$params$learners,3))
+
+# test that unique names are created when there's repetition
+dens_bin10_glm <- Lrnr_condensier$new(
+  nbins = 10, bin_estimator = glm_learner,
+  bin_method = "dhist"
+)
+sl_dens <- Lrnr_sl$new(
+  learners = list(dens_bin10_glm, dens_bin10_glm),
+  metalearner = Lrnr_solnp_density$new()
+)
+sl_fit <- sl_dens$train(data)
