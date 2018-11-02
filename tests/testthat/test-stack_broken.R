@@ -48,7 +48,6 @@ test_that("Stack predicts on remaining good learners", {
 test_that("Stack fails if all learners return errors", {
   all_broken_stack <- Stack$new(broken_learner, broken_learner)
   expect_error(all_broken_stack$train(task))
-  expect_warning(all_broken_stack$train(task))
 })
 
 test_that("Lrnr_cv on stack drops all learners that error on any fold", {
