@@ -185,7 +185,7 @@ Lrnr_cv <- R6Class(
         list(index = index, predictions = predictions)
       }
 
-      fold_predictions = cross_validate(cv_predict, folds, fold_fits, task, use_future = FALSE)
+      fold_predictions <- cross_validate(cv_predict, folds, fold_fits, task, use_future = FALSE)
       index <- fold_predictions$index
       predictions <- as.data.table(fold_predictions$predictions)
       predictions <- aorder(predictions, order(index))
