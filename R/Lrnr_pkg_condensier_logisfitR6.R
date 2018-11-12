@@ -53,9 +53,7 @@ Lrnr_pkg_condensier_logisfitR6 <- R6Class(
           outcome = colnames(dataDT)[ncol(dataDT)],
           weights = if (!is.null(wts)) "weights"
         )
-        out <- capture.output(
-          sl3_lrnr <- try(suppressWarnings(sl3_lrnr$train(task)))
-        )
+        out <- sl3_lrnr <- try(suppressWarnings(sl3_lrnr$train(task)))
         if (inherits(sl3_lrnr, "try-error") ||
           inherits(sl3_lrnr$fit_object, "try-error")) {
           # if failed, use fall back learner
