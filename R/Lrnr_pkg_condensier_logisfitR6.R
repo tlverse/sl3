@@ -53,6 +53,8 @@ Lrnr_pkg_condensier_logisfitR6 <- R6Class(
           outcome = colnames(dataDT)[ncol(dataDT)],
           weights = if (!is.null(wts)) "weights"
         )
+      # TODO: remove browser
+        browser()
         out <- sl3_lrnr <- try(suppressWarnings(sl3_lrnr$train(task)))
         if (inherits(sl3_lrnr, "try-error") ||
           inherits(sl3_lrnr$fit_object, "try-error")) {
@@ -76,6 +78,8 @@ Lrnr_pkg_condensier_logisfitR6 <- R6Class(
     },
 
     predict = function(datsum_obj, m.fit) {
+      # TODO: remove browser
+      browser()
       verbose <- getOption("sl3.verbose")
       X_mat <- datsum_obj$getXDT
       assert_that(!is.null(X_mat))

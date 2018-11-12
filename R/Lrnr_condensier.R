@@ -124,8 +124,6 @@ Lrnr_condensier <- R6Class(
 
     .predict = function(task = NULL) {
       verbose <- getOption("sl3.verbose")
-      # TODO: remove browser
-      browser()
       predictions <- condensier::predict_probability(
         private$.fit_object,
         task$data
