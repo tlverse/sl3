@@ -88,22 +88,7 @@ Lrnr_hal9001 <- R6Class(
         args$offset <- task$offset
       }
 
-      # NOTE: ONLY FOR USE WITH CONDENSIER, TO PASS IDs TO CV.GLMNET PROPERLY
-      rep_var <- c(0, which(task$Y == 1))
-      ids_times <- rep_var - dplyr::lag(rep_var)
-      ids_times <- ids_times[!is.na(ids_times)]
-      ids_in <- seq_len(length(which(task$Y == 1)))
-      ids <- rep(ids_in, times = ids_times)
-      foldid <- origami:::folds2foldvec(make_folds(cluster_ids = ids))
-      other_valid <- list(foldid = foldid)
-      args$fit_type <- "glmnet"
-      args$n_folds <- 10
-      args$nfolds <- NULL
-      #test <- fit_hal(X = args$X, Y = args$Y, fit_type = "glmnet",
-                      #family = "binomial", foldid = foldid)
-
-      fit_object <- call_with_args(hal9001::fit_hal, args,
-                                   other_valid = other_valid)
+      fit_object <- call_with_args(hal9001::fit_hal, args)
       return(fit_object)
     },
     .predict = function(task = NULL) {
