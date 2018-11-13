@@ -27,6 +27,27 @@ lrn <- Lrnr_condensier$new(nbins = 10, bin_method = "equal.len", pool = TRUE,
 
 # train and predict from learner
 trained_lrn <- lrn$train(sl_task)
-predictions <- trained_lrn$predict()
-predictions
+
+# make separate tasks with W = 0 and W = 1
+n_samp <- 5000
+A_supp <- seq(-6, 6, length = n_samp)
+W0 <- rep(0, n_samp)
+data_W0 <- as.data.table(cbind(A_supp, W0))
+setnames(data_W0, c("A", "W"))
+task_W0 <- sl3_Task$new(data_W0, covariates = "W", outcome = "A")
+
+predictions_W0 <- trained_lrn$predict(task_W0)
+hist_W0 <- predictions_W0 %>%
+  ggplot(aes(x = likelihood)) + geom_histogram()
+
+
+W1 <- rep(1, n_samp)
+data_W1 <- as.data.table(cbind(A_supp, W1))
+setnames(data_W1, c("A", "W"))
+task_W1 <- sl3_Task$new(data_W1, covariates = "W", outcome = "A")
+
+predictions_W1 <- trained_lrn$predict(task_W1)
+hist_W1 <- predictions_W1 %>%
+  ggplot(aes(x = likelihood)) + geom_histogram()
+ggsave(hist_W1, filename = "~/hal_condensier_example.pdf")
 
