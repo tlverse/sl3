@@ -50,22 +50,22 @@
 #'   }
 #' }
 #
-Lrnr_hal9001 <- R6Class(
-  classname = "Lrnr_hal9001", inherit = Lrnr_base,
+Lrnr_hal9001_density <- R6Class(
+  classname = "Lrnr_hal9001_density", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
   public = list(
     initialize = function(degrees = NULL,
-                              fit_type = "glmnet",
-                              n_folds = 10,
-                              use_min = TRUE,
-                              basis_list = NULL,
-                              ...) {
+                          fit_type = "glmnet",
+                          n_folds = 10,
+                          use_min = TRUE,
+                          basis_list = NULL,
+                          ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }
   ),
   private = list(
-    .properties = c("continuous", "binomial"),
+    .properties = c("binomial"),
 
     .train = function(task) {
       args <- self$params
@@ -74,6 +74,11 @@ Lrnr_hal9001 <- R6Class(
 
       if (is.null(args$family)) {
         args$family <- outcome_type$glm_family(return_object = TRUE)$family
+      }
+
+      # NOTE: forces use of glmnet
+      if (args$fit_type != "glmnet") {
+        args$fit_type <- "glmnet"
       }
 
       args$X <- as.matrix(task$X)
@@ -89,16 +94,13 @@ Lrnr_hal9001 <- R6Class(
       }
 
       # NOTE: ONLY FOR USE WITH CONDENSIER, TO PASS IDs TO CV.GLMNET PROPERLY
-      rep_var <- c(0, which(task$Y == 1))
-      ids_times <- rep_var - dplyr::lag(rep_var)
-      ids_times <- ids_times[!is.na(ids_times)]
+      repeated_obs_idx <- c(0, which(task$Y == 1))
+      ids_times_arg <- repeated_obs_idx - dplyr::lag(repeated_obs_idx)
+      ids_times_arg <- ids_times_arg[!is.na(ids_times_arg)]
       ids_in <- seq_len(length(which(task$Y == 1)))
-      ids <- rep(ids_in, times = ids_times)
+      ids <- rep(ids_in, times = ids_times_arg)
       foldid <- origami:::folds2foldvec(make_folds(cluster_ids = ids))
       other_valid <- list(foldid = foldid)
-      args$fit_type <- "glmnet"
-      args$n_folds <- 10
-      args$nfolds <- NULL  # do we need this?
 
       fit_object <- call_with_args(hal9001::fit_hal, args,
                                    other_valid = other_valid)

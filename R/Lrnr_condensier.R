@@ -42,6 +42,10 @@
 #'  \item{\code{intrvls=NULL}}{An interval range to be used for custom bin
 #'   definitions. See documentation of the \code{condensier} package for
 #'   details.}
+#'  \item{\code{type=c("probability", "sampled")}}{Whether to return predicitons
+#'   that are probabilities or values sampled from the estimated conditional
+#'   density. Refer to \code{condensier::predict_probability} for the former
+#'   and \code{condensier::sample_value} for the latter option.}
 #' }
 #'
 #' @template common_parameters
@@ -63,6 +67,7 @@ Lrnr_condensier <- R6Class(
                                 family = binomial()
                               ),
                               intrvls = NULL,
+                              type = "probability",
                               ...) {
       params <- args_to_list()
       assert_that(is(bin_estimator, "Lrnr_base") || is(
@@ -124,15 +129,24 @@ Lrnr_condensier <- R6Class(
 
     .predict = function(task = NULL) {
       verbose <- getOption("sl3.verbose")
-      predictions <- condensier::predict_probability(
-        private$.fit_object,
-        task$data
-      )
-      # sampled_value <- condensier::sample_value(private$.fit_object,
-      # task$data)
-      # predictions <- data.table::data.table(likelihood = predictions,
-      # sampled_value = sampled_value)
-      predictions <- data.table::data.table(likelihood = predictions)
+ 
+      # get prediction type
+      type <- self$params$type
+      type <- match.arg(type, choices = c("probability", "sampled"))
+
+      if (type == "probability") {
+        predictions <- condensier::predict_probability(
+          private$.fit_object,
+          task$data
+        )
+        predictions <- data.table::data.table(likelihood = predictions)
+      } else if (type == "sampled") {
+        sampled_value <- condensier::sample_value(
+          private$.fit_object,
+          task$data
+        )
+        predictions <- data.table::data.table(sampled_value = sampled_value)
+      }
       return(predictions)
     },
     .required_packages = c("condensier")

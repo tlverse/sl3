@@ -40,6 +40,10 @@ documentation of the \code{condensier} package for details.}
 \item{\code{intrvls=NULL}}{An interval range to be used for custom bin
 definitions. See documentation of the \code{condensier} package for
 details.}
+\item{\code{type=c("probability", "sampled")}}{Whether to return predicitons
+that are probabilities or values sampled from the estimated conditional
+density. Refer to \code{condensier::predict_probability} for the former
+and \code{condensier::sample_value} for the latter option.}
 }
 }
 
@@ -66,7 +70,9 @@ Other Learners: \code{\link{Custom_chain}},
   \code{\link{Lrnr_expSmooth}},
   \code{\link{Lrnr_glm_fast}}, \code{\link{Lrnr_glmnet}},
   \code{\link{Lrnr_glm}}, \code{\link{Lrnr_grf}},
-  \code{\link{Lrnr_h2o_grid}}, \code{\link{Lrnr_hal9001}},
+  \code{\link{Lrnr_h2o_grid}},
+  \code{\link{Lrnr_hal9001_density}},
+  \code{\link{Lrnr_hal9001}},
   \code{\link{Lrnr_independent_binomial}},
   \code{\link{Lrnr_lstm}}, \code{\link{Lrnr_mean}},
   \code{\link{Lrnr_nnls}}, \code{\link{Lrnr_optim}},
