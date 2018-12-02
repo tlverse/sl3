@@ -28,7 +28,10 @@ utils::globalVariables(c("self"))
 #'     library.}
 #'   \item{\code{folds=NULL}}{An \code{origami} folds object. If \code{NULL},
 #'     folds from the task are used.}
-#'   \item{\code{keep_extra=TRUE}}{Not used.}
+#'   \item{\code{keep_extra=TRUE}}{Stores all sub-parts of the SL computation.
+#'     When set to \code{FALSE} the resultant object has a memory footprint
+#'     that is significantly reduced through the discarding of intermediary
+#'     data structures.}
 #'   \item{\code{...}}{Not used.}
 #' }
 #'
@@ -57,9 +60,15 @@ Lrnr_sl <- R6Class(
       str(lrn_names)
       if (self$is_trained) {
         fit_object <- private$.fit_object
-        print(fit_object$cv_meta_fit)
-        print("Cross-validated risk (MSE, squared error loss):")
-        print(self$cv_risk(loss_squared_error))
+        if (self$params$keep_extra) {
+          # standard printing when all sub-parts of SL computation are stored
+          print(fit_object$cv_meta_fit)
+          print("Cross-validated risk (MSE, squared error loss):")
+          print(self$cv_risk(loss_squared_error))
+        } else {
+          # just print the remaining full fit object when keep_extra = FALSE
+          print(fit_object$full_fit$params$learners[[2]])
+        }
       }
     },
 
