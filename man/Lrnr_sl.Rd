@@ -25,7 +25,10 @@ learners.
 library.}
 \item{\code{folds=NULL}}{An \code{origami} folds object. If \code{NULL},
 folds from the task are used.}
-\item{\code{keep_extra=TRUE}}{Not used.}
+\item{\code{keep_extra=TRUE}}{Stores all sub-parts of the SL computation.
+When set to \code{FALSE} the resultant object has a memory footprint
+that is significantly reduced through the discarding of intermediary
+data structures.}
 \item{\code{...}}{Not used.}
 }
 }
