@@ -5,6 +5,6 @@ articles:
   custom_lrnrs: custom_lrnrs.html
   intro_sl3: intro_sl3.html
 urls:
-  reference: http://sl3.tlverse.org/reference
-  article: http://sl3.tlverse.org/articles
+  reference: https://tlverse.org/sl3/reference
+  article: https://tlverse.org/sl3/articles
 

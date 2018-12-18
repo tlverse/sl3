@@ -81,7 +81,7 @@ The resultant stack of learners may then be used as normal." />
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="http://tlverse.org">tlverse</a>
+  <a href="https://tlverse.org">tlverse</a>
 </li>
 <li>
   <a href="../index.html">sl3</a>
@@ -159,13 +159,19 @@ all of the standard methods associated with such objects.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># constructing learners with default settings</span>
-<span class='no'>sl_stack_easy</span> <span class='kw'>&lt;-</span> <span class='fu'>make_learner_stack</span>(<span class='st'>"Lrnr_mean"</span>, <span class='st'>"Lrnr_glm_fast"</span>,
-                                    <span class='st'>"Lrnr_xgboost"</span>)
+<span class='no'>sl_stack_easy</span> <span class='kw'>&lt;-</span> <span class='fu'>make_learner_stack</span>(
+  <span class='st'>"Lrnr_mean"</span>, <span class='st'>"Lrnr_glm_fast"</span>,
+  <span class='st'>"Lrnr_xgboost"</span>
+)
 
 <span class='co'># constructing learners with arguments passed in</span>
-<span class='no'>sl_stack</span> <span class='kw'>&lt;-</span> <span class='fu'>make_learner_stack</span>(<span class='st'>"Lrnr_mean"</span>,
-                               <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='st'>"Lrnr_condensier"</span>, <span class='kw'>nbins</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-                                    <span class='kw'>bin_method</span> <span class='kw'>=</span> <span class='st'>"equal.len"</span>, <span class='kw'>pool</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div></pre>
+<span class='no'>sl_stack</span> <span class='kw'>&lt;-</span> <span class='fu'>make_learner_stack</span>(
+  <span class='st'>"Lrnr_mean"</span>,
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='st'>"Lrnr_condensier"</span>,
+    <span class='kw'>nbins</span> <span class='kw'>=</span> <span class='fl'>5</span>,
+    <span class='kw'>bin_method</span> <span class='kw'>=</span> <span class='st'>"equal.len"</span>, <span class='kw'>pool</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  )
+)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
