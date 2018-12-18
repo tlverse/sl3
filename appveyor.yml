@@ -28,7 +28,6 @@ environment:
 
 build_script:
   - travis-tool.sh install_deps
-  - travis-tool.sh install_github r-lib/devtools@2d012d1
   - travis-tool.sh install_github r-lib/sessioninfo
   - travis-tool.sh install_github RDatatable/data.table
   - travis-tool.sh install_github jimhester/covr

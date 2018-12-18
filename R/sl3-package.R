@@ -94,7 +94,7 @@ NULL
 #' @examples
 #' data(cpp)
 #' head(cpp)
-#
+#' #
 NULL
 
 #' @name cpp_imputed
@@ -127,7 +127,7 @@ NULL
 #' data(cpp_1yr)
 #' head(cpp_1yr)
 #' table(cpp_1yr[["agedays"]])
-#
+#' #
 NULL
 
 #' Bicycle sharing time series dataset
@@ -153,7 +153,7 @@ NULL
 #' @examples
 #' data(bsds)
 #' head(bsds)
-#
+#' #
 NULL
 
 #' Simulated data with continuous exposure
@@ -173,5 +173,5 @@ NULL
 #' @examples
 #' data(density_dat)
 #' head(density_dat)
-#
+#' #
 NULL

@@ -35,7 +35,6 @@ r_packages:
 #script:
 
 r_github_packages:
-  - r-lib/devtools
   - r-lib/sessioninfo
   - jimhester/covr
   - osofr/simcausal

@@ -42,7 +42,7 @@ predictions <- broken_fit$predict()
 
 test_that("Stack predicts on remaining good learners", {
   expect_equal(dim(predictions), c(nrow(cpp_imputed), 1))
-  #expect_equal(names(predictions), "Lrnr_glm_TRUE")
+  # expect_equal(names(predictions), "Lrnr_glm_TRUE")
 })
 
 test_that("Stack fails if all learners return errors", {
@@ -57,7 +57,7 @@ test_that("Lrnr_cv on stack drops all learners that error on any fold", {
   })
   cv_preds <- broken_cv_fit$predict()
   expect_equal(dim(cv_preds), c(nrow(cpp_imputed), 1))
-  #expect_equal(names(cv_preds), "Lrnr_glm_TRUE")
+  # expect_equal(names(cv_preds), "Lrnr_glm_TRUE")
 })
 
 test_that("Lrnr_sl propagates errors to full refit", {
