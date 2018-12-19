@@ -156,13 +156,9 @@ head(preds)
 
 ## Contributions
 
-It is our hope that `sl3` will grow to be widely used for creating
-stacked regression models and the cross-validation of pipelines that
-make up such models, as well as the variety of other applications in
-which the Super Learner algorithm plays a role. To that end,
-contributions are very welcome, though we ask that interested
-contributors consult our [contribution
-guidelines](https://github.com/jeremyrcoyle/sl3/blob/master/CONTRIBUTING.md)
+Contributions are very welcome. Interested contributors should consult
+our [contribution
+guidelines](https://github.com/tlverse/sl3/blob/master/CONTRIBUTING.md)
 prior to submitting a pull request.
 
 -----
@@ -175,7 +171,7 @@ After using the `sl3` R package, please cite the following:
         Sofrygin, Oleg},
       title = {{sl3}: Modern Pipelines for Machine Learning and {Super
         Learning}},
-      year  = {2018},
+      year = {2018},
       howpublished = {\url{https://github.com/tlverse/sl3}},
       note = {{R} package version 1.1.0},
       url = {https://doi.org/10.5281/zenodo.1342294},
@@ -187,8 +183,8 @@ After using the `sl3` R package, please cite the following:
 
 ## License
 
-© 2017-2018 [Jeremy R. Coyle](https://github.com/jeremyrcoyle), [Nima S.
-Hejazi](https://github.com/nhejazi), [Ivana
+© 2017-2019 [Jeremy R. Coyle](https://github.com/jeremyrcoyle), [Nima S.
+Hejazi](https://nimahejazi.org), [Ivana
 Malenica](https://github.com/podTockom), [Oleg
 Sofrygin](https://github.com/osofr)
 

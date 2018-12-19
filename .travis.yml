@@ -1,7 +1,6 @@
 branches:
   only:
   - master
-  - devel
 
 env:
   global:
@@ -32,8 +31,6 @@ r_packages:
   - covr
   - drat
 
-#script:
-
 r_github_packages:
   - r-lib/sessioninfo
   - jimhester/covr
@@ -53,3 +50,4 @@ notifications:
   email:
     on_success: change
     on_failure: change
+
