@@ -19,8 +19,9 @@ use the \code{value} parameter too.
 \examples{
 \dontrun{
 sl3Options()
-sl3Options('sl3.verbose')
-sl3Options('sl3.temp.dir')
-sl3Options('sl3.verbose', TRUE)
+sl3Options("sl3.verbose")
+sl3Options("sl3.temp.dir")
+sl3Options("sl3.verbose", TRUE)
 }
+#
 }

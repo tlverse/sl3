@@ -1,5 +1,5 @@
 title: sl3
-url: http://sl3.tlverse.org
+url: https://tlverse.org/sl3
 template:
   params:
     bootswatch: flatly
@@ -8,7 +8,7 @@ navbar:
   title: ""
   left:
     - text: "tlverse"
-      href: http://tlverse.org
+      href: https://tlverse.org
     - text: "sl3"
       href: "index.html"
     - text: "Reference"
