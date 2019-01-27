@@ -38,7 +38,7 @@ r_github_packages:
   - osofr/condensier
   - tlverse/delayed
   - tlverse/origami
-  - tlverse/hal9001
+  - tlverse/hal9001@haldensify
   - nhejazi/haldensify
 
 after_success:

@@ -15,8 +15,6 @@ if (FALSE) {
   ) # INSTALL W/ devtools:
 }
 
-library(testthat)
-library(sl3)
 library(hal9001)
 library(haldensify)
 
@@ -30,16 +28,17 @@ task <- cpp_imputed %>%
   sl3_Task$new(covariates = covars, outcome = outcome)
 
 hal_dens <- Lrnr_haldensify$new(
-  grid_type = "equal_range", n_bins = 3,
+  grid_type = "equal_mass", n_bins = 3,
   lambda_seq = exp(seq(-1, -13, length = 100))
 )
-hal_dens_2 <- Lrnr_haldensify$new(
-  grid_type = "equal_range", n_bins = 2,
+
+hal_dens_less_bins <- Lrnr_haldensify$new(
+  grid_type = "equal_mass", n_bins = 2,
   lambda_seq = exp(seq(-1, -13, length = 100))
 )
 
 sl3_dens <- Lrnr_sl$new(
-  learners = list(hal_dens, hal_dens_2),
+  learners = list(hal_dens, hal_dens_less_bins),
   metalearner = Lrnr_solnp_density$new()
 )
 
@@ -54,18 +53,19 @@ test_that("Lrnr_haldensify produces prediction similar to haldensify", {
 
   set.seed(67391)
   haldensify_fit <- haldensify::haldensify(
-    A = task$Y, W = as.matrix(task$X),
-    grid_type = "equal_range",
+    A = as.numeric(task$Y),
+    W = as.matrix(task$X),
+    grid_type = "equal_mass",
     n_bins = 3,
     lambda_seq = exp(seq(-1, -13,
       length = 100
     ))
   )
   haldensify_preds <- predict(haldensify_fit,
-    new_A = task$Y,
+    new_A = as.numeric(task$Y),
     new_W = as.matrix(task$X)
   )
 
   # check that predicted conditional density estimates match
-  expect_equal(hal_dens_preds, haldensify_preds, tolerance = 1e-15)
+  expect_equal(hal_dens_preds, haldensify_preds, tolerance = 1e-12)
 })
