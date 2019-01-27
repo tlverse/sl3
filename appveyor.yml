@@ -11,7 +11,7 @@ install:
   ps: Bootstrap
 
 cache:
-  - C:\RLibrary
+  - C:\RLibrary -> appveyor.yml
 
 # Adapt as necessary starting from here
 branches:
@@ -37,6 +37,7 @@ build_script:
   - travis-tool.sh install_github osofr/condensier
   - travis-tool.sh install_github benkeser/halplus
   - travis-tool.sh install_github tlverse/hal9001
+  - travis-tool.sh install_github nhejazi/haldensify
 
 test_script:
   - travis-tool.sh run_tests

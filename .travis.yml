@@ -39,6 +39,7 @@ r_github_packages:
   - tlverse/delayed
   - tlverse/origami
   - tlverse/hal9001
+  - nhejazi/haldensify
 
 after_success:
   - travis_wait 80 Rscript -e 'covr::codecov()'
