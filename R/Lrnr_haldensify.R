@@ -78,7 +78,7 @@ Lrnr_haldensify <- R6Class(
       }
 
       args$W <- as.matrix(task$X)
-      args$A <- outcome_type$format(task$Y)
+      args$A <- as.numeric(outcome_type$format(task$Y))
 
       if (task$has_node("weights")) {
         args$wts <- task$weights
@@ -92,7 +92,10 @@ Lrnr_haldensify <- R6Class(
       return(fit_object)
     },
     .predict = function(task = NULL) {
-      predictions <- predict(self$fit_object, new_data = as.matrix(task$X))
+      predictions <- predict(self$fit_object,
+        new_A = as.numeric(task$Y),
+        new_W = as.matrix(task$X)
+      )
       return(predictions)
     },
     .required_packages = c("haldensify")

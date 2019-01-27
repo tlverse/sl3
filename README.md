@@ -9,14 +9,15 @@ Status](https://travis-ci.org/tlverse/sl3.svg?branch=master)](https://travis-ci.
 Status](https://ci.appveyor.com/api/projects/status/hagh8vidrdeacr7f?svg=true)](https://ci.appveyor.com/project/tlverse/sl3)
 [![Coverage
 Status](https://img.shields.io/codecov/c/github/tlverse/sl3/master.svg)](https://codecov.io/github/tlverse/sl3?branch=master)
+[![CRAN](http://www.r-pkg.org/badges/version/sl3)](http://www.r-pkg.org/pkg/sl3)
+[![CRAN
+downloads](https://cranlogs.r-pkg.org/badges/sl3)](https://CRAN.R-project.org/package=sl3)
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![License: GPL
 v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1342294.svg)](https://doi.org/10.5281/zenodo.1342294)
-[![Join the chat at
-https://gitter.im/sl3-Rpkg/Lobby](https://badges.gitter.im/sl3-Rpkg/Lobby.svg)](https://gitter.im/sl3-Rpkg/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 > A modern implementation of the Super Learner algorithm for ensemble
 > learning and model stacking
@@ -130,10 +131,6 @@ SL.glmnet_learner <- Lrnr_pkg_SuperLearner$new(SL_wrapper = "SL.glmnet")
 # stack learners into a model (including screeners and pipelines)
 learner_stack <- Stack$new(SL.glmnet_learner, glm_learner, screen_and_glm)
 stack_fit <- learner_stack$train(task)
-#> Loading required package: glmnet
-#> Loading required package: Matrix
-#> Loading required package: foreach
-#> Loaded glmnet 2.0-16
 preds <- stack_fit$predict()
 head(preds)
 #>    Lrnr_pkg_SuperLearner_SL.glmnet Lrnr_glm_TRUE
