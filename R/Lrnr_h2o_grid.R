@@ -164,7 +164,8 @@ Lrnr_h2o_grid <- R6Class(
         (!is.null(mainArgs[["distribution"]]) &&
           (mainArgs[["distribution"]] %in% "bernoulli"))
       outvar <- task$nodes$outcome
-      outfactors <- as.vector(h2o::h2o.unique(mainArgs[["training_frame"]][
+      outfactors <- as.vector(h2o::h2o.unique(mainArgs[["training_frame"]]
+      [
         ,
         outvar
       ]))

@@ -22,5 +22,6 @@ agedays==366. See \code{?cpp} for the description of the variables.
 data(cpp_1yr)
 head(cpp_1yr)
 table(cpp_1yr[["agedays"]])
+#
 }
 \keyword{data}

@@ -61,5 +61,6 @@ purposes of simplifying testing and examples.
 \examples{
 data(cpp)
 head(cpp)
+#
 }
 \keyword{data}

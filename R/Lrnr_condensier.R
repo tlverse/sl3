@@ -88,8 +88,10 @@ Lrnr_condensier <- R6Class(
         if (length(params) > 0) {
           # TODO: sanitize further
           atom_params <- sapply(params, is.atomic)
-          bin_lrnr_name <- str_remove(str_extract(params$bin_estimator$lmclass,
-                                                  "::.+"), "::")
+          bin_lrnr_name <- str_remove(str_extract(
+            params$bin_estimator$lmclass,
+            "::.+"
+          ), "::")
           if (is.na(bin_lrnr_name)) {
             bin_lrnr_name <- params$bin_estimator$lmclass
           }

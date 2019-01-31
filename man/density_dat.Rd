@@ -14,5 +14,6 @@ density estimation.
 \examples{
 data(density_dat)
 head(density_dat)
+#
 }
 \keyword{data}
