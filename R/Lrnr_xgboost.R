@@ -34,7 +34,7 @@ Lrnr_xgboost <- R6Class(
   classname = "Lrnr_xgboost", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(nrounds = 20, ...) {
+    initialize = function(nrounds = 20, nthread = 1, ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }
