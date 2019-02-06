@@ -1,4 +1,4 @@
-context("test-density.R -- Lrnr_condensier")
+context("test-density.R -- Density Learners")
 
 # define test dataset
 data(mtcars)
