@@ -170,16 +170,12 @@ Lrnr_base <- R6Class(
     },
     predict_fold = function(task, fold_number = "full") {
       # support legacy "magic number" definitions
-      if (fold_number == -1) {
-        fold_number <- "full"
-      } else if (fold_number == 0) {
-        fold_number <- "validation"
-      }
-
+     fold_number <- interpret_fold_number(fold_number)
       # for non cv learners, do full predict no matter what, but warn about it if fold_number is something else
       if (fold_number != "full") {
         warning(self$name, " is not a cv-aware learner, so self$predict_fold reverts to self$predict")
       }
+      self$predict(task)
     }
   ),
 

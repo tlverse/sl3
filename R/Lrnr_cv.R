@@ -31,6 +31,15 @@ validation_task <- function(task, fold) {
   return(task$subset_task(validation(fold = fold), drop_folds = TRUE))
 }
 
+interpret_fold_number <- function(fold_number){
+  if (fold_number == -1) {
+    fold_number <- "full"
+  } else if (fold_number == 0) {
+    fold_number <- "validation"
+  }
+  return(fold_number)
+}
+
 #' Fit/Predict a learner with Cross Validation
 #'
 #' A wrapper around any learner that generates cross-validate predictions
@@ -87,6 +96,7 @@ Lrnr_cv <- R6Class(
       # todo: check if fit
     },
     predict_fold = function(task, fold_number = "validation") {
+      fold_number <- interpret_fold_number(fold_number)
       if (fold_number == "validation") {
         # return cross validation predicitons (what Lrnr_cv$predict does, so use that)
         return(self$predict(task))
@@ -221,7 +231,6 @@ Lrnr_cv <- R6Class(
 
       results <- cross_validate(cv_predict, folds, fold_fits, task, use_future = FALSE)
       predictions <- aorder(results$predictions, order(results$index))
-
       return(predictions)
     },
     .required_packages = c("origami")

@@ -93,6 +93,7 @@ Lrnr_sl <- R6Class(
       return(risks)
     },
     predict_fold = function(task, fold_number = "validation") {
+      fold_number <- interpret_fold_number(fold_number)
       meta_task <- self$fit_object$cv_fit$chain_fold(task, fold_number)
       meta_predictions <- self$fit_object$cv_meta_fit$predict(meta_task)
     }
@@ -194,7 +195,7 @@ drop_offsets_chain <- function(learner, task) {
   predictions <- learner$predict(task)
   predictions <- as.data.table(predictions)
   # Add predictions as new columns
-  new_col_names <- task$add_columns(learner$fit_uuid, predictions)
+  new_col_names <- task$add_columns(predictions, learner$fit_uuid)
   # new_covariates = union(names(predictions),task$nodes$covariates)
   return(task$next_in_chain(
     covariates = names(predictions),

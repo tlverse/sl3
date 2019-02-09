@@ -22,7 +22,7 @@ folds <- make_folds(cpp_imputed, V = 5)
 task_2 <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome, folds = folds)
 test_that("task will accept custom folds", expect_length(task_2$folds, 5))
 
-test_that("we can generate predictions", expect_equal(nrow(cv_glm_fit$predict()), task_2$nrow))
+test_that("we can generate predictions", expect_equal(length(cv_glm_fit$predict()), task_2$nrow))
 
 cv_glm_2 <- Lrnr_cv$new(glm_learner, folds = make_folds(cpp_imputed, V = 10))
 cv_glm_fit_2 <- cv_glm_2$train(task_2)
@@ -59,5 +59,4 @@ test_that(
 
 test_that("Lrnr_cv$predict_fold throws an error on a bad fold_number", {
   expect_error(cv_glm_fit$predict_fold(task, "junk"))
-  expect_error(cv_glm_fit$predict_fold(task, -1))
 })
