@@ -51,7 +51,11 @@ Lrnr_glm <- R6Class(
       link_fun <- args$family$linkfun
 
       # specify data
-      args$x <- as.matrix(task$X_intercept)
+      if (args$intercept) {
+        args$x <- as.matrix(task$X_intercept)
+      } else {
+        args$x <- as.matrix(task$X)
+      }
       args$y <- outcome_type$format(task$Y)
 
       if (task$has_node("weights")) {

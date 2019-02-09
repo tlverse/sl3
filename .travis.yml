@@ -1,42 +1,53 @@
-language: r
-dist: trusty
-sudo: required
-cache: packages
-warnings_are_errors: true
-r_check_args: ''
-r:
-  - release
-  - devel
-  
-before_install: Rscript -e 'update.packages(ask = FALSE)'
-  - sudo apt-get -y install python3-pip python-dev
-  - sudo pip install numpy 
-  - sudo pip install tensorflow
-  - sudo pip install keras
-  
-r_packages:
-  - devtools
-  - covr
-  - drat
-  
-r_github_packages:
-  - jimhester/covr
-  
-after_success:
-  - travis_wait Rscript -e 'covr::codecov()'
-  - test $TRAVIS_PULL_REQUEST == "true" && test $TRAVIS_BRANCH == "master" && bash deploy.sh
-  
-on_failure:
-  - "./travis-tool.sh dump_logs"
-  
-notifications:
-  email:
-    on_success: change
-    on_failure: change
-    
+branches:
+  only:
+  - master
+
 env:
   global:
   - RGL_USE_NULL=TRUE
   - PKG_CFLAGS="-O3 -Wall -pedantic"
-  - secure: IH0Tiyhb9aj5Rd/o44LiNf7L+mDTLhLHIVfv2iR8V7WKp5uT6QAvUzNvKLDhMwRfsNd9Wa9C67oXA6ROUoBkeyrETUT79BgZ+DG77EJ3i3XE153IHpGEFxW5gnEpFz4Sn6bS6qncfaKB2ocnJwByEfWCk2uMt5onBn7q5WAheuX0eeg6X3DJmJa+nTCAIQWRv/F0PLup5z0BTobAF2Qddp3KWug9WuWnyUPXJDLWww4IpU9V2P7DL9vsgwo/WqA59AbdPRqZbTCQh8kuJq2ETnQwfqwL6kofQnGeB/KNrIVLfvGucRQpZvF/7a1QDZvXd5RvQjBLS+8eoqb25bCSHtUr1UQI4Dpyf15LJThXksgPmm8pNdO7RYtjBENM0sD4eCyTwW/MXibGKCexgFlI0T4jwnyMpNOyZlefUolIjjjZh0e4wOpSY6kXSq9bz8EyloA0qcyfbJ5UKhwm9RVsXZCIbvSRtPyMoo8g8526Pbzs4eLND79mdQFy/2EhshCLnz/iH9QrNeNkWGbMHHUrkxChZWbP2LPt68PbYP3qPf3qbRmzamAjqO/hN4/xzls7/V23dW8aocHDSYi29R3UfKV69jgVYI3YXv7pUlxrqPNScpTZOxjAomZntWWGQVG6vhOyKuRc0z93X+zqaWdTUtVlcZKaEI+OPQeZWEFU9gY=
-  
+  - GITHUB_PAT:
+      secure: qw5REv850LVn7sMGf+lH0atxwjdzdidtInbW2m+b8ytkpSDjNdU/nUJQyPwkZtQOp5YGhffE0aeLoZiFmpnNqdnilxzA5/sGg/xC6kobCY/5C40pEFE+9ia3NkRBE3sGcXT3xowXDvY54zw/8Vc0E2NONU64xutlVtWRpjj5O4tVCEUsj+Vp4wxp737+UWjaZmVcPKv7fZje0MF77AowwP/mxjRTdo6gS9HmP527UWv53FksncMWAz8P/RwKRRpFI329yvkGiUvxmbAERhnTLSJpgQz+kqwhgNDm5E/6nEZ+fcfUoFoXBSsQvEF0Chi3J5NoGDg+kU8JDFOwW8wZEgPw0+ipNgPqs+KbDXCh+Yg11wCiS9IGLRgMDAV1WNrnjE9MLgtHD1JU/k2yrpvMOI8CbDwHV/f3D0UGf31qYiPFfu1F2mnkWlH+MpcSNASu/IKpeMrNsuxhkZrqnAhB4ZbWTfRSP9aFXd7WfejNSfgfwoUxeGMeKRT3cR0WP3Iv1rsvg3II6CNgIxNRGvOBT6Qb/oBSl1skSw2PvwB2Dj053E8qh3OkOuJJe7MPqRjEN+4IkhvFCP7mlLN3PGX+pny0Rx2oQ6kCg0uIDOa9O8es1ABUEdg09If1CyPMuDFvGwwOrb2Q7qe2c1d73bhb0dzqTnG1zHGhX54+ZQcQ9qc=
+  - secure: wp2+ENwJC6gtY0XA8h2w3t6FFlp8g0gABC2FfIYLVstNaH2UmML04YBKsbKxea5PigAiRJbSxgasD+FZTqVhSrNU3D9q5rdInocywRAVn0Xd1a2K8rPN0zf+H9BBJtjjJoQNsQlVEisCrlPuY5zs3KgpOkjD0xvx3sBw0wddwaLsNusrZWfiCHoc7+wIWtZzekK2z4ji0MOUI6LvdjYiBzUtNjZ+NZ0ef02EUHc7uvHioqmPi/KZvGcCCMYl3uz+aAlAstPbBuOVwRK7RHquvhjFxppgWB9cVV4nOelXvyrruCmJgogoiRifEi/cOxvkAR/qKTi5rnN83QPl69cd55ix1fa3dffFA9cYJJNZs3mm/XDc0niUvm520KRnExgjxDwvHYBBbViG5U8bGTOi3GFKmtfSJ2ra12vn3vgYleQt5R8JWhQ3mFsDGjjpL2pWkjpjWk0erew/afOcgq/C7cdvN7FXCVb5QgWAaJHpHHzGwqDN2eEZyiEAMrWVaWSu4CS9An5GDSZTYCBCYDUiwbpf3R0IBMHK4Lf+fbVC0/fVQY3cnLnq64sZH75ZGFgDsnU2UVSAu5zSBW06W/jWUUXMsf0OvVdSQ+HAEV/SIJ4PYiIL6nmOktGaXiMgzVUyD+Oz06t76MuvTnoV7ACTyoOINDd9ztJoLpI0kZwHZkg=
+
+language: r
+sudo: required
+cache: packages
+cran: http://cran.rstudio.com
+warnings_are_errors: true
+r_build_args: "--no-manual"
+r_check_args: "--no-build-vignettes --no-manual"
+
+r:
+  - release
+  - devel
+
+before_install:
+  - sudo apt-get -y install python3-pip python-dev
+  - sudo pip install numpy tensorflow keras
+
+r_packages:
+  - devtools
+  - covr
+  - drat
+
+r_github_packages:
+  - r-lib/sessioninfo
+  - jimhester/covr
+  - osofr/simcausal
+  - osofr/condensier
+  - tlverse/delayed
+  - tlverse/origami
+  - tlverse/hal9001
+
+after_success:
+  - travis_wait 80 Rscript -e 'covr::codecov()'
+
+on_failure:
+  - "./travis-tool.sh dump_logs"
+
+notifications:
+  email:
+    on_success: change
+    on_failure: change
+

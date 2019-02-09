@@ -60,7 +60,8 @@ sl3Options <- function(o, value) {
     "sl3.memoise.learner" = FALSE,
     "sl3.save.training" = TRUE,
     "sl3.pcontinuous" = 0.05,
-    "sl3.transform.offset" = TRUE
+    "sl3.transform.offset" = TRUE,
+    "sl3.enable.future" = TRUE
   )
   # for (i in setdiff(names(opts),names(options()))) {
   #   browser()
@@ -94,10 +95,10 @@ sl3Options <- function(o, value) {
     #     packageStartupMessage("**********\nThis development version of sl3 was
     # built more than 4 weeks ago. Please update.\n**********")
     packageStartupMessage(paste(
-      "Please note the package is in early stages of",
-      "development. Check often for updates and",
+      "Please note the package is under active",
+      "development.\nCheck often for updates and",
       "report bugs at",
-      "http://github.com/jeremyrcoyle/sl3.", "\n"
+      "https://github.com/tlverse/sl3.", "\n"
     ))
   }
 }

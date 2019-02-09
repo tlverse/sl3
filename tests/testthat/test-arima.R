@@ -13,7 +13,7 @@ if (FALSE) {
 }
 
 set.seed(1)
-
+attach(list(lag = stats::lag), name = "stats_lag_test_kludge", warn.conflicts = FALSE)
 data(bsds)
 covars <- c("cnt")
 outcome <- "cnt"

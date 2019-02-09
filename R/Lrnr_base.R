@@ -108,10 +108,8 @@ Lrnr_base <- R6Class(
       self$assert_trained()
       if (is.null(task)) {
         task <- private$.training_task
-      } else {
-        task <- task$next_in_chain(covariates <-
-          private$.training_task$nodes$covariates)
       }
+
       assert_that(is(task, "sl3_Task"))
       subsetted_task <- self$subset_covariates(task)
       predictions <- private$.predict(subsetted_task)
@@ -127,10 +125,8 @@ Lrnr_base <- R6Class(
       self$assert_trained()
       if (is.null(task)) {
         task <- private$.training_task
-      } else {
-        task <- task$next_in_chain(covariates <-
-          private$.training_task$nodes$covariates)
       }
+
       assert_that(is(task, "sl3_Task"))
       subsetted_task <- self$subset_covariates(task)
       # use custom chain function if provided
@@ -148,17 +144,18 @@ Lrnr_base <- R6Class(
 
     train = function(task) {
       delayed_fit <- delayed_learner_train(self, task)
-      return(delayed_fit$compute())
+
+      return(delayed_fit$compute(job_type = sl3_delayed_job_type()))
     },
 
     predict = function(task = NULL) {
       delayed_preds <- delayed_learner_fit_predict(self, task)
-      return(delayed_preds$compute())
+      return(delayed_preds$compute(job_type = sl3_delayed_job_type()))
     },
 
     chain = function(task = NULL) {
       delayed_chained <- delayed_learner_fit_chain(self, task)
-      return(delayed_chained$compute())
+      return(delayed_chained$compute(job_type = sl3_delayed_job_type()))
     },
 
     print = function() {
@@ -184,7 +181,6 @@ Lrnr_base <- R6Class(
         warning(self$name, " is not a cv-aware learner, so self$predict_fold reverts to self$predict")
       }
 
-      self$predict(task)
     }
   ),
 
@@ -281,7 +277,7 @@ Lrnr_base <- R6Class(
       predictions <- self$predict(task)
       predictions <- as.data.table(predictions)
       # Add predictions as new columns
-      new_col_names <- task$add_columns(self$fit_uuid, predictions)
+      new_col_names <- task$add_columns(predictions, self$fit_uuid)
       # new_covariates = union(names(predictions),task$nodes$covariates)
       return(task$next_in_chain(
         covariates = names(predictions),

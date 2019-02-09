@@ -60,10 +60,10 @@ Lrnr_solnp_density <- R6Class(
       )
       fit_object$coef <- fit_object$pars
       names(fit_object$coef) <- colnames(task$X)
-      # if (verbose) {
-      cat("\ndensity meta-learner fit:\n")
-      print(fit_object$coef)
-      # }
+      if (verbose) {
+        cat("\ndensity meta-learner fit:\n")
+        print(fit_object$coef)
+      }
       fit_object$name <- "solnp"
       return(fit_object)
     },

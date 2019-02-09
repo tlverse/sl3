@@ -44,13 +44,12 @@ Stack <- R6Class(
           learners <- learners[[1]]
         }
       }
+      # catch learner names and make unique if there's repetition
       learner_names <- sapply(learners, `[[`, "name")
       if (any(duplicated(learner_names))) {
-        warning(paste(
-          "Stack has learners with identical names. This is",
-          "unsupported and might lead to errors."
-        ))
+        learner_names <- make.unique(learner_names, sep = "_")
       }
+      private$.learner_names <- learner_names
       params <- list(learners = learners)
 
       learners_trained <- sapply(learners, `[[`, "is_trained")
@@ -69,9 +68,11 @@ Stack <- R6Class(
     },
     print = function() {
       if (is.null(private$.fit_object)) {
-        lapply(self$params$learners, print)
+        print(private$.learner_names)
+        # lapply(self$params$learners, print)
       } else {
-        lapply(private$.fit_object, print)
+        print(private$.learner_names)
+        # lapply(private$.fit_object, print)
       }
     },
     update_errors = function(is_error) {
@@ -90,6 +91,9 @@ Stack <- R6Class(
   ),
 
   private = list(
+    # modified names of learners
+    .learner_names = NULL,
+
     .train_sublearners = function(task) {
       # generate training subtasks
       learners <- self$params$learners
@@ -112,7 +116,8 @@ Stack <- R6Class(
         message <- learner_errors[[i]]$message
         learner <- errored_learners[[i]]
         warning(sprintf(
-          "%s failed with message: %s. It will be removed from the stack", learner$name, message
+          "%s failed with message: %s. It will be removed from the stack",
+          learner$name, message
         ))
       }
       if (all(is_error)) {
@@ -128,7 +133,7 @@ Stack <- R6Class(
       is_error <- private$.fit_object$is_error
       learner_fits <- private$.fit_object$learner_fits[!is_error]
       learners <- self$params$learners[!is_error]
-      learner_names <- sapply(learners, function(learner) learner$name)
+      learner_names <- private$.learner_names
       n_to_pred <- nrow(task$X)
       n_learners <- length(learner_names)
 
@@ -147,11 +152,11 @@ Stack <- R6Class(
           current_names <- paste0(learner_names[i], "_", names(current_preds))
           stopifnot(length(current_names) == safe_dim(current_preds)[2])
         }
-        data.table::set(learner_preds, j = current_names, value = current_preds)
+        set(learner_preds, j = current_names, value = current_preds)
         invisible(NULL)
       }
       ## remove the initial seeded column by reference
-      data.table::set(
+      set(
         learner_preds,
         j = "init_seed_preds_to_delete",
         value = NULL

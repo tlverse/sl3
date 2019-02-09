@@ -114,7 +114,7 @@ Lrnr_bilstm <- R6Class(
 
       # Create output as in glm
       predictions <- as.numeric(predictions)
-      predictions <- structure(predictions, names = seq_len(predictions))
+      predictions <- structure(predictions, names = seq_along(predictions))
 
       return(predictions)
     },

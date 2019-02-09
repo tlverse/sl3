@@ -1,7 +1,7 @@
 ---
 output:
   rmarkdown::github_document
-bibliography: "`r here::here('README-refs.bib')`"
+bibliography: "README-refs.bib"
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -17,10 +17,11 @@ knitr::opts_chunk$set(
 # R/`sl3`: modern Super Learning with pipelines
 
 [![Travis-CI Build Status](https://travis-ci.org/tlverse/sl3.svg?branch=master)](https://travis-ci.org/tlverse/sl3)
-[![Build status](https://ci.appveyor.com/api/projects/status/25reu5wdhrwj9qgy?svg=true)](https://ci.appveyor.com/project/jeremyrcoyle/sl3)
-[![Coverage Status](https://img.shields.io/codecov/c/github/jeremyrcoyle/sl3/master.svg)](https://codecov.io/github/jeremyrcoyle/sl3?branch=master)
-[![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](http://www.repostatus.org/badges/latest/wip.svg)](http://www.repostatus.org/#wip)
-[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
+[![Appveyor Build Status](https://ci.appveyor.com/api/projects/status/hagh8vidrdeacr7f?svg=true)](https://ci.appveyor.com/project/tlverse/sl3)
+[![Coverage Status](https://img.shields.io/codecov/c/github/tlverse/sl3/master.svg)](https://codecov.io/github/tlverse/sl3?branch=master)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1342294.svg)](https://doi.org/10.5281/zenodo.1342294)
 [![Join the chat at https://gitter.im/sl3-Rpkg/Lobby](https://badges.gitter.im/sl3-Rpkg/Lobby.svg)](https://gitter.im/sl3-Rpkg/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 > A modern implementation of the Super Learner algorithm for ensemble learning
@@ -39,15 +40,18 @@ Sofrygin](https://github.com/osofr)
 @vdl2007super. The Super Learner algorithm performs ensemble learning in one of
 two fashions:
 
-1. The "discrete" Super Learner can be used to select the best prediction
-   algorithm among a supplied library of learning algorithms ("learners" in the
-   `sl3` nomenclature) -- that is, that algorithm which minimizes the
-   cross-validated risk with respect to some appropriate loss function.
-2. The "ensemble" Super Learner can be used to assign weights to specified
-   learning algorithms (in a user-supplied library) in order to create a
-   combination of these learners that minimizes the cross-validated risk with
-   respect to an appropriate loss function. This notion of weighted combinations
-   has also been called _stacked regression_ [@breiman1996stacked].
+1. The _discrete_ Super Learner can be used to select the best prediction
+   algorithm from among a supplied library of machine learning algorithms
+   ("learners" in the `sl3` nomenclature) -- that is, the discrete Super Learner
+   is the single learning algorithm that minimizes the cross-validated risk with
+   respect to an appropriate loss function.
+2. The _ensemble_ Super Learner can be used to assign weights to a set of
+   specified learning algorithms (from a user-supplied library of such
+   algorithms) so as to create a combination of these learners that minimizes
+   the cross-validated risk with respect to an appropriate loss function. This
+   notion of weighted combinations has also been referred to as _stacked
+   regression_ [@breiman1996stacked] and _stacked generalization_
+   [@wolpert1992stacked].
 
 ---
 
@@ -121,13 +125,10 @@ head(preds)
 
 ## Contributions
 
-It is our hope that `sl3` will grow to be widely used for creating stacked
-regression models and the cross-validation of pipelines that make up such
-models, as well as the variety of other applications in which the Super Learner
-algorithm plays a role. To that end, contributions are very welcome, though we
-ask that interested contributors consult our [contribution
-guidelines](https://github.com/jeremyrcoyle/sl3/blob/master/CONTRIBUTING.md)
-prior to submitting a pull request.
+Contributions are very welcome. Interested contributors should consult our
+[contribution
+guidelines](https://github.com/tlverse/sl3/blob/master/CONTRIBUTING.md) prior to
+submitting a pull request.
 
 ---
 
@@ -138,18 +139,19 @@ After using the `sl3` R package, please cite the following:
             Sofrygin, Oleg},
           title = {{sl3}: Modern Pipelines for Machine Learning and {Super
             Learning}},
-          year  = {2018},
+          year = {2018},
           howpublished = {\url{https://github.com/tlverse/sl3}},
-          url = {https://doi.org/DOI_HERE},
-          doi = {DOI_HERE}
+          note = {{R} package version 1.1.0},
+          url = {https://doi.org/10.5281/zenodo.1342294},
+          doi = {10.5281/zenodo.1342294}
         }
 
 ---
 
 ## License
 
-&copy; 2017-2018 [Jeremy R. Coyle](https://github.com/jeremyrcoyle), [Nima S.
-Hejazi](https://github.com/nhejazi), [Ivana
+&copy; 2017-2019 [Jeremy R. Coyle](https://github.com/jeremyrcoyle), [Nima S.
+Hejazi](https://nimahejazi.org), [Ivana
 Malenica](https://github.com/podTockom), [Oleg
 Sofrygin](https://github.com/osofr)
 

@@ -39,7 +39,7 @@ validation_task <- function(task, fold) {
 #'
 #' @importFrom R6 R6Class
 #' @importFrom assertthat assert_that is.count is.flag
-#' @importFrom origami training validation fold_index
+#' @importFrom origami training validation fold_index cross_validate
 #'
 #' @export
 #'
@@ -112,7 +112,7 @@ Lrnr_cv <- R6Class(
     chain_fold = function(task, fold_number = "validation") {
       predictions <- self$predict_fold(task, fold_number)
       # Add predictions as new columns
-      new_col_names <- task$add_columns(self$fit_uuid, predictions)
+      new_col_names <- task$add_columns(predictions, self$fit_uuid)
       # new_covariates = union(names(predictions),task$nodes$covariates)
       return(task$next_in_chain(
         covariates = names(predictions),
@@ -221,6 +221,7 @@ Lrnr_cv <- R6Class(
 
       results <- cross_validate(cv_predict, folds, fold_fits, task, use_future = FALSE)
       predictions <- aorder(results$predictions, order(results$index))
+
       return(predictions)
     },
     .required_packages = c("origami")

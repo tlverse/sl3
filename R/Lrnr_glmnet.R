@@ -34,6 +34,9 @@
 #'   \item{\code{nlambda=100}}{The number of lambda values to compare. Comparing
 #'     less values will speed up computation, but may decrease statistical
 #'     performance. Documented in \code{\link[glmnet]{cv.glmnet}}.}
+#'   \item{\code{use_min=TRUE}}{If TRUE, use lambda=cv_fit$lambda.min for prediction,
+#'     otherwise use lambda=cv_fit$lambda.1se.
+#'     the distinction is clarified in \code{\link[glmnet]{cv.glmnet}}.}
 #'   \item{\code{...}}{Other parameters to be passed to
 #'     \code{\link[glmnet]{cv.glmnet}} and \code{\link[glmnet]{glmnet}}.}
 #' }
@@ -45,7 +48,7 @@ Lrnr_glmnet <- R6Class(
   inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
     initialize = function(lambda = NULL, type.measure = "deviance", nfolds = 10,
-                              alpha = 1, nlambda = 100, ...) {
+                              alpha = 1, nlambda = 100, use_min = TRUE, ...) {
       super$initialize(params = args_to_list(), ...)
     }
   ),
@@ -92,16 +95,22 @@ Lrnr_glmnet <- R6Class(
 
     .predict = function(task) {
       outcome_type <- private$.training_outcome_type
+      if (self$params$use_min) {
+        lambda <- "lambda.min"
+      } else {
+        lambda <- "lambda.1se"
+      }
       predictions <- stats::predict(
         private$.fit_object,
         newx = as.matrix(task$X), type = "response",
-        s = "lambda.min"
+        s = lambda
       )
 
       if (outcome_type$type == "categorical") {
+        cat_names <- dimnames(predictions)[[2]]
         # predictions is a 3-dim matrix, convert to 2-dim matrix
         dim(predictions) <- dim(predictions)[1:2]
-
+        colnames(predictions) <- cat_names
         # pack predictions in a single column
         predictions <- pack_predictions(predictions)
       }

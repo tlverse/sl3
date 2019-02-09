@@ -140,7 +140,14 @@ Lrnr_tsDyn <- R6Class(
           ))
         }
       }
+
+      # kludge for tsDyn (https://groups.google.com/forum/#!topic/tsdyn/qgvR7mEqf64)
+      attach(list(lag = stats::lag), name = "stats_lag_kludge", warn.conflicts = FALSE)
+
+
       fit_object <- call_with_args(learner_fun, args)
+
+      detach("stats_lag_kludge")
       return(fit_object)
     },
 

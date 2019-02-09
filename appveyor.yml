@@ -6,6 +6,7 @@ init:
         $ErrorActionPreference = "Stop"
         Invoke-WebRequest http://raw.github.com/krlmlr/r-appveyor/master/scripts/appveyor-tool.ps1 -OutFile "..\appveyor-tool.ps1"
         Import-Module '..\appveyor-tool.ps1'
+
 install:
   ps: Bootstrap
 
@@ -16,18 +17,32 @@ cache:
 branches:
   only:
     - master
-    - develop
 
 environment:
   global:
     WARNINGS_ARE_ERRORS: 0
+    R_ARCH: x64
     USE_RTOOLS: true
+    GITHUB_PAT:
+      secure: Nu6c5CmcVdYHDUVGej5ZIXGKOXVPBwqUwjrLV8d6UlbUaAtYuUhgpNuv9oLztAQQ
 
 build_script:
   - travis-tool.sh install_deps
+  - travis-tool.sh install_github r-lib/sessioninfo
+  - travis-tool.sh install_github RDatatable/data.table
+  - travis-tool.sh install_github jimhester/covr
+  - travis-tool.sh install_github tlverse/delayed
+  - travis-tool.sh install_github tlverse/origami
+  - travis-tool.sh install_github osofr/simcausal
+  - travis-tool.sh install_github osofr/condensier
+  - travis-tool.sh install_github benkeser/halplus
+  - travis-tool.sh install_github tlverse/hal9001
 
 test_script:
   - travis-tool.sh run_tests
+
+on_success:
+  - Rscript -e "covr::codecov(line_exclusions = list('R/plots.R'))"
 
 on_failure:
   - 7z a failure.zip *.Rcheck\*
@@ -62,3 +77,4 @@ notifications:
    on_build_success: false
    on_build_failure: true
    on_build_status_changed: true
+
