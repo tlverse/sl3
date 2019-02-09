@@ -31,7 +31,7 @@ validation_task <- function(task, fold) {
   return(task$subset_task(validation(fold = fold), drop_folds = TRUE))
 }
 
-interpret_fold_number <- function(fold_number){
+interpret_fold_number <- function(fold_number) {
   if (fold_number == -1) {
     fold_number <- "full"
   } else if (fold_number == 0) {
