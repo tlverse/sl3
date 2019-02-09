@@ -17,23 +17,15 @@ task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
 glm_learner <- Lrnr_glm$new()
 
 #### custom chain
-<<<<<<< HEAD:tests/testthat/test_custom_chain.R
 chain_custom <- function(learner, task) {
   preds <- learner$predict(task)
-=======
-chain_custom <- function(self, task) {
-  preds <- self$predict(task)
->>>>>>> e38c43dae505af5bb8f02db5cf41d7d893eaae67:tests/testthat/test-custom_chain.R
   pred_dt <- data.table(preds)
 
   setnames(pred_dt, names(pred_dt), learner$name)
 
   # add predictions as new column
-<<<<<<< HEAD:tests/testthat/test_custom_chain.R
-  new_col_names <- task$add_columns(learner$fit_uuid, pred_dt)
-=======
   new_col_names <- task$add_columns(pred_dt, self$fit_uuid)
->>>>>>> e38c43dae505af5bb8f02db5cf41d7d893eaae67:tests/testthat/test-custom_chain.R
+
   # prediction becomes outcome
   return(task$next_in_chain(
     outcome = names(pred_dt),

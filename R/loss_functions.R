@@ -151,7 +151,7 @@ cv_risk <- function(learner, loss_fun, coefs = NULL) {
     fold_max_risk = fold_max_risk
   )
   if (!is.null(coefs)) {
-    set(risk_dt , , "coefficients", coefs)
+    set(risk_dt, , "coefficients", coefs)
   }
   return(risk_dt)
 }

@@ -180,7 +180,6 @@ Lrnr_base <- R6Class(
       if (fold_number != "full") {
         warning(self$name, " is not a cv-aware learner, so self$predict_fold reverts to self$predict")
       }
-
     }
   ),
 
