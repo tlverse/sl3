@@ -238,17 +238,22 @@ sl3_Task <- R6Class(
       return(new_task)
     },
 
-    subset_task = function(row_index) {
+    subset_task = function(row_index, drop_folds = FALSE) {
       old_row_index <- private$.row_index
       if (!is.null(old_row_index)) {
         # index into the logical rows of this task
         row_index <- old_row_index[row_index]
       }
       new_task <- self$clone()
+      if (drop_folds) {
+        new_folds <- NULL
+      } else {
+        new_folds <- self$folds
+      }
       new_task$initialize(
         private$.data,
         nodes = private$.nodes,
-        folds = self$folds,
+        folds = new_folds,
         column_names = private$.column_names,
         row_index = row_index,
         outcome_type = self$outcome_type

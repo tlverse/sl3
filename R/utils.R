@@ -8,7 +8,7 @@ SuppressGivenWarnings <- function(expr, warningsToIgnore) {
 
 ################################################################################
 
-GetWarningsToSuppress <- function(update.step =FALSE) {
+GetWarningsToSuppress <- function(update.step = FALSE) {
   warnings.to.suppress <- c(
     paste(
       "glm.fit: fitted probabilities numerically 0",
@@ -65,7 +65,7 @@ keep_only_fun_args <- function(Args, fun) {
 #'
 #' @keywords internal
 #
-call_with_args <- function(fun, args, other_valid=list(), keep_all=FALSE) {
+call_with_args <- function(fun, args, other_valid = list(), keep_all = FALSE) {
   if (!keep_all) {
     formal_args <- names(formals(fun))
     all_valid <- c(formal_args, other_valid)

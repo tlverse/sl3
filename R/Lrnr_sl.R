@@ -67,76 +67,24 @@ Lrnr_sl <- R6Class(
       self$assert_trained()
       return(private$.fit_object$cv_meta_fit$fit_object)
     },
-
     cv_risk = function(loss_fun) {
-      # warning(paste("cv_risks are for demonstration purposes only.",
-      # "Don't trust these for now."))
-      cv_meta_task <- self$fit_object$cv_meta_task
-      cv_meta_fit <- self$fit_object$cv_meta_fit
-      losses <- cv_meta_task$X[, lapply(.SD, loss_fun, cv_meta_task$Y)]
-      losses[, SuperLearner := loss_fun(cv_meta_fit$predict(), cv_meta_task$Y)]
-      # multiply each loss (L(O_i)) by the weights (w_i):
-      losses_by_id <- losses[, lapply(.SD, function(loss) cv_meta_task$weights *
-          loss)]
-      # for clustered data, this will first evaluate the mean weighted loss
-      # within each cluster (subject) before evaluating SD
-      losses_by_id <- losses_by_id[, lapply(.SD, function(loss) {
-        mean(loss, na.rm = TRUE)
-      }), by = cv_meta_task$id]
-      losses_by_id[, "cv_meta_task" := NULL]
-      # n_obs for clustered data (person-time observations), should be equal to
-      # number of independent subjects
-      n_obs <- nrow(losses_by_id)
-      # evaluate risk SE for each learner incorporating: a) weights and b) using
-      # the number of independent subjects
-      se <- unlist((1 / sqrt(n_obs)) * losses_by_id[, lapply(
-        .SD, sd,
-        na.rm = TRUE
-      )])
-      # get fold specific risks
-      validation_means <- function(fold, losses, weight) {
-        risks <- lapply(
-          origami::validation(losses), weighted.mean,
-          origami::validation(weight)
-        )
-        return(as.data.frame(risks))
-      }
-      # TODO: this ignores weights, square errors are also incorrect
-      fold_risks <- lapply(
-        cv_meta_task$folds,
-        validation_means,
-        losses,
-        cv_meta_task$weights
-      )
-      fold_risks <- rbindlist(fold_risks)
-      fold_mean_risk <- apply(fold_risks, 2, mean)
-      fold_min_risk <- apply(fold_risks, 2, min)
-      fold_max_risk <- apply(fold_risks, 2, max)
-      fold_SD <- apply(fold_risks, 2, sd)
 
-      learner_names <- c(
-        cv_meta_task$nodes$covariates,
-        "SuperLearner"
-      )
+      # get risks for cv learners (nested cv)
+      cv_stack_fit <- self$fit_object$cv_fit
+      stack_risks <- cv_stack_fit$cv_risk(loss_fun)
       coefs <- self$coefficients
+      set(stack_risks, , "coefficients", coefs[match(stack_risks$learner, names(coefs))])
 
-      risk_dt <- data.table::data.table(
-        learner = learner_names,
-        coefficients = NA * 0.0,
-        mean_risk = fold_mean_risk,
-        SE_risk = se,
-        fold_SD = fold_SD,
-        fold_min_risk = fold_min_risk,
-        fold_max_risk = fold_max_risk
-      )
-      if (!is.null(coefs)) {
-        # risk_dt[match(learner, names(coefs)), coefficients := coefs]
-        risk_dt[, coefficients := c(coefs, NA)]
-      }
-      return(risk_dt)
+      # get risks for super learner (revere cv)
+      sl_risk <- cv_risk(self, loss_fun)
+      set(sl_risk, , "learner", "SuperLearner")
+
+      # combine and return
+      risks <- rbind(stack_risks, sl_risk)
+      return(risks)
     },
-    predict_fold = function(task, fold_number=0){
-      meta_task <- self$fit_object$cv_fit$chain_fold(task,fold_number)
+    predict_fold = function(task, fold_number = "validation") {
+      meta_task <- self$fit_object$cv_fit$chain_fold(task, fold_number)
       meta_predictions <- self$fit_object$cv_meta_fit$predict(meta_task)
     }
   ),
@@ -165,7 +113,7 @@ Lrnr_sl <- R6Class(
       # make stack and CV learner objects
       learners <- self$params$learners
       learner_stack <- do.call(Stack$new, learners)
-      cv_stack <- Lrnr_cv$new(learner_stack, folds = folds)
+      cv_stack <- Lrnr_cv$new(learner_stack, folds = folds, full_fit = TRUE)
       cv_stack$custom_chain(drop_offsets_chain)
 
       # fit stack on CV data
@@ -181,19 +129,29 @@ Lrnr_sl <- R6Class(
 
       # form full SL fit -- a pipeline with the stack fit to the full data,
       # and the metalearner fit to the cv predictions
-      full_fit <- delayed_make_learner(Pipeline, stack_fit, cv_meta_fit)
       fit_object <- list(
         cv_fit = cv_fit, cv_meta_task = cv_meta_task,
-        cv_meta_fit = cv_meta_fit, full_fit = full_fit
+        cv_meta_fit = cv_meta_fit
       )
       return(bundle_delayed(fit_object))
     },
 
     .train = function(task, trained_sublearners) {
-      # propagate stack errors from cross-validation to full refit
       fit_object <- trained_sublearners
+
+      # construct full fit pipeline
+      full_stack_fit <- fit_object$cv_fit$fit_object$full_fit
+      full_stack_fit$custom_chain(drop_offsets_chain)
+
+      # propagate stack errors from cross-validation to full refit
       cv_errors <- fit_object$cv_fit$fit_object$is_error
-      fit_object$full_fit$fit_object$learner_fits[[1]]$update_errors(cv_errors)
+      full_stack_fit$update_errors(cv_errors)
+
+      full_fit <- make_learner(Pipeline, full_stack_fit, fit_object$cv_meta_fit)
+
+
+
+      fit_object$full_fit <- full_fit
 
       if (self$params$keep_extra) {
         keep <- names(fit_object)
@@ -213,7 +171,7 @@ Lrnr_sl <- R6Class(
   )
 )
 
-#' Chain while dropping offsetes
+#' Chain while dropping offsets
 #'
 #' Allows the dropping of offsets when calling the chain method. This is simply
 #' a modified version of the chain method found in \code{Lrnr_base}. INTERNAL
@@ -223,11 +181,11 @@ Lrnr_sl <- R6Class(
 #'
 #' @keywords internal
 #
-drop_offsets_chain <- function(task) {
-  predictions <- self$predict(task)
+drop_offsets_chain <- function(learner, task) {
+  predictions <- learner$predict(task)
   predictions <- as.data.table(predictions)
   # Add predictions as new columns
-  new_col_names <- task$add_columns(self$fit_uuid, predictions)
+  new_col_names <- task$add_columns(learner$fit_uuid, predictions)
   # new_covariates = union(names(predictions),task$nodes$covariates)
   return(task$next_in_chain(
     covariates = names(predictions),

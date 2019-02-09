@@ -75,8 +75,8 @@ Lrnr_solnp_density <- R6Class(
       if (nrow(X) > 0) {
         coef <- private$.fit_object$coef
         if (!all(is.na(coef))) {
-          predictions <- data.table::data.table(as.matrix(X[
-            ,
+          predictions <- data.table::data.table(as.matrix(X
+          [,
             which(!is.na(coef)),
             drop = FALSE, with = FALSE
           ]) %*%

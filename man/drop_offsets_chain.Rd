@@ -2,9 +2,9 @@
 % Please edit documentation in R/Lrnr_sl.R
 \name{drop_offsets_chain}
 \alias{drop_offsets_chain}
-\title{Chain while dropping offsetes}
+\title{Chain while dropping offsets}
 \usage{
-drop_offsets_chain(task)
+drop_offsets_chain(learner, task)
 }
 \arguments{
 \item{task}{An object of class \code{sl3_Task}.}

@@ -43,7 +43,7 @@ normalize_rows <- function(x) {
 #' @param ind_ref_mat a matrix used for expansion, if NULL generated automatically
 #' @rdname factors_to_indicators
 #' @export
-factor_to_indicators <- function(x, ind_ref_mat=NULL) {
+factor_to_indicators <- function(x, ind_ref_mat = NULL) {
   x_vals <- get_levels(x)
   if (is.null(ind_ref_mat)) {
     ind_ref_mat <- sapply(x_vals[-1], function(x_val) as.numeric(x_val == x_vals))

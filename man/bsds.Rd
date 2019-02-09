@@ -20,5 +20,6 @@ Bicycle sharing time series dataset from the UCI Machine Learning Repository.
 \examples{
 data(bsds)
 head(bsds)
+#
 }
 \keyword{data}

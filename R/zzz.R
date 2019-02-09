@@ -12,13 +12,14 @@ NULL
 #'
 #' @export
 #'
-#' @examples \dontrun{
+#' @examples
+#' \dontrun{
 #' sl3Options()
-#' sl3Options('sl3.verbose')
-#' sl3Options('sl3.temp.dir')
-#' sl3Options('sl3.verbose', TRUE)
+#' sl3Options("sl3.verbose")
+#' sl3Options("sl3.temp.dir")
+#' sl3Options("sl3.verbose", TRUE)
 #' }
-#
+#' #
 sl3Options <- function(o, value) {
   res <- options()[grep("sl3", names(options()))]
   if (missing(value)) {

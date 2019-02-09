@@ -51,9 +51,9 @@ Variable_Type <- R6Class(
     glm_family = function(return_object = FALSE) {
       type <- self$type
       family <- switch(type, continuous = "gaussian", binomial = "binomial",
-      quasibinomial = "quasibinomial",
-      categorical = "multinomial", constant = "binomial",
-      "unknown"
+        quasibinomial = "quasibinomial",
+        categorical = "multinomial", constant = "binomial",
+        "unknown"
       )
       if (family == "unknown") {
         warning("No family for this outcome_type. Defaulting to gaussian")

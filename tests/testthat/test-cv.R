@@ -13,7 +13,7 @@ test_that("task will self-generate folds for 10-fold CV", expect_length(
 ))
 
 glm_learner <- Lrnr_glm$new()
-cv_glm <- Lrnr_cv$new(glm_learner)
+cv_glm <- Lrnr_cv$new(glm_learner, full_fit = TRUE)
 cv_glm_fit <- cv_glm$train(task)
 
 test_that("Lrnr_cv will use folds from task", expect_equal(task$folds, cv_glm_fit$fit_object$folds))
@@ -24,7 +24,38 @@ test_that("task will accept custom folds", expect_length(task_2$folds, 5))
 
 cv_glm_2 <- Lrnr_cv$new(glm_learner, folds = make_folds(cpp_imputed, V = 10))
 cv_glm_fit_2 <- cv_glm_2$train(task_2)
+cv_glm_fit_2$cv_risk(loss_squared_error)
 test_that("Lrnr_cv can override folds from task", expect_equal(
   cv_glm_fit_2$params$folds,
   cv_glm_fit_2$fit_object$folds
 ))
+
+glm_fit <- glm_learner$train(task)
+test_that(
+  "Lrnr_cv$predict_fold can generate full sample predictions",
+  expect_equal(
+    cv_glm_fit$predict_fold(task, "full"),
+    glm_fit$predict(task)
+  )
+)
+
+test_that(
+  "Lrnr_cv$predict_fold can generate split specific predictions",
+  expect_equal(
+    cv_glm_fit$predict_fold(task, 1),
+    cv_glm_fit$fit_object$fold_fits[[1]]$predict(task)
+  )
+)
+
+test_that(
+  "Lrnr_cv$predict_fold can generate cross-validated predictions",
+  expect_equal(
+    cv_glm_fit$predict_fold(task, "validation"),
+    cv_glm_fit$predict(task)
+  )
+)
+
+test_that("Lrnr_cv$predict_fold throws an error on a bad fold_number", {
+  expect_error(cv_glm_fit$predict_fold(task, "junk"))
+  expect_error(cv_glm_fit$predict_fold(task, -1))
+})

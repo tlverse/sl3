@@ -135,7 +135,7 @@ Lrnr_base <- R6Class(
       subsetted_task <- self$subset_covariates(task)
       # use custom chain function if provided
       if (!is.null(private$.custom_chain)) {
-        next_task <- private$.custom_chain(subsetted_task)
+        next_task <- private$.custom_chain(self, subsetted_task)
       } else {
         next_task <- private$.chain(subsetted_task)
       }
@@ -171,8 +171,19 @@ Lrnr_base <- R6Class(
     custom_chain = function(new_chain_fun = NULL) {
       private$.custom_chain <- new_chain_fun
     },
-    predict_fold = function(task, fold_number){
-      warning(self$name, " is not a cv-aware learner, so self$predict_fold reverts to self$predict")
+    predict_fold = function(task, fold_number = "full") {
+      # support legacy "magic number" definitions
+      if (fold_number == -1) {
+        fold_number <- "full"
+      } else if (fold_number == 0) {
+        fold_number <- "validation"
+      }
+
+      # for non cv learners, do full predict no matter what, but warn about it if fold_number is something else
+      if (fold_number != "full") {
+        warning(self$name, " is not a cv-aware learner, so self$predict_fold reverts to self$predict")
+      }
+
       self$predict(task)
     }
   ),

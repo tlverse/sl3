@@ -21,11 +21,17 @@ The resultant stack of learners may then be used as normal.
 }
 \examples{
 # constructing learners with default settings
-sl_stack_easy <- make_learner_stack("Lrnr_mean", "Lrnr_glm_fast",
-                                    "Lrnr_xgboost")
+sl_stack_easy <- make_learner_stack(
+  "Lrnr_mean", "Lrnr_glm_fast",
+  "Lrnr_xgboost"
+)
 
 # constructing learners with arguments passed in
-sl_stack <- make_learner_stack("Lrnr_mean",
-                               list("Lrnr_condensier", nbins = 5,
-                                    bin_method = "equal.len", pool = FALSE))
+sl_stack <- make_learner_stack(
+  "Lrnr_mean",
+  list("Lrnr_condensier",
+    nbins = 5,
+    bin_method = "equal.len", pool = FALSE
+  )
+)
 }

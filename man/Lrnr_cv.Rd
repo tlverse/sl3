@@ -21,6 +21,9 @@ A wrapper around any learner that generates cross-validate predictions
 \item{\code{learner}}{The learner to wrap}
 \item{\code{folds=NULL}}{An \code{origami} folds object. If \code{NULL},
 folds from the task are used}
+\item{\code{full_fit=FALSE}}{If \code{TRUE}, also fit the underlying learner on the full data.
+This can then be accessed with predict_fold(task, fold_number="full")
+}
 }
 }
 
@@ -49,4 +52,5 @@ Other Learners: \code{\link{Custom_chain}},
   \code{\link{define_h2o_X}},
   \code{\link{undocumented_learner}}
 }
+\concept{Learners}
 \keyword{data}
