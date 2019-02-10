@@ -11,7 +11,7 @@ install:
   ps: Bootstrap
 
 cache:
-  - C:\RLibrary
+  - C:\RLibrary -> appveyor.yml
 
 # Adapt as necessary starting from here
 branches:
@@ -42,7 +42,7 @@ test_script:
   - travis-tool.sh run_tests
 
 on_success:
-  - Rscript -e "covr::codecov(line_exclusions = list('R/plots.R'))"
+  - Rscript -e "covr::codecov()"
 
 on_failure:
   - 7z a failure.zip *.Rcheck\*

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Chain while dropping offsets — drop_offsets_chain • sl3</title>
+<title>Estimate Cross-Validated Risk of Super Learner — CV_lrnr_sl • sl3</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,11 +30,9 @@
 
 
 
-<meta property="og:title" content="Chain while dropping offsets — drop_offsets_chain" />
+<meta property="og:title" content="Estimate Cross-Validated Risk of Super Learner — CV_lrnr_sl" />
 
-<meta property="og:description" content="Allows the dropping of offsets when calling the chain method. This is simply
-a modified version of the chain method found in Lrnr_base. INTERNAL
-USE ONLY." />
+<meta property="og:description" content="Estimate Cross-Validated Risk of Super Learner" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -127,27 +125,33 @@ USE ONLY." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Chain while dropping offsets</h1>
+    <h1>Estimate Cross-Validated Risk of Super Learner</h1>
     
-    <div class="hidden name"><code>drop_offsets_chain.Rd</code></div>
+    <div class="hidden name"><code>CV_lrnr_sl.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Allows the dropping of offsets when calling the chain method. This is simply
-a modified version of the chain method found in <code>Lrnr_base</code>. INTERNAL
-USE ONLY.</p>
+    <p>Estimate Cross-Validated Risk of Super Learner</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>drop_offsets_chain</span>(<span class='no'>learner</span>, <span class='no'>task</span>)</pre>
+    <pre class="usage"><span class='fu'>CV_lrnr_sl</span>(<span class='no'>lrnr_sl</span>, <span class='no'>task</span>, <span class='no'>loss_fun</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>lrnr_sl</th>
+      <td><p>a Lrnr_sl object specifying the Super Learner</p></td>
+    </tr>
+    <tr>
       <th>task</th>
-      <td><p>An object of class <code>sl3_Task</code>.</p></td>
+      <td><p>the task used for training and performance assessment</p></td>
+    </tr>
+    <tr>
+      <th>loss_fun</th>
+      <td><p>the loss function used to evaluate Super Learner</p></td>
     </tr>
     </table>
     

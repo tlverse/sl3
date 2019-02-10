@@ -162,8 +162,8 @@ install.packages("sl3")
 <a class="sourceLine" id="cb2-25" data-line-number="25"><span class="co"># load example data set</span></a>
 <a class="sourceLine" id="cb2-26" data-line-number="26"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(cpp)</a>
 <a class="sourceLine" id="cb2-27" data-line-number="27">cpp &lt;-<span class="st"> </span>cpp <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb2-28" data-line-number="28"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NA">is.na</a></span>(haz)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb2-29" data-line-number="29"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise_all.html">mutate_all</a></span>(<span class="kw"><a href="http://dplyr.tidyverse.org/reference/funs.html">funs</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/replace">replace</a></span>(., <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NA">is.na</a></span>(.), <span class="dv">0</span>)))</a>
+<a class="sourceLine" id="cb2-28" data-line-number="28"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NA">is.na</a></span>(haz)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-29" data-line-number="29"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise_all.html">mutate_all</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org/reference/funs.html">funs</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/replace">replace</a></span>(., <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NA">is.na</a></span>(.), <span class="dv">0</span>)))</a>
 <a class="sourceLine" id="cb2-30" data-line-number="30"></a>
 <a class="sourceLine" id="cb2-31" data-line-number="31"><span class="co"># use covariates of intest and the outcome to build a task object</span></a>
 <a class="sourceLine" id="cb2-32" data-line-number="32">covars &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"apgar1"</span>, <span class="st">"apgar5"</span>, <span class="st">"parity"</span>, <span class="st">"gagebrth"</span>, <span class="st">"mage"</span>, <span class="st">"meducyrs"</span>,</a>
@@ -179,26 +179,22 @@ install.packages("sl3")
 <a class="sourceLine" id="cb2-42" data-line-number="42"><span class="co"># stack learners into a model (including screeners and pipelines)</span></a>
 <a class="sourceLine" id="cb2-43" data-line-number="43">learner_stack &lt;-<span class="st"> </span>Stack<span class="op">$</span><span class="kw">new</span>(SL.glmnet_learner, glm_learner, screen_and_glm)</a>
 <a class="sourceLine" id="cb2-44" data-line-number="44">stack_fit &lt;-<span class="st"> </span>learner_stack<span class="op">$</span><span class="kw">train</span>(task)</a>
-<a class="sourceLine" id="cb2-45" data-line-number="45"><span class="co">#&gt; Loading required package: glmnet</span></a>
-<a class="sourceLine" id="cb2-46" data-line-number="46"><span class="co">#&gt; Loading required package: Matrix</span></a>
-<a class="sourceLine" id="cb2-47" data-line-number="47"><span class="co">#&gt; Loading required package: foreach</span></a>
-<a class="sourceLine" id="cb2-48" data-line-number="48"><span class="co">#&gt; Loaded glmnet 2.0-16</span></a>
-<a class="sourceLine" id="cb2-49" data-line-number="49">preds &lt;-<span class="st"> </span>stack_fit<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/predict">predict</a></span>()</a>
-<a class="sourceLine" id="cb2-50" data-line-number="50"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(preds)</a>
-<a class="sourceLine" id="cb2-51" data-line-number="51"><span class="co">#&gt;    Lrnr_pkg_SuperLearner_SL.glmnet Lrnr_glm_TRUE</span></a>
-<a class="sourceLine" id="cb2-52" data-line-number="52"><span class="co">#&gt; 1:                      0.35345519    0.36298498</span></a>
-<a class="sourceLine" id="cb2-53" data-line-number="53"><span class="co">#&gt; 2:                      0.35345519    0.36298498</span></a>
-<a class="sourceLine" id="cb2-54" data-line-number="54"><span class="co">#&gt; 3:                      0.24554305    0.25993072</span></a>
-<a class="sourceLine" id="cb2-55" data-line-number="55"><span class="co">#&gt; 4:                      0.24554305    0.25993072</span></a>
-<a class="sourceLine" id="cb2-56" data-line-number="56"><span class="co">#&gt; 5:                      0.24554305    0.25993072</span></a>
-<a class="sourceLine" id="cb2-57" data-line-number="57"><span class="co">#&gt; 6:                      0.02953193    0.05680264</span></a>
-<a class="sourceLine" id="cb2-58" data-line-number="58"><span class="co">#&gt;    Lrnr_pkg_SuperLearner_screener_screen.glmnet___Lrnr_glm_TRUE</span></a>
-<a class="sourceLine" id="cb2-59" data-line-number="59"><span class="co">#&gt; 1:                                                   0.36228209</span></a>
-<a class="sourceLine" id="cb2-60" data-line-number="60"><span class="co">#&gt; 2:                                                   0.36228209</span></a>
-<a class="sourceLine" id="cb2-61" data-line-number="61"><span class="co">#&gt; 3:                                                   0.25870995</span></a>
-<a class="sourceLine" id="cb2-62" data-line-number="62"><span class="co">#&gt; 4:                                                   0.25870995</span></a>
-<a class="sourceLine" id="cb2-63" data-line-number="63"><span class="co">#&gt; 5:                                                   0.25870995</span></a>
-<a class="sourceLine" id="cb2-64" data-line-number="64"><span class="co">#&gt; 6:                                                   0.05600958</span></a></code></pre></div>
+<a class="sourceLine" id="cb2-45" data-line-number="45">preds &lt;-<span class="st"> </span>stack_fit<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/predict">predict</a></span>()</a>
+<a class="sourceLine" id="cb2-46" data-line-number="46"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(preds)</a>
+<a class="sourceLine" id="cb2-47" data-line-number="47"><span class="co">#&gt;    Lrnr_pkg_SuperLearner_SL.glmnet Lrnr_glm_TRUE</span></a>
+<a class="sourceLine" id="cb2-48" data-line-number="48"><span class="co">#&gt; 1:                      0.35345519    0.36298498</span></a>
+<a class="sourceLine" id="cb2-49" data-line-number="49"><span class="co">#&gt; 2:                      0.35345519    0.36298498</span></a>
+<a class="sourceLine" id="cb2-50" data-line-number="50"><span class="co">#&gt; 3:                      0.24554305    0.25993072</span></a>
+<a class="sourceLine" id="cb2-51" data-line-number="51"><span class="co">#&gt; 4:                      0.24554305    0.25993072</span></a>
+<a class="sourceLine" id="cb2-52" data-line-number="52"><span class="co">#&gt; 5:                      0.24554305    0.25993072</span></a>
+<a class="sourceLine" id="cb2-53" data-line-number="53"><span class="co">#&gt; 6:                      0.02953193    0.05680264</span></a>
+<a class="sourceLine" id="cb2-54" data-line-number="54"><span class="co">#&gt;    Lrnr_pkg_SuperLearner_screener_screen.glmnet___Lrnr_glm_TRUE</span></a>
+<a class="sourceLine" id="cb2-55" data-line-number="55"><span class="co">#&gt; 1:                                                   0.36228209</span></a>
+<a class="sourceLine" id="cb2-56" data-line-number="56"><span class="co">#&gt; 2:                                                   0.36228209</span></a>
+<a class="sourceLine" id="cb2-57" data-line-number="57"><span class="co">#&gt; 3:                                                   0.25870995</span></a>
+<a class="sourceLine" id="cb2-58" data-line-number="58"><span class="co">#&gt; 4:                                                   0.25870995</span></a>
+<a class="sourceLine" id="cb2-59" data-line-number="59"><span class="co">#&gt; 5:                                                   0.25870995</span></a>
+<a class="sourceLine" id="cb2-60" data-line-number="60"><span class="co">#&gt; 6:                                                   0.05600958</span></a></code></pre></div>
 <hr>
 </div>
 <div id="contributions" class="section level2">

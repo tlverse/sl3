@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Chain while dropping offsets — drop_offsets_chain • sl3</title>
+<title>Revere (SplitSpecific) Task — sl3_revere_Task • sl3</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,11 +30,10 @@
 
 
 
-<meta property="og:title" content="Chain while dropping offsets — drop_offsets_chain" />
+<meta property="og:title" content="Revere (SplitSpecific) Task — sl3_revere_Task" />
 
-<meta property="og:description" content="Allows the dropping of offsets when calling the chain method. This is simply
-a modified version of the chain method found in Lrnr_base. INTERNAL
-USE ONLY." />
+<meta property="og:description" content="A task that has different realizations in different folds
+Useful for Revere CV operations" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -127,37 +126,39 @@ USE ONLY." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Chain while dropping offsets</h1>
+    <h1>Revere (SplitSpecific) Task</h1>
     
-    <div class="hidden name"><code>drop_offsets_chain.Rd</code></div>
+    <div class="hidden name"><code>sl3_revere_Task.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Allows the dropping of offsets when calling the chain method. This is simply
-a modified version of the chain method found in <code>Lrnr_base</code>. INTERNAL
-USE ONLY.</p>
+    <p>A task that has different realizations in different folds
+Useful for Revere CV operations</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>drop_offsets_chain</span>(<span class='no'>learner</span>, <span class='no'>task</span>)</pre>
+    <pre class="usage"><span class='no'>sl3_revere_Task</span></pre>
+        
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+
+    <p>An object of class <code>R6ClassGenerator</code> of length 24.</p>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>task</th>
-      <td><p>An object of class <code>sl3_Task</code>.</p></td>
-    </tr>
-    </table>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Learners with property "cv" must use these tasks correctly</p>
+<p>Other learners will treat this as the equivalent of the "full" task.</p>
     
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#format">Format</a></li>
+
+      <li><a href="#details">Details</a></li>
+          </ul>
 
   </div>
 </div>
