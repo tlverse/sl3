@@ -192,6 +192,8 @@ Lrnr_sl <- R6Class(
 #' @keywords internal
 #
 drop_offsets_chain <- function(learner, task) {
+  # pull out the validation task if we're in a revere context
+  task <- task$revere_fold_task("validation")
   predictions <- learner$predict(task)
   predictions <- as.data.table(predictions)
   # Add predictions as new columns
