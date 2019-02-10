@@ -116,15 +116,18 @@ Lrnr_cv <- R6Class(
         fold_fit <- self$fit_object$fold_fits[[as.numeric(fold_number)]]
       }
 
-
-      return(fold_fit$predict(task))
+      revere_task <- task$revere_fold_task(fold_number)
+      preds <- fold_fit$predict(revere_task)
+      return(preds)
     },
     chain_fold = function(task, fold_number = "validation") {
+      # TODO: make this respect custom_chain
       predictions <- self$predict_fold(task, fold_number)
       # Add predictions as new columns
-      new_col_names <- task$add_columns(predictions, self$fit_uuid)
+      revere_task <- task$revere_fold_task(fold_number)
+      new_col_names <- revere_task$add_columns(predictions, self$fit_uuid)
       # new_covariates = union(names(predictions),task$nodes$covariates)
-      return(task$next_in_chain(
+      return(revere_task$next_in_chain(
         covariates = names(predictions),
         column_names = new_col_names
       ))
@@ -152,7 +155,9 @@ Lrnr_cv <- R6Class(
       # delayed_train_task <- delayed_fun(train_task)
 
       delayed_cv_train <- function(fold, learner, task) {
-        training_task <- train_task(task, fold)
+        fold_number <- fold_index()
+        revere_task <- task$revere_fold_task(fold_number)
+        training_task <- train_task(revere_task, fold)
         fit_object <- delayed_learner_train(learner, training_task)
         return(fit_object)
       }
@@ -222,7 +227,10 @@ Lrnr_cv <- R6Class(
       fold_fits <- private$.fit_object$fold_fits
 
       cv_predict <- function(fold, fold_fits, task) {
-        validation_task <- validation_task(task, fold)
+        fold_number <- fold_index()
+        revere_task <- task$revere_fold_task(fold_number)
+
+        validation_task <- validation_task(revere_task, fold)
         index <- validation()
         fit <- fold_index(fold_fits)[[1]]
         predictions <- fit$base_predict(validation_task)

@@ -301,6 +301,9 @@ sl3_Task <- R6Class(
     print = function() {
       cat(sprintf("A sl3 Task with %d obs and these nodes:\n", self$nrow))
       print(self$nodes)
+    },
+    revere_fold_task = function(fold_number) {
+      return(self)
     }
   ),
 
