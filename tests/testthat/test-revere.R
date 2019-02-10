@@ -1,3 +1,5 @@
+library(sl3)
+library(data.table)
 context("test-revere.R -- Split Specific SuperLearner")
 
 # generate simulated data
@@ -57,8 +59,14 @@ revere_generator <- function(fit) {
 revere_task_fun <- revere_generator(fit)
 
 revere_task <- sl3_revere_Task$new(generator_fun = revere_task_fun, task = task)
+
 # debugonce(drop_offsets_chain)
+# debug_train(lrnr_sl,once=TRUE)
+# sl3_debug_mode()
+# debug_train(lib$params$learners[[1]], once=FALSE)
 revere_v_fit <- lrnr_sl$train(revere_task)
+
+
 revere_v_fit_preds <- revere_v_fit$predict_fold(revere_task, "validation")
 revere_v_mse <- mean((data$VY - revere_v_fit_preds)^2)
 revere_v_bias <- mean(data$VY - revere_v_fit_preds)
