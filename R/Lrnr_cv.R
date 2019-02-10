@@ -122,6 +122,7 @@ Lrnr_cv <- R6Class(
     },
     chain_fold = function(task, fold_number = "validation") {
       # TODO: make this respect custom_chain
+
       # Add predictions as new columns
       revere_task <- task$revere_fold_task(fold_number)
       
