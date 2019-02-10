@@ -28,15 +28,16 @@ sl3_revere_Task <- R6Class(
       private$.input_task <- task
       private$.task_cache <- new.env()
 
+      ## disabling this in case it masks errors
       # initialize other private members to the contents of full task so naive use of this task will act like full task
-      full_task <- self$revere_fold_task("full")
-      full_task_private <- full_task$.__enclos_env__$private
-      invisible(lapply(
-        names(full_task_private),
-        function(name) {
-          assign(name, full_task_private[[name]], private)
-        }
-      ))
+      # full_task <- self$revere_fold_task("full")
+      # full_task_private <- full_task$.__enclos_env__$private
+      # invisible(lapply(
+      #   names(full_task_private),
+      #   function(name) {
+      #     assign(name, full_task_private[[name]], private)
+      #   }
+      # ))
     },
     revere_fold_task = function(fold_number) {
       fold_task <- get0(as.character(fold_number), envir = self$task_cache, inherits = FALSE)
@@ -57,6 +58,9 @@ sl3_revere_Task <- R6Class(
     },
     generator_fun = function() {
       return(private$.generator_fun)
+    },
+    folds = function(){
+      return(self$input_task$folds)
     }
   ),
   private = list(
