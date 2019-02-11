@@ -94,8 +94,15 @@ Lrnr_sl <- R6Class(
     },
     predict_fold = function(task, fold_number = "validation") {
       fold_number <- interpret_fold_number(fold_number)
-      meta_task <- self$fit_object$cv_fit$chain_fold(task, fold_number)
-      meta_predictions <- self$fit_object$cv_meta_fit$predict(meta_task)
+      revere_task <- task$revere_fold_task(fold_number)
+      if(fold_number=="full"){
+        preds <- self$predict(revere_task)
+      } else {
+        meta_task <- self$fit_object$cv_fit$chain_fold(revere_task, fold_number)
+        preds <- self$fit_object$cv_meta_fit$predict(meta_task)
+      }
+        
+      return(preds)
     }
   ),
 
