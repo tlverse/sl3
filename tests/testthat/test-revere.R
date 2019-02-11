@@ -43,7 +43,7 @@ fit <- lrnr_sl$train(task)
 # make the revere task
 fold_number <- "validation"
 revere_generator <- function(fit) {
-  fun <- function(fold_number, task) {
+  fun <- function(task, fold_number) {
     preds <- fit$predict_fold(task, fold_number)
     squared_error <- data.table(squared_error = (preds - task$Y)^2)
 
