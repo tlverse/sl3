@@ -125,7 +125,7 @@ Lrnr_cv <- R6Class(
 
       # Add predictions as new columns
       revere_task <- task$revere_fold_task(fold_number)
-      
+
       predictions <- self$predict_fold(revere_task, fold_number)
       new_col_names <- revere_task$add_columns(predictions, self$fit_uuid)
       # new_covariates = union(names(predictions),task$nodes$covariates)

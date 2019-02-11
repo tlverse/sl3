@@ -45,5 +45,5 @@ sl1_small <- Lrnr_sl$new(learners = list(glm_learner, glmnet_learner, subset_apg
 sl1_small_fit <- sl1_small$train(task)
 expect_lt(length(sl1_small_fit$fit_object), length(sl1_fit$fit_object))
 preds <- sl1_small_fit$predict(task)
-preds_fold <- sl1_small_fit$predict_fold(task,"full")
-test_that("predict_fold(task,'full') works if keep_extra=FALSE",expect_equal(preds,preds_fold))
+preds_fold <- sl1_small_fit$predict_fold(task, "full")
+test_that("predict_fold(task,'full') works if keep_extra=FALSE", expect_equal(preds, preds_fold))

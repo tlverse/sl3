@@ -1,6 +1,6 @@
 #' Multivariate Learner
 #'
-#' This learner applies a univariate outcome learner across a vector of outcome variables, 
+#' This learner applies a univariate outcome learner across a vector of outcome variables,
 #' effectively transforming it into a multivariate outcome learner
 #'
 #' @docType class
@@ -46,36 +46,36 @@ Lrnr_multivariate <- R6Class(
       learner <- self$params$learner
       outcome_cols <- task$nodes$outcome
 
-      train_univariate_learner <- function(outcome_col,learner,task){
-        univariate_task <- task$next_in_chain(outcome=outcome_col)
+      train_univariate_learner <- function(outcome_col, learner, task) {
+        univariate_task <- task$next_in_chain(outcome = outcome_col)
         fit_object <- delayed_learner_train(learner, univariate_task)
       }
-      
-      
-      
-      univariate_fits <- lapply( outcome_cols, train_univariate_learner, learner, task)
+
+
+
+      univariate_fits <- lapply(outcome_cols, train_univariate_learner, learner, task)
       return(bundle_delayed(univariate_fits))
     },
     .train = function(task, trained_sublearners) {
       outcome_fits <- trained_sublearners
       names(outcome_fits) <- task$nodes$outcome
       fit_object <- list(outcome_fits = outcome_fits, outcome_cols = task$nodes$outcome)
-      
+
       return(fit_object)
     },
 
     .predict = function(task) {
-      predict_univariate_learner <- function(outcome_col,outcome_fits,task){
-        univariate_task <- task$next_in_chain(outcome=outcome_col)
+      predict_univariate_learner <- function(outcome_col, outcome_fits, task) {
+        univariate_task <- task$next_in_chain(outcome = outcome_col)
         univariate_fit <- outcome_fits[[outcome_col]]
         univariate_preds <- univariate_fit$predict(univariate_task)
         return(univariate_preds)
       }
-      
+
       outcome_cols <- self$fit_object$outcome_cols
-      
-      univariate_preds <- sapply( outcome_cols, predict_univariate_learner, self$fit_object$outcome_fits, task)
-      
+
+      univariate_preds <- sapply(outcome_cols, predict_univariate_learner, self$fit_object$outcome_fits, task)
+
       # TODO: maybe pack predictions
       predictions <- pack_predictions(univariate_preds)
       return(predictions)
