@@ -38,12 +38,11 @@ sl3_revere_Task <- R6Class(
       #     assign(name, full_task_private[[name]], private)
       #   }
       # ))
-
     },
     revere_fold_task = function(fold_number) {
       fold_task <- get0(as.character(fold_number), envir = self$task_cache, inherits = FALSE)
       if (is.null(fold_task)) {
-        fold_task <- self$generator_fun(fold_number, self$input_task)
+        fold_task <- self$generator_fun(self$input_task, fold_number)
         assign(as.character(fold_number), fold_task, envir = self$task_cache)
       }
 
@@ -60,7 +59,7 @@ sl3_revere_Task <- R6Class(
     generator_fun = function() {
       return(private$.generator_fun)
     },
-    folds = function(){
+    folds = function() {
       return(self$input_task$folds)
     }
   ),

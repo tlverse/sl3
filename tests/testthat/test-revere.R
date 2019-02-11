@@ -43,7 +43,7 @@ fit <- lrnr_sl$train(task)
 # make the revere task
 fold_number <- "validation"
 revere_generator <- function(fit) {
-  fun <- function(fold_number, task) {
+  fun <- function(task, fold_number) {
     preds <- fit$predict_fold(task, fold_number)
     squared_error <- data.table(squared_error = (preds - task$Y)^2)
 
@@ -59,7 +59,8 @@ revere_generator <- function(fit) {
 revere_task_fun <- revere_generator(fit)
 
 revere_task <- sl3_revere_Task$new(generator_fun = revere_task_fun, task = task)
-
+full_task <- revere_task$revere_fold_task("full")
+val_task <- revere_task$revere_fold_task("validation")
 # debugonce(drop_offsets_chain)
 # debug_train(lrnr_sl,once=TRUE)
 # sl3_debug_mode()
