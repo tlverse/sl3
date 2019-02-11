@@ -25,4 +25,4 @@ preds <- unpack_predictions(preds)
 test_that("Lrnr_mv preds are the correct dimensions",{
   expect_equal(ncol(preds),pY)
   expect_equal(nrow(preds),n)
-}
+})
