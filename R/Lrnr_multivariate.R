@@ -80,6 +80,6 @@ Lrnr_multivariate <- R6Class(
       predictions <- pack_predictions(univariate_preds)
       return(predictions)
     },
-    .required_packages = c("randomForest")
+    .required_packages = c()
   )
 )

@@ -96,6 +96,6 @@ Lrnr_independent_binomial <- R6Class(
       predictions <- pack_predictions(predictions)
       return(predictions)
     },
-    .required_packages = c("randomForest")
+    .required_packages = c()
   )
 )
