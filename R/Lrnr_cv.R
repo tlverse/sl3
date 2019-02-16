@@ -9,6 +9,37 @@ aorder <- function(mat, index, along = 1) {
   return(result)
 }
 
+
+#' Subset Tasks for CV
+#' THe functions use origami folds to subset tasks. These functions are used by Lrnr_cv
+#' (and therefore other learners that use Lrnr_cv). So that nested cv works properly, currently
+#' the subsetted task objects do not have fold structures of their own, and so generate them from
+#' defaults if nested cv is requested.
+#' @importFrom origami training
+#' @param task a task to subset
+#' @param fold an origami fold object to use for subsetting
+#' @export
+#' @rdname cv_helpers
+train_task <- function(task, fold) {
+  return(task$subset_task(training(fold = fold), drop_folds = TRUE))
+}
+
+#' @importFrom origami validation
+#' @export
+#' @rdname cv_helpers
+validation_task <- function(task, fold) {
+  return(task$subset_task(validation(fold = fold), drop_folds = TRUE))
+}
+
+interpret_fold_number <- function(fold_number) {
+  if (fold_number == -1) {
+    fold_number <- "full"
+  } else if (fold_number == 0) {
+    fold_number <- "validation"
+  }
+  return(fold_number)
+}
+
 #' Fit/Predict a learner with Cross Validation
 #'
 #' A wrapper around any learner that generates cross-validate predictions
@@ -35,6 +66,9 @@ aorder <- function(mat, index, along = 1) {
 #'   \item{\code{learner}}{The learner to wrap}
 #'   \item{\code{folds=NULL}}{An \code{origami} folds object. If \code{NULL},
 #'    folds from the task are used}
+#'   \item{\code{full_fit=FALSE}}{If \code{TRUE}, also fit the underlying learner on the full data.
+#'   This can then be accessed with predict_fold(task, fold_number="full")
+#'   }
 #' }
 #
 Lrnr_cv <- R6Class(
@@ -43,19 +77,17 @@ Lrnr_cv <- R6Class(
   portable = TRUE,
   class = TRUE,
   public = list(
-    initialize = function(learner, folds = NULL, ...) {
+    initialize = function(learner, folds = NULL, full_fit = FALSE, ...) {
       # check if learner is a list of learners, and if so, make a stack
       if (is.list(learner) && all(sapply(learner, inherits, "Lrnr_base"))) {
         learner <- Stack$new(learner)
       }
-      params <- list(learner = learner, folds = folds, ...)
+      params <- list(learner = learner, folds = folds, full_fit = full_fit, ...)
       super$initialize(params = params, ...)
     },
 
-    cv_risk = function(loss) {
-      preds <- self$predict()
-      task <- self$training_task
-      risks <- apply(preds, 2, risk, task$Y, loss, task$weights)
+    cv_risk = function(loss_fun) {
+      return(cv_risk(self, loss_fun))
     },
 
     print = function() {
@@ -63,20 +95,41 @@ Lrnr_cv <- R6Class(
       print(self$params$learner)
       # todo: check if fit
     },
-    predict_fold = function(task, fold_number = 0) {
-      if (fold_number != 0) {
-        fold_fit <- self$fit_object$fold_fits[[fold_number]]
-        return(fold_fit$predict(task))
-      } else {
+    predict_fold = function(task, fold_number = "validation") {
+      fold_number <- interpret_fold_number(fold_number)
+      if (fold_number == "validation") {
+        # return cross validation predicitons (what Lrnr_cv$predict does, so use that)
         return(self$predict(task))
+      } else if (fold_number == "full") {
+        # check if we did a fold fit, and use that fit if available
+        if (self$params$full_fit) {
+          fold_fit <- self$fit_object$full_fit
+        } else {
+          stop("full fit requested, but Lrnr_cv was constructed with full_fit=FALSE")
+        }
+      } else {
+        # use the requested fold fit
+        fold_number <- as.numeric(fold_number)
+        if (is.na(fold_number) || !(fold_number > 0)) {
+          stop("fold_number must be 'full', 'validation', or a positive integer")
+        }
+        fold_fit <- self$fit_object$fold_fits[[as.numeric(fold_number)]]
       }
+
+      revere_task <- task$revere_fold_task(fold_number)
+      preds <- fold_fit$predict(revere_task)
+      return(preds)
     },
-    chain_fold = function(task, fold_number = 0) {
-      predictions <- self$predict_fold(task, fold_number)
+    chain_fold = function(task, fold_number = "validation") {
+      # TODO: make this respect custom_chain
+
       # Add predictions as new columns
-      new_col_names <- task$add_columns(predictions, self$fit_uuid)
+      revere_task <- task$revere_fold_task(fold_number)
+
+      predictions <- self$predict_fold(revere_task, fold_number)
+      new_col_names <- revere_task$add_columns(predictions, self$fit_uuid)
       # new_covariates = union(names(predictions),task$nodes$covariates)
-      return(task$next_in_chain(
+      return(revere_task$next_in_chain(
         covariates = names(predictions),
         column_names = new_col_names
       ))
@@ -101,24 +154,26 @@ Lrnr_cv <- R6Class(
       }
       learner <- self$params$learner
 
-      train_task <- function(task, fold) {
-        return(task[fold$training_set])
-      }
-
-      delayed_train_task <- delayed_fun(train_task)
+      # delayed_train_task <- delayed_fun(train_task)
 
       delayed_cv_train <- function(fold, learner, task) {
-        training_task <- delayed_train_task(task, fold)
-        training_task$sequential <- TRUE
+        fold_number <- fold_index()
+        revere_task <- task$revere_fold_task(fold_number)
+        training_task <- train_task(revere_task, fold)
         fit_object <- delayed_learner_train(learner, training_task)
         return(fit_object)
       }
 
-      # TODO: maybe write delayed_cross_validate (as it'd be a neat thing to
-      # have around anyway)
+      if (self$params$full_fit) {
+        full_task <- task$revere_fold_task("full")
+        full_fit <- delayed_learner_train(learner, full_task)
+      } else {
+        full_fit <- NULL
+      }
+
       cv_results <- lapply(folds, delayed_cv_train, learner, task)
-      result <- bundle_delayed(cv_results)
-      return(result)
+      results <- list(full_fit = full_fit, fold_fits = bundle_delayed(cv_results))
+      return(bundle_delayed(results))
     },
 
     .train = function(task, trained_sublearners) {
@@ -128,7 +183,9 @@ Lrnr_cv <- R6Class(
         folds <- task$folds
       }
 
-      fold_fits <- trained_sublearners
+      fold_fits <- trained_sublearners$fold_fits
+      full_fit <- trained_sublearners$full_fit
+
       learner <- self$params$learner
       ever_error <- NULL
 
@@ -162,33 +219,29 @@ Lrnr_cv <- R6Class(
       }
 
       fit_object <- list(
-        folds = folds, fold_fits = fold_fits,
+        folds = folds, fold_fits = fold_fits, full_fit = full_fit,
         is_error = ever_error
       )
       return(fit_object)
     },
 
     .predict = function(task) {
-      # if(!identical(task,private$.training_task)){
-      #   stop("task must match training task for Lrnr_cv")
-      # }
-      # doing train and predict like this is stupid, but that's the paradigm
-      # (for now!)
       folds <- task$folds
       fold_fits <- private$.fit_object$fold_fits
 
       cv_predict <- function(fold, fold_fits, task) {
-        validation_task <- validation(task)
+        fold_number <- fold_index()
+        revere_task <- task$revere_fold_task(fold_number)
+
+        validation_task <- validation_task(revere_task, fold)
         index <- validation()
         fit <- fold_index(fold_fits)[[1]]
         predictions <- fit$base_predict(validation_task)
         list(index = index, predictions = predictions)
       }
 
-      fold_predictions = cross_validate(cv_predict, folds, fold_fits, task, use_future = FALSE)
-      index <- fold_predictions$index
-      predictions <- as.data.table(fold_predictions$predictions)
-      predictions <- aorder(predictions, order(index))
+      results <- cross_validate(cv_predict, folds, fold_fits, task, use_future = FALSE)
+      predictions <- aorder(results$predictions, order(results$index))
       return(predictions)
     },
     .required_packages = c("origami")

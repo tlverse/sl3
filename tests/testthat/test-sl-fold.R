@@ -20,7 +20,7 @@ sl1 <- make_learner(Lrnr_sl, learners, glm_learner)
 sl_fit <- sl1$train(task)
 
 fold1_predict <- sl_fit$predict_fold(task, 1)
-validation_predict <- sl_fit$predict_fold(task, 0)
+validation_predict <- sl_fit$predict_fold(task, "validation")
 expect_false(all(fold1_predict == validation_predict))
 expect_true(any(fold1_predict == validation_predict))
 

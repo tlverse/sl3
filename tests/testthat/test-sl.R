@@ -17,8 +17,11 @@ glmnet_learner <- Lrnr_pkg_SuperLearner$new("SL.glmnet")
 subset_apgar <- Lrnr_subset_covariates$new(covariates = c("apgar1", "apgar5"))
 learners <- list(glm_learner, glmnet_learner, subset_apgar)
 sl1 <- make_learner(Lrnr_sl, learners, glm_learner)
-
+# sl3_debug_mode()
+# debugonce(sl1$.__enclos_env__$private$.train)
+# debugonce(sl1$.__enclos_env__$private$.train_sublearners)
 sl1_fit <- sl1$train(task)
+
 sl1_risk <- sl1_fit$cv_risk(loss_squared_error)
 
 expected_learners <- c(
@@ -41,3 +44,6 @@ sl_nnls_fit <- sl_nnls$train(task)
 sl1_small <- Lrnr_sl$new(learners = list(glm_learner, glmnet_learner, subset_apgar), metalearner = glm_learner, keep_extra = FALSE)
 sl1_small_fit <- sl1_small$train(task)
 expect_lt(length(sl1_small_fit$fit_object), length(sl1_fit$fit_object))
+preds <- sl1_small_fit$predict(task)
+preds_fold <- sl1_small_fit$predict_fold(task, "full")
+test_that("predict_fold(task,'full') works if keep_extra=FALSE", expect_equal(preds, preds_fold))

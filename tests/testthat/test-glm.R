@@ -21,7 +21,7 @@ outcome <- "haz"
 
 test_that("lrnr_glm with intercept=FALSE works", {
   task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
-  lrnr_glm <- make_learner(Lrnr_glm, intercept=FALSE)
+  lrnr_glm <- make_learner(Lrnr_glm, intercept = FALSE)
   fit <- lrnr_glm$train(task)
   preds <- fit$predict(task)
   expect_equal(task$nrow, length(preds))

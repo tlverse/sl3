@@ -25,7 +25,10 @@ learners.
 library.}
 \item{\code{folds=NULL}}{An \code{origami} folds object. If \code{NULL},
 folds from the task are used.}
-\item{\code{keep_extra=TRUE}}{Not used.}
+\item{\code{keep_extra=TRUE}}{Stores all sub-parts of the SL computation.
+When set to \code{FALSE} the resultant object has a memory footprint
+that is significantly reduced through the discarding of intermediary
+data structures.}
 \item{\code{...}}{Not used.}
 }
 }
@@ -57,8 +60,8 @@ Other Learners: \code{\link{Custom_chain}},
   \code{\link{Lrnr_h2o_grid}}, \code{\link{Lrnr_hal9001}},
   \code{\link{Lrnr_independent_binomial}},
   \code{\link{Lrnr_lstm}}, \code{\link{Lrnr_mean}},
-  \code{\link{Lrnr_nnls}}, \code{\link{Lrnr_optim}},
-  \code{\link{Lrnr_pca}},
+  \code{\link{Lrnr_multivariate}}, \code{\link{Lrnr_nnls}},
+  \code{\link{Lrnr_optim}}, \code{\link{Lrnr_pca}},
   \code{\link{Lrnr_pkg_SuperLearner}},
   \code{\link{Lrnr_randomForest}},
   \code{\link{Lrnr_ranger}}, \code{\link{Lrnr_rpart}},
