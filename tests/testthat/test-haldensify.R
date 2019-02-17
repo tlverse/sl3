@@ -17,6 +17,7 @@ if (FALSE) {
 
 library(hal9001)
 library(haldensify)
+library(origami)
 
 data(cpp_imputed)
 covars <- c(
@@ -25,21 +26,13 @@ covars <- c(
 outcome <- "haz"
 task <- cpp_imputed %>%
   dplyr::filter(agedays == 1) %>%
-  sl3_Task$new(covariates = covars, outcome = outcome)
+  sl3_Task$new(
+    covariates = covars,
+    outcome = outcome
+  )
 
 hal_dens <- Lrnr_haldensify$new(
-  grid_type = "equal_mass", n_bins = 3,
   lambda_seq = exp(seq(-1, -13, length = 100))
-)
-
-hal_dens_less_bins <- Lrnr_haldensify$new(
-  grid_type = "equal_mass", n_bins = 2,
-  lambda_seq = exp(seq(-1, -13, length = 100))
-)
-
-sl3_dens <- Lrnr_sl$new(
-  learners = list(hal_dens, hal_dens_less_bins),
-  metalearner = Lrnr_solnp_density$new()
 )
 
 test_that("Lrnr_haldensify produces prediction similar to haldensify", {
@@ -47,16 +40,10 @@ test_that("Lrnr_haldensify produces prediction similar to haldensify", {
   hal_dens_fit <- hal_dens$train(task)
   hal_dens_preds <- hal_dens_fit$predict()
 
-  # set.seed(67391)
-  # sl3_dens_fit <- sl3_dens$train(task)
-  # sl3_dens_preds <- sl3_dens_fit$predict()
-
   set.seed(67391)
   haldensify_fit <- haldensify::haldensify(
     A = as.numeric(task$Y),
     W = as.matrix(task$X),
-    grid_type = "equal_mass",
-    n_bins = 3,
     lambda_seq = exp(seq(-1, -13,
       length = 100
     ))
@@ -67,5 +54,26 @@ test_that("Lrnr_haldensify produces prediction similar to haldensify", {
   )
 
   # check that predicted conditional density estimates match
-  expect_equal(hal_dens_preds, haldensify_preds, tolerance = 1e-12)
+  expect_equal(hal_dens_preds, haldensify_preds, tolerance = 1e-15)
 })
+
+# test_that("Ensembling with Lrnr_haldensify produces sane predictions", {
+## just another HAL to ensemble with
+# hal_dens_more_lambda <- Lrnr_haldensify$new(
+# lambda_seq = exp(seq(-1, -13, length = 200))
+# )
+
+## ensembled conditional density estimation
+# sl3_dens <- Lrnr_sl$new(
+# learners = list(hal_dens, hal_dens_more_lambda),
+# metalearner = Lrnr_solnp_density$new()
+# )
+
+# set.seed(67391)
+# sl3_dens_fit <- sl3_dens$train(task)
+# sl3_dens_preds <- sl3_dens_fit$predict() %>%
+# unlist(use.names = FALSE)
+
+## check that predicted conditional density estimates match
+# expect_equal(sl3_dens_preds, haldensify_preds, tolerance = 1e-2)
+# })

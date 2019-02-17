@@ -36,7 +36,7 @@ build_script:
   - travis-tool.sh install_github osofr/simcausal
   - travis-tool.sh install_github osofr/condensier
   - travis-tool.sh install_github benkeser/halplus
-  - travis-tool.sh install_github tlverse/hal9001@haldensify
+  - travis-tool.sh install_github tlverse/hal9001
   - travis-tool.sh install_github nhejazi/haldensify
 
 test_script:
