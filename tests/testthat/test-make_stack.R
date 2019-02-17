@@ -46,6 +46,8 @@ sl_condensier <- Lrnr_condensier$new(
   nbins = 5, bin_method = "equal.len",
   pool = FALSE
 )
+
+debugonce(sl_condensier$.__enclos_env__$private$.train)
 sl_condensier_fit <- sl_condensier$train(task)
 sl_condensier_fit_pred <- sl_condensier_fit$predict()
 

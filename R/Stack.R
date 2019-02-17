@@ -51,6 +51,19 @@ Stack <- R6Class(
       }
       private$.learner_names <- learner_names
       params <- list(learners = learners)
+
+      learners_trained <- sapply(learners, `[[`, "is_trained")
+
+      if (all(learners_trained)) {
+        # we've been passed a list of existing fits so we're already fit
+        private$.fit_object <- list(
+          learner_fits = learners,
+          learner_errors = list(),
+          is_error = rep(FALSE, length(learners))
+        )
+        private$.training_task <- learners[[1]]$training_task
+      }
+
       super$initialize(params = params)
     },
     print = function() {
