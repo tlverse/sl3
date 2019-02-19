@@ -152,7 +152,7 @@ sl3_Task <- R6Class(
 
     next_in_chain = function(covariates = NULL, outcome = NULL, id = NULL,
                                  weights = NULL, offset = NULL, column_names = NULL,
-                                 new_nodes = NULL, data = NULL, ...) {
+                                 new_nodes = NULL, data = NULL, folds = NULL, ...) {
       if (is.null(new_nodes)) {
         new_nodes <- self$nodes
 
@@ -208,15 +208,19 @@ sl3_Task <- R6Class(
       # if we're forcing new data, throw out row indicies
       if(is.null(data)){
         data <- private$.shared_data
-        row_index <- NULL
+        row_index <- private$.row_index
       } else {
-        row_index = private$.row_index
+        row_index <- NULL
+      }
+      
+      if(is.null(folds)){
+        folds <- private$.folds
       }
       
       new_task$initialize(
         data = data,
         nodes = new_nodes,
-        folds = private$.folds, column_names = column_names,
+        folds = folds, column_names = column_names,
         row_index = row_index,
         outcome_type = new_outcome_type, ...
       )

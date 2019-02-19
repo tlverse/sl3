@@ -1,3 +1,17 @@
+# the functions reindex folds to account for new long data structure
+reindex <- function(index,fold_index){
+  which(index%in%fold_index)  
+}
+
+reindex_fold <- function(fold,index){
+  new_fold <- make_fold(fold$v, 
+                        reindex(index, fold$training_set),
+                        reindex(index, fold$validation_set))
+}
+
+  
+  
+  
 #' Generate A Pooled Hazards Task from a Failure Time (or Categorical) Task
 #' 
 #' @param task a task where the outcome is failure time
@@ -26,8 +40,11 @@ pooled_hazard_task <- function(task, trim = TRUE){
   
   # generate repeated task
   index <- rep(seq_len(n),n_levels)
-  repeated_data <- underlying_data[index, ]
-  repeated_task <- task$next_in_chain(column_names = column_names, data=repeated_data,id="id")
+  repeated_data <- underlying_data[index]
+  new_folds <- id_folds_to_folds(task$folds, index)
+  # repeated_data <- rbindlist(lapply(seq_len(n_levels),function(x)underlying_data))
+  
+  repeated_task <- task$next_in_chain(column_names = column_names, data=repeated_data,id="id", folds=new_folds)
   
   # make bin indicators
   bin_number <- rep(level_index,each=n)

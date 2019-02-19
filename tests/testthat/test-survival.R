@@ -40,6 +40,7 @@ Wnodes <- grep("^W", names(data), value = TRUE)
 Anode <- "A"
 
 task <- sl3_Task$new(data, covariates = Wnodes, outcome = Anode)
+hazards_task <- pooled_hazard_task(task)
 lrnr_ph <- make_learner(Lrnr_pooled_hazards, binomial_learner=make_learner(Lrnr_xgboost))
 fit <- lrnr_ph$train(task)
 preds <- unpack_predictions(fit$base_predict())

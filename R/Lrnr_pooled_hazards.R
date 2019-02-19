@@ -54,6 +54,8 @@ Lrnr_pooled_hazards <- R6Class(
       outcome_levels <- task$outcome_type$levels
       binomial_learner <- self$params$binomial_learner
       hazards_fit <- binomial_learner$train(hazards_task)
+      # drop hazards training_task to save memory
+      hazards_fit$set_train(hazards_fit$fit_object, NULL)
       fit_object <- list(hazards_fit = hazards_fit, outcome_levels = outcome_levels)
       return(fit_object)
     },
