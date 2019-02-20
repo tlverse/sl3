@@ -66,12 +66,14 @@ Suggests:
     tsDyn,
     xgboost,
     dbarts,
-    gam (>= 1.15.0)
+    gam (>= 1.15.0),
+    haldensify
 Remotes:
-    github::tlverse/delayed,
     github::osofr/simcausal,
     github::osofr/condensier,
-    github::jeremyrcoyle/hal9001,
+    github::tlverse/delayed,
+    github::tlverse/hal9001,
+    github::nhejazi/haldensify,
     github::vdorie/dbarts
 License: GPL-3
 URL: https://tlverse.org/sl3

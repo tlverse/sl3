@@ -154,6 +154,8 @@
 <dt><code>learner</code></dt><dd><p>The learner to wrap</p></dd>
 <dt><code>folds=NULL</code></dt><dd><p>An <code>origami</code> folds object. If <code>NULL</code>,
 folds from the task are used</p></dd>
+<dt><code>full_fit=FALSE</code></dt><dd><p>If <code>TRUE</code>, also fit the underlying learner on the full data.
+This can then be accessed with predict_fold(task, fold_number="full")</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -168,10 +170,11 @@ folds from the task are used</p></dd>
   <code><a href='Lrnr_glm_fast.html'>Lrnr_glm_fast</a></code>, <code><a href='Lrnr_glmnet.html'>Lrnr_glmnet</a></code>,
   <code><a href='Lrnr_glm.html'>Lrnr_glm</a></code>, <code><a href='Lrnr_grf.html'>Lrnr_grf</a></code>,
   <code><a href='Lrnr_h2o_grid.html'>Lrnr_h2o_grid</a></code>, <code><a href='Lrnr_hal9001.html'>Lrnr_hal9001</a></code>,
+  <code><a href='Lrnr_haldensify.html'>Lrnr_haldensify</a></code>,
   <code><a href='Lrnr_independent_binomial.html'>Lrnr_independent_binomial</a></code>,
   <code><a href='Lrnr_lstm.html'>Lrnr_lstm</a></code>, <code><a href='Lrnr_mean.html'>Lrnr_mean</a></code>,
-  <code><a href='Lrnr_nnls.html'>Lrnr_nnls</a></code>, <code><a href='Lrnr_optim.html'>Lrnr_optim</a></code>,
-  <code><a href='Lrnr_pca.html'>Lrnr_pca</a></code>,
+  <code><a href='Lrnr_multivariate.html'>Lrnr_multivariate</a></code>, <code><a href='Lrnr_nnls.html'>Lrnr_nnls</a></code>,
+  <code><a href='Lrnr_optim.html'>Lrnr_optim</a></code>, <code><a href='Lrnr_pca.html'>Lrnr_pca</a></code>,
   <code><a href='SuperLearner_interface.html'>Lrnr_pkg_SuperLearner</a></code>,
   <code><a href='Lrnr_randomForest.html'>Lrnr_randomForest</a></code>,
   <code><a href='Lrnr_ranger.html'>Lrnr_ranger</a></code>, <code><a href='Lrnr_rpart.html'>Lrnr_rpart</a></code>,
