@@ -116,6 +116,15 @@ data(cpp)
 cpp <- cpp %>%
   dplyr::filter(!is.na(haz)) %>%
   mutate_all(funs(replace(., is.na(.), 0)))
+#> Warning: funs() is soft deprecated as of dplyr 0.8.0
+#> please use list() instead
+#> 
+#> # Before:
+#> funs(name = f(.)
+#> 
+#> # After: 
+#> list(name = ~f(.))
+#> This warning is displayed once per session.
 
 # use covariates of intest and the outcome to build a task object
 covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",

@@ -79,6 +79,7 @@ Lrnr_haldensify <- R6Class(
 
       args$W <- as.matrix(task$X)
       args$A <- as.numeric(outcome_type$format(task$Y))
+      args$use_future <- FALSE
 
       if (task$has_node("weights")) {
         args$wts <- task$weights

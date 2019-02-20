@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>xgboost: eXtreme Gradient Boosting — Lrnr_xgboost • sl3</title>
+<title>Multivariate Learner — Lrnr_multivariate • sl3</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,13 +30,10 @@
 
 
 
-<meta property="og:title" content="xgboost: eXtreme Gradient Boosting — Lrnr_xgboost" />
+<meta property="og:title" content="Multivariate Learner — Lrnr_multivariate" />
 
-<meta property="og:description" content="This learner provides fitting procedures for xgboost models, using the
-xgboost package, using the xgb.train function.
-Such models are classification and regression trees with extreme gradient
-boosting. For details on the fitting procedure, consult the documentation of
-the xgboost package." />
+<meta property="og:description" content="This learner applies a univariate outcome learner across a vector of outcome variables,
+effectively transforming it into a multivariate outcome learner" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -129,22 +126,19 @@ the xgboost package." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>xgboost: eXtreme Gradient Boosting</h1>
+    <h1>Multivariate Learner</h1>
     
-    <div class="hidden name"><code>Lrnr_xgboost.Rd</code></div>
+    <div class="hidden name"><code>Lrnr_multivariate.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This learner provides fitting procedures for <code>xgboost</code> models, using the
-<code>xgboost</code> package, using the <code><a href='https://www.rdocumentation.org/packages/xgboost/topics/xgb.train'>xgb.train</a></code> function.
-Such models are classification and regression trees with extreme gradient
-boosting. For details on the fitting procedure, consult the documentation of
-the <code>xgboost</code> package.</p>
+    <p>This learner applies a univariate outcome learner across a vector of outcome variables,
+effectively transforming it into a multivariate outcome learner</p>
     
     </div>
 
-    <pre class="usage"><span class='no'>Lrnr_xgboost</span></pre>
+    <pre class="usage"><span class='no'>Lrnr_multivariate</span></pre>
         
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
@@ -159,9 +153,7 @@ the <code>xgboost</code> package.</p>
 
     
     <dl class='dl-horizontal'>
-<dt><code>nrounds=20</code></dt><dd><p>Number of fitting iterations.</p></dd>
-<dt><code>...</code></dt><dd><p>Other parameters passed to
-<code><a href='https://www.rdocumentation.org/packages/xgboost/topics/xgb.train'>xgb.train</a></code>.</p></dd>
+<dt><code>learner</code></dt><dd><p>The learner to wrap.</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="common-parameters"><a class="anchor" href="#common-parameters"></a>Common Parameters</h2>
@@ -190,8 +182,8 @@ by all learners.</p>
   <code><a href='Lrnr_haldensify.html'>Lrnr_haldensify</a></code>,
   <code><a href='Lrnr_independent_binomial.html'>Lrnr_independent_binomial</a></code>,
   <code><a href='Lrnr_lstm.html'>Lrnr_lstm</a></code>, <code><a href='Lrnr_mean.html'>Lrnr_mean</a></code>,
-  <code><a href='Lrnr_multivariate.html'>Lrnr_multivariate</a></code>, <code><a href='Lrnr_nnls.html'>Lrnr_nnls</a></code>,
-  <code><a href='Lrnr_optim.html'>Lrnr_optim</a></code>, <code><a href='Lrnr_pca.html'>Lrnr_pca</a></code>,
+  <code><a href='Lrnr_nnls.html'>Lrnr_nnls</a></code>, <code><a href='Lrnr_optim.html'>Lrnr_optim</a></code>,
+  <code><a href='Lrnr_pca.html'>Lrnr_pca</a></code>,
   <code><a href='SuperLearner_interface.html'>Lrnr_pkg_SuperLearner</a></code>,
   <code><a href='Lrnr_randomForest.html'>Lrnr_randomForest</a></code>,
   <code><a href='Lrnr_ranger.html'>Lrnr_ranger</a></code>, <code><a href='Lrnr_rpart.html'>Lrnr_rpart</a></code>,
@@ -200,8 +192,8 @@ by all learners.</p>
   <code><a href='Lrnr_solnp.html'>Lrnr_solnp</a></code>, <code><a href='Lrnr_stratified.html'>Lrnr_stratified</a></code>,
   <code><a href='Lrnr_subset_covariates.html'>Lrnr_subset_covariates</a></code>,
   <code><a href='Lrnr_svm.html'>Lrnr_svm</a></code>, <code><a href='Lrnr_tsDyn.html'>Lrnr_tsDyn</a></code>,
-  <code><a href='Pipeline.html'>Pipeline</a></code>, <code><a href='Stack.html'>Stack</a></code>,
-  <code><a href='Lrnr_h2o_glm.html'>define_h2o_X</a></code>,
+  <code><a href='Lrnr_xgboost.html'>Lrnr_xgboost</a></code>, <code><a href='Pipeline.html'>Pipeline</a></code>,
+  <code><a href='Stack.html'>Stack</a></code>, <code><a href='Lrnr_h2o_glm.html'>define_h2o_X</a></code>,
   <code><a href='undocumented_learner.html'>undocumented_learner</a></code></p></div>
     
 

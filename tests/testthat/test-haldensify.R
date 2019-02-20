@@ -32,10 +32,12 @@ task <- cpp_imputed %>%
   )
 
 hal_dens <- Lrnr_haldensify$new(
+  grid_type = "equal_mass",
+  n_bins = 10,
   lambda_seq = exp(seq(-1, -13, length = 100))
 )
 
-test_that("Lrnr_haldensify produces prediction similar to haldensify", {
+test_that("Lrnr_haldensify produces predictions identical to haldensify", {
   set.seed(67391)
   hal_dens_fit <- hal_dens$train(task)
   hal_dens_preds <- hal_dens_fit$predict()
@@ -44,6 +46,8 @@ test_that("Lrnr_haldensify produces prediction similar to haldensify", {
   haldensify_fit <- haldensify::haldensify(
     A = as.numeric(task$Y),
     W = as.matrix(task$X),
+    grid_type = "equal_mass",
+    n_bins = 10,
     lambda_seq = exp(seq(-1, -13,
       length = 100
     ))
@@ -57,23 +61,26 @@ test_that("Lrnr_haldensify produces prediction similar to haldensify", {
   expect_equal(hal_dens_preds, haldensify_preds, tolerance = 1e-15)
 })
 
-# test_that("Ensembling with Lrnr_haldensify produces sane predictions", {
-## just another HAL to ensemble with
-# hal_dens_more_lambda <- Lrnr_haldensify$new(
-# lambda_seq = exp(seq(-1, -13, length = 200))
-# )
+test_that("Ensembling with Lrnr_haldensify produces sane predictions", {
+  # just another HAL to ensemble with
+  hal_dens2 <- Lrnr_haldensify$new(
+    grid_type = "equal_range",
+    n_bins = 5,
+    lambda_seq = exp(seq(-1, -12, length = 100))
+  )
 
-## ensembled conditional density estimation
-# sl3_dens <- Lrnr_sl$new(
-# learners = list(hal_dens, hal_dens_more_lambda),
-# metalearner = Lrnr_solnp_density$new()
-# )
+  # ensemble-based conditional density estimation
+  sl3_dens <- Lrnr_sl$new(
+    learners = list(hal_dens, hal_dens2),
+    metalearner = Lrnr_solnp_density$new()
+  )
 
-# set.seed(67391)
-# sl3_dens_fit <- sl3_dens$train(task)
-# sl3_dens_preds <- sl3_dens_fit$predict() %>%
-# unlist(use.names = FALSE)
+  set.seed(67391)
+  sl3_dens_fit <- sl3_dens$train(task)
+  sl3_dens_preds <- sl3_dens_fit$predict() %>%
+    unlist(use.names = FALSE)
 
-## check that predicted conditional density estimates match
-# expect_equal(sl3_dens_preds, haldensify_preds, tolerance = 1e-2)
-# })
+  # check that predicted conditional density estimates are sane
+  #expect_gte(min(range(sl3_dens_preds)), 0)
+  #expect_lte(max(range(sl3_dens_preds)), 1)
+})

@@ -4,6 +4,9 @@
     <loc>https://tlverse.org/sl3/index.html</loc>
   </url>
   <url>
+    <loc>https://tlverse.org/sl3/reference/CV_lrnr_sl.html</loc>
+  </url>
+  <url>
     <loc>https://tlverse.org/sl3/reference/Custom_chain.html</loc>
   </url>
   <url>
@@ -68,6 +71,9 @@
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_mean.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_multivariate.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_nnls.html</loc>
@@ -145,6 +151,9 @@
     <loc>https://tlverse.org/sl3/reference/cpp_1yr.html</loc>
   </url>
   <url>
+    <loc>https://tlverse.org/sl3/reference/cv_helpers.html</loc>
+  </url>
+  <url>
     <loc>https://tlverse.org/sl3/reference/debug_helpers.html</loc>
   </url>
   <url>
@@ -197,6 +206,9 @@
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/sl3_Task.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/reference/sl3_revere_Task.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/true_obj_size.html</loc>
