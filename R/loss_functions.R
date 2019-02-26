@@ -155,3 +155,17 @@ cv_risk <- function(learner, loss_fun, coefs = NULL) {
   }
   return(risk_dt)
 }
+
+# Squared Error loss for multivariate (loss averaged across outcomes)
+#
+# Assumes predicted probabilities are "packed" into a single vector
+#
+#' @rdname loss_functions
+#'
+#' @export
+#
+loss_squared_error_multivariate <- function(pred, observed) {
+  unpacked <- unpack_predictions(pred)
+  losses <- rowMeans((unpacked - observed)^2)
+  return(losses)
+}

@@ -142,7 +142,8 @@ Lrnr_sl <- R6Class(
       cv_meta_fit <- delayed_learner_train(metalearner, cv_meta_task)
 
       # refit stack on full data
-      stack_fit <- delayed_learner_train(learner_stack, task)
+      full_task <- task$revere_fold_task("full")
+      stack_fit <- delayed_learner_train(learner_stack, full_task)
 
       # form full SL fit -- a pipeline with the stack fit to the full data,
       # and the metalearner fit to the cv predictions

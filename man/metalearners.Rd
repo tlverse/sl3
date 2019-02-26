@@ -4,12 +4,15 @@
 \alias{metalearners}
 \alias{metalearner_logistic_binomial}
 \alias{metalearner_linear}
+\alias{metalearner_linear_multivariate}
 \alias{metalearner_linear_multinomial}
 \title{Combine predictions from multiple learners}
 \usage{
 metalearner_logistic_binomial(alpha, X, trim)
 
 metalearner_linear(alpha, X)
+
+metalearner_linear_multivariate(alpha, X)
 
 metalearner_linear_multinomial(alpha, X)
 }
