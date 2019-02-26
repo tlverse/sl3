@@ -47,6 +47,10 @@ sl3_revere_Task <- R6Class(
       }
 
       return(fold_task)
+    },
+    print = function() {
+      cat("A revere task with this input task:\n")
+      print(self$input_task)
     }
   ),
   active = list(

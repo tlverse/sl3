@@ -6,6 +6,7 @@
 \alias{loss_loglik_true_cat}
 \alias{loss_loglik_binomial}
 \alias{loss_loglik_multinomial}
+\alias{loss_squared_error_multivariate}
 \title{Loss Function Definitions}
 \usage{
 loss_squared_error(pred, observed)
@@ -15,6 +16,8 @@ loss_loglik_true_cat(pred, observed)
 loss_loglik_binomial(pred, observed)
 
 loss_loglik_multinomial(pred, observed)
+
+loss_squared_error_multivariate(pred, observed)
 }
 \arguments{
 \item{pred}{A vector of predicted values}

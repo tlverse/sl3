@@ -35,11 +35,20 @@ metalearner_linear <- function(alpha, X) {
 #'
 #' @export
 #
-metalearner_linear_multinomial <- function(alpha, X) {
+metalearner_linear_multivariate <- function(alpha, X) {
   unpacked <- lapply(as.data.frame(X), unpack_predictions)
   multiplied <- mapply(`*`, unpacked, alpha, SIMPLIFY = FALSE)
   Y_pred <- Reduce(`+`, multiplied)
-  # normalize so class predictions sum to 1
-  Y_pred <- normalize_rows(Y_pred)
+  return(pack_predictions(Y_pred))
+}
+
+#' @rdname metalearners
+#'
+#' @export
+#
+metalearner_linear_multinomial <- function(alpha, X) {
+  Y_pred <- metalearner_linear_multivariate(alpha, X)
+
+  Y_pred <- normalize_rows(unpack_predictions(Y_pred))
   return(pack_predictions(Y_pred))
 }

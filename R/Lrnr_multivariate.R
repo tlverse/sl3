@@ -40,6 +40,15 @@ Lrnr_multivariate <- R6Class(
     }
   ),
 
+  active = list(
+    name = function() {
+      learner_name <- self$params$learner$name
+      # learner_names = sapply(learners, function(learner) learner$name)
+      # name = paste(learner_names, collapse="x")
+      name <- sprintf("%s_multivariate", learner_name)
+      return(name)
+    }
+  ),
   private = list(
     .properties = c("categorical"),
     .train_sublearners = function(task) {

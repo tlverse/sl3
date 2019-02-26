@@ -81,6 +81,6 @@ test_that("Ensembling with Lrnr_haldensify produces sane predictions", {
     unlist(use.names = FALSE)
 
   # check that predicted conditional density estimates are sane
-  #expect_gte(min(range(sl3_dens_preds)), 0)
-  #expect_lte(max(range(sl3_dens_preds)), 1)
+  # expect_gte(min(range(sl3_dens_preds)), 0)
+  # expect_lte(max(range(sl3_dens_preds)), 1)
 })
