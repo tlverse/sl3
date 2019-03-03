@@ -57,7 +57,7 @@ Lrnr_stratified <- R6Class(
       fit_object <- list()
       for (strata in variable_stratify_stratas) {
         index_in_strata <- which(args$X[, args$variable_stratify] == strata)
-        sub_task <- task$subset_task(row_index = index_in_strata)
+        sub_task <- task$subset_task(row_index = index_in_strata, drop_folds = TRUE)
         # remove the `variable_stratify` from the sub task
         sub_task <- sub_task$next_in_chain(
           covariates = sub_task$nodes$covariates[
@@ -87,8 +87,10 @@ Lrnr_stratified <- R6Class(
       }
 
       prediction_df_dict <- list()
-
-      for (strata in variable_stratify_stratas) {
+      
+      # predictions <- aorder(results$predictions, order(results$index))
+      
+      for (strata in variable_stratify_stratas_new) {
         index_subtask <- which(X_new[, variable_stratify] == strata)
         # construct subtask
         sub_task <- task$subset_task(row_index = index_subtask)
@@ -102,18 +104,17 @@ Lrnr_stratified <- R6Class(
           lrnr_dict[[as.character(strata)]],
           sub_task
         )
-        prediction_df <- data.frame(
-          prediction = prediction_subtask,
-          original_index = index_subtask
-        )
-        prediction_df_dict[[as.character(strata)]] <- prediction_df
+        result <- list(prediction = prediction_subtask,
+                       original_index = index_subtask)
+        prediction_df_dict[[as.character(strata)]] <- result
       }
-      prediction_df_dict <- do.call(rbind, prediction_df_dict)
-      # sort by original row index
-      prediction_df_dict <- prediction_df_dict[
-        order(prediction_df_dict$original_index),
-      ]
-      return(prediction_df_dict$prediction)
+      
+      results <- apply(do.call(rbind, prediction_df_dict), 2, as.list)
+      results = origami::combine_results(results)
+      
+      predictions <- aorder(results$prediction, order(results$original_index))
+      
+      return(predictions)
     },
     # WILSON: how can we access the field of the sub learner?
     .required_packages = c("hal9001")
