@@ -1,3 +1,6 @@
+codecov:
+  token: 0e172078-76a1-4b94-bd7f-2e10d0647b3d
+
 coverage:
   status:
     project:
@@ -29,7 +32,7 @@ coverage:
           - integration
         paths:
           - folder
-    
+
     changes:
       default:
         against: parent
@@ -52,7 +55,7 @@ coverage:
 
   ignore: # files and folders for processing
     - tests/*
-  
+
   fixes:
     - "old_path::new_path"
 
