@@ -87,9 +87,9 @@ Lrnr_stratified <- R6Class(
       }
 
       prediction_df_dict <- list()
-      
+
       # predictions <- aorder(results$predictions, order(results$index))
-      
+
       for (strata in variable_stratify_stratas_new) {
         index_subtask <- which(X_new[, variable_stratify] == strata)
         # construct subtask
@@ -104,16 +104,18 @@ Lrnr_stratified <- R6Class(
           lrnr_dict[[as.character(strata)]],
           sub_task
         )
-        result <- list(prediction = prediction_subtask,
-                       original_index = index_subtask)
+        result <- list(
+          prediction = prediction_subtask,
+          original_index = index_subtask
+        )
         prediction_df_dict[[as.character(strata)]] <- result
       }
-      
+
       results <- apply(do.call(rbind, prediction_df_dict), 2, as.list)
-      results = origami::combine_results(results)
-      
+      results <- origami::combine_results(results)
+
       predictions <- aorder(results$prediction, order(results$original_index))
-      
+
       return(predictions)
     },
     # WILSON: how can we access the field of the sub learner?

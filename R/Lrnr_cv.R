@@ -146,13 +146,13 @@ Lrnr_cv <- R6Class(
     .properties = c("wrapper", "cv"),
 
     .train_sublearners = function(task) {
-      
+
       # if we get a delayed task, evaluate it
       # TODO: this is a kludge -- ideally we'd have Lrnr_cv work on delayed tasks like other learners
-      if(inherits(task,"Delayed")){
+      if (inherits(task, "Delayed")) {
         task <- task$compute()
       }
-      
+
       # prefer folds from params, but default to folds from task
       folds <- self$params$folds
       if (is.null(folds)) {
