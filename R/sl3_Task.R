@@ -398,7 +398,7 @@ sl3_Task <- R6Class(
 
     outcome_type = function() {
       return(private$.outcome_type)
-    },
+    }
   ),
 
   private = list(
