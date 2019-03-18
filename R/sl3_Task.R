@@ -95,7 +95,19 @@ sl3_Task <- R6Class(
 
       # assign uuid
       private$.uuid <- UUIDgenerate(use.time = T)
-      invisible(self)
+      
+      # check for missingness, and process if found
+      p_missing <- sapply(cbind(self$Y,self$X), function(x) mean(is.na(x)))
+      if(max(p_missing)>0){
+        warning("Missing Data Found. Imputing X variables using sl3_process_missing")
+        imputed_task <- sl3_process_missing(self)
+        self <- imputed_task
+      }
+      
+      invisible(self)  
+
+      
+      
     },
 
     add_interactions = function(interactions, warn_on_existing = TRUE) {
@@ -398,6 +410,10 @@ sl3_Task <- R6Class(
 
     outcome_type = function() {
       return(private$.outcome_type)
+    },
+    
+    row_index = function(){
+      return(private$.row_index)
     }
   ),
 
