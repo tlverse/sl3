@@ -97,13 +97,16 @@ sl3_Task <- R6Class(
       private$.uuid <- UUIDgenerate(use.time = T)
       
       # check for missingness, and process if found
-      p_missing <- sapply(cbind(self$Y,self$X), function(x) mean(is.na(x)))
+      p_missing <- sapply(self$X, function(x) mean(is.na(x)))
       if(max(p_missing)>0){
-        warning("Missing Data Found. Imputing X variables using sl3_process_missing")
+        warning("Missing Covariate Data Found. Imputing covariates using sl3_process_missing")
         imputed_task <- sl3_process_missing(self)
         self <- imputed_task
       }
       
+      if(any(is.na(self$Y))){
+        warning("Missing Outcome Data Found. This is okay for prediction, but will likely break training")
+      }
       invisible(self)  
 
       
@@ -275,6 +278,7 @@ sl3_Task <- R6Class(
       node_var <- private$.nodes[[node_name]]
       return(!is.null(node_var))
     },
+    
     get_node = function(node_name, generator_fun = NULL, expand_factors = FALSE) {
       if (missing(generator_fun)) {
         generator_fun <- function(node_name, n) {
@@ -295,6 +299,7 @@ sl3_Task <- R6Class(
         }
       }
     },
+    
     offset_transformed = function(link_fun = NULL, for_prediction = FALSE) {
       if (self$has_node("offset")) {
         offset <- self$offset
@@ -314,6 +319,7 @@ sl3_Task <- R6Class(
       cat(sprintf("A sl3 Task with %d obs and these nodes:\n", self$nrow))
       print(self$nodes)
     },
+    
     revere_fold_task = function(fold_number) {
       return(self)
     }
