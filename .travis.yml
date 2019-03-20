@@ -25,15 +25,18 @@ r:
 before_install:
   - sudo apt-get -y install python3-pip python-dev
   - sudo pip install numpy tensorflow keras
+  - Rscript -e 'update.packages(ask = FALSE)'
 
 r_packages:
   - devtools
   - covr
+  - sessioninfo
   - drat
 
 r_github_packages:
+  - r-lib/covr
   - r-lib/sessioninfo
-  - jimhester/covr
+  - Rdatatable/data.table
   - osofr/simcausal
   - osofr/condensier
   - tlverse/delayed

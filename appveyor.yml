@@ -28,9 +28,9 @@ environment:
 
 build_script:
   - travis-tool.sh install_deps
+  - travis-tool.sh install_github r-lib/covr
   - travis-tool.sh install_github r-lib/sessioninfo
   - travis-tool.sh install_github RDatatable/data.table
-  - travis-tool.sh install_github jimhester/covr
   - travis-tool.sh install_github tlverse/delayed
   - travis-tool.sh install_github tlverse/origami
   - travis-tool.sh install_github osofr/simcausal
@@ -43,7 +43,7 @@ test_script:
   - travis-tool.sh run_tests
 
 on_success:
-  - Rscript -e "covr::codecov(line_exclusions = list('R/plots.R'))"
+  - Rscript -e "covr::codecov()"
 
 on_failure:
   - 7z a failure.zip *.Rcheck\*
