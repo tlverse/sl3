@@ -1,4 +1,4 @@
-#' Conditional Density Estimation with the Highly Adaptive LASSO
+#' Random Forests for Conditional Density Estimation (RFCDE)
 #'
 #' @docType class
 #' @importFrom R6 R6Class
@@ -37,7 +37,7 @@
 #'   }
 #' }
 #
-Lrnr_haldensify <- R6Class(
+Lrnr_rfcde <- R6Class(
   classname = "Lrnr_haldensify", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
   public = list(
@@ -99,6 +99,6 @@ Lrnr_haldensify <- R6Class(
       )
       return(predictions)
     },
-    .required_packages = c("haldensify")
+    .required_packages = c("RFCDE")
   )
 )

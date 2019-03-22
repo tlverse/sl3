@@ -67,14 +67,16 @@ Suggests:
     xgboost,
     dbarts,
     gam (>= 1.15.0),
-    haldensify
+    haldensify,
+    RFCDE
 Remotes:
     github::osofr/simcausal,
     github::osofr/condensier,
     github::tlverse/delayed,
     github::tlverse/hal9001,
     github::nhejazi/haldensify,
-    github::vdorie/dbarts
+    github::vdorie/dbarts,
+    github::tpospisi/RFCDE/r
 License: GPL-3
 URL: https://tlverse.org/sl3
 BugReports: https://github.com/tlverse/sl3/issues
