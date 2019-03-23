@@ -16,7 +16,7 @@
 #'
 #' @section Parameters:
 #' \describe{
-#'   \item{\code{grid_type = "grid_type")}}{A \code{character} indicating the
+#'   \item{\code{grid_type = "grid_type"}}{A \code{character} indicating the
 #'    strategy to be used in creating bins along the observed support of the
 #'    outcome variable. For bins of equal range, use "equal_range", consulting
 #'    the documentation of \code{ggplot2::cut_interval} for more information. To
@@ -66,7 +66,7 @@ Lrnr_haldensify <- R6Class(
     }
   ),
   private = list(
-    .properties = c("continuous"),
+    .properties = c("density"),
 
     .train = function(task) {
       args <- self$params

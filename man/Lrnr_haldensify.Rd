@@ -18,7 +18,7 @@ Conditional Density Estimation with the Highly Adaptive LASSO
 \section{Parameters}{
 
 \describe{
-\item{\code{grid_type = "grid_type")}}{A \code{character} indicating the
+\item{\code{grid_type = "grid_type"}}{A \code{character} indicating the
 strategy to be used in creating bins along the observed support of the
 outcome variable. For bins of equal range, use "equal_range", consulting
 the documentation of \code{ggplot2::cut_interval} for more information. To
@@ -57,9 +57,9 @@ Other Learners: \code{\link{Custom_chain}},
   \code{\link{Lrnr_optim}}, \code{\link{Lrnr_pca}},
   \code{\link{Lrnr_pkg_SuperLearner}},
   \code{\link{Lrnr_randomForest}},
-  \code{\link{Lrnr_ranger}}, \code{\link{Lrnr_rpart}},
-  \code{\link{Lrnr_rugarch}}, \code{\link{Lrnr_sl}},
-  \code{\link{Lrnr_solnp_density}},
+  \code{\link{Lrnr_ranger}}, \code{\link{Lrnr_rfcde}},
+  \code{\link{Lrnr_rpart}}, \code{\link{Lrnr_rugarch}},
+  \code{\link{Lrnr_sl}}, \code{\link{Lrnr_solnp_density}},
   \code{\link{Lrnr_solnp}}, \code{\link{Lrnr_stratified}},
   \code{\link{Lrnr_subset_covariates}},
   \code{\link{Lrnr_svm}}, \code{\link{Lrnr_tsDyn}},
