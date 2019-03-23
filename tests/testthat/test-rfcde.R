@@ -1,4 +1,4 @@
-context("test_haldensify.R -- Lrnr_haldensify")
+context("test_rfcde.R -- Lrnr_rfcde")
 
 if (FALSE) {
   setwd("..")
@@ -15,9 +15,7 @@ if (FALSE) {
   ) # INSTALL W/ devtools:
 }
 
-library(hal9001)
-library(haldensify)
-library(origami)
+library(RFCDE)
 
 data(cpp_imputed)
 covars <- c(
@@ -31,56 +29,36 @@ task <- cpp_imputed %>%
     outcome = outcome
   )
 
-hal_dens <- Lrnr_haldensify$new(
-  grid_type = "equal_mass",
-  n_bins = 10,
-  lambda_seq = exp(seq(-1, -13, length = 100))
-)
-
-test_that("Lrnr_haldensify produces predictions identical to haldensify", {
+test_that("Lrnr_rfcde produces predictions similar to those from RFCDE", {
   set.seed(67391)
-  hal_dens_fit <- hal_dens$train(task)
-  hal_dens_preds <- hal_dens_fit$predict()
+  rfcde_lrn <- Lrnr_rfcde$new(
+    z_grid = seq(0, 10, length.out = 100)
+  )
+  rfcde_lrn_fit <- rfcde_lrn$train(task)
+  rfcde_lrn_fit_preds <- rfcde_lrn_fit$predict() %>% as.numeric()
 
   set.seed(67391)
-  haldensify_fit <- haldensify::haldensify(
-    A = as.numeric(task$Y),
-    W = as.matrix(task$X),
-    grid_type = "equal_mass",
-    n_bins = 10,
-    lambda_seq = exp(seq(-1, -13,
-      length = 100
-    ))
+  rfcde_fit <- RFCDE::RFCDE(
+    z_train = as.numeric(task$Y),
+    x_train = as.matrix(task$X),
+    n_trees = 1000,
+    node_size = 5,
+    n_basis = 31,
+    basis_system = "cosine",
+    min_loss_delta = 0,
+    fit_oob = FALSE
   )
-  haldensify_preds <- predict(haldensify_fit,
-    new_A = as.numeric(task$Y),
-    new_W = as.matrix(task$X)
+  rfcde_fit_preds <- predict(rfcde_fit,
+    newdata = as.matrix(task$X),
+    z_grid = seq(0, 10, length.out = 100),
+    bandwidth = "auto"
+  ) %>%
+    as.numeric()
+
+  # check that predicted conditional density estimates match within tolerance
+  expect_equal(rfcde_lrn_fit_preds,
+    expected = rfcde_fit_preds,
+    tolerance = 1e-3,
+    scale = 1
   )
-
-  # check that predicted conditional density estimates match
-  expect_equal(hal_dens_preds, haldensify_preds, tolerance = 1e-15)
-})
-
-test_that("Ensembling with Lrnr_haldensify produces sane predictions", {
-  # just another HAL to ensemble with
-  hal_dens2 <- Lrnr_haldensify$new(
-    grid_type = "equal_range",
-    n_bins = 5,
-    lambda_seq = exp(seq(-1, -12, length = 100))
-  )
-
-  # ensemble-based conditional density estimation
-  sl3_dens <- Lrnr_sl$new(
-    learners = list(hal_dens, hal_dens2),
-    metalearner = Lrnr_solnp_density$new()
-  )
-
-  set.seed(67391)
-  sl3_dens_fit <- sl3_dens$train(task)
-  sl3_dens_preds <- sl3_dens_fit$predict() %>%
-    unlist(use.names = FALSE)
-
-  # check that predicted conditional density estimates are sane
-  # expect_gte(min(range(sl3_dens_preds)), 0)
-  # expect_lte(max(range(sl3_dens_preds)), 1)
 })

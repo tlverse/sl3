@@ -3,7 +3,7 @@
 \docType{class}
 \name{Lrnr_rfcde}
 \alias{Lrnr_rfcde}
-\title{Random Forests for Conditional Density Estimation (RFCDE)}
+\title{RFCDE: Random Forests for Conditional Density Estimation}
 \format{\code{\link{R6Class}} object.}
 \usage{
 Lrnr_rfcde
@@ -13,29 +13,39 @@ Learner object with methods for training and prediction. See
 \code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
-Random Forests for Conditional Density Estimation (RFCDE)
+RFCDE: Random Forests for Conditional Density Estimation
 }
 \section{Parameters}{
 
 \describe{
-\item{\code{grid_type = "grid_type")}}{A \code{character} indicating the
-strategy to be used in creating bins along the observed support of the
-outcome variable. For bins of equal range, use "equal_range", consulting
-the documentation of \code{ggplot2::cut_interval} for more information. To
-ensure each bins has the same number of points, use "equal_mass" and
-consult the documentation of \code{ggplot2::cut_number} for details.
+\item{\code{n_trees = 1000}}{ The number of trees in the forest. Defaults
+to 1000.
 }
-\item{\code{n_bins = "n_bins"}}{ Only used if \code{type} is set to
-\code{"equal_range"} or \code{"equal_mass"}. This \code{numeric} value
-indicates the number of bins that the support of the outcome variable is
-to be divided into.
+\item{\code{node_size = 5}}{ The minimum number of observations in a leaf
+node. Defaults to 5.
 }
-\item{\code{lambda_seq = "lambda_seq"}}{ A \code{numeric} sequence of
-values of the lambda tuning parameter of the Lasso L1 regression, to be
-passed to \code{glmnet::glmnet} through a call to \code{hal9001::fit_hal}.
+\item{\code{n_basis}}{ The number of basis functions used in split density
+estimates. Defaults to 31.
 }
-\item{\code{...}}{ Other parameters passed directly to
-\code{\link[haldensify]{haldensify}}. See its documentation for details.
+\item{\code{basis_system}}{ The system of basis functions to use; currently
+"cosine" and "Haar" are supported. Defaults to "cosine".
+}
+\item{\code{min_loss_delta}}{ The minimum loss for a split. Defaults to
+0.0.
+}
+\item{\code{fit_oob}}{ Whether to fit out-of-bag samples or not. Out-of-bag
+samples increase the computation time but allows for estimation of the
+prediction loss. Defaults to \code{FALSE.}
+}
+\item{\code{z_grid}}{ Grid points at which to evaluate the kernel density.
+The default value is given as an example but should be customized to make
+the prediction procedure suitable for a given use case.
+}
+\item{\code{bandwidth}}{ Bandwidth for kernel density estimates (optional).
+Defaults to \code{"auto"} for automatic bandwidth selection.
+}
+\item{\code{...}}{ Other parameters passed directly to \code{RFCDE}.
+Consult the documentation of that package for details.
 }
 }
 }

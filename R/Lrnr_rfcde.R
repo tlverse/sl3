@@ -1,4 +1,4 @@
-#' Random Forests for Conditional Density Estimation (RFCDE)
+#' RFCDE: Random Forests for Conditional Density Estimation
 #'
 #' @docType class
 #' @importFrom R6 R6Class
@@ -16,34 +16,49 @@
 #'
 #' @section Parameters:
 #' \describe{
-#'   \item{\code{grid_type = "grid_type")}}{A \code{character} indicating the
-#'    strategy to be used in creating bins along the observed support of the
-#'    outcome variable. For bins of equal range, use "equal_range", consulting
-#'    the documentation of \code{ggplot2::cut_interval} for more information. To
-#'    ensure each bins has the same number of points, use "equal_mass" and
-#'    consult the documentation of \code{ggplot2::cut_number} for details.
+#'   \item{\code{n_trees = 1000}}{ The number of trees in the forest. Defaults
+#'    to 1000.
 #'   }
-#'   \item{\code{n_bins = "n_bins"}}{ Only used if \code{type} is set to
-#'    \code{"equal_range"} or \code{"equal_mass"}. This \code{numeric} value
-#'    indicates the number of bins that the support of the outcome variable is
-#'    to be divided into.
+#'   \item{\code{node_size = 5}}{ The minimum number of observations in a leaf
+#'    node. Defaults to 5.
 #'   }
-#'   \item{\code{lambda_seq = "lambda_seq"}}{ A \code{numeric} sequence of
-#'    values of the lambda tuning parameter of the Lasso L1 regression, to be
-#'    passed to \code{glmnet::glmnet} through a call to \code{hal9001::fit_hal}.
+#'   \item{\code{n_basis}}{ The number of basis functions used in split density
+#'    estimates. Defaults to 31.
 #'   }
-#'   \item{\code{...}}{ Other parameters passed directly to
-#'    \code{\link[haldensify]{haldensify}}. See its documentation for details.
+#'   \item{\code{basis_system}}{ The system of basis functions to use; currently
+#'    "cosine" and "Haar" are supported. Defaults to "cosine".
+#'   }
+#'   \item{\code{min_loss_delta}}{ The minimum loss for a split. Defaults to
+#'    0.0.
+#'   }
+#'   \item{\code{fit_oob}}{ Whether to fit out-of-bag samples or not. Out-of-bag
+#'    samples increase the computation time but allows for estimation of the
+#'    prediction loss. Defaults to \code{FALSE.}
+#'   }
+#'   \item{\code{z_grid}}{ Grid points at which to evaluate the kernel density.
+#'    The default value is given as an example but should be customized to make
+#'    the prediction procedure suitable for a given use case.
+#'   }
+#'   \item{\code{bandwidth}}{ Bandwidth for kernel density estimates (optional).
+#'    Defaults to \code{"auto"} for automatic bandwidth selection.
+#'   }
+#'   \item{\code{...}}{ Other parameters passed directly to \code{RFCDE}.
+#'    Consult the documentation of that package for details.
 #'   }
 #' }
 #
 Lrnr_rfcde <- R6Class(
-  classname = "Lrnr_haldensify", inherit = Lrnr_base,
+  classname = "Lrnr_rfcde", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(grid_type = c("equal_range", "equal_mass"),
-                              n_bins = c(5, 10),
-                              lambda_seq = exp(seq(-1, -13, length = 1000)),
+    initialize = function(n_trees = 1000,
+                              node_size = 5,
+                              n_basis = 31,
+                              basis_system = "cosine",
+                              min_loss_delta = 0.0,
+                              fit_oob = FALSE,
+                              z_grid = seq(0, 10, length.out = 100),
+                              bandwidth = "auto",
                               ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
@@ -55,6 +70,7 @@ Lrnr_rfcde <- R6Class(
         params <- self$params
         if (length(params) > 0) {
           atom_params <- sapply(params, is.atomic)
+          atom_params["z_grid"] <- FALSE
           params <- params[atom_params]
         }
         props <- c(list(class(self)[1]), params)
@@ -77,25 +93,30 @@ Lrnr_rfcde <- R6Class(
         args$family <- outcome_type$glm_family(return_object = TRUE)$family
       }
 
-      args$W <- as.matrix(task$X)
-      args$A <- as.numeric(outcome_type$format(task$Y))
-      args$use_future <- FALSE
+      args$x_train <- as.matrix(task$X)
+      args$z_train <- as.numeric(outcome_type$format(task$Y))
 
       if (task$has_node("weights")) {
-        args$wts <- task$weights
+        warning("Lrnr_rfcde and RFCDE do not appear to support weights.")
       }
 
       if (task$has_node("offset")) {
         args$offset <- task$offset
       }
 
-      fit_object <- call_with_args(haldensify::haldensify, args)
+      fit_object <- call_with_args(RFCDE::RFCDE, args)
       return(fit_object)
     },
     .predict = function(task = NULL) {
+      # extra arguments required for prediction method
+      bandwidth <- self$params$bandwidth
+      n_grid <- self$params$n_grid
+      z_grid <- self$params$z_grid
+
       predictions <- predict(self$fit_object,
-        new_A = as.numeric(task$Y),
-        new_W = as.matrix(task$X)
+        newdata = as.matrix(task$X),
+        z_grid = z_grid,
+        bandwidth = bandwidth
       )
       return(predictions)
     },
