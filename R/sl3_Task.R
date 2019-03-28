@@ -1,6 +1,6 @@
 #' Define a Machine Learning Task
 #'
-#' A thin wrapper around a \code{data.table} containing the data. Contains
+#' A increasingly less thin wrapper around a \code{data.table} containing the data. Contains
 #' metadata about the particular machine learning problem, including which
 #' variables are to be used as covariates and outcomes.
 #'
@@ -30,16 +30,19 @@ sl3_Task <- R6Class(
     initialize = function(data, covariates, outcome = NULL, outcome_type = NULL,
                               outcome_levels = NULL, id = NULL, weights = NULL,
                               offset = NULL, nodes = NULL, column_names = NULL,
-                              row_index = NULL, folds = NULL) {
+                              row_index = NULL, folds = NULL, user_mode = NULL,
+                              drop_missing_outcome = FALSE) {
 
       # process data
       if (inherits(data, "Shared_Data")) {
         # we already have a Shared_Data object, so just store it
         private$.shared_data <- data
+        user_mode <- FALSE
       } else {
         # we have some other data object, so construct a Shared_Data object
         # and store it (this will copy the data)
         private$.shared_data <- Shared_Data$new(data)
+        user_mode <- TRUE
       }
 
       # process column_names
@@ -49,6 +52,7 @@ sl3_Task <- R6Class(
       }
 
       private$.column_names <- column_names
+      
       # generate node list from other arguments
       if (is.null(nodes)) {
         nodes <- list(
@@ -97,16 +101,26 @@ sl3_Task <- R6Class(
       private$.uuid <- UUIDgenerate(use.time = T)
       
       # check for missingness, and process if found
-      p_missing <- sapply(self$X, function(x) mean(is.na(x)))
-      if(max(p_missing)>0){
-        warning("Missing Covariate Data Found. Imputing covariates using sl3_process_missing")
-        imputed_task <- sl3_process_missing(self)
-        self <- imputed_task
+      if(user_mode){
+        p_missing <- sapply(self$X, function(x) mean(is.na(x)))
+        missing_Y <- any(is.na(self$Y))
+        if((max(p_missing)>0)||(missing_Y && drop_missing_outcome)){
+          warning("Missing Covariate Data Found. Imputing covariates using sl3_process_missing")
+          imputed_task <- sl3_process_missing(self, drop_missing_outcome=drop_missing_outcome)
+          
+          # make this task a copy of imputed_task
+          self <<- imputed_task$.__enclos_env__$self
+          private <<- imputed_task$.__enclos_env__$private
+          
+          missing_Y <- any(is.na(self$Y))
+        }
+        
+        if(missing_Y){
+          warning("Missing Outcome Data Found. This is okay for prediction, but will likely break training. \n
+               You can drop observations with missing outcomes by setting drop_missing_outcome=TRUE in make_sl3_Task")
+        }
       }
       
-      if(any(is.na(self$Y))){
-        warning("Missing Outcome Data Found. This is okay for prediction, but will likely break training")
-      }
       invisible(self)  
 
       

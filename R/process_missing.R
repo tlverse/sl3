@@ -19,10 +19,14 @@ impute_by_type <- function(x) {
   }
 }
 
-sl3_process_missing <- function(task, drop_missing_outcome = TRUE, max_p_missing = 0.5) {
+sl3_process_missing <- function(task, drop_missing_outcome = FALSE, max_p_missing = 0.5) {
+  
+  if(drop_missing_outcome){
+    task <- task[!is.na(task$Y)]
+  }
+  
   covars <- task$nodes$covariates
   X <- task$X
-  Y <- task$Y
 
 
   # median impute the covariates and build indicators
@@ -49,16 +53,9 @@ sl3_process_missing <- function(task, drop_missing_outcome = TRUE, max_p_missing
   # nodes with too much missingness
   to_drop <- names(p_missing[(max_p_missing < p_missing)])
 
-  # drop rows where there is outcome missingness
-  # TODO: this wipes folds
-  if (drop_missing_outcome) {
-    missing_Y <- is.na(Y)
-    task <- task[!missing_Y]
-    processed <- processed[!missing_Y]
-  }
-
   new_columns <- task$add_columns(processed)
-  processed_task <- task$next_in_chain(column_list = new_columns)
+  covariates <- c(task$nodes$covariates, missing_names)
+  processed_task <- task$next_in_chain(covariates = covariates ,column_names = new_columns)
 
 
 
