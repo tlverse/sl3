@@ -29,12 +29,11 @@ expect_equal(
   )
 )
 
-expect_warning(
-  {
-    task_impute_covariates <- make_sl3_Task(cpp, covars, outcome)
-  },
+warnings <- capture_warnings({task_impute_covariates <- make_sl3_Task(cpp, covars, outcome)})
+expect_equal(warnings,
+  c("Missing Covariate Data Found. Imputing covariates using sl3_process_missing",
   "Missing Outcome Data Found. This is okay for prediction, but will likely break training. \n
-               You can drop observations with missing outcomes by setting drop_missing_outcome=TRUE in make_sl3_Task"
+               You can drop observations with missing outcomes by setting drop_missing_outcome=TRUE in make_sl3_Task")
 )
 
 expect_equal(task_impute_covariates$nrow, nrow(cpp))

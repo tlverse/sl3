@@ -1,3 +1,4 @@
+#' @importFrom stats median
 impute_median <- function(x) {
   value <- median(as.numeric(x[!is.na(x)]))
   x[is.na(x)] <- value

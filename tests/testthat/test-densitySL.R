@@ -47,7 +47,7 @@ test_that("Super Learner for densities works", {
     # objective = 'reg:logistic')
   )
   sl <- Lrnr_sl$new(
-    learners = list(lrn1, lrn2, lrn3, lrn4),
+    learners = list(lrn1, lrn2, lrn3),
     metalearner = Lrnr_solnp_density$new()
   )
   sl_fit <- sl$train(task_1)
