@@ -52,7 +52,7 @@ sl3_Task <- R6Class(
       }
 
       private$.column_names <- column_names
-      
+
       # generate node list from other arguments
       if (is.null(nodes)) {
         nodes <- list(
@@ -99,50 +99,48 @@ sl3_Task <- R6Class(
 
       # assign uuid
       private$.uuid <- UUIDgenerate(use.time = T)
-      
-      
+
+
       # check data quality if we think this is a user provided dataset
-      if(user_mode){
+      if (user_mode) {
         # convert characters to factors
-        character_covars <- self$nodes$covariates[which(sapply(self$X, data.class)=="character")]
-        
-        if(length(character_covars)>0){
-          warning(sprintf("Character covariates found: %s;\nConverting these to factors",
-                          paste0(character_covars, collapse=", ")))
-                  
-          converted <- self$X[,lapply(.SD,factor), .SDcols=character_covars]
+        character_covars <- self$nodes$covariates[which(sapply(self$X, data.class) == "character")]
+
+        if (length(character_covars) > 0) {
+          warning(sprintf(
+            "Character covariates found: %s;\nConverting these to factors",
+            paste0(character_covars, collapse = ", ")
+          ))
+
+          converted <- self$X[, lapply(.SD, factor), .SDcols = character_covars]
           converted_column_names <- self$add_columns(converted)
           converted_task <- self$next_in_chain(column_names = converted_column_names)
           # make this task a copy of imputed_task
           self <<- converted_task$.__enclos_env__$self
           private <<- converted_task$.__enclos_env__$private
-          
         }
-          
+
         # check for missingness, and process if found
         p_missing <- sapply(self$X, function(x) mean(is.na(x)))
         missing_Y <- any(is.na(self$Y))
-        if((max(p_missing)>0)||(missing_Y && drop_missing_outcome)){
+        if ((max(p_missing) > 0) || (missing_Y && drop_missing_outcome)) {
           warning("Missing Covariate Data Found. Imputing covariates using sl3_process_missing")
-          imputed_task <- sl3_process_missing(self, drop_missing_outcome=drop_missing_outcome)
-          
+          imputed_task <- sl3_process_missing(self, drop_missing_outcome = drop_missing_outcome)
+
           # make this task a copy of imputed_task
           self <<- imputed_task$.__enclos_env__$self
           private <<- imputed_task$.__enclos_env__$private
-          
+
           missing_Y <- any(is.na(self$Y))
         }
-        
-        if(missing_Y){
+
+        if (missing_Y) {
           warning("Missing Outcome Data Found. This is okay for prediction, but will likely break training. \n
                You can drop observations with missing outcomes by setting drop_missing_outcome=TRUE in make_sl3_Task")
         }
       }
-      
-      invisible(self)  
 
-      
-      
+      invisible(self)
     },
 
     add_interactions = function(interactions, warn_on_existing = TRUE) {
@@ -310,7 +308,7 @@ sl3_Task <- R6Class(
       node_var <- private$.nodes[[node_name]]
       return(!is.null(node_var))
     },
-    
+
     get_node = function(node_name, generator_fun = NULL, expand_factors = FALSE) {
       if (missing(generator_fun)) {
         generator_fun <- function(node_name, n) {
@@ -331,7 +329,7 @@ sl3_Task <- R6Class(
         }
       }
     },
-    
+
     offset_transformed = function(link_fun = NULL, for_prediction = FALSE) {
       if (self$has_node("offset")) {
         offset <- self$offset
@@ -351,7 +349,7 @@ sl3_Task <- R6Class(
       cat(sprintf("A sl3 Task with %d obs and these nodes:\n", self$nrow))
       print(self$nodes)
     },
-    
+
     revere_fold_task = function(fold_number) {
       return(self)
     }
@@ -449,8 +447,8 @@ sl3_Task <- R6Class(
     outcome_type = function() {
       return(private$.outcome_type)
     },
-    
-    row_index = function(){
+
+    row_index = function() {
       return(private$.row_index)
     }
   ),

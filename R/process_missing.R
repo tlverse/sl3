@@ -20,11 +20,10 @@ impute_by_type <- function(x) {
 }
 
 sl3_process_missing <- function(task, drop_missing_outcome = FALSE, max_p_missing = 0.5) {
-  
-  if(drop_missing_outcome){
+  if (drop_missing_outcome) {
     task <- task[!is.na(task$Y)]
   }
-  
+
   covars <- task$nodes$covariates
   X <- task$X
 
@@ -55,7 +54,7 @@ sl3_process_missing <- function(task, drop_missing_outcome = FALSE, max_p_missin
 
   new_columns <- task$add_columns(processed)
   covariates <- c(task$nodes$covariates, missing_names)
-  processed_task <- task$next_in_chain(covariates = covariates ,column_names = new_columns)
+  processed_task <- task$next_in_chain(covariates = covariates, column_names = new_columns)
 
 
 
