@@ -100,8 +100,26 @@ sl3_Task <- R6Class(
       # assign uuid
       private$.uuid <- UUIDgenerate(use.time = T)
       
-      # check for missingness, and process if found
+      
+      # check data quality if we think this is a user provided dataset
       if(user_mode){
+        # convert characters to factors
+        character_covars <- self$nodes$covariates[which(sapply(self$X, data.class)=="character")]
+        
+        if(length(character_covars)>0){
+          warning(sprintf("Character covariates found: %s;\nConverting these to factors",
+                          paste0(character_covars, collapse=", ")))
+                  
+          converted <- self$X[,lapply(.SD,factor), .SDcols=character_covars]
+          converted_column_names <- self$add_columns(converted)
+          converted_task <- self$next_in_chain(column_names = converted_column_names)
+          # make this task a copy of imputed_task
+          self <<- converted_task$.__enclos_env__$self
+          private <<- converted_task$.__enclos_env__$private
+          
+        }
+          
+        # check for missingness, and process if found
         p_missing <- sapply(self$X, function(x) mean(is.na(x)))
         missing_Y <- any(is.na(self$Y))
         if((max(p_missing)>0)||(missing_Y && drop_missing_outcome)){
