@@ -17,7 +17,6 @@
 #'
 #' @export
 #' @keywords variable importance
-
 varimp <- function(fit, loss, type=c("permute", "sample")){
 
   task <- fit$training_task
