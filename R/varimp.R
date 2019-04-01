@@ -8,29 +8,37 @@
 #'
 #' @param fit A learner fitted task
 #' @param loss A loss function (see loss_functions.R)
-#'
+#' @param type either "permute" (for permutation based variable importance),
+#'             or "sample" (for sample based variable importance)
 #' @return A table of risk differences for each covariate, where a higher risk
-#'         differnece indicates a more important covariate in predicting Y
+#'         difference indicates a more important covariate in predicting Y
 #'
 #' @name varimp
 #'
 #' @export
 #' @keywords variable importance
 
-varimp <- function(fit, loss){
+varimp <- function(fit, loss, type=c("permute", "sample")){
 
   task <- fit$training_task
   dat <- task$data
   X <- task$X
-  Y <- task$X
+  Y <- task$Y
 
   preds <- fit$predict()
   risk <- mean(loss(Y, preds))
-
-  risk_diffs <- lapply(X, function(i){
-    # scramble cov column and give it the same name as the raw cov col
-    scrambled_col <- data.table(sample(unlist(dat[,i, with = FALSE]),
+  type <- match.arg(type)
+  risk_diffs <- lapply(task$nodes$covariates, function(i){
+    if(type=="permute"){
+      # scramble cov column and give it the same name as the raw cov col
+      scrambled_col <- data.table(sample(unlist(dat[,i, with = FALSE]),
                                        nrow(dat)))
+    } else {
+      col_to_scramble <- as.numeric(unlist(dat[,i, with = FALSE]))
+      scrambled_col <- data.table(runif(nrow(dat),
+                                        min = min(col_to_scramble),
+                                        max = max(col_to_scramble)))
+    }
     names(scrambled_col) <- i
 
     # replace raw col with scrambled col in the task
@@ -48,8 +56,8 @@ varimp <- function(fit, loss){
     return(rd)
   })
 
-  names(risk_diffs) <- X
-  results <- data.table(X = rep(names(risk_diffs), sapply(risk_diffs,length)),
+  names(risk_diffs) <- task$nodes$covariates
+  results <- data.table(X = names(risk_diffs),
                         risk_diff = unlist(risk_diffs))
   results_ord <- results[ order(-risk_diff) ]
   return(results_ord)
