@@ -18,6 +18,7 @@
 #' @name varimp
 #'
 #' @export
+#' @importFrom stats runif
 #' @keywords variable importance
 varimp <- function(fit, loss, type = c("permute", "sample"), fold_number = "validation") {
   task <- fit$training_task
@@ -64,6 +65,6 @@ varimp <- function(fit, loss, type = c("permute", "sample"), fold_number = "vali
     X = names(risk_diffs),
     risk_diff = unlist(risk_diffs)
   )
-  results_ord <- results[ order(-risk_diff) ]
+  results_ord <- results[ order(-results$risk_diff) ]
   return(results_ord)
 }
