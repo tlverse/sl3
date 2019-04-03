@@ -10,6 +10,8 @@
 #' @param loss A loss function (see loss_functions.R)
 #' @param type either "permute" (for permutation based variable importance),
 #'             or "sample" (for sample based variable importance)
+#' @param fold_number either "full" for full fit vim, "validation" for 
+#'             cross-validated vim, or a positive integer for fold-specific vim
 #' @return A table of risk differences for each covariate, where a higher risk
 #'         difference indicates a more important covariate in predicting Y
 #'
@@ -17,7 +19,7 @@
 #'
 #' @export
 #' @keywords variable importance
-varimp <- function(fit, loss, type=c("permute", "sample")){
+varimp <- function(fit, loss, type=c("permute", "sample"), fold_number="validation"){
 
   task <- fit$training_task
   dat <- task$data
@@ -45,7 +47,7 @@ varimp <- function(fit, loss, type=c("permute", "sample")){
     scrambled_col_task <- task$next_in_chain(column_names = scrambled_col_names)
 
     # obtain preds on the scrambled col task
-    scrambled_sl_preds <- fit$predict_fold(scrambled_col_task)
+    scrambled_sl_preds <- fit$predict_fold(scrambled_col_task, fold_number)
 
     # risk on scrambled col task
     risk_scrambled <- mean(loss(Y, scrambled_sl_preds))
