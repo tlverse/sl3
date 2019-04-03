@@ -13,13 +13,13 @@ metalearner <- make_learner(Lrnr_nnls)
 sl <- Lrnr_sl$new(learners = stack, metalearner = metalearner)
 
 fit <- sl$train(task)
-fold_number = "validation"
+fold_number <- "validation"
 # subset_revere_fun_generator <- function(fit, threshold, keep_vars)
-revere_subset_vim_fit <- function(task, fold_number){
+revere_subset_vim_fit <- function(task, fold_number) {
   vim <- varimp(fit, loss_squared_error, "permute", fold_number)
-  keep_vars <- unlist(vim[1:3,"X"], use.names = FALSE)
-  subset_task <- task$next_in_chain(covariates=keep_vars)
-  
+  keep_vars <- unlist(vim[1:3, "X"], use.names = FALSE)
+  subset_task <- task$next_in_chain(covariates = keep_vars)
+
   return(subset_task)
 }
 
@@ -31,4 +31,3 @@ subset_test <- chained_revere_task$revere_fold_task("full")
 pipe <- make_learner(Pipeline, lrnr_subset_revere, sl)
 pipe_fit <- pipe$train(task)
 pipe_preds <- pipe_fit$predict()
-

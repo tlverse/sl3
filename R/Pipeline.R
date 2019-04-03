@@ -102,7 +102,7 @@ Pipeline <- R6Class(
       for (i in seq_along(learner_fits)) {
         current_task <- next_task
         current_fit <- learner_fits[[i]]
-        if(i<length(learner_fits)){
+        if (i < length(learner_fits)) {
           next_task <- current_fit$base_chain(current_task)
         }
       }

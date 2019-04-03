@@ -10,7 +10,7 @@
 #' @param loss A loss function (see loss_functions.R)
 #' @param type either "permute" (for permutation based variable importance),
 #'             or "sample" (for sample based variable importance)
-#' @param fold_number either "full" for full fit vim, "validation" for 
+#' @param fold_number either "full" for full fit vim, "validation" for
 #'             cross-validated vim, or a positive integer for fold-specific vim
 #' @return A table of risk differences for each covariate, where a higher risk
 #'         difference indicates a more important covariate in predicting Y
@@ -19,8 +19,7 @@
 #'
 #' @export
 #' @keywords variable importance
-varimp <- function(fit, loss, type=c("permute", "sample"), fold_number="validation"){
-
+varimp <- function(fit, loss, type = c("permute", "sample"), fold_number = "validation") {
   task <- fit$training_task
   dat <- task$data
   X <- task$X
@@ -29,16 +28,19 @@ varimp <- function(fit, loss, type=c("permute", "sample"), fold_number="validati
   preds <- fit$predict()
   risk <- mean(loss(Y, preds))
   type <- match.arg(type)
-  risk_diffs <- lapply(task$nodes$covariates, function(i){
-    if(type=="permute"){
+  risk_diffs <- lapply(task$nodes$covariates, function(i) {
+    if (type == "permute") {
       # scramble cov column and give it the same name as the raw cov col
-      scrambled_col <- data.table(sample(unlist(dat[,i, with = FALSE]),
-                                       nrow(dat)))
+      scrambled_col <- data.table(sample(
+        unlist(dat[, i, with = FALSE]),
+        nrow(dat)
+      ))
     } else {
-      col_to_scramble <- as.numeric(unlist(dat[,i, with = FALSE]))
+      col_to_scramble <- as.numeric(unlist(dat[, i, with = FALSE]))
       scrambled_col <- data.table(runif(nrow(dat),
-                                        min = min(col_to_scramble),
-                                        max = max(col_to_scramble)))
+        min = min(col_to_scramble),
+        max = max(col_to_scramble)
+      ))
     }
     names(scrambled_col) <- i
 
@@ -58,8 +60,10 @@ varimp <- function(fit, loss, type=c("permute", "sample"), fold_number="validati
   })
 
   names(risk_diffs) <- task$nodes$covariates
-  results <- data.table(X = names(risk_diffs),
-                        risk_diff = unlist(risk_diffs))
+  results <- data.table(
+    X = names(risk_diffs),
+    risk_diff = unlist(risk_diffs)
+  )
   results_ord <- results[ order(-risk_diff) ]
   return(results_ord)
 }

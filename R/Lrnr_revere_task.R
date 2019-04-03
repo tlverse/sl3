@@ -31,53 +31,49 @@ Lrnr_revere_task <- R6Class(
   class = TRUE,
   public = list(
     initialize = function(revere_function, ...) {
-      
       params <- list(revere_function = revere_function, ...)
       super$initialize(params = params, ...)
     },
-  
+
     predict_fold = function(task, fold_number = "validation") {
       stop("this learner is meant for chaining only")
     },
     chain_fold = function(task, fold_number = "validation") {
-      if(task$uuid==self$training_task$uuid){
+      if (task$uuid == self$training_task$uuid) {
         revere_task <- self$fit_object$revere_Task
-      } else{
+      } else {
         revere_task <- sl3_revere_Task$new(self$params$revere_function, task)
       }
-      
+
       return(revere_task$revere_fold_task(fold_number))
     }
   ),
-  
+
   active = list(
     name = function() {
       name <- paste("CV", self$params$learner$name, sep = "_")
     }
   ),
-  
+
   private = list(
     .properties = c("wrapper", "cv"),
-    
+
 
     .train = function(task, trained_sublearners) {
-      
-      
       fit_object <- list(
         revere_task = sl3_revere_Task$new(self$params$revere_function, task)
-        
       )
       return(fit_object)
     },
-    
+
     .predict = function(task) {
       stop("this learner is meant for chaining only")
       return(predictions)
     },
-    .chain = function(task){
-      if(task$uuid==self$training_task$uuid){
+    .chain = function(task) {
+      if (task$uuid == self$training_task$uuid) {
         return(self$fit_object$revere_task)
-      } else{
+      } else {
         return(sl3_revere_Task$new(self$params$revere_function, task))
       }
     },
