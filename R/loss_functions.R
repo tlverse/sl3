@@ -91,6 +91,7 @@ cv_risk <- function(learner, loss_fun, coefs = NULL) {
   }
 
   task <- learner$training_task
+  task <- task$revere_fold_task("validation")
   preds <- learner$predict_fold(task, "validation")
   if (!is.data.table(preds)) {
     preds <- data.table(preds)

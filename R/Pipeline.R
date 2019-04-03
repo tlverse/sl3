@@ -102,7 +102,9 @@ Pipeline <- R6Class(
       for (i in seq_along(learner_fits)) {
         current_task <- next_task
         current_fit <- learner_fits[[i]]
-        next_task <- current_fit$base_chain(current_task)
+        if (i < length(learner_fits)) {
+          next_task <- current_fit$base_chain(current_task)
+        }
       }
       # current_task is now the task for the last fit, so we can just do this
       predictions <- current_fit$base_predict(current_task)

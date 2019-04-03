@@ -122,10 +122,10 @@ sl3_Task <- R6Class(
 
         # check for missingness, and process if found
         p_missing <- sapply(self$X, function(x) mean(is.na(x)))
-        missing_Y <- (!is.null(self$nodes$outcome)&& any(is.na(self$Y)))
-        if((length(p_missing)>0) && 
-            ((max(p_missing) > 0) || 
-             (missing_Y && drop_missing_outcome))) {
+        missing_Y <- (!is.null(self$nodes$outcome) && any(is.na(self$Y)))
+        if ((length(p_missing) > 0) &&
+          ((max(p_missing) > 0) ||
+            (missing_Y && drop_missing_outcome))) {
           warning("Missing Covariate Data Found. Imputing covariates using sl3_process_missing")
           imputed_task <- sl3_process_missing(self, drop_missing_outcome = drop_missing_outcome)
 
@@ -133,7 +133,7 @@ sl3_Task <- R6Class(
           self <<- imputed_task$.__enclos_env__$self
           private <<- imputed_task$.__enclos_env__$private
 
-          missing_Y <- (!is.null(self$nodes$outcome)&& any(is.na(self$Y)))
+          missing_Y <- (!is.null(self$nodes$outcome) && any(is.na(self$Y)))
         }
 
         if (missing_Y) {
