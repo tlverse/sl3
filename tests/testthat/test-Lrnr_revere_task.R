@@ -31,7 +31,4 @@ subset_test <- chained_revere_task$revere_fold_task("full")
 pipe <- make_learner(Pipeline, lrnr_subset_revere, sl)
 pipe_fit <- pipe$train(task)
 pipe_preds <- pipe_fit$predict()
-<<<<<<< HEAD
 pipe_val_preds <- pipe_fit$predict_fold(task, "validation")
-=======
->>>>>>> 5b53bc8f431e824b913e6d177c66ea1e7d7c8bde
