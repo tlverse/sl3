@@ -40,7 +40,7 @@ Lrnr_revere_task <- R6Class(
     },
     chain_fold = function(task, fold_number = "validation") {
       if (task$uuid == self$training_task$uuid) {
-        revere_task <- self$fit_object$revere_Task
+        revere_task <- self$fit_object$revere_task
       } else {
         revere_task <- sl3_revere_Task$new(self$params$revere_function, task)
       }

@@ -58,6 +58,25 @@ Pipeline <- R6Class(
       } else {
         lapply(private$.fit_object, print)
       }
+    },
+
+    predict_fold = function(task, fold_number) {
+
+      # prediction is just chaining until you get to the last fit, and then
+      # calling predict
+      learner_fits <- private$.fit_object$learner_fits
+      next_task <- task
+
+      for (i in seq_along(learner_fits)) {
+        current_task <- next_task
+        current_fit <- learner_fits[[i]]
+        if (i < length(learner_fits)) {
+          next_task <- current_fit$chain_fold(current_task, fold_number)
+        }
+      }
+      # current_task is now the task for the last fit, so we can just do this
+      predictions <- current_fit$predict_fold(current_task, fold_number)
+      return(predictions)
     }
   ),
 
@@ -65,7 +84,7 @@ Pipeline <- R6Class(
     name = function() {
       learners <- self$params$learners
       learner_names <- sapply(learners, function(learner) learner$name)
-      name <- paste(learner_names, collapse = "___")
+      name <- sprintf("Pipeline(%s)", paste(learner_names, collapse = "->"))
       return(name)
     }
   ),
