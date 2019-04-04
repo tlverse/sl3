@@ -87,6 +87,10 @@ Lrnr_base <- R6Class(
 
     set_train = function(fit_object, training_task) {
       private$.fit_object <- fit_object
+      # for predict/chaining subset covariates to be same as training task
+      if(!inherits(training_task,"sl3_revere_Task")&&(is.null(private$.params$covariates))){
+        private$.params$covariates <- training_task$nodes$covariates
+      }
       save_training <- getOption("sl3.save.training")
       if (is.null(save_training) || save_training) {
         private$.training_task <- training_task
@@ -272,6 +276,7 @@ Lrnr_base <- R6Class(
       predictions <- self$predict(task)
       predictions <- as.data.table(predictions)
       # Add predictions as new columns
+      task <- task$revere_fold_task("full")
       new_col_names <- task$add_columns(predictions, self$fit_uuid)
       # new_covariates = union(names(predictions),task$nodes$covariates)
       return(task$next_in_chain(
