@@ -189,7 +189,8 @@ Lrnr_sl <- R6Class(
     },
 
     .predict = function(task) {
-      predictions <- private$.fit_object$full_fit$base_predict(task)
+      full_task <- task$revere_fold_task("full")
+      predictions <- private$.fit_object$full_fit$base_predict(full_task)
       return(predictions)
     }
   )
