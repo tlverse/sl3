@@ -130,9 +130,10 @@ Lrnr_rfcde <- R6Class(
         return(predictions)
       } else if (output_type == "observed") {
         density_pred <- predict(self$fit_object,
-                                newdata = as.matrix(task$X),
-                                z_grid = as.numeric(task$Y),
-                                bandwidth = bandwidth)
+          newdata = as.matrix(task$X),
+          z_grid = as.numeric(task$Y),
+          bandwidth = bandwidth
+        )
         predictions <- diag(density_pred)
         return(predictions)
       }

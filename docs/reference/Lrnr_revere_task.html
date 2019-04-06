@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Pipeline (chain) of learners. — Pipeline • sl3</title>
+<title>Learner that chains into a revere task — Lrnr_revere_task • sl3</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,16 +30,9 @@
 
 
 
-<meta property="og:title" content="Pipeline (chain) of learners. — Pipeline" />
+<meta property="og:title" content="Learner that chains into a revere task — Lrnr_revere_task" />
 
-<meta property="og:description" content="A Pipeline of learners is a way to &quot;chain&quot; Learners together, where the
-output of one learner is used as output for the next learner. This can be
-used for things like screening, two stage machine learning methods, and Super
-Learning. A pipeline is fit by fitting the first Learner, calling
-chain() to create the next task, which becomes the training data for
-the next Learner. Similarly, for prediction, the predictions from the
-first Learner become the data to predict on for the next
-Learner." />
+<meta property="og:description" content="A wrapper around a revere generator that produces a revere task on chain" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -132,25 +125,18 @@ Learner." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Pipeline (chain) of learners.</h1>
+    <h1>Learner that chains into a revere task</h1>
     
-    <div class="hidden name"><code>Pipeline.Rd</code></div>
+    <div class="hidden name"><code>Lrnr_revere_task.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>A Pipeline of learners is a way to "chain" Learners together, where the
-output of one learner is used as output for the next learner. This can be
-used for things like screening, two stage machine learning methods, and Super
-Learning. A pipeline is fit by fitting the first <code>Learner</code>, calling
-<code>chain()</code> to create the next task, which becomes the training data for
-the next <code>Learner</code>. Similarly, for prediction, the predictions from the
-first <code>Learner</code> become the data to predict on for the next
-<code>Learner</code>.</p>
+    <p>A wrapper around a revere generator that produces a revere task on chain</p>
     
     </div>
 
-    <pre class="usage"><span class='no'>Pipeline</span></pre>
+    <pre class="usage"><span class='no'>Lrnr_revere_task</span></pre>
         
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
@@ -165,19 +151,7 @@ first <code>Learner</code> become the data to predict on for the next
 
     
     <dl class='dl-horizontal'>
-<dt><code>...</code></dt><dd><p>Parameters should be individual <code>Learner</code>s, in the
-order they should be applied.</p></dd>
-</dl>
-    
-    <h2 class="hasAnchor" id="common-parameters"><a class="anchor" href="#common-parameters"></a>Common Parameters</h2>
-
-    
-    <p>Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by <code>Lrnr_base</code>, and shared
-by all learners.</p>
-<dl class='dl-horizontal'>
-<dt><code>covariates</code></dt><dd><p>A character vector of covariates. The learner will use this to subset the covariates for any specified task</p></dd>
-<dt><code>outcome_type</code></dt><dd><p>A <code><a href='variable_type.html'>variable_type</a></code> object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified</p></dd>
-<dt><code>...</code></dt><dd><p>All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating</p></dd>
+<dt><code>revere_function</code></dt><dd><p>The revere generator function to wrap</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -199,15 +173,14 @@ by all learners.</p>
   <code><a href='Lrnr_optim.html'>Lrnr_optim</a></code>, <code><a href='Lrnr_pca.html'>Lrnr_pca</a></code>,
   <code><a href='SuperLearner_interface.html'>Lrnr_pkg_SuperLearner</a></code>,
   <code><a href='Lrnr_randomForest.html'>Lrnr_randomForest</a></code>,
-  <code><a href='Lrnr_ranger.html'>Lrnr_ranger</a></code>,
-  <code><a href='Lrnr_revere_task.html'>Lrnr_revere_task</a></code>, <code><a href='Lrnr_rfcde.html'>Lrnr_rfcde</a></code>,
+  <code><a href='Lrnr_ranger.html'>Lrnr_ranger</a></code>, <code><a href='Lrnr_rfcde.html'>Lrnr_rfcde</a></code>,
   <code><a href='Lrnr_rpart.html'>Lrnr_rpart</a></code>, <code><a href='Lrnr_rugarch.html'>Lrnr_rugarch</a></code>,
   <code><a href='Lrnr_sl.html'>Lrnr_sl</a></code>, <code><a href='Lrnr_solnp_density.html'>Lrnr_solnp_density</a></code>,
   <code><a href='Lrnr_solnp.html'>Lrnr_solnp</a></code>, <code><a href='Lrnr_stratified.html'>Lrnr_stratified</a></code>,
   <code><a href='Lrnr_subset_covariates.html'>Lrnr_subset_covariates</a></code>,
   <code><a href='Lrnr_svm.html'>Lrnr_svm</a></code>, <code><a href='Lrnr_tsDyn.html'>Lrnr_tsDyn</a></code>,
-  <code><a href='Lrnr_xgboost.html'>Lrnr_xgboost</a></code>, <code><a href='Stack.html'>Stack</a></code>,
-  <code><a href='Lrnr_h2o_glm.html'>define_h2o_X</a></code>,
+  <code><a href='Lrnr_xgboost.html'>Lrnr_xgboost</a></code>, <code><a href='Pipeline.html'>Pipeline</a></code>,
+  <code><a href='Stack.html'>Stack</a></code>, <code><a href='Lrnr_h2o_glm.html'>define_h2o_X</a></code>,
   <code><a href='undocumented_learner.html'>undocumented_learner</a></code></p></div>
     
 
@@ -221,8 +194,6 @@ by all learners.</p>
       <li><a href="#value">Value</a></li>
 
       <li><a href="#parameters">Parameters</a></li>
-
-      <li><a href="#common-parameters">Common Parameters</a></li>
 
       <li><a href="#see-also">See also</a></li>
           </ul>

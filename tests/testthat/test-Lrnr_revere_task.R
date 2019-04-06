@@ -16,7 +16,7 @@ fit <- sl$train(task)
 fold_number <- "validation"
 # subset_revere_fun_generator <- function(fit, threshold, keep_vars)
 revere_subset_vim_fit <- function(task, fold_number) {
-  if(fold_number=="validation"){
+  if (fold_number == "validation") {
     return(task)
   }
   vim <- varimp(fit, loss_squared_error, "permute", fold_number)
