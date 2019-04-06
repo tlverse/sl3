@@ -94,6 +94,9 @@
     <loc>https://tlverse.org/sl3/reference/Lrnr_ranger.html</loc>
   </url>
   <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_revere_task.html</loc>
+  </url>
+  <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_rfcde.html</loc>
   </url>
   <url>
@@ -221,6 +224,9 @@
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/variable_type.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/reference/varimp.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/write_learner_template.html</loc>

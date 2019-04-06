@@ -42,6 +42,12 @@
 #'   \item{\code{bandwidth}}{ Bandwidth for kernel density estimates (optional).
 #'    Defaults to \code{"auto"} for automatic bandwidth selection.
 #'   }
+#'   \item{\code{output_type}}{ Whether to return the density evaluated over a
+#'    grid of supplied points (using \code{z_grid}) or at the observed outcome
+#'    values. Default is to return the density evaluated at only the observed
+#'    outcome values (option \code{"observed"}); choose \code{"grid"} to return
+#'    instead the density evaluated over the arbitrary input grid.
+#'   }
 #'   \item{\code{...}}{ Other parameters passed directly to \code{RFCDE}.
 #'    Consult the documentation of that package for details.
 #'   }
@@ -59,6 +65,7 @@ Lrnr_rfcde <- R6Class(
                               fit_oob = FALSE,
                               z_grid = seq(0, 10, length.out = 100),
                               bandwidth = "auto",
+                              output_type = "observed",
                               ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
@@ -112,13 +119,24 @@ Lrnr_rfcde <- R6Class(
       bandwidth <- self$params$bandwidth
       n_grid <- self$params$n_grid
       z_grid <- self$params$z_grid
+      output_type <- self$params$output_type
 
-      predictions <- predict(self$fit_object,
-        newdata = as.matrix(task$X),
-        z_grid = z_grid,
-        bandwidth = bandwidth
-      )
-      return(predictions)
+      if (output_type == "grid") {
+        predictions <- predict(self$fit_object,
+          newdata = as.matrix(task$X),
+          z_grid = z_grid,
+          bandwidth = bandwidth
+        )
+        return(predictions)
+      } else if (output_type == "observed") {
+        density_pred <- predict(self$fit_object,
+          newdata = as.matrix(task$X),
+          z_grid = as.numeric(task$Y),
+          bandwidth = bandwidth
+        )
+        predictions <- diag(density_pred)
+        return(predictions)
+      }
     },
     .required_packages = c("RFCDE")
   )

@@ -44,6 +44,12 @@ the prediction procedure suitable for a given use case.
 \item{\code{bandwidth}}{ Bandwidth for kernel density estimates (optional).
 Defaults to \code{"auto"} for automatic bandwidth selection.
 }
+\item{\code{output_type}}{ Whether to return the density evaluated over a
+grid of supplied points (using \code{z_grid}) or at the observed outcome
+values. Default is to return the density evaluated at only the observed
+outcome values (option \code{"observed"}); choose \code{"grid"} to return
+instead the density evaluated over the arbitrary input grid.
+}
 \item{\code{...}}{ Other parameters passed directly to \code{RFCDE}.
 Consult the documentation of that package for details.
 }

@@ -88,7 +88,7 @@ Lrnr_base <- R6Class(
     set_train = function(fit_object, training_task) {
       private$.fit_object <- fit_object
       # for predict/chaining subset covariates to be same as training task
-      if(!inherits(training_task,"sl3_revere_Task")&&(is.null(private$.params$covariates))){
+      if (!inherits(training_task, "sl3_revere_Task") && (is.null(private$.params$covariates))) {
         private$.params$covariates <- training_task$nodes$covariates
       }
       save_training <- getOption("sl3.save.training")
