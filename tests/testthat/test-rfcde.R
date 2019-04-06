@@ -32,7 +32,8 @@ task <- cpp_imputed %>%
 test_that("Lrnr_rfcde produces predictions similar to those from RFCDE", {
   set.seed(67391)
   rfcde_lrn <- Lrnr_rfcde$new(
-    z_grid = seq(0, 10, length.out = 100)
+    z_grid = seq(0, 10, length.out = 100),
+    output_type = "grid"
   )
   rfcde_lrn_fit <- rfcde_lrn$train(task)
   rfcde_lrn_fit_preds <- rfcde_lrn_fit$predict() %>% as.numeric()
