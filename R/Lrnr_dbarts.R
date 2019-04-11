@@ -124,7 +124,7 @@ Lrnr_dbarts <- R6Class(
           data.frame(task$X),
           type="response"
         ))))
-        predictions<-ifelse(predictions<0.5,0,1)
+        #predictions<-ifelse(predictions<0.5,0,1)
       }else{
         predictions <- rowMeans(t(stats::predict(
           private$.fit_object,
