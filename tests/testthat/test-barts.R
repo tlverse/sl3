@@ -66,8 +66,42 @@ outcome <- names(y)
 data <- cbind.data.frame(y, x)
 task <- sl3_Task$new(data, covariates = covars, outcome = outcome)
 
-test_that("Lrnr_dbarts works", {
-  dbart_learner <- Lrnr_dbarts$new(ndpost = 1)
+test_that("Lrnr_dbarts with continuous outcome works", {
+  dbart_learner <- Lrnr_dbarts$new(ndpost = 200)
+  dbart_fit <- dbart_learner$train(task)
+  mean_pred_sl3 <- mean(dbart_fit$predict(task))
+  expect_true(mean_pred_sl3 < 20)
+})
+
+## Classification 
+
+generateProbitData <- function() {
+  n <- 800
+  beta <- c(0.12, -0.89, 0.3)
+  p <- 3
+  
+  set.seed(0)
+  X <- matrix(rnorm(p * n), n, p)
+  
+  mu <- pnorm(X %*% beta)
+  Z <- rbinom(n, 1, mu)
+  
+  return(list(X = X, Z = Z, p = mu))
+}
+
+testData <- generateProbitData()
+x <- data.frame(testData$X)
+names(x) <- paste("Covs", seq_along(1:ncol(x)), sep = "_")
+y <- data.frame(y = testData$Z)
+
+covars <- names(x)
+outcome <- names(y)
+
+data <- cbind.data.frame(y, x)
+task <- sl3_Task$new(data, covariates = covars, outcome = outcome)
+
+test_that("Lrnr_dbarts with binary outcome works", {
+  dbart_learner <- Lrnr_dbarts$new()
   dbart_fit <- dbart_learner$train(task)
   mean_pred_sl3 <- mean(dbart_fit$predict(task))
   expect_true(mean_pred_sl3 < 20)

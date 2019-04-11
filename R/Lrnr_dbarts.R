@@ -84,8 +84,8 @@ Lrnr_dbarts <- R6Class(
   classname = "Lrnr_dbarts",
   inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(ndpost = 20, nskip = 5,
-                              ntree = 5L, verbose = FALSE, keeptrees = TRUE, ...) {
+    initialize = function(ndpost = 500, nskip = 100,
+                              ntree = 200L, verbose = FALSE, keeptrees = TRUE, ...) {
       super$initialize(params = args_to_list(), ...)
     }
   ),
@@ -110,16 +110,28 @@ Lrnr_dbarts <- R6Class(
       }
 
       fit_object <- call_with_args(dbarts::bart, args)
-
+      
       return(fit_object)
     },
 
     .predict = function(task) {
-      predictions <- t(stats::predict(
-        private$.fit_object,
-        data.frame(task$X)
-      ))
-
+      
+      outcome_type <- private$.training_outcome_type
+      
+      if(outcome_type$type=="binomial"){
+        predictions <- pnorm(rowMeans(t(stats::predict(
+          private$.fit_object,
+          data.frame(task$X),
+          type="response"
+        ))))
+        predictions<-ifelse(predictions<0.5,0,1)
+      }else{
+        predictions <- rowMeans(t(stats::predict(
+          private$.fit_object,
+          data.frame(task$X)
+        )))
+      }
+      
       return(predictions)
     },
     .required_packages = c("dbarts")
