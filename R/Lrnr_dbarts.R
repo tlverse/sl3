@@ -119,7 +119,7 @@ Lrnr_dbarts <- R6Class(
       outcome_type <- private$.training_outcome_type
       
       if(outcome_type$type=="binomial"){
-        predictions <- pnorm(rowMeans(t(stats::predict(
+        predictions <- rowMeans(stats::pnorm(t(stats::predict(
           private$.fit_object,
           data.frame(task$X),
           type="response"
