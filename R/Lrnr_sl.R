@@ -147,10 +147,6 @@ Lrnr_sl <- R6Class(
       cv_meta_task <- delayed_learner_fit_chain(cv_fit, task)
       cv_meta_fit <- delayed_learner_train(metalearner, cv_meta_task)
 
-      # refit stack on full data
-      full_task <- task$revere_fold_task("full")
-      stack_fit <- delayed_learner_train(learner_stack, full_task)
-
       # form full SL fit -- a pipeline with the stack fit to the full data,
       # and the metalearner fit to the cv predictions
       fit_object <- list(
@@ -166,10 +162,6 @@ Lrnr_sl <- R6Class(
       # construct full fit pipeline
       full_stack_fit <- fit_object$cv_fit$fit_object$full_fit
       full_stack_fit$custom_chain(drop_offsets_chain)
-
-      # propagate stack errors from cross-validation to full refit
-      cv_errors <- fit_object$cv_fit$fit_object$is_error
-      full_stack_fit$update_errors(cv_errors)
 
       full_fit <- make_learner(Pipeline, full_stack_fit, fit_object$cv_meta_fit)
 
