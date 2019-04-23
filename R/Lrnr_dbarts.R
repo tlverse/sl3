@@ -110,28 +110,27 @@ Lrnr_dbarts <- R6Class(
       }
 
       fit_object <- call_with_args(dbarts::bart, args)
-      
+
       return(fit_object)
     },
 
     .predict = function(task) {
-      
       outcome_type <- private$.training_outcome_type
-      
-      if(outcome_type$type=="binomial"){
+
+      if (outcome_type$type == "binomial") {
         predictions <- rowMeans(stats::pnorm(t(stats::predict(
           private$.fit_object,
           data.frame(task$X),
-          type="response"
+          type = "response"
         ))))
-        #predictions<-ifelse(predictions<0.5,0,1)
-      }else{
+        # predictions<-ifelse(predictions<0.5,0,1)
+      } else {
         predictions <- rowMeans(t(stats::predict(
           private$.fit_object,
           data.frame(task$X)
         )))
       }
-      
+
       return(predictions)
     },
     .required_packages = c("dbarts")
