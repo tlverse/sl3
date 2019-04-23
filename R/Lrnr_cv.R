@@ -202,7 +202,7 @@ Lrnr_cv <- R6Class(
         if (self$params$full_fit) {
           all_fits <- c(all_fits, full_fit)
         }
-        
+
         errored_learners <- sapply(all_fits, function(fold_fit) {
           fold_fit$fit_object$is_error
         })
@@ -218,11 +218,11 @@ Lrnr_cv <- R6Class(
           for (fold_fit in fold_fits) {
             fold_fit$update_errors(ever_error)
           }
-          
+
           if (self$params$full_fit) {
             full_fit$update_errors(ever_error)
           }
-          
+
           # warn about dropping
           errored_learners <- learner$params$learners[ever_error]
           errored_names <- sapply(errored_learners, `[[`, "name")

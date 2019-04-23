@@ -46,19 +46,19 @@ test_that("Lrnr_dbarts with continuous outcome works", {
   expect_true(mean_pred_sl3 < 20)
 })
 
-## Classification 
+## Classification
 
 generateProbitData <- function() {
   n <- 800
   beta <- c(0.12, -0.89, 0.3)
   p <- 3
-  
+
   set.seed(0)
   X <- matrix(rnorm(p * n), n, p)
-  
+
   mu <- pnorm(X %*% beta)
   Z <- rbinom(n, 1, mu)
-  
+
   return(list(X = X, Z = Z, p = mu))
 }
 

@@ -18,8 +18,14 @@ library(SuperLearner)
 set.seed(1)
 
 data(cpp_imputed)
-covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")
+
+# make a factor covariate
+setDT(cpp_imputed)
+cpp_imputed[, parity_cat := factor(ifelse(parity < 4, parity, 4))]
+
+covars <- c("apgar1", "apgar5", "parity_cat", "gagebrth", "mage", "meducyrs", "sexn")
 outcome <- "haz"
+
 
 
 task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
@@ -31,4 +37,3 @@ glm_learner <- Lrnr_glm$new()
 screen_and_glm <- Pipeline$new(slscreener, glm_learner)
 SL.glmnet_learner <- Lrnr_pkg_SuperLearner$new(SL_wrapper = "SL.glmnet")
 sg_fit <- screen_and_glm$train(task)
-# print(sg_fit)

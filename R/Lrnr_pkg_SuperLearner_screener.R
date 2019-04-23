@@ -35,16 +35,23 @@ Lrnr_pkg_SuperLearner_screener <- R6Class(
         args$family <- outcome_type$glm_family(return_object = TRUE)
       }
       wrapper <- args$wrapper_fun
+      x <- task$X
       if (is.null(wrapper)) {
         selected <- task$nodes$covariates
       } else {
         selected <- wrapper(
-          task$Y, task$X,
+          task$Y, x,
           family = args$family,
           obsWeights = task$weights, id = task$id
         )
       }
-      fit_object <- list(selected = task$nodes$covariates[selected])
+      selected_names <- names(x)[selected]
+
+      covariates <- task$nodes$covariates
+      covariate_selected <- sapply(covariates, function(covariate) {
+        any(grep(covariate, selected_names))
+      })
+      fit_object <- list(selected = covariates[covariate_selected])
       return(fit_object)
     },
 
