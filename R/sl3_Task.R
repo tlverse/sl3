@@ -244,7 +244,7 @@ sl3_Task <- R6Class(
 
       if ((is.null(new_nodes$outcome) &&
         is.null(self$nodes$outcome)) ||
-        (new_nodes$outcome == self$nodes$outcome)) {
+        all(new_nodes$outcome == self$nodes$outcome)) {
         # if we have the same outcome, transfer outcome properties
         new_outcome_type <- self$outcome_type
       } else {
