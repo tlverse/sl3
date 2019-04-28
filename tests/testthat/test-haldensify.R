@@ -18,6 +18,7 @@ if (FALSE) {
 library(hal9001)
 library(haldensify)
 library(origami)
+library(dplyr)
 
 data(cpp_imputed)
 covars <- c(
