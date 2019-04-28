@@ -73,6 +73,7 @@ Remotes:
     github::osofr/simcausal,
     github::osofr/condensier,
     github::tlverse/delayed,
+    github::tlverse/origami,
     github::tlverse/hal9001,
     github::nhejazi/haldensify,
     github::vdorie/dbarts,
