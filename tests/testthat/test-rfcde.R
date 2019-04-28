@@ -16,6 +16,7 @@ if (FALSE) {
 }
 
 library(RFCDE)
+library(dplyr)
 
 data(cpp_imputed)
 covars <- c(
