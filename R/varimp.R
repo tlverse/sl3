@@ -8,8 +8,6 @@
 #'
 #' @param fit A learner fitted task
 #' @param loss A loss function (see loss_functions.R)
-#' @param split_factors should categorical variables be split into level-specific
-#'            columns of binaries?
 #' @param fold_number either "full" for full fit vim, "validation" for
 #'             cross-validated vim, or a positive integer for fold-specific vim
 #' @return A table of risk differences for each covariate, where a higher risk
