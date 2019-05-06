@@ -18,7 +18,7 @@
 #' @export
 #' @importFrom stats runif
 #' @keywords variable importance
-varimp <- function(fit, loss, fold_number = "validation") {
+varimp <- function(fit, loss, factor_indicators=FALSE, fold_number = "validation") {
 
   task <- fit$training_task
   Y <- task$Y
@@ -26,14 +26,14 @@ varimp <- function(fit, loss, fold_number = "validation") {
   preds <- fit$predict()
   risk <- mean(loss(Y, preds))
 
-  # if(split_factors == TRUE){
-  #   X <- names(task$X)
-  #   dat <- data.table(task$X, task$Y)
-  # }
-  # if(split_factors == FALSE){
+  if(factor_indicators == TRUE){
+    X <- names(task$X)
+    dat <- data.table(task$X, task$Y)
+  }
+  if(factor_indicators == FALSE){
     X <- task$nodes$covariates
     dat <- task$data
-  # }
+  }
   
   risk_diffs <- lapply(X, function(i) {
     # scramble cov column and give it the same name as the raw cov col
