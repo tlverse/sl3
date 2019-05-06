@@ -49,7 +49,7 @@ factor_to_indicators <- function(x, ind_ref_mat = NULL) {
     ind_ref_mat <- sapply(x_vals[-1], function(x_val) as.numeric(x_val == x_vals))
   }
 
-  ind_mat <- ind_ref_mat[as.numeric(x), ]
+  ind_mat <- ind_ref_mat[as.numeric(x), , drop=FALSE]
   return(ind_mat)
 }
 
@@ -63,7 +63,9 @@ factor_to_indicators <- function(x, ind_ref_mat = NULL) {
 dt_expand_factors <- function(dt) {
   raw <- lapply(dt, function(dt_col) {
     if (is.factor(dt_col)) {
-      return(factor_to_indicators(dt_col))
+      fi <- factor_to_indicators(dt_col)
+      colnames(fi) <- make.names(colnames(fi))
+      return(fi)
     } else {
       return(dt_col)
     }

@@ -4,16 +4,12 @@
 \alias{varimp}
 \title{Variable Importance Measure}
 \usage{
-varimp(fit, loss, factor_indicators = FALSE,
-  fold_number = "validation")
+varimp(fit, loss, fold_number = "validation")
 }
 \arguments{
 \item{fit}{A learner fitted task}
 
 \item{loss}{A loss function (see loss_functions.R)}
-
-\item{factor_indicators}{if TRUE, factors are split into binary indicators, and
-importance is calculated for each indicator}
 
 \item{fold_number}{either "full" for full fit vim, "validation" for
 cross-validated vim, or a positive integer for fold-specific vim}
