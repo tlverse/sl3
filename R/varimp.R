@@ -8,6 +8,8 @@
 #'
 #' @param fit A learner fitted task
 #' @param loss A loss function (see loss_functions.R)
+#' @param factor_indicators if TRUE, factors are split into binary indicators, and 
+#' importance is calculated for each indicator
 #' @param fold_number either "full" for full fit vim, "validation" for
 #'             cross-validated vim, or a positive integer for fold-specific vim
 #' @return A table of risk differences for each covariate, where a higher risk

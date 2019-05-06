@@ -16,4 +16,4 @@ task <- sl3_Task$new(data.table::copy(cpp_imputed), covariates = covars, outcome
 lrnr_glm <- make_learner(Lrnr_glm)
 fit <- lrnr_glm$train(task)
 permute_imp <- varimp(fit, loss_squared_error, factor_indicators=FALSE)
-permute_imp <- varimp(fit, loss_squared_error, split_factors=TRUE)
+permute_imp <- varimp(fit, loss_squared_error, factor_indicators=TRUE)
