@@ -4,16 +4,12 @@
 \alias{varimp}
 \title{Variable Importance Measure}
 \usage{
-varimp(fit, loss, type = c("permute", "sample"),
-  fold_number = "validation")
+varimp(fit, loss, fold_number = "validation")
 }
 \arguments{
 \item{fit}{A learner fitted task}
 
 \item{loss}{A loss function (see loss_functions.R)}
-
-\item{type}{either "permute" (for permutation based variable importance),
-or "sample" (for sample based variable importance)}
 
 \item{fold_number}{either "full" for full fit vim, "validation" for
 cross-validated vim, or a positive integer for fold-specific vim}

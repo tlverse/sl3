@@ -19,7 +19,7 @@ revere_subset_vim_fit <- function(task, fold_number) {
   if (fold_number == "validation") {
     return(task)
   }
-  vim <- varimp(fit, loss_squared_error, "permute", fold_number)
+  vim <- varimp(fit, loss_squared_error, fold_number)
   keep_vars <- unlist(vim[1:3, "X"], use.names = FALSE)
   subset_task <- task$next_in_chain(covariates = keep_vars)
 
