@@ -157,7 +157,7 @@ Lrnr_tsDyn <- R6Class(
       learner <- params[["learner"]]
 
       if (is.null(n.ahead)) {
-        n.ahead <- nrow(task$X)
+        n.ahead <- task$nrow
       }
       if (learner == "TVAR") {
         stop("No forecast for multivariate Threshold VAR model implemented.")
