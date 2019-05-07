@@ -104,12 +104,17 @@ library(dplyr)
 library(SuperLearner)
 #> Loading required package: nnls
 #> Super Learner
-#> Version: 2.0-24
-#> Package created on 2018-08-10
+#> Version: 2.0-25-9000
+#> Package created on 2018-07-10
 library(origami)
 #> origami: Generalized Cross-Validation Framework
-#> Version: 1.0.0
+#> Version: 1.0.1
 library(sl3)
+#> Registered S3 methods overwritten by 'ggplot2':
+#>   method         from 
+#>   [.quosures     rlang
+#>   c.quosures     rlang
+#>   print.quosures rlang
 
 # load example data set
 data(cpp)
@@ -143,12 +148,12 @@ stack_fit <- learner_stack$train(task)
 preds <- stack_fit$predict()
 head(preds)
 #>    Lrnr_pkg_SuperLearner_SL.glmnet Lrnr_glm_TRUE
-#> 1:                      0.35345519    0.36298498
-#> 2:                      0.35345519    0.36298498
-#> 3:                      0.24554305    0.25993072
-#> 4:                      0.24554305    0.25993072
-#> 5:                      0.24554305    0.25993072
-#> 6:                      0.02953193    0.05680264
+#> 1:                      0.35618966    0.36298498
+#> 2:                      0.35618966    0.36298498
+#> 3:                      0.24964615    0.25993072
+#> 4:                      0.24964615    0.25993072
+#> 5:                      0.24964615    0.25993072
+#> 6:                      0.03776486    0.05680264
 #>    Pipeline(Lrnr_pkg_SuperLearner_screener_screen.glmnet->Lrnr_glm_TRUE)
 #> 1:                                                            0.36228209
 #> 2:                                                            0.36228209

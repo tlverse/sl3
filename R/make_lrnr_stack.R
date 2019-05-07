@@ -18,7 +18,7 @@
 #'   "Lrnr_mean", "Lrnr_glm_fast",
 #'   "Lrnr_xgboost"
 #' )
-#' 
+#'
 #' # constructing learners with arguments passed in
 #' sl_stack <- make_learner_stack(
 #'   "Lrnr_mean",
