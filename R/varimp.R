@@ -19,16 +19,16 @@
 #' @importFrom stats runif
 #' @keywords variable importance
 varimp <- function(fit, loss, fold_number = "validation") {
-
   task <- fit$training_task
   Y <- task$Y
 
   preds <- fit$predict_fold(task, fold_number = fold_number)
   risk <- mean(loss(Y, preds))
 
+
   X <- task$nodes$covariates
   dat <- task$data
-  
+ 
   risk_diffs <- lapply(X, function(i) {
     # scramble cov column and give it the same name as the raw cov col
     scrambled_col <- data.table(sample(
