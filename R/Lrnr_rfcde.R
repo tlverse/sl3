@@ -124,17 +124,23 @@ Lrnr_rfcde <- R6Class(
       if (output_type == "grid") {
         predictions <- predict(self$fit_object,
           newdata = as.matrix(task$X),
+          response = "CDE",
           z_grid = z_grid,
           bandwidth = bandwidth
         )
         return(predictions)
       } else if (output_type == "observed") {
-        density_pred <- predict(self$fit_object,
-          newdata = as.matrix(task$X),
-          z_grid = as.numeric(task$Y),
-          bandwidth = bandwidth
-        )
-        predictions <- diag(density_pred)
+        density_pred <- lapply(seq_along(task$Y), function(idx) {
+          density_pred_idx <- predict(self$fit_object,
+            newdata = as.matrix(task$X[idx, ]),
+            response = "CDE",
+            z_grid = as.numeric(task$Y[idx]),
+            bandwidth = bandwidth
+          )
+          return(density_pred_idx)
+        })
+        predictions <- do.call(c, density_pred)
+        predictions <- unname(predictions)
         return(predictions)
       }
     },
