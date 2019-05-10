@@ -36,6 +36,7 @@ Lrnr_ranger <- R6Class(
   public = list(
     initialize = function(num.trees = 500,
                               write.forest = TRUE,
+                              num.threads = 1,
                               ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
@@ -59,7 +60,8 @@ Lrnr_ranger <- R6Class(
       predictions <- stats::predict(
         private$.fit_object,
         data = task$X,
-        type = "response"
+        type = "response",
+        num.threads = self$params$num.threads
       )
       # extract numeric predictions from custom class ranger.prediction
       preds <- predictions[[1]]
