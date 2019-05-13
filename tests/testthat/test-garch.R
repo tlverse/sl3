@@ -18,7 +18,6 @@ set.seed(1)
 data(bsds)
 covars <- c("cnt")
 outcome <- "cnt"
-
 task <- sl3_Task$new(bsds, covariates = covars, outcome = outcome)
 task$nodes$covariates
 

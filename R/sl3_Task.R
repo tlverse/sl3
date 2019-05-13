@@ -11,7 +11,7 @@
 #' @importFrom uuid UUIDgenerate
 #' @importFrom origami make_folds
 #' @import data.table
-#'
+#' @importFrom digest digest
 #' @export
 #'
 #' @keywords data
@@ -97,10 +97,6 @@ sl3_Task <- R6Class(
       private$.row_index <- row_index
       private$.folds <- folds
 
-      # assign uuid
-      private$.uuid <- UUIDgenerate(use.time = T)
-
-
       # check data quality if we think this is a user provided dataset
       if (user_mode) {
         # convert characters to factors
@@ -142,6 +138,9 @@ sl3_Task <- R6Class(
         }
       }
 
+      # assign uuid using digest
+      private$.uuid <- digest(self$data)
+      
       invisible(self)
     },
 
@@ -363,7 +362,7 @@ sl3_Task <- R6Class(
     },
 
     data = function() {
-      all_nodes <- unlist(private$.nodes)
+      all_nodes <- unique(unlist(private$.nodes))
       return(self$get_data(, all_nodes))
     },
 
