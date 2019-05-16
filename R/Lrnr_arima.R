@@ -66,7 +66,7 @@ Lrnr_arima <- R6Class(
       n.ahead <- params[["n.ahead"]]
 
       if (is.null(n.ahead)) {
-        n.ahead <- nrow(task$X)
+        n.ahead <- task$nrow
       }
       predictions <- predict(
         private$.fit_object,

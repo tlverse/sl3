@@ -134,7 +134,7 @@ Stack <- R6Class(
       learner_fits <- private$.fit_object$learner_fits[!is_error]
       learners <- self$params$learners[!is_error]
       learner_names <- private$.learner_names
-      n_to_pred <- nrow(task$X)
+      n_to_pred <- task$nrow
       n_learners <- length(learner_names)
 
       ## Cannot use := to add columns to a null data.table (no columns),

@@ -104,7 +104,7 @@ Lrnr_expSmooth <- R6Class(
       n.ahead <- params[["n.ahead"]]
 
       if (is.null(n.ahead)) {
-        n.ahead <- nrow(task$X)
+        n.ahead <- task$nrow
       }
       predictions <- forecast::forecast(private$.fit_object, h = n.ahead)
       # Create output as in glm

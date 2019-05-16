@@ -29,7 +29,8 @@ Imports:
     utils,
     methods,
     ggplot2,
-    stringr
+    stringr,
+    digest
 Suggests:
     testthat,
     rmarkdown,
