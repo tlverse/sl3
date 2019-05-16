@@ -77,7 +77,7 @@ Lrnr_rugarch <- R6Class(
       params <- self$params
       n.ahead <- params[["n.ahead"]]
       if (is.null(n.ahead)) {
-        n.ahead <- nrow(task$X)
+        n.ahead <- task$nrow
       }
       # Give the same output as GLM
       predictions <- rugarch::ugarchforecast(

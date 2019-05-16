@@ -71,7 +71,7 @@ Lrnr_HarmonicReg <- R6Class(
       Kparam <- params[["Kparam"]]
 
       if (is.null(n.ahead)) {
-        n.ahead <- nrow(task$X)
+        n.ahead <- task$nrow
       }
 
       task_ts <- ts(task$X, frequency = freq)
