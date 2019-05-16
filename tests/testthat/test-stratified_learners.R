@@ -17,7 +17,8 @@ covars <- c("apgar1", "apgar5", "sexn")
 task <- sl3_Task$new(cpp, covariates = covars, outcome = "haz")
 
 # TRY stratified lrnr
-hal_lrnr <- Lrnr_hal9001$new(fit_type = "glmnet", n_folds = 3, use_min = TRUE)
+hal_lrnr <- Lrnr_hal9001$new(fit_type = "glmnet", degrees = NULL,
+                             n_folds = 3, use_min = TRUE)
 stratified_hal <- Lrnr_stratified$new(
   lrnr = hal_lrnr,
   variable_stratify = "sexn"
