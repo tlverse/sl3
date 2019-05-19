@@ -49,7 +49,7 @@ factor_to_indicators <- function(x, ind_ref_mat = NULL) {
     ind_ref_mat <- sapply(x_vals[-1], function(x_val) as.numeric(x_val == x_vals))
   }
 
-  ind_mat <- ind_ref_mat[as.numeric(x), , drop=FALSE]
+  ind_mat <- ind_ref_mat[as.numeric(x), , drop = FALSE]
   return(ind_mat)
 }
 

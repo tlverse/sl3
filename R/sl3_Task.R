@@ -140,7 +140,7 @@ sl3_Task <- R6Class(
 
       # assign uuid using digest
       private$.uuid <- digest(self$data)
-      
+
       invisible(self)
     },
 
