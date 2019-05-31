@@ -60,6 +60,7 @@ sl3Options <- function(o, value) {
     "sl3.memoise.learner" = FALSE,
     "sl3.save.training" = TRUE,
     "sl3.pcontinuous" = 0.05,
+    "sl3.max_p_missing" = 0.5,
     "sl3.transform.offset" = TRUE,
     "sl3.enable.future" = TRUE
   )
