@@ -40,7 +40,8 @@ sl3_process_missing <- function(task, drop_missing_outcome = FALSE,
   to_impute <- names(p_missing[(0 < p_missing) & (p_missing < max_p_missing)])
   if (length(to_impute) > 0) {
     missing_indicators <- X[, lapply(.SD, function(x) as.numeric(is.na(x))),
-                            .SDcols = to_impute]
+      .SDcols = to_impute
+    ]
     missing_names <- sprintf("delta_%s", to_impute)
     setnames(missing_indicators, missing_names)
 
@@ -55,7 +56,9 @@ sl3_process_missing <- function(task, drop_missing_outcome = FALSE,
 
   new_columns <- task$add_columns(processed)
   covariates <- c(task$nodes$covariates, missing_names)
-  processed_task <- task$next_in_chain(covariates = covariates,
-                                       column_names = new_columns)
+  processed_task <- task$next_in_chain(
+    covariates = covariates,
+    column_names = new_columns
+  )
   return(processed_task)
 }

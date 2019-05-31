@@ -22,7 +22,7 @@ data(cpp_imputed)
 # make a factor covariate
 setDT(cpp_imputed)
 cpp_imputed[, parity_cat := factor(ifelse(parity < 4, parity, 4))]
-levels(cpp_imputed$parity_cat) <- c("0","bad level 1","bad.2","also_bad","4+")
+levels(cpp_imputed$parity_cat) <- c("0", "bad level 1", "bad.2", "also_bad", "4+")
 covars <- c("apgar1", "apgar5", "parity_cat", "gagebrth", "mage", "meducyrs", "sexn")
 outcome <- "haz"
 
