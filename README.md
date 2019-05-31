@@ -124,11 +124,11 @@ cpp <- cpp %>%
 #> Warning: funs() is soft deprecated as of dplyr 0.8.0
 #> please use list() instead
 #> 
-#> # Before:
-#> funs(name = f(.)
+#>   # Before:
+#>   funs(name = f(.))
 #> 
-#> # After: 
-#> list(name = ~f(.))
+#>   # After: 
+#>   list(name = ~ f(.))
 #> This warning is displayed once per session.
 
 # use covariates of intest and the outcome to build a task object

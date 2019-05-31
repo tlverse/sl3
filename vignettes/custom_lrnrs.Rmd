@@ -2,6 +2,8 @@
 title: "Defining New `sl3` Learners"
 author: "Jeremy Coyle, [Nima Hejazi](https://nimahejazi.org), Ivana Malenica,
   Oleg Sofrygin"
+resource_files:
+  - ../inst/templates/Lrnr_template.R
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -25,12 +27,13 @@ Learning in R"](intro_sl3.html) vignette is a good introduction to the `sl3`
 package and it's underlying architecture. The
 [`R6`](https://cran.r-project.org/web/packages/R6/vignettes/Introduction.html)
 documentation will help you understand how `R6` classes are defined. In
-addition, the help files for [`sl3_Task`](https://sl3.tlverse.org/reference/sl3_Task.html) and
-[`Lrnr_base`](https://sl3.tlverse.org/reference/Lrnr_base.html) are good resources for how those objects can be
-used. If you're interested in defining learners that fit sub-learners, reading
-the documentation of the
-[`delayed`](https://delayed.tlverse.org/articles/delayed.html)
-package will be helpful.
+addition, the help files for
+[`sl3_Task`](https://sl3.tlverse.org/reference/sl3_Task.html) and
+[`Lrnr_base`](https://sl3.tlverse.org/reference/Lrnr_base.html) are good
+resources for how those objects can be used. If you're interested in defining
+learners that fit sub-learners, reading the documentation of the
+[`delayed`](https://delayed.tlverse.org/articles/delayed.html) package will be
+helpful.
 
 In the following sections, we introduce and review a template for a new `sl3`
 learner, describing the sections that can be used to define your new learner.
@@ -40,7 +43,6 @@ your learner to `sl3` so that others may make use of it.
 
 ```{r setup}
 library(sl3)
-library(knitr)
 ```
 
 ## Learner Template
@@ -55,11 +57,7 @@ write_learner_template("path/to/write/Learner_template.R")
 
 ```{r cache=FALSE, echo=FALSE}
 chunkfile <- "../inst/templates/Lrnr_template.R"
-if (!file.exists(chunkfile)) {
-  #because pkgdown
-  chunkfile <- "../../inst/templates/Lrnr_template.R"
-}
-read_chunk(chunkfile, label="template")
+knitr::read_chunk(chunkfile, label = "template")
 ```
 
 Let's take a look at that template:
@@ -67,7 +65,9 @@ Let's take a look at that template:
 ```{r template, eval=FALSE}
 ```
 
-The template has comments indicating where details specific to the learner you're trying to implement should be filled in. In the next section, we will discuss those details further.
+The template has comments indicating where details specific to the learner
+you're trying to implement should be filled in. In the next section, we will
+discuss those details further.
 
 ## Defining your Learner
 
@@ -139,11 +139,11 @@ generates a learner fit object, and returns it to the user.
 Each call to `learner$train` involves three separate training methods:
 
 1. The user-facing `learner$train` -- trains a learner in a manner that can be
-   parallelized using `delayed`, which calls ...
-2. ... the user-facing `learner$base_train` that validates user input, and which
-   calls ...
-3. ... the internal `private$.train`, which does the actual work of fitting the
-   learner and returning the fit object.
+   parallelized using `delayed`, which calls `...`
+2. `...` the user-facing `learner$base_train` that validates user input, and
+   which calls `...`
+3. `...` the internal `private$.train`, which does the actual work of fitting
+   the learner and returning the fit object.
 
 The logic in the user-facing `learner$train` and `learner$base_train` is defined
 in the `Lrnr_base` base class and is shared across all learners. As such, these
@@ -264,4 +264,3 @@ added. If you've never made a "Pull Request" before, see this helpful
 guide: https://yangsu.github.io/pull-request-tutorial/.
 
 From the `sl3` team, thanks for your interest in extending `sl3`!
-
