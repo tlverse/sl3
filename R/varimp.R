@@ -28,7 +28,7 @@ varimp <- function(fit, loss, fold_number = "validation") {
 
   X <- task$nodes$covariates
   dat <- task$data
- 
+
   risk_diffs <- lapply(X, function(i) {
     # scramble cov column and give it the same name as the raw cov col
     scrambled_col <- data.table(sample(
