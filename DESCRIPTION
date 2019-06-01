@@ -37,7 +37,6 @@ Suggests:
     devtools,
     dplyr,
     R.rsp,
-    here,
     future,
     knitr,
     reticulate,

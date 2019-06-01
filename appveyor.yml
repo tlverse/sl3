@@ -12,6 +12,7 @@ install:
 
 cache:
   - C:\RLibrary
+  #- C:\RLibrary -> appveyor.yml
 
 # Adapt as necessary starting from here
 branches:
