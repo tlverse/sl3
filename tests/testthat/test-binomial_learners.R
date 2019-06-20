@@ -40,15 +40,9 @@ learners <- list(
   mean = make_learner(Lrnr_mean)
 )
 
-# define metalearner
-logit_metalearner <- make_learner(
-  Lrnr_optim,
-  loss_function = loss_loglik_binomial,
-  learner_function = metalearner_logistic_binomial
-)
 
 # define Super Learner
-binom_sl <- make_learner(Lrnr_sl, learners, logit_metalearner)
+binom_sl <- make_learner(Lrnr_sl, learners)
 
 # test_that("Binomial Lrnr_sl components for debugging", {
 #   # debugonce(learners$xgb$.__enclos_env__$private$.train)
