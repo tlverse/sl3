@@ -19,7 +19,7 @@ data(cpp_imputed)
 covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")
 outcome <- "haz"
 
-test_that("lrnr_glm with intercept=FALSE works", {
+test_that("Lrnr_glm with intercept=FALSE works", {
   task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
   lrnr_glm <- make_learner(Lrnr_glm, intercept = FALSE)
   fit <- lrnr_glm$train(task)

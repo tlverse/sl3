@@ -1,7 +1,7 @@
 #' Learner for Recursive Partitioning and Regression Trees.
 #'
 #' This learner uses \code{\link[rpart]{rpart}} from \code{rpart} to fit
-#' recursive partioning and regression trees.
+#' recursive partitioning and regression trees.
 #'
 #' @docType class
 #'
