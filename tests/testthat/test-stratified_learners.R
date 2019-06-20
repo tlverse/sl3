@@ -19,7 +19,7 @@ task <- sl3_Task$new(cpp, covariates = covars, outcome = "haz")
 # TRY stratified lrnr
 hal_lrnr <- Lrnr_hal9001$new(fit_type = "glmnet", n_folds = 3, use_min = TRUE)
 stratified_hal <- Lrnr_stratified$new(
-  lrnr = hal_lrnr,
+  learner = hal_lrnr,
   variable_stratify = "sexn"
 )
 stratified_hal_fit <- stratified_hal$train(task)
@@ -32,7 +32,7 @@ stratified_prediction <- stratified_hal_fit$predict(task = task)
 # DOES STACKING WORK?
 mean_lrnr <- Lrnr_mean$new()
 stratified_mean <- Lrnr_stratified$new(
-  lrnr = mean_lrnr,
+  learner = mean_lrnr,
   variable_stratify = "sexn"
 )
 stack_strat <- make_learner(Stack, stratified_mean, stratified_hal)

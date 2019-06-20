@@ -1,6 +1,7 @@
 branches:
   only:
   - master
+  - devel
 
 env:
   global:
