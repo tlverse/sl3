@@ -52,7 +52,9 @@ test_that("task subsetting works", {
   new_col_name <- tail(column_map, 1)[[1]]
 
   # extra column from original
-  new_column <- unlist(task$internal_data$get_data(NULL, new_col_name), use.names = FALSE)
+  new_column <- unlist(task$internal_data$get_data(NULL, new_col_name),
+    use.names = FALSE
+  )
   expect_equal(new_column[expected_rows], 1:2)
 
   # logical subset vector
@@ -71,8 +73,7 @@ test_that("task errors for empty Y", {
   expect_error(empty_task$Y)
 })
 
-
-test_that("two chained tasks can have the same column name without conflicts", {
+test_that("two chained tasks can have same column name without conflicts", {
   new_data1 <- data.table(test_col = 1)
   column_names1 <- task$add_columns(new_data1)
 
@@ -91,4 +92,14 @@ test_that("two chained tasks can have the same column name without conflicts", {
 
   expect_true(all(chained1$X$test_col == 1))
   expect_true(all(chained2$X$test_col == 2))
+})
+
+# check that integers may be passed to folds argument
+intfolds <- 4
+task_intfolds <- sl3_Task$new(mtcars,
+  covariates = covariates,
+  outcome = outcome, folds = intfolds
+)
+test_that("task$folds returns object with correct number of integer folds", {
+  expect_equal(length(task_intfolds$folds), intfolds)
 })

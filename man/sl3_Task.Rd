@@ -19,9 +19,9 @@ Constructor below.}
 \code{sl3_Task} object
 }
 \description{
-A increasingly less thin wrapper around a \code{data.table} containing the data. Contains
-metadata about the particular machine learning problem, including which
-variables are to be used as covariates and outcomes.
+An increasingly less thin wrapper around a \code{data.table} containing the
+data. Contains metadata about the particular machine learning problem,
+including which variables are to be used as covariates and outcomes.
 }
 \section{Constructor}{
 
