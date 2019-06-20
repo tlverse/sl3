@@ -31,6 +31,7 @@ environment:
 build_script:
   - travis-tool.sh install_github r-lib/covr
   - travis-tool.sh install_github r-lib/sessioninfo
+  - travis-tool.sh install_github tpospisi/cdetools/r
   - travis-tool.sh install_github tpospisi/RFCDE/r
   - travis-tool.sh install_github tlverse/delayed
   - travis-tool.sh install_github tlverse/origami
