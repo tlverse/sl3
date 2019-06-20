@@ -33,8 +33,10 @@ Lrnr_stratified <- R6Class(
   public = list(
     initialize = function(learner, variable_stratify, ...) {
       # learner is an already initialized learner
-      params <- list(learner = learner, variable_stratify = variable_stratify,
-                     ...)
+      params <- list(
+        learner = learner, variable_stratify = variable_stratify,
+        ...
+      )
       super$initialize(params = params, ...)
     }
   ),
@@ -58,8 +60,10 @@ Lrnr_stratified <- R6Class(
       fit_object <- list()
       for (strata in variable_stratify_stratas) {
         index_in_strata <- which(args$X[, args$variable_stratify] == strata)
-        sub_task <- task$subset_task(row_index = index_in_strata,
-                                     drop_folds = TRUE)
+        sub_task <- task$subset_task(
+          row_index = index_in_strata,
+          drop_folds = TRUE
+        )
         # remove the `variable_stratify` from the sub-task
         sub_task <- sub_task$next_in_chain(
           covariates = sub_task$nodes$covariates[
