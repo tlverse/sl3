@@ -61,11 +61,11 @@ Lrnr_gbm <- R6Class(
       args$x <- task$X
       args$y <- outcome_type$format(task$Y)
 
-      if(task$has_node("weights") {
+      if (task$has_node("weights")) {
          args$w <- task$weights
       }
 
-      if(task$has_node("offset") {
+      if (task$has_node("offset")) {
          args$offset <- task$offset
       }
 
@@ -77,6 +77,7 @@ Lrnr_gbm <- R6Class(
         stop("Unsupported outcome type for Lrnr_gbm.")
       }
       args$distribution <- distribution
+      args$verbose <- FALSE
 
       fit_object <- call_with_args(gbm::gbm.fit, args)
       return(fit_object)

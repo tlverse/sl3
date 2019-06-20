@@ -76,11 +76,11 @@ Lrnr_earth <- R6Class(
       args$x <- task$X
       args$y <- outcome_type$format(task$Y)
 
-      if(task$has_node("weights") {
+      if (task$has_node("weights")) {
          args$weights <- task$weights
       }
 
-      if(task$has_node("offset") {
+      if (task$has_node("offset")) {
          args$offset <- task$offset
       }
 
@@ -93,7 +93,7 @@ Lrnr_earth <- R6Class(
       }
       args$glm <- glm
 
-      fit_object <- call_with_args(earth::earth, args)
+      fit_object <- call_with_args(getS3method("earth", "default"), args)
       return(fit_object)
     },
 

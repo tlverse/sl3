@@ -50,22 +50,24 @@ Lrnr_polspline <- R6Class(
     .train = function(task) {
       args <- self$params
       outcome_type <- self$get_outcome_type(task)
-      args$X <- task$X
-      args$Y <- outcome_type$format(task$Y)
 
-      if(task$has_node("offset") {
+      if (task$has_node("offset")) {
          args$offset <- task$offset
       }
 
       if (outcome_type$type == "continuous") {
-        if(task$has_node("weights") {
+        if (task$has_node("weights")) {
            args$weights <- task$weights
         }
+        args$predictors <- task$X
+        args$responses <- outcome_type$format(task$Y)
         fit_object <- call_with_args(polspline::polymars, args)
       } else if (outcome_type$type %in% c("binomial", "categorical")) {
-        if(task$has_node("weights") {
+        if (task$has_node("weights")) {
            args$weight <- task$weights
         }
+        args$cov <- task$X
+        args$data <- outcome_type$format(task$Y)
         fit_object <- call_with_args(polspline::polyclass, args)
       } else {
         stop("Lrnr_polspline does not support the designated outcome type.")
@@ -78,7 +80,7 @@ Lrnr_polspline <- R6Class(
       if (outcome_type$type == "continuous") {
         preds <- stats::predict(object = private$.fit_object, x = task$X)
       } else if (outcome_type$type %in% c("binomial", "categorical")) {
-        preds <- polspline::ppolyclass(object = private$.fit_object,
+        preds <- polspline::ppolyclass(fit = private$.fit_object,
                                        cov = task$X)[, 2]
       }
       return(preds)
