@@ -22,7 +22,8 @@ learners.
 \describe{
 \item{\code{learners}}{The "library" of learners to include}
 \item{\code{metalearner}}{The metalearner to be fit on predictions from the
-library.}
+library.} If null, \code{\link{default_metalearner} is used to construct a 
+    metalearner based on the outcome_type of the training task}
 \item{\code{folds=NULL}}{An \code{origami} folds object. If \code{NULL},
 folds from the task are used.}
 \item{\code{keep_extra=TRUE}}{Stores all sub-parts of the SL computation.
