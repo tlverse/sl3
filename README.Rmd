@@ -135,16 +135,16 @@ submitting a pull request.
 
 After using the `sl3` R package, please cite the following:
 
-        @misc{coyle2018sl3,
+        @misc{coyle2019sl3,
           author = {Coyle, Jeremy R and Hejazi, Nima S and Malenica, Ivana and
             Sofrygin, Oleg},
           title = {{sl3}: Modern Pipelines for Machine Learning and {Super
             Learning}},
-          year = {2018},
+          year = {2019},
           howpublished = {\url{https://github.com/tlverse/sl3}},
-          note = {{R} package version 1.1.0},
-          url = {https://doi.org/10.5281/zenodo.1342294},
-          doi = {10.5281/zenodo.1342294}
+          note = {{R} package version 1.2.0},
+          url = {https://doi.org/10.5281/},
+          doi = {10.5281/}
         }
 
 ---

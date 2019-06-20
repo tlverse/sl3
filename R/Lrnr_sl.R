@@ -25,7 +25,7 @@ utils::globalVariables(c("self"))
 #' \describe{
 #'   \item{\code{learners}}{The "library" of learners to include}
 #'   \item{\code{metalearner}}{The metalearner to be fit on predictions from the
-#'     library.} If null, \code{\link{default_metalearner} is used to construct a 
+#'     library.} If null, \code{\link{default_metalearner} is used to construct a
 #'     metalearner based on the outcome_type of the training task}
 #'   \item{\code{folds=NULL}}{An \code{origami} folds object. If \code{NULL},
 #'     folds from the task are used.}
@@ -134,15 +134,15 @@ Lrnr_sl <- R6Class(
         # TODO: this breaks if task is delayed
         folds <- task$folds
       }
-      
-      
+
+
       # construct default metalearner if necessary
       metalearner <- self$params$metalearner
-      if(is.character(metalearner)&&(metalearner=="default")){
+      if (is.character(metalearner) && (metalearner == "default")) {
         metalearner <- default_metalearner(task$outcome_type)
         private$.params$metalearner <- metalearner
       }
-      
+
       # make stack and CV learner objects
       learners <- self$params$learners
       learner_stack <- do.call(Stack$new, learners)

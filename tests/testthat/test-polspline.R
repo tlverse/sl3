@@ -3,9 +3,12 @@ context("test-polspline.R -- Lrnr_polspline")
 library(polspline)
 data(cpp_imputed)
 task <- sl3_Task$new(cpp_imputed,
-                     covariates = c("apgar1", "apgar5", "parity", "gagebrth",
-                                    "mage", "meducyrs", "sexn"),
-                     outcome = "haz")
+  covariates = c(
+    "apgar1", "apgar5", "parity", "gagebrth",
+    "mage", "meducyrs", "sexn"
+  ),
+  outcome = "haz"
+)
 
 test_that("Results of Lrnr_polspline match those of polspline::polymars", {
   # get predictions from Lrnr_* wrapper
@@ -26,9 +29,12 @@ test_that("Results of Lrnr_polspline match those of polspline::polymars", {
 
 # change to binary outcome to check polspline::polyclass wrapper
 task <- sl3_Task$new(cpp_imputed,
-                     covariates = c("apgar1", "apgar5", "parity", "gagebrth",
-                                    "mage", "meducyrs", "haz"),
-                     outcome = "sexn")
+  covariates = c(
+    "apgar1", "apgar5", "parity", "gagebrth",
+    "mage", "meducyrs", "haz"
+  ),
+  outcome = "sexn"
+)
 
 test_that("Results of Lrnr_polspline match those of polspline::polyclass", {
   # get predictions from Lrnr_* wrapper

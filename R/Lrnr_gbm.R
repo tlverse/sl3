@@ -46,7 +46,7 @@ Lrnr_gbm <- R6Class(
   portable = TRUE, class = TRUE,
   public = list(
     initialize = function(n.trees = 10000, interaction.depth = 2,
-                          shrinkage = 0.001, ...) {
+                              shrinkage = 0.001, ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }
@@ -62,11 +62,11 @@ Lrnr_gbm <- R6Class(
       args$y <- outcome_type$format(task$Y)
 
       if (task$has_node("weights")) {
-         args$w <- task$weights
+        args$w <- task$weights
       }
 
       if (task$has_node("offset")) {
-         args$offset <- task$offset
+        args$offset <- task$offset
       }
 
       if (outcome_type$type == "continuous") {
@@ -84,8 +84,10 @@ Lrnr_gbm <- R6Class(
     },
 
     .predict = function(task) {
-      preds <- stats::predict(object = private$.fit_object, newdata = task$X,
-                              n.trees = self$params$n.trees, type = "response")
+      preds <- stats::predict(
+        object = private$.fit_object, newdata = task$X,
+        n.trees = self$params$n.trees, type = "response"
+      )
       return(preds)
     },
     .required_packages = c("gbm")

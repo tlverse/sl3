@@ -52,19 +52,19 @@ Lrnr_polspline <- R6Class(
       outcome_type <- self$get_outcome_type(task)
 
       if (task$has_node("offset")) {
-         args$offset <- task$offset
+        args$offset <- task$offset
       }
 
       if (outcome_type$type == "continuous") {
         if (task$has_node("weights")) {
-           args$weights <- task$weights
+          args$weights <- task$weights
         }
         args$predictors <- task$X
         args$responses <- outcome_type$format(task$Y)
         fit_object <- call_with_args(polspline::polymars, args)
       } else if (outcome_type$type %in% c("binomial", "categorical")) {
         if (task$has_node("weights")) {
-           args$weight <- task$weights
+          args$weight <- task$weights
         }
         args$cov <- task$X
         args$data <- outcome_type$format(task$Y)
@@ -80,8 +80,10 @@ Lrnr_polspline <- R6Class(
       if (outcome_type$type == "continuous") {
         preds <- stats::predict(object = private$.fit_object, x = task$X)
       } else if (outcome_type$type %in% c("binomial", "categorical")) {
-        preds <- polspline::ppolyclass(fit = private$.fit_object,
-                                       cov = task$X)[, 2]
+        preds <- polspline::ppolyclass(
+          fit = private$.fit_object,
+          cov = task$X
+        )[, 2]
       }
       return(preds)
     },

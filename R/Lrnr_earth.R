@@ -60,8 +60,8 @@ Lrnr_earth <- R6Class(
   portable = TRUE, class = TRUE,
   public = list(
     initialize = function(degree = 2, penalty = 3, pmethod = "backward",
-                          nfold = 0, ncross = 1, minspan = 0, endspan = 0,
-                          ...) {
+                              nfold = 0, ncross = 1, minspan = 0, endspan = 0,
+                              ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }
@@ -77,11 +77,11 @@ Lrnr_earth <- R6Class(
       args$y <- outcome_type$format(task$Y)
 
       if (task$has_node("weights")) {
-         args$weights <- task$weights
+        args$weights <- task$weights
       }
 
       if (task$has_node("offset")) {
-         args$offset <- task$offset
+        args$offset <- task$offset
       }
 
       if (outcome_type$type == "continuous") {
@@ -98,8 +98,10 @@ Lrnr_earth <- R6Class(
     },
 
     .predict = function(task) {
-      preds <- stats::predict(object = private$.fit_object, newdata = task$X,
-                              type = "response")
+      preds <- stats::predict(
+        object = private$.fit_object, newdata = task$X,
+        type = "response"
+      )
       return(preds)
     },
     .required_packages = c("earth")
