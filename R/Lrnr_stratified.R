@@ -16,14 +16,14 @@
 #'
 #' @section Parameters:
 #' \describe{
-#'   \item{\code{lrnr="lrnr"}}{ An initialized Lrnr object.
+#'   \item{\code{learner="learner"}}{An initialized Lrnr_* object.
 #'   }
-#'   \item{\code{variable_stratify="variable_stratify"}}{ character of the
-#'    variable in `covariates` that need to be stratified on. Only support
-#'    numerical factors
+#'   \item{\code{variable_stratify="variable_stratify"}}{\code{character} giving
+#'    the variable in the covariates on which to stratify. Supports only
+#'    variables with discrete levels coded as \code{numeric}.
 #'   }
-#'   \item{\code{...}}{ Other parameters passed directly to
-#'    \code{lrnr$train}. See its documentation for details.
+#'   \item{\code{...}}{Other parameters passed directly to
+#'    \code{learner$train}. See its documentation for details.
 #'   }
 #' }
 #
@@ -31,16 +31,17 @@ Lrnr_stratified <- R6Class(
   classname = "Lrnr_stratified", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(lrnr, variable_stratify, ...) {
-      # lrnr is an already initialized learner
-      params <- list(lrnr = lrnr, variable_stratify = variable_stratify, ...)
+    initialize = function(learner, variable_stratify, ...) {
+      # learner is an already initialized learner
+      params <- list(learner = learner, variable_stratify = variable_stratify,
+                     ...)
       super$initialize(params = params, ...)
     }
   ),
   active = list(
     name = function() {
       name <- paste("strat", self$params$variable_stratify,
-        self$params$lrnr$name,
+        self$params$learner$name,
         sep = "_"
       )
     }
@@ -53,26 +54,26 @@ Lrnr_stratified <- R6Class(
       args$X <- as.matrix(task$X)
       variable_stratify_stratas <- unique(args$X[, args$variable_stratify])
 
-      # fit_object is a dict of Lrnr
+      # fit_object is a dictionary of instantiated of Lrnr_* objects
       fit_object <- list()
       for (strata in variable_stratify_stratas) {
         index_in_strata <- which(args$X[, args$variable_stratify] == strata)
-        sub_task <- task$subset_task(row_index = index_in_strata, drop_folds = TRUE)
-        # remove the `variable_stratify` from the sub task
+        sub_task <- task$subset_task(row_index = index_in_strata,
+                                     drop_folds = TRUE)
+        # remove the `variable_stratify` from the sub-task
         sub_task <- sub_task$next_in_chain(
           covariates = sub_task$nodes$covariates[
             sub_task$nodes$covariates != args$variable_stratify
           ]
         )
-        # WILSON: I assume the `variable_stratify` is a numeric multinomial
-        # factor. since there is no dict object in R
-        fit_object[[as.character(strata)]] <- args$lrnr$train(sub_task)
+        # assume that `variable_stratify` is a numeric multinomial factor
+        fit_object[[as.character(strata)]] <- args$learner$train(sub_task)
       }
       return(fit_object)
     },
     .predict = function(task = NULL) {
-      lrnr_dict <- self$fit_object
-      variable_stratify_stratas <- as.numeric(names(lrnr_dict))
+      learner_dict <- self$fit_object
+      variable_stratify_stratas <- as.numeric(names(learner_dict))
       variable_stratify <- self$params$variable_stratify
 
       X_new <- as.matrix(task$X)
@@ -82,12 +83,11 @@ Lrnr_stratified <- R6Class(
           setdiff(variable_stratify_stratas_new, variable_stratify_stratas)
         ) > 0
       ) {
-        stop("There is new strata in the prdiction data that is not present in
-          training data!")
+        stop("There is new strata in the prediction data that is not present in
+              training data!")
       }
 
       prediction_df_dict <- list()
-
       # predictions <- aorder(results$predictions, order(results$index))
 
       for (strata in variable_stratify_stratas_new) {
@@ -101,7 +101,7 @@ Lrnr_stratified <- R6Class(
         )
         # predict on the subtask
         prediction_subtask <- learner_fit_predict(
-          lrnr_dict[[as.character(strata)]],
+          learner_dict[[as.character(strata)]],
           sub_task
         )
         result <- list(
@@ -110,15 +110,12 @@ Lrnr_stratified <- R6Class(
         )
         prediction_df_dict[[as.character(strata)]] <- result
       }
-
       results <- apply(do.call(rbind, prediction_df_dict), 2, as.list)
       results <- origami::combine_results(results)
 
       predictions <- aorder(results$prediction, order(results$original_index))
-
       return(predictions)
     },
-    # WILSON: how can we access the field of the sub learner?
-    .required_packages = c("hal9001")
+    .required_packages = NULL
   )
 )

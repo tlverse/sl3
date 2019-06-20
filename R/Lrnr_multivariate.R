@@ -60,16 +60,15 @@ Lrnr_multivariate <- R6Class(
         fit_object <- delayed_learner_train(learner, univariate_task)
       }
 
-
-
-      univariate_fits <- lapply(outcome_cols, train_univariate_learner, learner, task)
+      univariate_fits <- lapply(outcome_cols, train_univariate_learner,
+                                learner, task)
       return(bundle_delayed(univariate_fits))
     },
     .train = function(task, trained_sublearners) {
       outcome_fits <- trained_sublearners
       names(outcome_fits) <- task$nodes$outcome
-      fit_object <- list(outcome_fits = outcome_fits, outcome_cols = task$nodes$outcome)
-
+      fit_object <- list(outcome_fits = outcome_fits,
+                         outcome_cols = task$nodes$outcome)
       return(fit_object)
     },
 
@@ -83,12 +82,13 @@ Lrnr_multivariate <- R6Class(
 
       outcome_cols <- self$fit_object$outcome_cols
 
-      univariate_preds <- sapply(outcome_cols, predict_univariate_learner, self$fit_object$outcome_fits, task)
+      univariate_preds <- sapply(outcome_cols, predict_univariate_learner,
+                                 self$fit_object$outcome_fits, task)
 
       # TODO: maybe pack predictions
       predictions <- pack_predictions(univariate_preds)
       return(predictions)
     },
-    .required_packages = c("randomForest")
+    .required_packages = NULL 
   )
 )

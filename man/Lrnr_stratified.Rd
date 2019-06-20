@@ -18,14 +18,14 @@ Stratify learner fits by a single variable
 \section{Parameters}{
 
 \describe{
-\item{\code{lrnr="lrnr"}}{ An initialized Lrnr object.
+\item{\code{learner="learner"}}{An initialized Lrnr_* object.
 }
-\item{\code{variable_stratify="variable_stratify"}}{ character of the
-variable in \code{covariates} that need to be stratified on. Only support
-numerical factors
+\item{\code{variable_stratify="variable_stratify"}}{\code{character} giving
+the variable in the covariates on which to stratify. Supports only
+variables with discrete levels coded as \code{numeric}.
 }
-\item{\code{...}}{ Other parameters passed directly to
-\code{lrnr$train}. See its documentation for details.
+\item{\code{...}}{Other parameters passed directly to
+\code{learner$train}. See its documentation for details.
 }
 }
 }
