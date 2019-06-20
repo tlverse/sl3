@@ -9,6 +9,7 @@
 #' @docType class
 #'
 #' @importFrom R6 R6Class
+#' @importFrom stats predict
 #'
 #' @export
 #'
@@ -23,9 +24,9 @@
 #'
 #' @section Parameters:
 #' \describe{
-#'   \item{\code{cv}}{The number of cross-validation folds to use in evaluating
-#'     the sequence of fit models. Only passed to
-#'     \code{\link[polspline]{polyclass}}.
+#'   \item{\code{cv}}{The number of cross-validation folds to be used in
+#'     evaluating the sequence of fit models. This is only passed to
+#'     \code{\link[polspline]{polyclass}} for binary/categorical outcomes.
 #'   }
 #'   \item{\code{...}}{Other parameters passed to either
 #'     \code{\link[polspline]{polymars}} or \code{\link[polspline]{polyclass}}.
@@ -37,7 +38,7 @@ Lrnr_polspline <- R6Class(
   classname = "Lrnr_polspline", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(cv = 2, ...) {
+    initialize = function(cv = 5, ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }
@@ -52,30 +53,36 @@ Lrnr_polspline <- R6Class(
       args$X <- task$X
       args$Y <- outcome_type$format(task$Y)
 
+      if(task$has_node("offset") {
+         args$offset <- task$offset
+      }
+
       if (outcome_type$type == "continuous") {
-        ...
+        if(task$has_node("weights") {
+           args$weights <- task$weights
+        }
+        fit_object <- call_with_args(polspline::polymars, args)
       } else if (outcome_type$type %in% c("binomial", "categorical")) {
-        ...
+        if(task$has_node("weights") {
+           args$weight <- task$weights
+        }
+        fit_object <- call_with_args(polspline::polyclass, args)
       } else {
         stop("Lrnr_polspline does not support the designated outcome type.")
       }
-
-      fit_object <- call_with_args(ranger::ranger, args)
       return(fit_object)
     },
 
     .predict = function(task) {
-      predictions <- stats::predict(
-        private$.fit_object,
-        data = task$X,
-        type = "response",
-        num.threads = self$params$num.threads
-      )
-      # extract numeric predictions from custom class ranger.prediction
-      preds <- predictions[[1]]
+      outcome_type <- self$get_outcome_type(task)
+      if (outcome_type$type == "continuous") {
+        preds <- stats::predict(object = private$.fit_object, x = task$X)
+      } else if (outcome_type$type %in% c("binomial", "categorical")) {
+        preds <- polspline::ppolyclass(object = private$.fit_object,
+                                       cov = task$X)[, 2]
+      }
       return(preds)
     },
-    .required_packages = c("ranger")
+    .required_packages = c("polspline")
   )
 )
-
