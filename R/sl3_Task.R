@@ -128,8 +128,7 @@ sl3_Task <- R6Class(
         if ((length(p_missing) > 0) &&
           ((max(p_missing) > 0) ||
             (missing_Y && drop_missing_outcome))) {
-          warning("Missing Covariate Data Found. Imputing covariates using
-                   `sl3_process_missing`.")
+          warning("Missing Covariate Data Found. Imputing covariates using sl3_process_missing.")
           imputed_task <-
             sl3_process_missing(self,
               drop_missing_outcome = drop_missing_outcome
@@ -143,10 +142,7 @@ sl3_Task <- R6Class(
         }
 
         if (missing_Y) {
-          warning("Missing Outcome Data Found. This is okay for prediction, but
-                  will likely break training. \n You can drop observations with
-                  missing outcomes by setting `drop_missing_outcome=TRUE` in
-                  `make_sl3_Task`.")
+          warning("Missing Outcome Data Found. This is okay for prediction, but will likely break training. \n You can drop observations with missing outcomes by setting drop_missing_outcome=TRUE in make_sl3_Task.")
         }
       }
 
