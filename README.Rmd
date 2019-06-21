@@ -143,8 +143,8 @@ After using the `sl3` R package, please cite the following:
           year = {2019},
           howpublished = {\url{https://github.com/tlverse/sl3}},
           note = {{R} package version 1.2.0},
-          url = {https://doi.org/10.5281/zenodo.1342294},
-          doi = {10.5281/zenodo.1342294}
+          url = {https://doi.org/10.5281/zenodo.3251138},
+          doi = {10.5281/zenodo.3251138}
         }
 
 ---
