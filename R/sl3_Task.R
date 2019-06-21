@@ -1,17 +1,18 @@
 #' Define a Machine Learning Task
 #'
-#' A increasingly less thin wrapper around a \code{data.table} containing the data. Contains
-#' metadata about the particular machine learning problem, including which
-#' variables are to be used as covariates and outcomes.
+#' An increasingly less thin wrapper around a \code{data.table} containing the
+#' data. Contains metadata about the particular machine learning problem,
+#' including which variables are to be used as covariates and outcomes.
 #'
 #' @docType class
 #'
 #' @importFrom R6 R6Class
 #' @importFrom assertthat assert_that is.count is.flag
-#' @importFrom uuid UUIDgenerate
 #' @importFrom origami make_folds
-#' @import data.table
+#' @importFrom uuid UUIDgenerate
 #' @importFrom digest digest
+#' @import data.table
+#'
 #' @export
 #'
 #' @keywords data
@@ -100,7 +101,11 @@ sl3_Task <- R6Class(
       # check data quality if we think this is a user provided dataset
       if (user_mode) {
         # convert characters to factors
-        character_covars <- self$nodes$covariates[which(sapply(self$X, data.class) == "character")]
+        character_covars <-
+          self$nodes$covariates[which(sapply(
+            self$X,
+            data.class
+          ) == "character")]
 
         if (length(character_covars) > 0) {
           warning(sprintf(
@@ -110,7 +115,8 @@ sl3_Task <- R6Class(
 
           converted <- self$X[, lapply(.SD, factor), .SDcols = character_covars]
           converted_column_names <- self$add_columns(converted)
-          converted_task <- self$next_in_chain(column_names = converted_column_names)
+          converted_task <-
+            self$next_in_chain(column_names = converted_column_names)
           # make this task a copy of imputed_task
           self <<- converted_task$.__enclos_env__$self
           private <<- converted_task$.__enclos_env__$private
@@ -122,8 +128,11 @@ sl3_Task <- R6Class(
         if ((length(p_missing) > 0) &&
           ((max(p_missing) > 0) ||
             (missing_Y && drop_missing_outcome))) {
-          warning("Missing Covariate Data Found. Imputing covariates using sl3_process_missing")
-          imputed_task <- sl3_process_missing(self, drop_missing_outcome = drop_missing_outcome)
+          warning("Missing Covariate Data Found. Imputing covariates using sl3_process_missing.")
+          imputed_task <-
+            sl3_process_missing(self,
+              drop_missing_outcome = drop_missing_outcome
+            )
 
           # make this task a copy of imputed_task
           self <<- imputed_task$.__enclos_env__$self
@@ -133,8 +142,7 @@ sl3_Task <- R6Class(
         }
 
         if (missing_Y) {
-          warning("Missing Outcome Data Found. This is okay for prediction, but will likely break training. \n
-               You can drop observations with missing outcomes by setting drop_missing_outcome=TRUE in make_sl3_Task")
+          warning("Missing Outcome Data Found. This is okay for prediction, but will likely break training. \n You can drop observations with missing outcomes by setting drop_missing_outcome=TRUE in make_sl3_Task.")
         }
       }
 
@@ -183,11 +191,17 @@ sl3_Task <- R6Class(
       interaction_columns <- self$add_columns(interaction_data)
 
       new_covariates <- c(self$nodes$covariates, interaction_names[is_new])
-      return(self$next_in_chain(covariates = new_covariates, column_names = interaction_columns))
+      return(self$next_in_chain(
+        covariates = new_covariates,
+        column_names = interaction_columns
+      ))
     },
 
     add_columns = function(new_data, column_uuid = uuid::UUIDgenerate()) {
-      new_col_map <- private$.shared_data$add_columns(new_data, column_uuid, private$.row_index)
+      new_col_map <- private$.shared_data$add_columns(
+        new_data, column_uuid,
+        private$.row_index
+      )
 
       column_names <- private$.column_names
       column_names[names(new_col_map)] <- new_col_map
@@ -197,8 +211,8 @@ sl3_Task <- R6Class(
     },
 
     next_in_chain = function(covariates = NULL, outcome = NULL, id = NULL,
-                                 weights = NULL, offset = NULL, column_names = NULL,
-                                 new_nodes = NULL, ...) {
+                                 weights = NULL, offset = NULL,
+                                 column_names = NULL, new_nodes = NULL, ...) {
       if (is.null(new_nodes)) {
         new_nodes <- self$nodes
 
@@ -310,7 +324,8 @@ sl3_Task <- R6Class(
       return(!is.null(node_var))
     },
 
-    get_node = function(node_name, generator_fun = NULL, expand_factors = FALSE) {
+    get_node = function(node_name, generator_fun = NULL,
+                            expand_factors = FALSE) {
       if (missing(generator_fun)) {
         generator_fun <- function(node_name, n) {
           stop(sprintf("Node %s not specified", node_name))
@@ -425,12 +440,23 @@ sl3_Task <- R6Class(
     folds = function(new_folds) {
       if (!missing(new_folds)) {
         private$.folds <- new_folds
+      } else if (is.numeric(private$.folds)) {
+        # if an integer, create new_folds object but pass integer to V argument
+        if (self$has_node("id")) {
+          new_folds <- origami::make_folds(
+            cluster_ids = self$id,
+            V = private$.folds
+          )
+        } else {
+          new_folds <- origami::make_folds(n = self$nrow, V = private$.folds)
+        }
+        private$.folds <- new_folds
       } else if (is.null(private$.folds)) {
         # generate folds now if never specified
         if (self$has_node("id")) {
-          new_folds <- make_folds(cluster_ids = self$id)
+          new_folds <- origami::make_folds(cluster_ids = self$id)
         } else {
-          new_folds <- make_folds(n = self$nrow)
+          new_folds <- origami::make_folds(n = self$nrow)
         }
         private$.folds <- new_folds
       }

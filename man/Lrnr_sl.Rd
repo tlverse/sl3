@@ -22,7 +22,8 @@ learners.
 \describe{
 \item{\code{learners}}{The "library" of learners to include}
 \item{\code{metalearner}}{The metalearner to be fit on predictions from the
-library.}
+library.} If null, \code{\link{default_metalearner} is used to construct a
+    metalearner based on the outcome_type of the training task}
 \item{\code{folds=NULL}}{An \code{origami} folds object. If \code{NULL},
 folds from the task are used.}
 \item{\code{keep_extra=TRUE}}{Stores all sub-parts of the SL computation.
@@ -53,16 +54,18 @@ Other Learners: \code{\link{Custom_chain}},
   \code{\link{Lrnr_bilstm}}, \code{\link{Lrnr_condensier}},
   \code{\link{Lrnr_cv}}, \code{\link{Lrnr_dbarts}},
   \code{\link{Lrnr_define_interactions}},
-  \code{\link{Lrnr_expSmooth}},
-  \code{\link{Lrnr_glm_fast}}, \code{\link{Lrnr_glmnet}},
-  \code{\link{Lrnr_glm}}, \code{\link{Lrnr_grf}},
-  \code{\link{Lrnr_h2o_grid}}, \code{\link{Lrnr_hal9001}},
+  \code{\link{Lrnr_earth}}, \code{\link{Lrnr_expSmooth}},
+  \code{\link{Lrnr_gbm}}, \code{\link{Lrnr_glm_fast}},
+  \code{\link{Lrnr_glmnet}}, \code{\link{Lrnr_glm}},
+  \code{\link{Lrnr_grf}}, \code{\link{Lrnr_h2o_grid}},
+  \code{\link{Lrnr_hal9001}},
   \code{\link{Lrnr_haldensify}},
   \code{\link{Lrnr_independent_binomial}},
   \code{\link{Lrnr_lstm}}, \code{\link{Lrnr_mean}},
   \code{\link{Lrnr_multivariate}}, \code{\link{Lrnr_nnls}},
   \code{\link{Lrnr_optim}}, \code{\link{Lrnr_pca}},
   \code{\link{Lrnr_pkg_SuperLearner}},
+  \code{\link{Lrnr_polspline}},
   \code{\link{Lrnr_randomForest}},
   \code{\link{Lrnr_ranger}},
   \code{\link{Lrnr_revere_task}}, \code{\link{Lrnr_rfcde}},

@@ -18,14 +18,14 @@ Stratify learner fits by a single variable
 \section{Parameters}{
 
 \describe{
-\item{\code{lrnr="lrnr"}}{ An initialized Lrnr object.
+\item{\code{learner="learner"}}{An initialized Lrnr_* object.
 }
-\item{\code{variable_stratify="variable_stratify"}}{ character of the
-variable in \code{covariates} that need to be stratified on. Only support
-numerical factors
+\item{\code{variable_stratify="variable_stratify"}}{\code{character} giving
+the variable in the covariates on which to stratify. Supports only
+variables with discrete levels coded as \code{numeric}.
 }
-\item{\code{...}}{ Other parameters passed directly to
-\code{lrnr$train}. See its documentation for details.
+\item{\code{...}}{Other parameters passed directly to
+\code{learner$train}. See its documentation for details.
 }
 }
 }
@@ -37,16 +37,18 @@ Other Learners: \code{\link{Custom_chain}},
   \code{\link{Lrnr_bilstm}}, \code{\link{Lrnr_condensier}},
   \code{\link{Lrnr_cv}}, \code{\link{Lrnr_dbarts}},
   \code{\link{Lrnr_define_interactions}},
-  \code{\link{Lrnr_expSmooth}},
-  \code{\link{Lrnr_glm_fast}}, \code{\link{Lrnr_glmnet}},
-  \code{\link{Lrnr_glm}}, \code{\link{Lrnr_grf}},
-  \code{\link{Lrnr_h2o_grid}}, \code{\link{Lrnr_hal9001}},
+  \code{\link{Lrnr_earth}}, \code{\link{Lrnr_expSmooth}},
+  \code{\link{Lrnr_gbm}}, \code{\link{Lrnr_glm_fast}},
+  \code{\link{Lrnr_glmnet}}, \code{\link{Lrnr_glm}},
+  \code{\link{Lrnr_grf}}, \code{\link{Lrnr_h2o_grid}},
+  \code{\link{Lrnr_hal9001}},
   \code{\link{Lrnr_haldensify}},
   \code{\link{Lrnr_independent_binomial}},
   \code{\link{Lrnr_lstm}}, \code{\link{Lrnr_mean}},
   \code{\link{Lrnr_multivariate}}, \code{\link{Lrnr_nnls}},
   \code{\link{Lrnr_optim}}, \code{\link{Lrnr_pca}},
   \code{\link{Lrnr_pkg_SuperLearner}},
+  \code{\link{Lrnr_polspline}},
   \code{\link{Lrnr_randomForest}},
   \code{\link{Lrnr_ranger}},
   \code{\link{Lrnr_revere_task}}, \code{\link{Lrnr_rfcde}},

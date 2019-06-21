@@ -32,12 +32,9 @@ test_that("Lrnr_mv preds are the correct dimensions", {
 learners <- make_learner_stack("Lrnr_glm_fast", "Lrnr_xgboost", "Lrnr_mean")$params$learners
 mv_learners <- lapply(learners, function(learner) make_learner(Lrnr_multivariate, learner))
 mv_stack <- make_learner(Stack, mv_learners)
-mv_metalearner <- make_learner(Lrnr_solnp,
-  loss_function = loss_squared_error_multivariate,
-  learner_function = metalearner_linear_multivariate
-)
 
-mv_sl <- make_learner(Lrnr_sl, mv_stack, mv_metalearner)
+
+mv_sl <- make_learner(Lrnr_sl, mv_stack)
 mv_sl_fit <- mv_sl$train(task)
 mv_sl_preds <- mv_sl_fit$predict(task)
 mv_sl_preds <- unpack_predictions(mv_sl_preds)

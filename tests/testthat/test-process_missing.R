@@ -1,4 +1,4 @@
-context("test-process_missing.R -- Missing Handling for sl3 Tasks")
+context("test-process_missing.R -- Missing Handling for sl3_Task objects")
 
 if (FALSE) {
   setwd("..")
@@ -8,16 +8,19 @@ if (FALSE) {
   document()
   load_all("./") # load all R files in /R and datasets in /data. Ignores NAMESPACE:
   setwd("..")
-  install("sl3", build_vignettes = FALSE, dependencies = FALSE) # INSTALL W/ devtools:
+  install("sl3", build_vignettes = FALSE,
+          dependencies = FALSE) # INSTALL W/ devtools:
 }
 
 data(cpp)
-covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")
+covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
+            "sexn")
 outcome <- "haz"
 
 expect_warning(
-  task_drop_missing <- make_sl3_Task(cpp, covars, outcome, drop_missing_outcome = TRUE),
-  "Missing Covariate Data Found. Imputing covariates using sl3_process_missing"
+  task_drop_missing <- make_sl3_Task(cpp, covars, outcome,
+                                     drop_missing_outcome = TRUE),
+  "Missing Covariate Data Found. Imputing covariates using sl3_process_missing.",
 )
 
 expect_false(any(is.na(task_drop_missing$Y)))
@@ -35,9 +38,8 @@ warnings <- capture_warnings({
 expect_equal(
   warnings,
   c(
-    "Missing Covariate Data Found. Imputing covariates using sl3_process_missing",
-    "Missing Outcome Data Found. This is okay for prediction, but will likely break training. \n
-               You can drop observations with missing outcomes by setting drop_missing_outcome=TRUE in make_sl3_Task"
+    "Missing Covariate Data Found. Imputing covariates using sl3_process_missing.",
+    "Missing Outcome Data Found. This is okay for prediction, but will likely break training. \n You can drop observations with missing outcomes by setting drop_missing_outcome=TRUE in make_sl3_Task."
   )
 )
 

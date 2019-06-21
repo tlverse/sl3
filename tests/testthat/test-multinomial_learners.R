@@ -49,11 +49,8 @@ learners <- list(
   mean <- make_learner(Lrnr_mean)
 )
 
-# define metalearner
-mn_metalearner <- make_learner(Lrnr_solnp, loss_function = loss_loglik_multinomial, learner_function = metalearner_linear_multinomial)
-
 # define Super Learner
-mn_sl <- make_learner(Lrnr_sl, learners, mn_metalearner)
+mn_sl <- make_learner(Lrnr_sl, learners)
 
 # test_that("Multinomial Lrnr_sl components for debugging", {
 #   # debugonce(learners$xgb$.__enclos_env__$private$.train)
