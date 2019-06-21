@@ -13,17 +13,27 @@ env:
 
 language: R
 sudo: required
-cache: packages
 cran: http://cran.rstudio.com
 warnings_are_errors: true
 r_build_args: "--no-manual"
 r_check_args: "--no-build-vignettes --no-manual"
+
+# try cache mechanism used by the mlr project
+# see https://pjs-web.de/post/using-ccache-to-speed-up-r-package-checks-on-travis-ci/
+cache:
+  - ccache
+
+addons:
+  apt:
+    packages:
+     - ccache
 
 r:
   - release
   - devel
 
 before_install:
+  - mkdir $HOME/.R && echo -e 'CXX_STD = CXX14\n\nVER=\nCCACHE=ccache\nCC=$(CCACHE) gcc$(VER) -std=gnu99\nCXX=$(CCACHE) g++$(VER)\nC11=$(CCACHE) g++$(VER)\nC14=$(CCACHE) g++$(VER)\nFC=$(CCACHE) gfortran$(VER)\nF77=$(CCACHE) gfortran$(VER)' > $HOME/.R/Makevars
   - sudo apt-get -y install python3-pip python-dev
   - sudo pip install numpy tensorflow keras
   - Rscript -e 'update.packages(ask = FALSE)'
