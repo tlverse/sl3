@@ -13,7 +13,6 @@ env:
 
 language: R
 sudo: required
-dist: xenial
 # try cache mechanism used by the mlr project
 # see https://pjs-web.de/post/using-ccache-to-speed-up-r-package-checks-on-travis-ci/
 cache:
