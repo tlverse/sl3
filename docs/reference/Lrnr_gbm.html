@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Undocumented Learner — undocumented_learner • sl3</title>
+<title>GBM - generalized boosted regression models — Lrnr_gbm • sl3</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -31,9 +31,11 @@
 
 
 
-<meta property="og:title" content="Undocumented Learner — undocumented_learner" />
+<meta property="og:title" content="GBM - generalized boosted regression models — Lrnr_gbm" />
 
-<meta property="og:description" content="We haven't documented this one yet. Feel free to contribute!" />
+<meta property="og:description" content="This learner provides fitting procedures for building generalized boosted
+regression models, using the function gbm from the
+gbm package." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -126,17 +128,20 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Undocumented Learner</h1>
+    <h1>GBM - generalized boosted regression models</h1>
     
-    <div class="hidden name"><code>undocumented_learner.Rd</code></div>
+    <div class="hidden name"><code>Lrnr_gbm.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>We haven't documented this one yet. Feel free to contribute!</p>
+    <p>This learner provides fitting procedures for building generalized boosted
+regression models, using the function <code><a href='https://rdrr.io/pkg/gbm/man/gbm.html'>gbm</a></code> from the
+<code>gbm</code> package.</p>
     
     </div>
 
+    <pre class="usage"><span class='no'>Lrnr_gbm</span></pre>
         
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
@@ -144,15 +149,26 @@
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='Lrnr_base.html'>Lrnr_base</a></code> object with methods for training and
-prediction.</p>
+    <p>Learner object with methods for training and prediction. See
+<code><a href='Lrnr_base.html'>Lrnr_base</a></code> for documentation on learners.</p>
     
-    <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
+    <h2 class="hasAnchor" id="parameters"><a class="anchor" href="#parameters"></a>Parameters</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code>params</code></dt><dd><p>A list of parameters needed to fully specify the learner. This
-includes things like model hyperparameters.</p></dd>
+<dt><code>n.trees</code></dt><dd><p>Integer specifying the total number of trees to fit.
+This is equivalent to the number of iterations and the number of basis
+functions in the additive expansion. Default is 10000.</p></dd>
+<dt><code>interaction.depth</code></dt><dd><p>Integer specifying the maximum depth of
+each tree (i.e.,  the highest level ofvariable interactions allowed).
+A value of 1 implies an additive model, a valueof 2 implies a model with
+up to 2-way interactions, etc. Default is 2.</p></dd>
+<dt><code>shrinkage</code></dt><dd><p>A shrinkage parameter applied to each tree in the
+expansion. Also known asthe learning rate or step-size reduction; 0.001
+to 0.1 usually work, but a smallerlearning rate typically requires more
+trees. Default is 0.001.</p></dd>
+<dt><code>...</code></dt><dd><p>Other parameters passed to <code><a href='https://rdrr.io/pkg/gbm/man/gbm.html'>gbm</a></code>.
+See its documentation for details.</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -164,10 +180,9 @@ includes things like model hyperparameters.</p></dd>
   <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>, <code><a href='Lrnr_dbarts.html'>Lrnr_dbarts</a></code>,
   <code><a href='Lrnr_define_interactions.html'>Lrnr_define_interactions</a></code>,
   <code><a href='Lrnr_earth.html'>Lrnr_earth</a></code>, <code><a href='Lrnr_expSmooth.html'>Lrnr_expSmooth</a></code>,
-  <code><a href='Lrnr_gbm.html'>Lrnr_gbm</a></code>, <code><a href='Lrnr_glm_fast.html'>Lrnr_glm_fast</a></code>,
-  <code><a href='Lrnr_glmnet.html'>Lrnr_glmnet</a></code>, <code><a href='Lrnr_glm.html'>Lrnr_glm</a></code>,
-  <code><a href='Lrnr_grf.html'>Lrnr_grf</a></code>, <code><a href='Lrnr_h2o_grid.html'>Lrnr_h2o_grid</a></code>,
-  <code><a href='Lrnr_hal9001.html'>Lrnr_hal9001</a></code>,
+  <code><a href='Lrnr_glm_fast.html'>Lrnr_glm_fast</a></code>, <code><a href='Lrnr_glmnet.html'>Lrnr_glmnet</a></code>,
+  <code><a href='Lrnr_glm.html'>Lrnr_glm</a></code>, <code><a href='Lrnr_grf.html'>Lrnr_grf</a></code>,
+  <code><a href='Lrnr_h2o_grid.html'>Lrnr_h2o_grid</a></code>, <code><a href='Lrnr_hal9001.html'>Lrnr_hal9001</a></code>,
   <code><a href='Lrnr_haldensify.html'>Lrnr_haldensify</a></code>,
   <code><a href='Lrnr_independent_binomial.html'>Lrnr_independent_binomial</a></code>,
   <code><a href='Lrnr_lstm.html'>Lrnr_lstm</a></code>, <code><a href='Lrnr_mean.html'>Lrnr_mean</a></code>,
@@ -184,7 +199,8 @@ includes things like model hyperparameters.</p></dd>
   <code><a href='Lrnr_subset_covariates.html'>Lrnr_subset_covariates</a></code>,
   <code><a href='Lrnr_svm.html'>Lrnr_svm</a></code>, <code><a href='Lrnr_tsDyn.html'>Lrnr_tsDyn</a></code>,
   <code><a href='Lrnr_xgboost.html'>Lrnr_xgboost</a></code>, <code><a href='Pipeline.html'>Pipeline</a></code>,
-  <code><a href='Stack.html'>Stack</a></code>, <code><a href='Lrnr_h2o_glm.html'>define_h2o_X</a></code></p></div>
+  <code><a href='Stack.html'>Stack</a></code>, <code><a href='Lrnr_h2o_glm.html'>define_h2o_X</a></code>,
+  <code><a href='undocumented_learner.html'>undocumented_learner</a></code></p></div>
     
 
   </div>
@@ -196,7 +212,7 @@ includes things like model hyperparameters.</p></dd>
 
       <li><a href="#value">Value</a></li>
 
-      <li><a href="#fields">Fields</a></li>
+      <li><a href="#parameters">Parameters</a></li>
 
       <li><a href="#see-also">See also</a></li>
           </ul>

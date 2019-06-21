@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Undocumented Learner — undocumented_learner • sl3</title>
+<title>Polyspline - multivariate adaptive polynomial spline regression (polymars)
+and polychotomous regression and multiple classification (polyclass) — Lrnr_polspline • sl3</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -31,9 +32,13 @@
 
 
 
-<meta property="og:title" content="Undocumented Learner — undocumented_learner" />
+<meta property="og:title" content="Polyspline - multivariate adaptive polynomial spline regression (polymars)
+and polychotomous regression and multiple classification (polyclass) — Lrnr_polspline" />
 
-<meta property="og:description" content="We haven't documented this one yet. Feel free to contribute!" />
+<meta property="og:description" content="This learner provides fitting procedures for an adaptive regression procedure
+using piecewise linear splines to model the response, using the function
+polymars or polyclass from
+the polspline package as appropriate." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -126,17 +131,22 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Undocumented Learner</h1>
+    <h1>Polyspline - multivariate adaptive polynomial spline regression (polymars)
+and polychotomous regression and multiple classification (polyclass)</h1>
     
-    <div class="hidden name"><code>undocumented_learner.Rd</code></div>
+    <div class="hidden name"><code>Lrnr_polspline.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>We haven't documented this one yet. Feel free to contribute!</p>
+    <p>This learner provides fitting procedures for an adaptive regression procedure
+using piecewise linear splines to model the response, using the function
+<code><a href='https://rdrr.io/pkg/polspline/man/polymars.html'>polymars</a></code> or <code><a href='https://rdrr.io/pkg/polspline/man/polyclass.html'>polyclass</a></code> from
+the <code>polspline</code> package as appropriate.</p>
     
     </div>
 
+    <pre class="usage"><span class='no'>Lrnr_polspline</span></pre>
         
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
@@ -144,15 +154,19 @@
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='Lrnr_base.html'>Lrnr_base</a></code> object with methods for training and
-prediction.</p>
+    <p>Learner object with methods for training and prediction. See
+<code><a href='Lrnr_base.html'>Lrnr_base</a></code> for documentation on learners.</p>
     
-    <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
+    <h2 class="hasAnchor" id="parameters"><a class="anchor" href="#parameters"></a>Parameters</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code>params</code></dt><dd><p>A list of parameters needed to fully specify the learner. This
-includes things like model hyperparameters.</p></dd>
+<dt><code>cv</code></dt><dd><p>The number of cross-validation folds to be used in
+evaluating the sequence of fit models. This is only passed to
+<code><a href='https://rdrr.io/pkg/polspline/man/polyclass.html'>polyclass</a></code> for binary/categorical outcomes.</p></dd>
+<dt><code>...</code></dt><dd><p>Other parameters passed to either
+<code><a href='https://rdrr.io/pkg/polspline/man/polymars.html'>polymars</a></code> or <code><a href='https://rdrr.io/pkg/polspline/man/polyclass.html'>polyclass</a></code>.
+See their documentation for details.</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -174,7 +188,6 @@ includes things like model hyperparameters.</p></dd>
   <code><a href='Lrnr_multivariate.html'>Lrnr_multivariate</a></code>, <code><a href='Lrnr_nnls.html'>Lrnr_nnls</a></code>,
   <code><a href='Lrnr_optim.html'>Lrnr_optim</a></code>, <code><a href='Lrnr_pca.html'>Lrnr_pca</a></code>,
   <code><a href='SuperLearner_interface.html'>Lrnr_pkg_SuperLearner</a></code>,
-  <code><a href='Lrnr_polspline.html'>Lrnr_polspline</a></code>,
   <code><a href='Lrnr_randomForest.html'>Lrnr_randomForest</a></code>,
   <code><a href='Lrnr_ranger.html'>Lrnr_ranger</a></code>,
   <code><a href='Lrnr_revere_task.html'>Lrnr_revere_task</a></code>, <code><a href='Lrnr_rfcde.html'>Lrnr_rfcde</a></code>,
@@ -184,7 +197,8 @@ includes things like model hyperparameters.</p></dd>
   <code><a href='Lrnr_subset_covariates.html'>Lrnr_subset_covariates</a></code>,
   <code><a href='Lrnr_svm.html'>Lrnr_svm</a></code>, <code><a href='Lrnr_tsDyn.html'>Lrnr_tsDyn</a></code>,
   <code><a href='Lrnr_xgboost.html'>Lrnr_xgboost</a></code>, <code><a href='Pipeline.html'>Pipeline</a></code>,
-  <code><a href='Stack.html'>Stack</a></code>, <code><a href='Lrnr_h2o_glm.html'>define_h2o_X</a></code></p></div>
+  <code><a href='Stack.html'>Stack</a></code>, <code><a href='Lrnr_h2o_glm.html'>define_h2o_X</a></code>,
+  <code><a href='undocumented_learner.html'>undocumented_learner</a></code></p></div>
     
 
   </div>
@@ -196,7 +210,7 @@ includes things like model hyperparameters.</p></dd>
 
       <li><a href="#value">Value</a></li>
 
-      <li><a href="#fields">Fields</a></li>
+      <li><a href="#parameters">Parameters</a></li>
 
       <li><a href="#see-also">See also</a></li>
           </ul>

@@ -37,7 +37,13 @@
     <loc>https://tlverse.org/sl3/reference/Lrnr_define_interactions.html</loc>
   </url>
   <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_earth.html</loc>
+  </url>
+  <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_expSmooth.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_gbm.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_glm.html</loc>
@@ -86,6 +92,9 @@
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_pkg_condensier_logisfitR6.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_polspline.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_randomForest.html</loc>
@@ -163,6 +172,9 @@
     <loc>https://tlverse.org/sl3/reference/debug_helpers.html</loc>
   </url>
   <url>
+    <loc>https://tlverse.org/sl3/reference/default_metalearner.html</loc>
+  </url>
+  <url>
     <loc>https://tlverse.org/sl3/reference/density_dat.html</loc>
   </url>
   <url>
@@ -230,9 +242,6 @@
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/write_learner_template.html</loc>
-  </url>
-  <url>
-    <loc>https://tlverse.org/sl3/articles/custom_lrnrs.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/articles/intro_sl3.html</loc>

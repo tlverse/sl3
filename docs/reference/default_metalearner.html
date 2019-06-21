@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Undocumented Learner — undocumented_learner • sl3</title>
+<title>Automatically Defined Metalearner — default_metalearner • sl3</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -31,9 +31,16 @@
 
 
 
-<meta property="og:title" content="Undocumented Learner — undocumented_learner" />
+<meta property="og:title" content="Automatically Defined Metalearner — default_metalearner" />
 
-<meta property="og:description" content="We haven't documented this one yet. Feel free to contribute!" />
+<meta property="og:description" content="A sensible metalearner based on Lrnr_solnp is chosen based on outcome type.
+This amounts to choosing an appropriate loss function and combination function.
+Outcome TypeCombination FunctionLoss Function
+binomialmetalearner_logistic_binomialloss_squared_error
+categoricalmetalearner_linear_multinomialloss_loglik_multinomial
+continuousmetalearner_linearloss_squared_error
+multivariatemetalearner_linear_multivariateloss_squared_error_multivariate
+" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -126,80 +133,42 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Undocumented Learner</h1>
+    <h1>Automatically Defined Metalearner</h1>
     
-    <div class="hidden name"><code>undocumented_learner.Rd</code></div>
+    <div class="hidden name"><code>default_metalearner.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>We haven't documented this one yet. Feel free to contribute!</p>
+    <p>A sensible metalearner based on <code><a href='Lrnr_solnp.html'>Lrnr_solnp</a></code> is chosen based on outcome type.
+This amounts to choosing an appropriate loss function and combination function.</p><table class='table'>
+<tr><td>Outcome Type</td><td>Combination Function</td><td>Loss Function</td></tr>
+<tr><td>binomial</td><td>metalearner_logistic_binomial</td><td>loss_squared_error</td></tr>
+<tr><td>categorical</td><td>metalearner_linear_multinomial</td><td>loss_loglik_multinomial</td></tr>
+<tr><td>continuous</td><td>metalearner_linear</td><td>loss_squared_error</td></tr>
+<tr><td>multivariate</td><td>metalearner_linear_multivariate</td><td>loss_squared_error_multivariate</td></tr>
+</table>
     
     </div>
 
-        
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
-
-    <p><code>R6Class</code> object.</p>
+    <pre class="usage"><span class='fu'>default_metalearner</span>(<span class='no'>outcome_type</span>)</pre>
     
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p><code><a href='Lrnr_base.html'>Lrnr_base</a></code> object with methods for training and
-prediction.</p>
-    
-    <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
-
-    
-    <dl class='dl-horizontal'>
-<dt><code>params</code></dt><dd><p>A list of parameters needed to fully specify the learner. This
-includes things like model hyperparameters.</p></dd>
-</dl>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>Other Learners: <code><a href='Custom_chain.html'>Custom_chain</a></code>,
-  <code><a href='Lrnr_HarmonicReg.html'>Lrnr_HarmonicReg</a></code>, <code><a href='Lrnr_arima.html'>Lrnr_arima</a></code>,
-  <code><a href='Lrnr_bartMachine.html'>Lrnr_bartMachine</a></code>, <code><a href='Lrnr_base.html'>Lrnr_base</a></code>,
-  <code><a href='Lrnr_bilstm.html'>Lrnr_bilstm</a></code>, <code><a href='Lrnr_condensier.html'>Lrnr_condensier</a></code>,
-  <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>, <code><a href='Lrnr_dbarts.html'>Lrnr_dbarts</a></code>,
-  <code><a href='Lrnr_define_interactions.html'>Lrnr_define_interactions</a></code>,
-  <code><a href='Lrnr_earth.html'>Lrnr_earth</a></code>, <code><a href='Lrnr_expSmooth.html'>Lrnr_expSmooth</a></code>,
-  <code><a href='Lrnr_gbm.html'>Lrnr_gbm</a></code>, <code><a href='Lrnr_glm_fast.html'>Lrnr_glm_fast</a></code>,
-  <code><a href='Lrnr_glmnet.html'>Lrnr_glmnet</a></code>, <code><a href='Lrnr_glm.html'>Lrnr_glm</a></code>,
-  <code><a href='Lrnr_grf.html'>Lrnr_grf</a></code>, <code><a href='Lrnr_h2o_grid.html'>Lrnr_h2o_grid</a></code>,
-  <code><a href='Lrnr_hal9001.html'>Lrnr_hal9001</a></code>,
-  <code><a href='Lrnr_haldensify.html'>Lrnr_haldensify</a></code>,
-  <code><a href='Lrnr_independent_binomial.html'>Lrnr_independent_binomial</a></code>,
-  <code><a href='Lrnr_lstm.html'>Lrnr_lstm</a></code>, <code><a href='Lrnr_mean.html'>Lrnr_mean</a></code>,
-  <code><a href='Lrnr_multivariate.html'>Lrnr_multivariate</a></code>, <code><a href='Lrnr_nnls.html'>Lrnr_nnls</a></code>,
-  <code><a href='Lrnr_optim.html'>Lrnr_optim</a></code>, <code><a href='Lrnr_pca.html'>Lrnr_pca</a></code>,
-  <code><a href='SuperLearner_interface.html'>Lrnr_pkg_SuperLearner</a></code>,
-  <code><a href='Lrnr_polspline.html'>Lrnr_polspline</a></code>,
-  <code><a href='Lrnr_randomForest.html'>Lrnr_randomForest</a></code>,
-  <code><a href='Lrnr_ranger.html'>Lrnr_ranger</a></code>,
-  <code><a href='Lrnr_revere_task.html'>Lrnr_revere_task</a></code>, <code><a href='Lrnr_rfcde.html'>Lrnr_rfcde</a></code>,
-  <code><a href='Lrnr_rpart.html'>Lrnr_rpart</a></code>, <code><a href='Lrnr_rugarch.html'>Lrnr_rugarch</a></code>,
-  <code><a href='Lrnr_sl.html'>Lrnr_sl</a></code>, <code><a href='Lrnr_solnp_density.html'>Lrnr_solnp_density</a></code>,
-  <code><a href='Lrnr_solnp.html'>Lrnr_solnp</a></code>, <code><a href='Lrnr_stratified.html'>Lrnr_stratified</a></code>,
-  <code><a href='Lrnr_subset_covariates.html'>Lrnr_subset_covariates</a></code>,
-  <code><a href='Lrnr_svm.html'>Lrnr_svm</a></code>, <code><a href='Lrnr_tsDyn.html'>Lrnr_tsDyn</a></code>,
-  <code><a href='Lrnr_xgboost.html'>Lrnr_xgboost</a></code>, <code><a href='Pipeline.html'>Pipeline</a></code>,
-  <code><a href='Stack.html'>Stack</a></code>, <code><a href='Lrnr_h2o_glm.html'>define_h2o_X</a></code></p></div>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>outcome_type</th>
+      <td><p>a Variable_Type object</p></td>
+    </tr>
+    </table>
     
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      
-      <li><a href="#format">Format</a></li>
-
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#fields">Fields</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-          </ul>
+      <li><a href="#arguments">Arguments</a></li>
+                </ul>
 
   </div>
 </div>

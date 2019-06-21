@@ -9,9 +9,11 @@ Authors@R: c(
            role = "aut",
            comment = c(ORCID = "0000-0002-7127-2789")),
     person("Oleg", "Sofrygin", email="oleg.sofrygin@gmail.com",
-           role = "aut"),
+           role = "aut",
+           comment = c(ORCID = "0000-0002-9539-8853")),
     person("Ivana", "Malenica", email = "imalenica@berkeley.edu",
-           role = "aut")
+           role = "aut",
+           comment = c(ORCID = "0000-0002-7404-8088"))
   )
 Maintainer: Jeremy Coyle <jeremyrcoyle@gmail.com>
 Description: Modern implementation of the Super Learner prediction algorithm,
