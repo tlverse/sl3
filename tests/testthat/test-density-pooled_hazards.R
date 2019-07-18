@@ -18,8 +18,9 @@ haldensify <- Lrnr_haldensify$new(
 )
 hazard_learner <- Lrnr_pooled_hazards$new(hal)
 density_learner <- Lrnr_density_discretize$new(hazard_learner,
-                                               type = "equal_mass",
-                                               n_bins = 10)
+  type = "equal_mass",
+  n_bins = 10
+)
 
 # fit discrete density model to pooled hazards data
 set.seed(74294)

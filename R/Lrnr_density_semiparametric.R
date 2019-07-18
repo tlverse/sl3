@@ -1,6 +1,6 @@
 #' Density Estimation With Mean Model and Homoscedastic Errors
 #'
-#' This learner assumes a mean model with homoscedastic errors: Y ~ E(Y|W) + epsilon. E(Y|W) is fit using any mean learner, 
+#' This learner assumes a mean model with homoscedastic errors: Y ~ E(Y|W) + epsilon. E(Y|W) is fit using any mean learner,
 #' and then the errors are fit with kernel density estimation.
 #'
 #' @docType class
@@ -33,11 +33,11 @@ Lrnr_density_semiparametric <- R6Class(
   public = list(
     initialize = function(mean_learner = NULL, var_learner = NULL, bw = NULL, ...) {
       params <- args_to_list()
-      
+
       if (is.null(params$mean_learner)) {
         params$mean_learner <- make_learner(Lrnr_glm_fast)
       }
-      
+
       super$initialize(params = params, ...)
     }
   ),
@@ -46,42 +46,42 @@ Lrnr_density_semiparametric <- R6Class(
     .properties = c("density"),
 
     .train = function(task) {
-
-
       mean_learner <- self$params$mean_learner
       var_learner <- self$params$var_learner
       bw <- self$params$bw
-      
-      if(is.null(bw)){
-        bw="nrd0"
+
+      if (is.null(bw)) {
+        bw <- "nrd0"
       }
       mean_fit <- mean_learner$train(task)
-      
-      #todo: maybe these should be cv errors?
+
+      # todo: maybe these should be cv errors?
       mean_preds <- mean_fit$predict()
       errors <- task$Y - mean_preds
-      
-      if(!is.null(var_learner)){
-        new_columns <- task$add_columns(data.table(squared_error=errors^2))
-        se_task <- task$next_in_chain(column_names=new_columns, outcome="squared_error")
-        min_obs_error <- 2*min(se_task$Y) 
+
+      if (!is.null(var_learner)) {
+        new_columns <- task$add_columns(data.table(squared_error = errors^2))
+        se_task <- task$next_in_chain(column_names = new_columns, outcome = "squared_error")
+        min_obs_error <- 2 * min(se_task$Y)
         var_fit <- var_learner$train(se_task)
         var_preds <- var_fit$predict()
         var_preds[var_preds < 0 ] <- min_obs_error
         sd_preds <- sqrt(var_preds)
-        errors <- errors/sd_preds
+        errors <- errors / sd_preds
       } else {
         var_fit <- NULL
         min_obs_error <- NA
       }
-      
-      
-      
-      dens_fit <- density(errors, bw=bw)
-      fit_object <- list(mean_fit = mean_fit, 
-                         var_fit = var_fit, 
-                         min_obs_error = min_obs_error,
-                         dens_fit = dens_fit)
+
+
+
+      dens_fit <- density(errors, bw = bw)
+      fit_object <- list(
+        mean_fit = mean_fit,
+        var_fit = var_fit,
+        min_obs_error = min_obs_error,
+        dens_fit = dens_fit
+      )
 
       return(fit_object)
     },
@@ -92,23 +92,23 @@ Lrnr_density_semiparametric <- R6Class(
       dens_fit <- self$fit_object$dens_fit
       mean_preds <- mean_fit$predict(task)
       errors <- task$Y - mean_preds
-      if(!is.null(var_fit)){
+      if (!is.null(var_fit)) {
         var_preds <- var_fit$predict(task)
-        
+
         var_preds[var_preds < 0 ] <- self$fit_object$min_obs_error
         sd_preds <- sqrt(var_preds)
-        
       } else {
-        sd_preds <- rep(1,task$nrow)
+        sd_preds <- rep(1, task$nrow)
       }
-      
-      errors <- errors/sd_preds
-      
-      dens_preds <- approx(dens_fit$x, dens_fit$y, errors,rule=2)$y
-      
+
+      errors <- errors / sd_preds
+
+      dens_preds <- approx(dens_fit$x, dens_fit$y, errors, rule = 2)$y
+
       dens_preds <- dens_preds / sd_preds
-      
+
       # dens_preds[is.na(dens_preds)] <- 0
       return(dens_preds)
-    })
+    }
   )
+)

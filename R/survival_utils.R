@@ -4,7 +4,7 @@ reindex <- function(index, fold_index) {
 }
 
 reindex_fold <- function(fold, index) {
-  new_fold <- make_fold(
+  new_fold <- origami::make_fold(
     fold$v,
     reindex(index, fold$training_set),
     reindex(index, fold$validation_set)
