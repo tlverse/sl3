@@ -1,27 +1,38 @@
 context("test-density-pooled_hazards: Lrnr_pooled_hazards + Lrnr_density_discretize")
 
 # define test dataset
-n <- 1e3
+set.seed(74294)
+n <- 100
 x <- rnorm(n)
 epsilon <- rnorm(n)
 y <- 3 * x + epsilon
 data <- data.table(x = x, y = y)
 task <- sl3_Task$new(data, covariates = c("x"), outcome = "y")
 
-# reformat data into pooled hazards structure
-hazards_task <- pooled_hazard_task(task)
+# instantiate learners
+hal <- Lrnr_hal9001$new(lambda_seq = exp(seq(-1, -13, length = 100)))
+haldensify <- Lrnr_haldensify$new(
+  grid_type = "equal_mass",
+  n_bins = 10,
+  lambda_seq = exp(seq(-1, -13, length = 100))
+)
+hazard_learner <- Lrnr_pooled_hazards$new(hal)
+density_learner <- Lrnr_density_discretize$new(hazard_learner,
+                                               type = "equal_mass",
+                                               n_bins = 10)
 
 # fit discrete density model to pooled hazards data
-hse_learner <- make_learner(Lrnr_density_hse,
-                            mean_learner = make_learner(Lrnr_glm_fast))
-hse_fit <- hse_learner$train(task)
+set.seed(74294)
+fit_density <- density_learner$train(task)
+pred_density <- fit_density$predict()
 
-x_grid <- seq(from = min(data$x), to = max(data$x), length = 100)
-y_grid <- seq(from = min(data$y), to = max(data$y), length = 100)
-pred_data <- as.data.table(expand.grid(x = x_grid, y = y_grid))
-pred_task <- make_sl3_Task(pred_data, covariates = c("x"), outcome = "y")
+# fit haldensify for comparison
+set.seed(74294)
+fit_haldensify <- haldensify$train(task)
+pred_haldensify <- fit_haldensify$predict()
 
-pred_data$dens_preds <- hse_fit$predict(pred_task)
-pred_data[, true_dens := dnorm(x = y, mean = 3 * x)]
-nll <- sum(-1 * pred_data$true_dens * log(pred_data$dens_preds))
-expect_lt(nll, n)
+# compare density estimates
+true_density <- dnorm(x = y, mean = 3 * x)
+nll_ph <- sum(-1 * true_density * log(pred_density))
+nll_haldensify <- sum(-1 * true_density * log(pred_haldensify))
+expect_equal(nll_ph, nll_haldensify, scale = nll_ph, tol = 2)
