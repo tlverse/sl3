@@ -39,7 +39,13 @@ Lrnr_solnp_density <- R6Class(
       super$initialize(params = params)
     }
   ),
-
+  active = list(
+    coefficients = function() {
+      self$assert_trained()
+      coefs <- self$fit_object$coef
+      return(coefs)
+    }
+  ),
   private = list(
     .covariates = NULL,
     .properties = "density",
