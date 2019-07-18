@@ -4,9 +4,11 @@ reindex <- function(index, fold_index) {
 }
 
 reindex_fold <- function(fold, index) {
-  new_fold <- make_fold(fold$v,
-                        reindex(index, fold$training_set),
-                        reindex(index, fold$validation_set))
+  new_fold <- make_fold(
+    fold$v,
+    reindex(index, fold$training_set),
+    reindex(index, fold$validation_set)
+  )
 }
 
 
@@ -41,9 +43,11 @@ pooled_hazard_task <- function(task, trim = TRUE) {
   repeated_data <- underlying_data[index]
   new_folds <- id_folds_to_folds(task$folds, index)
 
-  repeated_task <- task$next_in_chain(column_names = column_names,
-                                      data = repeated_data, id = "id",
-                                      folds = new_folds)
+  repeated_task <- task$next_in_chain(
+    column_names = column_names,
+    data = repeated_data, id = "id",
+    folds = new_folds
+  )
 
   # make bin indicators
   bin_number <- rep(level_index, each = task$nrow)
@@ -52,12 +56,16 @@ pooled_hazard_task <- function(task, trim = TRUE) {
   in_bin <- as.numeric(outcome_level == bin_number)
 
   # add new columns for indicator (new outcome) and bin index (as covariate)
-  new_columns <- repeated_task$add_columns(data.table(bin_number = bin_number,
-                                                      in_bin = in_bin))
+  new_columns <- repeated_task$add_columns(data.table(
+    bin_number = bin_number,
+    in_bin = in_bin
+  ))
   new_covariates <- c(task$nodes$covariates, "bin_number")
-  hazard_task <- repeated_task$next_in_chain(column_names = new_columns,
-                                             outcome = "in_bin",
-                                             covariates = new_covariates)
+  hazard_task <- repeated_task$next_in_chain(
+    column_names = new_columns,
+    outcome = "in_bin",
+    covariates = new_covariates
+  )
   if (!trim) {
     return(hazard_task)
   }

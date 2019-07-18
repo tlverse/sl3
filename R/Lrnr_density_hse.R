@@ -1,6 +1,6 @@
 #' Density Estimation With Mean Model and Homoscedastic Errors
 #'
-#' This learner assumes a mean model with homoscedastic errors: Y ~ E(Y|W) + epsilon. E(Y|W) is fit using any mean learner, 
+#' This learner assumes a mean model with homoscedastic errors: Y ~ E(Y|W) + epsilon. E(Y|W) is fit using any mean learner,
 #' and then the errors are fit with kernel density estimation.
 #'
 #' @docType class
@@ -44,7 +44,6 @@ Lrnr_density_hse <- R6Class(
     .properties = c("density"),
 
     .train = function(task) {
-
       mean_learner <- self$params$mean_learner
       mean_fit <- mean_learner$train(task)
 
@@ -61,7 +60,7 @@ Lrnr_density_hse <- R6Class(
       dens_fit <- self$fit_object$dens_fit
       mean_preds <- mean_fit$predict(task)
       errors <- task$Y - mean_preds
-      dens_preds <- approx(dens_fit$x, dens_fit$y, errors,rule=2)$y
+      dens_preds <- approx(dens_fit$x, dens_fit$y, errors, rule = 2)$y
       # dens_preds[is.na(dens_preds)] <- 0
       return(dens_preds)
     },

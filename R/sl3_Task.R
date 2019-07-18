@@ -211,8 +211,8 @@ sl3_Task <- R6Class(
     },
 
     next_in_chain = function(covariates = NULL, outcome = NULL, id = NULL,
-                             weights = NULL, offset = NULL, folds = NULL,
-                             column_names = NULL, new_nodes = NULL, ...) {
+                                 weights = NULL, offset = NULL, folds = NULL,
+                                 column_names = NULL, new_nodes = NULL, ...) {
       if (is.null(new_nodes)) {
         new_nodes <- self$nodes
 
