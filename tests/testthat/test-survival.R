@@ -26,33 +26,34 @@ gen_data <- function(n = 1000, p = 4) {
   A_vals <- levels(A)
 
   df <- data.frame(W, A)
-
-  df$g0W <- g0(W)
-
-  return(df)
+  g0W <- g0(W)
+  return(list(data = df, truth = g0W))
 }
 
 set.seed(1234)
-data <- gen_data(1000)
-
+sim_results <- gen_data(1000)
+data <- sim_results$data
+g0W <- sim_results$truth
 
 Wnodes <- grep("^W", names(data), value = TRUE)
 Anode <- "A"
 
 task <- sl3_Task$new(data, covariates = Wnodes, outcome = Anode)
 hazards_task <- pooled_hazard_task(task)
-lrnr_ph <- make_learner(Lrnr_pooled_hazards, binomial_learner=make_learner(Lrnr_xgboost))
+lrnr_ph <- make_learner(Lrnr_pooled_hazards,
+  binomial_learner = make_learner(Lrnr_xgboost)
+)
 fit <- lrnr_ph$train(task)
 preds <- unpack_predictions(fit$base_predict())
 p0 <- g0(as.matrix(task$X))
-mean(rowSums(p0*log(preds)))
+mean(rowSums(p0 * log(preds)))
 
 lrnr_glmnet <- make_learner(Lrnr_glmnet)
 glmnet_fit <- lrnr_glmnet$train(task)
 glmnet_preds <- unpack_predictions(glmnet_fit$predict(task))
-mean(rowSums(p0*log(glmnet_preds)))
+mean(rowSums(p0 * log(glmnet_preds)))
 
 lrnr_mean <- make_learner(Lrnr_mean)
 mean_fit <- lrnr_mean$train(task)
 mean_preds <- unpack_predictions(mean_fit$predict(task))
-mean(rowSums(p0*log(mean_preds))) 
+mean(rowSums(p0 * log(mean_preds)))

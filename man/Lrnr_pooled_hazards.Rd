@@ -14,7 +14,7 @@ Learner object with methods for training and prediction. See
 }
 \description{
 This learner provides converts a binomial learner into a multinomial learner
-using a pooled hazards model
+using a pooled hazards model.
 }
 \section{Parameters}{
 
@@ -44,6 +44,7 @@ Other Learners: \code{\link{Custom_chain}},
   \code{\link{Lrnr_cv}}, \code{\link{Lrnr_dbarts}},
   \code{\link{Lrnr_define_interactions}},
   \code{\link{Lrnr_density_discretize}},
+  \code{\link{Lrnr_density_hse}},
   \code{\link{Lrnr_density_semiparametric}},
   \code{\link{Lrnr_earth}}, \code{\link{Lrnr_expSmooth}},
   \code{\link{Lrnr_gbm}}, \code{\link{Lrnr_glm_fast}},

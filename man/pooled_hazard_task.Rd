@@ -7,9 +7,10 @@
 pooled_hazard_task(task, trim = TRUE)
 }
 \arguments{
-\item{task}{a task where the outcome is failure time}
+\item{task}{A \code{\link{sl3_Task}} where the outcome is failure time.}
 
-\item{trim}{if true, remove entries after failure time for each observation}
+\item{trim}{If \code{true}, remove entries after failure time for each
+observation.}
 }
 \description{
 Generate A Pooled Hazards Task from a Failure Time (or Categorical) Task
