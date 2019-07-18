@@ -45,16 +45,14 @@ Lrnr_density_hse <- R6Class(
 
     .train = function(task) {
 
-
       mean_learner <- self$params$mean_learner
       mean_fit <- mean_learner$train(task)
-      
-      #todo: maybe these should be cv errors?
+
+      # TODO: maybe these should be cv errors?
       mean_preds <- mean_fit$predict()
       errors <- task$Y - mean_preds
       dens_fit <- density(errors)
       fit_object <- list(mean_fit = mean_fit, dens_fit = dens_fit)
-
       return(fit_object)
     },
 
@@ -69,3 +67,4 @@ Lrnr_density_hse <- R6Class(
     },
     .required_packages = c("randomForest")
   )
+)
