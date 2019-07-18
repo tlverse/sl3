@@ -48,7 +48,7 @@ Lrnr_density_hse <- R6Class(
 
       mean_learner <- self$params$mean_learner
       mean_fit <- mean_learner$train(task)
-
+      
       #todo: maybe these should be cv errors?
       mean_preds <- mean_fit$predict()
       errors <- task$Y - mean_preds
