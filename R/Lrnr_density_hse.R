@@ -64,6 +64,6 @@ Lrnr_density_hse <- R6Class(
       # dens_preds[is.na(dens_preds)] <- 0
       return(dens_preds)
     },
-    .required_packages = c("randomForest")
+    .required_packages = c()
   )
 )

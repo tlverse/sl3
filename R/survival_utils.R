@@ -41,7 +41,7 @@ pooled_hazard_task <- function(task, trim = TRUE) {
   # generate repeated task
   index <- rep(seq_len(task$nrow), n_levels)
   repeated_data <- underlying_data[index]
-  new_folds <- id_folds_to_folds(task$folds, index)
+  new_folds <- origami::id_folds_to_folds(task$folds, index)
 
   repeated_task <- task$next_in_chain(
     column_names = column_names,
