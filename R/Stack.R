@@ -133,7 +133,7 @@ Stack <- R6Class(
       is_error <- private$.fit_object$is_error
       learner_fits <- private$.fit_object$learner_fits[!is_error]
       learners <- self$params$learners[!is_error]
-      learner_names <- private$.learner_names
+      learner_names <- private$.learner_names[!is_error]
       n_to_pred <- task$nrow
       n_learners <- length(learner_names)
 
