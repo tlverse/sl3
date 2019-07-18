@@ -113,7 +113,7 @@ Stack <- R6Class(
       errored_learners <- self$params$learners[is_error]
 
       for (i in seq_along(errored_learners)) {
-        message <- learner_errors[[i]]$message
+        message <- learner_errors[[i]]
         learner <- errored_learners[[i]]
         warning(sprintf(
           "%s failed with message: %s. It will be removed from the stack",
