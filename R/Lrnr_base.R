@@ -95,6 +95,7 @@ Lrnr_base <- R6Class(
       if (is.null(save_training) || save_training) {
         private$.training_task <- training_task
       }
+      
       private$.training_outcome_type <- self$get_outcome_type(training_task)
       private$.fit_uuid <- UUIDgenerate(use.time = TRUE)
     },
