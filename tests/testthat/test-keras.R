@@ -36,15 +36,15 @@ test_that("Lrnr_lstm does what we expect", {
   lstm_preds <- lstm_fit$predict(task)
 
   # expect_true(sum(lstm_preds)-28.95605 < 10^(-1))
-  #expect_equal(length(lstm_preds), nrow(task$X) - 5)
+  expect_equal(length(lstm_preds), nrow(task$X) - 5)
 })
 
-test_that("Lrnr_bilstm does what we expect", {
-  skip_if_no_foo()
-  bilstm_learner <- Lrnr_bilstm$new(epochs = 1)
-  bilstm_fit <- bilstm_learner$train(task)
-  bilstm_preds <- bilstm_fit$predict(task)
+# test_that("Lrnr_bilstm does what we expect", {
+# skip_if_no_foo()
+# bilstm_learner <- Lrnr_bilstm$new(epochs = 1)
+# bilstm_fit <- bilstm_learner$train(task)
+# bilstm_preds <- bilstm_fit$predict(task)
 
-  # expect_true(sum(bilstm_preds)-118.5766 < 10^(-1))
-  #expect_equal(length(bilstm_preds), nrow(task$X) - 5)
-})
+# expect_true(sum(bilstm_preds)-118.5766 < 10^(-1))
+# expect_equal(length(bilstm_preds), nrow(task$X) - 5)
+# })
