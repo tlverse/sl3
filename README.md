@@ -110,11 +110,6 @@ library(origami)
 #> origami: Generalized Cross-Validation Framework
 #> Version: 1.0.1
 library(sl3)
-#> Registered S3 methods overwritten by 'ggplot2':
-#>   method         from 
-#>   [.quosures     rlang
-#>   c.quosures     rlang
-#>   print.quosures rlang
 
 # load example data set
 data(cpp)
@@ -122,13 +117,16 @@ cpp <- cpp %>%
   dplyr::filter(!is.na(haz)) %>%
   mutate_all(funs(replace(., is.na(.), 0)))
 #> Warning: funs() is soft deprecated as of dplyr 0.8.0
-#> please use list() instead
+#> Please use a list of either functions or lambdas: 
 #> 
-#>   # Before:
-#>   funs(name = f(.))
+#>   # Simple named list: 
+#>   list(mean = mean, median = median)
 #> 
-#>   # After: 
-#>   list(name = ~ f(.))
+#>   # Auto named with `tibble::lst()`: 
+#>   tibble::lst(mean, median)
+#> 
+#>   # Using lambdas
+#>   list(~ mean(., trim = .2), ~ median(., na.rm = TRUE))
 #> This warning is displayed once per session.
 
 # use covariates of intest and the outcome to build a task object
@@ -145,6 +143,10 @@ SL.glmnet_learner <- Lrnr_pkg_SuperLearner$new(SL_wrapper = "SL.glmnet")
 # stack learners into a model (including screeners and pipelines)
 learner_stack <- Stack$new(SL.glmnet_learner, glm_learner, screen_and_glm)
 stack_fit <- learner_stack$train(task)
+#> Warning: `lang_tail()` is deprecated as of rlang 0.2.0.
+#> This warning is displayed once per session.
+#> Warning: `mut_node_cdr()` is deprecated as of rlang 0.2.0.
+#> This warning is displayed once per session.
 preds <- stack_fit$predict()
 head(preds)
 #>    Lrnr_pkg_SuperLearner_SL.glmnet Lrnr_glm_TRUE
