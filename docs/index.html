@@ -159,57 +159,59 @@ install.packages("sl3")
 <a class="sourceLine" id="cb2-21" data-line-number="21"><span class="co">#&gt; origami: Generalized Cross-Validation Framework</span></a>
 <a class="sourceLine" id="cb2-22" data-line-number="22"><span class="co">#&gt; Version: 1.0.1</span></a>
 <a class="sourceLine" id="cb2-23" data-line-number="23"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(sl3)</a>
-<a class="sourceLine" id="cb2-24" data-line-number="24"><span class="co">#&gt; Registered S3 methods overwritten by 'ggplot2':</span></a>
-<a class="sourceLine" id="cb2-25" data-line-number="25"><span class="co">#&gt;   method         from </span></a>
-<a class="sourceLine" id="cb2-26" data-line-number="26"><span class="co">#&gt;   [.quosures     rlang</span></a>
-<a class="sourceLine" id="cb2-27" data-line-number="27"><span class="co">#&gt;   c.quosures     rlang</span></a>
-<a class="sourceLine" id="cb2-28" data-line-number="28"><span class="co">#&gt;   print.quosures rlang</span></a>
-<a class="sourceLine" id="cb2-29" data-line-number="29"></a>
-<a class="sourceLine" id="cb2-30" data-line-number="30"><span class="co"># load example data set</span></a>
-<a class="sourceLine" id="cb2-31" data-line-number="31"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(cpp)</a>
-<a class="sourceLine" id="cb2-32" data-line-number="32">cpp &lt;-<span class="st"> </span>cpp <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb2-33" data-line-number="33"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(haz)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb2-34" data-line-number="34"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html">mutate_all</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org/reference/funs.html">funs</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/replace.html">replace</a></span>(., <span class="kw"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(.), <span class="dv">0</span>)))</a>
-<a class="sourceLine" id="cb2-35" data-line-number="35"><span class="co">#&gt; Warning: funs() is soft deprecated as of dplyr 0.8.0</span></a>
-<a class="sourceLine" id="cb2-36" data-line-number="36"><span class="co">#&gt; please use list() instead</span></a>
-<a class="sourceLine" id="cb2-37" data-line-number="37"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb2-38" data-line-number="38"><span class="co">#&gt;   # Before:</span></a>
-<a class="sourceLine" id="cb2-39" data-line-number="39"><span class="co">#&gt;   funs(name = f(.))</span></a>
-<a class="sourceLine" id="cb2-40" data-line-number="40"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb2-41" data-line-number="41"><span class="co">#&gt;   # After: </span></a>
-<a class="sourceLine" id="cb2-42" data-line-number="42"><span class="co">#&gt;   list(name = ~ f(.))</span></a>
-<a class="sourceLine" id="cb2-43" data-line-number="43"><span class="co">#&gt; This warning is displayed once per session.</span></a>
-<a class="sourceLine" id="cb2-44" data-line-number="44"></a>
-<a class="sourceLine" id="cb2-45" data-line-number="45"><span class="co"># use covariates of intest and the outcome to build a task object</span></a>
-<a class="sourceLine" id="cb2-46" data-line-number="46">covars &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"apgar1"</span>, <span class="st">"apgar5"</span>, <span class="st">"parity"</span>, <span class="st">"gagebrth"</span>, <span class="st">"mage"</span>, <span class="st">"meducyrs"</span>,</a>
-<a class="sourceLine" id="cb2-47" data-line-number="47">            <span class="st">"sexn"</span>)</a>
-<a class="sourceLine" id="cb2-48" data-line-number="48">task &lt;-<span class="st"> </span>sl3_Task<span class="op">$</span><span class="kw">new</span>(cpp, <span class="dt">covariates =</span> covars, <span class="dt">outcome =</span> <span class="st">"haz"</span>)</a>
-<a class="sourceLine" id="cb2-49" data-line-number="49"></a>
-<a class="sourceLine" id="cb2-50" data-line-number="50"><span class="co"># set up screeners and learners via built-in functions and pipelines</span></a>
-<a class="sourceLine" id="cb2-51" data-line-number="51">slscreener &lt;-<span class="st"> </span>Lrnr_pkg_SuperLearner_screener<span class="op">$</span><span class="kw">new</span>(<span class="st">"screen.glmnet"</span>)</a>
-<a class="sourceLine" id="cb2-52" data-line-number="52">glm_learner &lt;-<span class="st"> </span>Lrnr_glm<span class="op">$</span><span class="kw">new</span>()</a>
-<a class="sourceLine" id="cb2-53" data-line-number="53">screen_and_glm &lt;-<span class="st"> </span>Pipeline<span class="op">$</span><span class="kw">new</span>(slscreener, glm_learner)</a>
-<a class="sourceLine" id="cb2-54" data-line-number="54">SL.glmnet_learner &lt;-<span class="st"> </span>Lrnr_pkg_SuperLearner<span class="op">$</span><span class="kw">new</span>(<span class="dt">SL_wrapper =</span> <span class="st">"SL.glmnet"</span>)</a>
-<a class="sourceLine" id="cb2-55" data-line-number="55"></a>
-<a class="sourceLine" id="cb2-56" data-line-number="56"><span class="co"># stack learners into a model (including screeners and pipelines)</span></a>
-<a class="sourceLine" id="cb2-57" data-line-number="57">learner_stack &lt;-<span class="st"> </span>Stack<span class="op">$</span><span class="kw">new</span>(SL.glmnet_learner, glm_learner, screen_and_glm)</a>
-<a class="sourceLine" id="cb2-58" data-line-number="58">stack_fit &lt;-<span class="st"> </span>learner_stack<span class="op">$</span><span class="kw">train</span>(task)</a>
-<a class="sourceLine" id="cb2-59" data-line-number="59">preds &lt;-<span class="st"> </span>stack_fit<span class="op">$</span><span class="kw"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>()</a>
-<a class="sourceLine" id="cb2-60" data-line-number="60"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(preds)</a>
-<a class="sourceLine" id="cb2-61" data-line-number="61"><span class="co">#&gt;    Lrnr_pkg_SuperLearner_SL.glmnet Lrnr_glm_TRUE</span></a>
-<a class="sourceLine" id="cb2-62" data-line-number="62"><span class="co">#&gt; 1:                      0.35618966    0.36298498</span></a>
-<a class="sourceLine" id="cb2-63" data-line-number="63"><span class="co">#&gt; 2:                      0.35618966    0.36298498</span></a>
-<a class="sourceLine" id="cb2-64" data-line-number="64"><span class="co">#&gt; 3:                      0.24964615    0.25993072</span></a>
-<a class="sourceLine" id="cb2-65" data-line-number="65"><span class="co">#&gt; 4:                      0.24964615    0.25993072</span></a>
-<a class="sourceLine" id="cb2-66" data-line-number="66"><span class="co">#&gt; 5:                      0.24964615    0.25993072</span></a>
-<a class="sourceLine" id="cb2-67" data-line-number="67"><span class="co">#&gt; 6:                      0.03776486    0.05680264</span></a>
-<a class="sourceLine" id="cb2-68" data-line-number="68"><span class="co">#&gt;    Pipeline(Lrnr_pkg_SuperLearner_screener_screen.glmnet-&gt;Lrnr_glm_TRUE)</span></a>
-<a class="sourceLine" id="cb2-69" data-line-number="69"><span class="co">#&gt; 1:                                                            0.36228209</span></a>
-<a class="sourceLine" id="cb2-70" data-line-number="70"><span class="co">#&gt; 2:                                                            0.36228209</span></a>
-<a class="sourceLine" id="cb2-71" data-line-number="71"><span class="co">#&gt; 3:                                                            0.25870995</span></a>
-<a class="sourceLine" id="cb2-72" data-line-number="72"><span class="co">#&gt; 4:                                                            0.25870995</span></a>
-<a class="sourceLine" id="cb2-73" data-line-number="73"><span class="co">#&gt; 5:                                                            0.25870995</span></a>
-<a class="sourceLine" id="cb2-74" data-line-number="74"><span class="co">#&gt; 6:                                                            0.05600958</span></a></code></pre></div>
+<a class="sourceLine" id="cb2-24" data-line-number="24"></a>
+<a class="sourceLine" id="cb2-25" data-line-number="25"><span class="co"># load example data set</span></a>
+<a class="sourceLine" id="cb2-26" data-line-number="26"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(cpp)</a>
+<a class="sourceLine" id="cb2-27" data-line-number="27">cpp &lt;-<span class="st"> </span>cpp <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-28" data-line-number="28"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(haz)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-29" data-line-number="29"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html">mutate_all</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org/reference/funs.html">funs</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/replace.html">replace</a></span>(., <span class="kw"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(.), <span class="dv">0</span>)))</a>
+<a class="sourceLine" id="cb2-30" data-line-number="30"><span class="co">#&gt; Warning: funs() is soft deprecated as of dplyr 0.8.0</span></a>
+<a class="sourceLine" id="cb2-31" data-line-number="31"><span class="co">#&gt; Please use a list of either functions or lambdas: </span></a>
+<a class="sourceLine" id="cb2-32" data-line-number="32"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-33" data-line-number="33"><span class="co">#&gt;   # Simple named list: </span></a>
+<a class="sourceLine" id="cb2-34" data-line-number="34"><span class="co">#&gt;   list(mean = mean, median = median)</span></a>
+<a class="sourceLine" id="cb2-35" data-line-number="35"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-36" data-line-number="36"><span class="co">#&gt;   # Auto named with `tibble::lst()`: </span></a>
+<a class="sourceLine" id="cb2-37" data-line-number="37"><span class="co">#&gt;   tibble::lst(mean, median)</span></a>
+<a class="sourceLine" id="cb2-38" data-line-number="38"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-39" data-line-number="39"><span class="co">#&gt;   # Using lambdas</span></a>
+<a class="sourceLine" id="cb2-40" data-line-number="40"><span class="co">#&gt;   list(~ mean(., trim = .2), ~ median(., na.rm = TRUE))</span></a>
+<a class="sourceLine" id="cb2-41" data-line-number="41"><span class="co">#&gt; This warning is displayed once per session.</span></a>
+<a class="sourceLine" id="cb2-42" data-line-number="42"></a>
+<a class="sourceLine" id="cb2-43" data-line-number="43"><span class="co"># use covariates of intest and the outcome to build a task object</span></a>
+<a class="sourceLine" id="cb2-44" data-line-number="44">covars &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"apgar1"</span>, <span class="st">"apgar5"</span>, <span class="st">"parity"</span>, <span class="st">"gagebrth"</span>, <span class="st">"mage"</span>, <span class="st">"meducyrs"</span>,</a>
+<a class="sourceLine" id="cb2-45" data-line-number="45">            <span class="st">"sexn"</span>)</a>
+<a class="sourceLine" id="cb2-46" data-line-number="46">task &lt;-<span class="st"> </span>sl3_Task<span class="op">$</span><span class="kw">new</span>(cpp, <span class="dt">covariates =</span> covars, <span class="dt">outcome =</span> <span class="st">"haz"</span>)</a>
+<a class="sourceLine" id="cb2-47" data-line-number="47"></a>
+<a class="sourceLine" id="cb2-48" data-line-number="48"><span class="co"># set up screeners and learners via built-in functions and pipelines</span></a>
+<a class="sourceLine" id="cb2-49" data-line-number="49">slscreener &lt;-<span class="st"> </span>Lrnr_pkg_SuperLearner_screener<span class="op">$</span><span class="kw">new</span>(<span class="st">"screen.glmnet"</span>)</a>
+<a class="sourceLine" id="cb2-50" data-line-number="50">glm_learner &lt;-<span class="st"> </span>Lrnr_glm<span class="op">$</span><span class="kw">new</span>()</a>
+<a class="sourceLine" id="cb2-51" data-line-number="51">screen_and_glm &lt;-<span class="st"> </span>Pipeline<span class="op">$</span><span class="kw">new</span>(slscreener, glm_learner)</a>
+<a class="sourceLine" id="cb2-52" data-line-number="52">SL.glmnet_learner &lt;-<span class="st"> </span>Lrnr_pkg_SuperLearner<span class="op">$</span><span class="kw">new</span>(<span class="dt">SL_wrapper =</span> <span class="st">"SL.glmnet"</span>)</a>
+<a class="sourceLine" id="cb2-53" data-line-number="53"></a>
+<a class="sourceLine" id="cb2-54" data-line-number="54"><span class="co"># stack learners into a model (including screeners and pipelines)</span></a>
+<a class="sourceLine" id="cb2-55" data-line-number="55">learner_stack &lt;-<span class="st"> </span>Stack<span class="op">$</span><span class="kw">new</span>(SL.glmnet_learner, glm_learner, screen_and_glm)</a>
+<a class="sourceLine" id="cb2-56" data-line-number="56">stack_fit &lt;-<span class="st"> </span>learner_stack<span class="op">$</span><span class="kw">train</span>(task)</a>
+<a class="sourceLine" id="cb2-57" data-line-number="57"><span class="co">#&gt; Warning: `lang_tail()` is deprecated as of rlang 0.2.0.</span></a>
+<a class="sourceLine" id="cb2-58" data-line-number="58"><span class="co">#&gt; This warning is displayed once per session.</span></a>
+<a class="sourceLine" id="cb2-59" data-line-number="59"><span class="co">#&gt; Warning: `mut_node_cdr()` is deprecated as of rlang 0.2.0.</span></a>
+<a class="sourceLine" id="cb2-60" data-line-number="60"><span class="co">#&gt; This warning is displayed once per session.</span></a>
+<a class="sourceLine" id="cb2-61" data-line-number="61">preds &lt;-<span class="st"> </span>stack_fit<span class="op">$</span><span class="kw"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>()</a>
+<a class="sourceLine" id="cb2-62" data-line-number="62"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(preds)</a>
+<a class="sourceLine" id="cb2-63" data-line-number="63"><span class="co">#&gt;    Lrnr_pkg_SuperLearner_SL.glmnet Lrnr_glm_TRUE</span></a>
+<a class="sourceLine" id="cb2-64" data-line-number="64"><span class="co">#&gt; 1:                      0.35618966    0.36298498</span></a>
+<a class="sourceLine" id="cb2-65" data-line-number="65"><span class="co">#&gt; 2:                      0.35618966    0.36298498</span></a>
+<a class="sourceLine" id="cb2-66" data-line-number="66"><span class="co">#&gt; 3:                      0.24964615    0.25993072</span></a>
+<a class="sourceLine" id="cb2-67" data-line-number="67"><span class="co">#&gt; 4:                      0.24964615    0.25993072</span></a>
+<a class="sourceLine" id="cb2-68" data-line-number="68"><span class="co">#&gt; 5:                      0.24964615    0.25993072</span></a>
+<a class="sourceLine" id="cb2-69" data-line-number="69"><span class="co">#&gt; 6:                      0.03776486    0.05680264</span></a>
+<a class="sourceLine" id="cb2-70" data-line-number="70"><span class="co">#&gt;    Pipeline(Lrnr_pkg_SuperLearner_screener_screen.glmnet-&gt;Lrnr_glm_TRUE)</span></a>
+<a class="sourceLine" id="cb2-71" data-line-number="71"><span class="co">#&gt; 1:                                                            0.36228209</span></a>
+<a class="sourceLine" id="cb2-72" data-line-number="72"><span class="co">#&gt; 2:                                                            0.36228209</span></a>
+<a class="sourceLine" id="cb2-73" data-line-number="73"><span class="co">#&gt; 3:                                                            0.25870995</span></a>
+<a class="sourceLine" id="cb2-74" data-line-number="74"><span class="co">#&gt; 4:                                                            0.25870995</span></a>
+<a class="sourceLine" id="cb2-75" data-line-number="75"><span class="co">#&gt; 5:                                                            0.25870995</span></a>
+<a class="sourceLine" id="cb2-76" data-line-number="76"><span class="co">#&gt; 6:                                                            0.05600958</span></a></code></pre></div>
 <hr>
 </div>
 <div id="contributions" class="section level2">
