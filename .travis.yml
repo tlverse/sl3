@@ -7,36 +7,23 @@ env:
   global:
   - RGL_USE_NULL=TRUE
   - PKG_CFLAGS="-O3 -Wall -pedantic"
-  - GITHUB_PAT:
-      secure: qw5REv850LVn7sMGf+lH0atxwjdzdidtInbW2m+b8ytkpSDjNdU/nUJQyPwkZtQOp5YGhffE0aeLoZiFmpnNqdnilxzA5/sGg/xC6kobCY/5C40pEFE+9ia3NkRBE3sGcXT3xowXDvY54zw/8Vc0E2NONU64xutlVtWRpjj5O4tVCEUsj+Vp4wxp737+UWjaZmVcPKv7fZje0MF77AowwP/mxjRTdo6gS9HmP527UWv53FksncMWAz8P/RwKRRpFI329yvkGiUvxmbAERhnTLSJpgQz+kqwhgNDm5E/6nEZ+fcfUoFoXBSsQvEF0Chi3J5NoGDg+kU8JDFOwW8wZEgPw0+ipNgPqs+KbDXCh+Yg11wCiS9IGLRgMDAV1WNrnjE9MLgtHD1JU/k2yrpvMOI8CbDwHV/f3D0UGf31qYiPFfu1F2mnkWlH+MpcSNASu/IKpeMrNsuxhkZrqnAhB4ZbWTfRSP9aFXd7WfejNSfgfwoUxeGMeKRT3cR0WP3Iv1rsvg3II6CNgIxNRGvOBT6Qb/oBSl1skSw2PvwB2Dj053E8qh3OkOuJJe7MPqRjEN+4IkhvFCP7mlLN3PGX+pny0Rx2oQ6kCg0uIDOa9O8es1ABUEdg09If1CyPMuDFvGwwOrb2Q7qe2c1d73bhb0dzqTnG1zHGhX54+ZQcQ9qc=
-  - secure: wp2+ENwJC6gtY0XA8h2w3t6FFlp8g0gABC2FfIYLVstNaH2UmML04YBKsbKxea5PigAiRJbSxgasD+FZTqVhSrNU3D9q5rdInocywRAVn0Xd1a2K8rPN0zf+H9BBJtjjJoQNsQlVEisCrlPuY5zs3KgpOkjD0xvx3sBw0wddwaLsNusrZWfiCHoc7+wIWtZzekK2z4ji0MOUI6LvdjYiBzUtNjZ+NZ0ef02EUHc7uvHioqmPi/KZvGcCCMYl3uz+aAlAstPbBuOVwRK7RHquvhjFxppgWB9cVV4nOelXvyrruCmJgogoiRifEi/cOxvkAR/qKTi5rnN83QPl69cd55ix1fa3dffFA9cYJJNZs3mm/XDc0niUvm520KRnExgjxDwvHYBBbViG5U8bGTOi3GFKmtfSJ2ra12vn3vgYleQt5R8JWhQ3mFsDGjjpL2pWkjpjWk0erew/afOcgq/C7cdvN7FXCVb5QgWAaJHpHHzGwqDN2eEZyiEAMrWVaWSu4CS9An5GDSZTYCBCYDUiwbpf3R0IBMHK4Lf+fbVC0/fVQY3cnLnq64sZH75ZGFgDsnU2UVSAu5zSBW06W/jWUUXMsf0OvVdSQ+HAEV/SIJ4PYiIL6nmOktGaXiMgzVUyD+Oz06t76MuvTnoV7ACTyoOINDd9ztJoLpI0kZwHZkg=
 
 language: R
 sudo: required
+cache: packages
 cran: http://cran.rstudio.com
 warnings_are_errors: true
 r_build_args: "--no-manual"
 r_check_args: "--no-build-vignettes --no-manual"
-
-# try cache mechanism used by the mlr project
-# see https://pjs-web.de/post/using-ccache-to-speed-up-r-package-checks-on-travis-ci/
-cache:
-  - ccache
-
-addons:
-  apt:
-    packages:
-     - ccache
 
 r:
   - release
   - devel
 
 before_install:
-  - mkdir $HOME/.R && echo -e 'CXX_STD = CXX14\n\nVER=\nCCACHE=ccache\nCC=$(CCACHE) gcc$(VER) -std=gnu99\nCXX=$(CCACHE) g++$(VER)\nC11=$(CCACHE) g++$(VER)\nC14=$(CCACHE) g++$(VER)\nFC=$(CCACHE) gfortran$(VER)\nF77=$(CCACHE) gfortran$(VER)' > $HOME/.R/Makevars
   - sudo apt-get -y install python3-pip python-dev
   - sudo pip install numpy tensorflow keras
-  - Rscript -e 'update.packages(ask = FALSE)'
+  #- Rscript -e 'update.packages(ask = FALSE)'
 
 r_packages:
   - devtools
