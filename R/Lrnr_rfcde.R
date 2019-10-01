@@ -111,7 +111,7 @@ Lrnr_rfcde <- R6Class(
         args$offset <- task$offset
       }
 
-      fit_object <- call_with_args(RFCDE::RFCDE, args)
+      fit_object <- do.call(RFCDE::RFCDE, args)
       return(fit_object)
     },
     .predict = function(task = NULL) {

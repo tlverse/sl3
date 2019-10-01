@@ -88,7 +88,7 @@ Lrnr_rpart <- R6Class(
 
       # call a function that fits your algorithm
       # with the argument list you constructed
-      fit_object <- call_with_args(rpart::rpart, args)
+      fit_object <- do.call(rpart::rpart, args)
 
       # return the fit object, which will be stored
       # in a learner object and returned from the call

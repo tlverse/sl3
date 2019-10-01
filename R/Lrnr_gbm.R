@@ -79,7 +79,7 @@ Lrnr_gbm <- R6Class(
       args$distribution <- distribution
       args$verbose <- FALSE
 
-      fit_object <- call_with_args(gbm::gbm.fit, args)
+      fit_object <- do.call(gbm::gbm.fit, args)
       return(fit_object)
     },
 
