@@ -211,7 +211,7 @@ sl3_Task <- R6Class(
     },
 
     next_in_chain = function(covariates = NULL, outcome = NULL, id = NULL,
-                                 weights = NULL, offset = NULL,
+                                 weights = NULL, offset = NULL, folds = NULL,
                                  column_names = NULL, new_nodes = NULL, ...) {
       if (is.null(new_nodes)) {
         new_nodes <- self$nodes
@@ -240,6 +240,11 @@ sl3_Task <- R6Class(
       if (is.null(column_names)) {
         column_names <- private$.column_names
       }
+
+      if (is.null(folds)) {
+        folds <- private$.folds
+      }
+
       all_nodes <- unlist(new_nodes)
 
       # verify nodes are contained in dataset
@@ -267,9 +272,11 @@ sl3_Task <- R6Class(
       new_task$initialize(
         private$.shared_data,
         nodes = new_nodes,
-        folds = private$.folds, column_names = column_names,
+        folds = private$.folds,
+        column_names = column_names,
         row_index = private$.row_index,
-        outcome_type = new_outcome_type, ...
+        outcome_type = new_outcome_type,
+        ...
       )
       return(new_task)
     },
