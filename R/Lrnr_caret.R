@@ -38,8 +38,8 @@
 #'   depending on the outcome type. For a detailed description, please consult 
 #'   the documentation for \code{\link[caret]{train}}.}
 #'   
-#'   \item{\code{trControl}}{An optional \code{\link[caret]{trainControl}} object 
-#'   controlling the computational nuances. If not specified, it will be 
+#'   \item{\code{trControl}}{An optional \code{\link[caret]{trainControl}} 
+#'   object controlling the computational nuances. If not specified, it will be 
 #'   initialized with `method`. For a detailed description, please consult the 
 #'   documentation for \code{\link[caret]{train}}.}
 #'   

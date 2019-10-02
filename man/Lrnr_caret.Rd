@@ -20,9 +20,9 @@ algorithms available in package \code{caret}.
 
 \describe{
 \item{\code{algorithm}}{The algorithm to use. This argument is passed as
-\code{method} to \code{\link[mgcv]{gam}}. For a detailed description of the
+\code{method} to \code{\link[caret]{train}}. For a detailed description of the
 methods available in the package, please consult the documentation for
-\code{\link[mgcv]{gam}}.}
+\code{\link[caret]{train}}.}
 
 \item{\code{method}}{An optional argument specifying the method for
 parameter selection criterion. Default is set to "CV" instead of the
@@ -34,12 +34,12 @@ detailed description, please consult the documentation for
 \item{\code{metric}}{An optional argument specifying the summary metric to
 be used to select the optimal model. If not specified, it will be inferred
 depending on the outcome type. For a detailed description, please consult
-the documentation for \code{\link[mgcv]{gam}}.}
+the documentation for \code{\link[caret]{train}}.}
 
-\item{\code{trControl}}{An optional \code{\link[mgcv]{trainControl}} object
-controlling the computational nuances. If not specified, it will be
+\item{\code{trControl}}{An optional \code{\link[caret]{trainControl}}
+object controlling the computational nuances. If not specified, it will be
 initialized with \code{method}. For a detailed description, please consult the
-documentation for \code{\link[mgcv]{gam}}.}
+documentation for \code{\link[caret]{train}}.}
 
 \item{\code{...}}{Other parameters passed to \code{\link[caret]{train}}.}
 }
