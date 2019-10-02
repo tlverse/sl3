@@ -13,8 +13,8 @@ Learner object with methods for training and prediction. See
 \code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
-This learner provides fitting procedures for generalized additive models using
-\code{\link[mgcv]{gam}}.
+This learner provides fitting procedures for generalized additive models
+using \code{\link[mgcv]{gam}}.
 }
 \section{Parameters}{
 
@@ -22,8 +22,8 @@ This learner provides fitting procedures for generalized additive models using
 \item{\code{formula}}{An optional argument specifying the formula of GAM.
 Input type can be formula or string, or a list of them. If not specified,
 continuous covariates will be smoothen with the smooth terms represented
-using `penalized thin plate regression splines'. For a detailed description,
-please consult the documentation for \code{\link[mgcv]{gam}}.}
+using `penalized thin plate regression splines'. For a detailed
+description, please consult the documentation for \code{\link[mgcv]{gam}}.}
 
 \item{\code{family}}{An optional argument specifying the family of GAM. See
 \code{\link{family}} and \code{\link[mgcv]{family.mgcv}} for a list of
