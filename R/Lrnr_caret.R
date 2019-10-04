@@ -98,9 +98,7 @@ Lrnr_caret <- R6Class(
         args$metric
       )
       # fit
-      fit_object <- call_with_args(caret::train, args,
-        other_valid = list("method", "metric", "y")
-      )
+      fit_object <- call_with_args(caret::train, args, keep_all = TRUE)
       return(fit_object)
     },
 
