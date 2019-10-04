@@ -34,6 +34,7 @@ task <- sl3_Task$new(data, covariates = Wnodes, outcome = Anode)
 learners <- list(
   rf = make_learner(Lrnr_randomForest),
   xgb = make_learner(Lrnr_xgboost),
+  gam = make_learner(Lrnr_gam),
   glmnet = make_learner(Lrnr_glmnet),
   glm_fast = make_learner(Lrnr_glm_fast),
   glm_fast_true_covars = make_learner(Lrnr_glm_fast, covariates = "W1"),

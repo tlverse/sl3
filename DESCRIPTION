@@ -74,7 +74,8 @@ Suggests:
     gam (>= 1.15.0),
     haldensify,
     RFCDE,
-    caret
+    caret,
+    mgcv
 Remotes:
     github::osofr/simcausal,
     github::osofr/condensier,
