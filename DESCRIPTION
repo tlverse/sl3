@@ -73,7 +73,8 @@ Suggests:
     dbarts,
     gam (>= 1.15.0),
     haldensify,
-    RFCDE
+    RFCDE,
+    caret
 Remotes:
     github::osofr/simcausal,
     github::osofr/condensier,
