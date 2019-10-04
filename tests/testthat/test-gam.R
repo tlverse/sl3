@@ -23,9 +23,10 @@ outcome <- "haz"
 task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
 
 test_that("Lrnr_gam with specifying formula and family works", {
-  lrnr_gam <- make_learner(Lrnr_gam, 
-                           formula = haz ~ s(bmi) + parity + s(mage) + sexn,
-                           family = quasi)
+  lrnr_gam <- make_learner(Lrnr_gam,
+    formula = haz ~ s(bmi) + parity + s(mage) + sexn,
+    family = quasi
+  )
   fit <- lrnr_gam$train(task)
   preds <- fit$predict(task)
   expect_equal(task$nrow, length(preds))
@@ -37,12 +38,13 @@ test_that("Lrnr_gam without specifying formula gives the predictions
   lrnr_gam <- Lrnr_gam$new()
   fit_lrnr_gam <- lrnr_gam$train(task)
   prd_lrnr_gam <- fit_lrnr_gam$predict()
-  
+
   ## fit gam using the data from the task
-  fit_gam <- mgcv::gam(haz ~ s(bmi) + parity + s(mage) + sexn, 
-                       method = "GCV.Cp", data = cpp_imputed)
+  fit_gam <- mgcv::gam(haz ~ s(bmi) + parity + s(mage) + sexn,
+    method = "GCV.Cp", data = cpp_imputed
+  )
   prd_gam <- as.numeric(predict(fit_gam, newdata = task$X))
-  
+
   ## test equivalence of prediction from Lrnr_svm and svm::svm
   expect_equal(prd_lrnr_gam, prd_gam)
 })
