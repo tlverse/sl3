@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Streamline Function Arguments — keep_only_fun_args • sl3</title>
+<title>Generate A Pooled Hazards Task from a Failure Time (or Categorical) Task — pooled_hazard_task • sl3</title>
 
 
 <!-- jquery -->
@@ -35,9 +35,8 @@
 
 
 
-<meta property="og:title" content="Streamline Function Arguments — keep_only_fun_args" />
-<meta property="og:description" content="Reduce a list of function argsuments by taking a function body and returning
-only the arguments that belong to the function signature." />
+<meta property="og:title" content="Generate A Pooled Hazards Task from a Failure Time (or Categorical) Task — pooled_hazard_task" />
+<meta property="og:description" content="Generate A Pooled Hazards Task from a Failure Time (or Categorical) Task" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -132,29 +131,28 @@ only the arguments that belong to the function signature." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Streamline Function Arguments</h1>
+    <h1>Generate A Pooled Hazards Task from a Failure Time (or Categorical) Task</h1>
     
-    <div class="hidden name"><code>keep_only_fun_args.Rd</code></div>
+    <div class="hidden name"><code>pooled_hazard_task.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Reduce a list of function argsuments by taking a function body and returning
-only the arguments that belong to the function signature.</p>
+    <p>Generate A Pooled Hazards Task from a Failure Time (or Categorical) Task</p>
     </div>
 
-    <pre class="usage"><span class='fu'>keep_only_fun_args</span>(<span class='no'>Args</span>, <span class='no'>fun</span>)</pre>
+    <pre class="usage"><span class='fu'>pooled_hazard_task</span>(<span class='no'>task</span>, <span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>Args</th>
-      <td><p>A <code>list</code> of function arguments to be streamlined.</p></td>
+      <th>task</th>
+      <td><p>A <code><a href='sl3_Task.html'>sl3_Task</a></code> where the outcome is failure time.</p></td>
     </tr>
     <tr>
-      <th>fun</th>
-      <td><p>A <code>function</code> whose signature will be used to reduce the
-arguments passed in.</p></td>
+      <th>trim</th>
+      <td><p>If <code>true</code>, remove entries after failure time for each
+observation.</p></td>
     </tr>
     </table>
 

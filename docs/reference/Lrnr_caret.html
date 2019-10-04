@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Univariate GARCH Models — Lrnr_rugarch • sl3</title>
+<title>Wrapping Learner for Package Caret — Lrnr_caret • sl3</title>
 
 
 <!-- jquery -->
@@ -35,10 +35,9 @@
 
 
 
-<meta property="og:title" content="Univariate GARCH Models — Lrnr_rugarch" />
-<meta property="og:description" content="This learner supports autoregressive fractionally integrated moving average
-and various flavors of generalized autoregressive conditional
-heteroskedasticity models for univariate time-series." />
+<meta property="og:title" content="Wrapping Learner for Package Caret — Lrnr_caret" />
+<meta property="og:description" content="This learner wraps train, providing a procedure to fit the
+algorithms available in package caret." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -133,18 +132,17 @@ heteroskedasticity models for univariate time-series." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Univariate GARCH Models</h1>
+    <h1>Wrapping Learner for Package Caret</h1>
     
-    <div class="hidden name"><code>Lrnr_rugarch.Rd</code></div>
+    <div class="hidden name"><code>Lrnr_caret.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This learner supports autoregressive fractionally integrated moving average
-and various flavors of generalized autoregressive conditional
-heteroskedasticity models for univariate time-series.</p>
+    <p>This learner wraps <code><a href='https://rdrr.io/pkg/caret/man/train.html'>train</a></code>, providing a procedure to fit the
+algorithms available in package <code>caret</code>.</p>
     </div>
 
-    <pre class="usage"><span class='no'>Lrnr_rugarch</span></pre>
+    <pre class="usage"><span class='no'>Lrnr_caret</span></pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
@@ -159,20 +157,29 @@ heteroskedasticity models for univariate time-series.</p>
     
 
 <dl class='dl-horizontal'>
-<dt><code>variance.model</code></dt><dd><p>List containing variance model specification.
-This includes model, GARCH order, submodel, external regressors and
-variance tageting. Refer to <code>ugarchspec</code> for more information.</p></dd>
-<dt><code>mean.model</code></dt><dd><p>List containing the mean model specification. This
-includes ARMA model, whether the mean should be included, and external
-regressors among others. Refer to <code>ugarchspec</code> for more
-information.</p></dd>
-<dt><code>distribution.model="norm"</code></dt><dd><p>Conditional density to use for the
-innovations.</p></dd>
-<dt><code>start.pars=list()</code></dt><dd><p>List of staring parameters for the
-optimization routine.</p></dd>
-<dt><code>fixed.pars=list()</code></dt><dd><p>List of parameters which are to be kept
-fixed during the optimization.</p></dd>
-<dt><code>n.ahead=NULL</code></dt><dd><p>The forecast horizon.</p></dd>
+<dt><code>algorithm</code></dt><dd><p>The algorithm to use. This argument is passed as
+<code>method</code> to <code><a href='https://rdrr.io/pkg/caret/man/train.html'>train</a></code>. For a detailed description of the
+methods available in the package, please consult the documentation for
+<code><a href='https://rdrr.io/pkg/caret/man/train.html'>train</a></code>.</p></dd>
+
+<dt><code>method</code></dt><dd><p>An optional argument specifying the method for
+parameter selection criterion. Default is set to "CV" instead of the
+<code><a href='https://rdrr.io/pkg/caret/man/train.html'>train</a></code> default "boot". This argument is passed to
+<code>trControl</code> and will not be effective if <code>trControl</code> is specified. For a
+detailed description, please consult the documentation for
+<code><a href='https://rdrr.io/pkg/caret/man/train.html'>train</a></code>.</p></dd>
+
+<dt><code>metric</code></dt><dd><p>An optional argument specifying the summary metric to
+be used to select the optimal model. If not specified, it will be inferred
+depending on the outcome type. For a detailed description, please consult
+the documentation for <code><a href='https://rdrr.io/pkg/caret/man/train.html'>train</a></code>.</p></dd>
+
+<dt><code>trControl</code></dt><dd><p>An optional <code><a href='https://rdrr.io/pkg/caret/man/trainControl.html'>trainControl</a></code>
+object controlling the computational nuances. If not specified, it will be
+initialized with <code>method</code>. For a detailed description, please consult the
+documentation for <code><a href='https://rdrr.io/pkg/caret/man/train.html'>train</a></code>.</p></dd>
+
+<dt><code>...</code></dt><dd><p>Other parameters passed to <code><a href='https://rdrr.io/pkg/caret/man/train.html'>train</a></code>.</p></dd>
 
 </dl>
 
@@ -181,9 +188,8 @@ fixed during the optimization.</p></dd>
     <div class='dont-index'><p>Other Learners: <code><a href='Custom_chain.html'>Custom_chain</a></code>,
   <code><a href='Lrnr_HarmonicReg.html'>Lrnr_HarmonicReg</a></code>, <code><a href='Lrnr_arima.html'>Lrnr_arima</a></code>,
   <code><a href='Lrnr_bartMachine.html'>Lrnr_bartMachine</a></code>, <code><a href='Lrnr_base.html'>Lrnr_base</a></code>,
-  <code><a href='Lrnr_bilstm.html'>Lrnr_bilstm</a></code>, <code><a href='Lrnr_caret.html'>Lrnr_caret</a></code>,
-  <code><a href='Lrnr_condensier.html'>Lrnr_condensier</a></code>, <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
-  <code><a href='Lrnr_dbarts.html'>Lrnr_dbarts</a></code>,
+  <code><a href='Lrnr_bilstm.html'>Lrnr_bilstm</a></code>, <code><a href='Lrnr_condensier.html'>Lrnr_condensier</a></code>,
+  <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>, <code><a href='Lrnr_dbarts.html'>Lrnr_dbarts</a></code>,
   <code><a href='Lrnr_define_interactions.html'>Lrnr_define_interactions</a></code>,
   <code><a href='Lrnr_density_discretize.html'>Lrnr_density_discretize</a></code>,
   <code><a href='Lrnr_density_hse.html'>Lrnr_density_hse</a></code>,
@@ -204,8 +210,8 @@ fixed during the optimization.</p></dd>
   <code><a href='Lrnr_randomForest.html'>Lrnr_randomForest</a></code>,
   <code><a href='Lrnr_ranger.html'>Lrnr_ranger</a></code>,
   <code><a href='Lrnr_revere_task.html'>Lrnr_revere_task</a></code>, <code><a href='Lrnr_rfcde.html'>Lrnr_rfcde</a></code>,
-  <code><a href='Lrnr_rpart.html'>Lrnr_rpart</a></code>, <code><a href='Lrnr_sl.html'>Lrnr_sl</a></code>,
-  <code><a href='Lrnr_solnp_density.html'>Lrnr_solnp_density</a></code>,
+  <code><a href='Lrnr_rpart.html'>Lrnr_rpart</a></code>, <code><a href='Lrnr_rugarch.html'>Lrnr_rugarch</a></code>,
+  <code><a href='Lrnr_sl.html'>Lrnr_sl</a></code>, <code><a href='Lrnr_solnp_density.html'>Lrnr_solnp_density</a></code>,
   <code><a href='Lrnr_solnp.html'>Lrnr_solnp</a></code>, <code><a href='Lrnr_stratified.html'>Lrnr_stratified</a></code>,
   <code><a href='Lrnr_subset_covariates.html'>Lrnr_subset_covariates</a></code>,
   <code><a href='Lrnr_svm.html'>Lrnr_svm</a></code>, <code><a href='Lrnr_tsDyn.html'>Lrnr_tsDyn</a></code>,

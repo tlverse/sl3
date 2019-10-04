@@ -108,7 +108,7 @@ library(SuperLearner)
 #> Package created on 2018-07-10
 library(origami)
 #> origami: Generalized Cross-Validation Framework
-#> Version: 1.0.1
+#> Version: 1.0.2
 library(sl3)
 
 # load example data set

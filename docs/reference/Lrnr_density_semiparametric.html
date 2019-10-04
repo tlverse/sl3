@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Univariate GARCH Models — Lrnr_rugarch • sl3</title>
+<title>Density Estimation With Mean Model and Homoscedastic Errors — Lrnr_density_semiparametric • sl3</title>
 
 
 <!-- jquery -->
@@ -35,10 +35,9 @@
 
 
 
-<meta property="og:title" content="Univariate GARCH Models — Lrnr_rugarch" />
-<meta property="og:description" content="This learner supports autoregressive fractionally integrated moving average
-and various flavors of generalized autoregressive conditional
-heteroskedasticity models for univariate time-series." />
+<meta property="og:title" content="Density Estimation With Mean Model and Homoscedastic Errors — Lrnr_density_semiparametric" />
+<meta property="og:description" content="This learner assumes a mean model with homoscedastic errors: Y ~ E(Y|W) + epsilon. E(Y|W) is fit using any mean learner,
+and then the errors are fit with kernel density estimation." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -133,18 +132,17 @@ heteroskedasticity models for univariate time-series." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Univariate GARCH Models</h1>
+    <h1>Density Estimation With Mean Model and Homoscedastic Errors</h1>
     
-    <div class="hidden name"><code>Lrnr_rugarch.Rd</code></div>
+    <div class="hidden name"><code>Lrnr_density_semiparametric.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This learner supports autoregressive fractionally integrated moving average
-and various flavors of generalized autoregressive conditional
-heteroskedasticity models for univariate time-series.</p>
+    <p>This learner assumes a mean model with homoscedastic errors: Y ~ E(Y|W) + epsilon. E(Y|W) is fit using any mean learner,
+and then the errors are fit with kernel density estimation.</p>
     </div>
 
-    <pre class="usage"><span class='no'>Lrnr_rugarch</span></pre>
+    <pre class="usage"><span class='no'>Lrnr_density_semiparametric</span></pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
@@ -159,20 +157,21 @@ heteroskedasticity models for univariate time-series.</p>
     
 
 <dl class='dl-horizontal'>
-<dt><code>variance.model</code></dt><dd><p>List containing variance model specification.
-This includes model, GARCH order, submodel, external regressors and
-variance tageting. Refer to <code>ugarchspec</code> for more information.</p></dd>
-<dt><code>mean.model</code></dt><dd><p>List containing the mean model specification. This
-includes ARMA model, whether the mean should be included, and external
-regressors among others. Refer to <code>ugarchspec</code> for more
-information.</p></dd>
-<dt><code>distribution.model="norm"</code></dt><dd><p>Conditional density to use for the
-innovations.</p></dd>
-<dt><code>start.pars=list()</code></dt><dd><p>List of staring parameters for the
-optimization routine.</p></dd>
-<dt><code>fixed.pars=list()</code></dt><dd><p>List of parameters which are to be kept
-fixed during the optimization.</p></dd>
-<dt><code>n.ahead=NULL</code></dt><dd><p>The forecast horizon.</p></dd>
+<dt><code>binomial_learner</code></dt><dd><p>The learner to wrap.</p></dd>
+
+</dl>
+
+    <h2 class="hasAnchor" id="common-parameters"><a class="anchor" href="#common-parameters"></a>Common Parameters</h2>
+
+    
+
+
+<p>Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by <code>Lrnr_base</code>, and shared
+by all learners.</p>
+<dl class='dl-horizontal'>
+<dt><code>covariates</code></dt><dd><p>A character vector of covariates. The learner will use this to subset the covariates for any specified task</p></dd>
+<dt><code>outcome_type</code></dt><dd><p>A <code><a href='variable_type.html'>variable_type</a></code> object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified</p></dd>
+<dt><code>...</code></dt><dd><p>All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating</p></dd>
 
 </dl>
 
@@ -186,13 +185,12 @@ fixed during the optimization.</p></dd>
   <code><a href='Lrnr_dbarts.html'>Lrnr_dbarts</a></code>,
   <code><a href='Lrnr_define_interactions.html'>Lrnr_define_interactions</a></code>,
   <code><a href='Lrnr_density_discretize.html'>Lrnr_density_discretize</a></code>,
-  <code><a href='Lrnr_density_hse.html'>Lrnr_density_hse</a></code>,
-  <code><a href='Lrnr_density_semiparametric.html'>Lrnr_density_semiparametric</a></code>,
-  <code><a href='Lrnr_earth.html'>Lrnr_earth</a></code>, <code><a href='Lrnr_expSmooth.html'>Lrnr_expSmooth</a></code>,
-  <code><a href='Lrnr_gam.html'>Lrnr_gam</a></code>, <code><a href='Lrnr_gbm.html'>Lrnr_gbm</a></code>,
-  <code><a href='Lrnr_glm_fast.html'>Lrnr_glm_fast</a></code>, <code><a href='Lrnr_glmnet.html'>Lrnr_glmnet</a></code>,
-  <code><a href='Lrnr_glm.html'>Lrnr_glm</a></code>, <code><a href='Lrnr_grf.html'>Lrnr_grf</a></code>,
-  <code><a href='Lrnr_h2o_grid.html'>Lrnr_h2o_grid</a></code>, <code><a href='Lrnr_hal9001.html'>Lrnr_hal9001</a></code>,
+  <code><a href='Lrnr_density_hse.html'>Lrnr_density_hse</a></code>, <code><a href='Lrnr_earth.html'>Lrnr_earth</a></code>,
+  <code><a href='Lrnr_expSmooth.html'>Lrnr_expSmooth</a></code>, <code><a href='Lrnr_gam.html'>Lrnr_gam</a></code>,
+  <code><a href='Lrnr_gbm.html'>Lrnr_gbm</a></code>, <code><a href='Lrnr_glm_fast.html'>Lrnr_glm_fast</a></code>,
+  <code><a href='Lrnr_glmnet.html'>Lrnr_glmnet</a></code>, <code><a href='Lrnr_glm.html'>Lrnr_glm</a></code>,
+  <code><a href='Lrnr_grf.html'>Lrnr_grf</a></code>, <code><a href='Lrnr_h2o_grid.html'>Lrnr_h2o_grid</a></code>,
+  <code><a href='Lrnr_hal9001.html'>Lrnr_hal9001</a></code>,
   <code><a href='Lrnr_haldensify.html'>Lrnr_haldensify</a></code>,
   <code><a href='Lrnr_independent_binomial.html'>Lrnr_independent_binomial</a></code>,
   <code><a href='Lrnr_lstm.html'>Lrnr_lstm</a></code>, <code><a href='Lrnr_mean.html'>Lrnr_mean</a></code>,
@@ -204,8 +202,8 @@ fixed during the optimization.</p></dd>
   <code><a href='Lrnr_randomForest.html'>Lrnr_randomForest</a></code>,
   <code><a href='Lrnr_ranger.html'>Lrnr_ranger</a></code>,
   <code><a href='Lrnr_revere_task.html'>Lrnr_revere_task</a></code>, <code><a href='Lrnr_rfcde.html'>Lrnr_rfcde</a></code>,
-  <code><a href='Lrnr_rpart.html'>Lrnr_rpart</a></code>, <code><a href='Lrnr_sl.html'>Lrnr_sl</a></code>,
-  <code><a href='Lrnr_solnp_density.html'>Lrnr_solnp_density</a></code>,
+  <code><a href='Lrnr_rpart.html'>Lrnr_rpart</a></code>, <code><a href='Lrnr_rugarch.html'>Lrnr_rugarch</a></code>,
+  <code><a href='Lrnr_sl.html'>Lrnr_sl</a></code>, <code><a href='Lrnr_solnp_density.html'>Lrnr_solnp_density</a></code>,
   <code><a href='Lrnr_solnp.html'>Lrnr_solnp</a></code>, <code><a href='Lrnr_stratified.html'>Lrnr_stratified</a></code>,
   <code><a href='Lrnr_subset_covariates.html'>Lrnr_subset_covariates</a></code>,
   <code><a href='Lrnr_svm.html'>Lrnr_svm</a></code>, <code><a href='Lrnr_tsDyn.html'>Lrnr_tsDyn</a></code>,
@@ -220,6 +218,7 @@ fixed during the optimization.</p></dd>
       <li><a href="#format">Format</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#parameters">Parameters</a></li>
+      <li><a href="#common-parameters">Common Parameters</a></li>
       <li><a href="#see-also">See also</a></li>
     </ul>
 
