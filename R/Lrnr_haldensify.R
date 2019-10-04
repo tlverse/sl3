@@ -89,7 +89,7 @@ Lrnr_haldensify <- R6Class(
         args$offset <- task$offset
       }
 
-      fit_object <- call_with_args(haldensify::haldensify, args)
+      fit_object <- do.call(haldensify::haldensify, args)
       return(fit_object)
     },
     .predict = function(task = NULL) {

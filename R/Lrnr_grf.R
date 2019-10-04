@@ -91,7 +91,7 @@ Lrnr_grf <- R6Class(
         args$offset <- task$offset
       }
 
-      fit_object <- call_with_args(grf::quantile_forest, args)
+      fit_object <- do.call(grf::quantile_forest, args)
 
       return(fit_object)
     },

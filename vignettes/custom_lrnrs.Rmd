@@ -172,11 +172,12 @@ Most of the time, the learner you are implementing will be fit using a function
 that already exists elsewhere. We've built some tools to facilitate passing
 parameter values directly to such functions. The `private$.train` function in
 the template uses a common pattern: it builds up an argument list starting with
-the parameter values and using data from the task, it then uses `call_with_args`
+the parameter values and using data from the task, it then uses `do.call`
 to call `my_ml_fun` with that argument list. It's not required that learners use
 this pattern, but it will be helpful in the common case where the learner is
 simply wrapping an underlying `my_ml_fun`.
 
+```{r, eval=FALSE, echo=FALSE}
 By default, `call_with_args` will pass all arguments in the argument list
 matched by the definition of the function that it is calling. This allows the
 learner to silently drop irrelevant parameters from the call to `my_ml_fun`.
@@ -185,6 +186,7 @@ by passing important arguments through such dot arguments on to a secondary
 function. Both of these cases can be handled using the `other_valid` and
 `keep_all` options to `call_with_args`. The former allows you to list other
 valid arguments and the latter disables argument filtering altogether.
+```
 
 ### `private$.predict`
 

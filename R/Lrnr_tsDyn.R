@@ -145,7 +145,7 @@ Lrnr_tsDyn <- R6Class(
       attach(list(lag = stats::lag), name = "stats_lag_kludge", warn.conflicts = FALSE)
 
 
-      fit_object <- call_with_args(learner_fun, args)
+      fit_object <- do.call(learner_fun, args)
 
       detach("stats_lag_kludge")
       return(fit_object)

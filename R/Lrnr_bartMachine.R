@@ -88,7 +88,7 @@ Lrnr_bartMachine <- R6Class(
         args$offset <- task$offset
       }
 
-      fit_object <- call_with_args(bartMachine::bartMachine, args)
+      fit_object <- do.call(bartMachine::bartMachine, args)
 
       return(fit_object)
     },
