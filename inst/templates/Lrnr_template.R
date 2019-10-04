@@ -90,7 +90,7 @@ Lrnr_template <- R6Class(classname = "Lrnr_template", inherit = Lrnr_base,
 
       # call a function that fits your algorithm
       # with the argument list you constructed
-      fit_object <- do.call(my_ml_fun, args)
+      fit_object <- call_with_args(my_ml_fun, args)
 
       # return the fit object, which will be stored
       # in a learner object and returned from the call

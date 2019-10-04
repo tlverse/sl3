@@ -109,7 +109,7 @@ Lrnr_dbarts <- R6Class(
         args$offset <- task$offset
       }
 
-      fit_object <- do.call(dbarts::bart, args)
+      fit_object <- call_with_args(dbarts::bart, args)
 
       return(fit_object)
     },

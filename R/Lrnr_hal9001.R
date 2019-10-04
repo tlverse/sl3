@@ -88,7 +88,7 @@ Lrnr_hal9001 <- R6Class(
         args$offset <- task$offset
       }
 
-      fit_object <- do.call(hal9001::fit_hal, args)
+      fit_object <- call_with_args(hal9001::fit_hal, args)
       return(fit_object)
     },
     .predict = function(task = NULL) {

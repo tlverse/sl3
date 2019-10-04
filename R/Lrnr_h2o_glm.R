@@ -126,7 +126,7 @@ Lrnr_h2o_glm <- R6Class(
         args$offset_column <- task$nodes$offset
       }
 
-      fit_object <- do.call(h2o::h2o.glm, args)
+      fit_object <- call_with_args(h2o::h2o.glm, args)
 
       h2o::h2o.show_progress()
       ## assign the fitted coefficients in correct order (same as predictor

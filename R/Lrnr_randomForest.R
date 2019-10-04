@@ -64,7 +64,7 @@ Lrnr_randomForest <- R6Class(
         "randomForest", "default",
         envir = getNamespace("randomForest")
       )
-      fit_object <- do.call(rf_fun, args)
+      fit_object <- call_with_args(rf_fun, args)
       return(fit_object)
     },
 

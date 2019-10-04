@@ -52,7 +52,7 @@ Lrnr_ranger <- R6Class(
       colnames(data_in)[1] <- task$nodes$outcome
       args$data <- data_in
       args$dependent.variable.name <- task$nodes$outcome
-      fit_object <- do.call(ranger::ranger, args)
+      fit_object <- call_with_args(ranger::ranger, args)
       return(fit_object)
     },
 

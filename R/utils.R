@@ -66,7 +66,6 @@ keep_only_fun_args <- function(Args, fun) {
 #' @keywords internal
 #
 call_with_args <- function(fun, args, other_valid = list(), keep_all = FALSE) {
-  warning("Function `call_with_args` is deprecated.")
   if (!keep_all) {
     formal_args <- names(formals(fun))
     all_valid <- c(formal_args, other_valid)

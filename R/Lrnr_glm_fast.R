@@ -89,7 +89,7 @@ Lrnr_glm_fast <- R6Class(
 
       SuppressGivenWarnings({
         fit_object <- try(
-          do.call(speedglm::speedglm.wfit, args),
+          call_with_args(speedglm::speedglm.wfit, args),
           silent = TRUE
         )
       }, GetWarningsToSuppress())
@@ -106,7 +106,7 @@ Lrnr_glm_fast <- R6Class(
         args$x <- args$X
 
         SuppressGivenWarnings({
-          fit_object <- do.call(stats::glm.fit, args)
+          fit_object <- call_with_args(stats::glm.fit, args)
         }, GetWarningsToSuppress())
 
         fit_object$linear.predictors <- NULL

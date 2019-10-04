@@ -61,14 +61,14 @@ Lrnr_polspline <- R6Class(
         }
         args$predictors <- task$X
         args$responses <- outcome_type$format(task$Y)
-        fit_object <- do.call(polspline::polymars, args)
+        fit_object <- call_with_args(polspline::polymars, args)
       } else if (outcome_type$type %in% c("binomial", "categorical")) {
         if (task$has_node("weights")) {
           args$weight <- task$weights
         }
         args$cov <- task$X
         args$data <- outcome_type$format(task$Y)
-        fit_object <- do.call(polspline::polyclass, args)
+        fit_object <- call_with_args(polspline::polyclass, args)
       } else {
         stop("Lrnr_polspline does not support the designated outcome type.")
       }

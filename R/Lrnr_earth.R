@@ -93,7 +93,7 @@ Lrnr_earth <- R6Class(
       }
       args$glm <- glm
 
-      fit_object <- do.call(getS3method("earth", "default"), args)
+      fit_object <- call_with_args(getS3method("earth", "default"), args)
       return(fit_object)
     },
 

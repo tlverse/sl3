@@ -66,7 +66,7 @@ Lrnr_rugarch <- R6Class(
     .train = function(task) {
       args <- self$params
       # Support for a single time-series
-      spec_object <- do.call(rugarch::ugarchspec, args)
+      spec_object <- call_with_args(rugarch::ugarchspec, args)
       # Perhaps might not want to store all the info. TODO
       fit_object <- rugarch::ugarchfit(spec_object, task$X)
       return(fit_object)
