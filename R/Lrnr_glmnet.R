@@ -85,12 +85,12 @@ Lrnr_glmnet <- R6Class(
         args$offset <- task$offset
       }
       fit_object <- do.call(glmnet::cv.glmnet, args)
-      '
+      "
       fit_object <- call_with_args(
         glmnet::cv.glmnet, args,
         names(formals(glmnet::glmnet))
       )
-      '
+      "
       fit_object$glmnet.fit$call <- NULL
       return(fit_object)
     },
