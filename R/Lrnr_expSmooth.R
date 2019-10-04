@@ -94,7 +94,7 @@ Lrnr_expSmooth <- R6Class(
       if (args$model == "ZZZ") {
         fit_object <- forecast::ets(args$y)
       } else {
-        fit_object <- call_with_args(forecast::ets, args)
+        fit_object <- do.call(forecast::ets, args)
       }
       return(fit_object)
     },
