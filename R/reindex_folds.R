@@ -12,6 +12,14 @@ subset_fold <- function(fold, subset){
                      reindex(validation(),subset))
 }
 
+#' Make folds work on subset of data
+#' 
+#' subset_folds takes a origami style folds list, and returns a 
+#' list of folds applicable to a subset, by subsetting the training and validation index vectors
+#' 
+#' @param folds an origami style folds list
+#' @param subset an index vector to be used to subset the data
+#' @export
 subset_folds <- function(folds, subset){
   subsetted <- lapply(folds,subset_fold, subset)
   
