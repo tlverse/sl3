@@ -73,7 +73,7 @@ Lrnr_hal9001 <- R6Class(
       outcome_type <- self$get_outcome_type(task)
 
       if (is.null(args$family)) {
-        args$family <- outcome_type$glm_family(return_object = TRUE)$family
+        args$family <- args$family <- outcome_type$glm_family()
       }
 
       args$X <- as.matrix(task$X)

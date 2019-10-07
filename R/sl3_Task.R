@@ -294,8 +294,9 @@ sl3_Task <- R6Class(
       if (drop_folds) {
         new_folds <- NULL
       } else {
-        new_folds <- self$folds
+        new_folds <- subset_folds(self$folds, row_index)
       }
+
       new_task$initialize(
         private$.shared_data,
         nodes = private$.nodes,

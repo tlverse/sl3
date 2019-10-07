@@ -1,17 +1,3 @@
-# the functions re-index folds to account for new long data structure
-reindex <- function(index, fold_index) {
-  which(index %in% fold_index)
-}
-
-reindex_fold <- function(fold, index) {
-  new_fold <- origami::make_fold(
-    fold$v,
-    reindex(index, fold$training_set),
-    reindex(index, fold$validation_set)
-  )
-}
-
-
 #' Generate A Pooled Hazards Task from a Failure Time (or Categorical) Task
 #'
 #' @param task A \code{\link{sl3_Task}} where the outcome is failure time.
