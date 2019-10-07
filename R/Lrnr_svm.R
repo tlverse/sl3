@@ -100,9 +100,7 @@ Lrnr_svm <- R6Class(
 
       # call a function that fits your algorithm
       # with the argument list you constructed
-      fit_object <- call_with_args(e1071::svm, args,
-        other_valid = list("type", "y")
-      )
+      fit_object <- call_with_args(e1071::svm, args, keep_all = TRUE)
       return(fit_object)
     },
 

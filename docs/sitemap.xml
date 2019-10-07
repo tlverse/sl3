@@ -25,6 +25,9 @@
     <loc>https://tlverse.org/sl3/reference/Lrnr_bilstm.html</loc>
   </url>
   <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_caret.html</loc>
+  </url>
+  <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_condensier.html</loc>
   </url>
   <url>
@@ -37,10 +40,22 @@
     <loc>https://tlverse.org/sl3/reference/Lrnr_define_interactions.html</loc>
   </url>
   <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_density_discretize.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_density_hse.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_density_semiparametric.html</loc>
+  </url>
+  <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_earth.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_expSmooth.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_gam.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_gbm.html</loc>
@@ -95,6 +110,9 @@
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_polspline.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_pooled_hazards.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_randomForest.html</loc>
@@ -203,6 +221,9 @@
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/pack_predictions.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/reference/pooled_hazard_task.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/predict_classes.html</loc>

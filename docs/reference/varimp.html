@@ -8,10 +8,12 @@
 
 <title>Variable Importance Measure — varimp • sl3</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -22,8 +24,9 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -31,14 +34,15 @@
 
 
 
-<meta property="og:title" content="Variable Importance Measure — varimp" />
 
+<meta property="og:title" content="Variable Importance Measure — varimp" />
 <meta property="og:description" content="Function that takes a learner fitted task and loss function to generate a
 table where each row corresponds to the risk when we omit a covariate minus
 the risk when we do not omit the covariate. Specifically, we calculate the
 risk difference between the learner fit with a scrambled covariate and the
 leaner fit with the true covariate, across all covariates." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -62,6 +66,7 @@ leaner fit with the true covariate, across all covariates." />
   gtag('config', 'UA-115145808-1');
 </script>
 
+
   </head>
 
   <body>
@@ -78,7 +83,7 @@ leaner fit with the true covariate, across all covariates." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sl3</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.2</span>
       </span>
     </div>
 
@@ -115,7 +120,6 @@ leaner fit with the true covariate, across all covariates." />
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -125,6 +129,7 @@ leaner fit with the true covariate, across all covariates." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -136,17 +141,15 @@ leaner fit with the true covariate, across all covariates." />
     </div>
 
     <div class="ref-description">
-    
     <p>Function that takes a learner fitted task and loss function to generate a
 table where each row corresponds to the risk when we omit a covariate minus
 the risk when we do not omit the covariate. Specifically, we calculate the
 risk difference between the learner fit with a scrambled covariate and the
 leaner fit with the true covariate, across all covariates.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>varimp</span>(<span class='no'>fit</span>, <span class='no'>loss</span>, <span class='kw'>fold_number</span> <span class='kw'>=</span> <span class='st'>"validation"</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -164,24 +167,23 @@ leaner fit with the true covariate, across all covariates.</p>
 cross-validated vim, or a positive integer for fold-specific vim</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A table of risk differences for each covariate, where a higher risk
 difference indicates a more important covariate in predicting Y</p>
-    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-          </ul>
+    </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -189,13 +191,16 @@ difference indicates a more important covariate in predicting Y</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

@@ -8,10 +8,12 @@
 
 <title>Undocumented Learner — undocumented_learner • sl3</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -22,8 +24,9 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -31,10 +34,11 @@
 
 
 
-<meta property="og:title" content="Undocumented Learner — undocumented_learner" />
 
+<meta property="og:title" content="Undocumented Learner — undocumented_learner" />
 <meta property="og:description" content="We haven't documented this one yet. Feel free to contribute!" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -58,6 +62,7 @@
   gtag('config', 'UA-115145808-1');
 </script>
 
+
   </head>
 
   <body>
@@ -74,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sl3</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.2</span>
       </span>
     </div>
 
@@ -111,7 +116,6 @@
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -121,6 +125,7 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -132,42 +137,44 @@
     </div>
 
     <div class="ref-description">
-    
     <p>We haven't documented this one yet. Feel free to contribute!</p>
-    
     </div>
 
-        
+
+
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
     <p><code>R6Class</code> object.</p>
-    
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code><a href='Lrnr_base.html'>Lrnr_base</a></code> object with methods for training and
 prediction.</p>
-    
     <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
 
     
-    <dl class='dl-horizontal'>
+
+<dl class='dl-horizontal'>
 <dt><code>params</code></dt><dd><p>A list of parameters needed to fully specify the learner. This
 includes things like model hyperparameters.</p></dd>
+
 </dl>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Learners: <code><a href='Custom_chain.html'>Custom_chain</a></code>,
   <code><a href='Lrnr_HarmonicReg.html'>Lrnr_HarmonicReg</a></code>, <code><a href='Lrnr_arima.html'>Lrnr_arima</a></code>,
   <code><a href='Lrnr_bartMachine.html'>Lrnr_bartMachine</a></code>, <code><a href='Lrnr_base.html'>Lrnr_base</a></code>,
-  <code><a href='Lrnr_bilstm.html'>Lrnr_bilstm</a></code>, <code><a href='Lrnr_condensier.html'>Lrnr_condensier</a></code>,
-  <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>, <code><a href='Lrnr_dbarts.html'>Lrnr_dbarts</a></code>,
+  <code><a href='Lrnr_bilstm.html'>Lrnr_bilstm</a></code>, <code><a href='Lrnr_caret.html'>Lrnr_caret</a></code>,
+  <code><a href='Lrnr_condensier.html'>Lrnr_condensier</a></code>, <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
+  <code><a href='Lrnr_dbarts.html'>Lrnr_dbarts</a></code>,
   <code><a href='Lrnr_define_interactions.html'>Lrnr_define_interactions</a></code>,
+  <code><a href='Lrnr_density_discretize.html'>Lrnr_density_discretize</a></code>,
+  <code><a href='Lrnr_density_hse.html'>Lrnr_density_hse</a></code>,
+  <code><a href='Lrnr_density_semiparametric.html'>Lrnr_density_semiparametric</a></code>,
   <code><a href='Lrnr_earth.html'>Lrnr_earth</a></code>, <code><a href='Lrnr_expSmooth.html'>Lrnr_expSmooth</a></code>,
-  <code><a href='Lrnr_gbm.html'>Lrnr_gbm</a></code>, <code><a href='Lrnr_glm_fast.html'>Lrnr_glm_fast</a></code>,
-  <code><a href='Lrnr_glmnet.html'>Lrnr_glmnet</a></code>, <code><a href='Lrnr_glm.html'>Lrnr_glm</a></code>,
-  <code><a href='Lrnr_grf.html'>Lrnr_grf</a></code>, <code><a href='Lrnr_h2o_grid.html'>Lrnr_h2o_grid</a></code>,
-  <code><a href='Lrnr_hal9001.html'>Lrnr_hal9001</a></code>,
+  <code><a href='Lrnr_gam.html'>Lrnr_gam</a></code>, <code><a href='Lrnr_gbm.html'>Lrnr_gbm</a></code>,
+  <code><a href='Lrnr_glm_fast.html'>Lrnr_glm_fast</a></code>, <code><a href='Lrnr_glmnet.html'>Lrnr_glmnet</a></code>,
+  <code><a href='Lrnr_glm.html'>Lrnr_glm</a></code>, <code><a href='Lrnr_grf.html'>Lrnr_grf</a></code>,
+  <code><a href='Lrnr_h2o_grid.html'>Lrnr_h2o_grid</a></code>, <code><a href='Lrnr_hal9001.html'>Lrnr_hal9001</a></code>,
   <code><a href='Lrnr_haldensify.html'>Lrnr_haldensify</a></code>,
   <code><a href='Lrnr_independent_binomial.html'>Lrnr_independent_binomial</a></code>,
   <code><a href='Lrnr_lstm.html'>Lrnr_lstm</a></code>, <code><a href='Lrnr_mean.html'>Lrnr_mean</a></code>,
@@ -175,6 +182,7 @@ includes things like model hyperparameters.</p></dd>
   <code><a href='Lrnr_optim.html'>Lrnr_optim</a></code>, <code><a href='Lrnr_pca.html'>Lrnr_pca</a></code>,
   <code><a href='SuperLearner_interface.html'>Lrnr_pkg_SuperLearner</a></code>,
   <code><a href='Lrnr_polspline.html'>Lrnr_polspline</a></code>,
+  <code><a href='Lrnr_pooled_hazards.html'>Lrnr_pooled_hazards</a></code>,
   <code><a href='Lrnr_randomForest.html'>Lrnr_randomForest</a></code>,
   <code><a href='Lrnr_ranger.html'>Lrnr_ranger</a></code>,
   <code><a href='Lrnr_revere_task.html'>Lrnr_revere_task</a></code>, <code><a href='Lrnr_rfcde.html'>Lrnr_rfcde</a></code>,
@@ -185,24 +193,20 @@ includes things like model hyperparameters.</p></dd>
   <code><a href='Lrnr_svm.html'>Lrnr_svm</a></code>, <code><a href='Lrnr_tsDyn.html'>Lrnr_tsDyn</a></code>,
   <code><a href='Lrnr_xgboost.html'>Lrnr_xgboost</a></code>, <code><a href='Pipeline.html'>Pipeline</a></code>,
   <code><a href='Stack.html'>Stack</a></code>, <code><a href='Lrnr_h2o_glm.html'>define_h2o_X</a></code></p></div>
-    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      
       <li><a href="#format">Format</a></li>
-
       <li><a href="#value">Value</a></li>
-
       <li><a href="#fields">Fields</a></li>
-
       <li><a href="#see-also">See also</a></li>
-          </ul>
+    </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -210,13 +214,16 @@ includes things like model hyperparameters.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

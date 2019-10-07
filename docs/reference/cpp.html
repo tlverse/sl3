@@ -8,10 +8,12 @@
 
 <title>Subset of growth data from the collaborative perinatal project (CPP) — cpp • sl3</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -22,8 +24,9 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -31,13 +34,14 @@
 
 
 
-<meta property="og:title" content="Subset of growth data from the collaborative perinatal project (CPP) — cpp" />
 
+<meta property="og:title" content="Subset of growth data from the collaborative perinatal project (CPP) — cpp" />
 <meta property="og:description" content="Subset of growth data from the collaborative perinatal project (CPP).
 cpp_imputed drops observations for which the haz column is
 NA, and imputes all other observations as 0. This is only for the
 purposes of simplifying testing and examples." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -61,6 +65,7 @@ purposes of simplifying testing and examples." />
   gtag('config', 'UA-115145808-1');
 </script>
 
+
   </head>
 
   <body>
@@ -77,7 +82,7 @@ purposes of simplifying testing and examples." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sl3</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.2</span>
       </span>
     </div>
 
@@ -114,7 +119,6 @@ purposes of simplifying testing and examples." />
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -124,6 +128,7 @@ purposes of simplifying testing and examples." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -135,16 +140,15 @@ purposes of simplifying testing and examples." />
     </div>
 
     <div class="ref-description">
-    
     <p>Subset of growth data from the collaborative perinatal project (CPP).
 <code>cpp_imputed</code> drops observations for which the <code>haz</code> column is
 <code>NA</code>, and imputes all other observations as 0. This is only for the
 purposes of simplifying testing and examples.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>cpp</span>)</pre>
-        
+
+
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
     <p>A data frame with 1,912 repated-measures observations and 500 unique
@@ -183,14 +187,13 @@ subjects:</p>
 <dt>smoked</dt><dd><p>Maternal smoking status</p></dd>
 <dt>mcignum</dt><dd><p>Num cigarettes mom smoked per day</p></dd>
 <dt>comprisk</dt><dd><p>Maternal risk factors</p></dd>
+
 </dl>
-    
     <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
 
     <p><a href='https://catalog.archives.gov/id/606622'>https://catalog.archives.gov/id/606622</a></p>
 <p>Broman, Sarah. 'The collaborative perinatal project: an overview.' Handbook
 of longitudinal research 1 (1984): 185-227.</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>cpp</span>)
@@ -227,16 +230,14 @@ of longitudinal research 1 (1984): 185-227.</p>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      
       <li><a href="#format">Format</a></li>
-
       <li><a href="#source">Source</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -244,13 +245,16 @@ of longitudinal research 1 (1984): 185-227.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

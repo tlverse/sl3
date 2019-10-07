@@ -81,6 +81,8 @@ Lrnr_mean <- R6Class(
         offset <- task$offset_transformed(NULL, for_prediction = TRUE)
         predictions <- predictions + offset
       }
+
+      predictions <- as.matrix(predictions, ncol = 1)
       return(predictions)
     }
   )
