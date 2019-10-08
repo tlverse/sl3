@@ -17,13 +17,13 @@ state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![License: GPL
 v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3251138.svg)](https://doi.org/10.5281/zenodo.3251138)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3475685.svg)](https://doi.org/10.5281/zenodo.3475685)
 
 > A modern implementation of the Super Learner algorithm for ensemble
 > learning and model stacking
 
 **Authors:** [Jeremy Coyle](https://github.com/jeremyrcoyle), [Nima
-Hejazi](https://github.com/nhejazi), [Ivana
+Hejazi](https://nimahejazi.org), [Ivana
 Malenica](https://github.com/podTockom), [Oleg
 Sofrygin](https://github.com/osofr)
 
@@ -63,12 +63,24 @@ install.packages("sl3")
 ```
 -->
 
-Install the most recent *stable release* from GitHub via
-[`devtools`](https://www.rstudio.com/products/rpackages/devtools/):
+Install the *most recent version* from the `master` branch on GitHub via
+[`remotes`](https://CRAN.R-project.org/package=remotes):
 
 ``` r
-devtools::install_github("tlverse/sl3")
+remotes::install_github("tlverse/sl3")
 ```
+
+Past stable releases may be located via the
+\[releases\]<https://github.com/tlverse/sl3/releases>\] page on GitHub
+and may be installed by including the appropriate major version tag. For
+example,
+
+``` r
+remotes::install_github("tlverse/sl3@v1.3.0")
+```
+
+To contribute, check out the `devel` branch and consider submitting a
+pull request.
 
 -----
 
@@ -187,8 +199,8 @@ After using the `sl3` R package, please cite the following:
       year = {2019},
       howpublished = {\url{https://github.com/tlverse/sl3}},
       note = {{R} package version 1.3.0},
-      url = {},
-      doi = {}
+      url = {https://doi.org/10.5281/zenodo.3475685},
+      doi = {10.5281/zenodo.3475685}
     }
 ```
 

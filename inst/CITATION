@@ -1,0 +1,15 @@
+citHeader("Please cite the following when using the 'sl3' software package.")
+
+year <- format(Sys.Date(), "%Y")
+note <- sprintf("R package version %s", meta$Version)
+
+bibentry(bibtype = "Manual",
+         title = "{sl3}: Pipelines for Machine Learning and {Super Learning}",
+         author = c(person("Jeremy", "Coyle", "R"),
+                    person("Nima", "Hejazi", "S"),
+                    person("Ivana", "Malenica"),
+                    person("Oleg", "Sofrygin")),
+         year = year,
+         note = note,
+         doi = "10.5281/zenodo.3475685",
+         url = "https://github.com/tlverse/sl3")

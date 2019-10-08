@@ -1,7 +1,6 @@
 ---
 title: "Defining New `sl3` Learners"
-author: "Jeremy Coyle, [Nima Hejazi](https://nimahejazi.org), Ivana Malenica,
-  Oleg Sofrygin"
+author: "Jeremy Coyle, Nima Hejazi, Ivana Malenica, Oleg Sofrygin"
 resource_files:
   - ../inst/templates/Lrnr_template.R
 date: "`r Sys.Date()`"
