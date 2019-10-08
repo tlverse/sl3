@@ -71,7 +71,7 @@ remotes::install_github("tlverse/sl3")
 ```
 
 Past stable releases may be located via the
-\[releases\]<https://github.com/tlverse/sl3/releases>\] page on GitHub
+\[releases\](<https://github.com/tlverse/sl3/releases>\] page on GitHub
 and may be installed by including the appropriate major version tag. For
 example,
 
@@ -191,7 +191,7 @@ prior to submitting a pull request.
 After using the `sl3` R package, please cite the following:
 
 ``` 
-    @misc{coyle2019sl3,
+    @manual{coyle2019sl3,
       author = {Coyle, Jeremy R and Hejazi, Nima S and Malenica, Ivana and
         Sofrygin, Oleg},
       title = {{sl3}: Modern Pipelines for Machine Learning and {Super
