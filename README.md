@@ -71,8 +71,8 @@ remotes::install_github("tlverse/sl3")
 ```
 
 Past stable releases may be located via the
-\[releases\](<https://github.com/tlverse/sl3/releases>\] page on GitHub
-and may be installed by including the appropriate major version tag. For
+[releases](https://github.com/tlverse/sl3/releases) page on GitHub and
+may be installed by including the appropriate major version tag. For
 example,
 
 ``` r
