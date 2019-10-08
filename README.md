@@ -4,7 +4,7 @@
 # R/`sl3`: modern Super Learning with pipelines
 
 [![Travis-CI Build
-Status](https://travis-ci.org/tlverse/sl3.svg?branch=master)](https://travis-ci.org/tlverse/sl3)
+Status](https://travis-ci.com/tlverse/sl3.svg?branch=master)](https://travis-ci.com/tlverse/sl3)
 [![Appveyor Build
 Status](https://ci.appveyor.com/api/projects/status/hagh8vidrdeacr7f?svg=true)](https://ci.appveyor.com/project/tlverse/sl3)
 [![Coverage
@@ -186,9 +186,9 @@ After using the `sl3` R package, please cite the following:
         Learning}},
       year = {2019},
       howpublished = {\url{https://github.com/tlverse/sl3}},
-      note = {{R} package version 1.2.0},
-      url = {https://doi.org/10.5281/zenodo.3251138},
-      doi = {10.5281/zenodo.3251138}
+      note = {{R} package version 1.3.0},
+      url = {},
+      doi = {}
     }
 ```
 
