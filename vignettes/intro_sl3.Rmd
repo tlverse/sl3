@@ -1,10 +1,9 @@
 ---
 title: "Modern Machine Learning in R"
-author: "Jeremy Coyle, [Nima Hejazi](https://nimahejazi.org), Ivana Malenica,
-  Oleg Sofrygin"
+author: "Jeremy Coyle, Nima Hejazi, Ivana Malenica, Oleg Sofrygin"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
-bibliography: intro_sl3_refs.bib
+bibliography: ../inst/REFERENCES.bib
 vignette: >
   %\VignetteIndexEntry{Modern Machine Learning in R}
   %\VignetteEngine{knitr::rmarkdown}
