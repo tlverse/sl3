@@ -32,9 +32,9 @@ sl3_Task <- R6Class(
     initialize = function(data, covariates, outcome = NULL, outcome_type = NULL,
                               outcome_levels = NULL, id = NULL, weights = NULL,
                               offset = NULL, nodes = NULL, column_names = NULL,
-                              row_index = NULL, folds = NULL,
+                              row_index = NULL, folds = NULL, flag = TRUE,
+                              save_flag_columns = TRUE,
                               drop_missing_outcome = FALSE) {
-
       # process data
       if (inherits(data, "Shared_Data")) {
         # we already have a Shared_Data object, so just store it
@@ -42,34 +42,35 @@ sl3_Task <- R6Class(
       } else {
         # we have some other data object, so construct a Shared_Data object
         # and store it (this will copy the data)
-        
-        covars = lapply(covariates, function(s) data$s)
+        covars = data[, colnames(data) %in% covariates]
         # convert characters to factors
-        char_index = which(sapply(covars, data.class) == "character")
-        if (length(char_index) > 0) {
+        char_cols = unname(which(sapply(covars, data.class) == "character"))
+        if (length(char_cols) > 0) {
           warning(sprintf(
             "Character covariates found: %s;\nConverting these to factors",
-            paste0(covariates[char_index], collapse = ", ")
+            paste0(covariates[char_cols], collapse = ", ")
           ))
-          `for`(i, char_index, `=`(covars[[i]], factor(covars[[i]])))
+          `for`(i, char_cols, `=`(covars[[i]], factor(covars[[i]])))
         }
         
         # process missing
-        p_missing <- !complete.cases(covars)
+        miss_cols = unname(which(sapply(covars, function(l) TRUE %in% is.na(l))))
         missing_Y <- (!is.null(outcome) && any(is.na(data$coutcome)))
-        if ((length(p_missing) > 0) && (max(p_missing) > 0)) {
+        if (length(miss_cols) > 0) {
           warning("Missing Covariate Data Found. Imputing covariates.")
-          `if`(drop_missing_outcome, `=`(covars, covars[!p_missing, ]))
-          covars = impute(covars, flag = TRUE)
+          `if`(drop_missing_outcome, `=`(covars, covars[complete.cases(covars), ]))
+          covars = impute(covars, flag = flag)
         }
         if (missing_Y) {
           warning("Missing Outcome Data Found. This is okay for prediction, but will likely break training. \n You can drop observations with missing outcomes by setting drop_missing_outcome=TRUE in make_sl3_Task.")
         }
         
         # convert data
-        convert_name = colnames(data)[colnames(data) %in% covariates]
-        `for`(s, convert_name, `=`(data$s, covars$s))
-        
+        cvrt_names = unique(c(covariates[char_cols], covariates[miss_cols]))
+        flag_names = colnames(covars)[seq(length(covars) - length(miss_cols) + 1, 
+                                          length(covars))]
+        `for`(s, c(cvrt_names, flag_names), `=`(data[[s]], covars[[s]]))
+        `if`(save_flag_columns, `=`(covariates, c(covariates, flag_names)))
         private$.shared_data <- Shared_Data$new(data)
       }
 
