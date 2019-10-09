@@ -11,6 +11,7 @@
 #' @importFrom origami make_folds
 #' @importFrom uuid UUIDgenerate
 #' @importFrom digest digest
+#' @importFrom imputeMissings impute
 #' @import data.table
 #'
 #' @export
@@ -31,19 +32,45 @@ sl3_Task <- R6Class(
     initialize = function(data, covariates, outcome = NULL, outcome_type = NULL,
                               outcome_levels = NULL, id = NULL, weights = NULL,
                               offset = NULL, nodes = NULL, column_names = NULL,
-                              row_index = NULL, folds = NULL, user_mode = NULL,
+                              row_index = NULL, folds = NULL,
                               drop_missing_outcome = FALSE) {
 
       # process data
       if (inherits(data, "Shared_Data")) {
         # we already have a Shared_Data object, so just store it
         private$.shared_data <- data
-        user_mode <- FALSE
       } else {
         # we have some other data object, so construct a Shared_Data object
         # and store it (this will copy the data)
+        
+        covars = lapply(covariates, function(s) data$s)
+        # convert characters to factors
+        char_index = which(sapply(covars, data.class) == "character")
+        if (length(char_index) > 0) {
+          warning(sprintf(
+            "Character covariates found: %s;\nConverting these to factors",
+            paste0(covariates[char_index], collapse = ", ")
+          ))
+          `for`(i, char_index, `=`(covars[[i]], factor(covars[[i]])))
+        }
+        
+        # process missing
+        p_missing <- !complete.cases(covars)
+        missing_Y <- (!is.null(outcome) && any(is.na(data$coutcome)))
+        if ((length(p_missing) > 0) && (max(p_missing) > 0)) {
+          warning("Missing Covariate Data Found. Imputing covariates.")
+          `if`(drop_missing_outcome, `=`(covars, covars[!p_missing, ]))
+          covars = impute(covars, flag = TRUE)
+        }
+        if (missing_Y) {
+          warning("Missing Outcome Data Found. This is okay for prediction, but will likely break training. \n You can drop observations with missing outcomes by setting drop_missing_outcome=TRUE in make_sl3_Task.")
+        }
+        
+        # convert data
+        convert_name = colnames(data)[colnames(data) %in% covariates]
+        `for`(s, convert_name, `=`(data$s, covars$s))
+        
         private$.shared_data <- Shared_Data$new(data)
-        user_mode <- TRUE
       }
 
       # process column_names
@@ -97,54 +124,6 @@ sl3_Task <- R6Class(
       # process row_index
       private$.row_index <- row_index
       private$.folds <- folds
-
-      # check data quality if we think this is a user provided dataset
-      if (user_mode) {
-        # convert characters to factors
-        character_covars <-
-          self$nodes$covariates[which(sapply(
-            self$X,
-            data.class
-          ) == "character")]
-
-        if (length(character_covars) > 0) {
-          warning(sprintf(
-            "Character covariates found: %s;\nConverting these to factors",
-            paste0(character_covars, collapse = ", ")
-          ))
-
-          converted <- self$X[, lapply(.SD, factor), .SDcols = character_covars]
-          converted_column_names <- self$add_columns(converted)
-          converted_task <-
-            self$next_in_chain(column_names = converted_column_names)
-          # make this task a copy of imputed_task
-          self <<- converted_task$.__enclos_env__$self
-          private <<- converted_task$.__enclos_env__$private
-        }
-
-        # check for missingness, and process if found
-        p_missing <- sapply(self$X, function(x) mean(is.na(x)))
-        missing_Y <- (!is.null(self$nodes$outcome) && any(is.na(self$Y)))
-        if ((length(p_missing) > 0) &&
-          ((max(p_missing) > 0) ||
-            (missing_Y && drop_missing_outcome))) {
-          warning("Missing Covariate Data Found. Imputing covariates using sl3_process_missing.")
-          imputed_task <-
-            sl3_process_missing(self,
-              drop_missing_outcome = drop_missing_outcome
-            )
-
-          # make this task a copy of imputed_task
-          self <<- imputed_task$.__enclos_env__$self
-          private <<- imputed_task$.__enclos_env__$private
-
-          missing_Y <- (!is.null(self$nodes$outcome) && any(is.na(self$Y)))
-        }
-
-        if (missing_Y) {
-          warning("Missing Outcome Data Found. This is okay for prediction, but will likely break training. \n You can drop observations with missing outcomes by setting drop_missing_outcome=TRUE in make_sl3_Task.")
-        }
-      }
 
       # assign uuid using digest
       private$.uuid <- digest(self$data)
