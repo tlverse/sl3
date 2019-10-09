@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>dim that works for vectors too — safe_dim • sl3</title>
+<title>Make folds work on subset of data — subset_folds • sl3</title>
 
 
 <!-- jquery -->
@@ -35,9 +35,9 @@
 
 
 
-<meta property="og:title" content="dim that works for vectors too — safe_dim" />
-<meta property="og:description" content="safe_dim tries to get dimensions from dim and falls back on
-length if dim returns NULL" />
+<meta property="og:title" content="Make folds work on subset of data — subset_folds" />
+<meta property="og:description" content="subset_folds takes a origami style folds list, and returns a
+list of folds applicable to a subset, by subsetting the training and validation index vectors" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -132,24 +132,28 @@ length if dim returns NULL" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>dim that works for vectors too</h1>
+    <h1>Make folds work on subset of data</h1>
     
-    <div class="hidden name"><code>safe_dim.Rd</code></div>
+    <div class="hidden name"><code>subset_folds.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>safe_dim</code> tries to get dimensions from <code>dim</code> and falls back on
-<code>length</code> if <code>dim</code> returns <code>NULL</code></p>
+    <p>subset_folds takes a origami style folds list, and returns a
+list of folds applicable to a subset, by subsetting the training and validation index vectors</p>
     </div>
 
-    <pre class="usage"><span class='fu'>safe_dim</span>(<span class='no'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>subset_folds</span>(<span class='no'>folds</span>, <span class='no'>subset</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>the object to get dimensions from</p></td>
+      <th>folds</th>
+      <td><p>an origami style folds list</p></td>
+    </tr>
+    <tr>
+      <th>subset</th>
+      <td><p>an index vector to be used to subset the data</p></td>
     </tr>
     </table>
 
