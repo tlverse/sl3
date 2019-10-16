@@ -35,6 +35,7 @@ sl3_Task <- R6Class(
                               row_index = NULL, folds = NULL, flag = TRUE,
                               save_flag_columns = TRUE,
                               drop_missing_outcome = FALSE) {
+      browser()
       # process data
       if (inherits(data, "Shared_Data")) {
         # we already have a Shared_Data object, so just store it
@@ -67,8 +68,11 @@ sl3_Task <- R6Class(
         
         # convert data
         cvrt_names = unique(c(covariates[char_cols], covariates[miss_cols]))
-        flag_names = colnames(covars)[seq(length(covars) - length(miss_cols) + 1, 
-                                          length(covars))]
+        if (length(covars) > length(covariates)) {
+          flag_names = colnames(covars)[seq(length(covars) - length(miss_cols) + 1, length(covars))]
+        } else {
+          flag_names = character()
+        }
         `for`(s, c(cvrt_names, flag_names), `=`(data[[s]], covars[[s]]))
         `if`(save_flag_columns, `=`(covariates, c(covariates, flag_names)))
         private$.shared_data <- Shared_Data$new(data)
