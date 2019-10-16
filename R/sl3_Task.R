@@ -35,7 +35,6 @@ sl3_Task <- R6Class(
                               row_index = NULL, folds = NULL, flag = TRUE,
                               save_flag_columns = TRUE,
                               drop_missing_outcome = FALSE) {
-      browser()
       # process data
       if (inherits(data, "Shared_Data")) {
         # we already have a Shared_Data object, so just store it
@@ -55,7 +54,8 @@ sl3_Task <- R6Class(
         }
         
         # process missing
-        miss_cols = unname(which(sapply(covars, function(l) TRUE %in% is.na(l))))
+        miss_cols = unname(which(sapply(covars, 
+                                        function(l) TRUE %in% is.na(l))  == TRUE))
         missing_Y <- (!is.null(outcome) && any(is.na(data$coutcome)))
         if (length(miss_cols) > 0) {
           warning("Missing Covariate Data Found. Imputing covariates.")
@@ -69,7 +69,8 @@ sl3_Task <- R6Class(
         # convert data
         cvrt_names = unique(c(covariates[char_cols], covariates[miss_cols]))
         if (length(covars) > length(covariates)) {
-          flag_names = colnames(covars)[seq(length(covars) - length(miss_cols) + 1, length(covars))]
+          flag_names = colnames(covars)[seq(length(covars) - length(miss_cols) + 1, 
+                                            length(covars))]
         } else {
           flag_names = character()
         }
