@@ -32,61 +32,106 @@ sl3_Task <- R6Class(
     initialize = function(data, covariates, outcome = NULL, outcome_type = NULL,
                               outcome_levels = NULL, id = NULL, weights = NULL,
                               offset = NULL, nodes = NULL, column_names = NULL,
-                              row_index = NULL, folds = NULL, flag = TRUE,
-                              save_flag_columns = TRUE,
+                              row_index = NULL, folds = NULL, user_mode = NULL,
+                              flag = TRUE, save_flag_cols = TRUE,
                               drop_missing_outcome = FALSE) {
+      browser()
       # process data
       if (inherits(data, "Shared_Data")) {
         # we already have a Shared_Data object, so just store it
         private$.shared_data <- data
+        user_mode <- FALSE
       } else {
         # we have some other data object, so construct a Shared_Data object
         # and store it (this will copy the data)
-        covars = data[, colnames(data) %in% covariates]
-        # convert characters to factors
-        char_cols = unname(which(sapply(covars, data.class) == "character"))
+        
+        covars <- data[, colnames(data) %in% covariates]
+        origin_cols <- colnames(data)
+        convert_cols <- vector()
+        
+        # process characters
+        char_cols <- names(which(sapply(covars, data.class) == "character"))
         if (length(char_cols) > 0) {
           warning(sprintf(
             "Character covariates found: %s;\nConverting these to factors",
-            paste0(covariates[char_cols], collapse = ", ")
+            paste0(char_cols, collapse = ", ")
           ))
-          `for`(i, char_cols, `=`(covars[[i]], factor(covars[[i]])))
+          # convert data
+          `for`(s, char_cols, `=`(covars[[s]], factor(covars[[s]])))
+          # convert names
+          convert_cols = sapply(char_cols, function(s) paste0(s, "_factorized"))
+          names(convert_cols) = char_cols
+          
+          private$.factorized = TRUE
+        }
+
+        # process missing
+        miss_cols <- names(which(sapply(
+          covars,
+          function(l) TRUE %in% is.na(l)
+        ) == TRUE))
+        missing_Y <- (!is.null(outcome) && any(is.na(data[[outcome]])))
+        if (length(miss_cols) > 0) {
+          if (missing_Y && drop_missing_outcome) {
+            warning("Missing Outcome Data Found. Dropping outcomes.")
+            keep_cols = complete.cases(data[[outcome]])
+            covars = covars[keep_cols, ]
+            data = data[keep_cols, ]
+            
+            private$.dropped = TRUE
+          }
+          warning("Missing Covariate Data Found. Imputing covariates.")
+          # convert data
+          covars = impute(covars, flag = flag)
+          # convert names
+          for (s in miss_cols) {
+            if (s %in% char_cols) {
+              convert_cols[s] = paste0(convert_cols[s], "_imputed")
+            } else {
+              convert_cols = setNames(c(convert_cols, paste0(s, "_imputed")), 
+                                      c(names(convert_cols), s))
+            }
+          }
+          
+          missing_Y <- (!is.null(outcome) && any(is.na(data[[outcome]])))
+          private$.imputed = TRUE
         }
         
-        # process missing
-        miss_cols = unname(which(sapply(covars, 
-                                        function(l) TRUE %in% is.na(l))  == TRUE))
-        missing_Y <- (!is.null(outcome) && any(is.na(data$coutcome)))
-        if (length(miss_cols) > 0) {
-          warning("Missing Covariate Data Found. Imputing covariates.")
-          `if`(drop_missing_outcome, `=`(covars, covars[complete.cases(covars), ]))
-          covars = impute(covars, flag = flag)
-        }
         if (missing_Y) {
           warning("Missing Outcome Data Found. This is okay for prediction, but will likely break training. \n You can drop observations with missing outcomes by setting drop_missing_outcome=TRUE in make_sl3_Task.")
         }
-        
-        # convert data
-        cvrt_names = unique(c(covariates[char_cols], covariates[miss_cols]))
-        if (length(covars) > length(covariates)) {
-          flag_names = colnames(covars)[seq(length(covars) - length(miss_cols) + 1, 
-                                            length(covars))]
-        } else {
-          flag_names = character()
+
+        # add mew columns to data
+        if (length(convert_cols) > 0) {
+          `for`(i, 1:length(convert_cols), `=`(data[[convert_cols[i]]], 
+                                               covars[[names(convert_cols)[i]]]))
+          
+          if (length(covars) > length(covariates)) {
+            flag_cols <- colnames(covars)[!(colnames(covars) %in% covariates)]
+            `for`(s, flag_cols, `=`(data[[s]], covars[[s]]))
+            `if`(save_flag_cols, `=`(covariates, c(covariates, flag_cols)))
+          }
         }
-        `for`(s, c(cvrt_names, flag_names), `=`(data[[s]], covars[[s]]))
-        `if`(save_flag_columns, `=`(covariates, c(covariates, flag_names)))
+        
         private$.shared_data <- Shared_Data$new(data)
+        user_mode <- TRUE
       }
 
       # process column_names
+      ## note: column_names is only specified when using next_in_chain,
+      ##       therefore is never in user mode and no conversion is done.
       if (is.null(column_names)) {
-        column_names <- as.list(private$.shared_data$column_names)
+        column_names <- as.list(origin_cols)
         names(column_names) <- column_names
+        
+        if (private$.factorized || private$.imputed) {
+          `for`(s, names(convert_cols), `=`(column_names[s], convert_cols[s]))
+          `if`(private$.imputed && flag, `=`(column_names, setNames(c(column_names, flag_cols), c(names(column_names), flag_cols))))
+        }
       }
-
+      
       private$.column_names <- column_names
-
+      
       # generate node list from other arguments
       if (is.null(nodes)) {
         nodes <- list(
@@ -481,7 +526,10 @@ sl3_Task <- R6Class(
     .uuid = NULL,
     .column_names = NULL,
     .row_index = NULL,
-    .outcome_type = NULL
+    .outcome_type = NULL,
+    .factorized = FALSE,
+    .dropped = FALSE,
+    .imputed = FALSE
   )
 )
 

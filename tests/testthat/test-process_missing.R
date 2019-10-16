@@ -21,11 +21,16 @@ covars <- c(
 )
 outcome <- "haz"
 
-expect_warning(
+warnings <- capture_warnings({
   task_drop_missing <- make_sl3_Task(cpp, covars, outcome,
-    drop_missing_outcome = TRUE
-  ),
-  "Missing Covariate Data Found. Imputing covariates using sl3_process_missing.",
+                                     drop_missing_outcome = TRUE)
+})
+expect_equal(
+  warnings,
+  c(
+    "Missing Outcome Data Found. Dropping outcomes.",
+    "Missing Covariate Data Found. Imputing covariates."
+    )
 )
 
 expect_false(any(is.na(task_drop_missing$Y)))
@@ -33,7 +38,7 @@ expect_equal(
   task_drop_missing$nodes$covariates,
   c(
     "apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
-    "sexn", "delta_apgar1", "delta_apgar5", "delta_parity", "delta_meducyrs"
+    "sexn", "apgar1_flag", "apgar5_flag", "meducyrs_flag", "parity_flag"
   )
 )
 
@@ -43,7 +48,7 @@ warnings <- capture_warnings({
 expect_equal(
   warnings,
   c(
-    "Missing Covariate Data Found. Imputing covariates using sl3_process_missing.",
+    "Missing Covariate Data Found. Imputing covariates.",
     "Missing Outcome Data Found. This is okay for prediction, but will likely break training. \n You can drop observations with missing outcomes by setting drop_missing_outcome=TRUE in make_sl3_Task."
   )
 )
