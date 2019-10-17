@@ -43,6 +43,7 @@ Lrnr_screener_corP <- R6Class(
     
     .train = function(task) {
       args <- self$params
+      outcome_type <- self$get_outcome_type(task)
       method <- args$method
       minPvalue <- args$minPvalue
       minscreen <- args$minscreen
