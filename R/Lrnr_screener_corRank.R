@@ -41,6 +41,7 @@ Lrnr_screener_corRank <- R6Class(
     
     .train = function(task) {
       args <- self$params
+      outcome_type <- self$get_outcome_type(task)
       method <- args$method
       rank <- args$rank
       X <- task$X
