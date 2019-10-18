@@ -15,7 +15,7 @@ Learner object with methods for training and prediction. See
 \description{
 This learner provides covariate screening procedures by ranking variables
 by the p-values returned from a test of correlation provided by the
-\code{stats} package, \code{\link[cor.test]{cor.test}} function.
+\code{stats} package, \code{\link[stats]{cor.test}} function.
 }
 \section{Parameters}{
 
