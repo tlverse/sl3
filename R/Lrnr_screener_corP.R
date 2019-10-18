@@ -2,7 +2,7 @@
 #'
 #' This learner provides covariate screening procedures using p-values returned 
 #' from a test of correlation provided by the \code{stats} package, 
-#' \code{\link[cor.test]{cor.test}} function.
+#' \code{\link[stats]{cor.test}} function.
 #'
 #' @docType class
 #'
