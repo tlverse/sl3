@@ -36,6 +36,11 @@ sl3_Task <- R6Class(
                               flag = TRUE, save_flag_cols = TRUE,
                               drop_missing_outcome = FALSE) {
       browser()
+      # get covariates and outcome name from nodes if exists
+      if (!is.null(nodes)) {
+        covariates = nodes[["covariates"]]
+        outcome = nodes[["outcome"]]
+      }
       # process data
       if (inherits(data, "Shared_Data")) {
         # we already have a Shared_Data object, so just store it
