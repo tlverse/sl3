@@ -35,8 +35,8 @@ sl3_Task <- R6Class(
                               row_index = NULL, folds = NULL, user_mode = NULL,
                               flag = TRUE, save_flag_cols = TRUE,
                               drop_missing_outcome = FALSE) {
-      browser()
-      # get covariates and outcome name from nodes if exists
+      
+      # get covariates and outcome names from nodes if exists
       if (!is.null(nodes)) {
         covariates = nodes[["covariates"]]
         outcome = nodes[["outcome"]]
@@ -75,11 +75,11 @@ sl3_Task <- R6Class(
           covars,
           function(l) TRUE %in% is.na(l)
         ) == TRUE))
-        missing_Y <- (!is.null(outcome) && any(is.na(data[[outcome]])))
+        missing_Y <- (!is.null(outcome) && any(is.na(data[, outcome, with = FALSE])))
         if (length(miss_cols) > 0) {
           if (missing_Y && drop_missing_outcome) {
             warning("Missing Outcome Data Found. Dropping outcomes.")
-            keep_cols = complete.cases(data[[outcome]])
+            keep_cols = complete.cases(data[, outcome, with = FALSE])
             covars = covars[keep_cols, ]
             data = data[keep_cols, ]
             
@@ -98,7 +98,7 @@ sl3_Task <- R6Class(
             }
           }
           
-          missing_Y <- (!is.null(outcome) && any(is.na(data[[outcome]])))
+          missing_Y <- (!is.null(outcome) && any(is.na(data[, outcome, with = FALSE])))
           private$.imputed = TRUE
         }
         
