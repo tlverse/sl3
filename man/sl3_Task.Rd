@@ -12,7 +12,7 @@ sl3_Task
 make_sl3_Task(...)
 }
 \arguments{
-\item{...}{Passes all arguments to the constructor. See documentation for the
+\item{...}{Passes all arguments to the constructor. See documentation for
 Constructor below.}
 }
 \value{

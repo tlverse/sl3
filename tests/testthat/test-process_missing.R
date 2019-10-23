@@ -23,14 +23,15 @@ outcome <- "haz"
 
 warnings <- capture_warnings({
   task_drop_missing <- make_sl3_Task(cpp, covars, outcome,
-                                     drop_missing_outcome = TRUE)
+    drop_missing_outcome = TRUE
+  )
 })
 expect_equal(
   warnings,
   c(
     "Missing Outcome Data Found. Dropping outcomes.",
     "Missing Covariate Data Found. Imputing covariates."
-    )
+  )
 )
 
 expect_false(any(is.na(task_drop_missing$Y)))
