@@ -99,7 +99,7 @@ process_data <- function(data, covariates, outcome = NULL, flag = TRUE,
   missing_Y <- (!is.null(outcome) && any(is.na(data[, outcome, with = FALSE])))
   if (length(miss_cols) > 0) {
     if (missing_Y && drop_missing_outcome) {
-      warning("Missing Outcome Data Found. Dropping outcomes.")
+      warning("Missing outcome data detected: dropping outcomes.")
       keep_rows <- stats::complete.cases(data[, outcome, with = FALSE])
       covars <- covars[keep_rows, ]
       data <- data[keep_rows, ]
@@ -126,7 +126,7 @@ process_data <- function(data, covariates, outcome = NULL, flag = TRUE,
   }
 
   if (missing_Y) {
-    warning("Missing Outcome Data Found. This is okay for prediction, but will likely break training. \n You can drop observations with missing outcomes by setting drop_missing_outcome=TRUE in make_sl3_Task.")
+    warning("Missing outcome data detected. This is okay for prediction, but will likely break training. \n You can drop observations with missing outcomes by setting drop_missing_outcome=TRUE in make_sl3_Task.")
   }
 
   # add new columns to data

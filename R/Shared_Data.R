@@ -9,8 +9,8 @@ Shared_Data <- R6Class(
   public = list(
     initialize = function(data, ...) {
       if (inherits(data, "Shared_Data")) {
-        stop("Shared_Data passed another Shared_Data object on construction. 
-    			Instead of doing this, use the existing Shared_Data object.")
+        stop("Shared_Data passed another Shared_Data object on construction.
+              Instead of doing this, use the existing Shared_Data object.")
       }
 
       if (inherits(data, "data.table")) {
