@@ -31,13 +31,13 @@ sl3_Task <- R6Class(
     initialize = function(data, covariates, outcome = NULL, outcome_type = NULL,
                               outcome_levels = NULL, id = NULL, weights = NULL,
                               offset = NULL, nodes = NULL, column_names = NULL,
-                              row_index = NULL, folds = NULL, flag = TRUE, 
+                              row_index = NULL, folds = NULL, flag = TRUE,
                               save_flag_cols = TRUE, drop_missing_outcome = FALSE) {
-      
+
       # get covariates and outcome names from nodes if exists
       if (!is.null(nodes)) {
-        covariates = nodes$covariates
-        outcome = nodes$outcome
+        covariates <- nodes$covariates
+        outcome <- nodes$outcome
       }
       # process data
       if (inherits(data, "Shared_Data")) {
@@ -52,21 +52,17 @@ sl3_Task <- R6Class(
       } else {
         # we have some other data object, so construct a Shared_Data object
         # and store it (this will copy the data)
-        
+
         # process characters and missings
-        processed = process_data(data, covariates, outcome = outcome, flag = flag, save_flag_cols = save_flag_cols, drop_missing_outcome = drop_missing_outcome)
-        data = processed$data
-        covariates = processed$covariates
-        ## note: So far, no processing is required in cases when column_names is given.
-        ##       A little bit modification here might be needed if this changes.
-        if (is.null(column_names)) {
-          column_names <- processed$map
-        }
-        
+        processed <- process_data(data, covariates, outcome = outcome, column_names = column_names, flag = flag, save_flag_cols = save_flag_cols, drop_missing_outcome = drop_missing_outcome)
+        data <- processed$data
+        covariates <- processed$covariates
+        column_names <- processed$map
+
         private$.shared_data <- Shared_Data$new(data)
         private$.column_names <- column_names
       }
-      
+
       # generate node list from other arguments
       if (is.null(nodes)) {
         nodes <- list(
