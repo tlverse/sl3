@@ -2,13 +2,13 @@
 process_data <- function(data, covariates, outcome = NULL, column_names = NULL, flag = TRUE, save_flag_cols = TRUE, drop_missing_outcome = FALSE) {
   # for efficiency, character & missing processing are not seperated
   if (!is.null(column_names)) {
-    covariates_data = sapply(covariates, function(s) column_names[[s]])
-    outcome_data = sapply(outcome, function(s) column_names[[s]])
+    covariates_data <- sapply(covariates, function(s) column_names[[s]])
+    outcome_data <- sapply(outcome, function(s) column_names[[s]])
   } else {
-    covariates_data = covariates
-    outcome_data = outcome
+    covariates_data <- covariates
+    outcome_data <- outcome
   }
-  
+
   data <- data.table(data)
   covars <- data[, colnames(data) %in% covariates_data, with = FALSE]
   origin_cols <- colnames(data)
@@ -97,6 +97,6 @@ process_data <- function(data, covariates, outcome = NULL, column_names = NULL, 
     `for`(s, names(convert_cols), `=`(map[map == s], convert_cols[s]))
     `if`(imputed && flag, `=`(map, stats::setNames(c(map, flag_cols), c(names(map), flag_cols))))
   }
-  
+
   list(data = data, covariates = covariates, map = map)
 }

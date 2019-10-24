@@ -32,20 +32,9 @@ pooled_hazard_task <- function(task, trim = TRUE) {
   repeated_data <- underlying_data[index, ]
   new_folds <- origami::id_folds_to_folds(task$folds, index)
 
-  # change column names to play more easily with downstream task creation
-  data.table::setnames(repeated_data, id_name, "id")
-  data.table::setnames(
-    repeated_data,
-    task$column_names[[task$nodes$outcome]],
-    task$nodes$outcome
-  )
-
-  # generate task for repeated data
-  repeated_task <- sl3_Task$new(
-    data = repeated_data,
-    covariates = task$nodes$covariates,
-    outcome = task$nodes$outcome,
-    id = "id",
+  repeated_task <- task$next_in_chain(
+    column_names = column_names,
+    data = repeated_data, id = "id",
     folds = new_folds
   )
 
