@@ -40,9 +40,9 @@ Lrnr_rpart <- R6Class(
     # you can define default parameter values here
     # if possible, your learner should define defaults for all required parameters
     initialize = function(model = FALSE,
-                              x = FALSE,
-                              y = FALSE,
-                              ...) {
+                          x = FALSE,
+                          y = FALSE,
+                          ...) {
       # this captures all parameters to initialize and saves them as self$params
       params <- args_to_list()
       super$initialize(params = params, ...)

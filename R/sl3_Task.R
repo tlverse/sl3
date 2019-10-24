@@ -28,12 +28,12 @@ sl3_Task <- R6Class(
   portable = TRUE,
   class = TRUE,
   public = list(
-    initialize = function(data, covariates, outcome = NULL, outcome_type = NULL,
-                              outcome_levels = NULL, id = NULL, weights = NULL,
-                              offset = NULL, nodes = NULL, column_names = NULL,
-                              row_index = NULL, folds = NULL, flag = TRUE,
-                              save_flag_cols = TRUE, drop_missing_outcome = FALSE) {
-
+    initialize = function(data, covariates, outcome = NULL,
+                          outcome_type = NULL, outcome_levels = NULL,
+                          id = NULL, weights = NULL, offset = NULL,
+                          nodes = NULL, column_names = NULL, row_index = NULL,
+                          folds = NULL, flag = TRUE, save_flag_cols = TRUE,
+                          drop_missing_outcome = FALSE) {
       # get covariates and outcome names from nodes if exists
       if (!is.null(nodes)) {
         covariates <- nodes$covariates
@@ -100,7 +100,6 @@ sl3_Task <- R6Class(
           outcome_type <- variable_type("none")
         }
       }
-
       private$.outcome_type <- outcome_type
 
       # process row_index
@@ -114,12 +113,11 @@ sl3_Task <- R6Class(
     },
 
     add_interactions = function(interactions, warn_on_existing = TRUE) {
-      ## ------------------------------------------------------------------------
+      ## ----------------------------------------------------------------------
       ## Add columns with interactions (by reference) to input design matrix
       ## (data.table). Used for training / predicting.
       ## returns the names of the added columns
-      ## ------------------------------------------------------------------------
-
+      ## ----------------------------------------------------------------------
       prod.DT <- function(x) {
         y <- x[[1]]
         for (i in 2:ncol(x)) {
@@ -133,24 +131,19 @@ sl3_Task <- R6Class(
       if (is.null(interaction_names)) {
         interaction_names <- sapply(interactions, paste0, collapse = "_")
       }
-
       is_new <- !(interaction_names %in% old_names)
-
       interaction_data <- lapply(interactions[is_new], function(interaction) {
         self$X[, prod.DT(.SD), .SD = interaction]
       })
-
       if (any(!is_new)) {
         warning(
           "The following interactions already exist:",
           paste0(interaction_names[!is_new], collapse = ", ")
         )
       }
-
       setDT(interaction_data)
       setnames(interaction_data, interaction_names[is_new])
       interaction_columns <- self$add_columns(interaction_data)
-
       new_covariates <- c(self$nodes$covariates, interaction_names[is_new])
       return(self$next_in_chain(
         covariates = new_covariates,
@@ -163,7 +156,6 @@ sl3_Task <- R6Class(
         new_data, column_uuid,
         private$.row_index
       )
-
       column_names <- private$.column_names
       column_names[names(new_col_map)] <- new_col_map
 
@@ -172,8 +164,8 @@ sl3_Task <- R6Class(
     },
 
     next_in_chain = function(covariates = NULL, outcome = NULL, id = NULL,
-                                 weights = NULL, offset = NULL, folds = NULL,
-                                 column_names = NULL, new_nodes = NULL, ...) {
+                             weights = NULL, offset = NULL, folds = NULL,
+                             column_names = NULL, new_nodes = NULL, ...) {
       if (is.null(new_nodes)) {
         new_nodes <- self$nodes
 
@@ -218,7 +210,6 @@ sl3_Task <- R6Class(
           paste(missing_cols, collapse = " ")
         )
       )
-
       new_task <- self$clone()
 
       if ((is.null(new_nodes$outcome) &&
@@ -294,7 +285,7 @@ sl3_Task <- R6Class(
     },
 
     get_node = function(node_name, generator_fun = NULL,
-                            expand_factors = FALSE) {
+                        expand_factors = FALSE) {
       if (missing(generator_fun)) {
         generator_fun <- function(node_name, n) {
           stop(sprintf("Node %s not specified", node_name))
@@ -466,7 +457,7 @@ sl3_Task <- R6Class(
   return(x$subset_task(i))
 }
 
-#' @param ... Passes all arguments to the constructor. See documentation for the
+#' @param ... Passes all arguments to the constructor. See documentation for
 #'  Constructor below.
 #'
 #' @rdname sl3_Task

@@ -58,15 +58,15 @@ Lrnr_rfcde <- R6Class(
   portable = TRUE, class = TRUE,
   public = list(
     initialize = function(n_trees = 1000,
-                              node_size = 5,
-                              n_basis = 31,
-                              basis_system = "cosine",
-                              min_loss_delta = 0.0,
-                              fit_oob = FALSE,
-                              z_grid = seq(0, 10, length.out = 100),
-                              bandwidth = "auto",
-                              output_type = "observed",
-                              ...) {
+                          node_size = 5,
+                          n_basis = 31,
+                          basis_system = "cosine",
+                          min_loss_delta = 0.0,
+                          fit_oob = FALSE,
+                          z_grid = seq(0, 10, length.out = 100),
+                          bandwidth = "auto",
+                          output_type = "observed",
+                          ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }

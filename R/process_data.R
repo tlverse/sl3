@@ -42,14 +42,13 @@ process_data <- function(data, covariates, outcome = NULL, column_names = NULL, 
   missing_Y <- (!is.null(outcome) && any(is.na(data[, outcome_data, with = FALSE])))
   if (length(miss_cols) > 0) {
     if (missing_Y && drop_missing_outcome) {
-      warning("Missing Outcome Data Found. Dropping outcomes.")
-      keep_cols <- complete.cases(data[, outcome_data, with = FALSE])
-      covars <- covars[keep_cols, ]
-      data <- data[keep_cols, ]
-
+      warning("Missing outcome data detected: dropping outcomes.")
+      keep_rows <- stats::complete.cases(data[, outcome_data, with = FALSE])
+      covars <- covars[keep_rows, ]
+      data <- data[keep_rows, ]
       dropped <- TRUE
     }
-    warning("Missing Covariate Data Found. Imputing covariates.")
+    warning("Missing covariate data detected: imputing covariates.")
     # convert data
     covars <- impute(covars, flag = flag)
     # convert names
@@ -57,7 +56,7 @@ process_data <- function(data, covariates, outcome = NULL, column_names = NULL, 
       if (s %in% char_cols) {
         convert_cols[s] <- paste0(convert_cols[s], "_imputed")
       } else {
-        convert_cols <- setNames(
+        convert_cols <- stats::setNames(
           c(convert_cols, paste0(s, "_imputed")),
           c(names(convert_cols), s)
         )
@@ -69,7 +68,7 @@ process_data <- function(data, covariates, outcome = NULL, column_names = NULL, 
   }
 
   if (missing_Y) {
-    warning("Missing Outcome Data Found. This is okay for prediction, but will likely break training. \n You can drop observations with missing outcomes by setting drop_missing_outcome=TRUE in make_sl3_Task.")
+    warning("Missing outcome data detected. This is okay for prediction, but will likely break training. \n You can drop observations with missing outcomes by setting drop_missing_outcome=TRUE in make_sl3_Task.")
   }
 
   # add new columns to data
@@ -96,8 +95,8 @@ process_data <- function(data, covariates, outcome = NULL, column_names = NULL, 
 
   if (factorized || imputed) {
     `for`(s, names(convert_cols), `=`(map[map == s], convert_cols[s]))
-    `if`(imputed && flag, `=`(map, setNames(c(map, flag_cols), c(names(map), flag_cols))))
+    `if`(imputed && flag, `=`(map, stats::setNames(c(map, flag_cols), c(names(map), flag_cols))))
   }
-
+  
   list(data = data, covariates = covariates, map = map)
 }

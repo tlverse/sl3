@@ -29,8 +29,8 @@ warnings <- capture_warnings({
 expect_equal(
   warnings,
   c(
-    "Missing Outcome Data Found. Dropping outcomes.",
-    "Missing Covariate Data Found. Imputing covariates."
+    "Missing outcome data detected: dropping outcomes.",
+    "Missing covariate data detected: imputing covariates."
   )
 )
 
@@ -49,8 +49,8 @@ warnings <- capture_warnings({
 expect_equal(
   warnings,
   c(
-    "Missing Covariate Data Found. Imputing covariates.",
-    "Missing Outcome Data Found. This is okay for prediction, but will likely break training. \n You can drop observations with missing outcomes by setting drop_missing_outcome=TRUE in make_sl3_Task."
+    "Missing covariate data detected: imputing covariates.",
+    "Missing outcome data detected. This is okay for prediction, but will likely break training. \n You can drop observations with missing outcomes by setting drop_missing_outcome=TRUE in make_sl3_Task."
   )
 )
 
