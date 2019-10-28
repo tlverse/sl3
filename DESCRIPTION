@@ -40,7 +40,8 @@ Imports:
     methods,
     ggplot2,
     stringr,
-    digest
+    digest,
+    imputeMissings
 Suggests:
     testthat,
     rmarkdown,

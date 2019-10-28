@@ -48,11 +48,11 @@ Lrnr_svm <- R6Class(
   portable = TRUE, class = TRUE,
   public = list(
     initialize = function(scale = TRUE,
-                              type = NULL,
-                              kernel = "radial",
-                              fitted = TRUE,
-                              probability = FALSE,
-                              ...) {
+                          type = NULL,
+                          kernel = "radial",
+                          fitted = TRUE,
+                          probability = FALSE,
+                          ...) {
       # this captures all parameters to initialize and saves them as self$params
       params <- args_to_list()
       super$initialize(params = params, ...)

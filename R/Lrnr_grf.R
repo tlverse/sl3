@@ -63,11 +63,11 @@ Lrnr_grf <- R6Class(
   inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
     initialize = function(quantiles = c(0.1, 0.5, 0.9), regression.splitting = FALSE,
-                              sample.fraction = 0.5,
-                              mtry = NULL, num.trees = 2000, num.threads = NULL,
-                              min.node.size = NULL, honesty = TRUE, alpha = 0.05,
-                              imbalance.penalty = 0, seed = NULL, clusters = NULL,
-                              samples_per_cluster = NULL, q = 0.5, ...) {
+                          sample.fraction = 0.5,
+                          mtry = NULL, num.trees = 2000, num.threads = NULL,
+                          min.node.size = NULL, honesty = TRUE, alpha = 0.05,
+                          imbalance.penalty = 0, seed = NULL, clusters = NULL,
+                          samples_per_cluster = NULL, q = 0.5, ...) {
       super$initialize(params = args_to_list(), ...)
     }
   ),

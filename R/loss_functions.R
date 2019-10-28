@@ -99,8 +99,10 @@ cv_risk <- function(learner, loss_fun, coefs = NULL) {
   }
   losses <- preds[, lapply(.SD, loss_fun, task$Y)]
   # multiply each loss (L(O_i)) by the weights (w_i):
-  losses_by_id <- losses[, lapply(.SD, function(loss) task$weights *
-      loss)]
+  losses_by_id <- losses[, lapply(.SD, function(loss) {
+    task$weights *
+      loss
+  })]
   # for clustered data, this will first evaluate the mean weighted loss
   # within each cluster (subject) before evaluating SD
   losses_by_id <- losses_by_id[, lapply(.SD, function(loss) {
