@@ -31,7 +31,7 @@ Lrnr_density_discretize <- R6Class(
   class = TRUE,
   public = list(
     initialize = function(categorical_learner = NULL, type = "equal_mass",
-                              n_bins = 20, ...) {
+                          n_bins = 20, ...) {
       if (is.null(categorical_learner)) {
         categorical_learner <- make_learner(Lrnr_glmnet)
       }
@@ -63,7 +63,6 @@ Lrnr_density_discretize <- R6Class(
         outcome = "discrete_Y",
         column_names = new_columns
       )
-
       # fit categorical learner to discretized task
       categorical_fit <- self$params$categorical_learner$train(discrete_task)
 
