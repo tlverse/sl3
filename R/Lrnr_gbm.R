@@ -46,7 +46,7 @@ Lrnr_gbm <- R6Class(
   portable = TRUE, class = TRUE,
   public = list(
     initialize = function(n.trees = 10000, interaction.depth = 2,
-                              shrinkage = 0.001, ...) {
+                          shrinkage = 0.001, ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }
