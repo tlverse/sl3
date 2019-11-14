@@ -20,7 +20,10 @@ least squares, internally using the \code{nnls} package and
 \section{Parameters}{
 
 \describe{
-\item{\code{...}}{Not used.}
+\item{\code{convex = FALSE}}{Normalize the coefficients to be a convex
+combination}
+\item{\code{...}}{Other parameters passed to
+\code{\link[nnls]{nnls}}.}
 }
 }
 
