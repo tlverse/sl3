@@ -29,10 +29,10 @@ sl3_Task <- R6Class(
   class = TRUE,
   public = list(
     initialize = function(data, covariates, outcome = NULL, outcome_type = NULL,
-                              outcome_levels = NULL, id = NULL, weights = NULL,
-                              offset = NULL, nodes = NULL, column_names = NULL,
-                              row_index = NULL, folds = NULL, user_mode = NULL,
-                              drop_missing_outcome = FALSE) {
+                          outcome_levels = NULL, id = NULL, weights = NULL,
+                          offset = NULL, nodes = NULL, column_names = NULL,
+                          row_index = NULL, folds = NULL, user_mode = NULL,
+                          drop_missing_outcome = FALSE) {
 
       # process data
       if (inherits(data, "Shared_Data")) {
@@ -211,8 +211,8 @@ sl3_Task <- R6Class(
     },
 
     next_in_chain = function(covariates = NULL, outcome = NULL, id = NULL,
-                                 weights = NULL, offset = NULL, folds = NULL,
-                                 column_names = NULL, new_nodes = NULL, ...) {
+                             weights = NULL, offset = NULL, folds = NULL,
+                             column_names = NULL, new_nodes = NULL, ...) {
       if (is.null(new_nodes)) {
         new_nodes <- self$nodes
 
@@ -333,7 +333,7 @@ sl3_Task <- R6Class(
     },
 
     get_node = function(node_name, generator_fun = NULL,
-                            expand_factors = FALSE) {
+                        expand_factors = FALSE) {
       if (missing(generator_fun)) {
         generator_fun <- function(node_name, n) {
           stop(sprintf("Node %s not specified", node_name))

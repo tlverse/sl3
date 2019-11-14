@@ -87,12 +87,15 @@ Lrnr_glm_fast <- R6Class(
         args$offset <- task$offset_transformed(link_fun)
       }
 
-      SuppressGivenWarnings({
-        fit_object <- try(
-          call_with_args(speedglm::speedglm.wfit, args),
-          silent = TRUE
-        )
-      }, GetWarningsToSuppress())
+      SuppressGivenWarnings(
+        {
+          fit_object <- try(
+            call_with_args(speedglm::speedglm.wfit, args),
+            silent = TRUE
+          )
+        },
+        GetWarningsToSuppress()
+      )
 
       if (inherits(fit_object, "try-error")) {
         # if failed, fall back on stats::glm
@@ -105,9 +108,12 @@ Lrnr_glm_fast <- R6Class(
         args$ctrl <- glm.control(trace = FALSE)
         args$x <- args$X
 
-        SuppressGivenWarnings({
-          fit_object <- call_with_args(stats::glm.fit, args)
-        }, GetWarningsToSuppress())
+        SuppressGivenWarnings(
+          {
+            fit_object <- call_with_args(stats::glm.fit, args)
+          },
+          GetWarningsToSuppress()
+        )
 
         fit_object$linear.predictors <- NULL
         fit_object$weights <- NULL

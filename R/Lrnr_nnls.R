@@ -22,7 +22,7 @@
 #'
 #' @section Parameters:
 #' \describe{
-#'   \item{\code{convex = FALSE}}{Normalize the coefficients to be a convex 
+#'   \item{\code{convex = FALSE}}{Normalize the coefficients to be a convex
 #'     combination}
 #'   \item{\code{...}}{Other parameters passed to
 #'     \code{\link[nnls]{nnls}}.}
@@ -63,17 +63,17 @@ Lrnr_nnls <- R6Class(
       y <- task$Y
       fit_object <- nnls::nnls(as.matrix(x), y)
       fit_object$lrnrs <- names(task$X)
-      if(args$convex == TRUE){
+      if (args$convex == TRUE) {
         init_coef <- coefficients(fit_object)
         init_coef[is.na(init_coef)] <- 0
         if (sum(init_coef) > 0) {
-          coef <- init_coef/sum(init_coef)
+          coef <- init_coef / sum(init_coef)
         } else {
           warning("All algorithms have zero weight", call. = FALSE)
           coef <- init_coef
         }
-       fit_object$coefficients <- coef 
-       fit_object$x <- coef
+        fit_object$coefficients <- coef
+        fit_object$x <- coef
       }
       return(fit_object)
     },
