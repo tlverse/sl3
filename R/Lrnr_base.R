@@ -146,7 +146,13 @@ Lrnr_base <- R6Class(
     },
 
     train_sublearners = function(task) {
-      return(private$.train_sublearners(task))
+      # trains learner to data
+      assert_that(is(task, "sl3_Task"))
+      
+      # TODO: add error handling
+      subsetted_task <- self$subset_covariates(task)
+      
+      return(private$.train_sublearners(subsetted_task))
     },
 
     train = function(task) {
