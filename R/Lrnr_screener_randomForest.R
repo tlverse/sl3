@@ -19,7 +19,7 @@
 #' @format \code{\link{R6Class}} object.
 #'
 #' @family Learners
-#'
+#' 
 #' @section Parameters:
 #' \describe{
 #'   \item{\code{nVar = 10}}{Number of covariates to select.}
@@ -32,23 +32,23 @@ Lrnr_screener_randomForest <- R6Class(
   classname = "Lrnr_screener_randomForest",
   inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(nVar = 10,
-                          ntree = 1000,
+    initialize = function(nVar = 10, 
+                          ntree = 1000, 
                           ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }
   ),
-
+  
   private = list(
     .properties = c("binomial", "continuous", "categorical"),
-
+    
     .train = function(task) {
       args <- self$params
       outcome_type <- self$get_outcome_type(task)
       args$x <- task$X
       args$y <- outcome_type$format(task$Y)
-
+      
       if (is.null(args$mtry)) {
         args$mtry <- floor(ncol(args$x))
       }
@@ -60,7 +60,7 @@ Lrnr_screener_randomForest <- R6Class(
         envir = getNamespace("randomForest")
       )
       rf_object <- call_with_args(rf_fun, args)
-
+      
       selected <- (rank(-rf_object$importance) <= args$nVar)
       selected_names <- names(task$X)[selected]
       covariates <- task$nodes$covariates
@@ -70,15 +70,15 @@ Lrnr_screener_randomForest <- R6Class(
       fit_object <- list(selected = covariates[covariate_selected])
       return(fit_object)
     },
-
+    
     .predict = function(task) {
       task$X[, private$.fit_object$selected, with = FALSE, drop = FALSE]
     },
-
+    
     .chain = function(task) {
       return(task$next_in_chain(covariates = private$.fit_object$selected))
     },
-
+    
     .required_packages = c("randomForest")
   )
 )

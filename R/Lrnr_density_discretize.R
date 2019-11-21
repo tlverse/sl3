@@ -63,7 +63,6 @@ Lrnr_density_discretize <- R6Class(
         outcome = "discrete_Y",
         column_names = new_columns
       )
-
       # fit categorical learner to discretized task
       categorical_fit <- self$params$categorical_learner$train(discrete_task)
 
