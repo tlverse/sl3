@@ -8,6 +8,8 @@
 \alias{delayed_learner_fit_predict}
 \alias{learner_fit_chain}
 \alias{delayed_learner_fit_chain}
+\alias{learner_subset_covariates}
+\alias{delayed_learner_subset_covariates}
 \title{Learner helpers}
 \usage{
 delayed_make_learner(learner_class, ...)
@@ -23,6 +25,10 @@ delayed_learner_fit_predict(learner_fit, task = NULL)
 learner_fit_chain(learner_fit, task = NULL)
 
 delayed_learner_fit_chain(learner_fit, task = NULL)
+
+learner_subset_covariates(learner, task)
+
+delayed_learner_subset_covariates(learner, task)
 }
 \arguments{
 \item{learner_class}{The learner class to instantiate.}
