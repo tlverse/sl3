@@ -13,7 +13,7 @@ Variable_Type <- R6Class(
         if (is.null(x)) {
           stop("type not specified, and no x from which to infer it")
         }
-        nunique <- length(unique(x))
+        nunique <- length(na.exclude(unique(x)))
         if (!is.null(ncol(x))) {
           type <- "multivariate"
         } else if (nunique == 1) {
