@@ -26,6 +26,7 @@ warnings <- capture_warnings({
     drop_missing_outcome = TRUE
   )
 })
+
 expect_equal(
   warnings,
   c(
@@ -39,7 +40,7 @@ expect_equal(
   task_drop_missing$nodes$covariates,
   c(
     "apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
-    "sexn", "apgar1_flag", "apgar5_flag", "meducyrs_flag", "parity_flag"
+    "sexn", "delta_apgar1", "delta_apgar5", "delta_parity", "delta_meducyrs"
   )
 )
 
@@ -55,3 +56,20 @@ expect_equal(
 )
 
 expect_equal(task_impute_covariates$nrow, nrow(cpp))
+
+# create data with missingness
+mtcars_with_missing <- data.table(copy(mtcars))
+mtcars_with_missing[sample(1:nrow(mtcars),10),cyl:=NA]
+
+# also add character column
+mtcars_with_missing[,gear:=as.character(gear)]
+
+# create a task specifing nodes
+covariates <- c("cyl","gear")
+suppressWarnings({
+task_from_nodes <- sl3_Task$new(mtcars_with_missing, nodes = list(outcome="mpg", covariates=covariates))
+})
+expected_covariates <- c(covariates, "delta_cyl")
+
+test_that("missing processing works when nodes is specified", 
+          expect_equal(task_from_nodes$nodes$covariates, expected_covariates))

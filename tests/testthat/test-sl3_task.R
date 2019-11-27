@@ -103,3 +103,6 @@ task_intfolds <- sl3_Task$new(mtcars,
 test_that("task$folds returns object with correct number of integer folds", {
   expect_equal(length(task_intfolds$folds), intfolds)
 })
+
+
+task_from_shared_data <- sl3_Task$new(data=task$.__enclos_env__$private$.shared_data, nodes=task$nodes)
