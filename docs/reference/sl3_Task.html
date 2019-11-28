@@ -81,7 +81,7 @@ including which variables are to be used as covariates and outcomes." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sl3</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.1</span>
       </span>
     </div>
 
@@ -258,129 +258,6 @@ Most of the parameter values are passed to the <code>sl3_Task</code> constructor
 
 </dl>
 
-    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
-
-    
-<h3>Public methods</h3>
-
-<ul>
-<li><p><a href='#method-new'><code>sl3_Task$new()</code></a></p></li>
-<li><p><a href='#method-add_interactions'><code>sl3_Task$add_interactions()</code></a></p></li>
-<li><p><a href='#method-add_columns'><code>sl3_Task$add_columns()</code></a></p></li>
-<li><p><a href='#method-next_in_chain'><code>sl3_Task$next_in_chain()</code></a></p></li>
-<li><p><a href='#method-subset_task'><code>sl3_Task$subset_task()</code></a></p></li>
-<li><p><a href='#method-get_data'><code>sl3_Task$get_data()</code></a></p></li>
-<li><p><a href='#method-has_node'><code>sl3_Task$has_node()</code></a></p></li>
-<li><p><a href='#method-get_node'><code>sl3_Task$get_node()</code></a></p></li>
-<li><p><a href='#method-offset_transformed'><code>sl3_Task$offset_transformed()</code></a></p></li>
-<li><p><a href='#method-print'><code>sl3_Task$print()</code></a></p></li>
-<li><p><a href='#method-revere_fold_task'><code>sl3_Task$revere_fold_task()</code></a></p></li>
-<li><p><a href='#method-clone'><code>sl3_Task$clone()</code></a></p></li>
-</ul>
-<p><hr>
-<a id="method-new"></a></p><h3>Method <code>new()</code></h3>
-
-<h3>Usage</h3>
-<p><div class="r"></p><pre>sl3_Task$new(
-  data,
-  covariates,
-  outcome = NULL,
-  outcome_type = NULL,
-  outcome_levels = NULL,
-  id = NULL,
-  weights = NULL,
-  offset = NULL,
-  nodes = NULL,
-  column_names = NULL,
-  row_index = NULL,
-  folds = NULL,
-  flag = TRUE,
-  save_flag_cols = TRUE,
-  drop_missing_outcome = FALSE
-)</pre><p></div></p>
-
-<p><hr>
-<a id="method-add_interactions"></a></p><h3>Method <code>add_interactions()</code></h3>
-
-<h3>Usage</h3>
-<p><div class="r"></p><pre>sl3_Task$add_interactions(interactions, warn_on_existing = TRUE)</pre><p></div></p>
-
-<p><hr>
-<a id="method-add_columns"></a></p><h3>Method <code>add_columns()</code></h3>
-
-<h3>Usage</h3>
-<p><div class="r"></p><pre>sl3_Task$add_columns(new_data, column_uuid = uuid::UUIDgenerate())</pre><p></div></p>
-
-<p><hr>
-<a id="method-next_in_chain"></a></p><h3>Method <code>next_in_chain()</code></h3>
-
-<h3>Usage</h3>
-<p><div class="r"></p><pre>sl3_Task$next_in_chain(
-  covariates = NULL,
-  outcome = NULL,
-  id = NULL,
-  weights = NULL,
-  offset = NULL,
-  folds = NULL,
-  column_names = NULL,
-  new_nodes = NULL,
-  ...
-)</pre><p></div></p>
-
-<p><hr>
-<a id="method-subset_task"></a></p><h3>Method <code>subset_task()</code></h3>
-
-<h3>Usage</h3>
-<p><div class="r"></p><pre>sl3_Task$subset_task(row_index, drop_folds = FALSE)</pre><p></div></p>
-
-<p><hr>
-<a id="method-get_data"></a></p><h3>Method <code>get_data()</code></h3>
-
-<h3>Usage</h3>
-<p><div class="r"></p><pre>sl3_Task$get_data(rows = NULL, columns, expand_factors = FALSE)</pre><p></div></p>
-
-<p><hr>
-<a id="method-has_node"></a></p><h3>Method <code>has_node()</code></h3>
-
-<h3>Usage</h3>
-<p><div class="r"></p><pre>sl3_Task$has_node(node_name)</pre><p></div></p>
-
-<p><hr>
-<a id="method-get_node"></a></p><h3>Method <code>get_node()</code></h3>
-
-<h3>Usage</h3>
-<p><div class="r"></p><pre>sl3_Task$get_node(node_name, generator_fun = NULL, expand_factors = FALSE)</pre><p></div></p>
-
-<p><hr>
-<a id="method-offset_transformed"></a></p><h3>Method <code>offset_transformed()</code></h3>
-
-<h3>Usage</h3>
-<p><div class="r"></p><pre>sl3_Task$offset_transformed(link_fun = NULL, for_prediction = FALSE)</pre><p></div></p>
-
-<p><hr>
-<a id="method-print"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/print.html'>print()</a></code></h3>
-
-<h3>Usage</h3>
-<p><div class="r"></p><pre>sl3_Task$print()</pre><p></div></p>
-
-<p><hr>
-<a id="method-revere_fold_task"></a></p><h3>Method <code>revere_fold_task()</code></h3>
-
-<h3>Usage</h3>
-<p><div class="r"></p><pre>sl3_Task$revere_fold_task(fold_number)</pre><p></div></p>
-
-<p><hr>
-<a id="method-clone"></a></p><h3>Method <code>clone()</code></h3>
-<p>The objects of this class are cloneable with this method.</p><h3>Usage</h3>
-<p><div class="r"></p><pre>sl3_Task$clone(deep = FALSE)</pre><p></div></p>
-
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl class='dl-horizontal'>
-<dt><code>deep</code></dt><dd><p>Whether to make a deep clone.</p></dd>
-
-</dl><p></div></p>
-
-
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -392,7 +269,6 @@ Most of the parameter values are passed to the <code>sl3_Task</code> constructor
       <li><a href="#constructor">Constructor</a></li>
       <li><a href="#methods">Methods</a></li>
       <li><a href="#fields">Fields</a></li>
-      <li><a href="#methods">Methods</a></li>
     </ul>
 
   </div>

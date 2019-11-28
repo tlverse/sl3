@@ -1,8 +1,7 @@
-pandoc: '2.4'
+pandoc: 2.2.1
 pkgdown: 1.4.1
 pkgdown_sha: ~
 articles:
-  custom_lrnrs: custom_lrnrs.html
   intro_sl3: intro_sl3.html
 urls:
   reference: https://tlverse.org/sl3/reference

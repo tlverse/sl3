@@ -82,7 +82,7 @@ For more information on a particular learner, see its help file." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sl3</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.1</span>
       </span>
     </div>
 
@@ -320,131 +320,6 @@ returns the task$outcome_type.<ul>
 <code><a href='Stack.html'>Stack</a></code>,
 <code><a href='Lrnr_h2o_glm.html'>define_h2o_X</a>()</code>,
 <code><a href='undocumented_learner.html'>undocumented_learner</a></code></p></div>
-    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
-
-    
-<h3>Public methods</h3>
-
-<ul>
-<li><p><a href='#method-new'><code>Lrnr_base$new()</code></a></p></li>
-<li><p><a href='#method-subset_covariates'><code>Lrnr_base$subset_covariates()</code></a></p></li>
-<li><p><a href='#method-get_outcome_type'><code>Lrnr_base$get_outcome_type()</code></a></p></li>
-<li><p><a href='#method-base_train'><code>Lrnr_base$base_train()</code></a></p></li>
-<li><p><a href='#method-set_train'><code>Lrnr_base$set_train()</code></a></p></li>
-<li><p><a href='#method-assert_trained'><code>Lrnr_base$assert_trained()</code></a></p></li>
-<li><p><a href='#method-base_predict'><code>Lrnr_base$base_predict()</code></a></p></li>
-<li><p><a href='#method-base_chain'><code>Lrnr_base$base_chain()</code></a></p></li>
-<li><p><a href='#method-train_sublearners'><code>Lrnr_base$train_sublearners()</code></a></p></li>
-<li><p><a href='#method-train'><code>Lrnr_base$train()</code></a></p></li>
-<li><p><a href='#method-predict'><code>Lrnr_base$predict()</code></a></p></li>
-<li><p><a href='#method-chain'><code>Lrnr_base$chain()</code></a></p></li>
-<li><p><a href='#method-print'><code>Lrnr_base$print()</code></a></p></li>
-<li><p><a href='#method-custom_chain'><code>Lrnr_base$custom_chain()</code></a></p></li>
-<li><p><a href='#method-predict_fold'><code>Lrnr_base$predict_fold()</code></a></p></li>
-<li><p><a href='#method-clone'><code>Lrnr_base$clone()</code></a></p></li>
-</ul>
-<p><hr>
-<a id="method-new"></a></p><h3>Method <code>new()</code></h3>
-
-<h3>Usage</h3>
-<p><div class="r"></p><pre>Lrnr_base$new(params = NULL, ...)</pre><p></div></p>
-
-<p><hr>
-<a id="method-subset_covariates"></a></p><h3>Method <code>subset_covariates()</code></h3>
-
-<h3>Usage</h3>
-<p><div class="r"></p><pre>Lrnr_base$subset_covariates(task)</pre><p></div></p>
-
-<p><hr>
-<a id="method-get_outcome_type"></a></p><h3>Method <code>get_outcome_type()</code></h3>
-
-<h3>Usage</h3>
-<p><div class="r"></p><pre>Lrnr_base$get_outcome_type(task)</pre><p></div></p>
-
-<p><hr>
-<a id="method-base_train"></a></p><h3>Method <code>base_train()</code></h3>
-
-<h3>Usage</h3>
-<p><div class="r"></p><pre>Lrnr_base$base_train(task, trained_sublearners = NULL)</pre><p></div></p>
-
-<p><hr>
-<a id="method-set_train"></a></p><h3>Method <code>set_train()</code></h3>
-
-<h3>Usage</h3>
-<p><div class="r"></p><pre>Lrnr_base$set_train(fit_object, training_task)</pre><p></div></p>
-
-<p><hr>
-<a id="method-assert_trained"></a></p><h3>Method <code>assert_trained()</code></h3>
-
-<h3>Usage</h3>
-<p><div class="r"></p><pre>Lrnr_base$assert_trained()</pre><p></div></p>
-
-<p><hr>
-<a id="method-base_predict"></a></p><h3>Method <code>base_predict()</code></h3>
-
-<h3>Usage</h3>
-<p><div class="r"></p><pre>Lrnr_base$base_predict(task = NULL)</pre><p></div></p>
-
-<p><hr>
-<a id="method-base_chain"></a></p><h3>Method <code>base_chain()</code></h3>
-
-<h3>Usage</h3>
-<p><div class="r"></p><pre>Lrnr_base$base_chain(task = NULL)</pre><p></div></p>
-
-<p><hr>
-<a id="method-train_sublearners"></a></p><h3>Method <code>train_sublearners()</code></h3>
-
-<h3>Usage</h3>
-<p><div class="r"></p><pre>Lrnr_base$train_sublearners(task)</pre><p></div></p>
-
-<p><hr>
-<a id="method-train"></a></p><h3>Method <code>train()</code></h3>
-
-<h3>Usage</h3>
-<p><div class="r"></p><pre>Lrnr_base$train(task)</pre><p></div></p>
-
-<p><hr>
-<a id="method-predict"></a></p><h3>Method <code><a href='https://rdrr.io/r/stats/predict.html'>predict()</a></code></h3>
-
-<h3>Usage</h3>
-<p><div class="r"></p><pre>Lrnr_base$predict(task = NULL)</pre><p></div></p>
-
-<p><hr>
-<a id="method-chain"></a></p><h3>Method <code>chain()</code></h3>
-
-<h3>Usage</h3>
-<p><div class="r"></p><pre>Lrnr_base$chain(task = NULL)</pre><p></div></p>
-
-<p><hr>
-<a id="method-print"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/print.html'>print()</a></code></h3>
-
-<h3>Usage</h3>
-<p><div class="r"></p><pre>Lrnr_base$print()</pre><p></div></p>
-
-<p><hr>
-<a id="method-custom_chain"></a></p><h3>Method <code>custom_chain()</code></h3>
-
-<h3>Usage</h3>
-<p><div class="r"></p><pre>Lrnr_base$custom_chain(new_chain_fun = NULL)</pre><p></div></p>
-
-<p><hr>
-<a id="method-predict_fold"></a></p><h3>Method <code>predict_fold()</code></h3>
-
-<h3>Usage</h3>
-<p><div class="r"></p><pre>Lrnr_base$predict_fold(task, fold_number = "full")</pre><p></div></p>
-
-<p><hr>
-<a id="method-clone"></a></p><h3>Method <code>clone()</code></h3>
-<p>The objects of this class are cloneable with this method.</p><h3>Usage</h3>
-<p><div class="r"></p><pre>Lrnr_base$clone(deep = FALSE)</pre><p></div></p>
-
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl class='dl-horizontal'>
-<dt><code>deep</code></dt><dd><p>Whether to make a deep clone.</p></dd>
-
-</dl><p></div></p>
-
-
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -458,7 +333,6 @@ returns the task$outcome_type.<ul>
       <li><a href="#fields">Fields</a></li>
       <li><a href="#internal-methods">Internal Methods</a></li>
       <li><a href="#see-also">See also</a></li>
-      <li><a href="#methods">Methods</a></li>
     </ul>
 
   </div>

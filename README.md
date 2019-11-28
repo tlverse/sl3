@@ -120,7 +120,7 @@ library(SuperLearner)
 #> Package created on 2019-08-05
 library(origami)
 #> origami: Generalized Cross-Validation Framework
-#> Version: 1.0.2
+#> Version: 1.0.1
 library(sl3)
 
 # load example data set
@@ -155,10 +155,6 @@ SL.glmnet_learner <- Lrnr_pkg_SuperLearner$new(SL_wrapper = "SL.glmnet")
 # stack learners into a model (including screeners and pipelines)
 learner_stack <- Stack$new(SL.glmnet_learner, glm_learner, screen_and_glm)
 stack_fit <- learner_stack$train(task)
-#> Warning: `lang_tail()` is deprecated as of rlang 0.2.0.
-#> This warning is displayed once per session.
-#> Warning: `mut_node_cdr()` is deprecated as of rlang 0.2.0.
-#> This warning is displayed once per session.
 preds <- stack_fit$predict()
 head(preds)
 #>    Lrnr_pkg_SuperLearner_SL.glmnet Lrnr_glm_TRUE
@@ -224,8 +220,8 @@ See file `LICENSE` for details.
 
 <div id="ref-breiman1996stacked">
 
-Breiman, Leo. 1996. “Stacked Regressions.” *Machine Learning* 24 (1):
-49–64.
+Breiman, Leo. 1996. “Stacked Regressions.” *Machine Learning* 24 (1).
+Springer: 49–64.
 
 </div>
 
@@ -240,7 +236,7 @@ Learner.” *Statistical Applications in Genetics and Molecular Biology* 6
 <div id="ref-wolpert1992stacked">
 
 Wolpert, David H. 1992. “Stacked Generalization.” *Neural Networks* 5
-(2): 241–59.
+(2). Elsevier: 241–59.
 
 </div>
 

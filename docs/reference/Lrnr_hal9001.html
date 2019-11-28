@@ -87,7 +87,7 @@ glmnet package." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sl3</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.1</span>
       </span>
     </div>
 
@@ -248,62 +248,6 @@ is the convention for v-fold cross-validation.</p></dd>
 <code><a href='Stack.html'>Stack</a></code>,
 <code><a href='Lrnr_h2o_glm.html'>define_h2o_X</a>()</code>,
 <code><a href='undocumented_learner.html'>undocumented_learner</a></code></p></div>
-    <h2 class="hasAnchor" id="super-class"><a class="anchor" href="#super-class"></a>Super class</h2>
-
-    <p><code><a href='Lrnr_base.html'>sl3::Lrnr_base</a></code> -&gt; <code>Lrnr_hal9001</code></p>
-    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
-
-    
-<h3>Public methods</h3>
-
-<ul>
-<li><p><a href='#method-new'><code>Lrnr_hal9001$new()</code></a></p></li>
-<li><p><a href='#method-clone'><code>Lrnr_hal9001$clone()</code></a></p></li>
-</ul>
-<p><details ><summary>Inherited methods</summary>
-<ul>
-<li><p><span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="assert_trained"><a href='../../sl3/html/Lrnr_base.html#method-assert_trained'><code>sl3::Lrnr_base$assert_trained()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="base_chain"><a href='../../sl3/html/Lrnr_base.html#method-base_chain'><code>sl3::Lrnr_base$base_chain()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="base_predict"><a href='../../sl3/html/Lrnr_base.html#method-base_predict'><code>sl3::Lrnr_base$base_predict()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="base_train"><a href='../../sl3/html/Lrnr_base.html#method-base_train'><code>sl3::Lrnr_base$base_train()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="chain"><a href='../../sl3/html/Lrnr_base.html#method-chain'><code>sl3::Lrnr_base$chain()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="custom_chain"><a href='../../sl3/html/Lrnr_base.html#method-custom_chain'><code>sl3::Lrnr_base$custom_chain()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="get_outcome_type"><a href='../../sl3/html/Lrnr_base.html#method-get_outcome_type'><code>sl3::Lrnr_base$get_outcome_type()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="predict"><a href='../../sl3/html/Lrnr_base.html#method-predict'><code>sl3::Lrnr_base$predict()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="predict_fold"><a href='../../sl3/html/Lrnr_base.html#method-predict_fold'><code>sl3::Lrnr_base$predict_fold()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="print"><a href='../../sl3/html/Lrnr_base.html#method-print'><code>sl3::Lrnr_base$print()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="set_train"><a href='../../sl3/html/Lrnr_base.html#method-set_train'><code>sl3::Lrnr_base$set_train()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="subset_covariates"><a href='../../sl3/html/Lrnr_base.html#method-subset_covariates'><code>sl3::Lrnr_base$subset_covariates()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="train"><a href='../../sl3/html/Lrnr_base.html#method-train'><code>sl3::Lrnr_base$train()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="train_sublearners"><a href='../../sl3/html/Lrnr_base.html#method-train_sublearners'><code>sl3::Lrnr_base$train_sublearners()</code></a></span></p></li>
-</ul>
-</details>
-
-<hr>
-<a id="method-new"></a></p><h3>Method <code>new()</code></h3>
-
-<h3>Usage</h3>
-<p><div class="r"></p><pre>Lrnr_hal9001$new(
-  degrees = NULL,
-  fit_type = "glmnet",
-  n_folds = 10,
-  use_min = TRUE,
-  basis_list = NULL,
-  ...
-)</pre><p></div></p>
-
-<p><hr>
-<a id="method-clone"></a></p><h3>Method <code>clone()</code></h3>
-<p>The objects of this class are cloneable with this method.</p><h3>Usage</h3>
-<p><div class="r"></p><pre>Lrnr_hal9001$clone(deep = FALSE)</pre><p></div></p>
-
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl class='dl-horizontal'>
-<dt><code>deep</code></dt><dd><p>Whether to make a deep clone.</p></dd>
-
-</dl><p></div></p>
-
-
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -313,8 +257,6 @@ is the convention for v-fold cross-validation.</p></dd>
       <li><a href="#value">Value</a></li>
       <li><a href="#parameters">Parameters</a></li>
       <li><a href="#see-also">See also</a></li>
-      <li><a href="#super-class">Super class</a></li>
-      <li><a href="#methods">Methods</a></li>
     </ul>
 
   </div>
