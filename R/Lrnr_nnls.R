@@ -22,7 +22,10 @@
 #'
 #' @section Parameters:
 #' \describe{
-#'   \item{\code{...}}{Not used.}
+#'   \item{\code{convex = FALSE}}{Normalize the coefficients to be a convex
+#'     combination}
+#'   \item{\code{...}}{Other parameters passed to
+#'     \code{\link[nnls]{nnls}}.}
 #' }
 #'
 #' @template common_parameters
@@ -31,8 +34,8 @@ Lrnr_nnls <- R6Class(
   classname = "Lrnr_nnls", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(...) {
-      params <- list(...)
+    initialize = function(convex = FALSE, ...) {
+      params <- args_to_list()
       super$initialize(params = params, ...)
     },
     print = function() {
@@ -55,10 +58,23 @@ Lrnr_nnls <- R6Class(
   private = list(
     .properties = c("continuous"),
     .train = function(task) {
+      args <- self$params
       x <- task$X
       y <- task$Y
       fit_object <- nnls::nnls(as.matrix(x), y)
       fit_object$lrnrs <- names(task$X)
+      if (args$convex == TRUE) {
+        init_coef <- coefficients(fit_object)
+        init_coef[is.na(init_coef)] <- 0
+        if (sum(init_coef) > 0) {
+          coef <- init_coef / sum(init_coef)
+        } else {
+          warning("All algorithms have zero weight", call. = FALSE)
+          coef <- init_coef
+        }
+        fit_object$coefficients <- coef
+        fit_object$x <- coef
+      }
       return(fit_object)
     },
 

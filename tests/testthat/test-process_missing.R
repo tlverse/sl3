@@ -21,11 +21,18 @@ covars <- c(
 )
 outcome <- "haz"
 
-expect_warning(
+warnings <- capture_warnings({
   task_drop_missing <- make_sl3_Task(cpp, covars, outcome,
     drop_missing_outcome = TRUE
-  ),
-  "Missing Covariate Data Found. Imputing covariates using sl3_process_missing.",
+  )
+})
+
+expect_equal(
+  warnings,
+  c(
+    "Missing outcome data detected: dropping outcomes.",
+    "Missing covariate data detected: imputing covariates."
+  )
 )
 
 expect_false(any(is.na(task_drop_missing$Y)))
@@ -43,9 +50,26 @@ warnings <- capture_warnings({
 expect_equal(
   warnings,
   c(
-    "Missing Covariate Data Found. Imputing covariates using sl3_process_missing.",
-    "Missing Outcome Data Found. This is okay for prediction, but will likely break training. \n You can drop observations with missing outcomes by setting drop_missing_outcome=TRUE in make_sl3_Task."
+    "Missing covariate data detected: imputing covariates.",
+    "Missing outcome data detected. This is okay for prediction, but will likely break training. \n You can drop observations with missing outcomes by setting drop_missing_outcome=TRUE in make_sl3_Task."
   )
 )
 
 expect_equal(task_impute_covariates$nrow, nrow(cpp))
+
+# create data with missingness
+mtcars_with_missing <- data.table(copy(mtcars))
+mtcars_with_missing[sample(1:nrow(mtcars),10),cyl:=NA]
+
+# also add character column
+mtcars_with_missing[,gear:=as.character(gear)]
+
+# create a task specifing nodes
+covariates <- c("cyl","gear")
+suppressWarnings({
+task_from_nodes <- sl3_Task$new(mtcars_with_missing, nodes = list(outcome="mpg", covariates=covariates))
+})
+expected_covariates <- c(covariates, "delta_cyl")
+
+test_that("missing processing works when nodes is specified", 
+          expect_equal(task_from_nodes$nodes$covariates, expected_covariates))

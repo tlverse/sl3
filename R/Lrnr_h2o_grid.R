@@ -49,9 +49,9 @@ Lrnr_h2o_grid <- R6Class(
   portable = TRUE, class = TRUE,
   public = list(
     initialize = function(algorithm, seed = 1, distribution = NULL,
-                              intercept = TRUE, standardize = TRUE, lambda = 0L,
-                              max_iterations = 100, ignore_const_cols = FALSE,
-                              missing_values_handling = "Skip", ...) {
+                          intercept = TRUE, standardize = TRUE, lambda = 0L,
+                          max_iterations = 100, ignore_const_cols = FALSE,
+                          missing_values_handling = "Skip", ...) {
       super$initialize(params = args_to_list(), ...)
     }
   ),

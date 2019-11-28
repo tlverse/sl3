@@ -7,15 +7,19 @@ Shared_Data <- R6Class(
   portable = TRUE,
   class = TRUE,
   public = list(
-    initialize = function(data, ...) {
+    initialize = function(data, force_copy = TRUE, ...) {
       if (inherits(data, "Shared_Data")) {
-        stop("Shared_Data passed another Shared_Data object on construction. 
-    			Instead of doing this, use the existing Shared_Data object.")
+        stop("Shared_Data passed another Shared_Data object on construction.
+              Instead of doing this, use the existing Shared_Data object.")
       }
 
       if (inherits(data, "data.table")) {
-        # explicitly copy existing data.table
-        private$.data <- data.table::copy(data)
+        if(force_copy){
+          # explicitly copy existing data.table
+          private$.data <- data.table::copy(data)
+        } else {
+          private$.data <- data
+        }
       } else {
         # coerce to data.table
         # as.data.table will also copy

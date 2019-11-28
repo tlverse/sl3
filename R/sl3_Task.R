@@ -28,46 +28,44 @@ sl3_Task <- R6Class(
   portable = TRUE,
   class = TRUE,
   public = list(
-    initialize = function(data, covariates, outcome = NULL, outcome_type = NULL,
-                              outcome_levels = NULL, id = NULL, weights = NULL,
-                              offset = NULL, nodes = NULL, column_names = NULL,
-                              row_index = NULL, folds = NULL, user_mode = NULL,
-                              drop_missing_outcome = FALSE) {
-
-      # process data
-      if (inherits(data, "Shared_Data")) {
-        # we already have a Shared_Data object, so just store it
-        private$.shared_data <- data
-        user_mode <- FALSE
-      } else {
-        # we have some other data object, so construct a Shared_Data object
-        # and store it (this will copy the data)
-        private$.shared_data <- Shared_Data$new(data)
-        user_mode <- TRUE
-      }
-
-      # process column_names
-      if (is.null(column_names)) {
-        column_names <- as.list(private$.shared_data$column_names)
-        names(column_names) <- column_names
-      }
-
-      private$.column_names <- column_names
-
-      # generate node list from other arguments
+    initialize = function(data, covariates, outcome = NULL,
+                          outcome_type = NULL, outcome_levels = NULL,
+                          id = NULL, weights = NULL, offset = NULL,
+                          nodes = NULL, column_names = NULL, row_index = NULL,
+                          folds = NULL, flag = TRUE,
+                          drop_missing_outcome = FALSE) {
+      
+      
+      # generate node list from other arguments if not explicitly specified
       if (is.null(nodes)) {
         nodes <- list(
           covariates = covariates, outcome = outcome, id = id,
           weights = weights, offset = offset
         )
-      } else {
-        # TODO: validate node schema
       }
-
-      # verify nodes are contained in dataset
+      
+      # generate column name mapping if not specified
       all_nodes <- unlist(nodes)
-      missing_cols <- setdiff(all_nodes, names(column_names))
+      
 
+      # get column names from data (and check data class in the process)
+      if (inherits(data, "data.frame")) {
+        data_names <- names(data)
+      } else if (inherits(data, "Shared_Data")) {
+        data_names <- data$column_names
+      } else {
+        stop(sprintf("Data of class %s not supported", class(data)[[1]]))
+      }
+      
+      
+      if (is.null(column_names)) {
+        column_names <- data_names
+        names(column_names) <- column_names
+      }
+      
+      # verify nodes are contained in column map
+      missing_cols <- setdiff(all_nodes, names(column_names))
+      
       assert_that(
         length(missing_cols) == 0,
         msg = sprintf(
@@ -75,9 +73,48 @@ sl3_Task <- R6Class(
           paste(missing_cols, collapse = " ")
         )
       )
+      
+      # verify referenced columns are actually in data
+      referenced_columns <- column_names[all_nodes]
 
+      missing_cols <- setdiff(referenced_columns, data_names)
+      assert_that(
+        length(missing_cols) == 0,
+        msg = sprintf(
+          "Data doesn't contain referenced columns %s",
+          paste(missing_cols, collapse = " ")
+        )
+      )
+      
+      # process data
+      if (inherits(data, "Shared_Data")) {
+        # we already have a Shared_Data object, so just store it
+        # we don't do processing because we assume it's already been done
+        private$.shared_data <- data
+        
+
+      } else {
+        # we have some other data object, so construct a Shared_Data object
+        # and store it (this will copy the data)
+
+        # process characters and missings
+        processed <- process_data(data, 
+                                  nodes, column_names = column_names, 
+                                  flag = flag, drop_missing_outcome = drop_missing_outcome)
+        
+        data <- processed$data
+        nodes <- processed$nodes
+        column_names <- processed$column_names
+        
+        # process_data copies, so don't copy again here
+        private$.shared_data <- Shared_Data$new(data, force_copy = FALSE)
+       
+      }
+
+      # store final nodes and column names
       private$.nodes <- nodes
-
+      private$.column_names <- column_names
+      
       # process outcome type
       if (is.character(outcome_type)) {
         outcome_type <- variable_type(
@@ -91,60 +128,11 @@ sl3_Task <- R6Class(
           outcome_type <- variable_type("none")
         }
       }
-
       private$.outcome_type <- outcome_type
 
       # process row_index
       private$.row_index <- row_index
       private$.folds <- folds
-
-      # check data quality if we think this is a user provided dataset
-      if (user_mode) {
-        # convert characters to factors
-        character_covars <-
-          self$nodes$covariates[which(sapply(
-            self$X,
-            data.class
-          ) == "character")]
-
-        if (length(character_covars) > 0) {
-          warning(sprintf(
-            "Character covariates found: %s;\nConverting these to factors",
-            paste0(character_covars, collapse = ", ")
-          ))
-
-          converted <- self$X[, lapply(.SD, factor), .SDcols = character_covars]
-          converted_column_names <- self$add_columns(converted)
-          converted_task <-
-            self$next_in_chain(column_names = converted_column_names)
-          # make this task a copy of imputed_task
-          self <<- converted_task$.__enclos_env__$self
-          private <<- converted_task$.__enclos_env__$private
-        }
-
-        # check for missingness, and process if found
-        p_missing <- sapply(self$X, function(x) mean(is.na(x)))
-        missing_Y <- (!is.null(self$nodes$outcome) && any(is.na(self$Y)))
-        if ((length(p_missing) > 0) &&
-          ((max(p_missing) > 0) ||
-            (missing_Y && drop_missing_outcome))) {
-          warning("Missing Covariate Data Found. Imputing covariates using sl3_process_missing.")
-          imputed_task <-
-            sl3_process_missing(self,
-              drop_missing_outcome = drop_missing_outcome
-            )
-
-          # make this task a copy of imputed_task
-          self <<- imputed_task$.__enclos_env__$self
-          private <<- imputed_task$.__enclos_env__$private
-
-          missing_Y <- (!is.null(self$nodes$outcome) && any(is.na(self$Y)))
-        }
-
-        if (missing_Y) {
-          warning("Missing Outcome Data Found. This is okay for prediction, but will likely break training. \n You can drop observations with missing outcomes by setting drop_missing_outcome=TRUE in make_sl3_Task.")
-        }
-      }
 
       # assign uuid using digest
       private$.uuid <- digest(self$data)
@@ -153,12 +141,11 @@ sl3_Task <- R6Class(
     },
 
     add_interactions = function(interactions, warn_on_existing = TRUE) {
-      ## ------------------------------------------------------------------------
+      ## ----------------------------------------------------------------------
       ## Add columns with interactions (by reference) to input design matrix
       ## (data.table). Used for training / predicting.
       ## returns the names of the added columns
-      ## ------------------------------------------------------------------------
-
+      ## ----------------------------------------------------------------------
       prod.DT <- function(x) {
         y <- x[[1]]
         for (i in 2:ncol(x)) {
@@ -172,24 +159,19 @@ sl3_Task <- R6Class(
       if (is.null(interaction_names)) {
         interaction_names <- sapply(interactions, paste0, collapse = "_")
       }
-
       is_new <- !(interaction_names %in% old_names)
-
       interaction_data <- lapply(interactions[is_new], function(interaction) {
         self$X[, prod.DT(.SD), .SD = interaction]
       })
-
       if (any(!is_new)) {
         warning(
           "The following interactions already exist:",
           paste0(interaction_names[!is_new], collapse = ", ")
         )
       }
-
       setDT(interaction_data)
       setnames(interaction_data, interaction_names[is_new])
       interaction_columns <- self$add_columns(interaction_data)
-
       new_covariates <- c(self$nodes$covariates, interaction_names[is_new])
       return(self$next_in_chain(
         covariates = new_covariates,
@@ -202,7 +184,6 @@ sl3_Task <- R6Class(
         new_data, column_uuid,
         private$.row_index
       )
-
       column_names <- private$.column_names
       column_names[names(new_col_map)] <- new_col_map
 
@@ -211,8 +192,8 @@ sl3_Task <- R6Class(
     },
 
     next_in_chain = function(covariates = NULL, outcome = NULL, id = NULL,
-                                 weights = NULL, offset = NULL, folds = NULL,
-                                 column_names = NULL, new_nodes = NULL, ...) {
+                             weights = NULL, offset = NULL, folds = NULL,
+                             column_names = NULL, new_nodes = NULL, ...) {
       if (is.null(new_nodes)) {
         new_nodes <- self$nodes
 
@@ -257,7 +238,6 @@ sl3_Task <- R6Class(
           paste(missing_cols, collapse = " ")
         )
       )
-
       new_task <- self$clone()
 
       if ((is.null(new_nodes$outcome) &&
@@ -333,7 +313,7 @@ sl3_Task <- R6Class(
     },
 
     get_node = function(node_name, generator_fun = NULL,
-                            expand_factors = FALSE) {
+                        expand_factors = FALSE) {
       if (missing(generator_fun)) {
         generator_fun <- function(node_name, n) {
           stop(sprintf("Node %s not specified", node_name))
@@ -505,7 +485,7 @@ sl3_Task <- R6Class(
   return(x$subset_task(i))
 }
 
-#' @param ... Passes all arguments to the constructor. See documentation for the
+#' @param ... Passes all arguments to the constructor. See documentation for
 #'  Constructor below.
 #'
 #' @rdname sl3_Task
