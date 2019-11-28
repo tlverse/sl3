@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Nonlinear Optimization via Augmented Lagrange — Lrnr_solnp_density • sl3</title>
+<title>Correlation P-value Screener — Lrnr_screener_corP • sl3</title>
 
 
 <!-- jquery -->
@@ -35,13 +35,10 @@
 
 
 
-<meta property="og:title" content="Nonlinear Optimization via Augmented Lagrange — Lrnr_solnp_density" />
-<meta property="og:description" content="This meta-learner provides fitting procedures for density estimation, finding
-convex combinations of candidate density estimators by minimizing the
-cross-validated negative log-likelihood loss of each candidate density. The
-optimization problem is solved by making use of solnp,
-using Lagrange multipliers. For further details, consult the documentation of
-the Rsolnp package." />
+<meta property="og:title" content="Correlation P-value Screener — Lrnr_screener_corP" />
+<meta property="og:description" content="This learner provides covariate screening procedures using p-values returned
+from a test of correlation provided by the stats package,
+cor.test function." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -136,18 +133,15 @@ the Rsolnp package." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Nonlinear Optimization via Augmented Lagrange</h1>
+    <h1>Correlation P-value Screener</h1>
     
-    <div class="hidden name"><code>Lrnr_solnp_density.Rd</code></div>
+    <div class="hidden name"><code>Lrnr_screener_corP.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This meta-learner provides fitting procedures for density estimation, finding
-convex combinations of candidate density estimators by minimizing the
-cross-validated negative log-likelihood loss of each candidate density. The
-optimization problem is solved by making use of <code><a href='https://rdrr.io/pkg/Rsolnp/man/solnp.html'>solnp</a></code>,
-using Lagrange multipliers. For further details, consult the documentation of
-the <code>Rsolnp</code> package.</p>
+    <p>This learner provides covariate screening procedures using p-values returned
+from a test of correlation provided by the <code>stats</code> package,
+<code><a href='https://rdrr.io/r/stats/cor.test.html'>cor.test</a></code> function.</p>
     </div>
 
 
@@ -164,21 +158,9 @@ the <code>Rsolnp</code> package.</p>
     
 
 <dl class='dl-horizontal'>
-<dt><code>...</code></dt><dd><p>Not currently used.</p></dd>
-
-</dl>
-
-    <h2 class="hasAnchor" id="common-parameters"><a class="anchor" href="#common-parameters"></a>Common Parameters</h2>
-
-    
-
-
-<p>Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by <code>Lrnr_base</code>, and shared
-by all learners.</p>
-<dl class='dl-horizontal'>
-<dt><code>covariates</code></dt><dd><p>A character vector of covariates. The learner will use this to subset the covariates for any specified task</p></dd>
-<dt><code>outcome_type</code></dt><dd><p>A <code><a href='variable_type.html'>variable_type</a></code> object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified</p></dd>
-<dt><code>...</code></dt><dd><p>All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating</p></dd>
+<dt><code>method = 'pearson'</code></dt><dd><p>Correlation coefficient used for test.</p></dd>
+<dt><code>minPvalue = 0.1</code></dt><dd><p>P-value threshold for covariate selection.</p></dd>
+<dt><code>minscreen = 2</code></dt><dd><p>Minimum number of covariates to select.</p></dd>
 
 </dl>
 
@@ -226,10 +208,10 @@ by all learners.</p>
 <code><a href='Lrnr_rfcde.html'>Lrnr_rfcde</a></code>,
 <code><a href='Lrnr_rpart.html'>Lrnr_rpart</a></code>,
 <code><a href='Lrnr_rugarch.html'>Lrnr_rugarch</a></code>,
-<code><a href='Lrnr_screener_corP.html'>Lrnr_screener_corP</a></code>,
 <code><a href='Lrnr_screener_corRank.html'>Lrnr_screener_corRank</a></code>,
 <code><a href='Lrnr_screener_randomForest.html'>Lrnr_screener_randomForest</a></code>,
 <code><a href='Lrnr_sl.html'>Lrnr_sl</a></code>,
+<code><a href='Lrnr_solnp_density.html'>Lrnr_solnp_density</a></code>,
 <code><a href='Lrnr_solnp.html'>Lrnr_solnp</a></code>,
 <code><a href='Lrnr_stratified.html'>Lrnr_stratified</a></code>,
 <code><a href='Lrnr_subset_covariates.html'>Lrnr_subset_covariates</a></code>,
@@ -242,15 +224,15 @@ by all learners.</p>
 <code><a href='undocumented_learner.html'>undocumented_learner</a></code></p></div>
     <h2 class="hasAnchor" id="super-class"><a class="anchor" href="#super-class"></a>Super class</h2>
 
-    <p><code><a href='Lrnr_base.html'>sl3::Lrnr_base</a></code> -&gt; <code>Lrnr_solnp_density</code></p>
+    <p><code><a href='Lrnr_base.html'>sl3::Lrnr_base</a></code> -&gt; <code>Lrnr_screener_corP</code></p>
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
 <h3>Public methods</h3>
 
 <ul>
-<li><p><a href='#method-new'><code>Lrnr_solnp_density$new()</code></a></p></li>
-<li><p><a href='#method-clone'><code>Lrnr_solnp_density$clone()</code></a></p></li>
+<li><p><a href='#method-new'><code>Lrnr_screener_corP$new()</code></a></p></li>
+<li><p><a href='#method-clone'><code>Lrnr_screener_corP$clone()</code></a></p></li>
 </ul>
 <p><details ><summary>Inherited methods</summary>
 <ul>
@@ -275,12 +257,12 @@ by all learners.</p>
 <a id="method-new"></a></p><h3>Method <code>new()</code></h3>
 
 <h3>Usage</h3>
-<p><div class="r"></p><pre>Lrnr_solnp_density$new(...)</pre><p></div></p>
+<p><div class="r"></p><pre>Lrnr_screener_corP$new(method = "pearson", minPvalue = 0.1, minscreen = 2)</pre><p></div></p>
 
 <p><hr>
 <a id="method-clone"></a></p><h3>Method <code>clone()</code></h3>
 <p>The objects of this class are cloneable with this method.</p><h3>Usage</h3>
-<p><div class="r"></p><pre>Lrnr_solnp_density$clone(deep = FALSE)</pre><p></div></p>
+<p><div class="r"></p><pre>Lrnr_screener_corP$clone(deep = FALSE)</pre><p></div></p>
 
 <h3>Arguments</h3>
 <p><div class="arguments"></p><dl class='dl-horizontal'>
@@ -297,7 +279,6 @@ by all learners.</p>
       <li><a href="#format">Format</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#parameters">Parameters</a></li>
-      <li><a href="#common-parameters">Common Parameters</a></li>
       <li><a href="#see-also">See also</a></li>
       <li><a href="#super-class">Super class</a></li>
       <li><a href="#methods">Methods</a></li>

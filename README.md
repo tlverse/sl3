@@ -116,8 +116,8 @@ library(dplyr)
 library(SuperLearner)
 #> Loading required package: nnls
 #> Super Learner
-#> Version: 2.0-25-9000
-#> Package created on 2018-07-10
+#> Version: 2.0-25
+#> Package created on 2019-08-05
 library(origami)
 #> origami: Generalized Cross-Validation Framework
 #> Version: 1.0.2
@@ -224,8 +224,8 @@ See file `LICENSE` for details.
 
 <div id="ref-breiman1996stacked">
 
-Breiman, Leo. 1996. “Stacked Regressions.” *Machine Learning* 24 (1).
-Springer: 49–64.
+Breiman, Leo. 1996. “Stacked Regressions.” *Machine Learning* 24 (1):
+49–64.
 
 </div>
 
@@ -240,7 +240,7 @@ Learner.” *Statistical Applications in Genetics and Molecular Biology* 6
 <div id="ref-wolpert1992stacked">
 
 Wolpert, David H. 1992. “Stacked Generalization.” *Neural Networks* 5
-(2). Elsevier: 241–59.
+(2): 241–59.
 
 </div>
 

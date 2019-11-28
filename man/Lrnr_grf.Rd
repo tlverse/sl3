@@ -5,9 +5,6 @@
 \alias{Lrnr_grf}
 \title{Generalized Random Forests Learner}
 \format{\code{\link{R6Class}} object.}
-\usage{
-Lrnr_grf
-}
 \value{
 Learner object with methods for training and prediction. See
 \code{\link{Lrnr_base}} for documentation on learners.
@@ -67,43 +64,133 @@ by all learners.
 }
 
 \seealso{
-Other Learners: \code{\link{Custom_chain}},
-  \code{\link{Lrnr_HarmonicReg}}, \code{\link{Lrnr_arima}},
-  \code{\link{Lrnr_bartMachine}}, \code{\link{Lrnr_base}},
-  \code{\link{Lrnr_bilstm}}, \code{\link{Lrnr_caret}},
-  \code{\link{Lrnr_condensier}}, \code{\link{Lrnr_cv}},
-  \code{\link{Lrnr_dbarts}},
-  \code{\link{Lrnr_define_interactions}},
-  \code{\link{Lrnr_density_discretize}},
-  \code{\link{Lrnr_density_hse}},
-  \code{\link{Lrnr_density_semiparametric}},
-  \code{\link{Lrnr_earth}}, \code{\link{Lrnr_expSmooth}},
-  \code{\link{Lrnr_gam}}, \code{\link{Lrnr_gbm}},
-  \code{\link{Lrnr_glm_fast}}, \code{\link{Lrnr_glmnet}},
-  \code{\link{Lrnr_glm}}, \code{\link{Lrnr_h2o_grid}},
-  \code{\link{Lrnr_hal9001}},
-  \code{\link{Lrnr_haldensify}},
-  \code{\link{Lrnr_independent_binomial}},
-  \code{\link{Lrnr_lstm}}, \code{\link{Lrnr_mean}},
-  \code{\link{Lrnr_multivariate}}, \code{\link{Lrnr_nnls}},
-  \code{\link{Lrnr_optim}}, \code{\link{Lrnr_pca}},
-  \code{\link{Lrnr_pkg_SuperLearner}},
-  \code{\link{Lrnr_polspline}},
-  \code{\link{Lrnr_pooled_hazards}},
-  \code{\link{Lrnr_randomForest}},
-  \code{\link{Lrnr_ranger}},
-  \code{\link{Lrnr_revere_task}}, \code{\link{Lrnr_rfcde}},
-  \code{\link{Lrnr_rpart}}, \code{\link{Lrnr_rugarch}},
-  \code{\link{Lrnr_screener_corP}},
-  \code{\link{Lrnr_screener_corRank}},
-  \code{\link{Lrnr_screener_randomForest}},
-  \code{\link{Lrnr_sl}}, \code{\link{Lrnr_solnp_density}},
-  \code{\link{Lrnr_solnp}}, \code{\link{Lrnr_stratified}},
-  \code{\link{Lrnr_subset_covariates}},
-  \code{\link{Lrnr_svm}}, \code{\link{Lrnr_tsDyn}},
-  \code{\link{Lrnr_xgboost}}, \code{\link{Pipeline}},
-  \code{\link{Stack}}, \code{\link{define_h2o_X}},
-  \code{\link{undocumented_learner}}
+Other Learners: 
+\code{\link{Custom_chain}},
+\code{\link{Lrnr_HarmonicReg}},
+\code{\link{Lrnr_arima}},
+\code{\link{Lrnr_bartMachine}},
+\code{\link{Lrnr_base}},
+\code{\link{Lrnr_bilstm}},
+\code{\link{Lrnr_caret}},
+\code{\link{Lrnr_condensier}},
+\code{\link{Lrnr_cv}},
+\code{\link{Lrnr_dbarts}},
+\code{\link{Lrnr_define_interactions}},
+\code{\link{Lrnr_density_discretize}},
+\code{\link{Lrnr_density_hse}},
+\code{\link{Lrnr_density_semiparametric}},
+\code{\link{Lrnr_earth}},
+\code{\link{Lrnr_expSmooth}},
+\code{\link{Lrnr_gam}},
+\code{\link{Lrnr_gbm}},
+\code{\link{Lrnr_glm_fast}},
+\code{\link{Lrnr_glmnet}},
+\code{\link{Lrnr_glm}},
+\code{\link{Lrnr_h2o_grid}},
+\code{\link{Lrnr_hal9001}},
+\code{\link{Lrnr_haldensify}},
+\code{\link{Lrnr_independent_binomial}},
+\code{\link{Lrnr_lstm}},
+\code{\link{Lrnr_mean}},
+\code{\link{Lrnr_multivariate}},
+\code{\link{Lrnr_nnls}},
+\code{\link{Lrnr_optim}},
+\code{\link{Lrnr_pca}},
+\code{\link{Lrnr_pkg_SuperLearner}},
+\code{\link{Lrnr_polspline}},
+\code{\link{Lrnr_pooled_hazards}},
+\code{\link{Lrnr_randomForest}},
+\code{\link{Lrnr_ranger}},
+\code{\link{Lrnr_revere_task}},
+\code{\link{Lrnr_rfcde}},
+\code{\link{Lrnr_rpart}},
+\code{\link{Lrnr_rugarch}},
+\code{\link{Lrnr_screener_corP}},
+\code{\link{Lrnr_screener_corRank}},
+\code{\link{Lrnr_screener_randomForest}},
+\code{\link{Lrnr_sl}},
+\code{\link{Lrnr_solnp_density}},
+\code{\link{Lrnr_solnp}},
+\code{\link{Lrnr_stratified}},
+\code{\link{Lrnr_subset_covariates}},
+\code{\link{Lrnr_svm}},
+\code{\link{Lrnr_tsDyn}},
+\code{\link{Lrnr_xgboost}},
+\code{\link{Pipeline}},
+\code{\link{Stack}},
+\code{\link{define_h2o_X}()},
+\code{\link{undocumented_learner}}
 }
 \concept{Learners}
 \keyword{data}
+\section{Super class}{
+\code{\link[sl3:Lrnr_base]{sl3::Lrnr_base}} -> \code{Lrnr_grf}
+}
+\section{Methods}{
+\subsection{Public methods}{
+\itemize{
+\item \href{#method-new}{\code{Lrnr_grf$new()}}
+\item \href{#method-clone}{\code{Lrnr_grf$clone()}}
+}
+}
+\if{html}{
+\out{<details ><summary>Inherited methods</summary>}
+\itemize{
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="assert_trained">}\href{../../sl3/html/Lrnr_base.html#method-assert_trained}{\code{sl3::Lrnr_base$assert_trained()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="base_chain">}\href{../../sl3/html/Lrnr_base.html#method-base_chain}{\code{sl3::Lrnr_base$base_chain()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="base_predict">}\href{../../sl3/html/Lrnr_base.html#method-base_predict}{\code{sl3::Lrnr_base$base_predict()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="base_train">}\href{../../sl3/html/Lrnr_base.html#method-base_train}{\code{sl3::Lrnr_base$base_train()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="chain">}\href{../../sl3/html/Lrnr_base.html#method-chain}{\code{sl3::Lrnr_base$chain()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="custom_chain">}\href{../../sl3/html/Lrnr_base.html#method-custom_chain}{\code{sl3::Lrnr_base$custom_chain()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="get_outcome_type">}\href{../../sl3/html/Lrnr_base.html#method-get_outcome_type}{\code{sl3::Lrnr_base$get_outcome_type()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="predict">}\href{../../sl3/html/Lrnr_base.html#method-predict}{\code{sl3::Lrnr_base$predict()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="predict_fold">}\href{../../sl3/html/Lrnr_base.html#method-predict_fold}{\code{sl3::Lrnr_base$predict_fold()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="print">}\href{../../sl3/html/Lrnr_base.html#method-print}{\code{sl3::Lrnr_base$print()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="set_train">}\href{../../sl3/html/Lrnr_base.html#method-set_train}{\code{sl3::Lrnr_base$set_train()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="subset_covariates">}\href{../../sl3/html/Lrnr_base.html#method-subset_covariates}{\code{sl3::Lrnr_base$subset_covariates()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="train">}\href{../../sl3/html/Lrnr_base.html#method-train}{\code{sl3::Lrnr_base$train()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="train_sublearners">}\href{../../sl3/html/Lrnr_base.html#method-train_sublearners}{\code{sl3::Lrnr_base$train_sublearners()}}\out{</span>}
+}
+\out{</details>}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\subsection{Method \code{new()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Lrnr_grf$new(
+  quantiles = c(0.1, 0.5, 0.9),
+  regression.splitting = FALSE,
+  sample.fraction = 0.5,
+  mtry = NULL,
+  num.trees = 2000,
+  num.threads = NULL,
+  min.node.size = NULL,
+  honesty = TRUE,
+  alpha = 0.05,
+  imbalance.penalty = 0,
+  seed = NULL,
+  clusters = NULL,
+  samples_per_cluster = NULL,
+  q = 0.5,
+  ...
+)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-clone"></a>}}
+\subsection{Method \code{clone()}}{
+The objects of this class are cloneable with this method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Lrnr_grf$clone(deep = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{deep}}{Whether to make a deep clone.}
+}
+\if{html}{\out{</div>}}
+}
+}
+}
