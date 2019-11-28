@@ -1,7 +1,7 @@
 #' Correlation Rank Screener
 #'
 #' This learner provides covariate screening procedures by ranking variables
-#' by the p-values returned from a test of correlation provided by the 
+#' by the p-values returned from a test of correlation provided by the
 #' \code{stats} package, \code{\link[stats]{cor.test}} function.
 #'
 #' @docType class
@@ -29,16 +29,16 @@ Lrnr_screener_corRank <- R6Class(
   classname = "Lrnr_screener_corRank",
   inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(method = 'pearson', 
+    initialize = function(method = "pearson",
                           rank = 5) {
       params <- args_to_list()
       super$initialize(params = params)
     }
   ),
-  
+
   private = list(
     .properties = c("binomial", "continuous", "categorical"),
-    
+
     .train = function(task) {
       args <- self$params
       outcome_type <- self$get_outcome_type(task)

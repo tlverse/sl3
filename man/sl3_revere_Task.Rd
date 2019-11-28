@@ -4,10 +4,6 @@
 \name{sl3_revere_Task}
 \alias{sl3_revere_Task}
 \title{Revere (SplitSpecific) Task}
-\format{An object of class \code{R6ClassGenerator} of length 24.}
-\usage{
-sl3_revere_Task
-}
 \description{
 A task that has different realizations in different folds
 Useful for Revere CV operations
@@ -18,3 +14,70 @@ Learners with property "cv" must use these tasks correctly
 Other learners will treat this as the equivalent of the "full" task.
 }
 \keyword{data}
+\section{Super class}{
+\code{\link[sl3:sl3_Task]{sl3::sl3_Task}} -> \code{sl3_revere_Task}
+}
+\section{Methods}{
+\subsection{Public methods}{
+\itemize{
+\item \href{#method-new}{\code{sl3_revere_Task$new()}}
+\item \href{#method-revere_fold_task}{\code{sl3_revere_Task$revere_fold_task()}}
+\item \href{#method-print}{\code{sl3_revere_Task$print()}}
+\item \href{#method-clone}{\code{sl3_revere_Task$clone()}}
+}
+}
+\if{html}{
+\out{<details ><summary>Inherited methods</summary>}
+\itemize{
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="sl3_Task" data-id="add_columns">}\href{../../sl3/html/sl3_Task.html#method-add_columns}{\code{sl3::sl3_Task$add_columns()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="sl3_Task" data-id="add_interactions">}\href{../../sl3/html/sl3_Task.html#method-add_interactions}{\code{sl3::sl3_Task$add_interactions()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="sl3_Task" data-id="get_data">}\href{../../sl3/html/sl3_Task.html#method-get_data}{\code{sl3::sl3_Task$get_data()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="sl3_Task" data-id="get_node">}\href{../../sl3/html/sl3_Task.html#method-get_node}{\code{sl3::sl3_Task$get_node()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="sl3_Task" data-id="has_node">}\href{../../sl3/html/sl3_Task.html#method-has_node}{\code{sl3::sl3_Task$has_node()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="sl3_Task" data-id="next_in_chain">}\href{../../sl3/html/sl3_Task.html#method-next_in_chain}{\code{sl3::sl3_Task$next_in_chain()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="sl3_Task" data-id="offset_transformed">}\href{../../sl3/html/sl3_Task.html#method-offset_transformed}{\code{sl3::sl3_Task$offset_transformed()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="sl3_Task" data-id="subset_task">}\href{../../sl3/html/sl3_Task.html#method-subset_task}{\code{sl3::sl3_Task$subset_task()}}\out{</span>}
+}
+\out{</details>}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\subsection{Method \code{new()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sl3_revere_Task$new(generator_fun, task)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-revere_fold_task"></a>}}
+\subsection{Method \code{revere_fold_task()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sl3_revere_Task$revere_fold_task(fold_number)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-print"></a>}}
+\subsection{Method \code{print()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sl3_revere_Task$print()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-clone"></a>}}
+\subsection{Method \code{clone()}}{
+The objects of this class are cloneable with this method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sl3_revere_Task$clone(deep = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{deep}}{Whether to make a deep clone.}
+}
+\if{html}{\out{</div>}}
+}
+}
+}

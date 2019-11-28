@@ -142,7 +142,6 @@ using gam." />
 using <code><a href='https://rdrr.io/pkg/mgcv/man/gam.html'>gam</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='no'>Lrnr_gam</span></pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
@@ -195,40 +194,111 @@ by all learners.</p>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other Learners: <code><a href='Custom_chain.html'>Custom_chain</a></code>,
-  <code><a href='Lrnr_HarmonicReg.html'>Lrnr_HarmonicReg</a></code>, <code><a href='Lrnr_arima.html'>Lrnr_arima</a></code>,
-  <code><a href='Lrnr_bartMachine.html'>Lrnr_bartMachine</a></code>, <code><a href='Lrnr_base.html'>Lrnr_base</a></code>,
-  <code><a href='Lrnr_bilstm.html'>Lrnr_bilstm</a></code>, <code><a href='Lrnr_caret.html'>Lrnr_caret</a></code>,
-  <code><a href='Lrnr_condensier.html'>Lrnr_condensier</a></code>, <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
-  <code><a href='Lrnr_dbarts.html'>Lrnr_dbarts</a></code>,
-  <code><a href='Lrnr_define_interactions.html'>Lrnr_define_interactions</a></code>,
-  <code><a href='Lrnr_density_discretize.html'>Lrnr_density_discretize</a></code>,
-  <code><a href='Lrnr_density_hse.html'>Lrnr_density_hse</a></code>,
-  <code><a href='Lrnr_density_semiparametric.html'>Lrnr_density_semiparametric</a></code>,
-  <code><a href='Lrnr_earth.html'>Lrnr_earth</a></code>, <code><a href='Lrnr_expSmooth.html'>Lrnr_expSmooth</a></code>,
-  <code><a href='Lrnr_gbm.html'>Lrnr_gbm</a></code>, <code><a href='Lrnr_glm_fast.html'>Lrnr_glm_fast</a></code>,
-  <code><a href='Lrnr_glmnet.html'>Lrnr_glmnet</a></code>, <code><a href='Lrnr_glm.html'>Lrnr_glm</a></code>,
-  <code><a href='Lrnr_grf.html'>Lrnr_grf</a></code>, <code><a href='Lrnr_h2o_grid.html'>Lrnr_h2o_grid</a></code>,
-  <code><a href='Lrnr_hal9001.html'>Lrnr_hal9001</a></code>,
-  <code><a href='Lrnr_haldensify.html'>Lrnr_haldensify</a></code>,
-  <code><a href='Lrnr_independent_binomial.html'>Lrnr_independent_binomial</a></code>,
-  <code><a href='Lrnr_lstm.html'>Lrnr_lstm</a></code>, <code><a href='Lrnr_mean.html'>Lrnr_mean</a></code>,
-  <code><a href='Lrnr_multivariate.html'>Lrnr_multivariate</a></code>, <code><a href='Lrnr_nnls.html'>Lrnr_nnls</a></code>,
-  <code><a href='Lrnr_optim.html'>Lrnr_optim</a></code>, <code><a href='Lrnr_pca.html'>Lrnr_pca</a></code>,
-  <code><a href='SuperLearner_interface.html'>Lrnr_pkg_SuperLearner</a></code>,
-  <code><a href='Lrnr_polspline.html'>Lrnr_polspline</a></code>,
-  <code><a href='Lrnr_pooled_hazards.html'>Lrnr_pooled_hazards</a></code>,
-  <code><a href='Lrnr_randomForest.html'>Lrnr_randomForest</a></code>,
-  <code><a href='Lrnr_ranger.html'>Lrnr_ranger</a></code>,
-  <code><a href='Lrnr_revere_task.html'>Lrnr_revere_task</a></code>, <code><a href='Lrnr_rfcde.html'>Lrnr_rfcde</a></code>,
-  <code><a href='Lrnr_rpart.html'>Lrnr_rpart</a></code>, <code><a href='Lrnr_rugarch.html'>Lrnr_rugarch</a></code>,
-  <code><a href='Lrnr_sl.html'>Lrnr_sl</a></code>, <code><a href='Lrnr_solnp_density.html'>Lrnr_solnp_density</a></code>,
-  <code><a href='Lrnr_solnp.html'>Lrnr_solnp</a></code>, <code><a href='Lrnr_stratified.html'>Lrnr_stratified</a></code>,
-  <code><a href='Lrnr_subset_covariates.html'>Lrnr_subset_covariates</a></code>,
-  <code><a href='Lrnr_svm.html'>Lrnr_svm</a></code>, <code><a href='Lrnr_tsDyn.html'>Lrnr_tsDyn</a></code>,
-  <code><a href='Lrnr_xgboost.html'>Lrnr_xgboost</a></code>, <code><a href='Pipeline.html'>Pipeline</a></code>,
-  <code><a href='Stack.html'>Stack</a></code>, <code><a href='Lrnr_h2o_glm.html'>define_h2o_X</a></code>,
-  <code><a href='undocumented_learner.html'>undocumented_learner</a></code></p></div>
+    <div class='dont-index'><p>Other Learners: 
+<code><a href='Custom_chain.html'>Custom_chain</a></code>,
+<code><a href='Lrnr_HarmonicReg.html'>Lrnr_HarmonicReg</a></code>,
+<code><a href='Lrnr_arima.html'>Lrnr_arima</a></code>,
+<code><a href='Lrnr_bartMachine.html'>Lrnr_bartMachine</a></code>,
+<code><a href='Lrnr_base.html'>Lrnr_base</a></code>,
+<code><a href='Lrnr_bilstm.html'>Lrnr_bilstm</a></code>,
+<code><a href='Lrnr_caret.html'>Lrnr_caret</a></code>,
+<code><a href='Lrnr_condensier.html'>Lrnr_condensier</a></code>,
+<code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
+<code><a href='Lrnr_dbarts.html'>Lrnr_dbarts</a></code>,
+<code><a href='Lrnr_define_interactions.html'>Lrnr_define_interactions</a></code>,
+<code><a href='Lrnr_density_discretize.html'>Lrnr_density_discretize</a></code>,
+<code><a href='Lrnr_density_hse.html'>Lrnr_density_hse</a></code>,
+<code><a href='Lrnr_density_semiparametric.html'>Lrnr_density_semiparametric</a></code>,
+<code><a href='Lrnr_earth.html'>Lrnr_earth</a></code>,
+<code><a href='Lrnr_expSmooth.html'>Lrnr_expSmooth</a></code>,
+<code><a href='Lrnr_gbm.html'>Lrnr_gbm</a></code>,
+<code><a href='Lrnr_glm_fast.html'>Lrnr_glm_fast</a></code>,
+<code><a href='Lrnr_glmnet.html'>Lrnr_glmnet</a></code>,
+<code><a href='Lrnr_glm.html'>Lrnr_glm</a></code>,
+<code><a href='Lrnr_grf.html'>Lrnr_grf</a></code>,
+<code><a href='Lrnr_h2o_grid.html'>Lrnr_h2o_grid</a></code>,
+<code><a href='Lrnr_hal9001.html'>Lrnr_hal9001</a></code>,
+<code><a href='Lrnr_haldensify.html'>Lrnr_haldensify</a></code>,
+<code><a href='Lrnr_independent_binomial.html'>Lrnr_independent_binomial</a></code>,
+<code><a href='Lrnr_lstm.html'>Lrnr_lstm</a></code>,
+<code><a href='Lrnr_mean.html'>Lrnr_mean</a></code>,
+<code><a href='Lrnr_multivariate.html'>Lrnr_multivariate</a></code>,
+<code><a href='Lrnr_nnls.html'>Lrnr_nnls</a></code>,
+<code><a href='Lrnr_optim.html'>Lrnr_optim</a></code>,
+<code><a href='Lrnr_pca.html'>Lrnr_pca</a></code>,
+<code><a href='SuperLearner_interface.html'>Lrnr_pkg_SuperLearner</a></code>,
+<code><a href='Lrnr_polspline.html'>Lrnr_polspline</a></code>,
+<code><a href='Lrnr_pooled_hazards.html'>Lrnr_pooled_hazards</a></code>,
+<code><a href='Lrnr_randomForest.html'>Lrnr_randomForest</a></code>,
+<code><a href='Lrnr_ranger.html'>Lrnr_ranger</a></code>,
+<code><a href='Lrnr_revere_task.html'>Lrnr_revere_task</a></code>,
+<code><a href='Lrnr_rfcde.html'>Lrnr_rfcde</a></code>,
+<code><a href='Lrnr_rpart.html'>Lrnr_rpart</a></code>,
+<code><a href='Lrnr_rugarch.html'>Lrnr_rugarch</a></code>,
+<code><a href='Lrnr_screener_corP.html'>Lrnr_screener_corP</a></code>,
+<code><a href='Lrnr_screener_corRank.html'>Lrnr_screener_corRank</a></code>,
+<code><a href='Lrnr_screener_randomForest.html'>Lrnr_screener_randomForest</a></code>,
+<code><a href='Lrnr_sl.html'>Lrnr_sl</a></code>,
+<code><a href='Lrnr_solnp_density.html'>Lrnr_solnp_density</a></code>,
+<code><a href='Lrnr_solnp.html'>Lrnr_solnp</a></code>,
+<code><a href='Lrnr_stratified.html'>Lrnr_stratified</a></code>,
+<code><a href='Lrnr_subset_covariates.html'>Lrnr_subset_covariates</a></code>,
+<code><a href='Lrnr_svm.html'>Lrnr_svm</a></code>,
+<code><a href='Lrnr_tsDyn.html'>Lrnr_tsDyn</a></code>,
+<code><a href='Lrnr_xgboost.html'>Lrnr_xgboost</a></code>,
+<code><a href='Pipeline.html'>Pipeline</a></code>,
+<code><a href='Stack.html'>Stack</a></code>,
+<code><a href='Lrnr_h2o_glm.html'>define_h2o_X</a>()</code>,
+<code><a href='undocumented_learner.html'>undocumented_learner</a></code></p></div>
+    <h2 class="hasAnchor" id="super-class"><a class="anchor" href="#super-class"></a>Super class</h2>
+
+    <p><code><a href='Lrnr_base.html'>sl3::Lrnr_base</a></code> -&gt; <code>Lrnr_gam</code></p>
+    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
+
+    
+<h3>Public methods</h3>
+
+<ul>
+<li><p><a href='#method-new'><code>Lrnr_gam$new()</code></a></p></li>
+<li><p><a href='#method-clone'><code>Lrnr_gam$clone()</code></a></p></li>
+</ul>
+<p><details ><summary>Inherited methods</summary>
+<ul>
+<li><p><span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="assert_trained"><a href='../../sl3/html/Lrnr_base.html#method-assert_trained'><code>sl3::Lrnr_base$assert_trained()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="base_chain"><a href='../../sl3/html/Lrnr_base.html#method-base_chain'><code>sl3::Lrnr_base$base_chain()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="base_predict"><a href='../../sl3/html/Lrnr_base.html#method-base_predict'><code>sl3::Lrnr_base$base_predict()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="base_train"><a href='../../sl3/html/Lrnr_base.html#method-base_train'><code>sl3::Lrnr_base$base_train()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="chain"><a href='../../sl3/html/Lrnr_base.html#method-chain'><code>sl3::Lrnr_base$chain()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="custom_chain"><a href='../../sl3/html/Lrnr_base.html#method-custom_chain'><code>sl3::Lrnr_base$custom_chain()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="get_outcome_type"><a href='../../sl3/html/Lrnr_base.html#method-get_outcome_type'><code>sl3::Lrnr_base$get_outcome_type()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="predict"><a href='../../sl3/html/Lrnr_base.html#method-predict'><code>sl3::Lrnr_base$predict()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="predict_fold"><a href='../../sl3/html/Lrnr_base.html#method-predict_fold'><code>sl3::Lrnr_base$predict_fold()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="print"><a href='../../sl3/html/Lrnr_base.html#method-print'><code>sl3::Lrnr_base$print()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="set_train"><a href='../../sl3/html/Lrnr_base.html#method-set_train'><code>sl3::Lrnr_base$set_train()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="subset_covariates"><a href='../../sl3/html/Lrnr_base.html#method-subset_covariates'><code>sl3::Lrnr_base$subset_covariates()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="train"><a href='../../sl3/html/Lrnr_base.html#method-train'><code>sl3::Lrnr_base$train()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="train_sublearners"><a href='../../sl3/html/Lrnr_base.html#method-train_sublearners'><code>sl3::Lrnr_base$train_sublearners()</code></a></span></p></li>
+</ul>
+</details>
+
+<hr>
+<a id="method-new"></a></p><h3>Method <code>new()</code></h3>
+
+<h3>Usage</h3>
+<p><div class="r"></p><pre>Lrnr_gam$new(formula = NULL, family = NULL, method = "GCV.Cp", ...)</pre><p></div></p>
+
+<p><hr>
+<a id="method-clone"></a></p><h3>Method <code>clone()</code></h3>
+<p>The objects of this class are cloneable with this method.</p><h3>Usage</h3>
+<p><div class="r"></p><pre>Lrnr_gam$clone(deep = FALSE)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl class='dl-horizontal'>
+<dt><code>deep</code></dt><dd><p>Whether to make a deep clone.</p></dd>
+
+</dl><p></div></p>
+
+
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -239,6 +309,8 @@ by all learners.</p>
       <li><a href="#parameters">Parameters</a></li>
       <li><a href="#common-parameters">Common Parameters</a></li>
       <li><a href="#see-also">See also</a></li>
+      <li><a href="#super-class">Super class</a></li>
+      <li><a href="#methods">Methods</a></li>
     </ul>
 
   </div>
