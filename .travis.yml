@@ -21,10 +21,9 @@ r:
   - devel
 
 before_install:
-  - sudo apt-get -y install python3-pip python-dev
   - sudo apt-get -y install libx11-dev mesa-common-dev libglu1-mesa-dev
-  - sudo apt-get remove python-enum34
-  - sudo -H pip install numpy tensorflow keras
+  - sudo apt-get -y install python3-pip python-dev
+  - sudo -H pip install --ignore-installed numpy tensorflow keras
   #- Rscript -e 'update.packages(ask = FALSE)'
 
 r_packages:
@@ -36,14 +35,14 @@ r_packages:
 r_github_packages:
   - r-lib/covr
   - r-lib/sessioninfo
-  - tpospisi/cdetools/r
-  - tpospisi/RFCDE/r
   - osofr/simcausal
   - osofr/condensier
-  - tlverse/delayed
   - tlverse/origami
+  - tlverse/delayed
   - tlverse/hal9001
   - nhejazi/haldensify
+  - tpospisi/cdetools/r
+  - tpospisi/RFCDE/r
 
 after_success:
   - travis_wait 80 Rscript -e 'covr::codecov()'
