@@ -17,7 +17,7 @@ state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![License: GPL
 v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3475685.svg)](https://doi.org/10.5281/zenodo.3475685)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3558317.svg)](https://doi.org/10.5281/zenodo.3558317)
 
 > A modern implementation of the Super Learner algorithm for ensemble
 > learning and model stacking
@@ -194,9 +194,9 @@ After using the `sl3` R package, please cite the following:
         Learning}},
       year = {2019},
       howpublished = {\url{https://github.com/tlverse/sl3}},
-      note = {{R} package version 1.3.0},
-      url = {https://doi.org/10.5281/zenodo.3475685},
-      doi = {10.5281/zenodo.3475685}
+      note = {{R} package version 1.3.5},
+      url = {https://doi.org/10.5281/zenodo.3558317},
+      doi = {10.5281/zenodo.3558317}
     }
 ```
 
