@@ -105,4 +105,4 @@ test_that("task$folds returns object with correct number of integer folds", {
 })
 
 
-task_from_shared_data <- sl3_Task$new(data=task$.__enclos_env__$private$.shared_data, nodes=task$nodes)
+task_from_shared_data <- sl3_Task$new(data = task$.__enclos_env__$private$.shared_data, nodes = task$nodes)

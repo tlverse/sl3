@@ -11,11 +11,6 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r echo=FALSE}
-knitr::opts_knit$set(root.dir = here::here())
-```
-
-
 ## Introduction
 
 This guide describes the process of implementing a learner class for a new

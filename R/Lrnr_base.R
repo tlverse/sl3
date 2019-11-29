@@ -148,7 +148,7 @@ Lrnr_base <- R6Class(
     train_sublearners = function(task) {
       # TODO: add error handling
       subsetted_task <- delayed_learner_subset_covariates(self, task)
-      
+
       return(private$.train_sublearners(subsetted_task))
     },
 

@@ -109,12 +109,12 @@ learner_subset_covariates <- function(learner, task) {
 #' @export
 #
 delayed_learner_subset_covariates <- function(learner, task) {
-  if(is(task,"Delayed")){
+  if (is(task, "Delayed")) {
     # only delay if task is delayed
     subset_delayed <- delayed_fun(learner_subset_covariates)(learner, task)
     subset_delayed$name <- "subset"
   } else {
-    subset_delayed <- learner_subset_covariates(learner,task)
+    subset_delayed <- learner_subset_covariates(learner, task)
   }
   return(subset_delayed)
 }
@@ -127,5 +127,3 @@ sl3_delayed_job_type <- function() {
     return(delayed::SequentialJob)
   }
 }
-
-

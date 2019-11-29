@@ -14,7 +14,7 @@ Shared_Data <- R6Class(
       }
 
       if (inherits(data, "data.table")) {
-        if(force_copy){
+        if (force_copy) {
           # explicitly copy existing data.table
           private$.data <- data.table::copy(data)
         } else {

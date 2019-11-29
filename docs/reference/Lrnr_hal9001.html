@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>The Scalable Highly Adaptive LASSO — Lrnr_hal9001 • sl3</title>
+<title>The Scalable Highly Adaptive Lasso — Lrnr_hal9001 • sl3</title>
 
 
 <!-- jquery -->
@@ -35,15 +35,15 @@
 
 
 
-<meta property="og:title" content="The Scalable Highly Adaptive LASSO — Lrnr_hal9001" />
-<meta property="og:description" content="The Highly Adaptive LASSO is an estimation procedure that generates a design
+<meta property="og:title" content="The Scalable Highly Adaptive Lasso — Lrnr_hal9001" />
+<meta property="og:description" content="The Highly Adaptive Lasso is an estimation procedure that generates a design
 matrix consisting of basis functions corresponding to covariates and
-interactions of covariates and fits LASSO regression to this (usually) very
+interactions of covariates and fits Lasso regression to this (usually) very
 wide matrix, recovering a nonparametric functional form that describes the
 target prediction function as a composition of subset functions with finite
 variation norm. This implementation uses the hal9001 R package, which
 provides both a custom implementation (based on the origami package)
-of the CV-LASSO as well the standard call to cv.glmnet from the
+of the CV-Lasso as well the standard call to cv.glmnet from the
 glmnet package." />
 <meta name="twitter:card" content="summary" />
 
@@ -87,7 +87,7 @@ glmnet package." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sl3</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.5</span>
       </span>
     </div>
 
@@ -139,20 +139,20 @@ glmnet package." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>The Scalable Highly Adaptive LASSO</h1>
+    <h1>The Scalable Highly Adaptive Lasso</h1>
     
     <div class="hidden name"><code>Lrnr_hal9001.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The Highly Adaptive LASSO is an estimation procedure that generates a design
+    <p>The Highly Adaptive Lasso is an estimation procedure that generates a design
 matrix consisting of basis functions corresponding to covariates and
-interactions of covariates and fits LASSO regression to this (usually) very
+interactions of covariates and fits Lasso regression to this (usually) very
 wide matrix, recovering a nonparametric functional form that describes the
 target prediction function as a composition of subset functions with finite
 variation norm. This implementation uses the <code>hal9001</code> R package, which
 provides both a custom implementation (based on the <code>origami</code> package)
-of the CV-LASSO as well the standard call to <code>cv.glmnet</code> from the
+of the CV-Lasso as well the standard call to <code>cv.glmnet</code> from the
 <code>glmnet</code> package.</p>
     </div>
 
@@ -171,11 +171,11 @@ of the CV-LASSO as well the standard call to <code>cv.glmnet</code> from the
 
 <dl class='dl-horizontal'>
 <dt><code>degrees="degrees"</code></dt><dd><p>The highest order of interaction terms for
-which the basis functions ought to be generated. The default (<code>NULL</code>)
-corresponds to generating basis functions for the full dimensionality of
-the input matrix.</p></dd>
+which the basis functions ought to be generated. The default corresponds
+to generating basis functions up to all 3-way interactions of covariates
+in the input matrix, matching the default in <span class="pkg">hal9001</span>.</p></dd>
 <dt><code>fit_type="fit_type"</code></dt><dd><p>The specific routine to be called when
-fitting the LASSO regression in a cross-validated manner. Choosing the
+fitting the Lasso regression in a cross-validated manner. Choosing the
 <code>glmnet</code> option will result in a call to <code>cv.glmnet</code> while
 <code>origami</code> will produce a (faster) call to a custom routine based on
 the <code>origami</code> package.</p></dd>

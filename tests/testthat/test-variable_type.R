@@ -17,7 +17,7 @@ test_that(
   expect_equal(type_names, expected_variable_types)
 )
 
-variable_type(x=c(0,0,1,1,NA,0))
+variable_type(x = c(0, 0, 1, 1, NA, 0))
 
 # forcing outcome_type
 data(cpp)

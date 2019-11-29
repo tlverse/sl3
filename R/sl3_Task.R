@@ -34,8 +34,8 @@ sl3_Task <- R6Class(
                           nodes = NULL, column_names = NULL, row_index = NULL,
                           folds = NULL, flag = TRUE,
                           drop_missing_outcome = FALSE) {
-      
-      
+
+
       # generate node list from other arguments if not explicitly specified
       if (is.null(nodes)) {
         nodes <- list(
@@ -43,10 +43,10 @@ sl3_Task <- R6Class(
           weights = weights, offset = offset
         )
       }
-      
+
       # generate column name mapping if not specified
       all_nodes <- unlist(nodes)
-      
+
 
       # get column names from data (and check data class in the process)
       if (inherits(data, "data.frame")) {
@@ -56,16 +56,16 @@ sl3_Task <- R6Class(
       } else {
         stop(sprintf("Data of class %s not supported", class(data)[[1]]))
       }
-      
-      
+
+
       if (is.null(column_names)) {
         column_names <- data_names
         names(column_names) <- column_names
       }
-      
+
       # verify nodes are contained in column map
       missing_cols <- setdiff(all_nodes, names(column_names))
-      
+
       assert_that(
         length(missing_cols) == 0,
         msg = sprintf(
@@ -73,7 +73,7 @@ sl3_Task <- R6Class(
           paste(missing_cols, collapse = " ")
         )
       )
-      
+
       # verify referenced columns are actually in data
       referenced_columns <- column_names[all_nodes]
 
@@ -85,36 +85,35 @@ sl3_Task <- R6Class(
           paste(missing_cols, collapse = " ")
         )
       )
-      
+
       # process data
       if (inherits(data, "Shared_Data")) {
         # we already have a Shared_Data object, so just store it
         # we don't do processing because we assume it's already been done
         private$.shared_data <- data
-        
-
       } else {
         # we have some other data object, so construct a Shared_Data object
         # and store it (this will copy the data)
 
         # process characters and missings
-        processed <- process_data(data, 
-                                  nodes, column_names = column_names, 
-                                  flag = flag, drop_missing_outcome = drop_missing_outcome)
-        
+        processed <- process_data(data,
+          nodes,
+          column_names = column_names,
+          flag = flag, drop_missing_outcome = drop_missing_outcome
+        )
+
         data <- processed$data
         nodes <- processed$nodes
         column_names <- processed$column_names
-        
+
         # process_data copies, so don't copy again here
         private$.shared_data <- Shared_Data$new(data, force_copy = FALSE)
-       
       }
 
       # store final nodes and column names
       private$.nodes <- nodes
       private$.column_names <- column_names
-      
+
       # process outcome type
       if (is.character(outcome_type)) {
         outcome_type <- variable_type(
