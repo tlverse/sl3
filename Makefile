@@ -11,6 +11,9 @@ check:
 checkfast:
 	Rscript -e "devtools::check(build_args = '--no-build-vignettes')"
 
+revdep:
+	Rscript -e "revdepcheck::revdep_check()"
+
 test:
 	Rscript -e "devtools::test()"
 

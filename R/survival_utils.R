@@ -4,6 +4,9 @@
 #' @param trim If \code{true}, remove entries after failure time for each
 #'  observation.
 #'
+#' @importFrom data.table set setnames
+#' @importFrom origami id_folds_to_folds
+#'
 #' @export
 #
 pooled_hazard_task <- function(task, trim = TRUE) {
@@ -26,7 +29,7 @@ pooled_hazard_task <- function(task, trim = TRUE) {
 
   # generate repeated task
   index <- rep(seq_len(task$nrow), n_levels)
-  repeated_data <- underlying_data[index]
+  repeated_data <- underlying_data[index, ]
   new_folds <- origami::id_folds_to_folds(task$folds, index)
 
   repeated_task <- task$next_in_chain(
@@ -58,6 +61,6 @@ pooled_hazard_task <- function(task, trim = TRUE) {
 
   # trim entries for observations that are in previous bins
   subset_index <- which(bin_number <= outcome_level)
-  trimmed_hazard_task <- hazard_task[subset_index]
+  trimmed_hazard_task <- hazard_task[subset_index, ]
   return(trimmed_hazard_task)
 }

@@ -51,6 +51,8 @@ of longitudinal research 1 (1984): 185-227.
 }
 \usage{
 data(cpp)
+
+data(cpp_imputed)
 }
 \description{
 Subset of growth data from the collaborative perinatal project (CPP).

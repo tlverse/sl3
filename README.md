@@ -17,7 +17,7 @@ state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![License: GPL
 v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3475685.svg)](https://doi.org/10.5281/zenodo.3475685)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3558317.svg)](https://doi.org/10.5281/zenodo.3558317)
 
 > A modern implementation of the Super Learner algorithm for ensemble
 > learning and model stacking
@@ -116,11 +116,11 @@ library(dplyr)
 library(SuperLearner)
 #> Loading required package: nnls
 #> Super Learner
-#> Version: 2.0-25-9000
-#> Package created on 2018-07-10
+#> Version: 2.0-25
+#> Package created on 2019-08-05
 library(origami)
 #> origami: Generalized Cross-Validation Framework
-#> Version: 1.0.2
+#> Version: 1.0.1
 library(sl3)
 
 # load example data set
@@ -155,10 +155,6 @@ SL.glmnet_learner <- Lrnr_pkg_SuperLearner$new(SL_wrapper = "SL.glmnet")
 # stack learners into a model (including screeners and pipelines)
 learner_stack <- Stack$new(SL.glmnet_learner, glm_learner, screen_and_glm)
 stack_fit <- learner_stack$train(task)
-#> Warning: `lang_tail()` is deprecated as of rlang 0.2.0.
-#> This warning is displayed once per session.
-#> Warning: `mut_node_cdr()` is deprecated as of rlang 0.2.0.
-#> This warning is displayed once per session.
 preds <- stack_fit$predict()
 head(preds)
 #>    Lrnr_pkg_SuperLearner_SL.glmnet Lrnr_glm_TRUE
@@ -198,9 +194,9 @@ After using the `sl3` R package, please cite the following:
         Learning}},
       year = {2019},
       howpublished = {\url{https://github.com/tlverse/sl3}},
-      note = {{R} package version 1.3.0},
-      url = {https://doi.org/10.5281/zenodo.3475685},
-      doi = {10.5281/zenodo.3475685}
+      note = {{R} package version 1.3.5},
+      url = {https://doi.org/10.5281/zenodo.3558317},
+      doi = {10.5281/zenodo.3558317}
     }
 ```
 

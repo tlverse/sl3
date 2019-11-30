@@ -96,6 +96,30 @@ delayed_learner_fit_chain <- function(learner_fit, task = NULL) {
 }
 
 
+#' @rdname learner_helpers
+#'
+#' @export
+#
+learner_subset_covariates <- function(learner, task) {
+  learner$subset_covariates(task)
+}
+
+#' @rdname learner_helpers
+#'
+#' @export
+#
+delayed_learner_subset_covariates <- function(learner, task) {
+  if (is(task, "Delayed")) {
+    # only delay if task is delayed
+    subset_delayed <- delayed_fun(learner_subset_covariates)(learner, task)
+    subset_delayed$name <- "subset"
+  } else {
+    subset_delayed <- learner_subset_covariates(learner, task)
+  }
+  return(subset_delayed)
+}
+
+
 sl3_delayed_job_type <- function() {
   if (getOption("sl3.enable.future")) {
     return(delayed::FutureJob)

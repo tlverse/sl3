@@ -67,9 +67,12 @@ Lrnr_glm <- R6Class(
       }
 
       args$ctrl <- glm.control(trace = FALSE)
-      SuppressGivenWarnings({
-        fit_object <- call_with_args(stats::glm.fit, args)
-      }, GetWarningsToSuppress())
+      SuppressGivenWarnings(
+        {
+          fit_object <- call_with_args(stats::glm.fit, args)
+        },
+        GetWarningsToSuppress()
+      )
 
       fit_object$linear.predictors <- NULL
       fit_object$weights <- NULL

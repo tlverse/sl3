@@ -81,7 +81,7 @@ Lrnr_base <- R6Class(
         fit_object <- private$.train(subsetted_task)
       }
       new_object <- self$clone() # copy parameters, and whatever else
-      new_object$set_train(fit_object, task)
+      new_object$set_train(fit_object, subsetted_task)
       return(new_object)
     },
 
@@ -146,7 +146,10 @@ Lrnr_base <- R6Class(
     },
 
     train_sublearners = function(task) {
-      return(private$.train_sublearners(task))
+      # TODO: add error handling
+      subsetted_task <- delayed_learner_subset_covariates(self, task)
+
+      return(private$.train_sublearners(subsetted_task))
     },
 
     train = function(task) {

@@ -69,9 +69,9 @@ Lrnr_pooled_hazards <- R6Class(
       predmat <- matrix(raw_preds, nrow = task$nrow, byrow = FALSE)
 
       # probability of surviving until time t
-      psurviv <- t(apply(1 - predmat, 1, cumprod))
-      psurviv <- cbind(1, psurviv)[, seq_len(ncol(predmat))]
-      predictions <- psurviv * predmat
+      psurv <- t(apply(1 - predmat, 1, cumprod))
+      psurv <- cbind(1, psurv)[, seq_len(ncol(predmat))]
+      predictions <- psurv * predmat
       predictions <- normalize_rows(predictions)
 
       predictions <- pack_predictions(predictions)

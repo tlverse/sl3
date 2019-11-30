@@ -133,6 +133,15 @@
     <loc>https://tlverse.org/sl3/reference/Lrnr_rugarch.html</loc>
   </url>
   <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_screener_corP.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_screener_corRank.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_screener_randomForest.html</loc>
+  </url>
+  <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_sl.html</loc>
   </url>
   <url>
@@ -266,9 +275,6 @@
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/write_learner_template.html</loc>
-  </url>
-  <url>
-    <loc>https://tlverse.org/sl3/articles/custom_lrnrs.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/articles/intro_sl3.html</loc>
