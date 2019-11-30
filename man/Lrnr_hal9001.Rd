@@ -23,10 +23,10 @@ of the CV-Lasso as well the standard call to \code{cv.glmnet} from the
 \section{Parameters}{
 
 \describe{
-\item{\code{degrees="degrees"}}{ The highest order of interaction terms for
-which the basis functions ought to be generated. The default corresponds
-to generating basis functions up to all 3-way interactions of covariates
-in the input matrix, matching the default in \pkg{hal9001}.
+\item{\code{max_degree="max_degree"}}{ The highest order of interaction
+terms for which the basis functions ought to be generated. The default
+corresponds to generating basis functions up to all 3-way interactions of
+covariates in the input matrix, matching the default in \pkg{hal9001}.
 }
 \item{\code{fit_type="fit_type"}}{ The specific routine to be called when
 fitting the Lasso regression in a cross-validated manner. Choosing the

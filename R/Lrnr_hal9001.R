@@ -26,10 +26,10 @@
 #'
 #' @section Parameters:
 #' \describe{
-#'   \item{\code{degrees="degrees"}}{ The highest order of interaction terms for
-#'    which the basis functions ought to be generated. The default corresponds
-#'    to generating basis functions up to all 3-way interactions of covariates
-#'    in the input matrix, matching the default in \pkg{hal9001}.
+#'   \item{\code{max_degree="max_degree"}}{ The highest order of interaction
+#'    terms for which the basis functions ought to be generated. The default
+#'    corresponds to generating basis functions up to all 3-way interactions of
+#'    covariates in the input matrix, matching the default in \pkg{hal9001}.
 #'   }
 #'   \item{\code{fit_type="fit_type"}}{ The specific routine to be called when
 #'    fitting the Lasso regression in a cross-validated manner. Choosing the
@@ -54,7 +54,7 @@ Lrnr_hal9001 <- R6Class(
   classname = "Lrnr_hal9001", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(degrees = 3,
+    initialize = function(max_degree = 3,
                           fit_type = "glmnet",
                           n_folds = 10,
                           use_min = TRUE,

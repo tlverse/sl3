@@ -170,10 +170,10 @@ of the CV-Lasso as well the standard call to <code>cv.glmnet</code> from the
     
 
 <dl class='dl-horizontal'>
-<dt><code>degrees="degrees"</code></dt><dd><p>The highest order of interaction terms for
-which the basis functions ought to be generated. The default corresponds
-to generating basis functions up to all 3-way interactions of covariates
-in the input matrix, matching the default in <span class="pkg">hal9001</span>.</p></dd>
+<dt><code>max_degree="max_degree"</code></dt><dd><p>The highest order of interaction
+terms for which the basis functions ought to be generated. The default
+corresponds to generating basis functions up to all 3-way interactions of
+covariates in the input matrix, matching the default in <span class="pkg">hal9001</span>.</p></dd>
 <dt><code>fit_type="fit_type"</code></dt><dd><p>The specific routine to be called when
 fitting the Lasso regression in a cross-validated manner. Choosing the
 <code>glmnet</code> option will result in a call to <code>cv.glmnet</code> while

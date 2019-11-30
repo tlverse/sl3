@@ -30,7 +30,7 @@ Depends: R (>= 2.14.0)
 Imports:
     data.table,
     assertthat,
-    origami,
+    origami (>= 1.0.0),
     R6,
     uuid,
     BBmisc,
@@ -64,7 +64,7 @@ Suggests:
     glmnet,
     grf,
     gbm,
-    hal9001,
+    hal9001 (>= 0.2.5),
     h2o,
     keras,
     kerasR,
