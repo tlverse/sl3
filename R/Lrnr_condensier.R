@@ -53,17 +53,17 @@ Lrnr_condensier <- R6Class(
   class = TRUE,
   public = list(
     initialize = function(bin_method = c("equal.mass", "equal.len", "dhist"),
-                          nbins = 5,
-                          max_n_cat = 20,
-                          pool = FALSE,
-                          max_n_bin = NA_integer_,
-                          parfit = FALSE,
-                          bin_estimator = make_learner(
-                            Lrnr_glm_fast,
-                            family = binomial()
-                          ),
-                          intrvls = NULL,
-                          ...) {
+                              nbins = 5,
+                              max_n_cat = 20,
+                              pool = FALSE,
+                              max_n_bin = NA_integer_,
+                              parfit = FALSE,
+                              bin_estimator = make_learner(
+                                Lrnr_glm_fast,
+                                family = binomial()
+                              ),
+                              intrvls = NULL,
+                              ...) {
       params <- args_to_list()
       assert_that(is(bin_estimator, "Lrnr_base") || is(
         bin_estimator,

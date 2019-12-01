@@ -43,7 +43,7 @@ Lrnr_sl <- R6Class(
   class = TRUE,
   public = list(
     initialize = function(learners, metalearner = "default", folds = NULL,
-                          keep_extra = TRUE, ...) {
+                              keep_extra = TRUE, ...) {
       # kludge to deal with stack as learners
       if (inherits(learners, "Stack")) {
         learners <- learners$params$learners
@@ -213,13 +213,15 @@ drop_offsets_chain <- function(learner, task) {
   predictions <- learner$predict(task)
   predictions <- as.data.table(predictions)
   # Add predictions as new columns
-  if(nrow(task$data)!=nrow(predictions)){
-    #Gather validation indexes:
-    val_index <- unlist(lapply(task$folds,function(fold){fold$validation_set}))
+  if (nrow(task$data) != nrow(predictions)) {
+    # Gather validation indexes:
+    val_index <- unlist(lapply(task$folds, function(fold) {
+      fold$validation_set
+    }))
     task <- task$subset_task(val_index)
-    new_col_names <- task$add_columns(predictions, learner$fit_uuid) 
-  }else{
-    new_col_names <- task$add_columns(predictions, learner$fit_uuid) 
+    new_col_names <- task$add_columns(predictions, learner$fit_uuid)
+  } else {
+    new_col_names <- task$add_columns(predictions, learner$fit_uuid)
   }
   # new_covariates = union(names(predictions),task$nodes$covariates)
   return(task$next_in_chain(

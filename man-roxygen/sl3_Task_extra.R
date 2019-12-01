@@ -1,9 +1,9 @@
 ##' @section Constructor:
-##' 
+##'
 ##'   \code{make_sl3_Task(data, covariates, outcome = NULL, outcome_type = NULL, outcome_levels = NULL,
 ##'                       id = NULL, weights = NULL, offset = NULL, nodes = NULL, column_names = NULL,
 ##'                       row_index = NULL, folds = NULL)}
-##'                      
+##'
 ##'   \describe{
 ##'     \item{\code{data}}{A \code{data.frame} or \code{data.table} containing the underlying data
 ##'     }
@@ -23,7 +23,7 @@
 ##'     }
 ##'     \item{\code{nodes}}{A list of character vectors as nodes. This will override the \code{covariates}, \code{outcome}, \code{id}, \code{weights}, and \code{offset} arguments if specified, and is an alternative way to specify those arguments.
 ##'     }
-##'     \item{\code{column_names}}{A named list of characters that maps between column names in \code{data} and how those variables are referenced in \code{sl3_Task} functions. 
+##'     \item{\code{column_names}}{A named list of characters that maps between column names in \code{data} and how those variables are referenced in \code{sl3_Task} functions.
 ##'     }
 ##'     }
 ##'
@@ -40,12 +40,12 @@
 ##'     }
 ##'   }
 ##'   }
-##'   
+##'
 ##' \item{\code{add_columns(fit_uuid, new_data, global_cols=FALSE)}}{
 ##'   Add columns to internal data, returning an updated vector of \code{column_names}
-##'   
+##'
 ##'   \itemize{
-##'     \item{\code{fit_uuid}: A uuid character that is used to generate unique internal column names. 
+##'     \item{\code{fit_uuid}: A uuid character that is used to generate unique internal column names.
 ##'     This prevents two added columns with the same name overwriting each other, provided they have different fit_uuid.
 ##'     }
 ##'     \item{\code{new_data}: A data.table containing the columns to add
@@ -54,10 +54,10 @@
 ##'     }
 ##'   }
 ##'   }
-##' \item{\code{next_in_chain(covariates=NULL, outcome=NULL, id=NULL, weights=NULL, 
+##' \item{\code{next_in_chain(covariates=NULL, outcome=NULL, id=NULL, weights=NULL,
 ##'                                     offset=NULL, column_names=NULL, new_nodes=NULL, ...)}}{
 ##'   Used by learner$chain methods to generate a task with the same underlying data, but redefined nodes.
-##'   Most of the parameter values are passed to the \code{sl3_Task} constructor, documented above. 
+##'   Most of the parameter values are passed to the \code{sl3_Task} constructor, documented above.
 ##'
 ##'   \itemize{
 ##'     \item{\code{covariates}: An updated covariates character vector
@@ -87,7 +87,7 @@
 ##'     }
 ##'   }
 ##'   }
-##'   
+##'
 ##' \item{\code{get_data(rows, columns)}}{
 ##'   Returns a \code{data.table} containing a subset of task data.
 ##'
@@ -96,7 +96,7 @@
 ##'     }
 ##'   }
 ##'   \itemize{
-##'     \item{\code{columns}: A character vector of columns to return. 
+##'     \item{\code{columns}: A character vector of columns to return.
 ##'     }
 ##'   }
 ##'   }
@@ -108,7 +108,7 @@
 ##'     }
 ##'   }
 ##'   }
-##'   
+##'
 ##' \item{\code{get_node(node_name, generator_fun=NULL)}}{
 ##'   Returns a ddta.table with the requested node's data
 ##'
@@ -121,7 +121,7 @@
 ##'   }
 ##'
 ##' }
-##' 
+##'
 ##' @section Fields:
 ##' \describe{
 ##'   \item{\code{raw_data}}{Internal representation of the data}

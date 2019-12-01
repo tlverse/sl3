@@ -34,14 +34,15 @@
 ##'   }
 ##'   }
 ##' }
-Lrnr_template <- R6Class(classname = "Lrnr_template", inherit = Lrnr_base,
-                         portable = TRUE, class = TRUE,
-# Above, you should change Lrnr_template (in both the object name and the classname argument)
-# to a name that indicates what your learner does
+Lrnr_template <- R6Class(
+  classname = "Lrnr_template", inherit = Lrnr_base,
+  portable = TRUE, class = TRUE,
+  # Above, you should change Lrnr_template (in both the object name and the classname argument)
+  # to a name that indicates what your learner does
   public = list(
     # you can define default parameter values here
     # if possible, your learner should define defaults for all required parameters
-    initialize = function(param_1="default_1", param_2="default_2", ...) {
+    initialize = function(param_1 = "default_1", param_2 = "default_2", ...) {
       # this captures all parameters to initialize and saves them as self$params
       params <- args_to_list()
       super$initialize(params = params, ...)
@@ -53,7 +54,7 @@ Lrnr_template <- R6Class(classname = "Lrnr_template", inherit = Lrnr_base,
     }
   ),
   private = list(
-    # list properties your learner supports here. 
+    # list properties your learner supports here.
     # Use sl3_list_properties() for a list of options
     .properties = c(""),
 
@@ -78,13 +79,13 @@ Lrnr_template <- R6Class(classname = "Lrnr_template", inherit = Lrnr_base,
       args$x <- as.matrix(task$X_intercept)
       args$y <- outcome_type$format(task$Y)
 
-      # only add arguments on weights and offset 
+      # only add arguments on weights and offset
       # if those were specified when the task was generated
-      if(task$has_node("weights")){
+      if (task$has_node("weights")) {
         args$weights <- task$weights
       }
 
-      if(task$has_node("offset")){
+      if (task$has_node("offset")) {
         args$offset <- task$offset
       }
 
@@ -109,4 +110,3 @@ Lrnr_template <- R6Class(classname = "Lrnr_template", inherit = Lrnr_base,
     }
   )
 )
-

@@ -127,16 +127,18 @@ Lrnr_cv <- R6Class(
       revere_task <- task$revere_fold_task(fold_number)
 
       predictions <- self$predict_fold(revere_task, fold_number)
-      
-      if(nrow(revere_task$data)!=nrow(predictions)){
-        #Gather validation indexes:
-        val_index <- unlist(lapply(revere_task$folds,function(fold){fold$validation_set}))
+
+      if (nrow(revere_task$data) != nrow(predictions)) {
+        # Gather validation indexes:
+        val_index <- unlist(lapply(revere_task$folds, function(fold) {
+          fold$validation_set
+        }))
         revere_task <- revere_task$subset_task(val_index)
         new_col_names <- revere_task$add_columns(predictions, self$fit_uuid)
-      }else{
+      } else {
         new_col_names <- revere_task$add_columns(predictions, self$fit_uuid)
       }
-      
+
       return(revere_task$next_in_chain(
         covariates = names(predictions),
         column_names = new_col_names
@@ -265,13 +267,14 @@ Lrnr_cv <- R6Class(
       }
 
       results <- cross_validate(cv_predict, folds, fold_fits, task, use_future = FALSE)
-      #Avoids issues with repeated validation samples in time-series cv
-      if(length(unique(results$index))==nrow(results$predictions)){
+      # Avoids issues with repeated validation samples in time-series cv
+      preds <- as.data.table(results$predictions)
+      if (length(unique(results$index)) == nrow(preds)) {
         predictions <- aorder(results$predictions, order(results$index))
-      }else{
-        predictions <- aorder(results$predictions, seq(1,nrow(results$predictions)))
+      } else {
+        predictions <- aorder(results$predictions, seq(1, nrow(results$predictions)))
       }
-      
+
       return(predictions)
     },
     .required_packages = c("origami")

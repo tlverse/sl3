@@ -4,15 +4,18 @@ library(sl3)
 library(delayed)
 library(origami)
 library(devtools)
-load_all()
+library(assertthat)
+library(digest)
 
 data(cpp_imputed)
 covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")
 outcome <- "haz"
-data<-cpp_imputed[1:100,]
+data <- cpp_imputed[1:100, ]
 
-folds = origami::make_folds(data, fold_fun=folds_rolling_window, window_size = 25, 
-                            validation_size = 25, gap = 0, batch = 10)
+folds <- origami::make_folds(data,
+  fold_fun = folds_rolling_window, window_size = 25,
+  validation_size = 25, gap = 0, batch = 10
+)
 task <- make_sl3_Task(
   data = data,
   covariates = covars,
@@ -30,9 +33,10 @@ stack <- make_learner(
 metalearner <- make_learner(Lrnr_nnls)
 
 sl <- make_learner(Lrnr_sl,
-                   learners = stack,
-                   metalearner = metalearner)
+  learners = stack,
+  metalearner = metalearner
+)
 sl_fit <- sl$train(task)
-preds<-sl_fit$predict_fold(task, "validation")
+preds <- sl_fit$predict_fold(task, "validation")
 
 test_that("validation set for time-series is as expected", expect_equal(length(preds), 150))
