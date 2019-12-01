@@ -51,10 +51,10 @@ Lrnr_caret <- R6Class(
   portable = TRUE, class = TRUE,
   public = list(
     initialize = function(algorithm,
-                              method = "CV",
-                              metric = NULL,
-                              trControl = caret::trainControl(method = method),
-                              ...) {
+                          method = "CV",
+                          metric = NULL,
+                          trControl = caret::trainControl(method = method),
+                          ...) {
       params <- list(
         method = algorithm,
         ...
