@@ -179,10 +179,19 @@ sl3_Task <- R6Class(
     },
 
     add_columns = function(new_data, column_uuid = uuid::UUIDgenerate()) {
-      new_col_map <- private$.shared_data$add_columns(
-        new_data, column_uuid,
-        private$.row_index
-      )
+      
+      if(is.numeric(private$.row_index)){
+        new_col_map <- private$.shared_data$add_columns(
+          new_data, column_uuid,
+          as.integer(private$.row_index)
+        )
+      }else{
+        new_col_map <- private$.shared_data$add_columns(
+          new_data, column_uuid,
+          private$.row_index
+        )
+      }
+      
       column_names <- private$.column_names
       column_names[names(new_col_map)] <- new_col_map
 
