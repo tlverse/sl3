@@ -55,8 +55,8 @@ write_learner_template("path/to/write/Learner_template.R")
 ```
 
 ```{r cache=FALSE, echo=FALSE}
-chunkfile <- "../inst/templates/Lrnr_template.R"
-knitr::read_chunk(chunkfile, label = "template")
+template_file <- "../inst/templates/Lrnr_template.R"
+do.call(knitr::read_chunk, list(path = template_file, label = "template"))
 ```
 
 Let's take a look at that template:
