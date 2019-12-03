@@ -23,24 +23,25 @@ of the CV-Lasso as well the standard call to \code{cv.glmnet} from the
 \section{Parameters}{
 
 \describe{
-\item{\code{max_degree="max_degree"}}{ The highest order of interaction
+\item{\code{max_degree=3}}{ The highest order of interaction
 terms for which the basis functions ought to be generated. The default
 corresponds to generating basis functions up to all 3-way interactions of
 covariates in the input matrix, matching the default in \pkg{hal9001}.
 }
-\item{\code{fit_type="fit_type"}}{ The specific routine to be called when
+\item{\code{fit_type="glmnet"}}{The specific routine to be called when
 fitting the Lasso regression in a cross-validated manner. Choosing the
-\code{glmnet} option will result in a call to \code{cv.glmnet} while
-\code{origami} will produce a (faster) call to a custom routine based on
-the \code{origami} package.
+"glmnet" option calls either \code{\link[glmnet]{cv.glmnet}} or
+\code{\link[glmnet]{glmnet}}.
 }
-\item{\code{n_folds="n_folds"}}{ Integer for the number of folds to be used
+\item{\code{n_folds=10}}{Integer for the number of folds to be used
 when splitting the data for cross-validation. This defaults to 10 as this
-is the convention for v-fold cross-validation.
+is the convention for V-fold cross-validation.
 }
-\item{\code{use_min="use_min"}}{ Determines which lambda is selected from
-\code{cv.glmnet}. \code{TRUE} corresponds to \code{"lambda.min"} and
-\code{FALSE} corresponds to \code{"lambda.1se"}.
+\item{\code{use_min=TRUE}}{Determines which lambda is selected from
+\code{\link[glmnet]{cv.glmnet}}. \code{TRUE} corresponds to
+\code{"lambda.min"} and \code{FALSE} corresponds to \code{"lambda.1se"}.
+}
+\item{\code{basis_list=NULL}}{
 }
 \item{\code{...}}{ Other parameters passed directly to
 \code{\link[hal9001]{fit_hal}}. See its documentation for details.
