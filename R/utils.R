@@ -179,8 +179,6 @@ subset_dt_cols <- function(dt, cols) {
 #'
 #' @return A \code{list} of all arguments for the parent function call.
 #'
-#' @importFrom rlang caller_env
-#'
 #' @export
 #
 args_to_list <- function() {

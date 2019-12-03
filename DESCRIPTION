@@ -62,7 +62,7 @@ Suggests:
     polspline,
     forecast,
     glmnet,
-    grf (>= 1.0.0),
+    grf,
     gbm,
     hal9001 (>= 0.2.5),
     h2o,
