@@ -40,8 +40,10 @@ test_that("Lrnr_grf gives the expected output", {
 
   set.seed(seed_int)
   # GRF package
-  grf_pkg <- grf::quantile_forest(X = X, Y = Y, seed = seed_int,
-                                  num.threads = 1)
+  grf_pkg <- grf::quantile_forest(
+    X = X, Y = Y, seed = seed_int,
+    num.threads = 1
+  )
   grf_pkg_pred <- predict(grf_pkg, quantiles = grf_fit$params$quantiles_pred)
 
   # test equivalence

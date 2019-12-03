@@ -190,9 +190,11 @@ args_to_list <- function() {
   fn <- sys.function(parent)
 
   # get specified args
-  expanded <- match.call(definition = fn,
-                         call = call,
-                         envir = parent.frame(n = 2L))
+  expanded <- match.call(
+    definition = fn,
+    call = call,
+    envir = parent.frame(n = 2L)
+  )
   args <- as.list(expanded[-1])
 
   # get default args
