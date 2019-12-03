@@ -17,9 +17,11 @@ library(grf)
 set.seed(11)
 
 # Generate some data
-n <- 2000
-p <- 20
+n <- 50
+p <- 10
 X <- matrix(rnorm(n * p), n, p)
+X.test <- matrix(0, 101, p)
+X.test[, 1] <- seq(-2, 2, length.out = 101)
 Y <- X[, 1] * rnorm(n)
 data <- cbind.data.frame(Y = Y, X = X)
 
@@ -29,17 +31,19 @@ outcome <- names(data)[1]
 task <- sl3_Task$new(data, covariates = covars, outcome = outcome)
 
 test_that("Lrnr_grf gives the expected output", {
-  set.seed(496)
+  seed_int <- 496L
+  set.seed(seed_int)
   # GRF learner class
-  grf_learner <- Lrnr_grf$new()
+  grf_learner <- Lrnr_grf$new(seed = seed_int)
   grf_fit <- grf_learner$train(task)
   grf_pred <- grf_fit$predict(task)
 
-  set.seed(496)
+  set.seed(seed_int)
   # GRF package
-  grf_pkg <- grf::quantile_forest(X = X, Y = Y)
-  grf_pkg_pred <- predict(grf_pkg)
+  grf_pkg <- grf::quantile_forest(X = X, Y = Y, seed = seed_int,
+                                  num.threads = 1)
+  grf_pkg_pred <- predict(grf_pkg, quantiles = grf_fit$params$quantiles_pred)
 
   # test equivalence
-  expect_equal(grf_pred, grf_pkg_pred[,2])
+  expect_equal(grf_pred, as.numeric(grf_pkg_pred))
 })

@@ -103,5 +103,5 @@ LazyLoad: yes
 VignetteBuilder:
     knitr,
     R.rsp
-RoxygenNote: 7.0.1
+RoxygenNote: 7.0.2
 Roxygen: list(markdown = TRUE, r6 = FALSE)

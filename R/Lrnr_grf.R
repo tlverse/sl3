@@ -29,37 +29,44 @@
 #' \describe{
 #'   \item{\code{X}}{The covariates used in the quantile regression.}
 #'   \item{\code{Y}}{The outcome.}
-#'   \item{\code{quantiles}}{Vector of quantiles used to calibrate the forest.}
-#'   \item{\code{regression.splitting}}{Whether to use regression splits when
-#'    growing trees instead of specialized splits based on the quantiles (the
-#'    default). Setting this flag to \code{TRUE} corresponds to the approach to
-#'    quantile forests from Meinshausen (2006).}
-#'   \item{\code{sample.fraction}}{Fraction of the data used to build each tree.
-#'    Note: If honesty is used, these subsamples will further be cut in half.}
-#'   \item{\code{mtry}}{Number of variables tried for each split.}
-#'   \item{\code{num.trees}}{Number of trees grown in the forest.
-#'    Note: Getting accurate confidence intervals generally requires more trees
-#'    than getting accurate predictions.}
-#'   \item{\code{num.threads}}{Number of threads used in training. If set to
-#'    \code{NULL}, the software automatically selects an appropriate amount.}
-#'   \item{\code{min.node.size}}{A target for the minimum number of observations
-#'    in each tree leaf. Note that nodes with size smaller than
+#'   \item{\code{num.trees = 2000}}{Number of trees grown in the forest. NOTE:
+#'    Getting accurate confidence intervals generally requires more trees than
+#'    getting accurate predictions.}
+#'   \item{\code{quantiles = c(0.1, 0.5, 0.9)}}{Vector of quantiles used to
+#'    calibrate the forest.}
+#'   \item{\code{regression.splitting = FALSE}}{Whether to use regression splits
+#'    when growing trees instead of specialized splits based on the quantiles
+#'    (the default). Setting this flag to \code{TRUE} corresponds to the
+#'    approach to quantile forests from Meinshausen (2006).}
+#'   \item{\code{clusters = NULL}}{Vector of integers or factors specifying
+#'    which cluster each observation corresponds to.}
+#'   \item{\code{equalize.cluster.weights = FALSE}}{If \code{FALSE}, each unit
+#'    is given the same weight (so that bigger clusters get more weight). If
+#'    \code{TRUE}, each cluster is given equal weight in the forest. In this
+#'    case, during training, each tree uses the same number of observations from
+#'    each drawn cluster: If the smallest cluster has K units, then when we
+#'    sample a cluster during training, we only give a random K elements of the
+#'    cluster to the tree-growing procedure. When estimating average treatment
+#'    effects, each observation is given weight 1/cluster size, so that the
+#'    total weight of each cluster is the same.}
+#'   \item{\code{sample.fraction = 0.5}}{Fraction of the data used to build each
+#'    tree. NOTE: If \code{honesty = TRUE}, these subsamples will further be cut
+#'    by a factor of \code{honesty.fraction.}.}
+#'   \item{\code{mtry = min(ceiling(sqrt(ncol(X)) + 20), ncol(X))}}{Number of
+#'    variables tried for each split.}
+#'   \item{\code{min.node.size = 5}}{A target for the minimum number of
+#'    observations in each tree leaf. Note that nodes with size smaller than
 #'    \code{min.node.size} can occur, as in the \pkg{randomForest} package.}
-#'   \item{\code{honesty}}{Whether or not honest splitting (i.e., sub-sample
-#'    splitting) should be used.}
-#'   \item{\code{alpha}}{A tuning parameter that controls the maximum imbalance
-#'    of a split.}
-#'   \item{\code{imbalance.penalty}}{A tuning parameter that controls how
+#'   \item{\code{honesty = TRUE}}{Whether or not honest splitting (i.e.,
+#'    sub-sample splitting) should be used.}
+#'   \item{\code{alpha = 0.05}}{A tuning parameter that controls the maximum
+#'    imbalance of a split.}
+#'   \item{\code{imbalance.penalty = 0}}{A tuning parameter that controls how
 #'    harshly imbalanced splits are penalized.}
-#'   \item{\code{seed}}{The seed for the C++ random number generator.}
-#'   \item{\code{clusters}}{Vector of integers or factors specifying which
-#'    cluster each observation corresponds to.}
-#'   \item{\code{samples_per_cluster}}{If sampling by cluster, the number of
-#'    observations to be sampled from each cluster. Must be less than the size
-#'    of the smallest cluster. If set to \code{NULL}, this value will be set to
-#'    the size of the smallest cluster.}
-#'   \item{\code{q}}{Vector of quantiles used to predict. This can be different
-#'    than the vector of quantiles used for training.}
+#'   \item{\code{num.threads = 1}}{Number of threads used in training. If set to
+#'    \code{NULL}, the software automatically selects an appropriate amount.}
+#'   \item{\code{quantiles_pred}}{Vector of quantiles used to predict. This can
+#'    be different than the vector of quantiles used for training.}
 #' }
 #'
 #' @template common_parameters
@@ -69,20 +76,19 @@ Lrnr_grf <- R6Class(
   classname = "Lrnr_grf",
   inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(quantiles = c(0.1, 0.5, 0.9),
+    initialize = function(num.trees = 2000,
+                          quantiles = c(0.1, 0.5, 0.9),
                           regression.splitting = FALSE,
+                          clusters = NULL,
+                          equalize.cluster.weights = FALSE,
                           sample.fraction = 0.5,
-                          mtry = NULL,
-                          num.trees = 2000,
-                          num.threads = NULL,
-                          min.node.size = NULL,
+                          mtry = min(ceiling(sqrt(ncol(X)) + 20), ncol(X)),
+                          min.node.size = 5,
                           honesty = TRUE,
                           alpha = 0.05,
                           imbalance.penalty = 0,
-                          seed = NULL, 
-                          clusters = NULL,
-                          samples_per_cluster = NULL,
-                          q = 0.5,
+                          num.threads = 1,
+                          quantiles_pred = 0.5,
                           ...) {
       super$initialize(params = args_to_list(), ...)
     }
@@ -107,21 +113,21 @@ Lrnr_grf <- R6Class(
         args$offset <- task$offset
       }
 
+      # train via call_with_args and return fitted object
       fit_object <- call_with_args(grf::quantile_forest, args)
-
       return(fit_object)
     },
 
     .predict = function(task) {
-      # outcome_type <- private$.training_outcome_type
-      q <- private$.params$q
+      # quantiles for which to predict
+      quantiles_pred <- private$.params$quantiles_pred
 
+      # generate predictions and output
       predictions <- stats::predict(
         private$.fit_object,
         new_data = data.frame(task$X),
-        quantiles = q
+        quantiles = quantiles_pred
       )
-
       return(predictions)
     },
     .required_packages = c("grf")

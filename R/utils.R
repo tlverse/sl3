@@ -188,11 +188,11 @@ args_to_list <- function() {
   parent <- sys.parent()
   call <- sys.call(parent)
   fn <- sys.function(parent)
-  browser()
 
   # get specified args
-  expanded <- match.call(definition = fn, call = call,
-                         envir = parent.frame(2L))
+  expanded <- match.call(definition = fn,
+                         call = call,
+                         envir = parent.frame(n = 2L))
   args <- as.list(expanded[-1])
 
   # get default args
@@ -205,18 +205,16 @@ args_to_list <- function() {
   all_args[names(args)] <- args
 
   # evaluate args
-  num_args <- length(all_args)
-  for (i in seq_len(num_args)) {
+  for (i in seq_along(all_args)) {
     if (!is.null(all_args[[i]])) {
       evaled <- eval(
-        all_args[[i]],
+        expr = all_args[[i]],
         envir = all_args,
-        enclos = parent.frame(2L)
+        enclos = parent.frame(n = 2L)
       )
       all_args[i] <- list(evaled)
     }
   }
-  # evaled <- lapply(all_args, eval, envir=parent.frame(2L))
   return(all_args)
 }
 
