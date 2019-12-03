@@ -208,11 +208,12 @@ args_to_list <- function() {
   num_args <- length(all_args)
   for (i in seq_len(num_args)) {
     if (!is.null(all_args[[i]])) {
-      all_args[[i]] <- eval(
+      evaled <- eval(
         all_args[[i]],
         envir = all_args,
         enclos = parent.frame(2L)
       )
+      all_args[i] <- list(evaled)
     }
   }
   # evaled <- lapply(all_args, eval, envir=parent.frame(2L))

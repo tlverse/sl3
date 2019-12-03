@@ -42,3 +42,8 @@ test_that("argument defaults can depend on previous arguments", {
   arglist <- my_function_defaults()
   expect_equal(arglist, list(arg1 = 1, arg2 = 1))
 })
+
+test_that("NULL arguments work", {
+  arglist <- my_function(arg1 = NULL)
+  expect_equal(arglist, list(arg1 = NULL, arg2 = "default_2"))
+})
