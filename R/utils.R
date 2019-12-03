@@ -108,7 +108,7 @@ replace_add_user_args <- function(mainArgs, userArgs, fun) {
 #'
 #' @return the size of \code{obj} in bytes
 #'
-#' @export
+#' @keywords internal
 #
 true_obj_size <- function(obj) {
   length(serialize(obj, NULL))
@@ -116,10 +116,17 @@ true_obj_size <- function(obj) {
 
 ################################################################################
 
+#' Drop components from learner fits
+#'
+#' Given learner fit, sequentially drop components from internal fit object,
+#' keeping track of which components are needed for prediction.
+#'
+#' @param learner_fit A \code{Lrnr_*} object, inheriting from \code{Lrnr_base},
+#'  that has been trained.
+#'
+#' @keywords internal
+#
 reduce_fit_test <- function(learner_fit) {
-  # given learner fit, sequentially drop components from internal fit object,
-  # keeping track of which components are needed for prediction
-
   # learner_fit = glm_fit
   original_fit <- learner_fit$fit_object
   task <- learner_fit$training_task
@@ -153,39 +160,45 @@ reduce_fit_test <- function(learner_fit) {
 
 ################################################################################
 
+#' Subset data.table columns
+#'
+#' @param dt A \code{\link[data.table]{data.table}}.
+#' @param cols Columns to subset.
+#'
+#' @return Subset of input \code{\link[data.table]{data.table}}.
+#'
+#' @keywords internal
+#
 subset_dt_cols <- function(dt, cols) {
-  # setDF(dt)
-  # subset = dt[,cols, drop = FALSE]
-  # setDT(subset)
-  # setDT(dt)
-  # return(subset)
   return(dt[, cols, with = FALSE, drop = FALSE])
 }
 
 ################################################################################
 
-#' Get all args of parent call (both specified and defaults) as list
+#' Get all arguments of parent call (both specified and defaults) as list
 #'
-#' @return a list of all for the parent function call
+#' @return A \code{list} of all arguments for the parent function call.
+#'
+#' @importFrom rlang caller_env
 #'
 #' @export
 #
 args_to_list <- function() {
+  # get calling environment, call object, and function to call
   parent <- sys.parent()
   call <- sys.call(parent)
   fn <- sys.function(parent)
-
   browser()
+
   # get specified args
   expanded <- match.call(definition = fn, call = call,
                          envir = parent.frame(2L))
   args <- as.list(expanded[-1])
 
-
   # get default args
   all_args <- formals(fn)
 
-  # drop dots from formals if it exists
+  # drop dot args from formals if it exists
   all_args$`...` <- NULL
 
   # add in specified args
@@ -229,9 +242,9 @@ safe_dim <- function(x) {
 
 #' Generate a file containing a template \code{sl3} Learner
 #'
-#' Generates a template file that can be used to write a new \code{sl3} Learner.
-#' For more information, see the \href{../doc/custom_lrnrs.html}{Defining New
-#' Learners} vignette.
+#' Generates a template file that can be used to write new \pkg{sl3} Learners.
+#' For more information, see the
+#' \href{../docs/articles/custom_lrnrs.html}{Defining New Learners} vignette.
 #'
 #' @param file the path where the file should be written
 #'
