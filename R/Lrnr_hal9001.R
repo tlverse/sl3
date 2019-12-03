@@ -33,7 +33,7 @@
 #'   }
 #'   \item{\code{fit_type="glmnet"}}{The specific routine to be called when
 #'    fitting the Lasso regression in a cross-validated manner. Choosing the
-#'    "glmnet" option calls either \code{\link[glmnet]{cv.glmnet}} or
+#'    \code{"glmnet"} option calls either \code{\link[glmnet]{cv.glmnet}} or
 #'    \code{\link[glmnet]{glmnet}}.
 #'   }
 #'   \item{\code{n_folds=10}}{Integer for the number of folds to be used
@@ -53,7 +53,7 @@
 #'    of HAL.
 #'   }
 #'   \item{\code{return_lasso=TRUE}}{A \code{logical} indicating whether or not
-#'    to return the \link[glmnet]{\code{glmnet}} fit of the Lasso model.
+#'    to return the \code{\link[glmnet]{glmnet}} fit of the Lasso model.
 #'   }
 #'   \item{\code{return_x_basis=FALSE}}{A \code{logical} indicating whether or
 #'    not to return the matrix of (possibly reduced) basis functions used in the
@@ -70,7 +70,7 @@
 #'    \code{TRUE}) or to simply fit along the sequence of values (or a single
 #'    value) using \code{\link[glmnet]{glmnet}} (when set to \code{FALSE}).
 #'   }
-#'   \item{\code{...}}{ Other parameters passed directly to
+#'   \item{\code{...}}{Other parameters passed directly to
 #'    \code{\link[hal9001]{fit_hal}}. See its documentation for details.
 #'   }
 #' }

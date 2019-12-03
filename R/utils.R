@@ -175,9 +175,10 @@ args_to_list <- function() {
   call <- sys.call(parent)
   fn <- sys.function(parent)
 
-  #browser()
+  browser()
   # get specified args
-  expanded <- match.call(fn, call, envir = parent.frame(2L))
+  expanded <- match.call(definition = fn, call = call,
+                         envir = parent.frame(2L))
   args <- as.list(expanded[-1])
 
 
