@@ -5,33 +5,41 @@ if (FALSE) {
   getwd()
   library("devtools")
   document()
-  load_all("./") # load all R files in /R and datasets in /data. Ignores NAMESPACE:
+  # load all R files in /R and datasets in /data. Ignores NAMESPACE:
+  load_all("./")
   setwd("..")
-  install("sl3", build_vignettes = FALSE, dependencies = FALSE) # INSTALL W/ devtools:
+  # INSTALL W/ devtools:
+  install("sl3", build_vignettes = FALSE, dependencies = FALSE)
 }
 
-library(testthat)
-library(sl3)
-
+# Preliminaries
+library(grf)
 set.seed(11)
 
-# Generate some data.
+# Generate some data
 n <- 2000
 p <- 20
 X <- matrix(rnorm(n * p), n, p)
 Y <- X[, 1] * rnorm(n)
-
 data <- cbind.data.frame(Y = Y, X = X)
 
+# Make sl3 Task
 covars <- names(data)[2:ncol(data)]
 outcome <- names(data)[1]
-
 task <- sl3_Task$new(data, covariates = covars, outcome = outcome)
 
 test_that("Lrnr_grf gives the expected output", {
+  set.seed(496)
+  # GRF learner class
   grf_learner <- Lrnr_grf$new()
   grf_fit <- grf_learner$train(task)
-  mean_pred_sl3 <- mean(grf_fit$predict(task))
+  grf_pred <- grf_fit$predict(task)
 
-  expect_true(mean_pred_sl3 < 0.5)
+  set.seed(496)
+  # GRF package
+  grf_pkg <- grf::quantile_forest(X = X, Y = Y)
+  grf_pkg_pred <- predict(grf_pkg)
+
+  # test equivalence
+  expect_equal(grf_pred, grf_pkg_pred[,2])
 })
