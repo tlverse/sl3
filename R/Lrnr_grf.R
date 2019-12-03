@@ -27,8 +27,6 @@
 #'
 #' @section Parameters:
 #' \describe{
-#'   \item{\code{X}}{The covariates used in the quantile regression.}
-#'   \item{\code{Y}}{The outcome.}
 #'   \item{\code{num.trees = 2000}}{Number of trees grown in the forest. NOTE:
 #'    Getting accurate confidence intervals generally requires more trees than
 #'    getting accurate predictions.}
@@ -52,8 +50,8 @@
 #'   \item{\code{sample.fraction = 0.5}}{Fraction of the data used to build each
 #'    tree. NOTE: If \code{honesty = TRUE}, these subsamples will further be cut
 #'    by a factor of \code{honesty.fraction.}.}
-#'   \item{\code{mtry = min(ceiling(sqrt(ncol(X)) + 20), ncol(X))}}{Number of
-#'    variables tried for each split.}
+#'   \item{\code{mtry = NULL}}{Number of variables tried for each split. By
+#'    default, this is set based on the dimensionality of the predictors.}
 #'   \item{\code{min.node.size = 5}}{A target for the minimum number of
 #'    observations in each tree leaf. Note that nodes with size smaller than
 #'    \code{min.node.size} can occur, as in the \pkg{randomForest} package.}
@@ -82,7 +80,7 @@ Lrnr_grf <- R6Class(
                           clusters = NULL,
                           equalize.cluster.weights = FALSE,
                           sample.fraction = 0.5,
-                          mtry = min(ceiling(sqrt(ncol(X)) + 20), ncol(X)),
+                          mtry = NULL,
                           min.node.size = 5,
                           honesty = TRUE,
                           alpha = 0.05,
@@ -111,6 +109,11 @@ Lrnr_grf <- R6Class(
 
       if (task$has_node("offset")) {
         args$offset <- task$offset
+      }
+
+      # set mtry arg based on dimensionality of X to match grf::quantile_forest
+      if (is.null(args$mtry)) {
+        args$mtry <- min(ceiling(sqrt(ncol(args$X)) + 20), ncol(args$X))
       }
 
       # train via call_with_args and return fitted object

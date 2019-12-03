@@ -14,7 +14,7 @@ if (FALSE) {
 
 # Preliminaries
 library(grf)
-set.seed(11)
+set.seed(791)
 
 # Generate some data
 n <- 50
@@ -30,7 +30,7 @@ covars <- names(data)[2:ncol(data)]
 outcome <- names(data)[1]
 task <- sl3_Task$new(data, covariates = covars, outcome = outcome)
 
-test_that("Lrnr_grf gives the expected output", {
+test_that("Lrnr_grf predictions match those of grf::quantile_forest", {
   seed_int <- 496L
   set.seed(seed_int)
   # GRF learner class
