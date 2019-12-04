@@ -5,51 +5,60 @@
 \alias{Lrnr_grf}
 \title{Generalized Random Forests Learner}
 \format{\code{\link{R6Class}} object.}
-\usage{
-Lrnr_grf
-}
 \value{
 Learner object with methods for training and prediction. See
 \code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
-This learner implements Generalized Random Forests, using the
-\code{grf} package. This is a pluggable package for forest-based statistical
-estimation and inference. GRF currently provides non-parametric methods for
-least-squares regression, quantile regression, and treatment effect estimation
-(optionally using instrumental variables). Current implementation trains a
-regression forest that can be used to estimate quantiles of the conditional
-distribution of Y given X=x.
+This learner implements Generalized Random Forests, using the \pkg{grf}
+package. This is a pluggable package for forest-based statistical estimation
+and inference. GRF currently provides non-parametric methods for
+least-squares regression, quantile regression, and treatment effect
+estimation (optionally using instrumental variables). Current implementation
+trains a regression forest that can be used to estimate quantiles of the
+conditional distribution of (Y|X=x).
 }
 \section{Parameters}{
 
 \describe{
-\item{\code{X}}{The covariates used in the quantile regression.}
-\item{\code{Y}}{The outcome.}
-\item{\code{quantiles}}{Vector of quantiles used to calibrate the forest.}
-\item{\code{regression.splitting}}{Whether to use regression splits when growing trees
-instead of specialized splits based on the quantiles (the default).
-Setting this flag to true corresponds to the approach to quantile forests from Meinshausen (2006).}
-\item{\code{sample.fraction}}{Fraction of the data used to build each tree.
-Note: If honesty is used, these subsamples will further be cut in half.}
-\item{\code{mtry}}{Number of variables tried for each split.}
-\item{\code{num.trees}}{Number of trees grown in the forest.
-Note: Getting accurate confidence intervals generally requires more trees than
+\item{\code{num.trees = 2000}}{Number of trees grown in the forest. NOTE:
+Getting accurate confidence intervals generally requires more trees than
 getting accurate predictions.}
-\item{\code{num.threads}}{Number of threads used in training.
-If set to NULL, the software automatically selects an appropriate amount.}
-\item{\code{min.node.size}}{A target for the minimum number of observations in each tree
-leaf. Note that nodes with size smaller than min.node.size can occur, as in the original randomForest package.}
-\item{\code{honesty}}{Whether or not honest splitting (i.e., sub-sample splitting) should be used.}
-\item{\code{alpha}}{A tuning parameter that controls the maximum imbalance of a split.}
-\item{\code{imbalance.penalty}}{A tuning parameter that controls how harshly imbalanced splits are penalized.}
-\item{\code{seed}}{The seed for the C++ random number generator.}
-\item{\code{clusters}}{Vector of integers or factors specifying which cluster each observation corresponds to.}
-\item{\code{samples_per_cluster}}{If sampling by cluster, the number of observations to be
-sampled from each cluster. Must be less than the size of the smallest cluster.
-If set to NULL software will set this value to the size of the smallest cluster.}
-\item{\code{q}}{Vector of quantiles used to predict. Can be different than the vector of quantiles used for training.}
-
+\item{\code{quantiles = c(0.1, 0.5, 0.9)}}{Vector of quantiles used to
+calibrate the forest.}
+\item{\code{regression.splitting = FALSE}}{Whether to use regression splits
+when growing trees instead of specialized splits based on the quantiles
+(the default). Setting this flag to \code{TRUE} corresponds to the
+approach to quantile forests from Meinshausen (2006).}
+\item{\code{clusters = NULL}}{Vector of integers or factors specifying
+which cluster each observation corresponds to.}
+\item{\code{equalize.cluster.weights = FALSE}}{If \code{FALSE}, each unit
+is given the same weight (so that bigger clusters get more weight). If
+\code{TRUE}, each cluster is given equal weight in the forest. In this
+case, during training, each tree uses the same number of observations from
+each drawn cluster: If the smallest cluster has K units, then when we
+sample a cluster during training, we only give a random K elements of the
+cluster to the tree-growing procedure. When estimating average treatment
+effects, each observation is given weight 1/cluster size, so that the
+total weight of each cluster is the same.}
+\item{\code{sample.fraction = 0.5}}{Fraction of the data used to build each
+tree. NOTE: If \code{honesty = TRUE}, these subsamples will further be cut
+by a factor of \code{honesty.fraction.}.}
+\item{\code{mtry = NULL}}{Number of variables tried for each split. By
+default, this is set based on the dimensionality of the predictors.}
+\item{\code{min.node.size = 5}}{A target for the minimum number of
+observations in each tree leaf. Note that nodes with size smaller than
+\code{min.node.size} can occur, as in the \pkg{randomForest} package.}
+\item{\code{honesty = TRUE}}{Whether or not honest splitting (i.e.,
+sub-sample splitting) should be used.}
+\item{\code{alpha = 0.05}}{A tuning parameter that controls the maximum
+imbalance of a split.}
+\item{\code{imbalance.penalty = 0}}{A tuning parameter that controls how
+harshly imbalanced splits are penalized.}
+\item{\code{num.threads = 1}}{Number of threads used in training. If set to
+\code{NULL}, the software automatically selects an appropriate amount.}
+\item{\code{quantiles_pred}}{Vector of quantiles used to predict. This can
+be different than the vector of quantiles used for training.}
 }
 }
 
@@ -67,43 +76,62 @@ by all learners.
 }
 
 \seealso{
-Other Learners: \code{\link{Custom_chain}},
-  \code{\link{Lrnr_HarmonicReg}}, \code{\link{Lrnr_arima}},
-  \code{\link{Lrnr_bartMachine}}, \code{\link{Lrnr_base}},
-  \code{\link{Lrnr_bilstm}}, \code{\link{Lrnr_caret}},
-  \code{\link{Lrnr_condensier}}, \code{\link{Lrnr_cv}},
-  \code{\link{Lrnr_dbarts}},
-  \code{\link{Lrnr_define_interactions}},
-  \code{\link{Lrnr_density_discretize}},
-  \code{\link{Lrnr_density_hse}},
-  \code{\link{Lrnr_density_semiparametric}},
-  \code{\link{Lrnr_earth}}, \code{\link{Lrnr_expSmooth}},
-  \code{\link{Lrnr_gam}}, \code{\link{Lrnr_gbm}},
-  \code{\link{Lrnr_glm_fast}}, \code{\link{Lrnr_glmnet}},
-  \code{\link{Lrnr_glm}}, \code{\link{Lrnr_h2o_grid}},
-  \code{\link{Lrnr_hal9001}},
-  \code{\link{Lrnr_haldensify}},
-  \code{\link{Lrnr_independent_binomial}},
-  \code{\link{Lrnr_lstm}}, \code{\link{Lrnr_mean}},
-  \code{\link{Lrnr_multivariate}}, \code{\link{Lrnr_nnls}},
-  \code{\link{Lrnr_optim}}, \code{\link{Lrnr_pca}},
-  \code{\link{Lrnr_pkg_SuperLearner}},
-  \code{\link{Lrnr_polspline}},
-  \code{\link{Lrnr_pooled_hazards}},
-  \code{\link{Lrnr_randomForest}},
-  \code{\link{Lrnr_ranger}},
-  \code{\link{Lrnr_revere_task}}, \code{\link{Lrnr_rfcde}},
-  \code{\link{Lrnr_rpart}}, \code{\link{Lrnr_rugarch}},
-  \code{\link{Lrnr_screener_corP}},
-  \code{\link{Lrnr_screener_corRank}},
-  \code{\link{Lrnr_screener_randomForest}},
-  \code{\link{Lrnr_sl}}, \code{\link{Lrnr_solnp_density}},
-  \code{\link{Lrnr_solnp}}, \code{\link{Lrnr_stratified}},
-  \code{\link{Lrnr_subset_covariates}},
-  \code{\link{Lrnr_svm}}, \code{\link{Lrnr_tsDyn}},
-  \code{\link{Lrnr_xgboost}}, \code{\link{Pipeline}},
-  \code{\link{Stack}}, \code{\link{define_h2o_X}},
-  \code{\link{undocumented_learner}}
+Other Learners: 
+\code{\link{Custom_chain}},
+\code{\link{Lrnr_HarmonicReg}},
+\code{\link{Lrnr_arima}},
+\code{\link{Lrnr_bartMachine}},
+\code{\link{Lrnr_base}},
+\code{\link{Lrnr_bilstm}},
+\code{\link{Lrnr_caret}},
+\code{\link{Lrnr_condensier}},
+\code{\link{Lrnr_cv}},
+\code{\link{Lrnr_dbarts}},
+\code{\link{Lrnr_define_interactions}},
+\code{\link{Lrnr_density_discretize}},
+\code{\link{Lrnr_density_hse}},
+\code{\link{Lrnr_density_semiparametric}},
+\code{\link{Lrnr_earth}},
+\code{\link{Lrnr_expSmooth}},
+\code{\link{Lrnr_gam}},
+\code{\link{Lrnr_gbm}},
+\code{\link{Lrnr_glm_fast}},
+\code{\link{Lrnr_glmnet}},
+\code{\link{Lrnr_glm}},
+\code{\link{Lrnr_h2o_grid}},
+\code{\link{Lrnr_hal9001}},
+\code{\link{Lrnr_haldensify}},
+\code{\link{Lrnr_independent_binomial}},
+\code{\link{Lrnr_lstm}},
+\code{\link{Lrnr_mean}},
+\code{\link{Lrnr_multivariate}},
+\code{\link{Lrnr_nnls}},
+\code{\link{Lrnr_optim}},
+\code{\link{Lrnr_pca}},
+\code{\link{Lrnr_pkg_SuperLearner}},
+\code{\link{Lrnr_polspline}},
+\code{\link{Lrnr_pooled_hazards}},
+\code{\link{Lrnr_randomForest}},
+\code{\link{Lrnr_ranger}},
+\code{\link{Lrnr_revere_task}},
+\code{\link{Lrnr_rfcde}},
+\code{\link{Lrnr_rpart}},
+\code{\link{Lrnr_rugarch}},
+\code{\link{Lrnr_screener_corP}},
+\code{\link{Lrnr_screener_corRank}},
+\code{\link{Lrnr_screener_randomForest}},
+\code{\link{Lrnr_sl}},
+\code{\link{Lrnr_solnp_density}},
+\code{\link{Lrnr_solnp}},
+\code{\link{Lrnr_stratified}},
+\code{\link{Lrnr_subset_covariates}},
+\code{\link{Lrnr_svm}},
+\code{\link{Lrnr_tsDyn}},
+\code{\link{Lrnr_xgboost}},
+\code{\link{Pipeline}},
+\code{\link{Stack}},
+\code{\link{define_h2o_X}()},
+\code{\link{undocumented_learner}}
 }
 \concept{Learners}
 \keyword{data}

@@ -2,13 +2,13 @@
 % Please edit documentation in R/utils.R
 \name{args_to_list}
 \alias{args_to_list}
-\title{Get all args of parent call (both specified and defaults) as list}
+\title{Get all arguments of parent call (both specified and defaults) as list}
 \usage{
 args_to_list()
 }
 \value{
-a list of all for the parent function call
+A \code{list} of all arguments for the parent function call.
 }
 \description{
-Get all args of parent call (both specified and defaults) as list
+Get all arguments of parent call (both specified and defaults) as list
 }

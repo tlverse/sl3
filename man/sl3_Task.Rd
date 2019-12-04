@@ -7,8 +7,6 @@
 \title{Define a Machine Learning Task}
 \format{\code{\link{R6Class}} object.}
 \usage{
-sl3_Task
-
 make_sl3_Task(...)
 }
 \arguments{

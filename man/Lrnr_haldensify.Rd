@@ -5,9 +5,6 @@
 \alias{Lrnr_haldensify}
 \title{Conditional Density Estimation with the Highly Adaptive LASSO}
 \format{\code{\link{R6Class}} object.}
-\usage{
-Lrnr_haldensify
-}
 \value{
 Learner object with methods for training and prediction. See
 \code{\link{Lrnr_base}} for documentation on learners.
@@ -18,21 +15,21 @@ Conditional Density Estimation with the Highly Adaptive LASSO
 \section{Parameters}{
 
 \describe{
-\item{\code{grid_type = "grid_type"}}{A \code{character} indicating the
-strategy to be used in creating bins along the observed support of the
-outcome variable. For bins of equal range, use "equal_range", consulting
-the documentation of \code{ggplot2::cut_interval} for more information. To
-ensure each bins has the same number of points, use "equal_mass" and
-consult the documentation of \code{ggplot2::cut_number} for details.
+\item{\code{grid_type = c("equal_range", "equal_mass")}}{\code{character}
+indicating the strategy to be used in creating bins along the observed
+support of the outcome variable. For bins of equal range, use
+"equal_range" (based on \code{\link[ggplot2]{cut_interval}}). To ensure
+each bin has the same number of observations, use "equal_mass" (based on
+\code{\link[ggplot2]{cut_number}}).
 }
-\item{\code{n_bins = "n_bins"}}{ Only used if \code{type} is set to
+\item{\code{n_bins = c(5, 10)}}{Only used if \code{type} is set to
 \code{"equal_range"} or \code{"equal_mass"}. This \code{numeric} value
 indicates the number of bins that the support of the outcome variable is
 to be divided into.
 }
-\item{\code{lambda_seq = "lambda_seq"}}{ A \code{numeric} sequence of
-values of the lambda tuning parameter of the Lasso L1 regression, to be
-passed to \code{glmnet::glmnet} through a call to \code{hal9001::fit_hal}.
+\item{\code{lambda_seq = exp(seq(-1, -13, length = 1000L))}}{\code{numeric}
+sequence of values of the regulariztion parameter of the Lasso regression,
+to be passed to to \code{\link[hal9001]{fit_hal}}.
 }
 \item{\code{...}}{ Other parameters passed directly to
 \code{\link[haldensify]{haldensify}}. See its documentation for details.
@@ -41,42 +38,62 @@ passed to \code{glmnet::glmnet} through a call to \code{hal9001::fit_hal}.
 }
 
 \seealso{
-Other Learners: \code{\link{Custom_chain}},
-  \code{\link{Lrnr_HarmonicReg}}, \code{\link{Lrnr_arima}},
-  \code{\link{Lrnr_bartMachine}}, \code{\link{Lrnr_base}},
-  \code{\link{Lrnr_bilstm}}, \code{\link{Lrnr_caret}},
-  \code{\link{Lrnr_condensier}}, \code{\link{Lrnr_cv}},
-  \code{\link{Lrnr_dbarts}},
-  \code{\link{Lrnr_define_interactions}},
-  \code{\link{Lrnr_density_discretize}},
-  \code{\link{Lrnr_density_hse}},
-  \code{\link{Lrnr_density_semiparametric}},
-  \code{\link{Lrnr_earth}}, \code{\link{Lrnr_expSmooth}},
-  \code{\link{Lrnr_gam}}, \code{\link{Lrnr_gbm}},
-  \code{\link{Lrnr_glm_fast}}, \code{\link{Lrnr_glmnet}},
-  \code{\link{Lrnr_glm}}, \code{\link{Lrnr_grf}},
-  \code{\link{Lrnr_h2o_grid}}, \code{\link{Lrnr_hal9001}},
-  \code{\link{Lrnr_independent_binomial}},
-  \code{\link{Lrnr_lstm}}, \code{\link{Lrnr_mean}},
-  \code{\link{Lrnr_multivariate}}, \code{\link{Lrnr_nnls}},
-  \code{\link{Lrnr_optim}}, \code{\link{Lrnr_pca}},
-  \code{\link{Lrnr_pkg_SuperLearner}},
-  \code{\link{Lrnr_polspline}},
-  \code{\link{Lrnr_pooled_hazards}},
-  \code{\link{Lrnr_randomForest}},
-  \code{\link{Lrnr_ranger}},
-  \code{\link{Lrnr_revere_task}}, \code{\link{Lrnr_rfcde}},
-  \code{\link{Lrnr_rpart}}, \code{\link{Lrnr_rugarch}},
-  \code{\link{Lrnr_screener_corP}},
-  \code{\link{Lrnr_screener_corRank}},
-  \code{\link{Lrnr_screener_randomForest}},
-  \code{\link{Lrnr_sl}}, \code{\link{Lrnr_solnp_density}},
-  \code{\link{Lrnr_solnp}}, \code{\link{Lrnr_stratified}},
-  \code{\link{Lrnr_subset_covariates}},
-  \code{\link{Lrnr_svm}}, \code{\link{Lrnr_tsDyn}},
-  \code{\link{Lrnr_xgboost}}, \code{\link{Pipeline}},
-  \code{\link{Stack}}, \code{\link{define_h2o_X}},
-  \code{\link{undocumented_learner}}
+Other Learners: 
+\code{\link{Custom_chain}},
+\code{\link{Lrnr_HarmonicReg}},
+\code{\link{Lrnr_arima}},
+\code{\link{Lrnr_bartMachine}},
+\code{\link{Lrnr_base}},
+\code{\link{Lrnr_bilstm}},
+\code{\link{Lrnr_caret}},
+\code{\link{Lrnr_condensier}},
+\code{\link{Lrnr_cv}},
+\code{\link{Lrnr_dbarts}},
+\code{\link{Lrnr_define_interactions}},
+\code{\link{Lrnr_density_discretize}},
+\code{\link{Lrnr_density_hse}},
+\code{\link{Lrnr_density_semiparametric}},
+\code{\link{Lrnr_earth}},
+\code{\link{Lrnr_expSmooth}},
+\code{\link{Lrnr_gam}},
+\code{\link{Lrnr_gbm}},
+\code{\link{Lrnr_glm_fast}},
+\code{\link{Lrnr_glmnet}},
+\code{\link{Lrnr_glm}},
+\code{\link{Lrnr_grf}},
+\code{\link{Lrnr_h2o_grid}},
+\code{\link{Lrnr_hal9001}},
+\code{\link{Lrnr_independent_binomial}},
+\code{\link{Lrnr_lstm}},
+\code{\link{Lrnr_mean}},
+\code{\link{Lrnr_multivariate}},
+\code{\link{Lrnr_nnls}},
+\code{\link{Lrnr_optim}},
+\code{\link{Lrnr_pca}},
+\code{\link{Lrnr_pkg_SuperLearner}},
+\code{\link{Lrnr_polspline}},
+\code{\link{Lrnr_pooled_hazards}},
+\code{\link{Lrnr_randomForest}},
+\code{\link{Lrnr_ranger}},
+\code{\link{Lrnr_revere_task}},
+\code{\link{Lrnr_rfcde}},
+\code{\link{Lrnr_rpart}},
+\code{\link{Lrnr_rugarch}},
+\code{\link{Lrnr_screener_corP}},
+\code{\link{Lrnr_screener_corRank}},
+\code{\link{Lrnr_screener_randomForest}},
+\code{\link{Lrnr_sl}},
+\code{\link{Lrnr_solnp_density}},
+\code{\link{Lrnr_solnp}},
+\code{\link{Lrnr_stratified}},
+\code{\link{Lrnr_subset_covariates}},
+\code{\link{Lrnr_svm}},
+\code{\link{Lrnr_tsDyn}},
+\code{\link{Lrnr_xgboost}},
+\code{\link{Pipeline}},
+\code{\link{Stack}},
+\code{\link{define_h2o_X}()},
+\code{\link{undocumented_learner}}
 }
 \concept{Learners}
 \keyword{data}

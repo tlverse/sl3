@@ -184,6 +184,8 @@ prior to submitting a pull request.
 
 -----
 
+## Citation
+
 After using the `sl3` R package, please cite the following:
 
 ``` 
