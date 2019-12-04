@@ -79,7 +79,7 @@ Past stable releases may be located via the
 installed by including the appropriate major version tag. For example,
 
 ```{r gh-version-installation, eval = FALSE}
-remotes::install_github("tlverse/sl3@v1.3.0")
+remotes::install_github("tlverse/sl3@v1.3.5")
 ```
 
 To contribute, check out the `devel` branch and consider submitting a pull

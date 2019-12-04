@@ -76,7 +76,7 @@ may be installed by including the appropriate major version tag. For
 example,
 
 ``` r
-remotes::install_github("tlverse/sl3@v1.3.0")
+remotes::install_github("tlverse/sl3@v1.3.5")
 ```
 
 To contribute, check out the `devel` branch and consider submitting a
@@ -100,46 +100,17 @@ best way to understand this is to see the `sl3` package in action:
 
 ``` r
 set.seed(49753)
-suppressMessages(library(data.table))
-library(dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:data.table':
-#> 
-#>     between, first, last
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
+library(tidyverse)
+library(data.table)
 library(SuperLearner)
-#> Loading required package: nnls
-#> Super Learner
-#> Version: 2.0-25
-#> Package created on 2019-08-05
 library(origami)
-#> origami: Generalized Cross-Validation Framework
-#> Version: 1.0.2
 library(sl3)
 
 # load example data set
 data(cpp)
 cpp <- cpp %>%
   dplyr::filter(!is.na(haz)) %>%
-  mutate_all(funs(replace(., is.na(.), 0)))
-#> Warning: funs() is soft deprecated as of dplyr 0.8.0
-#> Please use a list of either functions or lambdas: 
-#> 
-#>   # Simple named list: 
-#>   list(mean = mean, median = median)
-#> 
-#>   # Auto named with `tibble::lst()`: 
-#>   tibble::lst(mean, median)
-#> 
-#>   # Using lambdas
-#>   list(~ mean(., trim = .2), ~ median(., na.rm = TRUE))
-#> This warning is displayed once per session.
+  mutate_all(~ replace(., is.na(.), 0))
 
 # use covariates of intest and the outcome to build a task object
 covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",

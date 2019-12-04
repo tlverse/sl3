@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sl3</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.6</span>
       </span>
     </div>
 
@@ -90,7 +90,7 @@
       <h1>Defining New <code>sl3</code> Learners</h1>
                         <h4 class="author">Jeremy Coyle, Nima Hejazi, Ivana Malenica, Oleg Sofrygin</h4>
             
-            <h4 class="date">2019-12-02</h4>
+            <h4 class="date">2019-12-04</h4>
       
       
       <div class="hidden name"><code>custom_lrnrs.Rmd</code></div>
@@ -150,81 +150,82 @@
 <a class="sourceLine" id="cb3-34" data-line-number="34">##'   }</a>
 <a class="sourceLine" id="cb3-35" data-line-number="35">##'   }</a>
 <a class="sourceLine" id="cb3-36" data-line-number="36">##' }</a>
-<a class="sourceLine" id="cb3-37" data-line-number="37">Lrnr_template &lt;-<span class="st"> </span><span class="kw">R6Class</span>(<span class="dt">classname =</span> <span class="st">"Lrnr_template"</span>, <span class="dt">inherit =</span> Lrnr_base,</a>
-<a class="sourceLine" id="cb3-38" data-line-number="38">                         <span class="dt">portable =</span> <span class="ot">TRUE</span>, <span class="dt">class =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb3-39" data-line-number="39"><span class="co"># Above, you should change Lrnr_template (in both the object name and the classname argument)</span></a>
-<a class="sourceLine" id="cb3-40" data-line-number="40"><span class="co"># to a name that indicates what your learner does</span></a>
-<a class="sourceLine" id="cb3-41" data-line-number="41">  <span class="dt">public =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(</a>
-<a class="sourceLine" id="cb3-42" data-line-number="42">    <span class="co"># you can define default parameter values here</span></a>
-<a class="sourceLine" id="cb3-43" data-line-number="43">    <span class="co"># if possible, your learner should define defaults for all required parameters</span></a>
-<a class="sourceLine" id="cb3-44" data-line-number="44">    <span class="dt">initialize =</span> <span class="cf">function</span>(<span class="dt">param_1=</span><span class="st">"default_1"</span>, <span class="dt">param_2=</span><span class="st">"default_2"</span>, ...) {</a>
-<a class="sourceLine" id="cb3-45" data-line-number="45">      <span class="co"># this captures all parameters to initialize and saves them as self$params</span></a>
-<a class="sourceLine" id="cb3-46" data-line-number="46">      params &lt;-<span class="st"> </span><span class="kw"><a href="../reference/args_to_list.html">args_to_list</a></span>()</a>
-<a class="sourceLine" id="cb3-47" data-line-number="47">      super<span class="op">$</span><span class="kw">initialize</span>(<span class="dt">params =</span> params, ...)</a>
-<a class="sourceLine" id="cb3-48" data-line-number="48">    },</a>
-<a class="sourceLine" id="cb3-49" data-line-number="49"></a>
-<a class="sourceLine" id="cb3-50" data-line-number="50">    <span class="co"># you can define public functions that allow your learner to do special things here</span></a>
-<a class="sourceLine" id="cb3-51" data-line-number="51">    <span class="co"># for instance glm learner might return prediction standard errors</span></a>
-<a class="sourceLine" id="cb3-52" data-line-number="52">    <span class="dt">special_function =</span> <span class="cf">function</span>(arg_<span class="dv">1</span>) {</a>
-<a class="sourceLine" id="cb3-53" data-line-number="53">    }</a>
-<a class="sourceLine" id="cb3-54" data-line-number="54">  ),</a>
-<a class="sourceLine" id="cb3-55" data-line-number="55">  <span class="dt">private =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(</a>
-<a class="sourceLine" id="cb3-56" data-line-number="56">    <span class="co"># list properties your learner supports here. </span></a>
-<a class="sourceLine" id="cb3-57" data-line-number="57">    <span class="co"># Use sl3_list_properties() for a list of options</span></a>
-<a class="sourceLine" id="cb3-58" data-line-number="58">    <span class="dt">.properties =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">""</span>),</a>
-<a class="sourceLine" id="cb3-59" data-line-number="59"></a>
-<a class="sourceLine" id="cb3-60" data-line-number="60">    <span class="co"># list any packages required for your learner here.</span></a>
-<a class="sourceLine" id="cb3-61" data-line-number="61">    <span class="dt">.required_packages =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"my_package"</span>),</a>
-<a class="sourceLine" id="cb3-62" data-line-number="62"></a>
-<a class="sourceLine" id="cb3-63" data-line-number="63">    <span class="co"># .train takes task data and returns a fit object that can be used to generate predictions</span></a>
-<a class="sourceLine" id="cb3-64" data-line-number="64">    <span class="dt">.train =</span> <span class="cf">function</span>(task) {</a>
-<a class="sourceLine" id="cb3-65" data-line-number="65">      <span class="co"># generate an argument list from the parameters that were</span></a>
-<a class="sourceLine" id="cb3-66" data-line-number="66">      <span class="co"># captured when your learner was initialized.</span></a>
-<a class="sourceLine" id="cb3-67" data-line-number="67">      <span class="co"># this allows users to pass arguments directly to your ml function</span></a>
-<a class="sourceLine" id="cb3-68" data-line-number="68">      args &lt;-<span class="st"> </span>self<span class="op">$</span>params</a>
-<a class="sourceLine" id="cb3-69" data-line-number="69"></a>
-<a class="sourceLine" id="cb3-70" data-line-number="70">      <span class="co"># get outcome variable type</span></a>
-<a class="sourceLine" id="cb3-71" data-line-number="71">      <span class="co"># preferring learner$params$outcome_type first, then task$outcome_type</span></a>
-<a class="sourceLine" id="cb3-72" data-line-number="72">      outcome_type &lt;-<span class="st"> </span>self<span class="op">$</span><span class="kw">get_outcome_type</span>(task)</a>
-<a class="sourceLine" id="cb3-73" data-line-number="73">      <span class="co"># should pass something on to your learner indicating outcome_type</span></a>
-<a class="sourceLine" id="cb3-74" data-line-number="74">      <span class="co"># e.g. family or objective</span></a>
-<a class="sourceLine" id="cb3-75" data-line-number="75"></a>
-<a class="sourceLine" id="cb3-76" data-line-number="76">      <span class="co"># add task data to the argument list</span></a>
-<a class="sourceLine" id="cb3-77" data-line-number="77">      <span class="co"># what these arguments are called depends on the learner you are wrapping</span></a>
-<a class="sourceLine" id="cb3-78" data-line-number="78">      args<span class="op">$</span>x &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span>(task<span class="op">$</span>X_intercept)</a>
-<a class="sourceLine" id="cb3-79" data-line-number="79">      args<span class="op">$</span>y &lt;-<span class="st"> </span>outcome_type<span class="op">$</span><span class="kw"><a href="https://rdrr.io/r/base/format.html">format</a></span>(task<span class="op">$</span>Y)</a>
-<a class="sourceLine" id="cb3-80" data-line-number="80"></a>
-<a class="sourceLine" id="cb3-81" data-line-number="81">      <span class="co"># only add arguments on weights and offset </span></a>
-<a class="sourceLine" id="cb3-82" data-line-number="82">      <span class="co"># if those were specified when the task was generated</span></a>
-<a class="sourceLine" id="cb3-83" data-line-number="83">      <span class="cf">if</span>(task<span class="op">$</span><span class="kw">has_node</span>(<span class="st">"weights"</span>)){</a>
-<a class="sourceLine" id="cb3-84" data-line-number="84">        args<span class="op">$</span>weights &lt;-<span class="st"> </span>task<span class="op">$</span>weights</a>
-<a class="sourceLine" id="cb3-85" data-line-number="85">      }</a>
-<a class="sourceLine" id="cb3-86" data-line-number="86"></a>
-<a class="sourceLine" id="cb3-87" data-line-number="87">      <span class="cf">if</span>(task<span class="op">$</span><span class="kw">has_node</span>(<span class="st">"offset"</span>)){</a>
-<a class="sourceLine" id="cb3-88" data-line-number="88">        args<span class="op">$</span>offset &lt;-<span class="st"> </span>task<span class="op">$</span>offset</a>
-<a class="sourceLine" id="cb3-89" data-line-number="89">      }</a>
-<a class="sourceLine" id="cb3-90" data-line-number="90"></a>
-<a class="sourceLine" id="cb3-91" data-line-number="91">      <span class="co"># call a function that fits your algorithm</span></a>
-<a class="sourceLine" id="cb3-92" data-line-number="92">      <span class="co"># with the argument list you constructed</span></a>
-<a class="sourceLine" id="cb3-93" data-line-number="93">      fit_object &lt;-<span class="st"> </span><span class="kw"><a href="../reference/call_with_args.html">call_with_args</a></span>(my_ml_fun, args)</a>
-<a class="sourceLine" id="cb3-94" data-line-number="94"></a>
-<a class="sourceLine" id="cb3-95" data-line-number="95">      <span class="co"># return the fit object, which will be stored</span></a>
-<a class="sourceLine" id="cb3-96" data-line-number="96">      <span class="co"># in a learner object and returned from the call</span></a>
-<a class="sourceLine" id="cb3-97" data-line-number="97">      <span class="co"># to learner$predict</span></a>
-<a class="sourceLine" id="cb3-98" data-line-number="98">      <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(fit_object)</a>
-<a class="sourceLine" id="cb3-99" data-line-number="99">    },</a>
-<a class="sourceLine" id="cb3-100" data-line-number="100"></a>
-<a class="sourceLine" id="cb3-101" data-line-number="101">    <span class="co"># .predict takes a task and returns predictions from that task</span></a>
-<a class="sourceLine" id="cb3-102" data-line-number="102">    <span class="dt">.predict =</span> <span class="cf">function</span>(<span class="dt">task =</span> <span class="ot">NULL</span>) {</a>
-<a class="sourceLine" id="cb3-103" data-line-number="103">      self<span class="op">$</span>training_task</a>
-<a class="sourceLine" id="cb3-104" data-line-number="104">      self<span class="op">$</span>training_outcome_type</a>
-<a class="sourceLine" id="cb3-105" data-line-number="105">      self<span class="op">$</span>fit_object</a>
-<a class="sourceLine" id="cb3-106" data-line-number="106"></a>
-<a class="sourceLine" id="cb3-107" data-line-number="107">      predictions &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>(self<span class="op">$</span>fit_object, task<span class="op">$</span>X)</a>
-<a class="sourceLine" id="cb3-108" data-line-number="108">      <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(predictions)</a>
-<a class="sourceLine" id="cb3-109" data-line-number="109">    }</a>
-<a class="sourceLine" id="cb3-110" data-line-number="110">  )</a>
-<a class="sourceLine" id="cb3-111" data-line-number="111">)</a></code></pre></div>
+<a class="sourceLine" id="cb3-37" data-line-number="37">Lrnr_template &lt;-<span class="st"> </span><span class="kw">R6Class</span>(</a>
+<a class="sourceLine" id="cb3-38" data-line-number="38">  <span class="dt">classname =</span> <span class="st">"Lrnr_template"</span>, <span class="dt">inherit =</span> Lrnr_base,</a>
+<a class="sourceLine" id="cb3-39" data-line-number="39">  <span class="dt">portable =</span> <span class="ot">TRUE</span>, <span class="dt">class =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb3-40" data-line-number="40">  <span class="co"># Above, you should change Lrnr_template (in both the object name and the classname argument)</span></a>
+<a class="sourceLine" id="cb3-41" data-line-number="41">  <span class="co"># to a name that indicates what your learner does</span></a>
+<a class="sourceLine" id="cb3-42" data-line-number="42">  <span class="dt">public =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(</a>
+<a class="sourceLine" id="cb3-43" data-line-number="43">    <span class="co"># you can define default parameter values here</span></a>
+<a class="sourceLine" id="cb3-44" data-line-number="44">    <span class="co"># if possible, your learner should define defaults for all required parameters</span></a>
+<a class="sourceLine" id="cb3-45" data-line-number="45">    <span class="dt">initialize =</span> <span class="cf">function</span>(<span class="dt">param_1 =</span> <span class="st">"default_1"</span>, <span class="dt">param_2 =</span> <span class="st">"default_2"</span>, ...) {</a>
+<a class="sourceLine" id="cb3-46" data-line-number="46">      <span class="co"># this captures all parameters to initialize and saves them as self$params</span></a>
+<a class="sourceLine" id="cb3-47" data-line-number="47">      params &lt;-<span class="st"> </span><span class="kw"><a href="../reference/args_to_list.html">args_to_list</a></span>()</a>
+<a class="sourceLine" id="cb3-48" data-line-number="48">      super<span class="op">$</span><span class="kw">initialize</span>(<span class="dt">params =</span> params, ...)</a>
+<a class="sourceLine" id="cb3-49" data-line-number="49">    },</a>
+<a class="sourceLine" id="cb3-50" data-line-number="50"></a>
+<a class="sourceLine" id="cb3-51" data-line-number="51">    <span class="co"># you can define public functions that allow your learner to do special things here</span></a>
+<a class="sourceLine" id="cb3-52" data-line-number="52">    <span class="co"># for instance glm learner might return prediction standard errors</span></a>
+<a class="sourceLine" id="cb3-53" data-line-number="53">    <span class="dt">special_function =</span> <span class="cf">function</span>(arg_<span class="dv">1</span>) {</a>
+<a class="sourceLine" id="cb3-54" data-line-number="54">    }</a>
+<a class="sourceLine" id="cb3-55" data-line-number="55">  ),</a>
+<a class="sourceLine" id="cb3-56" data-line-number="56">  <span class="dt">private =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(</a>
+<a class="sourceLine" id="cb3-57" data-line-number="57">    <span class="co"># list properties your learner supports here.</span></a>
+<a class="sourceLine" id="cb3-58" data-line-number="58">    <span class="co"># Use sl3_list_properties() for a list of options</span></a>
+<a class="sourceLine" id="cb3-59" data-line-number="59">    <span class="dt">.properties =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">""</span>),</a>
+<a class="sourceLine" id="cb3-60" data-line-number="60"></a>
+<a class="sourceLine" id="cb3-61" data-line-number="61">    <span class="co"># list any packages required for your learner here.</span></a>
+<a class="sourceLine" id="cb3-62" data-line-number="62">    <span class="dt">.required_packages =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"my_package"</span>),</a>
+<a class="sourceLine" id="cb3-63" data-line-number="63"></a>
+<a class="sourceLine" id="cb3-64" data-line-number="64">    <span class="co"># .train takes task data and returns a fit object that can be used to generate predictions</span></a>
+<a class="sourceLine" id="cb3-65" data-line-number="65">    <span class="dt">.train =</span> <span class="cf">function</span>(task) {</a>
+<a class="sourceLine" id="cb3-66" data-line-number="66">      <span class="co"># generate an argument list from the parameters that were</span></a>
+<a class="sourceLine" id="cb3-67" data-line-number="67">      <span class="co"># captured when your learner was initialized.</span></a>
+<a class="sourceLine" id="cb3-68" data-line-number="68">      <span class="co"># this allows users to pass arguments directly to your ml function</span></a>
+<a class="sourceLine" id="cb3-69" data-line-number="69">      args &lt;-<span class="st"> </span>self<span class="op">$</span>params</a>
+<a class="sourceLine" id="cb3-70" data-line-number="70"></a>
+<a class="sourceLine" id="cb3-71" data-line-number="71">      <span class="co"># get outcome variable type</span></a>
+<a class="sourceLine" id="cb3-72" data-line-number="72">      <span class="co"># preferring learner$params$outcome_type first, then task$outcome_type</span></a>
+<a class="sourceLine" id="cb3-73" data-line-number="73">      outcome_type &lt;-<span class="st"> </span>self<span class="op">$</span><span class="kw">get_outcome_type</span>(task)</a>
+<a class="sourceLine" id="cb3-74" data-line-number="74">      <span class="co"># should pass something on to your learner indicating outcome_type</span></a>
+<a class="sourceLine" id="cb3-75" data-line-number="75">      <span class="co"># e.g. family or objective</span></a>
+<a class="sourceLine" id="cb3-76" data-line-number="76"></a>
+<a class="sourceLine" id="cb3-77" data-line-number="77">      <span class="co"># add task data to the argument list</span></a>
+<a class="sourceLine" id="cb3-78" data-line-number="78">      <span class="co"># what these arguments are called depends on the learner you are wrapping</span></a>
+<a class="sourceLine" id="cb3-79" data-line-number="79">      args<span class="op">$</span>x &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span>(task<span class="op">$</span>X_intercept)</a>
+<a class="sourceLine" id="cb3-80" data-line-number="80">      args<span class="op">$</span>y &lt;-<span class="st"> </span>outcome_type<span class="op">$</span><span class="kw"><a href="https://rdrr.io/r/base/format.html">format</a></span>(task<span class="op">$</span>Y)</a>
+<a class="sourceLine" id="cb3-81" data-line-number="81"></a>
+<a class="sourceLine" id="cb3-82" data-line-number="82">      <span class="co"># only add arguments on weights and offset</span></a>
+<a class="sourceLine" id="cb3-83" data-line-number="83">      <span class="co"># if those were specified when the task was generated</span></a>
+<a class="sourceLine" id="cb3-84" data-line-number="84">      <span class="cf">if</span> (task<span class="op">$</span><span class="kw">has_node</span>(<span class="st">"weights"</span>)) {</a>
+<a class="sourceLine" id="cb3-85" data-line-number="85">        args<span class="op">$</span>weights &lt;-<span class="st"> </span>task<span class="op">$</span>weights</a>
+<a class="sourceLine" id="cb3-86" data-line-number="86">      }</a>
+<a class="sourceLine" id="cb3-87" data-line-number="87"></a>
+<a class="sourceLine" id="cb3-88" data-line-number="88">      <span class="cf">if</span> (task<span class="op">$</span><span class="kw">has_node</span>(<span class="st">"offset"</span>)) {</a>
+<a class="sourceLine" id="cb3-89" data-line-number="89">        args<span class="op">$</span>offset &lt;-<span class="st"> </span>task<span class="op">$</span>offset</a>
+<a class="sourceLine" id="cb3-90" data-line-number="90">      }</a>
+<a class="sourceLine" id="cb3-91" data-line-number="91"></a>
+<a class="sourceLine" id="cb3-92" data-line-number="92">      <span class="co"># call a function that fits your algorithm</span></a>
+<a class="sourceLine" id="cb3-93" data-line-number="93">      <span class="co"># with the argument list you constructed</span></a>
+<a class="sourceLine" id="cb3-94" data-line-number="94">      fit_object &lt;-<span class="st"> </span><span class="kw"><a href="../reference/call_with_args.html">call_with_args</a></span>(my_ml_fun, args)</a>
+<a class="sourceLine" id="cb3-95" data-line-number="95"></a>
+<a class="sourceLine" id="cb3-96" data-line-number="96">      <span class="co"># return the fit object, which will be stored</span></a>
+<a class="sourceLine" id="cb3-97" data-line-number="97">      <span class="co"># in a learner object and returned from the call</span></a>
+<a class="sourceLine" id="cb3-98" data-line-number="98">      <span class="co"># to learner$predict</span></a>
+<a class="sourceLine" id="cb3-99" data-line-number="99">      <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(fit_object)</a>
+<a class="sourceLine" id="cb3-100" data-line-number="100">    },</a>
+<a class="sourceLine" id="cb3-101" data-line-number="101"></a>
+<a class="sourceLine" id="cb3-102" data-line-number="102">    <span class="co"># .predict takes a task and returns predictions from that task</span></a>
+<a class="sourceLine" id="cb3-103" data-line-number="103">    <span class="dt">.predict =</span> <span class="cf">function</span>(<span class="dt">task =</span> <span class="ot">NULL</span>) {</a>
+<a class="sourceLine" id="cb3-104" data-line-number="104">      self<span class="op">$</span>training_task</a>
+<a class="sourceLine" id="cb3-105" data-line-number="105">      self<span class="op">$</span>training_outcome_type</a>
+<a class="sourceLine" id="cb3-106" data-line-number="106">      self<span class="op">$</span>fit_object</a>
+<a class="sourceLine" id="cb3-107" data-line-number="107"></a>
+<a class="sourceLine" id="cb3-108" data-line-number="108">      predictions &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>(self<span class="op">$</span>fit_object, task<span class="op">$</span>X)</a>
+<a class="sourceLine" id="cb3-109" data-line-number="109">      <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(predictions)</a>
+<a class="sourceLine" id="cb3-110" data-line-number="110">    }</a>
+<a class="sourceLine" id="cb3-111" data-line-number="111">  )</a>
+<a class="sourceLine" id="cb3-112" data-line-number="112">)</a></code></pre></div>
 <p>The template has comments indicating where details specific to the learner you’re trying to implement should be filled in. In the next section, we will discuss those details further.</p>
 </div>
 <div id="defining-your-learner" class="section level2">
