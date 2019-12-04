@@ -162,6 +162,10 @@ Lrnr_base <- R6Class(
       delayed_preds <- delayed_learner_fit_predict(self, task)
       return(delayed_preds$compute(job_type = sl3_delayed_job_type()))
     },
+    
+    sample = function(task, n_samples = 30) {
+      return(private$.sample(task, n_samples))
+    }
 
     chain = function(task = NULL) {
       delayed_chained <- delayed_learner_fit_chain(self, task)
@@ -276,6 +280,10 @@ Lrnr_base <- R6Class(
     .predict = function(task) {
       predictions <- predict(private$.fit_object, newdata = task$X)
       return(predictions)
+    },
+    
+    .sample = function(task) {
+      stop("This learner does not have a sampling method.")
     },
 
     .chain = function(task) {

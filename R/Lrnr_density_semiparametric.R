@@ -43,7 +43,7 @@ Lrnr_density_semiparametric <- R6Class(
   ),
 
   private = list(
-    .properties = c("density"),
+    .properties = c("density", "sampling"),
 
     .train = function(task) {
       mean_learner <- self$params$mean_learner
@@ -109,6 +109,31 @@ Lrnr_density_semiparametric <- R6Class(
 
       # dens_preds[is.na(dens_preds)] <- 0
       return(dens_preds)
+    },
+    
+    .sample = function(task, n_samples, fold = "full") {
+      # method: inverse cdf
+      # style: parallel
+      # TODO: fold
+      mean_fit <- self$fit_object$mean_fit
+      var_fit <- self$fit_object$var_fit
+      dens_fit <- self$fit_object$dens_fit
+      
+      mean_preds <- mean_fit$predict(task)
+      if (!is.null(var_fit)) {
+        var_preds <- var_fit$predict(task)
+        
+        var_preds[var_preds < 0 ] <- self$fit_object$min_obs_error
+        sd_preds <- sqrt(var_preds)
+      } else {
+        sd_preds <- rep(1, task$nrow)
+      }
+      
+      samples <- inverse_sample(n_samples, dens_fit)
+      obs_samples <- sapply(1:task$nrow, 
+                            function(i) (samples + mean_preds[i])/sd_preds[i])
+      
+      return(obs_samples)
     }
   )
 )
