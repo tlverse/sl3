@@ -16,3 +16,4 @@ the size of \code{obj} in bytes
 Attempts to get a better estimate of object size than that returned by
 \code{\link{object.size}}
 }
+\keyword{internal}

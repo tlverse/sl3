@@ -79,7 +79,7 @@ Past stable releases may be located via the
 installed by including the appropriate major version tag. For example,
 
 ```{r gh-version-installation, eval = FALSE}
-remotes::install_github("tlverse/sl3@v1.3.0")
+remotes::install_github("tlverse/sl3@v1.3.5")
 ```
 
 To contribute, check out the `devel` branch and consider submitting a pull
@@ -101,10 +101,10 @@ combining both types of algorithms into a stacked regression model, and
 cross-validating this whole process essentially trivial. The best way to
 understand this is to see the `sl3` package in action:
 
-```{r sl3-simple-example}
+```{r sl3-simple-example, message=FALSE, warning=FALSE}
 set.seed(49753)
-suppressMessages(library(data.table))
-library(dplyr)
+library(tidyverse)
+library(data.table)
 library(SuperLearner)
 library(origami)
 library(sl3)
@@ -113,7 +113,7 @@ library(sl3)
 data(cpp)
 cpp <- cpp %>%
   dplyr::filter(!is.na(haz)) %>%
-  mutate_all(funs(replace(., is.na(.), 0)))
+  mutate_all(~ replace(., is.na(.), 0))
 
 # use covariates of intest and the outcome to build a task object
 covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
@@ -143,6 +143,8 @@ guidelines](https://github.com/tlverse/sl3/blob/master/CONTRIBUTING.md) prior to
 submitting a pull request.
 
 ---
+
+## Citation
 
 After using the `sl3` R package, please cite the following:
 

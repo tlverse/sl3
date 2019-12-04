@@ -1,6 +1,6 @@
 Package: sl3
 Title: Pipelines for Machine Learning and Super Learning
-Version: 1.3.5
+Version: 1.3.6
 Authors@R: c(
     person("Jeremy", "Coyle", email = "jeremyrcoyle@gmail.com",
            role = c("aut", "cre", "cph"),
@@ -103,5 +103,5 @@ LazyLoad: yes
 VignetteBuilder:
     knitr,
     R.rsp
-RoxygenNote: 7.0.1
+RoxygenNote: 7.0.2
 Roxygen: list(markdown = TRUE, r6 = FALSE)

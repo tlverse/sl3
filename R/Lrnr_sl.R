@@ -213,7 +213,16 @@ drop_offsets_chain <- function(learner, task) {
   predictions <- learner$predict(task)
   predictions <- as.data.table(predictions)
   # Add predictions as new columns
-  new_col_names <- task$add_columns(predictions, learner$fit_uuid)
+  if (nrow(task$data) != nrow(predictions)) {
+    # Gather validation indexes:
+    val_index <- unlist(lapply(task$folds, function(fold) {
+      fold$validation_set
+    }))
+    task <- task$subset_task(val_index)
+    new_col_names <- task$add_columns(predictions, learner$fit_uuid)
+  } else {
+    new_col_names <- task$add_columns(predictions, learner$fit_uuid)
+  }
   # new_covariates = union(names(predictions),task$nodes$covariates)
   return(task$next_in_chain(
     covariates = names(predictions),
