@@ -1,12 +1,12 @@
 if (FALSE) {
-    setwd("..")
-    setwd("..")
-    getwd()
-    library("devtools")
-    document()
-    load_all("./")  # load all R files in /R and datasets in /data. Ignores NAMESPACE:
-    setwd("..")
-    install("sl3", build_vignettes = FALSE, dependencies = FALSE)  # INSTALL W/ devtools:
+  setwd("..")
+  setwd("..")
+  getwd()
+  library("devtools")
+  document()
+  load_all("./") # load all R files in /R and datasets in /data. Ignores NAMESPACE:
+  setwd("..")
+  install("sl3", build_vignettes = FALSE, dependencies = FALSE) # INSTALL W/ devtools:
 }
 
 library(sl3)
@@ -28,7 +28,7 @@ covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn"
 cpp[is.na(cpp)] <- 0
 outcome <- "haz"
 
-load_all()  # for debug
+load_all() # for debug
 task <- sl3_Task$new(cpp, covariates = covars, outcome = outcome)
 task$nodes$covariates
 
@@ -58,7 +58,9 @@ ml_fit$predict()
 print(ml_fit)
 
 # convenience learner combining all this
-sl <- Lrnr_sl$new(learners = list(SL.glmnet_learner, glm_learner, screen_and_glm), 
-    metalearner = glm_learner)
+sl <- Lrnr_sl$new(
+  learners = list(SL.glmnet_learner, glm_learner, screen_and_glm),
+  metalearner = glm_learner
+)
 sl_fit <- sl$train(task)
 sl_fit

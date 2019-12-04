@@ -7,6 +7,8 @@
 \title{Define a Machine Learning Task}
 \format{\code{\link{R6Class}} object.}
 \usage{
+sl3_Task
+
 make_sl3_Task(...)
 }
 \arguments{
@@ -80,7 +82,7 @@ This prevents two added columns with the same name overwriting each other, provi
 }
 }
 }
-\item{\code{next_in_chain(covariates=NULL, outcome=NULL, id=NULL, weights=NULL, 
+\item{\code{next_in_chain(covariates=NULL, outcome=NULL, id=NULL, weights=NULL,
                                     offset=NULL, column_names=NULL, new_nodes=NULL, ...)}}{
 Used by learner$chain methods to generate a task with the same underlying data, but redefined nodes.
 Most of the parameter values are passed to the \code{sl3_Task} constructor, documented above.

@@ -9,7 +9,7 @@
 ##'     }
 ##'   }
 ##'   }
-##'   
+##'
 ##' \item{\code{base_train(task, trained_sublearners = NULL)}}{
 ##'   Trains learner to a task. Returns a fit object
 ##'
@@ -20,7 +20,7 @@
 ##'     }
 ##'   }
 ##'   }
-##'   
+##'
 ##' \item{\code{predict(task=NULL)}}{
 ##'   Generates predictions using \code{delayed}. Returns a prediction vector or matrix.
 ##'
@@ -29,7 +29,7 @@
 ##'     }
 ##'   }
 ##'   }
-##'    
+##'
 ##' \item{\code{base_predict(task=NULL)}}{
 ##'   Generates predictions. Returns a prediction vector or matrix.
 ##'
@@ -38,7 +38,7 @@
 ##'     }
 ##'   }
 ##'   }
-##'    
+##'
 ##' \item{\code{chain(task=NULL)}}{
 ##'   Generates a chained task using \code{delayed}
 ##'
@@ -47,7 +47,7 @@
 ##'     }
 ##'   }
 ##'   }
-##'    
+##'
 ##' \item{\code{base_chain(task=NULL)}}{
 ##'   Generates a chained task
 ##'
@@ -56,22 +56,22 @@
 ##'     }
 ##'   }
 ##'   }
-##'}
-##' 
+##' }
+##'
 ##' @section Fields:
 ##' \describe{
 ##'   \item{\code{is_trained}}{\code{TRUE} if this is a learner fit, not an untrained learner}
 ##'   \item{\code{fit_object}}{The internal fit object}
 ##'   \item{\code{name}}{The learner name}
 ##'   \item{\code{learner_uuid}}{A unique identifier of this learner, but common to all fits of this learner}
-##'   \item{\code{fit_uuid}}{A unique identifier of this learner fit. \code{NULL} if this is an untrained learner}   
-##'   \item{\code{params}}{A list of learner parameters, as specified on construction}   
-##'   \item{\code{training_task}}{The task used for training. \code{NULL} if this is an untrained learner}   
-##'   \item{\code{training_outcome_type}}{The outcome_type of the task used for training. \code{NULL} if this is an untrained learner}   
-##'   \item{\code{properties}}{The properties supported by this learner}   
-##'   \item{\code{coefficients}}{Fit coefficients, if this learner has coefficients. \code{NULL} otherwise, or if this is an untrained learner}  
+##'   \item{\code{fit_uuid}}{A unique identifier of this learner fit. \code{NULL} if this is an untrained learner}
+##'   \item{\code{params}}{A list of learner parameters, as specified on construction}
+##'   \item{\code{training_task}}{The task used for training. \code{NULL} if this is an untrained learner}
+##'   \item{\code{training_outcome_type}}{The outcome_type of the task used for training. \code{NULL} if this is an untrained learner}
+##'   \item{\code{properties}}{The properties supported by this learner}
+##'   \item{\code{coefficients}}{Fit coefficients, if this learner has coefficients. \code{NULL} otherwise, or if this is an untrained learner}
 ##' }
-##' 
+##'
 ##' @section Internal Methods:
 ##'
 ##' These methods are primiarily for internal use only. They're not recommended for public consumption.
@@ -85,7 +85,7 @@
 ##'     }
 ##'   }
 ##'   }
-##'   
+##'
 ##' \item{\code{get_outcome_type(task)}}{
 ##'   Mediates between the task outcome_type and parameter outcome_type. If a parameter outcome_type was specified, returns that. Otherwise,
 ##'   returns the task$outcome_type.
@@ -104,7 +104,7 @@
 ##'     }
 ##'   }
 ##'   }
-##'   
+##'
 ##' \item{\code{set_train(fit_object, training_task)}}{
 ##'   Converts a learner to a learner fit.
 ##'
@@ -115,7 +115,7 @@
 ##'     }
 ##'   }
 ##'   }
-##'   
+##'
 ##' \item{\code{assert_trained()}}{
 ##'   Throws an error if this learner does not have a \code{fit_object}
 ##' }
