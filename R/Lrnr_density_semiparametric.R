@@ -40,7 +40,7 @@ Lrnr_density_semiparametric <- R6Class(
 
       super$initialize(params = params, ...)
     },
-    
+
     sample = function(task, n_samples = 30, fold_number = "full") {
       # TODO: fold
       # method: inverse cdf
@@ -48,29 +48,31 @@ Lrnr_density_semiparametric <- R6Class(
       mean_fit <- self$fit_object$mean_fit
       var_fit <- self$fit_object$var_fit
       dens_fit <- self$fit_object$dens_fit
-      
+
       mean_preds <- mean_fit$predict(task)
       if (!is.null(var_fit)) {
         var_preds <- var_fit$predict(task)
-        
+
         var_preds[var_preds < 0 ] <- self$fit_object$min_obs_error
         sd_preds <- sqrt(var_preds)
       } else {
         sd_preds <- rep(1, task$nrow)
       }
-      
+
       samples <- inverse_sample(n_samples, dens_fit)
-      obs_samples <- sapply(1:task$nrow, 
-                            function(i) (samples + mean_preds[i])/sd_preds[i])
-      
+      obs_samples <- sapply(
+        1:task$nrow,
+        function(i) (samples + mean_preds[i]) / sd_preds[i]
+      )
+
       return(t(obs_samples))
     },
-    
+
     get_outcome_range = function(task = NULL, fold_number = "full") {
       # TODO: fold
       mean_fit <- self$fit_object$mean_fit
       dens_fit <- self$fit_object$dens_fit
-      
+
       if (!is.null(task)) {
         mean_preds <- mean_fit$predict(task)
         minimum <- min(dens_fit$x) + mean_preds

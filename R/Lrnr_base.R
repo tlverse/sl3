@@ -67,7 +67,7 @@ Lrnr_base <- R6Class(
       }
       return(outcome_type)
     },
-    
+
     get_outcome_range = function(task = NULL, fold_number = "full") {
       # return the support of learner
       # if task is specified, return task observations based supports
@@ -76,18 +76,22 @@ Lrnr_base <- R6Class(
         "Cannot get the outcome range of this learner.",
         "Returning an approximated range."
       ))
-      average <- try(apply(self$training_task$Y, 2, FUN=mean))
+      average <- try(apply(self$training_task$Y, 2, FUN = mean))
       if (class(average) == "try-error") {
         average <- mean(self$training_task$Y)
         minimum <- min(self$training_task$Y)
         maximum <- max(self$training_task$Y)
-        range <- c(minimum + 0.5 * (minimum - average) / 3.,
-                   maximum + 0.5 * (maximum - average) / 3.)
+        range <- c(
+          minimum + 0.5 * (minimum - average) / 3.,
+          maximum + 0.5 * (maximum - average) / 3.
+        )
       } else {
-        minimum <- apply(self$training_task$Y, 2, FUN=min)
-        maximum <- apply(self$training_task$Y, 2, FUN=max)
-        range <- rbind(minimum + 0.5 * (minimum - average) / 3.,
-                       maximum + 0.5 * (maximum - average) / 3.)
+        minimum <- apply(self$training_task$Y, 2, FUN = min)
+        maximum <- apply(self$training_task$Y, 2, FUN = max)
+        range <- rbind(
+          minimum + 0.5 * (minimum - average) / 3.,
+          maximum + 0.5 * (maximum - average) / 3.
+        )
       }
       return(range)
     },
@@ -186,11 +190,11 @@ Lrnr_base <- R6Class(
       delayed_preds <- delayed_learner_fit_predict(self, task)
       return(delayed_preds$compute(job_type = sl3_delayed_job_type()))
     },
-    
+
     sample = function(task, n_samples = 30, fold_number = "full") {
       stop("This learner does not have a sampling method.")
     },
-    
+
     chain = function(task = NULL) {
       delayed_chained <- delayed_learner_fit_chain(self, task)
       return(delayed_chained$compute(job_type = sl3_delayed_job_type()))
