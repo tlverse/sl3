@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>xgboost: eXtreme Gradient Boosting — Lrnr_xgboost • sl3</title>
+<title>Cross-Validated Selector — Lrnr_cv_selector • sl3</title>
 
 
 <!-- jquery -->
@@ -35,12 +35,9 @@
 
 
 
-<meta property="og:title" content="xgboost: eXtreme Gradient Boosting — Lrnr_xgboost" />
-<meta property="og:description" content="This learner provides fitting procedures for xgboost models, using the
-xgboost package, using the xgb.train function.
-Such models are classification and regression trees with extreme gradient
-boosting. For details on the fitting procedure, consult the documentation of
-the xgboost package." />
+<meta property="og:title" content="Cross-Validated Selector — Lrnr_cv_selector" />
+<meta property="og:description" content="This meta-learner identifies the cross-validated selector (i.e. discrete
+super learner) for any loss function." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -135,17 +132,14 @@ the xgboost package." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>xgboost: eXtreme Gradient Boosting</h1>
+    <h1>Cross-Validated Selector</h1>
     
-    <div class="hidden name"><code>Lrnr_xgboost.Rd</code></div>
+    <div class="hidden name"><code>Lrnr_cv_selector.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This learner provides fitting procedures for <code>xgboost</code> models, using the
-<code>xgboost</code> package, using the <code><a href='https://rdrr.io/pkg/xgboost/man/xgb.train.html'>xgb.train</a></code> function.
-Such models are classification and regression trees with extreme gradient
-boosting. For details on the fitting procedure, consult the documentation of
-the <code>xgboost</code> package.</p>
+    <p>This meta-learner identifies the cross-validated selector (i.e. discrete
+super learner) for any loss function.</p>
     </div>
 
 
@@ -162,9 +156,10 @@ the <code>xgboost</code> package.</p>
     
 
 <dl class='dl-horizontal'>
-<dt><code>nrounds=20</code></dt><dd><p>Number of fitting iterations.</p></dd>
-<dt><code>...</code></dt><dd><p>Other parameters passed to
-<code><a href='https://rdrr.io/pkg/xgboost/man/xgb.train.html'>xgb.train</a></code>.</p></dd>
+<dt><code>loss_function=loss_squared_error</code></dt><dd><p>A function(pred, truth) that
+takes prediction and truth vectors and returns a loss vector. See
+<a href='loss_functions.html'>loss_functions</a> for options.</p></dd>
+<dt><code>...</code></dt><dd><p>Not currently used.</p></dd>
 
 </dl>
 
@@ -193,7 +188,6 @@ by all learners.</p>
 <code><a href='Lrnr_bilstm.html'>Lrnr_bilstm</a></code>,
 <code><a href='Lrnr_caret.html'>Lrnr_caret</a></code>,
 <code><a href='Lrnr_condensier.html'>Lrnr_condensier</a></code>,
-<code><a href='Lrnr_cv_selector.html'>Lrnr_cv_selector</a></code>,
 <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
 <code><a href='Lrnr_dbarts.html'>Lrnr_dbarts</a></code>,
 <code><a href='Lrnr_define_interactions.html'>Lrnr_define_interactions</a></code>,
@@ -237,6 +231,7 @@ by all learners.</p>
 <code><a href='Lrnr_subset_covariates.html'>Lrnr_subset_covariates</a></code>,
 <code><a href='Lrnr_svm.html'>Lrnr_svm</a></code>,
 <code><a href='Lrnr_tsDyn.html'>Lrnr_tsDyn</a></code>,
+<code><a href='Lrnr_xgboost.html'>Lrnr_xgboost</a></code>,
 <code><a href='Pipeline.html'>Pipeline</a></code>,
 <code><a href='Stack.html'>Stack</a></code>,
 <code><a href='Lrnr_h2o_glm.html'>define_h2o_X</a>()</code>,
