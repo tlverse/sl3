@@ -163,14 +163,30 @@ Lrnr_cv <- R6Class(
       # retain past fold fits
       past_folds <- which(unlist(eval_past_fold))
       past_fold_fits <- self$fit_object$fold_fits[past_folds]
-      # fit new folds
+      # subset new folds
       new_folds <- task$folds[which(!unlist(eval_past_fold))]
       new_data_indices <- c(unlist(lapply(new_folds, '[[', "training_set")),
                             unlist(lapply(new_folds, '[[', "validation_set")))
+      # construct new task with only new folds
       new_task <- task$subset_task(row_index = new_data_indices)
-      # update Lrnr_cv with new fold fits
-      new_fold_fits <- past_fold_fits$chain_fold(new_task)
-      return(new_fold_fits)
+      # set up training for new fold fits
+      new_fold_fits <- private$.train_sublearners(new_task)
+      new_fold_fits <- new_fold_fits$fold_fits
+      all_fold_fits <- c(past_fold_fits, new_fold_fits)
+      
+      # refit full fit if necessary
+      if (self$params$full_fit) {
+        full_task <- task$revere_fold_task("full")
+        learner <- self$params$learner
+        full_fit <- delayed_learner_train(learner, full_task)
+      } else {
+        full_fit <- NULL
+      }
+      
+      # update fit_object
+      results <- list(full_fit = full_fit, fold_fits = all_fold_fits)
+      fit_object <- private$.train(task, results)
+      return(fit_object)
     }
   ),
 
