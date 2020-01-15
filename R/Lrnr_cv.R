@@ -149,14 +149,14 @@ Lrnr_cv <- R6Class(
       # identify the folds that already have fold fits
       folds <- task$folds
       eval_past_fold <- lapply(seq_len(length(folds)), function(x) { 
-        if(x > length(self$fit_object$folds)) {
+        if(x > length(self$training_task$folds)) {
           equal <- FALSE
         } else {
-          equal_training <- all.equal(self$fit_object$folds[[x]]$training_set, 
+          equal_training <- all.equal(self$training_task$folds[[x]]$training_set, 
                                       task$folds[[x]]$training_set)
-          equal_validation <- all.equal(self$fit_object$folds[[x]]$validation_set, 
+          equal_validation <- all.equal(self$training_task$folds[[x]]$validation_set, 
                                         task$folds[[x]]$validation_set)
-          equal <- ifelse(equal_training & equal_validation, TRUE, FALSE)
+          equal <- equal_training & equal_validation
         }
         return(equal)
       })
@@ -165,28 +165,20 @@ Lrnr_cv <- R6Class(
       past_fold_fits <- self$fit_object$fold_fits[past_folds]
       # subset new folds
       new_folds <- task$folds[which(!unlist(eval_past_fold))]
-      new_data_indices <- c(unlist(lapply(new_folds, '[[', "training_set")),
-                            unlist(lapply(new_folds, '[[', "validation_set")))
       # construct new task with only new folds
-      new_task <- task$subset_task(row_index = new_data_indices)
+      new_task <- task$next_in_chain(folds = new_folds)
       # set up training for new fold fits
-      new_fold_fits <- private$.train_sublearners(new_task)
-      new_fold_fits <- new_fold_fits$fold_fits
-      all_fold_fits <- c(past_fold_fits, new_fold_fits)
-      
-      # refit full fit if necessary
-      if (self$params$full_fit) {
-        full_task <- task$revere_fold_task("full")
-        learner <- self$params$learner
-        full_fit <- delayed_learner_train(learner, full_task)
-      } else {
-        full_fit <- NULL
-      }
+      new_fold_fits <- self$train(new_task)
       
       # update fit_object
-      results <- list(full_fit = full_fit, fold_fits = all_fold_fits)
-      fit_object <- private$.train(task, results)
-      return(fit_object)
+      fit_object <- new_fold_fits$fit_object
+      new_fold_fits <- fit_object$fold_fits
+      all_fold_fits <- c(past_fold_fits, new_fold_fits)
+      fit_object$fold_fits <- all_fold_fits
+      fit_object$folds <- folds
+      new_object <- self$clone() # copy parameters, and whatever else
+      new_object$set_train(fit_object, task)
+      return(new_object)
     }
   ),
 
