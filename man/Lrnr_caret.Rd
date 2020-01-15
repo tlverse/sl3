@@ -50,6 +50,7 @@ Other Learners:
 \code{\link{Lrnr_bartMachine}},
 \code{\link{Lrnr_base}},
 \code{\link{Lrnr_bilstm}},
+\code{\link{Lrnr_bound}},
 \code{\link{Lrnr_condensier}},
 \code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_cv}},
