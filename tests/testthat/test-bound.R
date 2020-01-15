@@ -12,12 +12,12 @@ gen_data <- function(n = 1000, p = 4) {
   colnames(W) <- paste("W", seq_len(p), sep = "")
   g0W <- g0(W)
   A <- rbinom(n, 1, g0W)
-  
+
   u <- runif(n)
   df <- data.frame(W, A)
-  
+
   df$g0W <- g0(W)
-  
+
   return(df)
 }
 
