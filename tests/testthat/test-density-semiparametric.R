@@ -26,7 +26,7 @@ mvd_learner <- make_learner(Lrnr_density_semiparametric,
 hse_fit <- hse_learner$train(task)
 mvd_fit <- mvd_learner$train(task)
 
-#test sampling
+# test sampling
 y_samp <- mvd_fit$sample(task[1:10], 100)
 
 x_grid <- seq(from = min(data$x), to = max(data$x), length = 100)

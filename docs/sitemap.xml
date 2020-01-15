@@ -34,6 +34,9 @@
     <loc>https://tlverse.org/sl3/reference/Lrnr_cv.html</loc>
   </url>
   <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_cv_selector.html</loc>
+  </url>
+  <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_dbarts.html</loc>
   </url>
   <url>
@@ -209,6 +212,9 @@
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/factors_to_indicators.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/reference/inverse_sample.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/keep_only_fun_args.html</loc>
