@@ -144,18 +144,22 @@ Lrnr_cv <- R6Class(
         column_names = new_col_names
       ))
     },
-    
+
     update = function(task) {
       # identify the folds that already have fold fits
       folds <- task$folds
-      eval_past_fold <- lapply(seq_len(length(folds)), function(x) { 
-        if(x > length(self$training_task$folds)) {
+      eval_past_fold <- lapply(seq_len(length(folds)), function(x) {
+        if (x > length(self$training_task$folds)) {
           equal <- FALSE
         } else {
-          equal_training <- all.equal(self$training_task$folds[[x]]$training_set, 
-                                      task$folds[[x]]$training_set)
-          equal_validation <- all.equal(self$training_task$folds[[x]]$validation_set, 
-                                        task$folds[[x]]$validation_set)
+          equal_training <- all.equal(
+            self$training_task$folds[[x]]$training_set,
+            task$folds[[x]]$training_set
+          )
+          equal_validation <- all.equal(
+            self$training_task$folds[[x]]$validation_set,
+            task$folds[[x]]$validation_set
+          )
           equal <- equal_training & equal_validation
         }
         return(equal)
@@ -169,7 +173,7 @@ Lrnr_cv <- R6Class(
       new_task <- task$next_in_chain(folds = new_folds)
       # set up training for new fold fits
       new_fold_fits <- self$train(new_task)
-      
+
       # update fit_object
       fit_object <- new_fold_fits$fit_object
       new_fold_fits <- fit_object$fold_fits

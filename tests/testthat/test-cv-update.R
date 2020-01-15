@@ -7,16 +7,18 @@ library(digest)
 
 data(cpp_imputed)
 covars <-
-  c("apgar1",
+  c(
+    "apgar1",
     "apgar5",
     "parity",
     "gagebrth",
     "mage",
     "meducyrs",
-    "sexn")
+    "sexn"
+  )
 outcome <- "haz"
 
-data <- cpp_imputed[1:100,]
+data <- cpp_imputed[1:100, ]
 folds <- origami::make_folds(
   data,
   fold_fun = folds_rolling_window,
@@ -32,7 +34,7 @@ task <- make_sl3_Task(
   folds = folds
 )
 
-data_more <- cpp_imputed[1:200,]
+data_more <- cpp_imputed[1:200, ]
 folds_more <- origami::make_folds(
   data_more,
   fold_fun = folds_rolling_window,
@@ -52,8 +54,10 @@ lrnr_glm <- make_learner(Lrnr_glm)
 lrnr_mean <- make_learner(Lrnr_mean)
 lrnr_xgboost <- make_learner(Lrnr_xgboost)
 
-stack <- make_learner(Stack,
-                      lrnr_glm, lrnr_mean, lrnr_xgboost)
+stack <- make_learner(
+  Stack,
+  lrnr_glm, lrnr_mean, lrnr_xgboost
+)
 
 cv_stack <- Lrnr_cv$new(stack)
 cv_fit <- cv_stack$train(task)
