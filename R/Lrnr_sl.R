@@ -48,6 +48,10 @@ Lrnr_sl <- R6Class(
       if (inherits(learners, "Stack")) {
         learners <- learners$params$learners
       }
+      
+      if(inherits(learners, "Lrnr_base")){
+        learners <- list(learners)
+      }
       params <- list(
         learners = learners, metalearner = metalearner,
         folds = folds, keep_extra = keep_extra, ...
