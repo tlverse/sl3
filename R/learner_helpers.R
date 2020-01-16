@@ -38,11 +38,17 @@ learner_train <- function(learner, task, trained_sublearners) {
 #'
 #' @export
 #
-delayed_learner_train <- function(learner, task) {
+delayed_learner_train <- function(learner, task, name=NULL) {
   trained_sublearners <- learner$train_sublearners(task)
   train_delayed <- delayed_fun(learner_train)(learner, task,
     trained_sublearners)
-  train_delayed$name <- learner$name
+  
+  if(is.null(name)){
+    name <- learner$name
+  }
+  
+  train_delayed$name <- name
+  
   if (!is.null(trained_sublearners)) {
     # if a learner is sequential assume the train step is minimal and don't
     # parallelize
