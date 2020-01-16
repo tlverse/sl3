@@ -12,4 +12,3 @@ screen_glmnet <- Lrnr_pkg_SuperLearner_screener$new("screen.glmnet")
 glm_learner <- Lrnr_glm$new()
 screen_glm <- make_learner(Pipeline, screen_glmnet, glm_learner)
 fit <- screen_glm$train(task)
-

@@ -60,8 +60,8 @@ Lrnr_earth <- R6Class(
   portable = TRUE, class = TRUE,
   public = list(
     initialize = function(degree = 2, penalty = 3, pmethod = "backward",
-                          nfold = 0, ncross = 1, minspan = 0, endspan = 0,
-                          ...) {
+                              nfold = 0, ncross = 1, minspan = 0, endspan = 0,
+                              ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }

@@ -16,7 +16,7 @@ delayed_make_learner(learner_class, ...)
 
 learner_train(learner, task, trained_sublearners)
 
-delayed_learner_train(learner, task)
+delayed_learner_train(learner, task, name = NULL)
 
 learner_fit_predict(learner_fit, task = NULL)
 

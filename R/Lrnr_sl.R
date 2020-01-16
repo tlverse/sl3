@@ -43,13 +43,13 @@ Lrnr_sl <- R6Class(
   class = TRUE,
   public = list(
     initialize = function(learners, metalearner = "default", folds = NULL,
-                          keep_extra = TRUE, ...) {
+                              keep_extra = TRUE, ...) {
       # kludge to deal with stack as learners
       if (inherits(learners, "Stack")) {
         learners <- learners$params$learners
       }
-      
-      if(inherits(learners, "Lrnr_base")){
+
+      if (inherits(learners, "Lrnr_base")) {
         learners <- list(learners)
       }
       params <- list(
@@ -120,8 +120,8 @@ Lrnr_sl <- R6Class(
       self$assert_trained()
       return(coef(self$fit_object$cv_meta_fit))
     },
-    
-    learner_fits = function(){
+
+    learner_fits = function() {
       result <- self$fit_object$full_fit$learner_fits[[1]]$learner_fits
       return(result)
     }

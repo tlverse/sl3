@@ -84,7 +84,7 @@ test_that("Lrnr_dbarts with binary outcome works", {
 # test_that("Lrnr_dbarts can be serialized with appropriate param", {
 #   dbart_learner_serializable <- Lrnr_dbarts$new(serializeable=TRUE)
 #   dbarts_s_fit <- dbart_learner_serializable$train(task)
-#   
+#
 #   preds <- dbarts_s_fit$predict()
 #   tmp <- tempfile()
 #   save(dbarts_s_fit, file=tmp)
@@ -92,7 +92,7 @@ test_that("Lrnr_dbarts with binary outcome works", {
 #   load(tmp)
 #   preds_from_serialized <- dbarts_s_fit$predict()
 #   tmp <- tempfile()
-#   
+#
 #   db_fit <- dbarts_s_fit$fit_object
 #   z <- db_fit$fit$storeState()
 #   invisible(db_fit$fit$state)

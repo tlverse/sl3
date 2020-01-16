@@ -90,7 +90,8 @@ returned in arrays of dimensions equal to \code{nchain} \eqn{\times}
 \code{call} set to \code{call("NULL")}, otherwise the call used to
 instantiate BART.}
 \item{\code{serializeable}}{Logical; if \code{TRUE}, loads the trees into R memory
-so the fit object can be saved and loaded. See the section on "Saving" in \code{\link[dbarts]{bart}}
+so the fit object can be saved and loaded. See the section on "Saving"
+in \code{\link[dbarts]{bart} NB: This is not currently working}
 }
 }
 }

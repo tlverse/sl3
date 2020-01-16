@@ -33,8 +33,8 @@ Lrnr_screener_randomForest <- R6Class(
   inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
     initialize = function(nVar = 10,
-                          ntree = 1000,
-                          ...) {
+                              ntree = 1000,
+                              ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }

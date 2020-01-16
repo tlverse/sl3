@@ -197,7 +197,7 @@ Lrnr_cv <- R6Class(
 
     .train_sublearners = function(task) {
       verbose <- getOption("sl3.verbose")
-      
+
       # if we get a delayed task, evaluate it
       # TODO: this is a kludge -- ideally we'd have Lrnr_cv work on delayed tasks like other learners
       if (inherits(task, "Delayed")) {
@@ -217,12 +217,12 @@ Lrnr_cv <- R6Class(
         fold_number <- fold_index()
         revere_task <- task$revere_fold_task(fold_number)
         training_task <- train_task(revere_task, fold)
-        if(verbose){
+        if (verbose) {
           delayed_name <- sprintf("CV %s fold %s", learner$name, fold_number)
-        } else{
+        } else {
           delayed_name <- learner$name
         }
-        
+
         fit_object <- delayed_learner_train(learner, training_task, delayed_name)
         return(fit_object)
       }

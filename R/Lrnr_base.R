@@ -105,8 +105,8 @@ Lrnr_base <- R6Class(
       subsetted_task <- self$subset_covariates(task)
 
       verbose <- getOption("sl3.verbose")
-      
-      if(verbose){
+
+      if (verbose) {
         message(sprintf("Training learner %s on task %s", self$name, task$uuid))
       }
 
@@ -190,8 +190,8 @@ Lrnr_base <- R6Class(
     train = function(task) {
       delayed_fit <- delayed_learner_train(self, task)
       verbose <- getOption("sl3.verbose")
-      
-      
+
+
       return(delayed_fit$compute(job_type = sl3_delayed_job_type()))
     },
 

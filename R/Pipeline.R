@@ -49,8 +49,8 @@ Pipeline <- R6Class(
         learner_names <- make.unique(learner_names, sep = "_")
       }
       private$.learner_names <- learner_names
-      
-      
+
+
       if (all(learners_trained)) {
         # we've been passed a list of existing fits so we're already fit
         names(learners) <- learner_names
@@ -95,7 +95,7 @@ Pipeline <- R6Class(
       name <- sprintf("Pipeline(%s)", paste(learner_names, collapse = "->"))
       return(name)
     },
-    learner_fits = function(){
+    learner_fits = function() {
       result <- self$fit_object$learner_fits
       return(result)
     }
@@ -140,7 +140,7 @@ Pipeline <- R6Class(
       predictions <- current_fit$base_predict(current_task)
       return(predictions)
     },
-    
+
     .learner_names = NULL
   )
 )

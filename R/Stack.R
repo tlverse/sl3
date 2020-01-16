@@ -88,11 +88,10 @@ Stack <- R6Class(
       name <- "Stack"
       return(name)
     },
-    learner_fits = function(){
+    learner_fits = function() {
       result <- self$fit_object$learner_fits
       return(result)
     }
-    
   ),
 
   private = list(
@@ -128,10 +127,10 @@ Stack <- R6Class(
       if (all(is_error)) {
         stop("All learners in stack have failed")
       }
-      
+
       learner_names <- private$.learner_names[!is_error]
       names(trained_sublearners) <- learner_names
-      
+
       fit_object <- list(
         learner_fits = trained_sublearners,
         learner_errors = learner_errors, is_error = is_error

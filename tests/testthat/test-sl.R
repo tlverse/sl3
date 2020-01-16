@@ -21,7 +21,7 @@ sl1 <- make_learner(Lrnr_sl, learners, glm_learner)
 sl1_fit <- sl1$train(task)
 test_that("Coefficients can extracted from sl fits", expect_true(!is.null(coef(sl1_fit))))
 glm_fit <- sl1_fit$learner_fits$Lrnr_glm_TRUE
-test_that("Library fits can extracted from sl fits", expect_true(inherits(glm_fit,"Lrnr_glm")))
+test_that("Library fits can extracted from sl fits", expect_true(inherits(glm_fit, "Lrnr_glm")))
 
 
 sl1_risk <- sl1_fit$cv_risk(loss_squared_error)
@@ -57,11 +57,11 @@ covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn"
 cpp[is.na(cpp)] <- 0
 outcome <- "haz"
 task <- sl3_Task$new(cpp, covariates = covars, outcome = outcome)
-make_inter <- Lrnr_define_interactions$new(interactions=list(c("apgar1","parity"),c("apgar5","parity")))
+make_inter <- Lrnr_define_interactions$new(interactions = list(c("apgar1", "parity"), c("apgar5", "parity")))
 
 glm_learner <- Lrnr_glm$new()
 glmnet_learner <- Lrnr_glmnet$new(nlambda = 5)
-learners = Stack$new(glm_learner, glmnet_learner)
+learners <- Stack$new(glm_learner, glmnet_learner)
 pipe <- Pipeline$new(make_inter, learners)
 sl1 <- make_learner(Lrnr_sl, pipe, metalearner = Lrnr_solnp$new())
 fit <- sl1$train(task)
