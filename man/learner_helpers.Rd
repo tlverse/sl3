@@ -42,6 +42,8 @@ delayed_learner_subset_covariates(learner, task)
 \item{trained_sublearners}{Any data obtained from a \code{train_sublearners}
 step.}
 
+\item{name}{a more detailed name for this delayed task, if necessary}
+
 \item{learner_fit}{a learner object that has already been fit}
 }
 \description{
