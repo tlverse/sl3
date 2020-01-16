@@ -17,10 +17,12 @@ glmnet_learner <- Lrnr_pkg_SuperLearner$new("SL.glmnet")
 subset_apgar <- Lrnr_subset_covariates$new(covariates = c("apgar1", "apgar5"))
 learners <- list(glm_learner, glmnet_learner, subset_apgar)
 sl1 <- make_learner(Lrnr_sl, learners, glm_learner)
-# sl3_debug_mode()
-# debugonce(sl1$.__enclos_env__$private$.train)
-# debugonce(sl1$.__enclos_env__$private$.train_sublearners)
+
 sl1_fit <- sl1$train(task)
+test_that("Coefficients can extracted from sl fits", expect_true(!is.null(coef(sl1_fit))))
+glm_fit <- sl1_fit$learner_fits$Lrnr_glm_TRUE
+test_that("Library fits can extracted from sl fits", expect_true(inherits(glm_fit,"Lrnr_glm")))
+
 
 sl1_risk <- sl1_fit$cv_risk(loss_squared_error)
 

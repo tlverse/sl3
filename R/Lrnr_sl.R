@@ -119,6 +119,11 @@ Lrnr_sl <- R6Class(
     coefficients = function() {
       self$assert_trained()
       return(coef(self$fit_object$cv_meta_fit))
+    },
+    
+    learner_fits = function(){
+      result <- self$fit_object$full_fit$learner_fits[[1]]$learner_fits
+      return(result)
     }
   ),
 
