@@ -70,3 +70,23 @@ test_that("Lrnr_rpart predictions match those from rpart", {
   ## test equivalence of prediction from Lrnr_rpart and rpart::rpart
   expect_equal(prd_lrnr_rpart, prd_rpart)
 })
+
+# try to reproduce https://github.com/tlverse/sl3/issues/230
+library(sl3)
+library(testthat)
+library(rpart)
+
+# define test dataset
+data(mtcars)
+task <- sl3_Task$new(mtcars, covariates = c(
+  "cyl", "disp", "hp", "drat", "wt", "qsec",
+  "vs", "am", "gear", "carb"
+), outcome = "mpg")
+
+
+lrnr_rpart <- Lrnr_rpart$new()
+lrnr_mean <- Lrnr_mean$new()
+stack <- Stack$new(lrnr_rpart, lrnr_mean)
+
+stack_fit <- stack$train(task)
+predict <- stack_fit$predict()
