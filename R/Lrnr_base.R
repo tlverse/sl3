@@ -106,9 +106,6 @@ Lrnr_base <- R6Class(
 
       verbose <- getOption("sl3.verbose")
 
-      if (verbose) {
-        message(sprintf("Training learner %s on task %s", self$name, task$uuid))
-      }
 
       if (!is.null(trained_sublearners)) {
         fit_object <- private$.train(subsetted_task, trained_sublearners)
@@ -192,7 +189,7 @@ Lrnr_base <- R6Class(
       verbose <- getOption("sl3.verbose")
 
 
-      return(delayed_fit$compute(job_type = sl3_delayed_job_type()))
+      return(delayed_fit$compute(job_type = sl3_delayed_job_type(), progress=verbose))
     },
 
     predict = function(task = NULL) {
