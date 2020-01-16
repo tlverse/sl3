@@ -30,7 +30,7 @@ Lrnr_screener_corRank <- R6Class(
   inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
     initialize = function(method = "pearson",
-                          rank = 5) {
+                              rank = 5) {
       params <- args_to_list()
       super$initialize(params = params)
     }

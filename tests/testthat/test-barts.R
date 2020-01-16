@@ -79,3 +79,27 @@ test_that("Lrnr_dbarts with binary outcome works", {
   mean_pred_sl3 <- mean(dbart_fit$predict(task))
   expect_true(mean_pred_sl3 < 20)
 })
+
+
+# test_that("Lrnr_dbarts can be serialized with appropriate param", {
+#   dbart_learner_serializable <- Lrnr_dbarts$new(serializeable=TRUE)
+#   dbarts_s_fit <- dbart_learner_serializable$train(task)
+#
+#   preds <- dbarts_s_fit$predict()
+#   tmp <- tempfile()
+#   save(dbarts_s_fit, file=tmp)
+#   rm(dbarts_s_fit)
+#   load(tmp)
+#   preds_from_serialized <- dbarts_s_fit$predict()
+#   tmp <- tempfile()
+#
+#   db_fit <- dbarts_s_fit$fit_object
+#   z <- db_fit$fit$storeState()
+#   invisible(db_fit$fit$state)
+#   predict(db_fit, as.matrix(task$X))
+#   save(db_fit, file=tmp)
+#   rm(db_fit)
+#   load(tmp)
+#   predict(db_fit, as.matrix(task$X))
+#   expect_equal(preds, preds_from_serialized)
+# })
