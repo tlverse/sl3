@@ -37,3 +37,8 @@ stack_lrnr_names <- as.character(stack_dens$print())
 test_that("Repetitive names of learners in stack differ after creation", {
   expect_false(stack_lrnr_names[1] == stack_lrnr_names[2])
 })
+
+# check that you can create a stack of one learner
+stack_one <- Stack$new(glm_learner)
+fit <- stack_one$train(task)
+preds <- fit$predict(task)

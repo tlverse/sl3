@@ -145,7 +145,7 @@ Lrnr_sl <- R6Class(
 
       # make stack and CV learner objects
       learners <- self$params$learners
-      learner_stack <- do.call(Stack$new, learners)
+      learner_stack <- do.call(Stack$new, list(learners))
       cv_stack <- Lrnr_cv$new(learner_stack, folds = folds, full_fit = TRUE)
       cv_stack$custom_chain(drop_offsets_chain)
 

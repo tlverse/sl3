@@ -47,3 +47,19 @@ expect_lt(length(sl1_small_fit$fit_object), length(sl1_fit$fit_object))
 preds <- sl1_small_fit$predict(task)
 preds_fold <- sl1_small_fit$predict_fold(task, "full")
 test_that("predict_fold(task,'full') works if keep_extra=FALSE", expect_equal(preds, preds_fold))
+
+# sl of a pipeline from https://github.com/tlverse/sl3/issues/81
+data(cpp)
+cpp <- cpp[!is.na(cpp[, "haz"]), ]
+covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")
+cpp[is.na(cpp)] <- 0
+outcome <- "haz"
+task <- sl3_Task$new(cpp, covariates = covars, outcome = outcome)
+make_inter <- Lrnr_define_interactions$new(interactions=list(c("apgar1","parity"),c("apgar5","parity")))
+
+glm_learner <- Lrnr_glm$new()
+glmnet_learner <- Lrnr_glmnet$new(nlambda = 5)
+learners = Stack$new(glm_learner, glmnet_learner)
+pipe <- Pipeline$new(make_inter, learners)
+sl1 <- make_learner(Lrnr_sl, pipe, metalearner = Lrnr_solnp$new())
+fit <- sl1$train(task)
