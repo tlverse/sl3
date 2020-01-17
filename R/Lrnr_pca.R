@@ -47,9 +47,9 @@ Lrnr_pca <- R6Class(
   class = TRUE,
   public = list(
     initialize = function(n_comp = 2,
-                          center = TRUE,
-                          scale. = TRUE,
-                          ...) {
+                              center = TRUE,
+                              scale. = TRUE,
+                              ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }

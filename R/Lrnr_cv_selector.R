@@ -34,7 +34,7 @@ Lrnr_cv_selector <- R6Class(
   class = TRUE,
   public = list(
     initialize = function(loss_function = loss_squared_error,
-                          ...) {
+                              ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }

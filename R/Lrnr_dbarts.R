@@ -92,6 +92,10 @@
 #'   \item{\code{keepcall}}{Logical; if \code{FALSE}, returned object will have
 #'     \code{call} set to \code{call("NULL")}, otherwise the call used to
 #'     instantiate BART.}
+#'   \item{\code{serializeable}}{Logical; if \code{TRUE}, loads the trees into R memory
+#'     so the fit object can be saved and loaded. See the section on "Saving"
+#'     in \code{\link[dbarts]{bart} NB: This is not currently working}
+#'     }
 #' }
 #'
 #' @template common_parameters
@@ -102,8 +106,9 @@ Lrnr_dbarts <- R6Class(
   inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
     initialize = function(ndpost = 500, nskip = 100,
-                          ntree = 200L, verbose = FALSE, keeptrees = TRUE,
-                          ...) {
+                              ntree = 200L, verbose = FALSE, keeptrees = TRUE,
+                              serializeable = FALSE,
+                              ...) {
       super$initialize(params = args_to_list(), ...)
     }
   ),
@@ -128,6 +133,10 @@ Lrnr_dbarts <- R6Class(
       }
 
       fit_object <- call_with_args(dbarts::bart, args)
+
+      if (self$params$serializeable) {
+        invisible(fit_object$fit$state)
+      }
 
       return(fit_object)
     },
