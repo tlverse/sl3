@@ -1,6 +1,6 @@
 #' Truncates predictions to ensure loss function is bounded.
 #'
-#' @param bounds Either a length two vector of c(lower,upper) or a lower bound, 
+#' @param bounds Either a length two vector of c(lower,upper) or a lower bound,
 #' where the upper is then 1 - lower. Default bounds=0.001.
 #'
 #' @return truncated predictions.
@@ -161,10 +161,11 @@ reduce_fit_test <- function(learner_fit) {
     reduced_fit[component] <- NULL
     reduced$set_train(reduced_fit, task)
     reduced_predict <- NULL
-    try({
-      reduced_predict <- reduced$predict()
-    },
-    silent = TRUE
+    try(
+      {
+        reduced_predict <- reduced$predict()
+      },
+      silent = TRUE
     )
     if (!identical(original_predict, reduced_predict)) {
       reduced_fit[component] <- backup
