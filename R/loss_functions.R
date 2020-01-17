@@ -30,7 +30,7 @@ loss_squared_error <- function(pred, observed) {
 #' @export
 #
 loss_loglik_true_cat <- function(pred, observed) {
-  out <- -log(pred)
+  out <- -log(bound(pred))
   return(out)
 }
 
@@ -41,7 +41,7 @@ loss_loglik_true_cat <- function(pred, observed) {
 #' @export
 #
 loss_loglik_binomial <- function(pred, observed) {
-  out <- -1 * ifelse(observed == 1, log(pred), log(1 - pred))
+  out <- -1 * ifelse(observed == 1, log(bound(pred)), log(1 - bound(pred)))
   return(out)
 }
 
@@ -57,7 +57,7 @@ loss_loglik_multinomial <- function(pred, observed) {
   # make index matrix
   index_mat <- cbind(seq_along(observed), observed)
   unpacked <- unpack_predictions(pred)
-  class_liks <- log(unpacked[index_mat])
+  class_liks <- log(bound(unpacked[index_mat]))
   return(-1 * class_liks)
 }
 

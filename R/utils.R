@@ -1,3 +1,22 @@
+#' Truncates predictions to ensure loss function is bounded.
+#'
+#' @param bounds Either a length two vector of c(lower,upper) or a lower bound, 
+#' where the upper is then 1 - lower. Default bounds=0.001.
+#'
+#' @return truncated predictions.
+#'
+#' @export
+#
+bound <- function(x, bounds = 0.001) {
+  lower <- bounds[[1]]
+  if (length(bounds) > 1) {
+    upper <- bounds[[2]]
+  } else {
+    upper <- 1 - lower
+  }
+  pmin(pmax(x, lower), upper)
+}
+
 # if warning is in ignoreWarningList, ignore it; otherwise post it as usual
 SuppressGivenWarnings <- function(expr, warningsToIgnore) {
   h <- function(w) {
