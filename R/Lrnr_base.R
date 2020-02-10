@@ -97,11 +97,15 @@ Lrnr_base <- R6Class(
     },
 
     base_train = function(task, trained_sublearners = NULL) {
+
       # trains learner to data
       assert_that(is(task, "sl3_Task"))
 
       # TODO: add error handling
       subsetted_task <- self$subset_covariates(task)
+
+      verbose <- getOption("sl3.verbose")
+
 
       if (!is.null(trained_sublearners)) {
         fit_object <- private$.train(subsetted_task, trained_sublearners)
@@ -182,8 +186,10 @@ Lrnr_base <- R6Class(
 
     train = function(task) {
       delayed_fit <- delayed_learner_train(self, task)
+      verbose <- getOption("sl3.verbose")
 
-      return(delayed_fit$compute(job_type = sl3_delayed_job_type()))
+
+      return(delayed_fit$compute(job_type = sl3_delayed_job_type(), progress=verbose))
     },
 
     predict = function(task = NULL) {

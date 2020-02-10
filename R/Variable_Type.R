@@ -8,7 +8,7 @@ Variable_Type <- R6Class(
   class = TRUE,
   public = list(
     initialize = function(type = NULL, levels = NULL, bounds = NULL, x = NULL,
-                          pcontinuous = getOption("sl3.pcontinuous")) {
+                              pcontinuous = getOption("sl3.pcontinuous")) {
       if (is.null(type)) {
         if (is.null(x)) {
           stop("type not specified, and no x from which to infer it")

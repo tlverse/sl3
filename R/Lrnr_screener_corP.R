@@ -31,8 +31,8 @@ Lrnr_screener_corP <- R6Class(
   inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
     initialize = function(method = "pearson",
-                          minPvalue = 0.1,
-                          minscreen = 2) {
+                              minPvalue = 0.1,
+                              minscreen = 2) {
       params <- args_to_list()
       super$initialize(params = params)
     }

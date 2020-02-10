@@ -44,8 +44,16 @@ Pipeline <- R6Class(
       params <- list(learners = learners)
       learners_trained <- sapply(learners, `[[`, "is_trained")
 
+      learner_names <- sapply(learners, `[[`, "name")
+      if (any(duplicated(learner_names))) {
+        learner_names <- make.unique(learner_names, sep = "_")
+      }
+      private$.learner_names <- learner_names
+
+
       if (all(learners_trained)) {
         # we've been passed a list of existing fits so we're already fit
+        names(learners) <- learner_names
         private$.fit_object <- list(learner_fits = learners)
         private$.training_task <- learners[[1]]$training_task
       }
@@ -86,15 +94,17 @@ Pipeline <- R6Class(
       learner_names <- sapply(learners, function(learner) learner$name)
       name <- sprintf("Pipeline(%s)", paste(learner_names, collapse = "->"))
       return(name)
+    },
+    learner_fits = function() {
+      result <- self$fit_object$learner_fits
+      return(result)
     }
   ),
 
   private = list(
     .train_sublearners = function(task) {
       learners <- self$params$learners
-      learner_names <- sapply(learners, function(learner) learner$name)
       learner_fits <- as.list(rep(NA, length(learners)))
-      names(learner_fits) <- learner_names
       current_task <- task
 
       for (i in seq_along(learners)) {
@@ -108,6 +118,7 @@ Pipeline <- R6Class(
     },
 
     .train = function(task, trained_sublearners) {
+      names(trained_sublearners) <- private$.learner_names
       fit_object <- list(learner_fits = trained_sublearners)
       return(fit_object)
     },
@@ -128,6 +139,8 @@ Pipeline <- R6Class(
       # current_task is now the task for the last fit, so we can just do this
       predictions <- current_fit$base_predict(current_task)
       return(predictions)
-    }
+    },
+
+    .learner_names = NULL
   )
 )

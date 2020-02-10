@@ -39,6 +39,7 @@ test_that("Repetitive names of learners in stack differ after creation", {
   expect_false(stack_lrnr_names[1] == stack_lrnr_names[2])
 })
 
+
 # check that stack does not assume predict length
 Lrnr_fixed_pred_length <- R6Class(
   classname = "Lrnr_broken", inherit = Lrnr_base, portable = TRUE,
@@ -63,3 +64,9 @@ test_that("Stack works with prediction lengths that don't match task length",{
   fit <- stack_fixed_len$train(task)
   preds <- fit$predict()
 })
+
+# check that you can create a stack of one learner
+stack_one <- Stack$new(glm_learner)
+fit <- stack_one$train(task)
+preds <- fit$predict(task)
+
