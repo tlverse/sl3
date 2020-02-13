@@ -70,3 +70,17 @@ stack_one <- Stack$new(glm_learner)
 fit <- stack_one$train(task)
 preds <- fit$predict(task)
 
+
+# check that stacks can be a mix of pretrained and untrained learners
+task_old <- task[1:10]
+mean_lrnr <- Lrnr_mean$new()
+old_fit <- mean_lrnr$train(task_old)
+stack_old_and_new <- Stack$new(old_fit, mean_lrnr)
+stack_fit <- stack_old_and_new$train(task)
+preds <- stack_fit$predict()
+old_mean <- mean(task_old$Y)
+new_mean <- mean(task$Y)
+
+test_that("A stack mixed from learners and fits does not retrain existing fits")
+expect_equal(unlist(preds[1,1,with=FALSE], use.names=FALSE),old_mean)
+expect_equal(unlist(preds[1,2,with=FALSE], use.names=FALSE),new_mean)

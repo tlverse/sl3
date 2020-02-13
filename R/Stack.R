@@ -102,9 +102,13 @@ Stack <- R6Class(
       # generate training subtasks
       learners <- self$params$learners
       subtasks <- lapply(learners, function(learner) {
-        delayed_learner <- delayed_learner_train(learner, task)
-        delayed_learner$expect_error <- TRUE
-        return(delayed_learner)
+        if(learner$is_trained){
+          return(learner)
+        } else {
+          delayed_learner <- delayed_learner_train(learner, task)
+          delayed_learner$expect_error <- TRUE
+          return(delayed_learner)
+        }
       })
       return(bundle_delayed(subtasks))
     },
@@ -169,7 +173,7 @@ Stack <- R6Class(
       
       for (i in seq_along(learner_fits)) {
         current_fit <- learner_fits[[i]]
-        if(i>2){
+        if(i>1){
           current_preds <- current_fit$base_predict(task)
         }
         
