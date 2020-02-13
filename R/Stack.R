@@ -161,7 +161,7 @@ Stack <- R6Class(
       
       if (!is.na(safe_dim(current_preds)[2]) &&
           safe_dim(current_preds)[2] > 1) {
-        current_names <- paste0(learner_names[i], "_", names(current_preds))
+        current_names <- paste0(current_names, "_", names(current_preds))
         stopifnot(length(current_names) == safe_dim(current_preds)[2])
       }
       

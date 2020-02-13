@@ -45,5 +45,6 @@ sl_fit_bounded <- sl_pipeline_bounded$train(task)
 bounded_preds <- sl_fit_bounded$predict()
 
 test_that("Lrnr_bound is bounding predictions", {
-  expect_equal(range(bounded_preds), c(0.1, 0.9))
+  expect_gt(min(bounded_preds),0.1)
+  expect_lte(max(bounded_preds), 0.9)
 })
