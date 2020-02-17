@@ -1,4 +1,5 @@
 ---
+always_allow_html: true
 output:
   rmarkdown::github_document
 bibliography: "inst/REFERENCES.bib"
@@ -131,6 +132,58 @@ learner_stack <- Stack$new(SL.glmnet_learner, glm_learner, screen_and_glm)
 stack_fit <- learner_stack$train(task)
 preds <- stack_fit$predict()
 head(preds)
+```
+
+---
+
+## Learner Properties
+
+You can find the properties that sl3 learners support in the table below:
+
+```{r warning=FALSE, echo = FALSE, message = FALSE}
+library(sl3)
+library(kableExtra)
+
+all_properties <- sl3_list_properties()
+
+get_all_learners <- function() {
+  # search for objects named like sl3 learners
+  learner_names <- apropos("^Lrnr_")
+  learners <- mget(learner_names, inherits = TRUE)
+
+  # verify that learner inherits from Lrnr_base (and is therefore an actual
+  # sl3 Learner)
+  is_learner_real <- sapply(learners, `[[`, "inherit") == "Lrnr_base"
+  return(learners[which(is_learner_real)])
+}
+all_learners <- get_all_learners()
+
+# get a list where each element is a list of properties of a particular learner
+get_learner_class_properties <- function(learner_class) {
+  return(learner_class$private_fields$.properties)
+}
+learner_property_lst <- lapply(all_learners, get_learner_class_properties)
+
+# get a list where each element is a list of True/False's indicating whether a learner has a property or not
+get_learner_class_properties_ownership <- function(properties) {
+  return(sl3_list_properties() %in% unlist(properties))
+}
+learner_property_ownership_mat <- lapply(learner_property_lst, get_learner_class_properties_ownership)
+
+get_learner_name <- function(learner_class) {
+  return(learner_class$classname)
+}
+learner_names <- lapply(all_learners, get_learner_name)
+
+# generate the data matrix, whose columns are properties and rows are learner names
+final_mat <- matrix(unlist(learner_property_ownership_mat), nrow = length(learner_property_ownership_mat), ncol = length(sl3_list_properties()), byrow = TRUE)
+dimnames(final_mat) <- list(unlist(learner_names), sl3_list_properties())
+final_mat.df <- as.data.frame(final_mat)
+
+char_final_mat.df <- ifelse(final_mat.df == TRUE, "√", "x")
+kable(char_final_mat.df) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  scroll_box(width = "100%", height = "200px", fixed_thead = T)
 ```
 
 ---
