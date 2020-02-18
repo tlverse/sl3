@@ -24,7 +24,7 @@ before_install:
   - sudo apt-get -y install libx11-dev mesa-common-dev libglu1-mesa-dev
   - sudo apt-get -y install python3-pip python-dev
   - sudo -H pip3 install --upgrade pip
-  - sudo -H pip3 install --ignore-installed numpy tensorflow keras
+  - sudo -H pip3 install numpy tensorflow keras
   #- Rscript -e 'update.packages(ask = FALSE)'
 
 r_packages:
