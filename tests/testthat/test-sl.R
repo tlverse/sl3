@@ -66,3 +66,13 @@ pipe <- Pipeline$new(make_inter, learners)
 sl1 <- make_learner(Lrnr_sl, pipe, metalearner = Lrnr_solnp$new())
 fit <- sl1$train(task)
 print(fit)
+
+# Metalearner does not return coefficients.
+glm_learner <- Lrnr_glm$new()
+glmnet_learner <- Lrnr_glmnet$new(nlambda = 5)
+learners <- Stack$new(glm_learner, glmnet_learner)
+# Selecting a metalearner that does not provide coefficients.
+ranger_learner <- Lrnr_ranger$new(num.trees = 5L)
+sl1 <- make_learner(Lrnr_sl, learners, ranger_learner)
+sl1_fit <- sl1$train(task)
+print(sl1_fit)
