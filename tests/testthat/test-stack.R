@@ -45,21 +45,20 @@ Lrnr_fixed_pred_length <- R6Class(
   classname = "Lrnr_broken", inherit = Lrnr_base, portable = TRUE,
   public = list(
     initialize = function() {
-      
       invisible(self)
     }
   ),
   private = list(
     .train = function(task) {
-        return(list())
+      return(list())
     },
     .predict = function(task) {
-      return(rep(1,10))
-    }   
+      return(rep(1, 10))
+    }
   )
 )
 
-test_that("Stack works with prediction lengths that don't match task length",{
+test_that("Stack works with prediction lengths that don't match task length", {
   stack_fixed_len <- Stack$new(Lrnr_fixed_pred_length$new(), Lrnr_fixed_pred_length$new())
   fit <- stack_fixed_len$train(task)
   preds <- fit$predict()
@@ -81,8 +80,7 @@ preds <- stack_fit$predict()
 old_mean <- mean(task_old$Y)
 new_mean <- mean(task$Y)
 
-test_that("A stack mixed from learners and fits does not retrain existing fits",{
-  expect_equal(unlist(preds[1,1,with=FALSE], use.names=FALSE),old_mean)
-  expect_equal(unlist(preds[1,2,with=FALSE], use.names=FALSE),new_mean)
-
+test_that("A stack mixed from learners and fits does not retrain existing fits", {
+  expect_equal(unlist(preds[1, 1, with = FALSE], use.names = FALSE), old_mean)
+  expect_equal(unlist(preds[1, 2, with = FALSE], use.names = FALSE), new_mean)
 })

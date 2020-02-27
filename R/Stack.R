@@ -102,7 +102,7 @@ Stack <- R6Class(
       # generate training subtasks
       learners <- self$params$learners
       subtasks <- lapply(learners, function(learner) {
-        if(learner$is_trained){
+        if (learner$is_trained) {
           return(learner)
         } else {
           delayed_learner <- delayed_learner_train(learner, task)
@@ -149,34 +149,34 @@ Stack <- R6Class(
       n_to_pred <- task$nrow
       n_learners <- length(learner_names)
 
-      
+
       current_fit <- learner_fits[[1]]
       current_preds <- current_fit$base_predict(task)
       current_names <- learner_names[1]
       n_to_pred <- safe_dim(current_preds)[2]
-      
-      
-      
+
+
+
       ## Cannot use := to add columns to a null data.table (no columns),
       ## hence we have to first seed an initial column, then delete it later
       learner_preds <- data.table::data.table(
         current_preds = current_preds
       )
-      
+
       if (!is.na(safe_dim(current_preds)[2]) &&
-          safe_dim(current_preds)[2] > 1) {
+        safe_dim(current_preds)[2] > 1) {
         current_names <- paste0(current_names, "_", names(current_preds))
         stopifnot(length(current_names) == safe_dim(current_preds)[2])
       }
-      
+
       setnames(learner_preds, names(learner_preds), current_names)
-      
+
       for (i in seq_along(learner_fits)) {
         current_fit <- learner_fits[[i]]
-        if(i>1){
+        if (i > 1) {
           current_preds <- current_fit$base_predict(task)
         }
-        
+
         current_names <- learner_names[i]
         if (!is.na(safe_dim(current_preds)[2]) &&
           safe_dim(current_preds)[2] > 1) {

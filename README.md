@@ -189,12 +189,12 @@ See file `LICENSE` for details.
 
 ## References
 
-<div id="refs" class="references">
+<div id="refs" class="references hanging-indent">
 
 <div id="ref-breiman1996stacked">
 
-Breiman, Leo. 1996. “Stacked Regressions.” *Machine Learning* 24 (1).
-Springer: 49–64.
+Breiman, Leo. 1996. “Stacked Regressions.” *Machine Learning* 24 (1):
+49–64.
 
 </div>
 
@@ -209,7 +209,7 @@ Learner.” *Statistical Applications in Genetics and Molecular Biology* 6
 <div id="ref-wolpert1992stacked">
 
 Wolpert, David H. 1992. “Stacked Generalization.” *Neural Networks* 5
-(2). Elsevier: 241–59.
+(2): 241–59.
 
 </div>
 
