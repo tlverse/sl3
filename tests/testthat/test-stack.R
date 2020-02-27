@@ -81,6 +81,8 @@ preds <- stack_fit$predict()
 old_mean <- mean(task_old$Y)
 new_mean <- mean(task$Y)
 
-test_that("A stack mixed from learners and fits does not retrain existing fits")
-expect_equal(unlist(preds[1,1,with=FALSE], use.names=FALSE),old_mean)
-expect_equal(unlist(preds[1,2,with=FALSE], use.names=FALSE),new_mean)
+test_that("A stack mixed from learners and fits does not retrain existing fits",{
+  expect_equal(unlist(preds[1,1,with=FALSE], use.names=FALSE),old_mean)
+  expect_equal(unlist(preds[1,2,with=FALSE], use.names=FALSE),new_mean)
+
+})
