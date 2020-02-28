@@ -28,5 +28,7 @@ loss_squared_error_multivariate(pred, observed)
 A vector of loss values
 }
 \description{
-Loss functions for use in evaluating learner fits
+Loss functions for use in evaluating learner fits.
+
+Assumes predicted probabilities are "packed" into a single vector.
 }

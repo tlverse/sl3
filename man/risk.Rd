@@ -2,7 +2,7 @@
 % Please edit documentation in R/loss_functions.R
 \name{risk}
 \alias{risk}
-\title{Risk Esimation}
+\title{Risk Estimation}
 \usage{
 risk(pred, observed, loss = loss_squared_error, weights = NULL)
 }

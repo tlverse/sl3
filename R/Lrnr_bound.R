@@ -32,7 +32,7 @@ Lrnr_bound <- R6Class(
   class = TRUE,
   public = list(
     initialize = function(bound = 0.005,
-                              ...) {
+                          ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }

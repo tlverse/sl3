@@ -42,9 +42,9 @@ Lrnr_haldensify <- R6Class(
   portable = TRUE, class = TRUE,
   public = list(
     initialize = function(grid_type = c("equal_range", "equal_mass"),
-                              n_bins = c(5, 10),
-                              lambda_seq = exp(seq(-1, -13, length = 1000L)),
-                              ...) {
+                          n_bins = c(5, 10),
+                          lambda_seq = exp(seq(-1, -13, length = 1000L)),
+                          ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }

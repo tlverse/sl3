@@ -53,7 +53,7 @@ Lrnr_density_semiparametric <- R6Class(
       if (!is.null(var_fit)) {
         var_preds <- var_fit$predict(task)
 
-        var_preds[var_preds < 0 ] <- self$fit_object$min_obs_error
+        var_preds[var_preds < 0] <- self$fit_object$min_obs_error
         sd_preds <- sqrt(var_preds)
       } else {
         sd_preds <- rep(1, task$nrow)
@@ -111,7 +111,7 @@ Lrnr_density_semiparametric <- R6Class(
         min_obs_error <- 2 * min(se_task$Y)
         var_fit <- var_learner$train(se_task)
         var_preds <- var_fit$predict()
-        var_preds[var_preds < 0 ] <- min_obs_error
+        var_preds[var_preds < 0] <- min_obs_error
         sd_preds <- sqrt(var_preds)
         errors <- errors / sd_preds
       } else {
@@ -141,7 +141,7 @@ Lrnr_density_semiparametric <- R6Class(
       if (!is.null(var_fit)) {
         var_preds <- var_fit$predict(task)
 
-        var_preds[var_preds < 0 ] <- self$fit_object$min_obs_error
+        var_preds[var_preds < 0] <- self$fit_object$min_obs_error
         sd_preds <- sqrt(var_preds)
       } else {
         sd_preds <- rep(1, task$nrow)
