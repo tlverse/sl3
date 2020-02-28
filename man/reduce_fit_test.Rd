@@ -7,8 +7,8 @@
 reduce_fit_test(learner_fit)
 }
 \arguments{
-\item{learner_fit}{A \code{Lrnr_*} object, inheriting from \code{Lrnr_base},
-that has been trained.}
+\item{learner_fit}{A \code{Lrnr_*} object, inheriting from
+\code{\link{Lrnr_base}}, that has been trained.}
 }
 \description{
 Given learner fit, sequentially drop components from internal fit object,

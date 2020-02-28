@@ -57,6 +57,6 @@ varimp <- function(fit, loss, fold_number = "validation") {
     X = names(risk_diffs),
     risk_diff = unlist(risk_diffs)
   )
-  results_ord <- results[ order(-results$risk_diff) ]
+  results_ord <- results[order(-results$risk_diff)]
   return(results_ord)
 }
