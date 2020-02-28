@@ -4,15 +4,19 @@
 \alias{bound}
 \title{Truncates predictions to ensure loss function is bounded.}
 \usage{
-bound(x, bounds = 0.001)
+bound(preds, bounds = 0.001)
 }
 \arguments{
-\item{bounds}{Either a length two vector of c(lower,upper) or a lower bound,
-where the upper is then 1 - lower. Default bounds=0.001.}
+\item{preds}{A \code{numeric} vector of predictions to to be bounded.}
+
+\item{bounds}{Either a \code{numeric} vector of length two, giving the
+closed interval (lower, upper), or just a lower bound. In the latter case,
+the upper bound is computed as (1 - lower). The default is 0.001.}
 }
 \value{
-truncated predictions.
+Truncated predictions.
 }
 \description{
 Truncates predictions to ensure loss function is bounded.
 }
+\keyword{internal}

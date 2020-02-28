@@ -1,21 +1,25 @@
 #' Truncates predictions to ensure loss function is bounded.
 #'
-#' @param bounds Either a length two vector of c(lower,upper) or a lower bound,
-#' where the upper is then 1 - lower. Default bounds=0.001.
+#' @param preds A \code{numeric} vector of predictions to to be bounded.
+#' @param bounds Either a \code{numeric} vector of length two, giving the
+#'  closed interval (lower, upper), or just a lower bound. In the latter case,
+#'  the upper bound is computed as (1 - lower). The default is 0.001.
 #'
-#' @return truncated predictions.
+#' @return Truncated predictions.
 #'
-#' @export
-#
-bound <- function(x, bounds = 0.001) {
+#' @keywords internal
+bound <- function(preds, bounds = 0.001) {
   lower <- bounds[[1]]
   if (length(bounds) > 1) {
     upper <- bounds[[2]]
   } else {
     upper <- 1 - lower
   }
-  pmin(pmax(x, lower), upper)
+  preds_bounded <- pmin(pmax(preds, lower), upper)
+  return(preds_bounded)
 }
+
+################################################################################
 
 # if warning is in ignoreWarningList, ignore it; otherwise post it as usual
 SuppressGivenWarnings <- function(expr, warningsToIgnore) {
@@ -56,7 +60,6 @@ GetWarningsToSuppress <- function(update.step = FALSE) {
 #'  arguments passed in.
 #'
 #' @keywords internal
-#
 keep_only_fun_args <- function(Args, fun) {
   keepArgs <- intersect(names(Args), names(formals(fun)))
   # captures optional arguments given by user
@@ -83,7 +86,6 @@ keep_only_fun_args <- function(Args, fun) {
 #'   matched in either the function prototype or other_valid.
 #'
 #' @keywords internal
-#
 call_with_args <- function(fun, args, other_valid = list(), keep_all = FALSE) {
   if (!keep_all) {
     formal_args <- names(formals(fun))
@@ -95,12 +97,12 @@ call_with_args <- function(fun, args, other_valid = list(), keep_all = FALSE) {
 
 ################################################################################
 
-#' Replace an argument in \code{mainArgs} if it also appears in \code{userArgs}.
+#' Replace an argument in \code{mainArgs} if it also appears in \code{userArgs}
+#'
 #' Add any argument from \code{userArgs} that appears in \code{formals(fun)} of
 #' the function \code{fun}.
 #'
 #' @keywords internal
-#
 replace_add_user_args <- function(mainArgs, userArgs, fun) {
   replaceArgs <- intersect(names(mainArgs), names(userArgs))
   # captures main arguments that were overridden by user
@@ -128,7 +130,6 @@ replace_add_user_args <- function(mainArgs, userArgs, fun) {
 #' @return the size of \code{obj} in bytes
 #'
 #' @keywords internal
-#
 true_obj_size <- function(obj) {
   length(serialize(obj, NULL))
 }
@@ -140,11 +141,10 @@ true_obj_size <- function(obj) {
 #' Given learner fit, sequentially drop components from internal fit object,
 #' keeping track of which components are needed for prediction.
 #'
-#' @param learner_fit A \code{Lrnr_*} object, inheriting from \code{Lrnr_base},
-#'  that has been trained.
+#' @param learner_fit A \code{Lrnr_*} object, inheriting from
+#'  \code{\link{Lrnr_base}}, that has been trained.
 #'
 #' @keywords internal
-#
 reduce_fit_test <- function(learner_fit) {
   # learner_fit = glm_fit
   original_fit <- learner_fit$fit_object
@@ -187,7 +187,6 @@ reduce_fit_test <- function(learner_fit) {
 #' @return Subset of input \code{\link[data.table]{data.table}}.
 #'
 #' @keywords internal
-#
 subset_dt_cols <- function(dt, cols) {
   return(dt[, cols, with = FALSE, drop = FALSE])
 }
@@ -199,7 +198,6 @@ subset_dt_cols <- function(dt, cols) {
 #' @return A \code{list} of all arguments for the parent function call.
 #'
 #' @export
-#
 args_to_list <- function() {
   # get calling environment, call object, and function to call
   parent <- sys.parent()
@@ -247,7 +245,6 @@ args_to_list <- function() {
 #' @param x the object to get dimensions from
 #'
 #' @export
-#
 safe_dim <- function(x) {
   d <- dim(x)
   if (is.null(d)) {
@@ -270,7 +267,6 @@ safe_dim <- function(x) {
 #'  template was successful.
 #'
 #' @export
-#
 write_learner_template <- function(file) {
   template_file <- system.file(
     "templates/Lrnr_template.R",

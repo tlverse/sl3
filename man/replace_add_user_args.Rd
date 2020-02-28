@@ -2,14 +2,11 @@
 % Please edit documentation in R/utils.R
 \name{replace_add_user_args}
 \alias{replace_add_user_args}
-\title{Replace an argument in \code{mainArgs} if it also appears in \code{userArgs}.
-Add any argument from \code{userArgs} that appears in \code{formals(fun)} of
-the function \code{fun}.}
+\title{Replace an argument in \code{mainArgs} if it also appears in \code{userArgs}}
 \usage{
 replace_add_user_args(mainArgs, userArgs, fun)
 }
 \description{
-Replace an argument in \code{mainArgs} if it also appears in \code{userArgs}.
 Add any argument from \code{userArgs} that appears in \code{formals(fun)} of
 the function \code{fun}.
 }
