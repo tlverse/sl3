@@ -16,21 +16,21 @@ library(reticulate)
 library(sl3)
 library(testthat)
 
-#See which environments reticulate can see:
-#reticulate:::conda_list()
-use_condaenv("r-reticulate")
-import("scipy")
-import("tensorflow")
-
-#Install keras:
-#install.packages("keras")
-#keras::install_keras()
-
 set.seed(1)
 
 trend_all <- 11:130 + rnorm(120, sd = 2)
 trend_all <- data.frame(data = trend_all)
 task <- sl3_Task$new(trend_all, covariates = "data", outcome = "data")
+
+#See which environments reticulate can see:
+#reticulate:::conda_list()
+#use_condaenv("r-reticulate")
+#import("scipy")
+#import("tensorflow")
+
+#Install keras:
+#install.packages("keras")
+#keras::install_keras()
 
 test_that("Lrnr_lstm does what we expect", {
   have_foo <- reticulate::py_module_available("keras.models")
