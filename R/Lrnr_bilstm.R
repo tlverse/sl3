@@ -68,7 +68,7 @@ Lrnr_bilstm <- R6Class(
       names(args$y) <- NULL
 
       args$x <- kerasR::expand_dims(args$x, axis = 2)
-      args$y <- kerasR::expand_dims(args$y, axis = 2)
+      args$y <- kerasR::expand_dims(args$y, axis = 1)
 
       num_samples <- dim(args$x)[1] # based on spliting the time series
       num_steps <- dim(args$x)[2] # window
@@ -76,14 +76,13 @@ Lrnr_bilstm <- R6Class(
 
       # Build the model
       model <- kerasR::Sequential()
-      keras::bidirectional(
-        object = model, layer = kerasR::LSTM(args$units,
-          return_sequences = TRUE
-        ),
-        input_shape = c(num_steps, num_features)
-      )
-      # model$add(kerasR::Bidirectional(kerasR::LSTM(args$units,
-      # return_sequences = TRUE)))
+      #keras::bidirectional(
+      #  object = model, layer = kerasR::LSTM(args$units,
+      #    return_sequences = TRUE
+      #  ),
+      #  input_shape = c(num_steps, num_features)
+      #)
+      model$add(kerasR::Bidirectional(kerasR::LSTM(args$units,return_sequences = TRUE)))
       model$add(kerasR::Dropout(rate = args$dropout))
       model$add(kerasR::Flatten())
       model$add(kerasR::Dense(args$dense))

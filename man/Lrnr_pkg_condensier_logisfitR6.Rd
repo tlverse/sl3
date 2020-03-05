@@ -4,11 +4,18 @@
 \name{Lrnr_pkg_condensier_logisfitR6}
 \alias{Lrnr_pkg_condensier_logisfitR6}
 \title{sl3 Learner wrapper for condensier}
+\format{An object of class \code{R6ClassGenerator} of length 25.}
+\usage{
+Lrnr_pkg_condensier_logisfitR6
+}
 \description{
 This wrapper allows the use of any \code{sl3} Learner as a Learner for
 \code{condensier}. For details, see the \code{\link[condensier]{fit_density}}
 function.
 }
+<<<<<<< HEAD
+\keyword{datasets}
+=======
 \section{Super class}{
 \code{\link[condensier:logisfitR6]{condensier::logisfitR6}} -> \code{Lrnr_pkg_condensier_logisfitR6}
 }
@@ -69,3 +76,4 @@ The objects of this class are cloneable with this method.
 }
 }
 }
+>>>>>>> 63d08007057d111e9839e207e70488ebc006f5ad
