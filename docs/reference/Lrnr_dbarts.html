@@ -225,6 +225,9 @@ returned in arrays of dimensions equal to <code>nchain</code> \(\times\)
 <dt><code>keepcall</code></dt><dd><p>Logical; if <code>FALSE</code>, returned object will have
 <code>call</code> set to <code><a href='https://rdrr.io/r/base/call.html'>call("NULL")</a></code>, otherwise the call used to
 instantiate BART.</p></dd>
+<dt><code>serializeable</code></dt><dd><p>Logical; if <code>TRUE</code>, loads the trees into R memory
+so the fit object can be saved and loaded. See the section on "Saving"
+in <code><a href='https://rdrr.io/pkg/dbarts/man/bart.html'>bart</a> NB: This is not currently working</code></p></dd>
 
 </dl>
 
@@ -251,6 +254,7 @@ by all learners.</p>
 <code><a href='Lrnr_bartMachine.html'>Lrnr_bartMachine</a></code>,
 <code><a href='Lrnr_base.html'>Lrnr_base</a></code>,
 <code><a href='Lrnr_bilstm.html'>Lrnr_bilstm</a></code>,
+<code><a href='Lrnr_bound.html'>Lrnr_bound</a></code>,
 <code><a href='Lrnr_caret.html'>Lrnr_caret</a></code>,
 <code><a href='Lrnr_condensier.html'>Lrnr_condensier</a></code>,
 <code><a href='Lrnr_cv_selector.html'>Lrnr_cv_selector</a></code>,

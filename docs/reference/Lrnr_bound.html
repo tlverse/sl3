@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>xgboost: eXtreme Gradient Boosting — Lrnr_xgboost • sl3</title>
+<title>Bound Predictions — Lrnr_bound • sl3</title>
 
 
 <!-- jquery -->
@@ -35,12 +35,8 @@
 
 
 
-<meta property="og:title" content="xgboost: eXtreme Gradient Boosting — Lrnr_xgboost" />
-<meta property="og:description" content="This learner provides fitting procedures for xgboost models, using the
-xgboost package, using the xgb.train function.
-Such models are classification and regression trees with extreme gradient
-boosting. For details on the fitting procedure, consult the documentation of
-the xgboost package." />
+<meta property="og:title" content="Bound Predictions — Lrnr_bound" />
+<meta property="og:description" content="This learner bounds predictions. Intended for use in a pipeline." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -135,17 +131,13 @@ the xgboost package." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>xgboost: eXtreme Gradient Boosting</h1>
+    <h1>Bound Predictions</h1>
     
-    <div class="hidden name"><code>Lrnr_xgboost.Rd</code></div>
+    <div class="hidden name"><code>Lrnr_bound.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This learner provides fitting procedures for <code>xgboost</code> models, using the
-<code>xgboost</code> package, using the <code><a href='https://rdrr.io/pkg/xgboost/man/xgb.train.html'>xgb.train</a></code> function.
-Such models are classification and regression trees with extreme gradient
-boosting. For details on the fitting procedure, consult the documentation of
-the <code>xgboost</code> package.</p>
+    <p>This learner bounds predictions. Intended for use in a pipeline.</p>
     </div>
 
 
@@ -162,9 +154,9 @@ the <code>xgboost</code> package.</p>
     
 
 <dl class='dl-horizontal'>
-<dt><code>nrounds=20</code></dt><dd><p>Number of fitting iterations.</p></dd>
-<dt><code>...</code></dt><dd><p>Other parameters passed to
-<code><a href='https://rdrr.io/pkg/xgboost/man/xgb.train.html'>xgb.train</a></code>.</p></dd>
+<dt><code>bound = .005</code></dt><dd><p>Either a length two vector of c(lower,upper) or a
+lower bound, where the upper is then 1 - lower</p></dd>
+<dt><code>...</code></dt><dd><p>Not currently used.</p></dd>
 
 </dl>
 
@@ -191,7 +183,6 @@ by all learners.</p>
 <code><a href='Lrnr_bartMachine.html'>Lrnr_bartMachine</a></code>,
 <code><a href='Lrnr_base.html'>Lrnr_base</a></code>,
 <code><a href='Lrnr_bilstm.html'>Lrnr_bilstm</a></code>,
-<code><a href='Lrnr_bound.html'>Lrnr_bound</a></code>,
 <code><a href='Lrnr_caret.html'>Lrnr_caret</a></code>,
 <code><a href='Lrnr_condensier.html'>Lrnr_condensier</a></code>,
 <code><a href='Lrnr_cv_selector.html'>Lrnr_cv_selector</a></code>,
@@ -238,6 +229,7 @@ by all learners.</p>
 <code><a href='Lrnr_subset_covariates.html'>Lrnr_subset_covariates</a></code>,
 <code><a href='Lrnr_svm.html'>Lrnr_svm</a></code>,
 <code><a href='Lrnr_tsDyn.html'>Lrnr_tsDyn</a></code>,
+<code><a href='Lrnr_xgboost.html'>Lrnr_xgboost</a></code>,
 <code><a href='Pipeline.html'>Pipeline</a></code>,
 <code><a href='Stack.html'>Stack</a></code>,
 <code><a href='Lrnr_h2o_glm.html'>define_h2o_X</a>()</code>,

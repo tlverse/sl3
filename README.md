@@ -9,18 +9,15 @@ Status](https://travis-ci.com/tlverse/sl3.svg?branch=master)](https://travis-ci.
 Status](https://ci.appveyor.com/api/projects/status/hagh8vidrdeacr7f?svg=true)](https://ci.appveyor.com/project/tlverse/sl3)
 [![Coverage
 Status](https://img.shields.io/codecov/c/github/tlverse/sl3/master.svg)](https://codecov.io/github/tlverse/sl3?branch=master)
-[![CRAN](http://www.r-pkg.org/badges/version/sl3)](http://www.r-pkg.org/pkg/sl3)
-[![CRAN
-downloads](https://cranlogs.r-pkg.org/badges/sl3)](https://CRAN.R-project.org/package=sl3)
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![License: GPL
 v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3558317.svg)](https://doi.org/10.5281/zenodo.3558317)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1342293.svg)](https://doi.org/10.5281/zenodo.1342293)
 
-> A modern implementation of the Super Learner algorithm for ensemble
-> learning and model stacking
+> A modern implementation of the Super Learner ensemble learning
+> algorithm
 
 **Authors:** [Jeremy Coyle](https://github.com/jeremyrcoyle), [Nima
 Hejazi](https://nimahejazi.org), [Ivana
@@ -148,8 +145,8 @@ head(preds)
 
 ## Learner Properties
 
-You can find the properties that sl3 learners support in the table
-below:
+Properties supported by `sl3` learners are presented in the following
+table:
 
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:200px; overflow-x: scroll; width:100%; ">
 
@@ -219,6 +216,12 @@ preprocessing
 
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 
+sampling
+
+</th>
+
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+
 timeseries
 
 </th>
@@ -264,6 +267,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -393,6 +402,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -469,6 +484,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -476,6 +497,94 @@ x
 <td style="text-align:left;">
 
 x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Lrnr\_bound
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+√
 
 </td>
 
@@ -510,6 +619,12 @@ Lrnr\_caret
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -639,6 +754,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -727,7 +848,101 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Lrnr\_cv\_selector
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -756,6 +971,12 @@ Lrnr\_dbarts
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -895,6 +1116,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
@@ -932,6 +1159,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -1059,6 +1292,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
@@ -1120,6 +1359,12 @@ x
 <td style="text-align:left;">
 
 x
+
+</td>
+
+<td style="text-align:left;">
+
+√
 
 </td>
 
@@ -1223,6 +1468,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
@@ -1248,6 +1499,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -1387,6 +1644,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
@@ -1412,6 +1675,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -1541,6 +1810,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -1623,6 +1898,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -1658,6 +1939,12 @@ Lrnr\_glmnet
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -1787,6 +2074,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -1852,6 +2145,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -1951,6 +2250,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -1986,6 +2291,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -2125,6 +2436,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
@@ -2150,6 +2467,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -2289,6 +2612,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
@@ -2314,6 +2643,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -2443,6 +2778,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -2472,6 +2813,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -2617,6 +2964,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
@@ -2672,6 +3025,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -2781,6 +3140,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
@@ -2853,6 +3218,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -2888,6 +3259,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -3017,6 +3394,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -3109,6 +3492,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
@@ -3128,6 +3517,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -3273,6 +3668,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
@@ -3298,6 +3699,12 @@ Lrnr\_ranger
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -3433,6 +3840,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -3474,6 +3887,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -3591,6 +4010,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -3626,6 +4051,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -3765,6 +4196,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
@@ -3790,6 +4227,12 @@ Lrnr\_screener\_corRank
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -3929,6 +4372,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
@@ -3960,6 +4409,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -4083,6 +4538,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -4130,6 +4591,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -4257,6 +4724,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
@@ -4264,6 +4737,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_subset\_covariates
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -4421,6 +4900,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
@@ -4470,6 +4955,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -4575,6 +5066,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -4609,16 +5106,16 @@ prior to submitting a pull request.
 After using the `sl3` R package, please cite the following:
 
 ``` 
- @manual{coyle2019sl3,
+ @manual{coyle2020sl3,
       author = {Coyle, Jeremy R and Hejazi, Nima S and Malenica, Ivana and
         Sofrygin, Oleg},
       title = {{sl3}: Modern Pipelines for Machine Learning and {Super
         Learning}},
-      year = {2019},
+      year = {2020},
       howpublished = {\url{https://github.com/tlverse/sl3}},
-      note = {{R} package version 1.3.5},
-      url = {https://doi.org/10.5281/zenodo.3558317},
-      doi = {10.5281/zenodo.3558317}
+      note = {{R} package version 1.3.7},
+      url = {https://doi.org/10.5281/zenodo.1342293},
+      doi = {10.5281/zenodo.1342293}
     }
 ```
 
@@ -4626,7 +5123,7 @@ After using the `sl3` R package, please cite the following:
 
 ## License
 
-© 2017-2019 [Jeremy R. Coyle](https://github.com/jeremyrcoyle), [Nima S.
+© 2017-2020 [Jeremy R. Coyle](https://github.com/jeremyrcoyle), [Nima S.
 Hejazi](https://nimahejazi.org), [Ivana
 Malenica](https://github.com/podTockom), [Oleg
 Sofrygin](https://github.com/osofr)
@@ -4638,12 +5135,12 @@ See file `LICENSE` for details.
 
 ## References
 
-<div id="refs" class="references hanging-indent">
+<div id="refs" class="references">
 
 <div id="ref-breiman1996stacked">
 
-Breiman, Leo. 1996. “Stacked Regressions.” *Machine Learning* 24 (1):
-49–64.
+Breiman, Leo. 1996. “Stacked Regressions.” *Machine Learning* 24 (1).
+Springer: 49–64.
 
 </div>
 
@@ -4658,7 +5155,7 @@ Learner.” *Statistical Applications in Genetics and Molecular Biology* 6
 <div id="ref-wolpert1992stacked">
 
 Wolpert, David H. 1992. “Stacked Generalization.” *Neural Networks* 5
-(2): 241–59.
+(2). Elsevier: 241–59.
 
 </div>
 
