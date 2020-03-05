@@ -1,6 +1,6 @@
 #' Loss Function Definitions
 #'
-#' Loss functions for use in evaluating learner fits
+#' Loss functions for use in evaluating learner fits.
 #'
 #' @param pred A vector of predicted values
 #' @param observed A vector of observed values
@@ -8,14 +8,12 @@
 #' @return A vector of loss values
 #'
 #' @name loss_functions
-#
 
 # SQUARED ERROR LOSS
 #
 #' @rdname loss_functions
 #'
 #' @export
-#
 loss_squared_error <- function(pred, observed) {
   out <- (pred - observed)^2
   return(out)
@@ -23,14 +21,13 @@ loss_squared_error <- function(pred, observed) {
 
 # NEGATIVE LOG-LIKELIHOOD LOSS
 #
-# assumes pred is p(Y = observed); therefore, observed is not actually used
+# Assumes pred is p(Y = observed); therefore, observed is not actually used.
 #
 #' @rdname loss_functions
 #'
 #' @export
-#
 loss_loglik_true_cat <- function(pred, observed) {
-  out <- -log(pred)
+  out <- -log(bound(pred))
   return(out)
 }
 
@@ -39,9 +36,8 @@ loss_loglik_true_cat <- function(pred, observed) {
 #' @rdname loss_functions
 #'
 #' @export
-#
 loss_loglik_binomial <- function(pred, observed) {
-  out <- -1 * ifelse(observed == 1, log(pred), log(1 - pred))
+  out <- -1 * ifelse(observed == 1, log(bound(pred)), log(1 - bound(pred)))
   return(out)
 }
 
@@ -52,16 +48,15 @@ loss_loglik_binomial <- function(pred, observed) {
 #' @rdname loss_functions
 #'
 #' @export
-#
 loss_loglik_multinomial <- function(pred, observed) {
   # make index matrix
   index_mat <- cbind(seq_along(observed), observed)
   unpacked <- unpack_predictions(pred)
-  class_liks <- log(unpacked[index_mat])
+  class_liks <- log(bound(unpacked[index_mat]))
   return(-1 * class_liks)
 }
 
-#' Risk Esimation
+#' Risk Estimation
 #'
 #' Estimates a risk for a given set of predictions and loss function.
 #'
@@ -73,7 +68,6 @@ loss_loglik_multinomial <- function(pred, observed) {
 #' @importFrom stats weighted.mean
 #'
 #' @export
-#
 risk <- function(pred, observed, loss = loss_squared_error, weights = NULL) {
   if (is.null(weights)) {
     weights <- rep(1, length(observed))
@@ -159,14 +153,13 @@ cv_risk <- function(learner, loss_fun, coefs = NULL) {
   return(risk_dt)
 }
 
-# Squared Error loss for multivariate (loss averaged across outcomes)
-#
-# Assumes predicted probabilities are "packed" into a single vector
-#
+#' Squared-error loss for multivariate (loss averaged across outcomes)
+#'
+#' Assumes predicted probabilities are "packed" into a single vector.
+#'
 #' @rdname loss_functions
 #'
 #' @export
-#
 loss_squared_error_multivariate <- function(pred, observed) {
   unpacked <- unpack_predictions(pred)
   losses <- rowMeans((unpacked - observed)^2)

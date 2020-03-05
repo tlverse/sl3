@@ -27,4 +27,72 @@ observations above which variable is continuous}
 \description{
 Specify variable type
 }
+<<<<<<< HEAD
 \keyword{datasets}
+=======
+\section{Methods}{
+\subsection{Public methods}{
+\itemize{
+\item \href{#method-new}{\code{Variable_Type$new()}}
+\item \href{#method-print}{\code{Variable_Type$print()}}
+\item \href{#method-glm_family}{\code{Variable_Type$glm_family()}}
+\item \href{#method-format}{\code{Variable_Type$format()}}
+\item \href{#method-clone}{\code{Variable_Type$clone()}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\subsection{Method \code{new()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Variable_Type$new(
+  type = NULL,
+  levels = NULL,
+  bounds = NULL,
+  x = NULL,
+  pcontinuous = getOption("sl3.pcontinuous")
+)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-print"></a>}}
+\subsection{Method \code{print()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Variable_Type$print()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-glm_family"></a>}}
+\subsection{Method \code{glm_family()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Variable_Type$glm_family(return_object = FALSE)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-format"></a>}}
+\subsection{Method \code{format()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Variable_Type$format(x)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-clone"></a>}}
+\subsection{Method \code{clone()}}{
+The objects of this class are cloneable with this method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Variable_Type$clone(deep = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{deep}}{Whether to make a deep clone.}
+}
+\if{html}{\out{</div>}}
+}
+}
+}
+>>>>>>> 63d08007057d111e9839e207e70488ebc006f5ad

@@ -1,4 +1,5 @@
 ---
+always_allow_html: true
 output:
   rmarkdown::github_document
 bibliography: "inst/REFERENCES.bib"
@@ -79,7 +80,7 @@ Past stable releases may be located via the
 installed by including the appropriate major version tag. For example,
 
 ```{r gh-version-installation, eval = FALSE}
-remotes::install_github("tlverse/sl3@v1.3.0")
+remotes::install_github("tlverse/sl3@v1.3.5")
 ```
 
 To contribute, check out the `devel` branch and consider submitting a pull
@@ -101,10 +102,10 @@ combining both types of algorithms into a stacked regression model, and
 cross-validating this whole process essentially trivial. The best way to
 understand this is to see the `sl3` package in action:
 
-```{r sl3-simple-example}
+```{r sl3-simple-example, message=FALSE, warning=FALSE}
 set.seed(49753)
-suppressMessages(library(data.table))
-library(dplyr)
+library(tidyverse)
+library(data.table)
 library(SuperLearner)
 library(origami)
 library(sl3)
@@ -113,7 +114,7 @@ library(sl3)
 data(cpp)
 cpp <- cpp %>%
   dplyr::filter(!is.na(haz)) %>%
-  mutate_all(funs(replace(., is.na(.), 0)))
+  mutate_all(~ replace(., is.na(.), 0))
 
 # use covariates of intest and the outcome to build a task object
 covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
@@ -135,6 +136,58 @@ head(preds)
 
 ---
 
+## Learner Properties
+
+You can find the properties that sl3 learners support in the table below:
+
+```{r warning=FALSE, echo = FALSE, message = FALSE}
+library(sl3)
+library(kableExtra)
+
+all_properties <- sl3_list_properties()
+
+get_all_learners <- function() {
+  # search for objects named like sl3 learners
+  learner_names <- apropos("^Lrnr_")
+  learners <- mget(learner_names, inherits = TRUE)
+
+  # verify that learner inherits from Lrnr_base (and is therefore an actual
+  # sl3 Learner)
+  is_learner_real <- sapply(learners, `[[`, "inherit") == "Lrnr_base"
+  return(learners[which(is_learner_real)])
+}
+all_learners <- get_all_learners()
+
+# get a list where each element is a list of properties of a particular learner
+get_learner_class_properties <- function(learner_class) {
+  return(learner_class$private_fields$.properties)
+}
+learner_property_lst <- lapply(all_learners, get_learner_class_properties)
+
+# get a list where each element is a list of True/False's indicating whether a learner has a property or not
+get_learner_class_properties_ownership <- function(properties) {
+  return(sl3_list_properties() %in% unlist(properties))
+}
+learner_property_ownership_mat <- lapply(learner_property_lst, get_learner_class_properties_ownership)
+
+get_learner_name <- function(learner_class) {
+  return(learner_class$classname)
+}
+learner_names <- lapply(all_learners, get_learner_name)
+
+# generate the data matrix, whose columns are properties and rows are learner names
+final_mat <- matrix(unlist(learner_property_ownership_mat), nrow = length(learner_property_ownership_mat), ncol = length(sl3_list_properties()), byrow = TRUE)
+dimnames(final_mat) <- list(unlist(learner_names), sl3_list_properties())
+final_mat.df <- as.data.frame(final_mat)
+
+char_final_mat.df <- ifelse(final_mat.df == TRUE, "√", "x")
+kable(char_final_mat.df) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  scroll_box(width = "100%", height = "200px", fixed_thead = T)
+```
+
+---
+
 ## Contributions
 
 Contributions are very welcome. Interested contributors should consult our
@@ -143,6 +196,8 @@ guidelines](https://github.com/tlverse/sl3/blob/master/CONTRIBUTING.md) prior to
 submitting a pull request.
 
 ---
+
+## Citation
 
 After using the `sl3` R package, please cite the following:
 

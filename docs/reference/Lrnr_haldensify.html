@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sl3</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.7</span>
       </span>
     </div>
 
@@ -154,19 +154,19 @@
     
 
 <dl class='dl-horizontal'>
-<dt><code>grid_type = "grid_type"</code></dt><dd><p>A <code>character</code> indicating the
-strategy to be used in creating bins along the observed support of the
-outcome variable. For bins of equal range, use "equal_range", consulting
-the documentation of <code><a href='https://ggplot2.tidyverse.org/reference/cut_interval.html'>ggplot2::cut_interval</a></code> for more information. To
-ensure each bins has the same number of points, use "equal_mass" and
-consult the documentation of <code><a href='https://ggplot2.tidyverse.org/reference/cut_interval.html'>ggplot2::cut_number</a></code> for details.</p></dd>
-<dt><code>n_bins = "n_bins"</code></dt><dd><p>Only used if <code>type</code> is set to
+<dt><code>grid_type = c("equal_range", "equal_mass")</code></dt><dd><p><code>character</code>
+indicating the strategy to be used in creating bins along the observed
+support of the outcome variable. For bins of equal range, use
+"equal_range" (based on <code><a href='https://ggplot2.tidyverse.org/reference/cut_interval.html'>cut_interval</a></code>). To ensure
+each bin has the same number of observations, use "equal_mass" (based on
+<code><a href='https://ggplot2.tidyverse.org/reference/cut_interval.html'>cut_number</a></code>).</p></dd>
+<dt><code>n_bins = c(5, 10)</code></dt><dd><p>Only used if <code>type</code> is set to
 <code>"equal_range"</code> or <code>"equal_mass"</code>. This <code>numeric</code> value
 indicates the number of bins that the support of the outcome variable is
 to be divided into.</p></dd>
-<dt><code>lambda_seq = "lambda_seq"</code></dt><dd><p>A <code>numeric</code> sequence of
-values of the lambda tuning parameter of the Lasso L1 regression, to be
-passed to <code><a href='https://rdrr.io/pkg/glmnet/man/glmnet.html'>glmnet::glmnet</a></code> through a call to <code><a href='https://rdrr.io/pkg/hal9001/man/fit_hal.html'>hal9001::fit_hal</a></code>.</p></dd>
+<dt><code>lambda_seq = exp(seq(-1, -13, length = 1000L))</code></dt><dd><p><code>numeric</code>
+sequence of values of the regulariztion parameter of the Lasso regression,
+to be passed to to <code><a href='https://rdrr.io/pkg/hal9001/man/fit_hal.html'>fit_hal</a></code>.</p></dd>
 <dt><code>...</code></dt><dd><p>Other parameters passed directly to
 <code><a href='https://rdrr.io/pkg/haldensify/man/haldensify.html'>haldensify</a></code>. See its documentation for details.</p></dd>
 
@@ -183,6 +183,7 @@ passed to <code><a href='https://rdrr.io/pkg/glmnet/man/glmnet.html'>glmnet::glm
 <code><a href='Lrnr_bilstm.html'>Lrnr_bilstm</a></code>,
 <code><a href='Lrnr_caret.html'>Lrnr_caret</a></code>,
 <code><a href='Lrnr_condensier.html'>Lrnr_condensier</a></code>,
+<code><a href='Lrnr_cv_selector.html'>Lrnr_cv_selector</a></code>,
 <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
 <code><a href='Lrnr_dbarts.html'>Lrnr_dbarts</a></code>,
 <code><a href='Lrnr_define_interactions.html'>Lrnr_define_interactions</a></code>,

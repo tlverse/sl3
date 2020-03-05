@@ -81,7 +81,7 @@ including which variables are to be used as covariates and outcomes." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sl3</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.7</span>
       </span>
     </div>
 
@@ -201,7 +201,7 @@ This prevents two added columns with the same name overwriting each other, provi
 <li><p><code>new_data</code>: A data.table containing the columns to add</p></li>
 <li><p><code>global_cols</code>: If true, don't use the fit_uuid to make unique column names</p></li>
 </ul></p></dd>
-<dt><code>next_in_chain(covariates=NULL, outcome=NULL, id=NULL, weights=NULL, 
+<dt><code>next_in_chain(covariates=NULL, outcome=NULL, id=NULL, weights=NULL,
                                     offset=NULL, column_names=NULL, new_nodes=NULL, ...)</code></dt><dd><p>Used by learner$chain methods to generate a task with the same underlying data, but redefined nodes.
 Most of the parameter values are passed to the <code>sl3_Task</code> constructor, documented above.<ul>
 <li><p><code>covariates</code>: An updated covariates character vector</p></li>

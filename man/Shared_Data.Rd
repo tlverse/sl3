@@ -11,4 +11,61 @@ Shared_Data
 \description{
 Mostly to deal with alloc.col shallow copies, but also nice to have a bit more abstraction.
 }
+<<<<<<< HEAD
 \keyword{datasets}
+=======
+\section{Methods}{
+\subsection{Public methods}{
+\itemize{
+\item \href{#method-new}{\code{Shared_Data$new()}}
+\item \href{#method-get_data}{\code{Shared_Data$get_data()}}
+\item \href{#method-add_columns}{\code{Shared_Data$add_columns()}}
+\item \href{#method-clone}{\code{Shared_Data$clone()}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\subsection{Method \code{new()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Shared_Data$new(data, force_copy = TRUE, ...)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_data"></a>}}
+\subsection{Method \code{get_data()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Shared_Data$get_data(rows = NULL, columns)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-add_columns"></a>}}
+\subsection{Method \code{add_columns()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Shared_Data$add_columns(
+  new_data,
+  column_uuid = uuid::UUIDgenerate(),
+  row_index = NULL
+)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-clone"></a>}}
+\subsection{Method \code{clone()}}{
+The objects of this class are cloneable with this method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Shared_Data$clone(deep = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{deep}}{Whether to make a deep clone.}
+}
+\if{html}{\out{</div>}}
+}
+}
+}
+>>>>>>> 63d08007057d111e9839e207e70488ebc006f5ad

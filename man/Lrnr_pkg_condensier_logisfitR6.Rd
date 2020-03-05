@@ -13,4 +13,67 @@ This wrapper allows the use of any \code{sl3} Learner as a Learner for
 \code{condensier}. For details, see the \code{\link[condensier]{fit_density}}
 function.
 }
+<<<<<<< HEAD
 \keyword{datasets}
+=======
+\section{Super class}{
+\code{\link[condensier:logisfitR6]{condensier::logisfitR6}} -> \code{Lrnr_pkg_condensier_logisfitR6}
+}
+\section{Methods}{
+\subsection{Public methods}{
+\itemize{
+\item \href{#method-new}{\code{Lrnr_pkg_condensier_logisfitR6$new()}}
+\item \href{#method-fit}{\code{Lrnr_pkg_condensier_logisfitR6$fit()}}
+\item \href{#method-predict}{\code{Lrnr_pkg_condensier_logisfitR6$predict()}}
+\item \href{#method-clone}{\code{Lrnr_pkg_condensier_logisfitR6$clone()}}
+}
+}
+\if{html}{
+\out{<details open ><summary>Inherited methods</summary>}
+\itemize{
+\item \out{<span class="pkg-link" data-pkg="condensier" data-topic="logisfitR6" data-id="predict.long">}\href{../../condensier/html/logisfitR6.html#method-predict.long}{\code{condensier::logisfitR6$predict.long()}}\out{</span>}
+}
+\out{</details>}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\subsection{Method \code{new()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Lrnr_pkg_condensier_logisfitR6$new(sl3_lrnr, ...)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-fit"></a>}}
+\subsection{Method \code{fit()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Lrnr_pkg_condensier_logisfitR6$fit(datsum_obj)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-predict"></a>}}
+\subsection{Method \code{predict()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Lrnr_pkg_condensier_logisfitR6$predict(datsum_obj, m.fit)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-clone"></a>}}
+\subsection{Method \code{clone()}}{
+The objects of this class are cloneable with this method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Lrnr_pkg_condensier_logisfitR6$clone(deep = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{deep}}{Whether to make a deep clone.}
+}
+\if{html}{\out{</div>}}
+}
+}
+}
+>>>>>>> 63d08007057d111e9839e207e70488ebc006f5ad

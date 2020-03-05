@@ -13,43 +13,55 @@ Learner object with methods for training and prediction. See
 \code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
-This learner implements Generalized Random Forests, using the
-\code{grf} package. This is a pluggable package for forest-based statistical
-estimation and inference. GRF currently provides non-parametric methods for
-least-squares regression, quantile regression, and treatment effect estimation
-(optionally using instrumental variables). Current implementation trains a
-regression forest that can be used to estimate quantiles of the conditional
-distribution of Y given X=x.
+This learner implements Generalized Random Forests, using the \pkg{grf}
+package. This is a pluggable package for forest-based statistical estimation
+and inference. GRF currently provides non-parametric methods for
+least-squares regression, quantile regression, and treatment effect
+estimation (optionally using instrumental variables). Current implementation
+trains a regression forest that can be used to estimate quantiles of the
+conditional distribution of (Y|X=x).
 }
 \section{Parameters}{
 
 \describe{
-\item{\code{X}}{The covariates used in the quantile regression.}
-\item{\code{Y}}{The outcome.}
-\item{\code{quantiles}}{Vector of quantiles used to calibrate the forest.}
-\item{\code{regression.splitting}}{Whether to use regression splits when growing trees
-instead of specialized splits based on the quantiles (the default).
-Setting this flag to true corresponds to the approach to quantile forests from Meinshausen (2006).}
-\item{\code{sample.fraction}}{Fraction of the data used to build each tree.
-Note: If honesty is used, these subsamples will further be cut in half.}
-\item{\code{mtry}}{Number of variables tried for each split.}
-\item{\code{num.trees}}{Number of trees grown in the forest.
-Note: Getting accurate confidence intervals generally requires more trees than
+\item{\code{num.trees = 2000}}{Number of trees grown in the forest. NOTE:
+Getting accurate confidence intervals generally requires more trees than
 getting accurate predictions.}
-\item{\code{num.threads}}{Number of threads used in training.
-If set to NULL, the software automatically selects an appropriate amount.}
-\item{\code{min.node.size}}{A target for the minimum number of observations in each tree
-leaf. Note that nodes with size smaller than min.node.size can occur, as in the original randomForest package.}
-\item{\code{honesty}}{Whether or not honest splitting (i.e., sub-sample splitting) should be used.}
-\item{\code{alpha}}{A tuning parameter that controls the maximum imbalance of a split.}
-\item{\code{imbalance.penalty}}{A tuning parameter that controls how harshly imbalanced splits are penalized.}
-\item{\code{seed}}{The seed for the C++ random number generator.}
-\item{\code{clusters}}{Vector of integers or factors specifying which cluster each observation corresponds to.}
-\item{\code{samples_per_cluster}}{If sampling by cluster, the number of observations to be
-sampled from each cluster. Must be less than the size of the smallest cluster.
-If set to NULL software will set this value to the size of the smallest cluster.}
-\item{\code{q}}{Vector of quantiles used to predict. Can be different than the vector of quantiles used for training.}
-
+\item{\code{quantiles = c(0.1, 0.5, 0.9)}}{Vector of quantiles used to
+calibrate the forest.}
+\item{\code{regression.splitting = FALSE}}{Whether to use regression splits
+when growing trees instead of specialized splits based on the quantiles
+(the default). Setting this flag to \code{TRUE} corresponds to the
+approach to quantile forests from Meinshausen (2006).}
+\item{\code{clusters = NULL}}{Vector of integers or factors specifying
+which cluster each observation corresponds to.}
+\item{\code{equalize.cluster.weights = FALSE}}{If \code{FALSE}, each unit
+is given the same weight (so that bigger clusters get more weight). If
+\code{TRUE}, each cluster is given equal weight in the forest. In this
+case, during training, each tree uses the same number of observations from
+each drawn cluster: If the smallest cluster has K units, then when we
+sample a cluster during training, we only give a random K elements of the
+cluster to the tree-growing procedure. When estimating average treatment
+effects, each observation is given weight 1/cluster size, so that the
+total weight of each cluster is the same.}
+\item{\code{sample.fraction = 0.5}}{Fraction of the data used to build each
+tree. NOTE: If \code{honesty = TRUE}, these subsamples will further be cut
+by a factor of \code{honesty.fraction.}.}
+\item{\code{mtry = NULL}}{Number of variables tried for each split. By
+default, this is set based on the dimensionality of the predictors.}
+\item{\code{min.node.size = 5}}{A target for the minimum number of
+observations in each tree leaf. Note that nodes with size smaller than
+\code{min.node.size} can occur, as in the \pkg{randomForest} package.}
+\item{\code{honesty = TRUE}}{Whether or not honest splitting (i.e.,
+sub-sample splitting) should be used.}
+\item{\code{alpha = 0.05}}{A tuning parameter that controls the maximum
+imbalance of a split.}
+\item{\code{imbalance.penalty = 0}}{A tuning parameter that controls how
+harshly imbalanced splits are penalized.}
+\item{\code{num.threads = 1}}{Number of threads used in training. If set to
+\code{NULL}, the software automatically selects an appropriate amount.}
+\item{\code{quantiles_pred}}{Vector of quantiles used to predict. This can
+be different than the vector of quantiles used for training.}
 }
 }
 
@@ -67,6 +79,7 @@ by all learners.
 }
 
 \seealso{
+<<<<<<< HEAD
 Other Learners: \code{\link{Custom_chain}},
   \code{\link{Lrnr_HarmonicReg}}, \code{\link{Lrnr_arima}},
   \code{\link{Lrnr_bartMachine}}, \code{\link{Lrnr_base}},
@@ -104,6 +117,138 @@ Other Learners: \code{\link{Custom_chain}},
   \code{\link{Lrnr_xgboost}}, \code{\link{Pipeline}},
   \code{\link{Stack}}, \code{\link{define_h2o_X}},
   \code{\link{undocumented_learner}}
+=======
+Other Learners: 
+\code{\link{Custom_chain}},
+\code{\link{Lrnr_HarmonicReg}},
+\code{\link{Lrnr_arima}},
+\code{\link{Lrnr_bartMachine}},
+\code{\link{Lrnr_base}},
+\code{\link{Lrnr_bilstm}},
+\code{\link{Lrnr_bound}},
+\code{\link{Lrnr_caret}},
+\code{\link{Lrnr_condensier}},
+\code{\link{Lrnr_cv_selector}},
+\code{\link{Lrnr_cv}},
+\code{\link{Lrnr_dbarts}},
+\code{\link{Lrnr_define_interactions}},
+\code{\link{Lrnr_density_discretize}},
+\code{\link{Lrnr_density_hse}},
+\code{\link{Lrnr_density_semiparametric}},
+\code{\link{Lrnr_earth}},
+\code{\link{Lrnr_expSmooth}},
+\code{\link{Lrnr_gam}},
+\code{\link{Lrnr_gbm}},
+\code{\link{Lrnr_glm_fast}},
+\code{\link{Lrnr_glmnet}},
+\code{\link{Lrnr_glm}},
+\code{\link{Lrnr_h2o_grid}},
+\code{\link{Lrnr_hal9001}},
+\code{\link{Lrnr_haldensify}},
+\code{\link{Lrnr_independent_binomial}},
+\code{\link{Lrnr_lstm}},
+\code{\link{Lrnr_mean}},
+\code{\link{Lrnr_multivariate}},
+\code{\link{Lrnr_nnls}},
+\code{\link{Lrnr_optim}},
+\code{\link{Lrnr_pca}},
+\code{\link{Lrnr_pkg_SuperLearner}},
+\code{\link{Lrnr_polspline}},
+\code{\link{Lrnr_pooled_hazards}},
+\code{\link{Lrnr_randomForest}},
+\code{\link{Lrnr_ranger}},
+\code{\link{Lrnr_revere_task}},
+\code{\link{Lrnr_rfcde}},
+\code{\link{Lrnr_rpart}},
+\code{\link{Lrnr_rugarch}},
+\code{\link{Lrnr_screener_corP}},
+\code{\link{Lrnr_screener_corRank}},
+\code{\link{Lrnr_screener_randomForest}},
+\code{\link{Lrnr_sl}},
+\code{\link{Lrnr_solnp_density}},
+\code{\link{Lrnr_solnp}},
+\code{\link{Lrnr_stratified}},
+\code{\link{Lrnr_subset_covariates}},
+\code{\link{Lrnr_svm}},
+\code{\link{Lrnr_tsDyn}},
+\code{\link{Lrnr_xgboost}},
+\code{\link{Pipeline}},
+\code{\link{Stack}},
+\code{\link{define_h2o_X}()},
+\code{\link{undocumented_learner}}
+>>>>>>> 63d08007057d111e9839e207e70488ebc006f5ad
 }
 \concept{Learners}
 \keyword{data}
+\section{Super class}{
+\code{\link[sl3:Lrnr_base]{sl3::Lrnr_base}} -> \code{Lrnr_grf}
+}
+\section{Methods}{
+\subsection{Public methods}{
+\itemize{
+\item \href{#method-new}{\code{Lrnr_grf$new()}}
+\item \href{#method-clone}{\code{Lrnr_grf$clone()}}
+}
+}
+\if{html}{
+\out{<details ><summary>Inherited methods</summary>}
+\itemize{
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="assert_trained">}\href{../../sl3/html/Lrnr_base.html#method-assert_trained}{\code{sl3::Lrnr_base$assert_trained()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="base_chain">}\href{../../sl3/html/Lrnr_base.html#method-base_chain}{\code{sl3::Lrnr_base$base_chain()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="base_predict">}\href{../../sl3/html/Lrnr_base.html#method-base_predict}{\code{sl3::Lrnr_base$base_predict()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="base_train">}\href{../../sl3/html/Lrnr_base.html#method-base_train}{\code{sl3::Lrnr_base$base_train()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="chain">}\href{../../sl3/html/Lrnr_base.html#method-chain}{\code{sl3::Lrnr_base$chain()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="custom_chain">}\href{../../sl3/html/Lrnr_base.html#method-custom_chain}{\code{sl3::Lrnr_base$custom_chain()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="get_outcome_range">}\href{../../sl3/html/Lrnr_base.html#method-get_outcome_range}{\code{sl3::Lrnr_base$get_outcome_range()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="get_outcome_type">}\href{../../sl3/html/Lrnr_base.html#method-get_outcome_type}{\code{sl3::Lrnr_base$get_outcome_type()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="predict">}\href{../../sl3/html/Lrnr_base.html#method-predict}{\code{sl3::Lrnr_base$predict()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="predict_fold">}\href{../../sl3/html/Lrnr_base.html#method-predict_fold}{\code{sl3::Lrnr_base$predict_fold()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="print">}\href{../../sl3/html/Lrnr_base.html#method-print}{\code{sl3::Lrnr_base$print()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="sample">}\href{../../sl3/html/Lrnr_base.html#method-sample}{\code{sl3::Lrnr_base$sample()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="set_train">}\href{../../sl3/html/Lrnr_base.html#method-set_train}{\code{sl3::Lrnr_base$set_train()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="subset_covariates">}\href{../../sl3/html/Lrnr_base.html#method-subset_covariates}{\code{sl3::Lrnr_base$subset_covariates()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="train">}\href{../../sl3/html/Lrnr_base.html#method-train}{\code{sl3::Lrnr_base$train()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="sl3" data-topic="Lrnr_base" data-id="train_sublearners">}\href{../../sl3/html/Lrnr_base.html#method-train_sublearners}{\code{sl3::Lrnr_base$train_sublearners()}}\out{</span>}
+}
+\out{</details>}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\subsection{Method \code{new()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Lrnr_grf$new(
+  num.trees = 2000,
+  quantiles = c(0.1, 0.5, 0.9),
+  regression.splitting = FALSE,
+  clusters = NULL,
+  equalize.cluster.weights = FALSE,
+  sample.fraction = 0.5,
+  mtry = NULL,
+  min.node.size = 5,
+  honesty = TRUE,
+  alpha = 0.05,
+  imbalance.penalty = 0,
+  num.threads = 1,
+  quantiles_pred = 0.5,
+  ...
+)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-clone"></a>}}
+\subsection{Method \code{clone()}}{
+The objects of this class are cloneable with this method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Lrnr_grf$clone(deep = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{deep}}{Whether to make a deep clone.}
+}
+\if{html}{\out{</div>}}
+}
+}
+}

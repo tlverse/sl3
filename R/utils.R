@@ -1,3 +1,26 @@
+#' Truncates predictions to ensure loss function is bounded.
+#'
+#' @param preds A \code{numeric} vector of predictions to to be bounded.
+#' @param bounds Either a \code{numeric} vector of length two, giving the
+#'  closed interval (lower, upper), or just a lower bound. In the latter case,
+#'  the upper bound is computed as (1 - lower). The default is 0.001.
+#'
+#' @return Truncated predictions.
+#'
+#' @keywords internal
+bound <- function(preds, bounds = 0.001) {
+  lower <- bounds[[1]]
+  if (length(bounds) > 1) {
+    upper <- bounds[[2]]
+  } else {
+    upper <- 1 - lower
+  }
+  preds_bounded <- pmin(pmax(preds, lower), upper)
+  return(preds_bounded)
+}
+
+################################################################################
+
 # if warning is in ignoreWarningList, ignore it; otherwise post it as usual
 SuppressGivenWarnings <- function(expr, warningsToIgnore) {
   h <- function(w) {
@@ -37,7 +60,6 @@ GetWarningsToSuppress <- function(update.step = FALSE) {
 #'  arguments passed in.
 #'
 #' @keywords internal
-#
 keep_only_fun_args <- function(Args, fun) {
   keepArgs <- intersect(names(Args), names(formals(fun)))
   # captures optional arguments given by user
@@ -64,7 +86,6 @@ keep_only_fun_args <- function(Args, fun) {
 #'   matched in either the function prototype or other_valid.
 #'
 #' @keywords internal
-#
 call_with_args <- function(fun, args, other_valid = list(), keep_all = FALSE) {
   if (!keep_all) {
     formal_args <- names(formals(fun))
@@ -76,12 +97,12 @@ call_with_args <- function(fun, args, other_valid = list(), keep_all = FALSE) {
 
 ################################################################################
 
-#' Replace an argument in \code{mainArgs} if it also appears in \code{userArgs}.
+#' Replace an argument in \code{mainArgs} if it also appears in \code{userArgs}
+#'
 #' Add any argument from \code{userArgs} that appears in \code{formals(fun)} of
 #' the function \code{fun}.
 #'
 #' @keywords internal
-#
 replace_add_user_args <- function(mainArgs, userArgs, fun) {
   replaceArgs <- intersect(names(mainArgs), names(userArgs))
   # captures main arguments that were overridden by user
@@ -108,18 +129,23 @@ replace_add_user_args <- function(mainArgs, userArgs, fun) {
 #'
 #' @return the size of \code{obj} in bytes
 #'
-#' @export
-#
+#' @keywords internal
 true_obj_size <- function(obj) {
   length(serialize(obj, NULL))
 }
 
 ################################################################################
 
+#' Drop components from learner fits
+#'
+#' Given learner fit, sequentially drop components from internal fit object,
+#' keeping track of which components are needed for prediction.
+#'
+#' @param learner_fit A \code{Lrnr_*} object, inheriting from
+#'  \code{\link{Lrnr_base}}, that has been trained.
+#'
+#' @keywords internal
 reduce_fit_test <- function(learner_fit) {
-  # given learner fit, sequentially drop components from internal fit object,
-  # keeping track of which components are needed for prediction
-
   # learner_fit = glm_fit
   original_fit <- learner_fit$fit_object
   task <- learner_fit$training_task
@@ -153,53 +179,59 @@ reduce_fit_test <- function(learner_fit) {
 
 ################################################################################
 
+#' Subset data.table columns
+#'
+#' @param dt A \code{\link[data.table]{data.table}}.
+#' @param cols Columns to subset.
+#'
+#' @return Subset of input \code{\link[data.table]{data.table}}.
+#'
+#' @keywords internal
 subset_dt_cols <- function(dt, cols) {
-  # setDF(dt)
-  # subset = dt[,cols, drop = FALSE]
-  # setDT(subset)
-  # setDT(dt)
-  # return(subset)
   return(dt[, cols, with = FALSE, drop = FALSE])
 }
 
 ################################################################################
 
-#' Get all args of parent call (both specified and defaults) as list
+#' Get all arguments of parent call (both specified and defaults) as list
 #'
-#' @return a list of all for the parent function call
+#' @return A \code{list} of all arguments for the parent function call.
 #'
 #' @export
-#
 args_to_list <- function() {
+  # get calling environment, call object, and function to call
   parent <- sys.parent()
   call <- sys.call(parent)
   fn <- sys.function(parent)
 
   # get specified args
-  expanded <- match.call(fn, call, envir = parent.frame(2L))
+  expanded <- match.call(
+    definition = fn,
+    call = call,
+    envir = parent.frame(n = 2L)
+  )
   args <- as.list(expanded[-1])
 
   # get default args
   all_args <- formals(fn)
 
-  # drop dots from formals if it exists
+  # drop dot args from formals if it exists
   all_args$`...` <- NULL
 
   # add in specified args
   all_args[names(args)] <- args
 
   # evaluate args
-  num_args <- length(all_args)
-  for (i in seq_len(num_args)) {
+  for (i in seq_along(all_args)) {
     if (!is.null(all_args[[i]])) {
-      all_args[[i]] <- eval(
-        all_args[[i]],
+      evaled <- eval(
+        expr = all_args[[i]],
         envir = all_args,
-        enclos = parent.frame(2L)
+        enclos = parent.frame(n = 2L)
       )
+      all_args[i] <- list(evaled)
     }
   }
-  # evaled <- lapply(all_args, eval, envir=parent.frame(2L))
   return(all_args)
 }
 
@@ -213,7 +245,6 @@ args_to_list <- function() {
 #' @param x the object to get dimensions from
 #'
 #' @export
-#
 safe_dim <- function(x) {
   d <- dim(x)
   if (is.null(d)) {
@@ -226,9 +257,9 @@ safe_dim <- function(x) {
 
 #' Generate a file containing a template \code{sl3} Learner
 #'
-#' Generates a template file that can be used to write a new \code{sl3} Learner.
-#' For more information, see the \href{../doc/custom_lrnrs.html}{Defining New
-#' Learners} vignette.
+#' Generates a template file that can be used to write new \pkg{sl3} Learners.
+#' For more information, see the
+#' \href{../docs/articles/custom_lrnrs.html}{Defining New Learners} vignette.
 #'
 #' @param file the path where the file should be written
 #'
@@ -236,7 +267,6 @@ safe_dim <- function(x) {
 #'  template was successful.
 #'
 #' @export
-#
 write_learner_template <- function(file) {
   template_file <- system.file(
     "templates/Lrnr_template.R",

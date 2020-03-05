@@ -27,8 +27,13 @@ prediction_plot <- function(learner_fit) {
 
   if (outcome_type$type == "continuous") {
     pred_data <- data.table(pred = predictions, obs = observed)
-    pred_plot <- ggplot(pred_data, aes_(x = ~obs, y = ~pred)) + geom_point() + geom_abline() +
-      xlab("Observed") + ylab("Predicted") + theme_bw() + geom_smooth(se = FALSE)
+    pred_plot <- ggplot(pred_data, aes_(x = ~obs, y = ~pred)) +
+      geom_point() +
+      geom_abline() +
+      xlab("Observed") +
+      ylab("Predicted") +
+      theme_bw() +
+      geom_smooth(se = FALSE)
   } else {
     unpacked <- unpack_predictions(predictions)
     unpacked <- as.data.table(unpacked)
@@ -43,10 +48,15 @@ prediction_plot <- function(learner_fit) {
     })
     auc_data <- rbindlist(all_auc_data)
     wide <- dcast(auc_data, cutoff + observed ~ accurate, value.var = "positive_rate")
-    pred_plot <- ggplot(wide[order(wide$`TRUE`)], aes_(x = ~`FALSE`, y = ~`TRUE`, color = ~observed)) + geom_step(direction = "vh") +
+    pred_plot <- ggplot(wide[order(wide$`TRUE`)], aes_(x = ~`FALSE`, y = ~`TRUE`, color = ~observed)) +
+      geom_step(direction = "vh") +
       geom_segment(data = data.table(1), x = 0, y = 0, xend = 1, yend = 1, color = "black") +
-      theme_bw() + theme(legend.position = "bottom") +
-      xlab("False Positive Rate") + ylab("True Positive Rate") + scale_color_discrete("Observed") + coord_equal()
+      theme_bw() +
+      theme(legend.position = "bottom") +
+      xlab("False Positive Rate") +
+      ylab("True Positive Rate") +
+      scale_color_discrete("Observed") +
+      coord_equal()
   }
 
   return(pred_plot)

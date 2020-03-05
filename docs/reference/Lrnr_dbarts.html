@@ -81,7 +81,7 @@ by a prior to be a weak learner." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sl3</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.7</span>
       </span>
     </div>
 
@@ -159,57 +159,72 @@ by a prior to be a weak learner.</p>
 
 <dl class='dl-horizontal'>
 <dt><code>x.test</code></dt><dd><p>Explanatory variables for test (out of sample) data.
-<code>bart</code> will generate draws of \(f(x)\) for each \(x\) which is a row of <code>x.test</code>.</p></dd>
-<dt><code>sigest</code></dt><dd><p>For continuous response models, an estimate of the error variance, \(\sigma^2\),
-used to calibrate an inverse-chi-squared prior used on that parameter. If not supplied,
-the least-squares estimate is derived instead. See <code>sigquant</code> for more information.
-Not applicable when \(y\) is binary.</p></dd>
-<dt><code>sigdf</code></dt><dd><p>Degrees of freedom for error variance prior.
-Not applicable when \(y\) is binary.</p></dd>
-<dt><code>sigquant</code></dt><dd><p>The quantile of the error variance prior that the rough estimate
-(<code>sigest</code>) is placed at. The closer the quantile is to 1, the more aggresive the fit
-will be as you are putting more prior weight on error standard deviations (\(\sigma\))
-less than the rough estimate. Not applicable when \(y\) is binary.</p></dd>
-<dt><code>k</code></dt><dd><p>For numeric \(y\), <code>k</code> is the number of prior standard deviations
-\(E(Y|x) = f(x)\) is away from \(\pm 0.5\). The response (<code>y.train</code>) is
-internally scaled to range from \(-0.5\) to \(0.5\). For binary \(y\), <code>k</code> is
-the number of prior standard deviations \(f(x)\) is away from \(\pm 3\).
-In both cases, the bigger \(k\) is, the more conservative the fitting will be.</p></dd>
+<code>bart</code> will generate draws of \(f(x)\) for each \(x\) which is a
+row of <code>x.test</code>.</p></dd>
+<dt><code>sigest</code></dt><dd><p>For continuous response models, an estimate of the
+error variance, \(\sigma^2\), used to calibrate an inverse-chi-squared
+prior used on that parameter. If not supplied, the least-squares estimate
+is derived instead. See <code>sigquant</code> for more information. Not
+applicable when \(y\) is binary.</p></dd>
+<dt><code>sigdf</code></dt><dd><p>Degrees of freedom for error variance prior. Not
+applicable when \(y\) is binary.</p></dd>
+<dt><code>sigquant</code></dt><dd><p>The quantile of the error variance prior that the
+rough estimate (<code>sigest</code>) is placed at. The closer the quantile is
+to 1, the more aggresive the fit will be as you are putting more prior
+weight on error standard deviations (\(\sigma\)) less than the rough
+estimate. Not applicable when \(y\) is binary.</p></dd>
+<dt><code>k</code></dt><dd><p>For numeric \(y\), <code>k</code> is the number of prior
+standard deviations \(E(Y|x) = f(x)\) is away from \(\pm 0.5\). The response (<code>y.train</code>) is internally scaled to range from
+\(-0.5\) to \(0.5\). For binary \(y\), <code>k</code> is the number of
+prior standard deviations \(f(x)\) is away from \(\pm 3\). In
+both cases, the bigger \(k\) is, the more conservative the fitting will
+be.</p></dd>
 <dt><code>power</code></dt><dd><p>Power parameter for tree prior.</p></dd>
 <dt><code>base</code></dt><dd><p>Base parameter for tree prior.</p></dd>
-<dt><code>binaryOffset</code></dt><dd><p>sed for binary \(y\). When present, the model is
-\(P(Y = 1 \mid x) = \Phi(f(x) + \mathrm{binaryOffset})\),
-allowing fits with probabilities shrunk towards values other than \(0.5\).</p></dd>
-<dt><code>weights</code></dt><dd><p>An optional vector of weights to be used in the fitting process.
-When present, BART fits a model with observations \(y \mid x \sim N(f(x),
-  \sigma^2 / w)\), where \(f(x)\) is the unknown function.</p></dd>
+<dt><code>binaryOffset</code></dt><dd><p>sed for binary \(y\). When present, the model
+is \(P(Y = 1 \mid x) = \Phi(f(x) + \mathrm{binaryOffset})\), allowing fits with probabilities shrunk
+towards values other than \(0.5\).</p></dd>
+<dt><code>weights</code></dt><dd><p>An optional vector of weights to be used in the
+fitting process. When present, BART fits a model with observations
+\(y \mid x \sim N(f(x), \sigma^2 / w)\),
+where \(f(x)\) is the unknown function.</p></dd>
 <dt><code>ntree</code></dt><dd><p>The number of trees in the sum-of-trees formulation.</p></dd>
 <dt><code>ndpost</code></dt><dd><p>The number of posterior draws after burn in,
 <code>ndpost / keepevery</code> will actually be returned.</p></dd>
 <dt><code>nskip</code></dt><dd><p>Number of MCMC iterations to be treated as burn in.</p></dd>
-<dt><code>printevery</code></dt><dd><p>As the MCMC runs, a message is printed every <code>printevery</code> draws.</p></dd>
-<dt><code>keepevery</code></dt><dd><p>Every <code>keepevery</code> draw is kept to be returned to the user.
-Useful for &#8220;thinning&#8221; samples.</p></dd>
-<dt><code>keeptrainfits</code></dt><dd><p>If <code>TRUE</code> the draws of \(f(x)\) for \(x\) corresponding
-to the rows of <code>x.train</code> are returned.</p></dd>
-<dt><code>usequants</code></dt><dd><p>When <code>TRUE</code>, determine tree decision rules using estimated
-quantiles derived from the <code>x.train</code> variables. When <code>FALSE</code>, splits are
-determined using values equally spaced across the range of a variable. See details for more information.</p></dd>
-<dt><code>numcut</code></dt><dd><p>The maximum number of possible values used in decision rules (see <code>usequants</code>, details).
-If a single number, it is recycled for all variables; otherwise must be a vector of length
-equal to <code><a href='https://rdrr.io/r/base/nrow.html'>ncol(x.train)</a></code>. Fewer rules may be used if a covariate lacks enough unique values.</p></dd>
-<dt><code>printcutoffs</code></dt><dd><p>The number of cutoff rules to printed to screen before the MCMC is run.
-Given a single integer, the same value will be used for all variables. If 0, nothing is printed.</p></dd>
+<dt><code>printevery</code></dt><dd><p>As the MCMC runs, a message is printed every
+<code>printevery</code> draws.</p></dd>
+<dt><code>keepevery</code></dt><dd><p>Every <code>keepevery</code> draw is kept to be returned
+to the user. Useful for &#8220;thinning&#8221; samples.</p></dd>
+<dt><code>keeptrainfits</code></dt><dd><p>If <code>TRUE</code> the draws of \(f(x)\) for
+\(x\) corresponding to the rows of <code>x.train</code> are returned.</p></dd>
+<dt><code>usequants</code></dt><dd><p>When <code>TRUE</code>, determine tree decision rules
+using estimated quantiles derived from the <code>x.train</code> variables. When
+<code>FALSE</code>, splits are determined using values equally spaced across
+the range of a variable. See details for more information.</p></dd>
+<dt><code>numcut</code></dt><dd><p>The maximum number of possible values used in decision
+rules (see <code>usequants</code>, details). If a single number, it is recycled
+for all variables; otherwise must be a vector of length equal to
+<code><a href='https://rdrr.io/r/base/nrow.html'>ncol(x.train)</a></code>. Fewer rules may be used if a covariate lacks enough
+unique values.</p></dd>
+<dt><code>printcutoffs</code></dt><dd><p>The number of cutoff rules to printed to screen
+before the MCMC is run. Given a single integer, the same value will be
+used for all variables. If 0, nothing is printed.</p></dd>
 <dt><code>verbose</code></dt><dd><p>Logical; if <code>FALSE</code> supress printing.</p></dd>
-<dt><code>nchain</code></dt><dd><p>Integer specifying how many independent tree sets and fits should be calculated.</p></dd>
-<dt><code>nthread</code></dt><dd><p>Integer specifying how many threads to use. Depending on the CPU architecture,
-using more than the number of chains can degrade performance for small/medium data sets.
-As such some calculations may be executed single threaded regardless.</p></dd>
-<dt><code>combinechains</code></dt><dd><p>Logical; if <code>TRUE</code>, samples will be returned in arrays of
-dimensions equal to <code>nchain</code> \(\times\) <code>ndpost</code> \(\times\) number of observations.</p></dd>
-<dt><code>keeptrees</code></dt><dd><p>Logical; must be <code>TRUE</code> in order to use <code>predict</code> with the result of a <code>bart</code> fit.</p></dd>
-<dt><code>keepcall</code></dt><dd><p>Logical; if <code>FALSE</code>, returned object will have <code>call</code> set to
-<code><a href='https://rdrr.io/r/base/call.html'>call("NULL")</a></code>, otherwise the call used to instantiate BART.</p></dd>
+<dt><code>nchain</code></dt><dd><p>Integer specifying how many independent tree sets and
+fits should be calculated.</p></dd>
+<dt><code>nthread</code></dt><dd><p>Integer specifying how many threads to use. Depending
+on the CPU architecture, using more than the number of chains can degrade
+performance for small/medium data sets. As such some calculations may be
+executed single threaded regardless.</p></dd>
+<dt><code>combinechains</code></dt><dd><p>Logical; if <code>TRUE</code>, samples will be
+returned in arrays of dimensions equal to <code>nchain</code> \(\times\)
+<code>ndpost</code> \(\times\) number of observations.</p></dd>
+<dt><code>keeptrees</code></dt><dd><p>Logical; must be <code>TRUE</code> in order to use
+<code>predict</code> with the result of a <code>bart</code> fit.</p></dd>
+<dt><code>keepcall</code></dt><dd><p>Logical; if <code>FALSE</code>, returned object will have
+<code>call</code> set to <code><a href='https://rdrr.io/r/base/call.html'>call("NULL")</a></code>, otherwise the call used to
+instantiate BART.</p></dd>
 
 </dl>
 
@@ -238,6 +253,7 @@ by all learners.</p>
 <code><a href='Lrnr_bilstm.html'>Lrnr_bilstm</a></code>,
 <code><a href='Lrnr_caret.html'>Lrnr_caret</a></code>,
 <code><a href='Lrnr_condensier.html'>Lrnr_condensier</a></code>,
+<code><a href='Lrnr_cv_selector.html'>Lrnr_cv_selector</a></code>,
 <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
 <code><a href='Lrnr_define_interactions.html'>Lrnr_define_interactions</a></code>,
 <code><a href='Lrnr_density_discretize.html'>Lrnr_density_discretize</a></code>,

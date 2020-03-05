@@ -17,10 +17,12 @@ glmnet_learner <- Lrnr_pkg_SuperLearner$new("SL.glmnet")
 subset_apgar <- Lrnr_subset_covariates$new(covariates = c("apgar1", "apgar5"))
 learners <- list(glm_learner, glmnet_learner, subset_apgar)
 sl1 <- make_learner(Lrnr_sl, learners, glm_learner)
-# sl3_debug_mode()
-# debugonce(sl1$.__enclos_env__$private$.train)
-# debugonce(sl1$.__enclos_env__$private$.train_sublearners)
+
 sl1_fit <- sl1$train(task)
+test_that("Coefficients can extracted from sl fits", expect_true(!is.null(coef(sl1_fit))))
+glm_fit <- sl1_fit$learner_fits$Lrnr_glm_TRUE
+test_that("Library fits can extracted from sl fits", expect_true(inherits(glm_fit, "Lrnr_glm")))
+
 
 sl1_risk <- sl1_fit$cv_risk(loss_squared_error)
 
@@ -47,3 +49,30 @@ expect_lt(length(sl1_small_fit$fit_object), length(sl1_fit$fit_object))
 preds <- sl1_small_fit$predict(task)
 preds_fold <- sl1_small_fit$predict_fold(task, "full")
 test_that("predict_fold(task,'full') works if keep_extra=FALSE", expect_equal(preds, preds_fold))
+
+# sl of a pipeline from https://github.com/tlverse/sl3/issues/81
+data(cpp)
+cpp <- cpp[!is.na(cpp[, "haz"]), ]
+covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")
+cpp[is.na(cpp)] <- 0
+outcome <- "haz"
+task <- sl3_Task$new(cpp, covariates = covars, outcome = outcome)
+make_inter <- Lrnr_define_interactions$new(interactions = list(c("apgar1", "parity"), c("apgar5", "parity")))
+
+glm_learner <- Lrnr_glm$new()
+glmnet_learner <- Lrnr_glmnet$new(nlambda = 5)
+learners <- Stack$new(glm_learner, glmnet_learner)
+pipe <- Pipeline$new(make_inter, learners)
+sl1 <- make_learner(Lrnr_sl, pipe, metalearner = Lrnr_solnp$new())
+fit <- sl1$train(task)
+print(fit)
+
+# Metalearner does not return coefficients.
+glm_learner <- Lrnr_glm$new()
+glmnet_learner <- Lrnr_glmnet$new(nlambda = 5)
+learners <- Stack$new(glm_learner, glmnet_learner)
+# Selecting a metalearner that does not provide coefficients.
+ranger_learner <- Lrnr_ranger$new(num.trees = 5L)
+sl1 <- make_learner(Lrnr_sl, learners, ranger_learner)
+sl1_fit <- sl1$train(task)
+print(sl1_fit)

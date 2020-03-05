@@ -36,13 +36,13 @@
 
 
 <meta property="og:title" content="Generalized Random Forests Learner — Lrnr_grf" />
-<meta property="og:description" content="This learner implements Generalized Random Forests, using the
-grf package. This is a pluggable package for forest-based statistical
-estimation and inference. GRF currently provides non-parametric methods for
-least-squares regression, quantile regression, and treatment effect estimation
-(optionally using instrumental variables). Current implementation trains a
-regression forest that can be used to estimate quantiles of the conditional
-distribution of Y given X=x." />
+<meta property="og:description" content="This learner implements Generalized Random Forests, using the grf
+package. This is a pluggable package for forest-based statistical estimation
+and inference. GRF currently provides non-parametric methods for
+least-squares regression, quantile regression, and treatment effect
+estimation (optionally using instrumental variables). Current implementation
+trains a regression forest that can be used to estimate quantiles of the
+conditional distribution of (Y|X=x)." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -85,7 +85,7 @@ distribution of Y given X=x." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sl3</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.7</span>
       </span>
     </div>
 
@@ -143,13 +143,13 @@ distribution of Y given X=x." />
     </div>
 
     <div class="ref-description">
-    <p>This learner implements Generalized Random Forests, using the
-<code>grf</code> package. This is a pluggable package for forest-based statistical
-estimation and inference. GRF currently provides non-parametric methods for
-least-squares regression, quantile regression, and treatment effect estimation
-(optionally using instrumental variables). Current implementation trains a
-regression forest that can be used to estimate quantiles of the conditional
-distribution of Y given X=x.</p>
+    <p>This learner implements Generalized Random Forests, using the <span class="pkg">grf</span>
+package. This is a pluggable package for forest-based statistical estimation
+and inference. GRF currently provides non-parametric methods for
+least-squares regression, quantile regression, and treatment effect
+estimation (optionally using instrumental variables). Current implementation
+trains a regression forest that can be used to estimate quantiles of the
+conditional distribution of (Y|X=x).</p>
     </div>
 
 
@@ -166,32 +166,44 @@ distribution of Y given X=x.</p>
     
 
 <dl class='dl-horizontal'>
-<dt><code>X</code></dt><dd><p>The covariates used in the quantile regression.</p></dd>
-<dt><code>Y</code></dt><dd><p>The outcome.</p></dd>
-<dt><code>quantiles</code></dt><dd><p>Vector of quantiles used to calibrate the forest.</p></dd>
-<dt><code>regression.splitting</code></dt><dd><p>Whether to use regression splits when growing trees
-instead of specialized splits based on the quantiles (the default).
-Setting this flag to true corresponds to the approach to quantile forests from Meinshausen (2006).</p></dd>
-<dt><code>sample.fraction</code></dt><dd><p>Fraction of the data used to build each tree.
-Note: If honesty is used, these subsamples will further be cut in half.</p></dd>
-<dt><code>mtry</code></dt><dd><p>Number of variables tried for each split.</p></dd>
-<dt><code>num.trees</code></dt><dd><p>Number of trees grown in the forest.
-Note: Getting accurate confidence intervals generally requires more trees than
+<dt><code>num.trees = 2000</code></dt><dd><p>Number of trees grown in the forest. NOTE:
+Getting accurate confidence intervals generally requires more trees than
 getting accurate predictions.</p></dd>
-<dt><code>num.threads</code></dt><dd><p>Number of threads used in training.
-If set to NULL, the software automatically selects an appropriate amount.</p></dd>
-<dt><code>min.node.size</code></dt><dd><p>A target for the minimum number of observations in each tree
-leaf. Note that nodes with size smaller than min.node.size can occur, as in the original randomForest package.</p></dd>
-<dt><code>honesty</code></dt><dd><p>Whether or not honest splitting (i.e., sub-sample splitting) should be used.</p></dd>
-<dt><code>alpha</code></dt><dd><p>A tuning parameter that controls the maximum imbalance of a split.</p></dd>
-<dt><code>imbalance.penalty</code></dt><dd><p>A tuning parameter that controls how harshly imbalanced splits are penalized.</p></dd>
-<dt><code>seed</code></dt><dd><p>The seed for the C++ random number generator.</p></dd>
-<dt><code>clusters</code></dt><dd><p>Vector of integers or factors specifying which cluster each observation corresponds to.</p></dd>
-<dt><code>samples_per_cluster</code></dt><dd><p>If sampling by cluster, the number of observations to be
-sampled from each cluster. Must be less than the size of the smallest cluster.
-If set to NULL software will set this value to the size of the smallest cluster.</p></dd>
-<dt><code>q</code></dt><dd><p>Vector of quantiles used to predict. Can be different than the vector of quantiles used for training.</p></dd>
-
+<dt><code>quantiles = c(0.1, 0.5, 0.9)</code></dt><dd><p>Vector of quantiles used to
+calibrate the forest.</p></dd>
+<dt><code>regression.splitting = FALSE</code></dt><dd><p>Whether to use regression splits
+when growing trees instead of specialized splits based on the quantiles
+(the default). Setting this flag to <code>TRUE</code> corresponds to the
+approach to quantile forests from Meinshausen (2006).</p></dd>
+<dt><code>clusters = NULL</code></dt><dd><p>Vector of integers or factors specifying
+which cluster each observation corresponds to.</p></dd>
+<dt><code>equalize.cluster.weights = FALSE</code></dt><dd><p>If <code>FALSE</code>, each unit
+is given the same weight (so that bigger clusters get more weight). If
+<code>TRUE</code>, each cluster is given equal weight in the forest. In this
+case, during training, each tree uses the same number of observations from
+each drawn cluster: If the smallest cluster has K units, then when we
+sample a cluster during training, we only give a random K elements of the
+cluster to the tree-growing procedure. When estimating average treatment
+effects, each observation is given weight 1/cluster size, so that the
+total weight of each cluster is the same.</p></dd>
+<dt><code>sample.fraction = 0.5</code></dt><dd><p>Fraction of the data used to build each
+tree. NOTE: If <code>honesty = TRUE</code>, these subsamples will further be cut
+by a factor of <code>honesty.fraction.</code>.</p></dd>
+<dt><code>mtry = NULL</code></dt><dd><p>Number of variables tried for each split. By
+default, this is set based on the dimensionality of the predictors.</p></dd>
+<dt><code>min.node.size = 5</code></dt><dd><p>A target for the minimum number of
+observations in each tree leaf. Note that nodes with size smaller than
+<code>min.node.size</code> can occur, as in the <span class="pkg">randomForest</span> package.</p></dd>
+<dt><code>honesty = TRUE</code></dt><dd><p>Whether or not honest splitting (i.e.,
+sub-sample splitting) should be used.</p></dd>
+<dt><code>alpha = 0.05</code></dt><dd><p>A tuning parameter that controls the maximum
+imbalance of a split.</p></dd>
+<dt><code>imbalance.penalty = 0</code></dt><dd><p>A tuning parameter that controls how
+harshly imbalanced splits are penalized.</p></dd>
+<dt><code>num.threads = 1</code></dt><dd><p>Number of threads used in training. If set to
+<code>NULL</code>, the software automatically selects an appropriate amount.</p></dd>
+<dt><code>quantiles_pred</code></dt><dd><p>Vector of quantiles used to predict. This can
+be different than the vector of quantiles used for training.</p></dd>
 
 </dl>
 
@@ -220,6 +232,7 @@ by all learners.</p>
 <code><a href='Lrnr_bilstm.html'>Lrnr_bilstm</a></code>,
 <code><a href='Lrnr_caret.html'>Lrnr_caret</a></code>,
 <code><a href='Lrnr_condensier.html'>Lrnr_condensier</a></code>,
+<code><a href='Lrnr_cv_selector.html'>Lrnr_cv_selector</a></code>,
 <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
 <code><a href='Lrnr_dbarts.html'>Lrnr_dbarts</a></code>,
 <code><a href='Lrnr_define_interactions.html'>Lrnr_define_interactions</a></code>,
