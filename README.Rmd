@@ -26,8 +26,7 @@ knitr::opts_chunk$set(
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3558317.svg)](https://doi.org/10.5281/zenodo.3558317)
 
-> A modern implementation of the Super Learner algorithm for ensemble learning
-> and model stacking
+> A modern implementation of the Super Learner ensemble learning algorithm
 
 __Authors:__ [Jeremy Coyle](https://github.com/jeremyrcoyle), [Nima
 Hejazi](https://nimahejazi.org), [Ivana
@@ -138,9 +137,9 @@ head(preds)
 
 ## Learner Properties
 
-You can find the properties that sl3 learners support in the table below:
+Properties supported by `sl3` learners are presented in the following table:
 
-```{r warning=FALSE, echo = FALSE, message = FALSE}
+```{r sl3-learner-properties, warning=FALSE, echo = FALSE, message = FALSE}
 library(sl3)
 library(kableExtra)
 
@@ -164,25 +163,30 @@ get_learner_class_properties <- function(learner_class) {
 }
 learner_property_lst <- lapply(all_learners, get_learner_class_properties)
 
-# get a list where each element is a list of True/False's indicating whether a learner has a property or not
+# get a list where each element is a list of logicals indicating whether a
+# learner has a property or not
 get_learner_class_properties_ownership <- function(properties) {
   return(sl3_list_properties() %in% unlist(properties))
 }
-learner_property_ownership_mat <- lapply(learner_property_lst, get_learner_class_properties_ownership)
+learner_property_ownership <- lapply(learner_property_lst,
+                                     get_learner_class_properties_ownership)
 
 get_learner_name <- function(learner_class) {
   return(learner_class$classname)
 }
 learner_names <- lapply(all_learners, get_learner_name)
 
-# generate the data matrix, whose columns are properties and rows are learner names
-final_mat <- matrix(unlist(learner_property_ownership_mat), nrow = length(learner_property_ownership_mat), ncol = length(sl3_list_properties()), byrow = TRUE)
+# generate matrix whose columns are properties and rows are learner names
+final_mat <- matrix(unlist(learner_property_ownership),
+                    nrow = length(learner_property_ownership),
+                    ncol = length(sl3_list_properties()), byrow = TRUE)
 dimnames(final_mat) <- list(unlist(learner_names), sl3_list_properties())
 final_mat.df <- as.data.frame(final_mat)
 
 char_final_mat.df <- ifelse(final_mat.df == TRUE, "√", "x")
 kable(char_final_mat.df) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed",
+                                      "responsive")) %>%
   scroll_box(width = "100%", height = "200px", fixed_thead = T)
 ```
 
@@ -201,23 +205,23 @@ submitting a pull request.
 
 After using the `sl3` R package, please cite the following:
 
-        @manual{coyle2019sl3,
+        @manual{coyle2020sl3,
           author = {Coyle, Jeremy R and Hejazi, Nima S and Malenica, Ivana and
             Sofrygin, Oleg},
           title = {{sl3}: Modern Pipelines for Machine Learning and {Super
             Learning}},
-          year = {2019},
+          year = {2020},
           howpublished = {\url{https://github.com/tlverse/sl3}},
-          note = {{R} package version 1.3.5},
-          url = {https://doi.org/10.5281/zenodo.3558317},
-          doi = {10.5281/zenodo.3558317}
+          note = {{R} package version 1.3.7},
+          url = {},
+          doi = {}
         }
 
 ---
 
 ## License
 
-&copy; 2017-2019 [Jeremy R. Coyle](https://github.com/jeremyrcoyle), [Nima S.
+&copy; 2017-2020 [Jeremy R. Coyle](https://github.com/jeremyrcoyle), [Nima S.
 Hejazi](https://nimahejazi.org), [Ivana
 Malenica](https://github.com/podTockom), [Oleg
 Sofrygin](https://github.com/osofr)

@@ -85,7 +85,7 @@ Lrnr_lstm <- R6Class(
         epochs = args$epochs
       )
       fit_object <- model
-      
+
       return(fit_object)
     },
 

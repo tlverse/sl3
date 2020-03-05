@@ -83,11 +83,11 @@ Lrnr_sl <- R6Class(
       return(private$.fit_object$cv_meta_fit$fit_object)
     },
     cv_risk = function(loss_fun) {
-      
+
       # get risks for cv learners (nested cv)
       cv_stack_fit <- self$fit_object$cv_fit
       stack_risks <- cv_stack_fit$cv_risk(loss_fun)
-      
+
       coefs <- self$coefficients
       if (!is.null(coefs)) {
         ordered_coefs <- coefs[match(stack_risks$learner, names(coefs))]
@@ -96,7 +96,7 @@ Lrnr_sl <- R6Class(
         ordered_coefs <- rep(NA, length(stack_risks$learner))
       }
       set(stack_risks, , "coefficients", ordered_coefs)
-      
+
       # Make sure that coefficients is the second column, even if the metalearner
       # did not provide coefficients.
       data.table::setcolorder(stack_risks, c(names(stack_risks)[1], "coefficients"))

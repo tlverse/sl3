@@ -76,13 +76,13 @@ Lrnr_bilstm <- R6Class(
 
       # Build the model
       model <- kerasR::Sequential()
-      #keras::bidirectional(
+      # keras::bidirectional(
       #  object = model, layer = kerasR::LSTM(args$units,
       #    return_sequences = TRUE
       #  ),
       #  input_shape = c(num_steps, num_features)
-      #)
-      model$add(kerasR::Bidirectional(kerasR::LSTM(args$units,return_sequences = TRUE)))
+      # )
+      model$add(kerasR::Bidirectional(kerasR::LSTM(args$units, return_sequences = TRUE)))
       model$add(kerasR::Dropout(rate = args$dropout))
       model$add(kerasR::Flatten())
       model$add(kerasR::Dense(args$dense))
