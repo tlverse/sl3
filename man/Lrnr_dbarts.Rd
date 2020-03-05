@@ -86,6 +86,10 @@ returned in arrays of dimensions equal to \code{nchain} \eqn{\times}
 \item{\code{keepcall}}{Logical; if \code{FALSE}, returned object will have
 \code{call} set to \code{call("NULL")}, otherwise the call used to
 instantiate BART.}
+\item{\code{serializeable}}{Logical; if \code{TRUE}, loads the trees into R memory
+so the fit object can be saved and loaded. See the section on "Saving"
+in \code{\link[dbarts]{bart} NB: This is not currently working}
+}
 }
 }
 
@@ -110,8 +114,10 @@ Other Learners:
 \code{\link{Lrnr_bartMachine}},
 \code{\link{Lrnr_base}},
 \code{\link{Lrnr_bilstm}},
+\code{\link{Lrnr_bound}},
 \code{\link{Lrnr_caret}},
 \code{\link{Lrnr_condensier}},
+\code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_cv}},
 \code{\link{Lrnr_define_interactions}},
 \code{\link{Lrnr_density_discretize}},

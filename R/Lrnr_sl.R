@@ -9,6 +9,7 @@ utils::globalVariables(c("self"))
 #' @docType class
 #'
 #' @importFrom R6 R6Class
+#' @importFrom data.table setcolorder
 #'
 #' @export
 #'
@@ -48,6 +49,10 @@ Lrnr_sl <- R6Class(
       if (inherits(learners, "Stack")) {
         learners <- learners$params$learners
       }
+
+      if (inherits(learners, "Lrnr_base")) {
+        learners <- list(learners)
+      }
       params <- list(
         learners = learners, metalearner = metalearner,
         folds = folds, keep_extra = keep_extra, ...
@@ -82,8 +87,19 @@ Lrnr_sl <- R6Class(
       # get risks for cv learners (nested cv)
       cv_stack_fit <- self$fit_object$cv_fit
       stack_risks <- cv_stack_fit$cv_risk(loss_fun)
+
       coefs <- self$coefficients
-      set(stack_risks, , "coefficients", coefs[match(stack_risks$learner, names(coefs))])
+      if (!is.null(coefs)) {
+        ordered_coefs <- coefs[match(stack_risks$learner, names(coefs))]
+      } else {
+        # Metalearner did not provide coefficients.
+        ordered_coefs <- rep(NA, length(stack_risks$learner))
+      }
+      set(stack_risks, , "coefficients", ordered_coefs)
+
+      # Make sure that coefficients is the second column, even if the metalearner
+      # did not provide coefficients.
+      data.table::setcolorder(stack_risks, c(names(stack_risks)[1], "coefficients"))
 
       # get risks for super learner (revere cv)
       sl_risk <- cv_risk(self, loss_fun)
@@ -115,6 +131,11 @@ Lrnr_sl <- R6Class(
     coefficients = function() {
       self$assert_trained()
       return(coef(self$fit_object$cv_meta_fit))
+    },
+
+    learner_fits = function() {
+      result <- self$fit_object$full_fit$learner_fits[[1]]$learner_fits
+      return(result)
     }
   ),
 
@@ -145,7 +166,7 @@ Lrnr_sl <- R6Class(
 
       # make stack and CV learner objects
       learners <- self$params$learners
-      learner_stack <- do.call(Stack$new, learners)
+      learner_stack <- do.call(Stack$new, list(learners))
       cv_stack <- Lrnr_cv$new(learner_stack, folds = folds, full_fit = TRUE)
       cv_stack$custom_chain(drop_offsets_chain)
 

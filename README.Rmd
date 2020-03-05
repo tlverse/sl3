@@ -1,4 +1,5 @@
 ---
+always_allow_html: true
 output:
   rmarkdown::github_document
 bibliography: "inst/REFERENCES.bib"
@@ -19,14 +20,11 @@ knitr::opts_chunk$set(
 [![Travis-CI Build Status](https://travis-ci.com/tlverse/sl3.svg?branch=master)](https://travis-ci.com/tlverse/sl3)
 [![Appveyor Build Status](https://ci.appveyor.com/api/projects/status/hagh8vidrdeacr7f?svg=true)](https://ci.appveyor.com/project/tlverse/sl3)
 [![Coverage Status](https://img.shields.io/codecov/c/github/tlverse/sl3/master.svg)](https://codecov.io/github/tlverse/sl3?branch=master)
-[![CRAN](http://www.r-pkg.org/badges/version/sl3)](http://www.r-pkg.org/pkg/sl3)
-[![CRAN downloads](https://cranlogs.r-pkg.org/badges/sl3)](https://CRAN.R-project.org/package=sl3)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3558317.svg)](https://doi.org/10.5281/zenodo.3558317)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1342293.svg)](https://doi.org/10.5281/zenodo.1342293)
 
-> A modern implementation of the Super Learner algorithm for ensemble learning
-> and model stacking
+> A modern implementation of the Super Learner ensemble learning algorithm
 
 __Authors:__ [Jeremy Coyle](https://github.com/jeremyrcoyle), [Nima
 Hejazi](https://nimahejazi.org), [Ivana
@@ -135,6 +133,63 @@ head(preds)
 
 ---
 
+## Learner Properties
+
+Properties supported by `sl3` learners are presented in the following table:
+
+```{r sl3-learner-properties, warning=FALSE, echo = FALSE, message = FALSE}
+library(sl3)
+library(kableExtra)
+
+all_properties <- sl3_list_properties()
+
+get_all_learners <- function() {
+  # search for objects named like sl3 learners
+  learner_names <- apropos("^Lrnr_")
+  learners <- mget(learner_names, inherits = TRUE)
+
+  # verify that learner inherits from Lrnr_base (and is therefore an actual
+  # sl3 Learner)
+  is_learner_real <- sapply(learners, `[[`, "inherit") == "Lrnr_base"
+  return(learners[which(is_learner_real)])
+}
+all_learners <- get_all_learners()
+
+# get a list where each element is a list of properties of a particular learner
+get_learner_class_properties <- function(learner_class) {
+  return(learner_class$private_fields$.properties)
+}
+learner_property_lst <- lapply(all_learners, get_learner_class_properties)
+
+# get a list where each element is a list of logicals indicating whether a
+# learner has a property or not
+get_learner_class_properties_ownership <- function(properties) {
+  return(sl3_list_properties() %in% unlist(properties))
+}
+learner_property_ownership <- lapply(learner_property_lst,
+                                     get_learner_class_properties_ownership)
+
+get_learner_name <- function(learner_class) {
+  return(learner_class$classname)
+}
+learner_names <- lapply(all_learners, get_learner_name)
+
+# generate matrix whose columns are properties and rows are learner names
+final_mat <- matrix(unlist(learner_property_ownership),
+                    nrow = length(learner_property_ownership),
+                    ncol = length(sl3_list_properties()), byrow = TRUE)
+dimnames(final_mat) <- list(unlist(learner_names), sl3_list_properties())
+final_mat.df <- as.data.frame(final_mat)
+
+char_final_mat.df <- ifelse(final_mat.df == TRUE, "√", "x")
+kable(char_final_mat.df) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed",
+                                      "responsive")) %>%
+  scroll_box(width = "100%", height = "200px", fixed_thead = T)
+```
+
+---
+
 ## Contributions
 
 Contributions are very welcome. Interested contributors should consult our
@@ -148,23 +203,23 @@ submitting a pull request.
 
 After using the `sl3` R package, please cite the following:
 
-        @manual{coyle2019sl3,
+        @manual{coyle2020sl3,
           author = {Coyle, Jeremy R and Hejazi, Nima S and Malenica, Ivana and
             Sofrygin, Oleg},
           title = {{sl3}: Modern Pipelines for Machine Learning and {Super
             Learning}},
-          year = {2019},
+          year = {2020},
           howpublished = {\url{https://github.com/tlverse/sl3}},
-          note = {{R} package version 1.3.5},
-          url = {https://doi.org/10.5281/zenodo.3558317},
-          doi = {10.5281/zenodo.3558317}
+          note = {{R} package version 1.3.7},
+          url = {https://doi.org/10.5281/zenodo.1342293},
+          doi = {10.5281/zenodo.1342293}
         }
 
 ---
 
 ## License
 
-&copy; 2017-2019 [Jeremy R. Coyle](https://github.com/jeremyrcoyle), [Nima S.
+&copy; 2017-2020 [Jeremy R. Coyle](https://github.com/jeremyrcoyle), [Nima S.
 Hejazi](https://nimahejazi.org), [Ivana
 Malenica](https://github.com/podTockom), [Oleg
 Sofrygin](https://github.com/osofr)

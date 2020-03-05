@@ -25,6 +25,9 @@
     <loc>https://tlverse.org/sl3/reference/Lrnr_bilstm.html</loc>
   </url>
   <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_bound.html</loc>
+  </url>
+  <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_caret.html</loc>
   </url>
   <url>
@@ -32,6 +35,9 @@
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_cv.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_cv_selector.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_dbarts.html</loc>
@@ -181,6 +187,9 @@
     <loc>https://tlverse.org/sl3/reference/args_to_list.html</loc>
   </url>
   <url>
+    <loc>https://tlverse.org/sl3/reference/bound.html</loc>
+  </url>
+  <url>
     <loc>https://tlverse.org/sl3/reference/bsds.html</loc>
   </url>
   <url>
@@ -209,6 +218,9 @@
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/factors_to_indicators.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/reference/inverse_sample.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/keep_only_fun_args.html</loc>

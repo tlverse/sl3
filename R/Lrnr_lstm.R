@@ -65,7 +65,7 @@ Lrnr_lstm <- R6Class(
       args$y <- as.numeric(sapply((args$window + 1):(dim(task$X)[1]), function(x) task$X[x]))
 
       args$x <- kerasR::expand_dims(args$x, axis = 2)
-      args$y <- kerasR::expand_dims(args$y, axis = 2)
+      args$y <- kerasR::expand_dims(args$y, axis = 1)
 
       num_samples <- dim(args$x)[1] # based on spliting the time series
       num_steps <- dim(args$x)[2] # window

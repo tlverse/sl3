@@ -11,5 +11,5 @@ bibentry(bibtype = "Manual",
                     person("Oleg", "Sofrygin")),
          year = year,
          note = note,
-         doi = "10.5281/zenodo.3558317",
+         doi = "10.5281/zenodo.1342293",
          url = "https://github.com/tlverse/sl3")

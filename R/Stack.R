@@ -87,6 +87,10 @@ Stack <- R6Class(
       # name = paste(learner_names, collapse="x")
       name <- "Stack"
       return(name)
+    },
+    learner_fits = function() {
+      result <- self$fit_object$learner_fits
+      return(result)
     }
   ),
 
@@ -98,9 +102,13 @@ Stack <- R6Class(
       # generate training subtasks
       learners <- self$params$learners
       subtasks <- lapply(learners, function(learner) {
-        delayed_learner <- delayed_learner_train(learner, task)
-        delayed_learner$expect_error <- TRUE
-        return(delayed_learner)
+        if (learner$is_trained) {
+          return(learner)
+        } else {
+          delayed_learner <- delayed_learner_train(learner, task)
+          delayed_learner$expect_error <- TRUE
+          return(delayed_learner)
+        }
       })
       return(bundle_delayed(subtasks))
     },
@@ -123,6 +131,10 @@ Stack <- R6Class(
       if (all(is_error)) {
         stop("All learners in stack have failed")
       }
+
+      learner_names <- private$.learner_names[!is_error]
+      names(trained_sublearners) <- learner_names
+
       fit_object <- list(
         learner_fits = trained_sublearners,
         learner_errors = learner_errors, is_error = is_error
@@ -137,15 +149,34 @@ Stack <- R6Class(
       n_to_pred <- task$nrow
       n_learners <- length(learner_names)
 
+
+      current_fit <- learner_fits[[1]]
+      current_preds <- current_fit$base_predict(task)
+      current_names <- learner_names[1]
+      n_to_pred <- safe_dim(current_preds)[2]
+
+
+
       ## Cannot use := to add columns to a null data.table (no columns),
       ## hence we have to first seed an initial column, then delete it later
       learner_preds <- data.table::data.table(
-        init_seed_preds_to_delete =
-          rep(NA_real_, n_to_pred)
+        current_preds = current_preds
       )
+
+      if (!is.na(safe_dim(current_preds)[2]) &&
+        safe_dim(current_preds)[2] > 1) {
+        current_names <- paste0(current_names, "_", names(current_preds))
+        stopifnot(length(current_names) == safe_dim(current_preds)[2])
+      }
+
+      setnames(learner_preds, names(learner_preds), current_names)
+
       for (i in seq_along(learner_fits)) {
         current_fit <- learner_fits[[i]]
-        current_preds <- current_fit$base_predict(task)
+        if (i > 1) {
+          current_preds <- current_fit$base_predict(task)
+        }
+
         current_names <- learner_names[i]
         if (!is.na(safe_dim(current_preds)[2]) &&
           safe_dim(current_preds)[2] > 1) {
@@ -155,12 +186,7 @@ Stack <- R6Class(
         set(learner_preds, j = current_names, value = current_preds)
         invisible(NULL)
       }
-      ## remove the initial seeded column by reference
-      set(
-        learner_preds,
-        j = "init_seed_preds_to_delete",
-        value = NULL
-      )
+
       return(learner_preds)
     }
   )

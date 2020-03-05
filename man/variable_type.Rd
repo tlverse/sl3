@@ -5,13 +5,8 @@
 \alias{variable_type}
 \title{Specify variable type}
 \usage{
-variable_type(
-  type = NULL,
-  levels = NULL,
-  bounds = NULL,
-  x = NULL,
-  pcontinuous = getOption("sl3.pcontinuous")
-)
+variable_type(type = NULL, levels = NULL, bounds = NULL, x = NULL,
+  pcontinuous = getOption("sl3.pcontinuous"))
 }
 \arguments{
 \item{type}{A type name.}

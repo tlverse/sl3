@@ -143,6 +143,46 @@ Lrnr_cv <- R6Class(
         covariates = names(predictions),
         column_names = new_col_names
       ))
+    },
+
+    update = function(task) {
+      # identify the folds that already have fold fits
+      folds <- task$folds
+      eval_past_fold <- lapply(seq_len(length(folds)), function(x) {
+        if (x > length(self$training_task$folds)) {
+          equal <- FALSE
+        } else {
+          equal_training <- all.equal(
+            self$training_task$folds[[x]]$training_set,
+            task$folds[[x]]$training_set
+          )
+          equal_validation <- all.equal(
+            self$training_task$folds[[x]]$validation_set,
+            task$folds[[x]]$validation_set
+          )
+          equal <- equal_training & equal_validation
+        }
+        return(equal)
+      })
+      # retain past fold fits
+      past_folds <- which(unlist(eval_past_fold))
+      past_fold_fits <- self$fit_object$fold_fits[past_folds]
+      # subset new folds
+      new_folds <- task$folds[which(!unlist(eval_past_fold))]
+      # construct new task with only new folds
+      new_task <- task$next_in_chain(folds = new_folds)
+      # set up training for new fold fits
+      new_fold_fits <- self$train(new_task)
+
+      # update fit_object
+      fit_object <- new_fold_fits$fit_object
+      new_fold_fits <- fit_object$fold_fits
+      all_fold_fits <- c(past_fold_fits, new_fold_fits)
+      fit_object$fold_fits <- all_fold_fits
+      fit_object$folds <- folds
+      new_object <- self$clone() # copy parameters, and whatever else
+      new_object$set_train(fit_object, task)
+      return(new_object)
     }
   ),
 
@@ -156,6 +196,7 @@ Lrnr_cv <- R6Class(
     .properties = c("wrapper", "cv"),
 
     .train_sublearners = function(task) {
+      verbose <- getOption("sl3.verbose")
 
       # if we get a delayed task, evaluate it
       # TODO: this is a kludge -- ideally we'd have Lrnr_cv work on delayed tasks like other learners
@@ -176,7 +217,13 @@ Lrnr_cv <- R6Class(
         fold_number <- fold_index()
         revere_task <- task$revere_fold_task(fold_number)
         training_task <- train_task(revere_task, fold)
-        fit_object <- delayed_learner_train(learner, training_task)
+        if (verbose) {
+          delayed_name <- sprintf("CV %s fold %s", learner$name, fold_number)
+        } else {
+          delayed_name <- learner$name
+        }
+
+        fit_object <- delayed_learner_train(learner, training_task, delayed_name)
         return(fit_object)
       }
 
