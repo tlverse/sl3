@@ -5,7 +5,9 @@
 \alias{define_h2o_X}
 \alias{Lrnr_h2o_glm}
 \title{h2o Model Definition}
-\format{\code{\link{R6Class}} object.}
+\format{
+\code{\link{R6Class}} object.
+}
 \usage{
 define_h2o_X(task, outcome_type = NULL)
 }
@@ -85,9 +87,11 @@ Other Learners:
 \code{\link{Lrnr_glmnet}},
 \code{\link{Lrnr_glm}},
 \code{\link{Lrnr_grf}},
+\code{\link{Lrnr_gts}},
 \code{\link{Lrnr_h2o_grid}},
 \code{\link{Lrnr_hal9001}},
 \code{\link{Lrnr_haldensify}},
+\code{\link{Lrnr_hts}},
 \code{\link{Lrnr_independent_binomial}},
 \code{\link{Lrnr_lstm}},
 \code{\link{Lrnr_mean}},

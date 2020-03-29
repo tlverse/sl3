@@ -79,6 +79,9 @@
     <loc>https://tlverse.org/sl3/reference/Lrnr_grf.html</loc>
   </url>
   <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_gts.html</loc>
+  </url>
+  <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_h2o_glm.html</loc>
   </url>
   <url>
@@ -89,6 +92,9 @@
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_haldensify.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_hts.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_independent_binomial.html</loc>

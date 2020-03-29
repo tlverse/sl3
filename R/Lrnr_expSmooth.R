@@ -1,7 +1,7 @@
 #' Exponential Smoothing
 #'
-#' This learner supports exponential smoothing models using the \code{forecast}
-#' package. Fitting is done with the \code{\link[forecast]{ets}} function.
+#' This learner supports exponential smoothing models using \pkg{forecast}.
+#' Fitting is done with \code{\link[forecast]{ets}}.
 #'
 #' @docType class
 #'

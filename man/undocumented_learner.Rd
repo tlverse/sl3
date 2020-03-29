@@ -4,7 +4,9 @@
 \name{undocumented_learner}
 \alias{undocumented_learner}
 \title{Undocumented Learner}
-\format{\code{\link{R6Class}} object.}
+\format{
+\code{\link{R6Class}} object.
+}
 \value{
 \code{\link{Lrnr_base}} object with methods for training and
 prediction.
@@ -45,9 +47,11 @@ Other Learners:
 \code{\link{Lrnr_glmnet}},
 \code{\link{Lrnr_glm}},
 \code{\link{Lrnr_grf}},
+\code{\link{Lrnr_gts}},
 \code{\link{Lrnr_h2o_grid}},
 \code{\link{Lrnr_hal9001}},
 \code{\link{Lrnr_haldensify}},
+\code{\link{Lrnr_hts}},
 \code{\link{Lrnr_independent_binomial}},
 \code{\link{Lrnr_lstm}},
 \code{\link{Lrnr_mean}},
