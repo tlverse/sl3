@@ -83,7 +83,7 @@ cv_risk <- function(learner, loss_fun, coefs = NULL) {
   if (!("cv" %in% learner$properties)) {
     stop("learner is not cv-aware")
   }
-
+  
   task <- learner$training_task
   task <- task$revere_fold_task("validation")
   preds <- learner$predict_fold(task, "validation")
@@ -91,7 +91,17 @@ cv_risk <- function(learner, loss_fun, coefs = NULL) {
     preds <- data.table(preds)
     setnames(preds, names(preds), learner$name)
   }
-  losses <- preds[, lapply(.SD, loss_fun, task$Y)]
+  #Time-series issue: not all time points used as validation
+  if(length(task$Y) != nrow(preds)){
+    folds <- task$folds
+    val_index <- unlist(lapply(folds, function(fold){
+      fold$validation_set}))
+    Y <- task$Y[val_index]
+    losses <- preds[, lapply(.SD, loss_fun, Y)]
+  }else{
+    losses <- preds[, lapply(.SD, loss_fun, task$Y)]
+  }
+  
   # multiply each loss (L(O_i)) by the weights (w_i):
   losses_by_id <- losses[, lapply(.SD, function(loss) {
     task$weights *
@@ -103,7 +113,7 @@ cv_risk <- function(learner, loss_fun, coefs = NULL) {
     mean(loss, na.rm = TRUE)
   }), by = task$id]
   losses_by_id[, "task" := NULL]
-
+  
   # n_obs for clustered data (person-time observations), should be equal to
   # number of independent subjects
   n_obs <- nrow(losses_by_id)
@@ -113,7 +123,7 @@ cv_risk <- function(learner, loss_fun, coefs = NULL) {
     .SD, sd,
     na.rm = TRUE
   )])
-
+  
   # get fold specific risks
   validation_means <- function(fold, losses, weight) {
     risks <- lapply(
@@ -122,22 +132,22 @@ cv_risk <- function(learner, loss_fun, coefs = NULL) {
     )
     return(as.data.frame(risks))
   }
-
+  
   fold_risks <- lapply(
     task$folds,
     validation_means,
     losses,
     task$weights
   )
-
+  
   fold_risks <- rbindlist(fold_risks)
   fold_mean_risk <- apply(fold_risks, 2, mean)
   fold_min_risk <- apply(fold_risks, 2, min)
   fold_max_risk <- apply(fold_risks, 2, max)
   fold_SD <- apply(fold_risks, 2, sd)
-
+  
   learner_names <- names(preds)
-
+  
   risk_dt <- data.table::data.table(
     learner = learner_names,
     coefficients = NA * 0.0,
