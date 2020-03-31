@@ -41,12 +41,12 @@ Imports:
     ggplot2,
     stringr,
     digest,
-    imputeMissings
+    imputeMissings,
+    dplyr
 Suggests:
     testthat,
     rmarkdown,
     devtools,
-    dplyr,
     R.rsp,
     future,
     knitr,
