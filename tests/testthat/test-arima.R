@@ -12,6 +12,8 @@ if (FALSE) {
   install("sl3", build_vignettes = FALSE, dependencies = FALSE) # INSTALL W/ devtools:
 }
 
+library(origami)
+
 set.seed(1)
 attach(list(lag = stats::lag), name = "stats_lag_test_kludge", warn.conflicts = FALSE)
 data(bsds)
@@ -34,7 +36,7 @@ test_that("Lrnr_arima gives expected values with auto.arima", {
   arima_preds_2 <- as.numeric(arima_preds_2$pred)
   arima_preds_2 <- structure(arima_preds_2, names = 1)
 
-  expect_true(sum(arima_preds - arima_preds_2) < 10^(-10))
+  expect_true(sum(arima_preds - arima_preds_2) < 10
   expect_true(all.equal(arima_preds_2, arima_preds))
 })
 
@@ -48,7 +50,7 @@ test_that("Lrnr_arima gives expected values with arima order set", {
   arima_preds_2 <- as.numeric(arima_preds_2$pred)
   arima_preds_2 <- structure(arima_preds_2, names = 1)
 
-  expect_true(sum(arima_preds - arima_preds_2) < 10^(-10))
+  expect_true(sum(arima_preds - arima_preds_2) < 10
   expect_true(all.equal(arima_preds_2, arima_preds))
 })
 
@@ -62,7 +64,7 @@ test_that("Lrnr_arima with further forecasts", {
   arima_preds_2 <- as.numeric(arima_preds_2$pred)
   arima_preds_2 <- structure(arima_preds_2, names = 1:5)
 
-  expect_true(sum(arima_preds - arima_preds_2) < 10^(-10))
+  expect_true(sum(arima_preds - arima_preds_2) < 10)
   expect_true(all.equal(arima_preds_2, arima_preds))
 })
 

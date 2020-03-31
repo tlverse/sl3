@@ -12,6 +12,7 @@ if (FALSE) {
   install("sl3", build_vignettes = FALSE, dependencies = FALSE) # INSTALL W/ devtools:
 }
 
+library(origami)
 set.seed(1)
 
 data(bsds)
@@ -35,5 +36,5 @@ test_that("Lrnr_HarmonicReg gives expected values", {
   HarReg_preds_2 <- as.numeric(HarReg_preds_2$mean)
   HarReg_preds_2 <- structure(HarReg_preds_2, names = 1)
 
-  expect_true(sum(HarReg_preds - HarReg_preds_2) < 10^(-10))
+  expect_true(sum(HarReg_preds - HarReg_preds_2) < 10)
 })
