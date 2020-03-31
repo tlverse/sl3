@@ -41,6 +41,10 @@ Lrnr_HarmonicReg <- R6Class(
     initialize = function(Kparam, n.ahead = NULL, freq, ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
+      if (!is.null(n.ahead)) {
+        warning("n.ahead paramater is specified- obtaining an ensemble will fail. 
+                Please only use for obtaining individual learner forcasts.")
+      }
     }
   ),
 
@@ -70,22 +74,63 @@ Lrnr_HarmonicReg <- R6Class(
       freq <- params[["freq"]]
       Kparam <- params[["Kparam"]]
 
-      if (is.null(n.ahead)) {
-        n.ahead <- task$nrow
+      # See if there is gap between training and validation:
+      gap <- min(task$folds[[1]]$validation_set) - max(task$folds[[1]]$training_set)
+
+      if (gap > 1) {
+        if (is.null(n.ahead)) {
+          n.ahead <- task$nrow + gap
+        } else {
+          n.ahead <- n.ahead + gap
+        }
+        task_ts <- ts(task$X, frequency = freq)
+        fourier_fit <- data.frame(forecast::fourier(
+          task_ts,
+          K = Kparam,
+          h = n.ahead
+        ))
+        predictions <- forecast::forecast(private$.fit_object, fourier_fit)
+
+        # Create output as in glm
+        predictions <- as.numeric(predictions$mean)
+        predictions <- structure(predictions, names = seq_len(length(predictions)))
+        return(predictions)
+      } else if (gap == 1) {
+        if (is.null(n.ahead)) {
+          n.ahead <- task$nrow
+        }
+        task_ts <- ts(task$X, frequency = freq)
+        fourier_fit <- data.frame(forecast::fourier(
+          task_ts,
+          K = Kparam,
+          h = n.ahead
+        ))
+        predictions <- forecast::forecast(private$.fit_object, fourier_fit)
+
+        # Create output as in glm
+        predictions <- as.numeric(predictions$mean)
+        predictions <- structure(predictions, names = seq_len(length(predictions)))
+        return(predictions)
+      } else if (gap < 1) {
+        warning("Validation samples come before Training samples; 
+                please specify one of the time-series fold structures.")
+
+        if (is.null(n.ahead)) {
+          n.ahead <- task$nrow
+        }
+        task_ts <- ts(task$X, frequency = freq)
+        fourier_fit <- data.frame(forecast::fourier(
+          task_ts,
+          K = Kparam,
+          h = n.ahead
+        ))
+        predictions <- forecast::forecast(private$.fit_object, fourier_fit)
+
+        # Create output as in glm
+        predictions <- as.numeric(predictions$mean)
+        predictions <- structure(predictions, names = seq_len(length(predictions)))
+        return(predictions)
       }
-
-      task_ts <- ts(task$X, frequency = freq)
-      fourier_fit <- data.frame(forecast::fourier(
-        task_ts,
-        K = Kparam,
-        h = n.ahead
-      ))
-      predictions <- forecast::forecast(private$.fit_object, fourier_fit)
-
-      # Create output as in glm
-      predictions <- as.numeric(predictions$mean)
-      predictions <- structure(predictions, names = seq_len(n.ahead))
-      return(predictions)
     },
 
     .required_packages = c("forecast")

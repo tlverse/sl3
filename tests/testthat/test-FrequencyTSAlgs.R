@@ -18,7 +18,11 @@ data(bsds)
 covars <- c("cnt")
 outcome <- "cnt"
 
-task <- sl3_Task$new(bsds, covariates = covars, outcome = outcome)
+folds <- origami::make_folds(bsds,
+  fold_fun = folds_rolling_window, window_size = 50,
+  validation_size = 10, gap = 0, batch = 200
+)
+task <- sl3_Task$new(bsds, covariates = covars, outcome = outcome, folds = folds)
 
 test_that("Lrnr_HarmonicReg gives expected values", {
   HarReg_learner <- Lrnr_HarmonicReg$new(n.ahead = 1, K = 7, freq = 105)

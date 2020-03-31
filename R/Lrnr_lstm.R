@@ -37,7 +37,6 @@ Lrnr_lstm <- R6Class(
                           batch_size = 1,
                           epochs = 500,
                           window = 5,
-                          n.ahead = 1,
                           activation = "linear",
                           dense = 1,
                           dropout = 0,
@@ -91,6 +90,12 @@ Lrnr_lstm <- R6Class(
 
     .predict = function(task = NULL) {
       args <- self$params
+
+      # TO DO: Incorporate gap between validation and training here as well?
+
+      # See if there is gap between training and validation:
+      # gap <- min(task$folds[[1]]$validation_set)-max(task$folds[[1]]$training_set)
+
       args$x <- t(data.frame(lapply(
         1:(dim(task$X)[1] - args$window),
         function(x) task$X[x:(x + args$window - 1)]

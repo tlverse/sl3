@@ -21,10 +21,14 @@ covars <- c("cnt")
 outcome <- "cnt"
 n_ahead_param <- 5
 
-task <- sl3_Task$new(bsds, covariates = covars, outcome = outcome)
+folds <- origami::make_folds(bsds,
+  fold_fun = folds_rolling_window, window_size = 50,
+  validation_size = 10, gap = 0, batch = 200
+)
+task <- sl3_Task$new(bsds, covariates = covars, outcome = outcome, folds = folds)
 
 test_that("Automatic Lrnr_expSmooth gives expected values", {
-  expSmooth_learner <- Lrnr_expSmooth$new(n.ahead = n_ahead_param)
+  expSmooth_learner <- Lrnr_expSmooth$new(n.ahead = 5)
   expSmooth_fit <- expSmooth_learner$train(task)
   expSmooth_preds <- expSmooth_fit$predict(task)
 

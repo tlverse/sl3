@@ -57,6 +57,10 @@ Lrnr_rugarch <- R6Class(
                           fixed.pars = list(), n.ahead = NULL, ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
+      if (!is.null(n.ahead)) {
+        warning("n.ahead paramater is specified- obtaining an ensemble will fail. 
+                Please only use for obtaining individual learner forcasts.")
+      }
     }
   ),
 
@@ -76,18 +80,58 @@ Lrnr_rugarch <- R6Class(
     .predict = function(task = NULL) {
       params <- self$params
       n.ahead <- params[["n.ahead"]]
-      if (is.null(n.ahead)) {
-        n.ahead <- task$nrow
+
+      # See if there is gap between training and validation:
+      gap <- min(task$folds[[1]]$validation_set) - max(task$folds[[1]]$training_set)
+
+      if (gap > 1) {
+        if (is.null(n.ahead)) {
+          n.ahead <- task$nrow + gap
+        } else {
+          n.ahead <- n.ahead + gap
+        }
+
+        # Give the same output as GLM
+        predictions <- rugarch::ugarchforecast(
+          private$.fit_object,
+          data = task$X,
+          n.ahead = n.ahead
+        )
+        predictions <- as.numeric(predictions@forecast$seriesFor)
+        predictions <- structure(predictions, names = seq_len(length(predictions)))
+        return(predictions)
+      } else if (gap == 1) {
+        if (is.null(n.ahead)) {
+          n.ahead <- task$nrow
+        }
+
+        # Give the same output as GLM
+        predictions <- rugarch::ugarchforecast(
+          private$.fit_object,
+          data = task$X,
+          n.ahead = n.ahead
+        )
+        predictions <- as.numeric(predictions@forecast$seriesFor)
+        predictions <- structure(predictions, names = seq_len(length(predictions)))
+        return(predictions)
+      } else if (gap < 1) {
+        warning("Validation samples come before Training samples; 
+                please specify one of the time-series fold structures.")
+
+        if (is.null(n.ahead)) {
+          n.ahead <- task$nrow
+        }
+
+        # Give the same output as GLM
+        predictions <- rugarch::ugarchforecast(
+          private$.fit_object,
+          data = task$X,
+          n.ahead = n.ahead
+        )
+        predictions <- as.numeric(predictions@forecast$seriesFor)
+        predictions <- structure(predictions, names = seq_len(length(predictions)))
+        return(predictions)
       }
-      # Give the same output as GLM
-      predictions <- rugarch::ugarchforecast(
-        private$.fit_object,
-        data = task$X,
-        n.ahead = n.ahead
-      )
-      predictions <- as.numeric(predictions@forecast$seriesFor)
-      predictions <- structure(predictions, names = seq_len(n.ahead))
-      return(predictions)
     },
     .required_packages = c("rugarch")
   )

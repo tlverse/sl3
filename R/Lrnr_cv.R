@@ -50,7 +50,7 @@ interpret_fold_number <- function(fold_number) {
 #' @importFrom assertthat assert_that is.count is.flag
 #' @importFrom origami training validation fold_index cross_validate
 #' @importFrom dplyr %>% group_by summarise_all select
-#' 
+#'
 #'
 #' @export
 #'
@@ -97,26 +97,28 @@ Lrnr_cv <- R6Class(
       print(self$params$learner)
       # todo: check if fit
     },
-    predict_fold = function(task, fold_number = "validation", pred_unique_ts=FALSE) {
+    predict_fold = function(task, fold_number = "validation", pred_unique_ts = FALSE) {
       fold_number <- interpret_fold_number(fold_number)
       if (fold_number == "validation") {
         # return cross validation predicitons (what Lrnr_cv$predict does, so use that)
         preds <- self$predict(task)
-        
-        ### Time-series addition: 
-        #Each time point gets an unique final prediction
-        if(pred_unique_ts){
+
+        ### Time-series addition:
+        # Each time point gets an unique final prediction
+        if (pred_unique_ts) {
           folds <- task$folds
-          index_val <- unlist(lapply(folds, function(fold){fold$validation_set}))
+          index_val <- unlist(lapply(folds, function(fold) {
+            fold$validation_set
+          }))
           preds_unique <- unique(index_val)
-          
-          if(length(unique(index_val)) != length(index_val)){
-            #Average over the same predictions:
+
+          if (length(unique(index_val)) != length(index_val)) {
+            # Average over the same predictions:
             preds <- data.table(index_val, preds)
-            
-            preds <- preds %>% 
-              group_by(index_val) %>% 
-              summarise_all(mean) %>% 
+
+            preds <- preds %>%
+              group_by(index_val) %>%
+              summarise_all(mean) %>%
               select(-1)
           }
         }

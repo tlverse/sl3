@@ -90,16 +90,18 @@ call_with_args <- function(fun, args, other_valid = list(), keep_all = FALSE) {
   if (!keep_all) {
     formal_args <- names(formals(fun))
     all_valid <- c(formal_args, other_valid)
-    
+
     invalid <- names(args)[which(!(names(args) %in% all_valid))]
-    
+
     args <- args[which(names(args) %in% all_valid)]
-    
-    
-    
-    if(length(invalid)>0){
-      warning(sprintf("Learner called function %s with unknown args: %s. These will be dropped.\nCheck the params supported by this learner.",
-                      as.character(substitute(fun)), paste(invalid, sep=", ")))
+
+
+
+    if (length(invalid) > 0) {
+      warning(sprintf(
+        "Learner called function %s with unknown args: %s. These will be dropped.\nCheck the params supported by this learner.",
+        as.character(substitute(fun)), paste(invalid, sep = ", ")
+      ))
     }
   }
   do.call(fun, args)
