@@ -91,7 +91,18 @@ cv_risk <- function(learner, loss_fun, coefs = NULL) {
     preds <- data.table(preds)
     setnames(preds, names(preds), learner$name)
   }
-  losses <- preds[, lapply(.SD, loss_fun, task$Y)]
+  # Time-series issue: not all time points used as validation
+  if (length(task$Y) != nrow(preds)) {
+    folds <- task$folds
+    val_index <- unlist(lapply(folds, function(fold) {
+      fold$validation_set
+    }))
+    Y <- task$Y[val_index]
+    losses <- preds[, lapply(.SD, loss_fun, Y)]
+  } else {
+    losses <- preds[, lapply(.SD, loss_fun, task$Y)]
+  }
+
   # multiply each loss (L(O_i)) by the weights (w_i):
   losses_by_id <- losses[, lapply(.SD, function(loss) {
     task$weights *

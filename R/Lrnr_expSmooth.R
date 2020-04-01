@@ -1,7 +1,7 @@
 #' Exponential Smoothing
 #'
-#' This learner supports exponential smoothing models using the \code{forecast}
-#' package. Fitting is done with the \code{\link[forecast]{ets}} function.
+#' This learner supports exponential smoothing models using \pkg{forecast}.
+#' Fitting is done with \code{\link[forecast]{ets}}.
 #'
 #' @docType class
 #'
@@ -71,7 +71,7 @@ Lrnr_expSmooth <- R6Class(
   portable = TRUE,
   class = TRUE,
   public = list(
-    initialize = function(model = "ZZZ", damped = NULL, alpha = NULL,
+    initialize = function(model = "ZZZ", damped = NULL, alpha = NULL, n.ahead = NULL,
                           beta = NULL, gamma = NULL, phi = NULL, lambda = NULL,
                           additive.only = FALSE, biasadj = FALSE,
                           lower = c(rep(1e-04, 3), 0.8),
@@ -82,6 +82,10 @@ Lrnr_expSmooth <- R6Class(
                           use.initial.values = FALSE, freq = 1, ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
+      if (!is.null(n.ahead)) {
+        warning("n.ahead paramater is specified- obtaining an ensemble will fail. 
+                Please only use for obtaining individual learner forcasts.")
+      }
     }
   ),
 
@@ -103,14 +107,41 @@ Lrnr_expSmooth <- R6Class(
       params <- self$params
       n.ahead <- params[["n.ahead"]]
 
-      if (is.null(n.ahead)) {
-        n.ahead <- task$nrow
+      # See if there is gap between training and validation:
+      gap <- min(task$folds[[1]]$validation_set) - max(task$folds[[1]]$training_set)
+
+      if (gap > 1) {
+        if (is.null(n.ahead)) {
+          n.ahead <- task$nrow + gap
+        } else {
+          n.ahead <- n.ahead + gap
+        }
+        predictions <- forecast::forecast(private$.fit_object, h = n.ahead)
+        # Create output as in glm
+        predictions <- as.numeric(predictions$mean)
+        predictions <- structure(predictions, names = seq_len(length(predictions)))
+        return(predictions)
+      } else if (gap == 1) {
+        if (is.null(n.ahead)) {
+          n.ahead <- task$nrow
+        }
+        predictions <- forecast::forecast(private$.fit_object, h = n.ahead)
+        # Create output as in glm
+        predictions <- as.numeric(predictions$mean)
+        predictions <- structure(predictions, names = seq_len(n.ahead))
+        return(predictions)
+      } else if (gap < 1) {
+        warning("Validation samples come before Training samples; 
+                please specify one of the time-series fold structures.")
+        if (is.null(n.ahead)) {
+          n.ahead <- task$nrow
+        }
+        predictions <- forecast::forecast(private$.fit_object, h = n.ahead)
+        # Create output as in glm
+        predictions <- as.numeric(predictions$mean)
+        predictions <- structure(predictions, names = seq_len(n.ahead))
+        return(predictions)
       }
-      predictions <- forecast::forecast(private$.fit_object, h = n.ahead)
-      # Create output as in glm
-      predictions <- as.numeric(predictions$mean)
-      predictions <- structure(predictions, names = seq_len(n.ahead))
-      return(predictions)
     },
     .required_packages = c("forecast")
   )

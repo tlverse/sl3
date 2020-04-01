@@ -109,7 +109,7 @@ Lrnr_sl <- R6Class(
       risks <- rbind(stack_risks, sl_risk)
       return(risks)
     },
-    predict_fold = function(task, fold_number = "validation") {
+    predict_fold = function(task, fold_number = "validation", pred_unique_ts = FALSE) {
       fold_number <- interpret_fold_number(fold_number)
       revere_task <- task$revere_fold_task(fold_number)
       if (fold_number == "full") {
@@ -117,6 +117,23 @@ Lrnr_sl <- R6Class(
       } else {
         meta_task <- self$fit_object$cv_fit$chain_fold(revere_task, fold_number)
         preds <- self$fit_object$cv_meta_fit$predict(meta_task)
+
+        if (pred_unique_ts) {
+          ### Time-series addition:
+          # Each time point gets an unique final prediction
+          folds <- revere_task$folds
+          index_val <- unlist(lapply(folds, function(fold) {
+            fold$validation_set
+          }))
+          preds_unique <- unique(index_val)
+
+          if (length(unique(index_val)) != length(index_val)) {
+            # Average over the same predictions:
+            preds <- data.table(index_val, preds)
+            preds <- preds[, mean(preds), index_val]
+            preds <- as.numeric(preds$V1)
+          }
+        }
       }
 
       return(preds)

@@ -36,7 +36,6 @@ Lrnr_bilstm <- R6Class(
                           batch_size = 1,
                           epochs = 500,
                           window = 5,
-                          n.ahead = 1,
                           activation = "linear",
                           dense = 1,
                           dropout = 0,

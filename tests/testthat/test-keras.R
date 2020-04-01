@@ -20,7 +20,12 @@ set.seed(1)
 
 trend_all <- 11:130 + rnorm(120, sd = 2)
 trend_all <- data.frame(data = trend_all)
-task <- sl3_Task$new(trend_all, covariates = "data", outcome = "data")
+
+folds <- origami::make_folds(trend_all$data,
+  fold_fun = folds_rolling_window, window_size = 50,
+  validation_size = 10, gap = 0, batch = 20
+)
+task <- sl3_Task$new(trend_all, covariates = "data", outcome = "data", folds = folds)
 
 # See which environments reticulate can see:
 # reticulate:::conda_list()

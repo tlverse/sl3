@@ -18,8 +18,12 @@ set.seed(1)
 data(bsds)
 covars <- c("cnt")
 outcome <- "cnt"
-task <- sl3_Task$new(bsds, covariates = covars, outcome = outcome)
-task$nodes$covariates
+
+folds <- origami::make_folds(bsds,
+  fold_fun = folds_rolling_window, window_size = 50,
+  validation_size = 10, gap = 0, batch = 200
+)
+task <- sl3_Task$new(bsds, covariates = covars, outcome = outcome, folds = folds)
 
 test_that("Lrnr_rugarch gives expected values with no model specification", {
   garch_learner <- Lrnr_rugarch$new(n.ahead = 1)
@@ -77,7 +81,7 @@ test_that("Lrnr_rugarch gives expected values when ran with a fixed parameter", 
 test_that("Lrnr_rugarch gives expected values with external regressors", {
   covars <- c("cnt", "workingday")
   outcome <- "cnt"
-  task <- sl3_Task$new(bsds, covariates = covars, outcome = outcome)
+  task <- sl3_Task$new(bsds, covariates = covars, outcome = outcome, folds = folds)
 
   garch_learner <- Lrnr_rugarch$new(variance.model = list(
     model = "sGARCH", garchOrder = c(1, 1),

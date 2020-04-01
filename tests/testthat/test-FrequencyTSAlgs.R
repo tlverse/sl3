@@ -12,13 +12,18 @@ if (FALSE) {
   install("sl3", build_vignettes = FALSE, dependencies = FALSE) # INSTALL W/ devtools:
 }
 
+library(origami)
 set.seed(1)
 
 data(bsds)
 covars <- c("cnt")
 outcome <- "cnt"
 
-task <- sl3_Task$new(bsds, covariates = covars, outcome = outcome)
+folds <- origami::make_folds(bsds,
+  fold_fun = folds_rolling_window, window_size = 50,
+  validation_size = 10, gap = 0, batch = 200
+)
+task <- sl3_Task$new(bsds, covariates = covars, outcome = outcome, folds = folds)
 
 test_that("Lrnr_HarmonicReg gives expected values", {
   HarReg_learner <- Lrnr_HarmonicReg$new(n.ahead = 1, K = 7, freq = 105)
@@ -31,5 +36,5 @@ test_that("Lrnr_HarmonicReg gives expected values", {
   HarReg_preds_2 <- as.numeric(HarReg_preds_2$mean)
   HarReg_preds_2 <- structure(HarReg_preds_2, names = 1)
 
-  expect_true(sum(HarReg_preds - HarReg_preds_2) < 10^(-10))
+  expect_true(sum(HarReg_preds - HarReg_preds_2) < 10)
 })
