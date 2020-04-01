@@ -94,6 +94,7 @@ Lrnr_hts <- R6Class(
   private = list(
     .properties = c("timeseries", "continuous"),
     .train = function(task) {
+      browser()
       args <- self$params
       args$y <- ts(task$X)
       args$bnames <- colnames(args$y)
