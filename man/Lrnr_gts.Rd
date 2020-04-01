@@ -19,12 +19,6 @@ performed via \code{\link[hts]{forecast.gts}}.
 \section{Parameters}{
 
 \describe{
-\item{\code{groups}}{Group matrix indicating the group structure, with one
-column for each series when completely disaggregated, and one row for
-each grouping of the time series. It allows either a numerical matrix or
-a matrix consisting of strings that can be used for labelling.}
-\item{\code{h)}}{Forecast horizon. If \code{NULL}, will be guessed from
-the frequency of the time series.}
 \item{\code{method)}}{Method for distributing forecasts within hierarchy.
 See details of \code{\link[hts]{forecast.gts}}.}
 \item{\code{weights)}}{Weights used for "optimal combination" method:
