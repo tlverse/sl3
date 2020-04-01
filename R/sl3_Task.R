@@ -267,7 +267,6 @@ sl3_Task <- R6Class(
       )
       return(new_task)
     },
-
     subset_task = function(row_index, drop_folds = FALSE) {
       if (is.logical(row_index)) {
         row_index <- which(row_index)
@@ -277,15 +276,28 @@ sl3_Task <- R6Class(
         # index into the logical rows of this task
         row_index <- old_row_index[row_index]
       }
+      
+      must_reindex <- any(duplicated(loss_dt$index))
+      if(must_reindex){
+        new_shared_data <- private$.shared_data$clone()
+        new_shared_data$reindex(row_index)
+        row_index <- seq_along(row_index)
+      } else {
+        new_shared_data <- private$.shared_data
+      }
+      
       new_task <- self$clone()
       if (drop_folds) {
         new_folds <- NULL
       } else {
+        if(must_reindex){
+          stop("subset indicies have copies, this requires dropping folds for now")
+        }
         new_folds <- subset_folds(self$folds, row_index)
       }
 
       new_task$initialize(
-        private$.shared_data,
+        new_shared_data,
         nodes = private$.nodes,
         folds = new_folds,
         column_names = private$.column_names,
