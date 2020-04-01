@@ -277,7 +277,7 @@ sl3_Task <- R6Class(
         row_index <- old_row_index[row_index]
       }
       
-      must_reindex <- any(duplicated(loss_dt$index))
+      must_reindex <- any(duplicated(row_index))
       if(must_reindex){
         new_shared_data <- private$.shared_data$clone()
         new_shared_data$reindex(row_index)
