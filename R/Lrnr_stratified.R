@@ -54,12 +54,13 @@ Lrnr_stratified <- R6Class(
     .train = function(task) {
       args <- self$params
       args$X <- as.matrix(task$X)
-      variable_stratify_stratas <- unique(args$X[, args$variable_stratify])
+      strata_ids <- unlist(task$data[, args$variable_stratify, with = FALSE])
+      variable_stratify_stratas <- unique(strata_ids)
 
       # fit_object is a dictionary of instantiated of Lrnr_* objects
       fit_object <- list()
       for (strata in variable_stratify_stratas) {
-        index_in_strata <- which(args$X[, args$variable_stratify] == strata)
+        index_in_strata <- which(strata_ids == strata)
         sub_task <- task$subset_task(
           row_index = index_in_strata,
           drop_folds = TRUE
@@ -77,11 +78,12 @@ Lrnr_stratified <- R6Class(
     },
     .predict = function(task = NULL) {
       learner_dict <- self$fit_object
-      variable_stratify_stratas <- as.numeric(names(learner_dict))
+      variable_stratify_stratas <- names(learner_dict)
       variable_stratify <- self$params$variable_stratify
 
-      X_new <- as.matrix(task$X)
-      variable_stratify_stratas_new <- unique(X_new[, variable_stratify])
+      strata_ids <- unlist(task$data[, variable_stratify, with = FALSE])
+      variable_stratify_stratas_new <- unique(strata_ids)
+      
       if (
         length(
           setdiff(variable_stratify_stratas_new, variable_stratify_stratas)
@@ -95,7 +97,7 @@ Lrnr_stratified <- R6Class(
       # predictions <- aorder(results$predictions, order(results$index))
 
       for (strata in variable_stratify_stratas_new) {
-        index_subtask <- which(X_new[, variable_stratify] == strata)
+        index_subtask <- which(strata_ids == strata)
         # construct subtask
         sub_task <- task$subset_task(row_index = index_subtask)
         sub_task <- sub_task$next_in_chain(
