@@ -26,7 +26,7 @@ folds <- origami::make_folds(bsds,
 task <- sl3_Task$new(bsds, covariates = covars, outcome = outcome, folds = folds)
 
 test_that("Lrnr_HarmonicReg gives expected values", {
-  HarReg_learner <- Lrnr_HarmonicReg$new(n.ahead = 1, K = 7, freq = 105)
+  HarReg_learner <- Lrnr_HarmonicReg$new(K = 7, freq = 105)
   HarReg_fit <- HarReg_learner$train(task)
   HarReg_preds <- HarReg_fit$predict(task)
 
@@ -36,5 +36,5 @@ test_that("Lrnr_HarmonicReg gives expected values", {
   HarReg_preds_2 <- as.numeric(HarReg_preds_2$mean)
   HarReg_preds_2 <- structure(HarReg_preds_2, names = 1)
 
-  expect_true(sum(HarReg_preds - HarReg_preds_2) < 10)
+  expect_true(sum(HarReg_preds[1] - HarReg_preds_2) < 10)
 })

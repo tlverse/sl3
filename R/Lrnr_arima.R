@@ -70,6 +70,7 @@ Lrnr_arima <- R6Class(
       n.ahead <- params[["n.ahead"]]
 
       # See if there is gap between training and validation:
+      # get horizon based on training and testing tasks
       gap <- min(task$folds[[1]]$validation_set) - max(task$folds[[1]]$training_set)
 
       if (gap > 1) {
