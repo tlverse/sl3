@@ -5,7 +5,8 @@
 \alias{cpp}
 \alias{cpp_imputed}
 \title{Subset of growth data from the collaborative perinatal project (CPP)}
-\format{A data frame with 1,912 repated-measures observations and 500 unique
+\format{
+A data frame with 1,912 repated-measures observations and 500 unique
 subjects:
 
 \describe{
@@ -42,7 +43,8 @@ subjects:
 \item{smoked}{Maternal smoking status}
 \item{mcignum}{Num cigarettes mom smoked per day}
 \item{comprisk}{Maternal risk factors}
-}}
+}
+}
 \source{
 \url{https://catalog.archives.gov/id/606622}
 
@@ -51,6 +53,8 @@ of longitudinal research 1 (1984): 185-227.
 }
 \usage{
 data(cpp)
+
+data(cpp_imputed)
 }
 \description{
 Subset of growth data from the collaborative perinatal project (CPP).
