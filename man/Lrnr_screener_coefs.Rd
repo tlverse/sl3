@@ -3,7 +3,7 @@
 \docType{class}
 \name{Lrnr_screener_coefs}
 \alias{Lrnr_screener_coefs}
-\title{Random Forest Screener}
+\title{Coefficient Magnitude Screener}
 \format{
 \code{\link{R6Class}} object.
 }
@@ -12,18 +12,16 @@ Learner object with methods for training and prediction. See
 \code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
-This learner provides covariate screening procedures using variable
-importance measures as produced by random forest models, provided by the
-\code{randomForest} package, \code{\link[randomForest]{randomForest}}
-function.
+This learner provides screening of covariates based on the magnitude of
+their estimated coefficients in a (possibly regularized) GLM.
 }
 \section{Parameters}{
 
 \describe{
-\item{\code{nVar = 10}}{Number of covariates to select.}
-\item{\code{ntree = 1000}}{Number of trees in forest.}
-\item{\code{...}}{Other parameters passed to
-\code{\link[randomForest]{randomForest}}.}
+\item{\code{learner}}{An instantiated learner to use for estimating
+coefficients used in screening.}
+\item{\code{threshold = 1e-3}}{Minimum size of coefficients to be kept.}
+\item{\code{...}}{Other parameters passed to \code{learner}.}
 }
 }
 
