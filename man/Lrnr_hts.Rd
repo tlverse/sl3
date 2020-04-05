@@ -19,12 +19,6 @@ is performed via \code{\link[hts]{forecast.gts}}.
 \section{Parameters}{
 
 \describe{
-\item{\code{nodes}}{A \code{list} containing the number of child nodes
-associated with each level, which indicates the hierarchical structure.
-The default is a simple hierarchy with only 2 levels (i.e., total and
-bottom).}
-\item{\code{h)}}{Forecast horizon. If \code{NULL}, will be guessed from
-the frequency of the time series.}
 \item{\code{method)}}{Method for distributing forecasts within hierarchy.
 See details of \code{\link[hts]{forecast.gts}}.}
 \item{\code{weights)}}{Weights used for "optimal combination" method:

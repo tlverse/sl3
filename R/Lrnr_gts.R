@@ -88,7 +88,8 @@ Lrnr_gts <- R6Class(
     .train = function(task) {
       args <- self$params
       wide_formula <- sprintf("%s ~ %s", task$nodes$time, task$nodes$id)
-      args$y <-ts(as.matrix(dcast(task$data, as.formula(wide_formula), value.var=task$nodes$outcome))[, -1])
+      args$y <- ts(as.matrix(dcast(task$data, as.formula(wide_formula),
+                                   value.var = task$nodes$outcome))[, -1])
       fit_object <- call_with_args(gts, args)
       return(fit_object)
     },
