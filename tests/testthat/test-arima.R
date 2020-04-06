@@ -19,9 +19,9 @@ attach(list(lag = stats::lag), name = "stats_lag_test_kludge", warn.conflicts = 
 data(bsds)
 
 data <- as.data.table(bsds$cnt)
-data <- data[1:50,]
+data <- data[1:50, ]
 data[, time := .I]
-names(data)[1]<-"cnt"
+names(data)[1] <- "cnt"
 
 covars <- c("cnt")
 outcome <- "cnt"
@@ -31,7 +31,7 @@ folds <- origami::make_folds(data,
   validation_size = 15, gap = 0, batch = 10
 )
 
-node_list <- list(outcome = outcome, covariates=covars, time = "time")
+node_list <- list(outcome = outcome, covariates = covars, time = "time")
 task <- sl3_Task$new(data, nodes = node_list, folds = folds)
 
 test_that("Lrnr_arima gives expected values with auto.arima", {
@@ -94,8 +94,8 @@ test_that("Lrnr_tsDyn with multiple different models, multivariate", {
   # Define new data:
   covars <- c("temp", "atemp")
   outcome <- c("temp", "atemp")
-  
-  data <- bsds[1:50, c("temp","atemp")]
+
+  data <- bsds[1:50, c("temp", "atemp")]
 
   task <- sl3_Task$new(data, covariates = covars, outcome = outcome, folds = folds)
 

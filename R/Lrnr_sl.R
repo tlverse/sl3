@@ -185,9 +185,9 @@ Lrnr_sl <- R6Class(
       learners <- self$params$learners
       learner_stack <- do.call(Stack$new, list(learners))
       cv_stack <- Lrnr_cv$new(learner_stack, folds = folds, full_fit = TRUE)
-      
+
       # TODO: readd custom chain w/ better cv chain code
-      #cv_stack$custom_chain(drop_offsets_chain)
+      # cv_stack$custom_chain(drop_offsets_chain)
 
       # fit stack on CV data
       cv_fit <- delayed_learner_train(cv_stack, task)

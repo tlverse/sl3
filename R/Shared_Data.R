@@ -77,7 +77,7 @@ Shared_Data <- R6Class(
       # return an updated column_names map
       return(column_names)
     },
-    reindex = function(row_index){
+    reindex = function(row_index) {
       private$.data <- copy(private$.data[row_index])
     }
   ),

@@ -68,8 +68,8 @@ trend_all <- 11:130 + rnorm(120, sd = 2)
 trend_all <- data.frame(data = trend_all)
 
 folds <- origami::make_folds(trend_all$data,
-                             fold_fun = folds_rolling_window, window_size = 50,
-                             validation_size = 10, gap = 0, batch = 5
+  fold_fun = folds_rolling_window, window_size = 50,
+  validation_size = 10, gap = 0, batch = 5
 )
 
 lrnr_glm <- make_learner(Lrnr_glm)
@@ -81,5 +81,5 @@ fit$predict_fold(task, "validation")
 cv_risk_table <- fit$cv_risk(loss_squared_error)
 
 # GLM should be perfect here because outcome=covariate
-expect_equal(cv_risk_table$coefficients[[1]],1)
-expect_equal(cv_risk_table$risk[[1]],0)
+expect_equal(cv_risk_table$coefficients[[1]], 1)
+expect_equal(cv_risk_table$risk[[1]], 0)

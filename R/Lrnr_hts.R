@@ -89,7 +89,8 @@ Lrnr_hts <- R6Class(
       args <- self$params
       wide_formula <- sprintf("%s ~ %s", task$nodes$time, task$nodes$id)
       args$y <- ts(as.matrix(dcast(task$data, as.formula(wide_formula),
-                                   value.var = task$nodes$outcome))[, -1])
+        value.var = task$nodes$outcome
+      ))[, -1])
       fit_object <- call_with_args(hts, args, silent = TRUE)
       return(fit_object)
     },
@@ -107,8 +108,10 @@ Lrnr_hts <- R6Class(
       hts_dt <-
         as.data.table(hts_forecasts)[, time := (train_hmax + 1):test_hmax]
       predictions <- melt(hts_dt, id.vars = "time", variable.name = "series")
-      test_data_formerge <- as.data.table(list(time = task$get_node("time"),
-                                               series = task$get_node("id")))
+      test_data_formerge <- as.data.table(list(
+        time = task$get_node("time"),
+        series = task$get_node("id")
+      ))
       predictions <- merge(predictions, test_data_formerge, sort = FALSE)$value
       return(predictions)
     },

@@ -19,8 +19,8 @@ Stratify univariable time-series learners by time-series
 \describe{
 \item{\code{learner="learner"}}{An initialized Lrnr_* object.
 }
-\item{\code{variable_stratify="variable_stratify"}}{\code{character} giving
-the variable in the covariates on which to stratify. Supports only
+\item{\code{variable_stratify="variable_stratify"}}{A \code{character}
+giving the variable in the covariates on which to stratify. Supports only
 variables with discrete levels coded as \code{numeric}.
 }
 \item{\code{...}}{Other parameters passed directly to
