@@ -84,7 +84,7 @@ keep_only_fun_args <- function(Args, fun) {
 #'   but not formals of \code{fun}.
 #' @param keep_all A \code{logical} don't drop arguments, even if they aren't
 #'   matched in either the function prototype or other_valid.
-#' @param silent A \code{logical} indicating whether to pass \code{warning}s
+#' @param silent A \code{logical} indicating whether to pass \code{message}s
 #'  when arguments not found in \code{formals} are passed to \code{fun}.
 #'
 #' @keywords internal
@@ -103,7 +103,7 @@ call_with_args <- function(fun, args, other_valid = list(), keep_all = FALSE,
 
     # return warnings when dropping arguments
     if (!silent & length(invalid) > 0) {
-      warning(sprintf(
+      message(sprintf(
         "Learner called function %s with unknown args: %s. These will be dropped.\nCheck the params supported by this learner.",
         as.character(substitute(fun)), paste(invalid, sep = ", ")
       ))

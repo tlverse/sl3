@@ -21,9 +21,9 @@ section below.}
 Learner object with methods for training and prediction
 }
 \description{
-Generally this base learner class shouldn't be instantiated. It's intended to
-be an abstract class, although abstract classes aren't explicitly supported
-by \code{R6}. All learners support the methods and fields documented below.
+Generally this base learner class should not be instantiated. Intended to be
+an abstract class, although abstract classes are not explicitly supported
+by \pkg{R6}. All learners support the methods and fields documented below.
 For more information on a particular learner, see its help file.
 }
 \section{Common Parameters}{

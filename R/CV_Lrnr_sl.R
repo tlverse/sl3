@@ -7,12 +7,7 @@ CV_lrnr_sl <- function(lrnr_sl, task, loss_fun) {
   if (!inherits(lrnr_sl, "Lrnr_sl")) {
     stop("lrnr_sl must be a Lrnr_sl object")
   }
-
-
-
   cv_sl <- make_learner(Lrnr_cv, lrnr_sl, full_fit = TRUE)
-
-
   cv_sl_fit <- cv_sl$train(task)
   #
   # # to avoid refitting the stack to the full data,
@@ -29,7 +24,6 @@ CV_lrnr_sl <- function(lrnr_sl, task, loss_fun) {
   # cv_combined_fit <- copy(cv_sl)
   # cv_combined_fit$set_train(combined_fit_object, task)
   #
-
   full_fit <- cv_sl_fit$fit_object$full_fit
 
   # TODO: extract loss function from lrnr_sl where possible
@@ -40,6 +34,5 @@ CV_lrnr_sl <- function(lrnr_sl, task, loss_fun) {
   stack_risks <- full_risk[full_risk$learner != "SuperLearner"]
   set(sl_risk, , "learner", "SuperLearner")
   risks <- rbind(stack_risks, sl_risk)
-
   return(risks)
 }

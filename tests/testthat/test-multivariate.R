@@ -1,8 +1,6 @@
-library(testthat)
 context("test_multivariate.R -- Basic Multivariate functionality")
 
 options(sl3.verbose = TRUE)
-library(sl3)
 library(origami)
 library(SuperLearner)
 
@@ -18,7 +16,8 @@ covariates <- grep("W", names(data), value = TRUE)
 outcomes <- grep("Y", names(data), value = TRUE)
 
 # test a single mv learner
-task <- sl3_Task$new(data.table::copy(data), covariates = covariates, outcome = outcomes)
+task <- sl3_Task$new(data.table::copy(data), covariates = covariates,
+                     outcome = outcomes)
 mv_learner <- make_learner(Lrnr_multivariate, make_learner(Lrnr_glm_fast))
 mv_fit <- mv_learner$train(task)
 preds <- mv_fit$predict(task)
@@ -29,10 +28,12 @@ test_that("Lrnr_mv preds are the correct dimensions", {
 })
 
 # test a SL of mv learners
-learners <- make_learner_stack("Lrnr_glm_fast", "Lrnr_xgboost", "Lrnr_mean")$params$learners
-mv_learners <- lapply(learners, function(learner) make_learner(Lrnr_multivariate, learner))
+learners <- make_learner_stack("Lrnr_glm_fast", "Lrnr_xgboost",
+                               "Lrnr_mean")$params$learners
+mv_learners <- lapply(learners, function(learner) {
+                        make_learner(Lrnr_multivariate, learner)
+                     })
 mv_stack <- make_learner(Stack, mv_learners)
-
 
 mv_sl <- make_learner(Lrnr_sl, mv_stack)
 mv_sl_fit <- mv_sl$train(task)

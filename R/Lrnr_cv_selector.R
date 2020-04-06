@@ -20,8 +20,8 @@
 #'
 #' @section Parameters:
 #' \describe{
-#'   \item{\code{loss_function=loss_squared_error}}{A function(pred, truth) that
-#'     takes prediction and truth vectors and returns a loss vector. See
+#'   \item{\code{loss_function=loss_squared_error}}{A function(pred, truth)
+#'     that takes prediction and truth vectors and returns a loss vector. See
 #'     \link{loss_functions} for options.}
 #'   \item{\code{...}}{Not currently used.}
 #' }

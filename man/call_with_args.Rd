@@ -18,7 +18,7 @@ but not formals of \code{fun}.}
 \item{keep_all}{A \code{logical} don't drop arguments, even if they aren't
 matched in either the function prototype or other_valid.}
 
-\item{silent}{A \code{logical} indicating whether to pass \code{warning}s
+\item{silent}{A \code{logical} indicating whether to pass \code{message}s
 when arguments not found in \code{formals} are passed to \code{fun}.}
 }
 \description{
