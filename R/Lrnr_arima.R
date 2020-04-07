@@ -56,12 +56,22 @@ Lrnr_arima <- R6Class(
       params <- self$params
       ord <- params[["order"]]
       season <- params[["seasonal"]]
-
-      # Support for a single time-series
-      if (is.numeric(ord)) {
-        fit_object <- stats::arima(task$X, order = ord, seasonal = season)
-      } else {
-        fit_object <- forecast::auto.arima(task$X)
+      
+      #Add option to include external regressors:
+      if(length(task$X)>0){
+        # Support for a single time-series
+        if (is.numeric(ord)) {
+          fit_object <- stats::arima(task$Y, order = ord, seasonal = season, xreg = as.matrix(task$X))
+        } else {
+          fit_object <- forecast::auto.arima(task$Y, xreg = as.matrix(task$X))
+        }
+      }else{
+        # Support for a single time-series
+        if (is.numeric(ord)) {
+          fit_object <- stats::arima(task$Y, order = ord, seasonal = season)
+        } else {
+          fit_object <- forecast::auto.arima(task$Y)
+        }
       }
       return(fit_object)
     },
@@ -79,11 +89,22 @@ Lrnr_arima <- R6Class(
         } else {
           n.ahead <- n.ahead + gap
         }
-        predictions <- predict(
-          private$.fit_object,
-          newdata = task$X,
-          type = "response", n.ahead = n.ahead
-        )
+        
+        #Include external regressors:
+        if(length(task$X)>0){
+          predictions <- predict(
+            private$.fit_object,
+            newdata = task$Y, newxreg = as.matrix(task$X),
+            type = "response", n.ahead = n.ahead
+          )
+        }else{
+          predictions <- predict(
+            private$.fit_object,
+            newdata = task$Y,
+            type = "response", n.ahead = n.ahead
+          )
+        }
+        
         # Create output as in glm
         predictions <- as.numeric(predictions$pred)
         predictions <- predictions[(gap + 1):length(predictions)]
@@ -94,11 +115,22 @@ Lrnr_arima <- R6Class(
         if (is.null(n.ahead)) {
           n.ahead <- task$nrow
         }
-        predictions <- predict(
-          private$.fit_object,
-          newdata = task$X,
-          type = "response", n.ahead = n.ahead
-        )
+        
+        #Include external regressors:
+        if(length(task$X)>0){
+          predictions <- predict(
+            private$.fit_object,
+            newdata = task$Y, newxreg = as.matrix(task$X),
+            type = "response", n.ahead = n.ahead
+          )
+        }else{
+          predictions <- predict(
+            private$.fit_object,
+            newdata = task$Y,
+            type = "response", n.ahead = n.ahead
+          )
+        }
+        
         # Create output as in glm
         predictions <- as.numeric(predictions$pred)
         predictions <- structure(predictions, names = seq_len(n.ahead))
@@ -109,11 +141,22 @@ Lrnr_arima <- R6Class(
         if (is.null(n.ahead)) {
           n.ahead <- task$nrow
         }
-        predictions <- predict(
-          private$.fit_object,
-          newdata = task$X,
-          type = "response", n.ahead = n.ahead
-        )
+       
+        #Include external regressors:
+        if(length(task$X)>0){
+          predictions <- predict(
+            private$.fit_object,
+            newdata = task$Y, newxreg = as.matrix(task$X),
+            type = "response", n.ahead = n.ahead
+          )
+        }else{
+          predictions <- predict(
+            private$.fit_object,
+            newdata = task$Y,
+            type = "response", n.ahead = n.ahead
+          )
+        }
+        
         # Create output as in glm
         predictions <- as.numeric(predictions$pred)
         predictions <- structure(predictions, names = seq_len(n.ahead))
