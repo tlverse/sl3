@@ -94,7 +94,7 @@ Lrnr_expSmooth <- R6Class(
 
     .train = function(task) {
       args <- self$params
-      args$y <- ts(task$X, frequency = args$freq)
+      args$y <- ts(task$Y, frequency = args$freq)
       if (args$model == "ZZZ") {
         fit_object <- forecast::ets(args$y)
       } else {

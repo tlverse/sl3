@@ -17,7 +17,7 @@ if (FALSE) {
 set.seed(1)
 
 data(bsds)
-covars <- c("cnt")
+covars <- c("temp","windspeed")
 outcome <- "cnt"
 
 folds <- origami::make_folds(bsds,
