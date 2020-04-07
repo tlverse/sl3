@@ -1,9 +1,7 @@
-#' Random Forest Screener
+#' Coefficient Magnitude Screener
 #'
-#' This learner provides covariate screening procedures using variable
-#' importance measures as produced by random forest models, provided by the
-#' \code{randomForest} package, \code{\link[randomForest]{randomForest}}
-#' function.
+#' This learner provides screening of covariates based on the magnitude of
+#' their estimated coefficients in a (possibly regularized) GLM.
 #'
 #' @docType class
 #'
@@ -22,22 +20,20 @@
 #'
 #' @section Parameters:
 #' \describe{
-#'   \item{\code{nVar = 10}}{Number of covariates to select.}
-#'   \item{\code{ntree = 1000}}{Number of trees in forest.}
-#'   \item{\code{...}}{Other parameters passed to
-#'     \code{\link[randomForest]{randomForest}}.}
+#'   \item{\code{learner}}{An instantiated learner to use for estimating
+#'     coefficients used in screening.}
+#'   \item{\code{threshold = 1e-3}}{Minimum size of coefficients to be kept.}
+#'   \item{\code{...}}{Other parameters passed to \code{learner}.}
 #' }
-#
 Lrnr_screener_coefs <- R6Class(
   classname = "Lrnr_screener_coefs",
   inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(learner, threshold=1e-3, ...) {
+    initialize = function(learner, threshold = 1e-3, ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }
   ),
-
   private = list(
     .properties = c("screener"),
 
@@ -45,9 +41,20 @@ Lrnr_screener_coefs <- R6Class(
       learner <- self$params$learner
       fit <- learner$train(task)
       coefs <- as.vector(coef(fit))
+      coef_names <- rownames(coef(fit))
+      if(is.null(coef_names)){
+        coef_names <- names(coef(fit))
+      }
+      
+      if(is.null(coef_names)){
+        stop("could not extract names from fit coefficients")
+      }
+      
       covs <- task$nodes$covariates
-      selected <- covs[which(abs(coefs)>self$params$threshold)]
-
+      
+      selected_coefs <- coef_names[which(abs(coefs) > self$params$threshold)]
+      selected_coefs <- unique(gsub("\\..*","",selected_coefs))
+      selected <- intersect(selected_coefs, covs)
       fit_object <- list(selected = selected)
       return(fit_object)
     },
@@ -59,7 +66,6 @@ Lrnr_screener_coefs <- R6Class(
     .chain = function(task) {
       return(task$next_in_chain(covariates = private$.fit_object$selected))
     },
-
     .required_packages = c()
   )
 )

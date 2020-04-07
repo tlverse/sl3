@@ -83,7 +83,7 @@ Lrnr_stratified <- R6Class(
 
       strata_ids <- unlist(task$data[, variable_stratify, with = FALSE])
       variable_stratify_stratas_new <- unique(strata_ids)
-      
+
       if (
         length(
           setdiff(variable_stratify_stratas_new, variable_stratify_stratas)

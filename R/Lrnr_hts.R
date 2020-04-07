@@ -22,12 +22,6 @@
 #'
 #' @section Parameters:
 #' \describe{
-#'   \item{\code{nodes}}{A \code{list} containing the number of child nodes
-#'     associated with each level, which indicates the hierarchical structure.
-#'     The default is a simple hierarchy with only 2 levels (i.e., total and
-#'     bottom).}
-#'   \item{\code{h)}}{Forecast horizon. If \code{NULL}, will be guessed from
-#'     the frequency of the time series.}
 #'   \item{\code{method)}}{Method for distributing forecasts within hierarchy.
 #'     See details of \code{\link[hts]{forecast.gts}}.}
 #'   \item{\code{weights)}}{Weights used for "optimal combination" method:
@@ -71,9 +65,7 @@ Lrnr_hts <- R6Class(
   portable = TRUE,
   class = TRUE,
   public = list(
-    initialize = function(nodes,
-                          h = NULL,
-                          method = "comb",
+    initialize = function(method = "comb",
                           weights = "wls",
                           fmethod = "ets",
                           algorithms = "lu",
@@ -94,25 +86,33 @@ Lrnr_hts <- R6Class(
   private = list(
     .properties = c("timeseries", "continuous"),
     .train = function(task) {
-      browser()
       args <- self$params
-      args$y <- ts(task$X)
-      args$bnames <- colnames(args$y)
-      fit_object <- call_with_args(hts, args)
+      wide_formula <- sprintf("%s ~ %s", task$nodes$time, task$nodes$id)
+      args$y <- ts(as.matrix(dcast(task$data, as.formula(wide_formula),
+        value.var = task$nodes$outcome
+      ))[, -1])
+      fit_object <- call_with_args(hts, args, silent = TRUE)
       return(fit_object)
     },
 
     .predict = function(task = NULL) {
       args <- self$params
+      # get horizon based on training and testing tasks
+      test_hmax <- max(unique(task$get_node("time")))
+      train_hmax <- max(unique(self$training_task$get_node("time")))
+      args$h <- test_hmax - train_hmax
+      # get predictions for each time series
       args$object <- private$.fit_object
-      if (is.null(args$h)) {
-        args$h <- ifelse(frequency(args$object$bts) > 1L,
-          2L * frequency(args$object$bts), 10L
-        )
-      }
-      forecast_hts <- call_with_args(forecast.gts, args)
-      predictions_all_groups <- aggts(forecast_hts)
-      predictions <- as.numeric(predictions_all_groups[, "Total"])
+      hts_forecasts <- call_with_args(forecast.gts, args, silent = TRUE)$bts
+      # reformat predictions to match input task
+      hts_dt <-
+        as.data.table(hts_forecasts)[, time := (train_hmax + 1):test_hmax]
+      predictions <- melt(hts_dt, id.vars = "time", variable.name = "series")
+      test_data_formerge <- as.data.table(list(
+        time = task$get_node("time"),
+        series = task$get_node("id")
+      ))
+      predictions <- merge(predictions, test_data_formerge, sort = FALSE)$value
       return(predictions)
     },
     .required_packages = c("hts")

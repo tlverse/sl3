@@ -17,7 +17,6 @@ if (FALSE) {
 
 library(RFCDE)
 library(dplyr)
-
 data(cpp_imputed)
 covars <- c(
   "parity", "sexn"
@@ -52,10 +51,11 @@ test_that("Lrnr_rfcde produces predictions similar to those from RFCDE", {
   )
   rfcde_fit_preds <- predict(rfcde_fit,
     newdata = as.matrix(task$X),
+    response = "CDE",
     z_grid = seq(0, 10, length.out = 100),
     bandwidth = "auto"
   ) %>%
-    as.numeric()
+  as.numeric()
 
   # check that predicted conditional density estimates match within tolerance
   expect_equal(rfcde_lrn_fit_preds,

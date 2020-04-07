@@ -88,8 +88,10 @@ Lrnr_gts <- R6Class(
     .train = function(task) {
       args <- self$params
       wide_formula <- sprintf("%s ~ %s", task$nodes$time, task$nodes$id)
-      args$y <-ts(as.matrix(dcast(task$data, as.formula(wide_formula), value.var=task$nodes$outcome))[, -1])
-      fit_object <- call_with_args(gts, args)
+      args$y <- ts(as.matrix(dcast(task$data, as.formula(wide_formula),
+        value.var = task$nodes$outcome
+      ))[, -1])
+      fit_object <- call_with_args(gts, args, silent = TRUE)
       return(fit_object)
     },
 
@@ -101,13 +103,15 @@ Lrnr_gts <- R6Class(
       args$h <- test_hmax - train_hmax
       # get predictions for each time series
       args$object <- private$.fit_object
-      gts_forecasts <- call_with_args(forecast.gts, args)$bts
+      gts_forecasts <- call_with_args(forecast.gts, args, silent = TRUE)$bts
       # reformat predictions to match input task
       gts_dt <-
         as.data.table(gts_forecasts)[, time := (train_hmax + 1):test_hmax]
       predictions <- melt(gts_dt, id.vars = "time", variable.name = "series")
-      test_data_formerge <- as.data.table(list(time = task$get_node("time"),
-                                               series = task$get_node("id")))
+      test_data_formerge <- as.data.table(list(
+        time = task$get_node("time"),
+        series = task$get_node("id")
+      ))
       predictions <- merge(predictions, test_data_formerge, sort = FALSE)$value
       return(predictions)
     },

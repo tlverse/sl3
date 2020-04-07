@@ -4,7 +4,8 @@
 \alias{call_with_args}
 \title{Call with filtered argument list}
 \usage{
-call_with_args(fun, args, other_valid = list(), keep_all = FALSE)
+call_with_args(fun, args, other_valid = list(), keep_all = FALSE,
+  silent = FALSE)
 }
 \arguments{
 \item{fun}{A \code{function} whose signature will be used to reduce the}
@@ -14,8 +15,11 @@ call_with_args(fun, args, other_valid = list(), keep_all = FALSE)
 \item{other_valid}{A \code{list} of function arguments names that are valid,
 but not formals of \code{fun}.}
 
-\item{keep_all}{A \code{boolean} don't drop arguments, even if they aren't
+\item{keep_all}{A \code{logical} don't drop arguments, even if they aren't
 matched in either the function prototype or other_valid.}
+
+\item{silent}{A \code{logical} indicating whether to pass \code{message}s
+when arguments not found in \code{formals} are passed to \code{fun}.}
 }
 \description{
 Call a function with a list of arguments, eliminating any that aren't

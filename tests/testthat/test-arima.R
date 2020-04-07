@@ -30,6 +30,7 @@ folds <- origami::make_folds(data,
 )
 
 node_list <- list(outcome = outcome, time = "time")
+
 task <- sl3_Task$new(data, nodes = node_list, folds = folds)
 
 test_that("Lrnr_arima gives expected values with auto.arima", {
@@ -92,8 +93,8 @@ test_that("Lrnr_tsDyn with multiple different models, multivariate", {
   # Define new data:
   covars <- c("temp", "atemp")
   outcome <- c("temp", "atemp")
-  
-  data <- bsds[1:50, c("temp","atemp")]
+
+  data <- bsds[1:50, c("temp", "atemp")]
 
   task <- sl3_Task$new(data, covariates = covars, outcome = outcome, folds = folds)
 
