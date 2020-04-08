@@ -1,10 +1,10 @@
 #' Long short-term memory Recurrent Neural Network (LSTM)
 #'
-#' This learner supports long short-term memory recurrent neural network
-#' algorithm. In order to use this learner, you will need keras Python module
-#' 2.0.0 or higher. Note that all preprocessing, such as differencing and
-#' seasonal effects for time series, should be addressed before using this
-#' learner.
+#' This learner supports long short-term memory (LSTM) recurrent neural network
+#' algorithm. This learner uses the \code{kerasR} package, and in order to use 
+#' it, you will need \code{keras} Python module 2.0.0 or higher. Note that all 
+#' preprocessing, such as differencing and seasonal effects for time series, 
+#' should be addressed before using this learner.
 #'
 #' @docType class
 #' @importFrom R6 R6Class
@@ -22,7 +22,14 @@
 #' @field activation The activation function to use.
 #' @field dense regular, densely-connected NN layer. Default is 1.
 #' @field dropout float between 0 and 1. Fraction of the input units to drop.
+#' @field early_stop logical indicating whether ot not to interrupt training 
+#'        when the validation loss is not decreasing anymore.
+#' @field patience number of epochs with no improvement after which training 
+#'        will be stopped, only used when early_stop = TRUE.
+#' @field validation_split float between 0 and 1. Fraction of the data to use 
+#'        as held-out validation data, only used when early_stop = TRUE.
 #'
+#'        
 #' @importFrom assertthat assert_that is.count is.flag
 #'
 #' @family Learners
@@ -40,6 +47,9 @@ Lrnr_lstm <- R6Class(
                           activation = "linear",
                           dense = 1,
                           dropout = 0,
+                          early_stop = FALSE,
+                          patience = 2,
+                          validation_split = 0.2,
                           ...) {
       params <- list(
         units = units, loss = loss, optimizer = optimizer,
@@ -83,10 +93,21 @@ Lrnr_lstm <- R6Class(
       kerasR::keras_compile(model, loss = args$loss, optimizer = args$optimizer)
 
       # Fit the model
-      kerasR::keras_fit(model, args$x, args$y,
-        batch_size = args$batch_size,
-        epochs = args$epochs
-      )
+      if(early_stop){
+        early_stopping <- callback_early_stopping(monitor = 'val_loss', 
+                                                  patience = args$patience)
+        kerasR::keras_fit(model, args$x, args$y,
+                          batch_size = args$batch_size,
+                          epochs = args$epochs,
+                          validation_split = args$validation_split, 
+                          callbacks = c(early_stopping)
+        )
+      } else {
+        kerasR::keras_fit(model, args$x, args$y,
+                          batch_size = args$batch_size,
+                          epochs = args$epochs
+        )
+      }
       fit_object <- model
 
       return(fit_object)
