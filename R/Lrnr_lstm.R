@@ -54,7 +54,9 @@ Lrnr_lstm <- R6Class(
       params <- list(
         units = units, loss = loss, optimizer = optimizer,
         batch_size = batch_size, epochs = epochs, window = window,
-        activation = activation, dense = dense, dropout = dropout, ...
+        activation = activation, dense = dense, dropout = dropout, 
+        early_stop = early_stop, patience = patience, 
+        validation_split =validation_split, ...
       )
       super$initialize(params = params, ...)
     }
@@ -93,7 +95,7 @@ Lrnr_lstm <- R6Class(
       kerasR::keras_compile(model, loss = args$loss, optimizer = args$optimizer)
 
       # Fit the model
-      if(early_stop){
+      if(args$early_stop){
         early_stopping <- callback_early_stopping(monitor = 'val_loss', 
                                                   patience = args$patience)
         kerasR::keras_fit(model, args$x, args$y,
