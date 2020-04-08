@@ -67,14 +67,15 @@ Lrnr_multiple_ts <- R6Class(
     .train = function(task) {
       args <- self$params
       learners <- args$learner
-
-      # Deal with the task structure here:
-      task_new <- self$create_task(task)
-      data <- task_new$data
-
-      strata_ids <- task_new$data$series
+      
+      #TO DO: add task restructure in case in wide format
+      #task <- self$create_task(task)
+      
+      data <- task$data
+      
+      strata_ids <- unlist(task$data[, task$nodes$id, with = FALSE])
       variable_stratify_stratas <- unique(strata_ids)
-
+    
       # fit_object is a dictionary of instantiated of Lrnr_* objects
       fit_object <- list()
       for (strata in variable_stratify_stratas) {
@@ -82,8 +83,8 @@ Lrnr_multiple_ts <- R6Class(
         data_subset <- data[index_in_strata, ]
         sub_task <- sl3_Task$new(
           data = data_subset,
-          nodes = list(covariates = "value", outcome = "value", id = "series"),
-          folds = task_new$folds
+          nodes = task$nodes,
+          folds = task$folds
         )
 
         ### Issue: this changes fold structure...
@@ -100,11 +101,12 @@ Lrnr_multiple_ts <- R6Class(
       learner_dict <- self$fit_object
       variable_stratify_stratas <- names(learner_dict)
 
-      # Deal with the task structure here:
-      task_new <- self$create_task(task)
-      data <- task_new$data
-
-      strata_ids <- task_new$data$series
+      #TO DO: add task restructure in case in wide format
+      #task <- self$create_task(task)
+      
+      data <- task$data
+      
+      strata_ids <- unlist(task$data[, task$nodes$id, with = FALSE])
       variable_stratify_stratas_new <- unique(strata_ids)
 
       if (
@@ -125,8 +127,8 @@ Lrnr_multiple_ts <- R6Class(
         data_subset <- data[index_subtask, ]
         sub_task <- sl3_Task$new(
           data = data_subset,
-          nodes = list(covariates = "value", outcome = "value", id = "series"),
-          folds = task_new$folds
+          nodes = task$nodes,
+          folds = task$folds
         )
         ### Issue: this changes fold structure...
         # sub_task <- task_new$subset_task(row_index = index_subtask)
