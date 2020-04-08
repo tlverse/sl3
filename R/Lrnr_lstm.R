@@ -22,12 +22,12 @@
 #' @field activation The activation function to use.
 #' @field dense regular, densely-connected NN layer. Default is 1.
 #' @field dropout float between 0 and 1. Fraction of the input units to drop.
-#' @field early_stop logical indicating whether ot not to interrupt training 
+#' @field early_stopping logical indicating whether ot not to interrupt training 
 #'        when the validation loss is not decreasing anymore.
 #' @field patience number of epochs with no improvement after which training 
-#'        will be stopped, only used when early_stop = TRUE.
+#'        will be stopped, only used when early_stopping = TRUE.
 #' @field validation_split float between 0 and 1. Fraction of the data to use 
-#'        as held-out validation data, only used when early_stop = TRUE.
+#'        as held-out validation data, only used when early_stopping = TRUE.
 #'
 #'        
 #' @importFrom assertthat assert_that is.count is.flag
@@ -47,7 +47,7 @@ Lrnr_lstm <- R6Class(
                           activation = "linear",
                           dense = 1,
                           dropout = 0,
-                          early_stop = FALSE,
+                          early_stopping = FALSE,
                           patience = 2,
                           validation_split = 0.2,
                           ...) {
@@ -55,8 +55,8 @@ Lrnr_lstm <- R6Class(
         units = units, loss = loss, optimizer = optimizer,
         batch_size = batch_size, epochs = epochs, window = window,
         activation = activation, dense = dense, dropout = dropout, 
-        early_stop = early_stop, patience = patience, 
-        validation_split =validation_split, ...
+        early_stopping = early_stopping, patience = patience, 
+        validation_split = validation_split, ...
       )
       super$initialize(params = params, ...)
     }
@@ -95,14 +95,13 @@ Lrnr_lstm <- R6Class(
       kerasR::keras_compile(model, loss = args$loss, optimizer = args$optimizer)
 
       # Fit the model
-      if(args$early_stop){
-        early_stopping <- callback_early_stopping(monitor = 'val_loss', 
-                                                  patience = args$patience)
+      if(args$early_stopping){
+        callbacks <- list(kerasR::EarlyStopping(patience = args$patience))
         kerasR::keras_fit(model, args$x, args$y,
                           batch_size = args$batch_size,
                           epochs = args$epochs,
                           validation_split = args$validation_split, 
-                          callbacks = c(early_stopping)
+                          callbacks = callbacks
         )
       } else {
         kerasR::keras_fit(model, args$x, args$y,
