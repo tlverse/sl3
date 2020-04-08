@@ -17,15 +17,23 @@ library(sl3)
 library(testthat)
 
 set.seed(1)
+attach(list(lag = stats::lag), name = "stats_lag_test_kludge", warn.conflicts = FALSE)
+data(bsds)
+bsds<-bsds[1:50,]
 
-trend_all <- 11:130 + rnorm(120, sd = 2)
-trend_all <- data.frame(data = trend_all)
+data <- as.data.table(bsds)
+data[, time := .I]
 
-folds <- origami::make_folds(trend_all$data,
-  fold_fun = folds_rolling_window, window_size = 50,
-  validation_size = 10, gap = 0, batch = 20
+outcome <- "cnt"
+
+folds <- origami::make_folds(data,
+                             fold_fun = folds_rolling_window, window_size = 20,
+                             validation_size = 15, gap = 0, batch = 10
 )
-task <- sl3_Task$new(trend_all, covariates = "data", outcome = "data", folds = folds)
+
+node_list <- list(outcome = outcome, time = "time")
+
+task <- sl3_Task$new(data, nodes = node_list, folds = folds)
 
 # See which environments reticulate can see:
 # reticulate:::conda_list()
@@ -51,7 +59,7 @@ test_that("Lrnr_lstm does what we expect", {
 
     # At epochs=1 (saves time) the prediction is too variable to be tested
     # expect_true(sum(lstm_preds)-28.95605 < 10^(-1))
-    expect_equal(length(lstm_preds), nrow(task$X) - 5)
+    expect_equal(length(lstm_preds), length(task$Y) - 5)
   }
 })
 
@@ -69,6 +77,6 @@ test_that("Lrnr_bilstm does what we expect", {
 
     # At epochs=1 (saves time) the prediction is too variable to be tested
     # expect_true(sum(bilstm_preds)-118.5766 < 10^(-1))
-    expect_equal(length(bilstm_preds), nrow(task$X) - 5)
+    expect_equal(length(bilstm_preds), length(task$Y) - 5)
   }
 })

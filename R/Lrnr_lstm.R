@@ -56,12 +56,13 @@ Lrnr_lstm <- R6Class(
 
       # Convert to keras input shape:
       args$x <- t(data.frame(lapply(
-        1:(dim(task$X)[1] - args$window),
-        function(x) task$X[x:(x + args$window - 1)]
+        1:(length(task$Y)[1] - args$window),
+        function(x) task$Y[x:(x + args$window - 1)]
       )))
       row.names(args$x) <- NULL
 
-      args$y <- as.numeric(sapply((args$window + 1):(dim(task$X)[1]), function(x) task$X[x]))
+      args$y <- as.numeric(sapply((args$window + 1):(length(task$Y)[1]), 
+                                  function(x) task$Y[x]))
 
       args$x <- kerasR::expand_dims(args$x, axis = 2)
       args$y <- kerasR::expand_dims(args$y, axis = 1)
@@ -97,8 +98,8 @@ Lrnr_lstm <- R6Class(
       # gap <- min(task$folds[[1]]$validation_set)-max(task$folds[[1]]$training_set)
 
       args$x <- t(data.frame(lapply(
-        1:(dim(task$X)[1] - args$window),
-        function(x) task$X[x:(x + args$window - 1)]
+        1:(length(task$Y)[1] - args$window),
+        function(x) task$Y[x:(x + args$window - 1)]
       )))
       row.names(args$x) <- NULL
       args$x <- kerasR::expand_dims(args$x, axis = 2)
