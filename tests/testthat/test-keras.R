@@ -59,7 +59,7 @@ test_that("Lrnr_lstm does what we expect", {
 
     # At epochs=1 (saves time) the prediction is too variable to be tested
     # expect_true(sum(lstm_preds)-28.95605 < 10^(-1))
-    expect_equal(length(lstm_preds), length(task$Y) - 5)
+    expect_equal(length(lstm_preds), length(task$Y))
   }
 })
 
@@ -77,6 +77,6 @@ test_that("Lrnr_bilstm does what we expect", {
 
     # At epochs=1 (saves time) the prediction is too variable to be tested
     # expect_true(sum(bilstm_preds)-118.5766 < 10^(-1))
-    expect_equal(length(bilstm_preds), length(task$Y) - 5)
+    expect_equal(length(bilstm_preds), length(task$Y))
   }
 })
