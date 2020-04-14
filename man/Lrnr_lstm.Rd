@@ -12,11 +12,11 @@ Lrnr_lstm
 \code{\link{Lrnr_base}} object with methods for training and prediction
 }
 \description{
-This learner supports long short-term memory recurrent neural network
-algorithm. In order to use this learner, you will need keras Python module
-2.0.0 or higher. Note that all preprocessing, such as differencing and
-seasonal effects for time series, should be addressed before using this
-learner.
+This learner supports long short-term memory (LSTM) recurrent neural network
+algorithm. This learner uses the \code{kerasR} package, and in order to use
+it, you will need \code{keras} Python module 2.0.0 or higher. Note that all
+preprocessing, such as differencing and seasonal effects for time series,
+should be addressed before using this learner.
 }
 \section{Fields}{
 
@@ -38,6 +38,15 @@ learner.
 \item{\code{dense}}{regular, densely-connected NN layer. Default is 1.}
 
 \item{\code{dropout}}{float between 0 and 1. Fraction of the input units to drop.}
+
+\item{\code{early_stopping}}{logical indicating whether ot not to interrupt training
+when the validation loss is not decreasing anymore.}
+
+\item{\code{patience}}{number of epochs with no improvement after which training
+will be stopped, only used when early_stopping = TRUE.}
+
+\item{\code{validation_split}}{float between 0 and 1. Fraction of the data to use
+as held-out validation data, only used when early_stopping = TRUE.}
 }}
 
 \seealso{

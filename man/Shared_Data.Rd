@@ -4,7 +4,7 @@
 \name{Shared_Data}
 \alias{Shared_Data}
 \title{Container Class for data.table Shared Between Tasks}
-\format{An object of class \code{R6ClassGenerator} of length 25.}
+\format{An object of class \code{R6ClassGenerator} of length 24.}
 \usage{
 Shared_Data
 }

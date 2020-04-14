@@ -87,7 +87,7 @@ Lrnr_glmnet <- R6Class(
 
       fit_object <- call_with_args(
         glmnet::cv.glmnet, args,
-        names(formals(glmnet::glmnet))
+        names(formals(glmnet::glmnet)), ignore="use_min"
       )
       fit_object$glmnet.fit$call <- NULL
       return(fit_object)

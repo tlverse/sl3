@@ -66,7 +66,7 @@ Lrnr_glm <- R6Class(
         args$offset <- task$offset_transformed(link_fun)
       }
 
-      args$ctrl <- glm.control(trace = FALSE)
+      args$control <- glm.control(trace = FALSE)
       SuppressGivenWarnings(
         {
           fit_object <- call_with_args(stats::glm.fit, args)

@@ -4,7 +4,7 @@
 \name{Lrnr_pkg_condensier_logisfitR6}
 \alias{Lrnr_pkg_condensier_logisfitR6}
 \title{sl3 Learner wrapper for condensier}
-\format{An object of class \code{R6ClassGenerator} of length 25.}
+\format{An object of class \code{R6ClassGenerator} of length 24.}
 \usage{
 Lrnr_pkg_condensier_logisfitR6
 }

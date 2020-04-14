@@ -24,7 +24,7 @@ or more time series. Fourier decomposition relies on
 \item{\code{Kparam}}{Maximum order of the fourier terms. Passed to
 \code{\link[forecast]{fourier}}.}
 \item{\code{n.ahead=NULL}}{ The forecast horizon. If not specified, returns
-forecast of size \code{task$X}.}
+forecast of size \code{task$Y}.}
 \item{\code{freq}}{The frequency of the time series.}
 \item{\code{...}}{Not used.}
 }

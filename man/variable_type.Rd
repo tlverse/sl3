@@ -5,7 +5,7 @@
 \alias{Variable_Type}
 \alias{variable_type}
 \title{Specify variable type}
-\format{An object of class \code{R6ClassGenerator} of length 25.}
+\format{An object of class \code{R6ClassGenerator} of length 24.}
 \usage{
 Variable_Type
 

@@ -4,7 +4,7 @@
 \name{sl3_revere_Task}
 \alias{sl3_revere_Task}
 \title{Revere (SplitSpecific) Task}
-\format{An object of class \code{R6ClassGenerator} of length 25.}
+\format{An object of class \code{R6ClassGenerator} of length 24.}
 \usage{
 sl3_revere_Task
 }
