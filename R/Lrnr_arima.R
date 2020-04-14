@@ -76,92 +76,27 @@ Lrnr_arima <- R6Class(
       return(fit_object)
     },
     .predict = function(task = NULL) {
-      params <- self$params
-      n.ahead <- params[["n.ahead"]]
+      h <- ts_get_pred_horizon(self$training_task, task)
 
-      # See if there is gap between training and validation:
-      # get horizon based on training and testing tasks
-      gap <- min(task$folds[[1]]$validation_set) - max(task$folds[[1]]$training_set)
-
-      if (gap > 1) {
-        if (is.null(n.ahead)) {
-          n.ahead <- task$nrow + gap
-        } else {
-          n.ahead <- n.ahead + gap
-        }
-        
-        #Include external regressors:
-        if(length(task$X)>0){
-          predictions <- predict(
-            private$.fit_object,
-            newdata = task$Y, newxreg = as.matrix(task$X),
-            type = "response", n.ahead = n.ahead
-          )
-        }else{
-          predictions <- predict(
-            private$.fit_object,
-            newdata = task$Y,
-            type = "response", n.ahead = n.ahead
-          )
-        }
-        
-        # Create output as in glm
-        predictions <- as.numeric(predictions$pred)
-        predictions <- predictions[(gap + 1):length(predictions)]
-        predictions <- structure(predictions, names = seq_len(length(predictions)))
-
-        return(predictions)
-      } else if (gap == 1) {
-        if (is.null(n.ahead)) {
-          n.ahead <- task$nrow
-        }
-        
-        #Include external regressors:
-        if(length(task$X)>0){
-          predictions <- predict(
-            private$.fit_object,
-            newdata = task$Y, newxreg = as.matrix(task$X),
-            type = "response", n.ahead = n.ahead
-          )
-        }else{
-          predictions <- predict(
-            private$.fit_object,
-            newdata = task$Y,
-            type = "response", n.ahead = n.ahead
-          )
-        }
-        
-        # Create output as in glm
-        predictions <- as.numeric(predictions$pred)
-        predictions <- structure(predictions, names = seq_len(n.ahead))
-        return(predictions)
-      } else if (gap < 1) {
-        warning("Validation samples come before Training samples; 
-                please specify one of the time-series fold structures.")
-        if (is.null(n.ahead)) {
-          n.ahead <- task$nrow
-        }
-       
-        #Include external regressors:
-        if(length(task$X)>0){
-          predictions <- predict(
-            private$.fit_object,
-            newdata = task$Y, newxreg = as.matrix(task$X),
-            type = "response", n.ahead = n.ahead
-          )
-        }else{
-          predictions <- predict(
-            private$.fit_object,
-            newdata = task$Y,
-            type = "response", n.ahead = n.ahead
-          )
-        }
-        
-        # Create output as in glm
-        predictions <- as.numeric(predictions$pred)
-        predictions <- structure(predictions, names = seq_len(n.ahead))
-        return(predictions)
+      #Include external regressors:
+      if(length(task$X)>0){
+        predictions <- predict(
+          private$.fit_object,
+          newdata = task$Y, newxreg = as.matrix(task$X),
+          type = "response", n.ahead = h
+        )
+      }else{
+        predictions <- predict(
+          private$.fit_object,
+          newdata = task$Y,
+          type = "response", n.ahead = h
+        )
       }
+        
+      preds <- as.numeric(predictions$pred)
+      requested_preds <- ts_get_requested_preds(self$training_task, task, preds)
+   
+      return(requested_preds)
     },
     .required_packages = c("forecast")
   )

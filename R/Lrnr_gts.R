@@ -98,9 +98,8 @@ Lrnr_gts <- R6Class(
     .predict = function(task = NULL) {
       args <- self$params
       # get horizon based on training and testing tasks
-      test_hmax <- max(unique(task$get_node("time")))
-      train_hmax <- max(unique(self$training_task$get_node("time")))
-      args$h <- test_hmax - train_hmax
+      args$h <- ts_get_pred_horizon(self$training_task, task)
+      
       # get predictions for each time series
       args$object <- private$.fit_object
       gts_forecasts <- call_with_args(forecast.gts, args, silent = TRUE)$bts

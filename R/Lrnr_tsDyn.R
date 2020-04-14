@@ -154,7 +154,7 @@ Lrnr_tsDyn <- R6Class(
       # kludge for tsDyn (https://groups.google.com/forum/#!topic/tsdyn/qgvR7mEqf64)
       attach(list(lag = stats::lag), name = "stats_lag_kludge", warn.conflicts = FALSE)
 
-      fit_object <- call_with_args(learner_fun, args)
+      fit_object <- call_with_args(learner_fun, args, silent = TRUE)
 
       detach("stats_lag_kludge")
       return(fit_object)
@@ -162,57 +162,21 @@ Lrnr_tsDyn <- R6Class(
 
     .predict = function(task = NULL) {
       params <- self$params
-      n.ahead <- params[["n.ahead"]]
+      h <- ts_get_pred_horizon(self$training_task, task)
       learner <- params[["learner"]]
 
-      # See if there is gap between training and validation:
-      gap <- min(task$folds[[1]]$validation_set) - max(task$folds[[1]]$training_set)
-
-      if (gap > 1) {
-        if (is.null(n.ahead)) {
-          n.ahead <- task$nrow + gap
-        } else {
-          n.ahead <- n.ahead + gap
-        }
-
-        if (learner == "TVAR") {
-          stop("No forecast for multivariate Threshold VAR model implemented.")
-        } else {
-          predictions <- predict(private$.fit_object, n.ahead = n.ahead)
-          # Create output as in glm
-          predictions <- as.numeric(predictions)
-          predictions <- structure(predictions, names = seq_len(length(predictions)))
-          return(predictions)
-        }
-      } else if (gap == 1) {
-        if (is.null(n.ahead)) {
-          n.ahead <- task$nrow
-        }
-        if (learner == "TVAR") {
-          stop("No forecast for multivariate Threshold VAR model implemented.")
-        } else {
-          predictions <- predict(private$.fit_object, n.ahead = n.ahead)
-          # Create output as in glm
-          predictions <- as.numeric(predictions)
-          predictions <- structure(predictions, names = seq_len(n.ahead))
-          return(predictions)
-        }
-      } else if (gap < 1) {
-        warning("Validation samples come before Training samples; 
-                please specify one of the time-series fold structures.")
-        if (is.null(n.ahead)) {
-          n.ahead <- task$nrow
-        }
-        if (learner == "TVAR") {
-          stop("No forecast for multivariate Threshold VAR model implemented.")
-        } else {
-          predictions <- predict(private$.fit_object, n.ahead = n.ahead)
-          # Create output as in glm
-          predictions <- as.numeric(predictions)
-          predictions <- structure(predictions, names = seq_len(n.ahead))
-          return(predictions)
-        }
+      
+      if (learner == "TVAR") {
+        stop("No forecast for multivariate Threshold VAR model implemented.")
       }
+      
+      predictions <- predict(private$.fit_object, n.ahead = h)
+      predictions <- as.numeric(predictions)
+
+      requested_preds <- ts_get_requested_preds(self$training_task, task, predictions)
+      
+      return(requested_preds)
+      
     },
     .required_packages = c("tsDyn", "mgcv")
   )

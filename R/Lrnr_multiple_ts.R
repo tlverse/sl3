@@ -80,12 +80,13 @@ Lrnr_multiple_ts <- R6Class(
       fit_object <- list()
       for (strata in variable_stratify_stratas) {
         index_in_strata <- which(strata_ids == strata)
-        data_subset <- data[index_in_strata, ]
-        sub_task <- sl3_Task$new(
-          data = data_subset,
-          nodes = task$nodes,
-          folds = task$folds
-        )
+        sub_task <- task[index_in_strata]
+        # data_subset <- data[index_in_strata, ]
+        # sub_task <- sl3_Task$new(
+        #   data = data_subset,
+        #   nodes = task$nodes,
+        #   folds = task$folds
+        # )
 
         ### Issue: this changes fold structure...
         # sub_task <- task_new$subset_task(
@@ -124,12 +125,14 @@ Lrnr_multiple_ts <- R6Class(
       for (strata in variable_stratify_stratas_new) {
         index_subtask <- which(strata_ids == strata)
         # construct subtask
-        data_subset <- data[index_subtask, ]
-        sub_task <- sl3_Task$new(
-          data = data_subset,
-          nodes = task$nodes,
-          folds = task$folds
-        )
+        sub_task <- task[index_subtask]
+        # 
+        # data_subset <- data[index_subtask, ]
+        # sub_task <- sl3_Task$new(
+        #   data = data_subset,
+        #   nodes = task$nodes,
+        #   folds = task$folds
+        # )
         ### Issue: this changes fold structure...
         # sub_task <- task_new$subset_task(row_index = index_subtask)
 

@@ -109,7 +109,7 @@ call_with_args <- function(fun, args, other_valid = list(), keep_all = FALSE,
     if (!silent & length(invalid) > 0) {
       message(sprintf(
         "Learner called function %s with unknown args: %s. These will be dropped.\nCheck the params supported by this learner.",
-        as.character(substitute(fun)), paste(invalid, sep = ", ")
+        as.character(substitute(fun)), paste(invalid, collapse = ", ")
       ))
     }
   }
