@@ -153,7 +153,7 @@ Stack <- R6Class(
       current_fit <- learner_fits[[1]]
       current_preds <- current_fit$base_predict(task)
       current_names <- learner_names[1]
-      n_to_pred <- safe_dim(current_preds)[2]
+      n_to_pred <- safe_dim(current_preds)[1]
 
 
 
@@ -174,7 +174,9 @@ Stack <- R6Class(
       for (i in seq_along(learner_fits)) {
         current_fit <- learner_fits[[i]]
         if (i > 1) {
-          current_preds <- current_fit$base_predict(task)
+          current_preds <- rep(NA, n_to_pred)
+          try({current_preds <- current_fit$base_predict(task)})
+          
         }
 
         current_names <- learner_names[i]
