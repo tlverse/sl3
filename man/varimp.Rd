@@ -2,28 +2,34 @@
 % Please edit documentation in R/varimp.R
 \name{varimp}
 \alias{varimp}
-\title{Variable Importance Measure}
+\title{Variable Importance Measures}
 \usage{
-varimp(fit, loss, fold_number = "validation")
+varimp(fit, loss, fold_number = "validation", type = "ratio")
 }
 \arguments{
-\item{fit}{A learner fitted task}
+\item{fit}{learner fitted task}
 
-\item{loss}{A loss function (see loss_functions.R)}
+\item{loss}{loss function (see loss_functions.R)}
 
-\item{fold_number}{either "full" for full fit vim, "validation" for
-cross-validated vim, or a positive integer for fold-specific vim}
+\item{fold_number}{either "full" for full fit vim, "validation" (default) for
+cross-validated vim, or a positive integer for
+fold-specific vim}
+
+\item{type}{either "ratio" (default) for the ratio of scrambled risk over the
+true risk, or "difference" for the difference between the
+scrambled risk and the true risk}
 }
 \value{
-A table of risk differences for each covariate, where a higher risk
-difference indicates a more important covariate in predicting Y
+A table of variable importance for each covariate, X, where a higher
+risk ratio/difference indicates a more important covariate in
+predicting the outcome
 }
 \description{
 Function that takes a learner fitted task and loss function to generate a
 table where each row corresponds to the risk when we omit a covariate minus
 the risk when we do not omit the covariate. Specifically, we calculate the
-risk difference between the learner fit with a scrambled covariate and the
-leaner fit with the true covariate, across all covariates.
+risk ratio (default), or difference, between the learner fit with a scrambled
+covariate and the learner fit with the true covariate, across all covariates.
 }
 \keyword{importance}
 \keyword{variable}
