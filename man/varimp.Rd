@@ -9,7 +9,7 @@ varimp(fit, loss, fold_number = "validation", type = c("ratio", "difference"))
 \arguments{
 \item{fit}{Learner fitted task.}
 
-\item{loss}{Loss function (see loss_functions.R)}
+\item{loss}{Loss function (see \code{\link{loss_functions}}).}
 
 \item{fold_number}{Either \code{"full"} for a variable importance measure
 with the full fit or \code{"validation"} (default) for a cross-validated

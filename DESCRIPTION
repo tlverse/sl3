@@ -21,6 +21,8 @@ Authors@R: c(
            role = "ctb",
            comment = c(ORCID = "0000-0003-2680-3066")),
     person("Yulun", "Wu", email = "yulun_wu@berkeley.edu",
+           role = "ctb"),
+    person("Hugh", "Jiang", email = "hugh_jiang@berkeley.edu",
            role = "ctb")
   )
 Maintainer: Jeremy Coyle <jeremyrcoyle@gmail.com>

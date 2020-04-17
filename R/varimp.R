@@ -8,7 +8,7 @@
 #' of that covariate, across all covariates.
 #'
 #' @param fit Learner fitted task.
-#' @param loss Loss function (see loss_functions.R)
+#' @param loss Loss function (see \code{\link{loss_functions}}).
 #' @param fold_number Either \code{"full"} for a variable importance measure
 #'  with the full fit or \code{"validation"} (default) for a cross-validated
 #'  variable importance measure, or a positive integer for a fold-specific
@@ -63,8 +63,8 @@ varimp <- function(fit,
     # risk on scrambled col task
     risk_scrambled <- mean(loss(scrambled_sl_preds, Y))
 
-    if(type == "ratio") {
-      varimp_metric <- risk_scrambled/risk
+    if (type == "ratio") {
+      varimp_metric <- risk_scrambled / risk
     } else if (type == "difference") {
       varimp_metric <- risk_scrambled - risk
     }
