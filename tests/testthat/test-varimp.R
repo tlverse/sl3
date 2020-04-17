@@ -15,4 +15,5 @@ outcome <- "haz"
 task <- sl3_Task$new(data.table::copy(cpp_imputed), covariates = covars, outcome = outcome)
 lrnr_glm <- make_learner(Lrnr_glm)
 fit <- lrnr_glm$train(task)
-permute_imp <- varimp(fit, loss_squared_error)
+permute_imp_ratio <- varimp(fit, loss_squared_error)
+permute_imp_diff <- varimp(fit, loss_squared_error, type = "difference")
