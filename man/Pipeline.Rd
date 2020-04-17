@@ -4,7 +4,9 @@
 \name{Pipeline}
 \alias{Pipeline}
 \title{Pipeline (chain) of learners.}
-\format{\code{\link{R6Class}} object.}
+\format{
+\code{\link{R6Class}} object.
+}
 \value{
 Learner object with methods for training and prediction. See
 \code{\link{Lrnr_base}} for documentation on learners.

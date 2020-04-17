@@ -4,7 +4,9 @@
 \name{Lrnr_dbarts}
 \alias{Lrnr_dbarts}
 \title{Discrete Bayesian Additive Regression Tree sampler}
-\format{\code{\link{R6Class}} object.}
+\format{
+\code{\link{R6Class}} object.
+}
 \value{
 Learner object with methods for training and prediction. See
 \code{\link{Lrnr_base}} for documentation on learners.

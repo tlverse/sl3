@@ -5,7 +5,9 @@
 \alias{Custom_chain}
 \alias{customize_chain}
 \title{Customize chaining for a learner}
-\format{\code{\link{R6Class}} object.}
+\format{
+\code{\link{R6Class}} object.
+}
 \usage{
 customize_chain(learner, chain_fun)
 }

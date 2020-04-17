@@ -4,7 +4,9 @@
 \name{Lrnr_hal9001}
 \alias{Lrnr_hal9001}
 \title{The Scalable Highly Adaptive Lasso}
-\format{\code{\link{R6Class}} object.}
+\format{
+\code{\link{R6Class}} object.
+}
 \value{
 Learner object with methods for training and prediction. See
 \code{\link{Lrnr_base}} for documentation on learners.

@@ -4,7 +4,9 @@
 \name{Lrnr_screener_corRank}
 \alias{Lrnr_screener_corRank}
 \title{Correlation Rank Screener}
-\format{\code{\link{R6Class}} object.}
+\format{
+\code{\link{R6Class}} object.
+}
 \value{
 Learner object with methods for training and prediction. See
 \code{\link{Lrnr_base}} for documentation on learners.

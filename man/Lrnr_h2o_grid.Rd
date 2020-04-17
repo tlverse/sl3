@@ -6,7 +6,9 @@
 \alias{Lrnr_h2o_classifier}
 \alias{Lrnr_h2o_mutator}
 \title{Grid Search Models with h2o}
-\format{\code{\link{R6Class}} object.}
+\format{
+\code{\link{R6Class}} object.
+}
 \value{
 Learner object with methods for training and prediction. See
 \code{\link{Lrnr_base}} for documentation on learners.

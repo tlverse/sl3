@@ -4,7 +4,9 @@
 \name{Lrnr_bilstm}
 \alias{Lrnr_bilstm}
 \title{Bidirectional Long short-term memory Recurrent Neural Network (LSTM)}
-\format{\code{\link{R6Class}} object.}
+\format{
+\code{\link{R6Class}} object.
+}
 \value{
 \code{\link{Lrnr_base}} object with methods for training and prediction
 }

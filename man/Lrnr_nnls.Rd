@@ -4,7 +4,9 @@
 \name{Lrnr_nnls}
 \alias{Lrnr_nnls}
 \title{Non-negative Linear Least Squares}
-\format{\code{\link{R6Class}} object.}
+\format{
+\code{\link{R6Class}} object.
+}
 \value{
 Learner object with methods for both training and prediction. See
 \code{\link{Lrnr_base}} for documentation on learners.

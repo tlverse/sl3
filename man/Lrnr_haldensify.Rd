@@ -4,7 +4,9 @@
 \name{Lrnr_haldensify}
 \alias{Lrnr_haldensify}
 \title{Conditional Density Estimation with the Highly Adaptive LASSO}
-\format{\code{\link{R6Class}} object.}
+\format{
+\code{\link{R6Class}} object.
+}
 \value{
 Learner object with methods for training and prediction. See
 \code{\link{Lrnr_base}} for documentation on learners.

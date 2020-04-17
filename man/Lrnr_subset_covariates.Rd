@@ -4,7 +4,9 @@
 \name{Lrnr_subset_covariates}
 \alias{Lrnr_subset_covariates}
 \title{Learner with Covariate Subsetting}
-\format{\code{\link{R6Class}} object.}
+\format{
+\code{\link{R6Class}} object.
+}
 \value{
 Learner object with methods for training and prediction. See
 \code{\link{Lrnr_base}} for documentation on learners.

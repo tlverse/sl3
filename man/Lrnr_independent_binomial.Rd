@@ -4,7 +4,9 @@
 \name{Lrnr_independent_binomial}
 \alias{Lrnr_independent_binomial}
 \title{Classification from Binomial Regression}
-\format{\code{\link{R6Class}} object.}
+\format{
+\code{\link{R6Class}} object.
+}
 \value{
 Learner object with methods for training and prediction. See
 \code{\link{Lrnr_base}} for documentation on learners.

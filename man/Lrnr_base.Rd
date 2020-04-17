@@ -5,7 +5,9 @@
 \alias{Lrnr_base}
 \alias{make_learner}
 \title{Base Class for all sl3 Learners.}
-\format{\code{\link{R6Class}} object.}
+\format{
+\code{\link{R6Class}} object.
+}
 \usage{
 make_learner(learner_class, ...)
 }

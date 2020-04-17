@@ -5,7 +5,9 @@
 \alias{define_h2o_X}
 \alias{Lrnr_h2o_glm}
 \title{h2o Model Definition}
-\format{\code{\link{R6Class}} object.}
+\format{
+\code{\link{R6Class}} object.
+}
 \usage{
 define_h2o_X(task, outcome_type = NULL)
 }

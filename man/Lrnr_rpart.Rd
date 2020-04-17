@@ -4,7 +4,9 @@
 \name{Lrnr_rpart}
 \alias{Lrnr_rpart}
 \title{Learner for Recursive Partitioning and Regression Trees.}
-\format{\code{\link{R6Class}} object.}
+\format{
+\code{\link{R6Class}} object.
+}
 \value{
 Learner object with methods for training and prediction. See
 \code{\link{Lrnr_base}} for documentation on learners.

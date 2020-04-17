@@ -4,7 +4,9 @@
 \name{undocumented_learner}
 \alias{undocumented_learner}
 \title{Undocumented Learner}
-\format{\code{\link{R6Class}} object.}
+\format{
+\code{\link{R6Class}} object.
+}
 \value{
 \code{\link{Lrnr_base}} object with methods for training and
 prediction.
