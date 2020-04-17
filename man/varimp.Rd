@@ -2,28 +2,36 @@
 % Please edit documentation in R/varimp.R
 \name{varimp}
 \alias{varimp}
-\title{Variable Importance Measure}
+\title{Variable Importance Measures}
 \usage{
-varimp(fit, loss, fold_number = "validation")
+varimp(fit, loss, fold_number = "validation", type = c("ratio", "difference"))
 }
 \arguments{
-\item{fit}{A learner fitted task}
+\item{fit}{Learner fitted task.}
 
-\item{loss}{A loss function (see loss_functions.R)}
+\item{loss}{Loss function (see \code{\link{loss_functions}}).}
 
-\item{fold_number}{either "full" for full fit vim, "validation" for
-cross-validated vim, or a positive integer for fold-specific vim}
+\item{fold_number}{Either \code{"full"} for a variable importance measure
+with the full fit or \code{"validation"} (default) for a cross-validated
+variable importance measure, or a positive integer for a fold-specific
+variable importance measure.}
+
+\item{type}{Either \code{"ratio"} (default) for the ratio of permuted risk
+over the observed risk, or \code{"difference"} for the difference between
+the permuted risk and the observed risk.}
 }
 \value{
-A table of risk differences for each covariate, where a higher risk
-difference indicates a more important covariate in predicting Y
+A table of variable importance for each covariate X, where a higher
+risk ratio/difference indicates that a given covariate is more important in
+predicting the outcome.
 }
 \description{
 Function that takes a learner fitted task and loss function to generate a
-table where each row corresponds to the risk when we omit a covariate minus
-the risk when we do not omit the covariate. Specifically, we calculate the
-risk difference between the learner fit with a scrambled covariate and the
-leaner fit with the true covariate, across all covariates.
+table in which each row corresponds to the risk difference between when a
+covariate is omitted and when that covariate is included. Specifically, we
+calculate the risk ratio (default), or risk difference, between a learner
+fit with a permuted covariate and the learner fit with the observed values
+of that covariate, across all covariates.
 }
 \keyword{importance}
 \keyword{variable}
