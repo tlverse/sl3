@@ -15,7 +15,8 @@ test_that("task will self-generate folds for 10-fold CV", expect_length(
 glm_learner <- Lrnr_glm$new()
 cv_glm <- Lrnr_cv$new(glm_learner, full_fit = TRUE)
 cv_glm_fit <- cv_glm$train(task)
-
+# debug_predict(cv_glm_fit)
+cv_glm_fit$predict()
 test_that("Lrnr_cv will use folds from task", expect_equal(task$folds, cv_glm_fit$fit_object$folds))
 
 folds <- make_folds(cpp_imputed, V = 5)

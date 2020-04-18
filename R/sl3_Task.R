@@ -30,7 +30,7 @@ sl3_Task <- R6Class(
   public = list(
     initialize = function(data, covariates, outcome = NULL,
                           outcome_type = NULL, outcome_levels = NULL,
-                          id = NULL, weights = NULL, offset = NULL,
+                          id = NULL, weights = NULL, offset = NULL, time = NULL,
                           nodes = NULL, column_names = NULL, row_index = NULL,
                           folds = NULL, flag = TRUE,
                           drop_missing_outcome = FALSE) {
@@ -40,7 +40,7 @@ sl3_Task <- R6Class(
       if (is.null(nodes)) {
         nodes <- list(
           covariates = covariates, outcome = outcome, id = id,
-          weights = weights, offset = offset
+          weights = weights, offset = offset, time = time
         )
       }
 
@@ -199,7 +199,7 @@ sl3_Task <- R6Class(
     },
 
     next_in_chain = function(covariates = NULL, outcome = NULL, id = NULL,
-                             weights = NULL, offset = NULL, folds = NULL,
+                             weights = NULL, offset = NULL, time = NULL, folds = NULL,
                              column_names = NULL, new_nodes = NULL, ...) {
       if (is.null(new_nodes)) {
         new_nodes <- self$nodes
@@ -222,6 +222,10 @@ sl3_Task <- R6Class(
 
         if (!missing(offset)) {
           new_nodes$offset <- offset
+        }
+        
+        if (!missing(time)) {
+          new_nodes$time <- time
         }
       }
 
@@ -293,7 +297,8 @@ sl3_Task <- R6Class(
         if (must_reindex) {
           stop("subset indicies have copies, this requires dropping folds for now")
         }
-        new_folds <- subset_folds(self$folds, row_index)
+        
+        new_folds <- subset_folds(private$.folds, row_index)
       }
 
       new_task$initialize(
@@ -444,6 +449,16 @@ sl3_Task <- R6Class(
       }))
     },
 
+    time = function() {
+      return(self$get_node("time", function(node_var, n) {
+        
+        if(self$has_node("id")){
+          stop("times requested but not specified for this task")
+        } else {
+          self$row_index
+        }
+      }))
+    },
     folds = function(new_folds) {
       if (!missing(new_folds)) {
         private$.folds <- new_folds

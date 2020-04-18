@@ -41,9 +41,20 @@ Lrnr_screener_coefs <- R6Class(
       learner <- self$params$learner
       fit <- learner$train(task)
       coefs <- as.vector(coef(fit))
+      coef_names <- rownames(coef(fit))
+      if(is.null(coef_names)){
+        coef_names <- names(coef(fit))
+      }
+      
+      if(is.null(coef_names)){
+        stop("could not extract names from fit coefficients")
+      }
+      
       covs <- task$nodes$covariates
-      selected <- covs[which(abs(coefs) > self$params$threshold)]
-
+      
+      selected_coefs <- coef_names[which(abs(coefs) > self$params$threshold)]
+      selected_coefs <- unique(gsub("\\..*","",selected_coefs))
+      selected <- intersect(selected_coefs, covs)
       fit_object <- list(selected = selected)
       return(fit_object)
     },

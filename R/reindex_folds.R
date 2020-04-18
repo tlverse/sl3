@@ -22,6 +22,9 @@ subset_fold <- function(fold, subset) {
 #' @param subset an index vector to be used to subset the data
 #' @export
 subset_folds <- function(folds, subset) {
+  if(is.null(folds)){
+    return(NULL)
+  }
   subsetted <- lapply(folds, subset_fold, subset)
 
   return(subsetted)

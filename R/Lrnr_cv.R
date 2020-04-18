@@ -340,16 +340,26 @@ Lrnr_cv <- R6Class(
         list(
           index = index,
           fold_index = rep(fold_index(), length(index)),
-          predictions = predictions
+          predictions = data.table(predictions)
         )
       }
 
-      results <- cross_validate(cv_predict, folds, fold_fits, task, use_future = FALSE)
+      comb_ctrl <- list(combiners=list(index=combiner_c, fold_index=combiner_c, 
+                                       predictions = function(x)rbindlist(x,fill=TRUE)))
+      results <- cross_validate(cv_predict, folds, fold_fits, task, use_future = FALSE,
+                                .combine_control = comb_ctrl)
       # Avoids issues with repeated validation samples in time-series cv
       preds <- as.data.table(results$predictions)
+      
+      # try to throw out columns with bad predictions
+      good_preds <- unlist(preds[,lapply(.SD, function(x)all(!is.na(x)))])
+      preds <- preds[,which(good_preds), with=FALSE]
+      
+      predictions <- aorder(preds, order(results$index, results$fold_index))
 
-      predictions <- aorder(results$predictions, order(results$index, results$fold_index))
-
+      if(ncol(predictions)==1){
+        predictions <- unlist(predictions)
+      }
       return(predictions)
     },
     .chain = function(task) {

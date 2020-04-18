@@ -5,7 +5,7 @@
 \title{Call with filtered argument list}
 \usage{
 call_with_args(fun, args, other_valid = list(), keep_all = FALSE,
-  silent = FALSE)
+  silent = FALSE, ignore = c())
 }
 \arguments{
 \item{fun}{A \code{function} whose signature will be used to reduce the}
@@ -20,6 +20,8 @@ matched in either the function prototype or other_valid.}
 
 \item{silent}{A \code{logical} indicating whether to pass \code{message}s
 when arguments not found in \code{formals} are passed to \code{fun}.}
+
+\item{ignore}{A \code{character} vector indicating which arguments should be dropped}
 }
 \description{
 Call a function with a list of arguments, eliminating any that aren't

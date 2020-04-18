@@ -18,7 +18,7 @@ folds <- origami::make_folds(data$cnt,
 
 # Generate task:
 task_ts <- sl3_Task$new(
-  data = data, covariates = "cnt",
+  data = data, covariates = c(),
   outcome = "cnt", outcome_type = "continuous", folds = folds
 )
 

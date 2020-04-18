@@ -94,7 +94,7 @@ Lrnr_expSmooth <- R6Class(
 
     .train = function(task) {
       args <- self$params
-      args$y <- ts(task$X, frequency = args$freq)
+      args$y <- ts(task$Y, frequency = args$freq)
       if (args$model == "ZZZ") {
         fit_object <- forecast::ets(args$y)
       } else {
@@ -104,44 +104,10 @@ Lrnr_expSmooth <- R6Class(
     },
 
     .predict = function(task = NULL) {
-      params <- self$params
-      n.ahead <- params[["n.ahead"]]
-
-      # See if there is gap between training and validation:
-      gap <- min(task$folds[[1]]$validation_set) - max(task$folds[[1]]$training_set)
-
-      if (gap > 1) {
-        if (is.null(n.ahead)) {
-          n.ahead <- task$nrow + gap
-        } else {
-          n.ahead <- n.ahead + gap
-        }
-        predictions <- forecast::forecast(private$.fit_object, h = n.ahead)
-        # Create output as in glm
-        predictions <- as.numeric(predictions$mean)
-        predictions <- structure(predictions, names = seq_len(length(predictions)))
-        return(predictions)
-      } else if (gap == 1) {
-        if (is.null(n.ahead)) {
-          n.ahead <- task$nrow
-        }
-        predictions <- forecast::forecast(private$.fit_object, h = n.ahead)
-        # Create output as in glm
-        predictions <- as.numeric(predictions$mean)
-        predictions <- structure(predictions, names = seq_len(n.ahead))
-        return(predictions)
-      } else if (gap < 1) {
-        warning("Validation samples come before Training samples; 
-                please specify one of the time-series fold structures.")
-        if (is.null(n.ahead)) {
-          n.ahead <- task$nrow
-        }
-        predictions <- forecast::forecast(private$.fit_object, h = n.ahead)
-        # Create output as in glm
-        predictions <- as.numeric(predictions$mean)
-        predictions <- structure(predictions, names = seq_len(n.ahead))
-        return(predictions)
-      }
+      h <- ts_get_pred_horizon(self$training_task, task)
+      raw_preds <- forecast::forecast(private$.fit_object, h = h)
+      preds <- as.numeric(raw_preds$mean)
+      requested_preds <- ts_get_requested_preds(self$training_task, task, preds)
     },
     .required_packages = c("forecast")
   )

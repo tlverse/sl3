@@ -27,7 +27,7 @@
 #'   \item{\code{Kparam}}{Maximum order of the fourier terms. Passed to
 #'     \code{\link[forecast]{fourier}}.}
 #'   \item{\code{n.ahead=NULL}}{ The forecast horizon. If not specified, returns
-#'     forecast of size \code{task$X}.}
+#'     forecast of size \code{task$Y}.}
 #'   \item{\code{freq}}{The frequency of the time series.}
 #'   \item{\code{...}}{Not used.}
 #' }
@@ -55,7 +55,7 @@ Lrnr_HarmonicReg <- R6Class(
       params <- self$params
       Kparam <- params[["Kparam"]]
       freq <- params[["freq"]]
-      task_ts <- ts(task$X, frequency = freq)
+      task_ts <- ts(task$Y, frequency = freq)
 
       if (length(freq) != length(Kparam)) {
         stop("Number of periods does not match number of orders")
@@ -83,7 +83,7 @@ Lrnr_HarmonicReg <- R6Class(
         } else {
           n.ahead <- n.ahead + gap
         }
-        task_ts <- ts(task$X, frequency = freq)
+        task_ts <- ts(task$Y, frequency = freq)
         fourier_fit <- data.frame(forecast::fourier(
           task_ts,
           K = Kparam,
@@ -99,7 +99,7 @@ Lrnr_HarmonicReg <- R6Class(
         if (is.null(n.ahead)) {
           n.ahead <- task$nrow
         }
-        task_ts <- ts(task$X, frequency = freq)
+        task_ts <- ts(task$Y, frequency = freq)
         fourier_fit <- data.frame(forecast::fourier(
           task_ts,
           K = Kparam,
@@ -118,7 +118,7 @@ Lrnr_HarmonicReg <- R6Class(
         if (is.null(n.ahead)) {
           n.ahead <- task$nrow
         }
-        task_ts <- ts(task$X, frequency = freq)
+        task_ts <- ts(task$Y, frequency = freq)
         fourier_fit <- data.frame(forecast::fourier(
           task_ts,
           K = Kparam,

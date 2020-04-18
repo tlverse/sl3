@@ -17,7 +17,7 @@ if (FALSE) {
 set.seed(1)
 
 data(bsds)
-covars <- c("cnt")
+covars <- c("temp","windspeed")
 outcome <- "cnt"
 
 folds <- origami::make_folds(bsds,
@@ -25,13 +25,15 @@ folds <- origami::make_folds(bsds,
   validation_size = 10, gap = 0, batch = 200
 )
 task <- sl3_Task$new(bsds, covariates = covars, outcome = outcome, folds = folds)
+train_task <- training(task, fold=task$folds[[1]])
+valid_task <- validation(task, fold=task$folds[[1]])
 
 test_that("Automatic Lrnr_expSmooth gives expected values", {
   expSmooth_learner <- Lrnr_expSmooth$new()
-  expSmooth_fit <- expSmooth_learner$train(task)
-  expSmooth_preds <- expSmooth_fit$predict(task)
+  expSmooth_fit <- expSmooth_learner$train(train_task)
+  expSmooth_preds <- expSmooth_fit$predict(valid_task)
 
-  expSmooth_fit_2 <- forecast::ets(bsds$cnt)
+  expSmooth_fit_2 <- forecast::ets(train_task$Y)
   expSmooth_preds_2 <- forecast::forecast(expSmooth_fit_2)
   expSmooth_preds_2 <- as.numeric(expSmooth_preds_2$mean)
   expSmooth_preds_2 <- structure(expSmooth_preds_2)
