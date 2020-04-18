@@ -106,6 +106,9 @@
     <loc>https://tlverse.org/sl3/reference/Lrnr_mean.html</loc>
   </url>
   <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_multiple_ts.html</loc>
+  </url>
+  <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_multivariate.html</loc>
   </url>
   <url>
@@ -143,6 +146,9 @@
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_rugarch.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_screener_coefs.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_screener_corP.html</loc>

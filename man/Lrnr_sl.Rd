@@ -3,11 +3,7 @@
 \docType{class}
 \name{Lrnr_sl}
 \alias{Lrnr_sl}
-<<<<<<< HEAD
 \title{The Super Learner Algorithm}
-=======
-\title{SuperLearner Algorithm}
->>>>>>> 375c72f521510e6c48a6f220edc16d7738e7e94c
 \format{
 \code{\link{R6Class}} object.
 }

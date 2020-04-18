@@ -184,8 +184,10 @@ Lrnr_base <- R6Class(
     train = function(task) {
       delayed_fit <- delayed_learner_train(self, task)
       verbose <- getOption("sl3.verbose")
-      return(delayed_fit$compute(job_type = sl3_delayed_job_type(),
-                                 progress = verbose))
+      return(delayed_fit$compute(
+        job_type = sl3_delayed_job_type(),
+        progress = verbose
+      ))
     },
 
     predict = function(task = NULL) {

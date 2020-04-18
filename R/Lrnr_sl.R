@@ -98,8 +98,10 @@ Lrnr_sl <- R6Class(
 
       # Make sure that coefficients is the second column, even if the
       # metalearner did not provide coefficients.
-      data.table::setcolorder(stack_risks,
-                              c(names(stack_risks)[1], "coefficients"))
+      data.table::setcolorder(
+        stack_risks,
+        c(names(stack_risks)[1], "coefficients")
+      )
 
       # get risks for super learner (revere cv)
       sl_risk <- cv_risk(self, loss_fun)
@@ -116,8 +118,10 @@ Lrnr_sl <- R6Class(
       if (fold_number == "full") {
         preds <- self$predict(revere_task)
       } else {
-        meta_task <- self$fit_object$cv_fit$chain_fold(revere_task,
-                                                       fold_number)
+        meta_task <- self$fit_object$cv_fit$chain_fold(
+          revere_task,
+          fold_number
+        )
         preds <- self$fit_object$cv_meta_fit$predict(meta_task)
 
         if (pred_unique_ts) {
@@ -213,8 +217,10 @@ Lrnr_sl <- R6Class(
       full_stack_fit <- fit_object$cv_fit$fit_object$full_fit
       full_stack_fit$custom_chain(drop_offsets_chain)
 
-      full_fit <- make_learner(Pipeline, full_stack_fit,
-                               fit_object$cv_meta_fit)
+      full_fit <- make_learner(
+        Pipeline, full_stack_fit,
+        fit_object$cv_meta_fit
+      )
       fit_object$full_fit <- full_fit
 
       if (self$params$keep_extra) {

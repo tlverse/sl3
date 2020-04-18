@@ -55,7 +55,7 @@ test_that("Lrnr_rfcde produces predictions similar to those from RFCDE", {
     z_grid = seq(0, 10, length.out = 100),
     bandwidth = "auto"
   ) %>%
-  as.numeric()
+    as.numeric()
 
   # check that predicted conditional density estimates match within tolerance
   expect_equal(rfcde_lrn_fit_preds,
