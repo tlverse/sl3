@@ -45,7 +45,10 @@ Stack <- R6Class(
         }
       }
       # catch learner names and make unique if there's repetition
-      learner_names <- sapply(learners, `[[`, "name")
+      learner_names <- names(learners)
+      if(is.null(learner_names)){
+        learner_names <- sapply(learners, `[[`, "name")
+      }
       if (any(duplicated(learner_names))) {
         learner_names <- make.unique(learner_names, sep = "_")
       }

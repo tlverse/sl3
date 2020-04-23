@@ -13,13 +13,17 @@ task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
 
 glm_learner <- Lrnr_glm$new()
 glmnet_learner <- Lrnr_pkg_SuperLearner$new("SL.glmnet")
-stack <- Stack$new(glm_learner, glmnet_learner)
+stack <- Stack$new(glm1=glm_learner, glm2=glmnet_learner)
 stack2 <- Stack$new(stack)
 test_that(
   "Stack$new copies original stack when learners is a Stack",
   expect_equivalent(stack$params$learners, stack2$params$learners)
 )
 
+stack_fit <- stack$train(task)
+stack_preds <- stack_fit$predict()
+test_that("Stack accepts custom names",
+          expect_equal(names(stack_preds),c("glm1","glm2")))
 # stack3 <- Stack$new(stack,glm_learner)
 # stack3$params$learners
 #

@@ -103,9 +103,11 @@ Lrnr_gts <- R6Class(
       # get predictions for each time series
       args$object <- private$.fit_object
       gts_forecasts <- call_with_args(forecast.gts, args, silent = TRUE)$bts
+      
       # reformat predictions to match input task
+      times <- max(self$training_task$time)+seq_len(args$h)
       gts_dt <-
-        as.data.table(gts_forecasts)[, time := (train_hmax + 1):test_hmax]
+        as.data.table(gts_forecasts)[, time := times]
       predictions <- melt(gts_dt, id.vars = "time", variable.name = "series")
       test_data_formerge <- as.data.table(list(
         time = task$get_node("time"),
