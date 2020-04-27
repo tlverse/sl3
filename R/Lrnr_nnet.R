@@ -77,7 +77,7 @@ Lrnr_nnet <- R6Class(
       if (outcome_type$type == "binomial") {
         predictions <- predict(private$.fit_object,
                                newdata=data.frame(task$X),
-                               type="class")
+                               type="raw")
       } else {
         predictions <- predict(private$.fit_object,
                                newdata=data.frame(task$X),
