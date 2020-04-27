@@ -83,6 +83,7 @@ Other Learners:
 \code{\link{Lrnr_mean}},
 \code{\link{Lrnr_multiple_ts}},
 \code{\link{Lrnr_multivariate}},
+\code{\link{Lrnr_nnet}},
 \code{\link{Lrnr_nnls}},
 \code{\link{Lrnr_pca}},
 \code{\link{Lrnr_pkg_SuperLearner}},
