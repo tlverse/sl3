@@ -134,9 +134,9 @@ Lrnr_dbarts <- R6Class(
 
       fit_object <- call_with_args(dbarts::bart, args)
 
-      if (self$params$serializeable) {
-        invisible(fit_object$fit$state)
-      }
+      #if (self$params$serializeable) {
+      #  invisible(fit_object$fit$state)
+      #}
 
       return(fit_object)
     },
