@@ -48,7 +48,7 @@ interpret_fold_number <- function(fold_number) {
 #'
 #' @importFrom R6 R6Class
 #' @importFrom assertthat assert_that is.count is.flag
-#' @importFrom origami training validation fold_index cross_validate
+#' @importFrom origami training validation fold_index cross_validate combiner_c
 #' @importFrom dplyr %>% group_by summarise_all select
 #'
 #'

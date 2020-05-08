@@ -50,9 +50,9 @@ sl3_Task <- R6Class(
 
       # get column names from data (and check data class in the process)
       if (inherits(data, "data.frame")) {
-        data_names <- names(data)
+        data_names <- copy(names(data))
       } else if (inherits(data, "Shared_Data")) {
-        data_names <- data$column_names
+        data_names <- copy(data$column_names)
       } else {
         stop(sprintf("Data of class %s not supported", class(data)[[1]]))
       }
