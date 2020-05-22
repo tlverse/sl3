@@ -94,7 +94,7 @@ Lrnr_hal9001 <- R6Class(
     }
   ),
   private = list(
-    .properties = c("continuous", "binomial"),
+    .properties = c("continuous", "binomial", "ids"),
 
     .train = function(task) {
       args <- self$params
@@ -115,6 +115,10 @@ Lrnr_hal9001 <- R6Class(
 
       if (task$has_node("offset")) {
         args$offset <- task$offset
+      }
+
+      if (task$has_node("id")) {
+        args$id <- task$id
       }
 
       fit_object <- call_with_args(hal9001::fit_hal, args)
