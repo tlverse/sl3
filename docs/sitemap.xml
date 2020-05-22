@@ -31,9 +31,6 @@
     <loc>https://tlverse.org/sl3/reference/Lrnr_caret.html</loc>
   </url>
   <url>
-    <loc>https://tlverse.org/sl3/reference/Lrnr_condensier.html</loc>
-  </url>
-  <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_cv.html</loc>
   </url>
   <url>
@@ -112,9 +109,6 @@
     <loc>https://tlverse.org/sl3/reference/Lrnr_pca.html</loc>
   </url>
   <url>
-    <loc>https://tlverse.org/sl3/reference/Lrnr_pkg_condensier_logisfitR6.html</loc>
-  </url>
-  <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_polspline.html</loc>
   </url>
   <url>
@@ -128,9 +122,6 @@
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_revere_task.html</loc>
-  </url>
-  <url>
-    <loc>https://tlverse.org/sl3/reference/Lrnr_rfcde.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_rpart.html</loc>

@@ -32,18 +32,14 @@ r_packages:
   - covr
   - sessioninfo
   - data.table
+  - hal9001
+  - haldensify
 
 r_github_packages:
   - r-lib/covr
   - r-lib/sessioninfo
-  - osofr/simcausal
-  - osofr/condensier
-  - tlverse/origami
   - tlverse/delayed
-  - tlverse/hal9001
-  - nhejazi/haldensify
-  - tpospisi/cdetools/r
-  - tpospisi/RFCDE/r
+  - tlverse/origami
 
 after_success:
   - travis_wait 80 Rscript -e 'covr::codecov()'
