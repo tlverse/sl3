@@ -26,8 +26,9 @@ Authors@R: c(
            role = "ctb")
   )
 Maintainer: Jeremy Coyle <jeremyrcoyle@gmail.com>
-Description: Modern implementation of the Super Learner prediction algorithm,
-    coupled with a general-purpose framework for machine learning via pipelines.
+Description: A modern implementation of the Super Learner prediction algorithm,
+    coupled with a general-purpose framework for composing arbitrary pipelines
+    for machine learning tasks.
 Depends: R (>= 2.14.0)
 Imports:
     data.table,

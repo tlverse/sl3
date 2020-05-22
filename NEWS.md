@@ -1,5 +1,6 @@
 # sl3 1.3.8
 * Updates to variable importance functionality, including use of risk ratios.
+* Change `Lrnr_hal9001` and `Lrnr_glmnet` to respect observation-level IDs.
 
 # sl3 1.3.7
 * Sampling methods for Monte Carlo integration and related procedures.

@@ -17,10 +17,10 @@ matrix consisting of basis functions corresponding to covariates and
 interactions of covariates and fits Lasso regression to this (usually) very
 wide matrix, recovering a nonparametric functional form that describes the
 target prediction function as a composition of subset functions with finite
-variation norm. This implementation uses the \code{hal9001} R package, which
-provides both a custom implementation (based on the \code{origami} package)
-of the CV-Lasso as well the standard call to \code{cv.glmnet} from the
-\code{glmnet} package.
+variation norm. This implementation uses \pkg{hal9001}, which provides both
+a custom implementation (based on \pkg{origami}) of the cross-validated
+lasso as well the standard call to \code{\link[glmnet]{cv.glmnet}} from the
+\pkg{glmnet}.
 }
 \section{Parameters}{
 
@@ -46,17 +46,17 @@ is the convention for V-fold cross-validation.
 \item{\code{reduce_basis=NULL}}{A \code{numeric} value bounded in the open
 interval (0,1) indicating the minimum proportion of ones in a basis
 function column needed for the basis function to be included in the
-procedure to fit the Lasso. Any basis functions with a lower proportion of
-1's than the specified cutoff will be removed. This argument defaults to
-\code{NULL}, in which case all basis functions are used in the Lasso stage
-of HAL.
+procedure to fit the Lasso. Any basis functions with a lower proportion
+of 1's than the specified cutoff will be removed. This argument defaults
+to \code{NULL}, in which case all basis functions are used in the Lasso
+stage of HAL.
 }
 \item{\code{return_lasso=TRUE}}{A \code{logical} indicating whether or not
 to return the \code{\link[glmnet]{glmnet}} fit of the Lasso model.
 }
 \item{\code{return_x_basis=FALSE}}{A \code{logical} indicating whether or
-not to return the matrix of (possibly reduced) basis functions used in the
-HAL Lasso fit.
+not to return the matrix of (possibly reduced) basis functions used in
+the HAL Lasso fit.
 }
 \item{\code{basis_list=NULL}}{The full set of basis functions generated
 from the input data (from \code{\link[hal9001]{enumerate_basis}}). The
@@ -64,10 +64,10 @@ dimensionality of this structure is roughly (n * 2^(d - 1)), where n is
 the number of observations and d is the number of columns in the input.
 }
 \item{\code{cv_select=TRUE}}{A \code{logical} specifying whether the array
-of values specified should be passed to \code{\link[glmnet]{cv.glmnet}} in
-order to pick the optimal value (based on cross-validation) (when set to
-\code{TRUE}) or to simply fit along the sequence of values (or a single
-value) using \code{\link[glmnet]{glmnet}} (when set to \code{FALSE}).
+of values specified should be passed to \code{\link[glmnet]{cv.glmnet}}
+in order to pick the optimal value (based on cross-validation) (when set
+to \code{TRUE}) or to fit along the sequence of values (or a single value
+using \code{\link[glmnet]{glmnet}} (when set to \code{FALSE}).
 }
 \item{\code{...}}{Other parameters passed directly to
 \code{\link[hal9001]{fit_hal}}. See its documentation for details.
