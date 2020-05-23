@@ -688,94 +688,6 @@ x
 
 <td style="text-align:left;">
 
-Lrnr\_condensier
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
 Lrnr\_cv
 
 </td>
@@ -1956,7 +1868,7 @@ x
 
 <td style="text-align:left;">
 
-x
+√
 
 </td>
 
@@ -2308,7 +2220,7 @@ x
 
 <td style="text-align:left;">
 
-x
+√
 
 </td>
 
@@ -2344,7 +2256,7 @@ x
 
 <td style="text-align:left;">
 
-x
+√
 
 </td>
 
@@ -3847,94 +3759,6 @@ x
 <td style="text-align:left;">
 
 √
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Lrnr\_rfcde
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
