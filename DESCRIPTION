@@ -57,8 +57,6 @@ Suggests:
     rgl,
     rJava,
     bartMachine,
-    simcausal,
-    condensier,
     cvAUC,
     e1071,
     earth,
@@ -85,7 +83,6 @@ Suggests:
     dbarts,
     gam (>= 1.15.0),
     haldensify (>= 0.0.5),
-    RFCDE,
     caret,
     mgcv
 License: GPL-3

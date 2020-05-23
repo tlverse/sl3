@@ -26,6 +26,7 @@ environment:
     R_ARCH: x64
     USE_RTOOLS: true
     R_REMOTES_STANDALONE: true
+    R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
     GITHUB_PAT:
       secure: Nu6c5CmcVdYHDUVGej5ZIXGKOXVPBwqUwjrLV8d6UlbUaAtYuUhgpNuv9oLztAQQ
 
