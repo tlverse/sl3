@@ -26,8 +26,9 @@ Authors@R: c(
            role = "ctb")
   )
 Maintainer: Jeremy Coyle <jeremyrcoyle@gmail.com>
-Description: Modern implementation of the Super Learner prediction algorithm,
-    coupled with a general-purpose framework for machine learning via pipelines.
+Description: A modern implementation of the Super Learner prediction algorithm,
+    coupled with a general-purpose framework for composing arbitrary pipelines
+    for machine learning tasks.
 Depends: R (>= 2.14.0)
 Imports:
     data.table,
@@ -56,8 +57,6 @@ Suggests:
     rgl,
     rJava,
     bartMachine,
-    simcausal,
-    condensier,
     cvAUC,
     e1071,
     earth,
@@ -83,15 +82,9 @@ Suggests:
     xgboost,
     dbarts,
     gam (>= 1.15.0),
-    haldensify,
-    RFCDE,
+    haldensify (>= 0.0.5),
     caret,
     mgcv
-Remotes:
-    github::osofr/condensier,
-    github::tlverse/hal9001,
-    github::nhejazi/haldensify,
-    github::tpospisi/RFCDE/r
 License: GPL-3
 URL: https://tlverse.org/sl3
 BugReports: https://github.com/tlverse/sl3/issues

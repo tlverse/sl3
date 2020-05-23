@@ -141,7 +141,7 @@ The resultant stack of learners may then be used as normal." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Make a stack of sl3 learners</h1>
-    <small class="dont-index">Source: <a href='https://github.com/tlverse/sl3/blob/master/R/make_lrnr_stack.R'><code>R/make_lrnr_stack.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/tlverse/sl3/blob/master/R/make_learner_stack.R'><code>R/make_learner_stack.R</code></a></small>
     <div class="hidden name"><code>make_learner_stack.Rd</code></div>
     </div>
 
@@ -178,9 +178,9 @@ all of the standard methods associated with such objects.</p>
 <span class='co'># constructing learners with arguments passed in</span>
 <span class='no'>sl_stack</span> <span class='kw'>&lt;-</span> <span class='fu'>make_learner_stack</span>(
   <span class='st'>"Lrnr_mean"</span>,
-  <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"Lrnr_condensier"</span>,
-    <span class='kw'>nbins</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-    <span class='kw'>bin_method</span> <span class='kw'>=</span> <span class='st'>"equal.len"</span>, <span class='kw'>pool</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"Lrnr_hal9001"</span>,
+    <span class='kw'>n_folds</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+    <span class='kw'>use_min</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
   )
 )</div></pre>
   </div>

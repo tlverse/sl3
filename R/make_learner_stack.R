@@ -22,9 +22,9 @@
 #' # constructing learners with arguments passed in
 #' sl_stack <- make_learner_stack(
 #'   "Lrnr_mean",
-#'   list("Lrnr_condensier",
-#'     nbins = 5,
-#'     bin_method = "equal.len", pool = FALSE
+#'   list("Lrnr_hal9001",
+#'     n_folds = 10,
+#'     use_min = TRUE
 #'   )
 #' )
 make_learner_stack <- function(...) {

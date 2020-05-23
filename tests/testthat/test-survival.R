@@ -1,4 +1,5 @@
 context("test-survival.R -- Pooled hazards model")
+library(data.table)
 library(origami)
 
 g0 <- function(W) {
@@ -25,20 +26,21 @@ gen_data <- function(n = 1000, p = 4) {
   A <- factor(apply(g0W, 1, function(pAi) which(rmultinom(1, 1, pAi) == 1)))
   A_vals <- levels(A)
 
-  df <- data.frame(W, A)
+  df <- data.table(W, A)
   g0W <- g0(W)
   return(list(data = df, truth = g0W))
 }
 
 set.seed(1234)
 sim_results <- gen_data(1000)
-data <- sim_results$data
+dat <- sim_results$data
+dat <- dat[, A := as.numeric(A)]
 g0W <- sim_results$truth
 
-Wnodes <- grep("^W", names(data), value = TRUE)
+Wnodes <- grep("^W", names(dat), value = TRUE)
 Anode <- "A"
 
-task <- sl3_Task$new(data, covariates = Wnodes, outcome = Anode)
+task <- sl3_Task$new(dat, covariates = Wnodes, outcome = Anode)
 hazards_task <- pooled_hazard_task(task)
 lrnr_ph <- make_learner(Lrnr_pooled_hazards,
   binomial_learner = make_learner(Lrnr_xgboost)
@@ -48,10 +50,10 @@ preds <- unpack_predictions(fit$base_predict())
 p0 <- g0(as.matrix(task$X))
 mean(rowSums(p0 * log(preds)))
 
-lrnr_glmnet <- make_learner(Lrnr_glmnet)
-glmnet_fit <- lrnr_glmnet$train(task)
-glmnet_preds <- unpack_predictions(glmnet_fit$predict(task))
-mean(rowSums(p0 * log(glmnet_preds)))
+lrnr_xgb <- make_learner(Lrnr_xgboost)
+xgb_fit <- lrnr_xgb$train(task)
+xgb_preds <- unpack_predictions(xgb_fit$predict(task))
+mean(rowSums(p0 * log(xgb_preds)))
 
 lrnr_mean <- make_learner(Lrnr_mean)
 mean_fit <- lrnr_mean$train(task)

@@ -38,22 +38,21 @@ test_that("Automatic and manually made learner stacks produce same preds", {
 # easily construct a Stack while passing in extra arguments to some learners
 sl_stack <- make_learner_stack(
   "Lrnr_mean",
-  list("Lrnr_condensier", nbins = 5, bin_method = "equal.len", pool = FALSE)
+  list("Lrnr_density_semiparametric", mean_learner = make_learner(Lrnr_glm))
 )
 
-# create condensier manually, train, and compare predictions
-sl_condensier <- Lrnr_condensier$new(
-  nbins = 5, bin_method = "equal.len",
-  pool = FALSE
+# create density learner manually, train, and compare predictions
+hse_density <- make_learner(Lrnr_density_semiparametric,
+  mean_learner = make_learner(Lrnr_glm)
 )
 
-sl_condensier_fit <- sl_condensier$train(task)
-sl_condensier_fit_pred <- sl_condensier_fit$predict()
+hse_density_fit <- hse_density$train(task)
+hse_density_fit_pred <- hse_density_fit$predict()
 
-sl_stack_condensier <- sl_stack$params$learners[[2]]
-sl_stack_condensier_fit <- sl_stack_condensier$train(task)
-sl_stack_condensier_fit_pred <- sl_stack_condensier_fit$predict()
+sl_stack_hse_density <- sl_stack$params$learners[[2]]
+sl_stack_hse_density_fit <- sl_stack_hse_density$train(task)
+sl_stack_hse_density_fit_pred <- sl_stack_hse_density_fit$predict()
 
 test_that("Learner from automatic stack behaves same as a standard learner", {
-  expect_equal(sl_stack_condensier_fit_pred, sl_condensier_fit_pred)
+  expect_equal(sl_stack_hse_density_fit_pred, hse_density_fit_pred)
 })

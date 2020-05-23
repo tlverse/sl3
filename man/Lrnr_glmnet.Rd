@@ -22,17 +22,20 @@ appropriate value of lambda.
 \item{\code{lambda=NULL}}{A vector of lambda values to compare}
 \item{\code{type.measure="deviance"}}{The loss to use when selecting
 lambda. Options documented in \code{\link[glmnet]{cv.glmnet}}.}
-\item{\code{nfolds=10}}{Number of folds to use for internal
+\item{\code{nfolds = 10}}{Number of folds to use for internal
 cross-validation.}
-\item{\code{alpha=1}}{The elastic net parameter. 0 is Ridge Regression, 1
-is Lasso. Intermediate values are a combination. Documented in
+\item{\code{alpha = 1}}{The elastic net parameter: \code{alpha = 0} is
+Ridge (L2-penalized) regression, while \code{alpha = 1} specifies Lasso
+(L1-penalized) regression. Values in the closed unit interval specify a
+weighted combination of the two penalties. This is further documented in
 \code{\link[glmnet]{glmnet}}.}
-\item{\code{nlambda=100}}{The number of lambda values to compare. Comparing
+\item{\code{nlambda=100}}{The number of lambda values to fit. Comparing
 less values will speed up computation, but may decrease statistical
 performance. Documented in \code{\link[glmnet]{cv.glmnet}}.}
-\item{\code{use_min=TRUE}}{If TRUE, use lambda=cv_fit$lambda.min for prediction,
-otherwise use lambda=cv_fit$lambda.1se.
-the distinction is clarified in \code{\link[glmnet]{cv.glmnet}}.}
+\item{\code{use_min=TRUE}}{If \code{TRUE}, use
+\code{lambda = cv_fit$lambda.min} for prediction; otherwise, use
+\code{lambda = cv_fit$lambda.1se}. The distinction between these is
+clarified in \code{\link[glmnet]{cv.glmnet}}.}
 \item{\code{...}}{Other parameters to be passed to
 \code{\link[glmnet]{cv.glmnet}} and \code{\link[glmnet]{glmnet}}.}
 }
@@ -61,7 +64,6 @@ Other Learners:
 \code{\link{Lrnr_bilstm}},
 \code{\link{Lrnr_bound}},
 \code{\link{Lrnr_caret}},
-\code{\link{Lrnr_condensier}},
 \code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_cv}},
 \code{\link{Lrnr_dbarts}},
@@ -92,7 +94,6 @@ Other Learners:
 \code{\link{Lrnr_randomForest}},
 \code{\link{Lrnr_ranger}},
 \code{\link{Lrnr_revere_task}},
-\code{\link{Lrnr_rfcde}},
 \code{\link{Lrnr_rpart}},
 \code{\link{Lrnr_rugarch}},
 \code{\link{Lrnr_screener_corP}},
