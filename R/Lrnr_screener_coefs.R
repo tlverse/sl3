@@ -56,7 +56,7 @@ Lrnr_screener_coefs <- R6Class(
       }
       
       if(is.null(min_retain)){
-        stop("min_retain must be provided. ")
+        stop("min_retain must be provided")
       }
       
       if(length(min_retain) >= length(covs)){
