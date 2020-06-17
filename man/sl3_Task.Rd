@@ -5,10 +5,10 @@
 \alias{sl3_Task}
 \alias{make_sl3_Task}
 \title{Define a Machine Learning Task}
-\format{\code{\link{R6Class}} object.}
+\format{
+\code{\link{R6Class}} object.
+}
 \usage{
-sl3_Task
-
 make_sl3_Task(...)
 }
 \arguments{

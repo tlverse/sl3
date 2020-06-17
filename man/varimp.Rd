@@ -4,8 +4,7 @@
 \alias{varimp}
 \title{Variable Importance Measures}
 \usage{
-varimp(fit, loss, fold_number = "validation", type = c("ratio",
-  "difference"))
+varimp(fit, loss, fold_number = "validation", type = c("ratio", "difference"))
 }
 \arguments{
 \item{fit}{Learner fitted task.}

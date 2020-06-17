@@ -4,9 +4,8 @@
 \name{Lrnr_bartMachine}
 \alias{Lrnr_bartMachine}
 \title{BART Machine Learner}
-\format{\code{\link{R6Class}} object.}
-\usage{
-Lrnr_bartMachine
+\format{
+\code{\link{R6Class}} object.
 }
 \value{
 Learner object with methods for training and prediction. See
@@ -36,7 +35,7 @@ nonterminal or not.}
 nonterminal or not.}
 \item{\code{k}}{For regression, k determines the prior probability that E(Y|X) is
 contained in the interval (y_{min}, y_{max}), based on a normal
-distribution. For example, when k=2, the prior probability is 95\%. For
+distribution. For example, when k=2, the prior probability is 95\\%. For
 classification, k determines the prior probability that E(Y|X) is between
 (-3,3). Note that a larger value of k results in more shrinkage and a more
 conservative fit.}
@@ -66,7 +65,7 @@ by all learners.
 }
 
 \seealso{
-Other Learners:
+Other Learners: 
 \code{\link{Custom_chain}},
 \code{\link{Lrnr_HarmonicReg}},
 \code{\link{Lrnr_arima}},
@@ -89,13 +88,17 @@ Other Learners:
 \code{\link{Lrnr_glmnet}},
 \code{\link{Lrnr_glm}},
 \code{\link{Lrnr_grf}},
+\code{\link{Lrnr_gts}},
 \code{\link{Lrnr_h2o_grid}},
 \code{\link{Lrnr_hal9001}},
 \code{\link{Lrnr_haldensify}},
+\code{\link{Lrnr_hts}},
 \code{\link{Lrnr_independent_binomial}},
 \code{\link{Lrnr_lstm}},
 \code{\link{Lrnr_mean}},
+\code{\link{Lrnr_multiple_ts}},
 \code{\link{Lrnr_multivariate}},
+\code{\link{Lrnr_nnet}},
 \code{\link{Lrnr_nnls}},
 \code{\link{Lrnr_optim}},
 \code{\link{Lrnr_pca}},
@@ -107,6 +110,7 @@ Other Learners:
 \code{\link{Lrnr_revere_task}},
 \code{\link{Lrnr_rpart}},
 \code{\link{Lrnr_rugarch}},
+\code{\link{Lrnr_screener_coefs}},
 \code{\link{Lrnr_screener_corP}},
 \code{\link{Lrnr_screener_corRank}},
 \code{\link{Lrnr_screener_randomForest}},
