@@ -169,17 +169,20 @@ appropriate value of lambda.</p>
 <dt><code>lambda=NULL</code></dt><dd><p>A vector of lambda values to compare</p></dd>
 <dt><code>type.measure="deviance"</code></dt><dd><p>The loss to use when selecting
 lambda. Options documented in <code><a href='https://rdrr.io/pkg/glmnet/man/cv.glmnet.html'>cv.glmnet</a></code>.</p></dd>
-<dt><code>nfolds=10</code></dt><dd><p>Number of folds to use for internal
+<dt><code>nfolds = 10</code></dt><dd><p>Number of folds to use for internal
 cross-validation.</p></dd>
-<dt><code>alpha=1</code></dt><dd><p>The elastic net parameter. 0 is Ridge Regression, 1
-is Lasso. Intermediate values are a combination. Documented in
+<dt><code>alpha = 1</code></dt><dd><p>The elastic net parameter: <code>alpha = 0</code> is
+Ridge (L2-penalized) regression, while <code>alpha = 1</code> specifies Lasso
+(L1-penalized) regression. Values in the closed unit interval specify a
+weighted combination of the two penalties. This is further documented in
 <code><a href='https://rdrr.io/pkg/glmnet/man/glmnet.html'>glmnet</a></code>.</p></dd>
-<dt><code>nlambda=100</code></dt><dd><p>The number of lambda values to compare. Comparing
+<dt><code>nlambda=100</code></dt><dd><p>The number of lambda values to fit. Comparing
 less values will speed up computation, but may decrease statistical
 performance. Documented in <code><a href='https://rdrr.io/pkg/glmnet/man/cv.glmnet.html'>cv.glmnet</a></code>.</p></dd>
-<dt><code>use_min=TRUE</code></dt><dd><p>If TRUE, use lambda=cv_fit$lambda.min for prediction,
-otherwise use lambda=cv_fit$lambda.1se.
-the distinction is clarified in <code><a href='https://rdrr.io/pkg/glmnet/man/cv.glmnet.html'>cv.glmnet</a></code>.</p></dd>
+<dt><code>use_min=TRUE</code></dt><dd><p>If <code>TRUE</code>, use
+<code>lambda = cv_fit$lambda.min</code> for prediction; otherwise, use
+<code>lambda = cv_fit$lambda.1se</code>. The distinction between these is
+clarified in <code><a href='https://rdrr.io/pkg/glmnet/man/cv.glmnet.html'>cv.glmnet</a></code>.</p></dd>
 <dt><code>...</code></dt><dd><p>Other parameters to be passed to
 <code><a href='https://rdrr.io/pkg/glmnet/man/cv.glmnet.html'>cv.glmnet</a></code> and <code><a href='https://rdrr.io/pkg/glmnet/man/glmnet.html'>glmnet</a></code>.</p></dd>
 
@@ -210,7 +213,6 @@ by all learners.</p>
 <code><a href='Lrnr_bilstm.html'>Lrnr_bilstm</a></code>,
 <code><a href='Lrnr_bound.html'>Lrnr_bound</a></code>,
 <code><a href='Lrnr_caret.html'>Lrnr_caret</a></code>,
-<code><a href='Lrnr_condensier.html'>Lrnr_condensier</a></code>,
 <code><a href='Lrnr_cv_selector.html'>Lrnr_cv_selector</a></code>,
 <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
 <code><a href='Lrnr_dbarts.html'>Lrnr_dbarts</a></code>,
@@ -244,7 +246,6 @@ by all learners.</p>
 <code><a href='Lrnr_randomForest.html'>Lrnr_randomForest</a></code>,
 <code><a href='Lrnr_ranger.html'>Lrnr_ranger</a></code>,
 <code><a href='Lrnr_revere_task.html'>Lrnr_revere_task</a></code>,
-<code><a href='Lrnr_rfcde.html'>Lrnr_rfcde</a></code>,
 <code><a href='Lrnr_rpart.html'>Lrnr_rpart</a></code>,
 <code><a href='Lrnr_rugarch.html'>Lrnr_rugarch</a></code>,
 <code><a href='Lrnr_screener_coefs.html'>Lrnr_screener_coefs</a></code>,

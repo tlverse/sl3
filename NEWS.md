@@ -1,5 +1,22 @@
 # sl3 1.3.8
 * Updates to variable importance functionality, including use of risk ratios.
+* Change `Lrnr_hal9001` and `Lrnr_glmnet` to respect observation-level IDs.
+* Removal of `Remotes` and deprecation of `Lrnr_rfcde` and `Lrnr_condensier`:
+  * Both of these learner classes provided support for conditional density
+      estimation (CDE) and were useful when support for CDE was more limited.
+      Unfortunately, both packages are un-maintained or updated only very
+      sporadically, resulting in both frequent bugs and presenting an obstacle
+      for an eventual CRAN release (both packages are GitHub-only).
+  * `Lrnr_rfcde` wrapped https://github.com/tpospisi/RFCDE, a sporadically
+      maintained tool for conditional density estimation (CDE). Support for
+      this has been removed in favor of built-in CDE tools, including, among
+      others, `Lrnr_density_semiparametric`.
+  * `Lrnr_condensier` wrapped https://github.com/osofr/condensier, which
+      provided a pooled hazards approach to CDE. This package contained an
+      implementation error (https://github.com/osofr/condensier/issues/15) and
+      was removed from CRAN. Support for this has been removed in favor of
+      `Lrnr_density_semiparametric` and `Lrnr_haldensify`, both of which more
+      reliably provide CDE support.
 
 # sl3 1.3.7
 * Sampling methods for Monte Carlo integration and related procedures.

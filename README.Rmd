@@ -137,7 +137,7 @@ head(preds)
 
 Properties supported by `sl3` learners are presented in the following table:
 
-```{r sl3-learner-properties, warning=FALSE, echo = FALSE, message = FALSE}
+```{r sl3-learner-properties, warning=FALSE, echo=FALSE, message=FALSE}
 library(sl3)
 library(kableExtra)
 
