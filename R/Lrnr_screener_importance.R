@@ -1,4 +1,4 @@
-#' Random Forest Screener
+#' Variable Importance Screener
 #'
 #' This learner provides covariate screening procedures using variable
 #' importance measures as produced by learners that support variable importance.

@@ -3,7 +3,7 @@
 \docType{class}
 \name{Lrnr_screener_importance}
 \alias{Lrnr_screener_importance}
-\title{Random Forest Screener}
+\title{Variable Importance Screener}
 \format{
 \code{\link{R6Class}} object.
 }
