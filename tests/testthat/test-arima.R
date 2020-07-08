@@ -17,7 +17,7 @@ library(origami)
 set.seed(1)
 attach(list(lag = stats::lag), name = "stats_lag_test_kludge", warn.conflicts = FALSE)
 data(bsds)
-bsds<-bsds[1:50,]
+bsds <- bsds[1:50, ]
 
 data <- as.data.table(bsds)
 data[, time := .I]
@@ -32,8 +32,8 @@ folds <- origami::make_folds(data,
 node_list <- list(outcome = outcome, time = "time")
 
 task <- sl3_Task$new(data, nodes = node_list, folds = folds)
-train_task <- training(task, fold=task$folds[[1]])
-valid_task <- validation(task, fold=task$folds[[1]])
+train_task <- training(task, fold = task$folds[[1]])
+valid_task <- validation(task, fold = task$folds[[1]])
 
 
 test_that("Lrnr_arima gives expected values with auto.arima", {
@@ -100,10 +100,10 @@ test_that("Lrnr_tsDyn with multiple different models, multivariate", {
   data <- bsds[1:50, c("temp", "atemp")]
 
   task <- sl3_Task$new(data, covariates = covars, outcome = outcome, folds = folds)
-  train_task <- training(task, fold=task$folds[[1]])
-  valid_task <- validation(task, fold=task$folds[[1]])
-  
-  
+  train_task <- training(task, fold = task$folds[[1]])
+  valid_task <- validation(task, fold = task$folds[[1]])
+
+
   tsDyn_learner <- Lrnr_tsDyn$new(learner = "lineVar", lag = 2)
   fit_1 <- tsDyn_learner$train(train_task)
   fit_1_preds <- fit_1$predict(valid_task)

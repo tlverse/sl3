@@ -67,15 +67,15 @@ Lrnr_multiple_ts <- R6Class(
     .train = function(task) {
       args <- self$params
       learners <- args$learner
-      
-      #TO DO: add task restructure in case in wide format
-      #task <- self$create_task(task)
-      
+
+      # TO DO: add task restructure in case in wide format
+      # task <- self$create_task(task)
+
       data <- task$data
-      
+
       strata_ids <- unlist(task$data[, task$nodes$id, with = FALSE])
       variable_stratify_stratas <- unique(strata_ids)
-    
+
       # fit_object is a dictionary of instantiated of Lrnr_* objects
       fit_object <- list()
       for (strata in variable_stratify_stratas) {
@@ -102,11 +102,11 @@ Lrnr_multiple_ts <- R6Class(
       learner_dict <- self$fit_object
       variable_stratify_stratas <- names(learner_dict)
 
-      #TO DO: add task restructure in case in wide format
-      #task <- self$create_task(task)
-      
+      # TO DO: add task restructure in case in wide format
+      # task <- self$create_task(task)
+
       data <- task$data
-      
+
       strata_ids <- unlist(task$data[, task$nodes$id, with = FALSE])
       variable_stratify_stratas_new <- unique(strata_ids)
 
@@ -126,7 +126,7 @@ Lrnr_multiple_ts <- R6Class(
         index_subtask <- which(strata_ids == strata)
         # construct subtask
         sub_task <- task[index_subtask]
-        # 
+        #
         # data_subset <- data[index_subtask, ]
         # sub_task <- sl3_Task$new(
         #   data = data_subset,

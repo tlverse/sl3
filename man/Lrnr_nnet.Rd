@@ -26,7 +26,7 @@ and for multinomial log-linear models.
 \item{\code{maxit}}{maximum number of iterations. Default 100.}
 \item{\code{linout}}{switch for linear output units. Default logistic output units.}
 \item{\code{...}}{Other parameters passed to
-\code{\link[nnls]{nnet}}.}
+\code{\link[nnet]{nnet}}.}
 }
 }
 

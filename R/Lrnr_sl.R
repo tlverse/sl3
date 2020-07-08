@@ -43,7 +43,7 @@ Lrnr_sl <- R6Class(
   class = TRUE,
   public = list(
     initialize = function(learners, metalearner = "default", folds = NULL,
-                          keep_extra = TRUE, ...) {
+                              keep_extra = TRUE, ...) {
       # kludge to deal with stack as learners
       if (inherits(learners, "Stack")) {
         learners <- learners$params$learners
@@ -112,7 +112,7 @@ Lrnr_sl <- R6Class(
       return(risks)
     },
     predict_fold = function(task, fold_number = "validation",
-                            pred_unique_ts = FALSE) {
+                                pred_unique_ts = FALSE) {
       fold_number <- interpret_fold_number(fold_number)
       revere_task <- task$revere_fold_task(fold_number)
       if (fold_number == "full") {

@@ -344,20 +344,25 @@ Lrnr_cv <- R6Class(
         )
       }
 
-      comb_ctrl <- list(combiners=list(index=combiner_c, fold_index=combiner_c, 
-                                       predictions = function(x)rbindlist(x,fill=TRUE)))
-      results <- cross_validate(cv_predict, folds, fold_fits, task, use_future = FALSE,
-                                .combine_control = comb_ctrl)
+      comb_ctrl <- list(combiners = list(
+        index = combiner_c, fold_index = combiner_c,
+        predictions = function(x) rbindlist(x, fill = TRUE)
+      ))
+      results <- cross_validate(cv_predict, folds, fold_fits, task,
+        use_future = FALSE,
+        .combine_control = comb_ctrl
+      )
       # Avoids issues with repeated validation samples in time-series cv
       preds <- as.data.table(results$predictions)
-      
+
       # try to throw out columns with bad predictions
-      good_preds <- unlist(preds[,lapply(.SD, function(x)all(!is.na(x)))])
-      preds <- preds[,which(good_preds), with=FALSE]
-      
+      good_preds <- unlist(preds[, lapply(.SD, function(x) all(!is.na(x)))])
+      preds <- preds[, which(good_preds), with = FALSE]
+
       predictions <- aorder(preds, order(results$index, results$fold_index))
 
-      if(ncol(predictions)==1){
+      # don't convert to vector if learner is stack, as stack won't
+      if ((ncol(predictions) == 1) && !inherits(self$params$learner, "Stack")) {
         predictions <- unlist(predictions)
       }
       return(predictions)

@@ -66,18 +66,18 @@ Lrnr_gts <- R6Class(
   class = TRUE,
   public = list(
     initialize = function(method = "comb",
-                          weights = "wls",
-                          fmethod = "ets",
-                          algorithms = "lu",
-                          covariance = "shr",
-                          keep.fitted = FALSE,
-                          keep.resid = FALSE,
-                          positive = FALSE,
-                          lambda = NULL,
-                          level = NULL,
-                          parallel = FALSE,
-                          num.cores = 1,
-                          ...) {
+                              weights = "wls",
+                              fmethod = "ets",
+                              algorithms = "lu",
+                              covariance = "shr",
+                              keep.fitted = FALSE,
+                              keep.resid = FALSE,
+                              positive = FALSE,
+                              lambda = NULL,
+                              level = NULL,
+                              parallel = FALSE,
+                              num.cores = 1,
+                              ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }
@@ -99,13 +99,13 @@ Lrnr_gts <- R6Class(
       args <- self$params
       # get horizon based on training and testing tasks
       args$h <- ts_get_pred_horizon(self$training_task, task)
-      
+
       # get predictions for each time series
       args$object <- private$.fit_object
       gts_forecasts <- call_with_args(forecast.gts, args, silent = TRUE)$bts
-      
+
       # reformat predictions to match input task
-      times <- max(self$training_task$time)+seq_len(args$h)
+      times <- max(self$training_task$time) + seq_len(args$h)
       gts_dt <-
         as.data.table(gts_forecasts)[, time := times]
       predictions <- melt(gts_dt, id.vars = "time", variable.name = "series")

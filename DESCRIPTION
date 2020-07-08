@@ -1,6 +1,6 @@
 Package: sl3
 Title: Pipelines for Machine Learning and Super Learning
-Version: 1.3.8
+Version: 1.4.1
 Authors@R: c(
     person("Jeremy", "Coyle", email = "jeremyrcoyle@gmail.com",
            role = c("aut", "cre", "cph"),
@@ -84,7 +84,8 @@ Suggests:
     gam (>= 1.15.0),
     haldensify (>= 0.0.5),
     caret,
-    mgcv
+    mgcv,
+    hts
 License: GPL-3
 URL: https://tlverse.org/sl3
 BugReports: https://github.com/tlverse/sl3/issues
@@ -94,5 +95,5 @@ LazyLoad: yes
 VignetteBuilder:
     knitr,
     R.rsp
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1.9000
 Roxygen: list(markdown = TRUE, old_usage = TRUE, r6 = FALSE)

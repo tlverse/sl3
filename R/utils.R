@@ -91,9 +91,9 @@ keep_only_fun_args <- function(Args, fun) {
 #' @keywords internal
 call_with_args <- function(fun, args, other_valid = list(), keep_all = FALSE,
                            silent = FALSE, ignore = c()) {
-  
+
   # drop ignore args
-  args <- args[!(names(args)%in%ignore)]
+  args <- args[!(names(args) %in% ignore)]
   if (!keep_all) {
     # catch arguments to be kept
     formal_args <- names(formals(fun))
@@ -182,11 +182,10 @@ reduce_fit_test <- function(learner_fit) {
     reduced_fit[component] <- NULL
     reduced$set_train(reduced_fit, task)
     reduced_predict <- NULL
-    try(
-      {
-        reduced_predict <- reduced$predict()
-      },
-      silent = TRUE
+    try({
+      reduced_predict <- reduced$predict()
+    },
+    silent = TRUE
     )
     if (!identical(original_predict, reduced_predict)) {
       reduced_fit[component] <- backup

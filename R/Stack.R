@@ -46,7 +46,7 @@ Stack <- R6Class(
       }
       # catch learner names and make unique if there's repetition
       learner_names <- names(learners)
-      if(is.null(learner_names)){
+      if (is.null(learner_names)) {
         learner_names <- sapply(learners, `[[`, "name")
       }
       if (any(duplicated(learner_names))) {
@@ -153,46 +153,49 @@ Stack <- R6Class(
       n_learners <- length(learner_names)
 
 
-      current_fit <- learner_fits[[1]]
-      current_preds <- current_fit$base_predict(task)
-      current_names <- learner_names[1]
-      n_to_pred <- safe_dim(current_preds)[1]
-
 
 
       ## Cannot use := to add columns to a null data.table (no columns),
       ## hence we have to first seed an initial column, then delete it later
       learner_preds <- data.table::data.table(
-        current_preds = current_preds
+        ..delete = rep(NA,n_to_pred)
       )
+      
 
-      if (!is.na(safe_dim(current_preds)[2]) &&
-        safe_dim(current_preds)[2] > 1) {
-        current_names <- paste0(current_names, "_", names(current_preds))
-        stopifnot(length(current_names) == safe_dim(current_preds)[2])
-      }
-
-      setnames(learner_preds, names(learner_preds), current_names)
 
       for (i in seq_along(learner_fits)) {
         current_fit <- learner_fits[[i]]
-        if (i > 1) {
-          current_preds <- rep(NA, n_to_pred)
-          try({current_preds <- current_fit$base_predict(task)})
-          
-        }
+        
+        current_preds <- rep(NA, n_to_pred)
+        try({
+          current_preds <- current_fit$base_predict(task)
+        })
+        
 
-        current_names <- learner_names[i]
-        if (!is.na(safe_dim(current_preds)[2]) &&
-          safe_dim(current_preds)[2] > 1) {
-          current_names <- paste0(learner_names[i], "_", names(current_preds))
-          stopifnot(length(current_names) == safe_dim(current_preds)[2])
-        }
-        set(learner_preds, j = current_names, value = current_preds)
+        pred_names <- private$.name_preds(learner_names[i], current_preds)
+        
+                
+        set(learner_preds, j = pred_names, value = as.data.table(current_preds))
         invisible(NULL)
       }
-
+      
+      learner_preds$..delete <- NULL
+      
       return(learner_preds)
+    },
+    .name_preds = function(learner_name, preds){
+      current_names <- learner_name
+      if (!is.na(safe_dim(preds)[2]) &&
+          safe_dim(preds)[2] > 1) {
+        prednames <- colnames(preds)
+        if(is.null(prednames)){
+          prednames <- sprintf("col_%03d",seq_len(ncol(preds)))
+        }
+        current_names <- paste0(current_names, "_", prednames)
+        stopifnot(length(current_names) == safe_dim(preds)[2])
+      }
+      
+      return(current_names)
     }
   )
 )

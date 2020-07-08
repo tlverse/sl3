@@ -41,8 +41,8 @@ Lrnr_arima <- R6Class(
   class = TRUE,
   public = list(
     initialize = function(order = NULL,
-                          seasonal = list(order = c(0L, 0L, 0L), period = NA),
-                          n.ahead = NULL, ...) {
+                              seasonal = list(order = c(0L, 0L, 0L), period = NA),
+                              n.ahead = NULL, ...) {
       super$initialize(params = args_to_list(), ...)
       if (!is.null(n.ahead)) {
         warning("n.ahead paramater is specified- obtaining an ensemble will fail. 
@@ -56,16 +56,16 @@ Lrnr_arima <- R6Class(
       params <- self$params
       ord <- params[["order"]]
       season <- params[["seasonal"]]
-      
-      #Add option to include external regressors:
-      if(length(task$X)>0){
+
+      # Add option to include external regressors:
+      if (length(task$X) > 0) {
         # Support for a single time-series
         if (is.numeric(ord)) {
           fit_object <- stats::arima(task$Y, order = ord, seasonal = season, xreg = as.matrix(task$X))
         } else {
           fit_object <- forecast::auto.arima(task$Y, xreg = as.matrix(task$X))
         }
-      }else{
+      } else {
         # Support for a single time-series
         if (is.numeric(ord)) {
           fit_object <- stats::arima(task$Y, order = ord, seasonal = season)
@@ -78,24 +78,24 @@ Lrnr_arima <- R6Class(
     .predict = function(task = NULL) {
       h <- ts_get_pred_horizon(self$training_task, task)
 
-      #Include external regressors:
-      if(length(task$X)>0){
+      # Include external regressors:
+      if (length(task$X) > 0) {
         predictions <- predict(
           private$.fit_object,
           newdata = task$Y, newxreg = as.matrix(task$X),
           type = "response", n.ahead = h
         )
-      }else{
+      } else {
         predictions <- predict(
           private$.fit_object,
           newdata = task$Y,
           type = "response", n.ahead = h
         )
       }
-        
+
       preds <- as.numeric(predictions$pred)
       requested_preds <- ts_get_requested_preds(self$training_task, task, preds)
-   
+
       return(requested_preds)
     },
     .required_packages = c("forecast")

@@ -82,25 +82,25 @@ Lrnr_tsDyn <- R6Class(
   portable = TRUE, class = TRUE,
   public = list(
     initialize = function(learner, m = 1, size = 1, lag = 1, d = 1,
-                          include = "const", type = "level", n.ahead = NULL,
-                          mL = m, mH = m, mM = NULL, thDelay = 0,
-                          common = "none", ML = seq_len(mL), MM = NULL,
-                          MH = seq_len(mH), nthresh = 1, trim = 0.15,
-                          sig = 0.05, control = list(), r = 1, model = "VAR",
-                          I = "level", beta = NULL, estim = "2OLS",
-                          exogen = NULL, LRinclude = "none",
-                          commonInter = FALSE, mTh = 1, gamma = NULL,
-                          dummyToBothRegimes = TRUE, max.iter = 2,
-                          ngridBeta = 50, ngridTh = 50,
-                          th1 = list(
-                            exact = NULL, int = c("from", "to"),
-                            around = "val"
-                          ),
-                          th2 = list(
-                            exact = NULL, int = c("from", "to"),
-                            around = "val"
-                          ),
-                          beta0 = 0, ...) {
+                              include = "const", type = "level", n.ahead = NULL,
+                              mL = m, mH = m, mM = NULL, thDelay = 0,
+                              common = "none", ML = seq_len(mL), MM = NULL,
+                              MH = seq_len(mH), nthresh = 1, trim = 0.15,
+                              sig = 0.05, control = list(), r = 1, model = "VAR",
+                              I = "level", beta = NULL, estim = "2OLS",
+                              exogen = NULL, LRinclude = "none",
+                              commonInter = FALSE, mTh = 1, gamma = NULL,
+                              dummyToBothRegimes = TRUE, max.iter = 2,
+                              ngridBeta = 50, ngridTh = 50,
+                              th1 = list(
+                                exact = NULL, int = c("from", "to"),
+                                around = "val"
+                              ),
+                              th2 = list(
+                                exact = NULL, int = c("from", "to"),
+                                around = "val"
+                              ),
+                              beta0 = 0, ...) {
       params <- args_to_list()
       super$initialize(params = params)
       if (!is.null(n.ahead)) {
@@ -122,14 +122,14 @@ Lrnr_tsDyn <- R6Class(
         envir = asNamespace("tsDyn")
       )
       model <- args$model
-      
-      if(length(task$X)>0){
-        #TO DO: add option for extrenal regressors
+
+      if (length(task$X) > 0) {
+        # TO DO: add option for extrenal regressors
         args$data <- args$x <- as.matrix(task$Y)
-      }else{
+      } else {
         args$data <- args$x <- as.matrix(task$Y)
       }
-    
+
       if (learner == "setar") {
         if (!model %in% c("TAR", "MTAR")) {
           stop(paste(
@@ -165,18 +165,17 @@ Lrnr_tsDyn <- R6Class(
       h <- ts_get_pred_horizon(self$training_task, task)
       learner <- params[["learner"]]
 
-      
+
       if (learner == "TVAR") {
         stop("No forecast for multivariate Threshold VAR model implemented.")
       }
-      
+
       predictions <- predict(private$.fit_object, n.ahead = h)
       predictions <- as.numeric(predictions)
 
       requested_preds <- ts_get_requested_preds(self$training_task, task, predictions)
-      
+
       return(requested_preds)
-      
     },
     .required_packages = c("tsDyn", "mgcv")
   )

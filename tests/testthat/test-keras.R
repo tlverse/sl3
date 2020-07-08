@@ -19,7 +19,7 @@ library(testthat)
 set.seed(1)
 attach(list(lag = stats::lag), name = "stats_lag_test_kludge", warn.conflicts = FALSE)
 data(bsds)
-bsds<-bsds[1:50,]
+bsds <- bsds[1:50, ]
 
 data <- as.data.table(bsds)
 data[, time := .I]
@@ -27,8 +27,8 @@ data[, time := .I]
 outcome <- "cnt"
 
 folds <- origami::make_folds(data,
-                             fold_fun = folds_rolling_window, window_size = 20,
-                             validation_size = 15, gap = 0, batch = 10
+  fold_fun = folds_rolling_window, window_size = 20,
+  validation_size = 15, gap = 0, batch = 10
 )
 
 node_list <- list(outcome = outcome, time = "time")
