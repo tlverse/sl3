@@ -81,11 +81,7 @@ test_that("Lrnr_multiple_ts fits each time-series separately", {
 test_that("Lrnr_multiple_ts fits multiple learners separately", {
   fit_stack <- stack$train(train_task)
   pred_stack <- fit_stack$predict(valid_task)
-<<<<<<< HEAD
 
-=======
-  
->>>>>>> 9675f936826b041cfa96b44fe8a40cceda6af630
   expect_true(ncol(pred_stack) == 2)
   expect_true(nrow(pred_stack) == 60)
 })
