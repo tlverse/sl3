@@ -56,7 +56,7 @@ multiple_ts_arima <- Lrnr_multiple_ts$new(
   learner = lrnr_arima
 )
 
-stack <- make_learner(Stack, unlist(list(lrnr_lasso,lrnr_mean,multiple_ts_arima),
+stack <- make_learner(Stack, unlist(list(lrnr_mean,multiple_ts_arima),
                                     recursive = TRUE))
 
 
@@ -79,6 +79,6 @@ test_that("Lrnr_multiple_ts fits multiple learners separately", {
   fit_stack <- stack$train(train_task)
   pred_stack <- fit_stack$predict(valid_task)
   
-  expect_true(ncol(pred_stack) == 3)
+  expect_true(ncol(pred_stack) == 2)
   expect_true(nrow(pred_stack) == 60)
 })

@@ -20,12 +20,7 @@ their estimated coefficients in a (possibly regularized) GLM.
 \describe{
 \item{\code{learner}}{An instantiated learner to use for estimating
 coefficients used in screening.}
-\item{\code{threshold = 1e-3}}{Minimum size of coefficients to be kept.
-If NULL, will select max_retain variables.}
-\item{\code{min_retain = 2}}{Minimum number of variables to be kept.}
-\item{\code{max_retain = NULL}}{Maximum number of variables to be kept.
-Default selects all with absolute coefficient above threshold.}
-\item{\code{verbose = FALSE}}{Print selected variables.}
+\item{\code{threshold = 1e-3}}{Minimum size of coefficients to be kept.}
 \item{\code{...}}{Other parameters passed to \code{learner}.}
 }
 }

@@ -47,7 +47,12 @@ Lrnr_base <- R6Class(
       if ("covariates" %in% names(self$params) &&
         !is.null(self$params[["covariates"]])) {
         task_covariates <- task$nodes$covariates
-        subset_covariates <- intersect(task_covariates, self$params$covariates)
+        params_covariates <- self$params$covariates
+        missing_covariates <- setdiff(params_covariates, task_covariates)
+        if(length(missing_covariates)>0){
+          warning(sprintf("Missing the following covariates expected by %s: %s",self$name, paste(missing_covariates,collapse=", ")))
+        }
+        subset_covariates <- intersect(task_covariates, params_covariates)
         return(task$next_in_chain(covariates = subset_covariates))
       } else {
         return(task)

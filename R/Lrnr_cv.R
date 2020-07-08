@@ -357,7 +357,8 @@ Lrnr_cv <- R6Class(
       
       predictions <- aorder(preds, order(results$index, results$fold_index))
 
-      if(ncol(predictions)==1){
+      # don't convert to vector if learner is stack, as stack won't
+      if((ncol(predictions)==1)&&!inherits(self$params$learner,"Stack")){
         predictions <- unlist(predictions)
       }
       return(predictions)
