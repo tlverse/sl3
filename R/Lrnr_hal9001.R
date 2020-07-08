@@ -126,9 +126,9 @@ Lrnr_hal9001 <- R6Class(
     },
     .predict = function(task = NULL) {
       predictions <- predict(self$fit_object, new_data = as.matrix(task$X))
-      if(!is.na(safe_dim(predictions)[2])){
+      if (!is.na(safe_dim(predictions)[2])) {
         p <- ncol(predictions)
-        colnames(predictions) <- sprintf("lambda_%0.3e",self$params$lambda)
+        colnames(predictions) <- sprintf("lambda_%0.3e", self$params$lambda)
       }
       return(predictions)
     },

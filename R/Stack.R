@@ -158,43 +158,43 @@ Stack <- R6Class(
       ## Cannot use := to add columns to a null data.table (no columns),
       ## hence we have to first seed an initial column, then delete it later
       learner_preds <- data.table::data.table(
-        ..delete = rep(NA,n_to_pred)
+        ..delete = rep(NA, n_to_pred)
       )
-      
+
 
 
       for (i in seq_along(learner_fits)) {
         current_fit <- learner_fits[[i]]
-        
+
         current_preds <- rep(NA, n_to_pred)
         try({
           current_preds <- current_fit$base_predict(task)
         })
-        
+
 
         pred_names <- private$.name_preds(learner_names[i], current_preds)
-        
-                
+
+
         set(learner_preds, j = pred_names, value = as.data.table(current_preds))
         invisible(NULL)
       }
-      
+
       learner_preds$..delete <- NULL
-      
+
       return(learner_preds)
     },
-    .name_preds = function(learner_name, preds){
+    .name_preds = function(learner_name, preds) {
       current_names <- learner_name
       if (!is.na(safe_dim(preds)[2]) &&
-          safe_dim(preds)[2] > 1) {
+        safe_dim(preds)[2] > 1) {
         prednames <- colnames(preds)
-        if(is.null(prednames)){
-          prednames <- sprintf("col_%03d",seq_len(ncol(preds)))
+        if (is.null(prednames)) {
+          prednames <- sprintf("col_%03d", seq_len(ncol(preds)))
         }
         current_names <- paste0(current_names, "_", prednames)
         stopifnot(length(current_names) == safe_dim(preds)[2])
       }
-      
+
       return(current_names)
     }
   )

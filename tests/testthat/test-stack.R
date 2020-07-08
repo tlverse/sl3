@@ -90,3 +90,13 @@ test_that("A stack mixed from learners and fits does not retrain existing fits",
   expect_equal(unlist(preds[1, 1, with = FALSE], use.names = FALSE), old_mean)
   expect_equal(unlist(preds[1, 2, with = FALSE], use.names = FALSE), new_mean)
 })
+
+# Example due to Lars van der Laan
+# check that stack can handle learners that return multiple predictions
+test_that("Stack will accept multiple predictions from a single learner", {
+  lrnr_hal <- make_learner(Lrnr_hal9001, max_degree = 1, lambda = c(5, 7, 8), yolo = F, cv_select = F)
+  hal_stack <- make_learner(Stack, mean_lrnr, lrnr_hal)
+  hs_fit <- hal_stack$train(task)
+  preds <- hs_fit$predict()
+  expect_equal(safe_dim(preds), c(task$nrow, 4))
+})
