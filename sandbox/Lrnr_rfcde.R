@@ -93,7 +93,6 @@ Lrnr_rfcde <- R6Class(
 
     .train = function(task) {
       args <- self$params
-
       outcome_type <- self$get_outcome_type(task)
 
       if (is.null(args$family)) {
@@ -110,8 +109,7 @@ Lrnr_rfcde <- R6Class(
       if (task$has_node("offset")) {
         args$offset <- task$offset
       }
-
-      fit_object <- call_with_args(RFCDE::RFCDE, args)
+      fit_object <- call_with_args(RFCDE::RFCDE, args, silent = TRUE)
       return(fit_object)
     },
     .predict = function(task = NULL) {

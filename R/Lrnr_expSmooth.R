@@ -1,7 +1,7 @@
 #' Exponential Smoothing
 #'
-#' This learner supports exponential smoothing models using the \code{forecast}
-#' package. Fitting is done with the \code{\link[forecast]{ets}} function.
+#' This learner supports exponential smoothing models using \pkg{forecast}.
+#' Fitting is done with \code{\link[forecast]{ets}}.
 #'
 #' @docType class
 #'
@@ -71,17 +71,21 @@ Lrnr_expSmooth <- R6Class(
   portable = TRUE,
   class = TRUE,
   public = list(
-    initialize = function(model = "ZZZ", damped = NULL, alpha = NULL,
-                          beta = NULL, gamma = NULL, phi = NULL, lambda = NULL,
-                          additive.only = FALSE, biasadj = FALSE,
-                          lower = c(rep(1e-04, 3), 0.8),
-                          upper = c(rep(0.9999, 3), 0.98),
-                          opt.crit = "lik", nmse = 3, bounds = "both",
-                          ic = "aic", restrict = TRUE,
-                          allow.multiplicative.trend = FALSE,
-                          use.initial.values = FALSE, freq = 1, ...) {
+    initialize = function(model = "ZZZ", damped = NULL, alpha = NULL, n.ahead = NULL,
+                              beta = NULL, gamma = NULL, phi = NULL, lambda = NULL,
+                              additive.only = FALSE, biasadj = FALSE,
+                              lower = c(rep(1e-04, 3), 0.8),
+                              upper = c(rep(0.9999, 3), 0.98),
+                              opt.crit = "lik", nmse = 3, bounds = "both",
+                              ic = "aic", restrict = TRUE,
+                              allow.multiplicative.trend = FALSE,
+                              use.initial.values = FALSE, freq = 1, ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
+      if (!is.null(n.ahead)) {
+        warning("n.ahead paramater is specified- obtaining an ensemble will fail. 
+                Please only use for obtaining individual learner forcasts.")
+      }
     }
   ),
 
@@ -90,7 +94,7 @@ Lrnr_expSmooth <- R6Class(
 
     .train = function(task) {
       args <- self$params
-      args$y <- ts(task$X, frequency = args$freq)
+      args$y <- ts(task$Y, frequency = args$freq)
       if (args$model == "ZZZ") {
         fit_object <- forecast::ets(args$y)
       } else {
@@ -100,17 +104,10 @@ Lrnr_expSmooth <- R6Class(
     },
 
     .predict = function(task = NULL) {
-      params <- self$params
-      n.ahead <- params[["n.ahead"]]
-
-      if (is.null(n.ahead)) {
-        n.ahead <- task$nrow
-      }
-      predictions <- forecast::forecast(private$.fit_object, h = n.ahead)
-      # Create output as in glm
-      predictions <- as.numeric(predictions$mean)
-      predictions <- structure(predictions, names = seq_len(n.ahead))
-      return(predictions)
+      h <- ts_get_pred_horizon(self$training_task, task)
+      raw_preds <- forecast::forecast(private$.fit_object, h = h)
+      preds <- as.numeric(raw_preds$mean)
+      requested_preds <- ts_get_requested_preds(self$training_task, task, preds)
     },
     .required_packages = c("forecast")
   )

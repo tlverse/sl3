@@ -82,15 +82,36 @@ keep_only_fun_args <- function(Args, fun) {
 #' @param args A \code{list} of function arguments to use.
 #' @param other_valid A \code{list} of function arguments names that are valid,
 #'   but not formals of \code{fun}.
-#' @param keep_all A \code{boolean} don't drop arguments, even if they aren't
+#' @param keep_all A \code{logical} don't drop arguments, even if they aren't
 #'   matched in either the function prototype or other_valid.
+#' @param silent A \code{logical} indicating whether to pass \code{message}s
+#'  when arguments not found in \code{formals} are passed to \code{fun}.
+#' @param ignore A \code{character} vector indicating which arguments should be dropped
 #'
 #' @keywords internal
-call_with_args <- function(fun, args, other_valid = list(), keep_all = FALSE) {
+call_with_args <- function(fun, args, other_valid = list(), keep_all = FALSE,
+                           silent = FALSE, ignore = c()) {
+
+  # drop ignore args
+  args <- args[!(names(args) %in% ignore)]
   if (!keep_all) {
+    # catch arguments to be kept
     formal_args <- names(formals(fun))
     all_valid <- c(formal_args, other_valid)
+
+    # find invalid arguments based on combination of formals and other_valid
+    invalid <- names(args)[which(!(names(args) %in% all_valid))]
+
+    # subset arguments to pass
     args <- args[which(names(args) %in% all_valid)]
+
+    # return warnings when dropping arguments
+    if (!silent & length(invalid) > 0) {
+      message(sprintf(
+        "Learner called function %s with unknown args: %s. These will be dropped.\nCheck the params supported by this learner.",
+        as.character(substitute(fun)), paste(invalid, collapse = ", ")
+      ))
+    }
   }
   do.call(fun, args)
 }
@@ -161,11 +182,10 @@ reduce_fit_test <- function(learner_fit) {
     reduced_fit[component] <- NULL
     reduced$set_train(reduced_fit, task)
     reduced_predict <- NULL
-    try(
-      {
-        reduced_predict <- reduced$predict()
-      },
-      silent = TRUE
+    try({
+      reduced_predict <- reduced$predict()
+    },
+    silent = TRUE
     )
     if (!identical(original_predict, reduced_predict)) {
       reduced_fit[component] <- backup

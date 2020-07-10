@@ -150,7 +150,8 @@ matched in the function prototype" />
 matched in the function prototype</p>
     </div>
 
-    <pre class="usage"><span class='fu'>call_with_args</span>(<span class='no'>fun</span>, <span class='no'>args</span>, <span class='kw'>other_valid</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(), <span class='kw'>keep_all</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>call_with_args</span>(<span class='no'>fun</span>, <span class='no'>args</span>, <span class='kw'>other_valid</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(), <span class='kw'>keep_all</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -170,8 +171,13 @@ but not formals of <code>fun</code>.</p></td>
     </tr>
     <tr>
       <th>keep_all</th>
-      <td><p>A <code>boolean</code> don't drop arguments, even if they aren't
+      <td><p>A <code>logical</code> don't drop arguments, even if they aren't
 matched in either the function prototype or other_valid.</p></td>
+    </tr>
+    <tr>
+      <th>silent</th>
+      <td><p>A <code>logical</code> indicating whether to pass <code>message</code>s
+when arguments not found in <code>formals</code> are passed to <code>fun</code>.</p></td>
     </tr>
     </table>
 

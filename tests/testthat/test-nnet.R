@@ -1,0 +1,15 @@
+context("test-nnet.R -- Lrnr_nnet")
+
+set.seed(1)
+
+data(cpp_imputed)
+covars <- c("bmi", "parity", "mage", "sexn")
+outcome <- "haz"
+task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
+
+test_that("Lrnr_nnet gives the correct output", {
+  lrnr_nnet <- Lrnr_nnet$new(linout = TRUE, size = 10, maxit = 1000)
+  fit <- lrnr_nnet$train(task)
+  preds <- fit$predict(task)
+  expect_equal(task$nrow, length(preds))
+})

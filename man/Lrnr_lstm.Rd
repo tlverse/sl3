@@ -11,11 +11,11 @@
 \code{\link{Lrnr_base}} object with methods for training and prediction
 }
 \description{
-This learner supports long short-term memory recurrent neural network
-algorithm. In order to use this learner, you will need keras Python module
-2.0.0 or higher. Note that all preprocessing, such as differencing and
-seasonal effects for time series, should be addressed before using this
-learner.
+This learner supports long short-term memory (LSTM) recurrent neural network
+algorithm. This learner uses the \code{kerasR} package, and in order to use
+it, you will need \code{keras} Python module 2.0.0 or higher. Note that all
+preprocessing, such as differencing and seasonal effects for time series,
+should be addressed before using this learner.
 }
 \section{Fields}{
 
@@ -37,6 +37,15 @@ learner.
 \item{\code{dense}}{regular, densely-connected NN layer. Default is 1.}
 
 \item{\code{dropout}}{float between 0 and 1. Fraction of the input units to drop.}
+
+\item{\code{early_stopping}}{logical indicating whether ot not to interrupt training
+when the validation loss is not decreasing anymore.}
+
+\item{\code{patience}}{number of epochs with no improvement after which training
+will be stopped, only used when early_stopping = TRUE.}
+
+\item{\code{validation_split}}{float between 0 and 1. Fraction of the data to use
+as held-out validation data, only used when early_stopping = TRUE.}
 }}
 
 \seealso{
@@ -64,12 +73,16 @@ Other Learners:
 \code{\link{Lrnr_glmnet}},
 \code{\link{Lrnr_glm}},
 \code{\link{Lrnr_grf}},
+\code{\link{Lrnr_gts}},
 \code{\link{Lrnr_h2o_grid}},
 \code{\link{Lrnr_hal9001}},
 \code{\link{Lrnr_haldensify}},
+\code{\link{Lrnr_hts}},
 \code{\link{Lrnr_independent_binomial}},
 \code{\link{Lrnr_mean}},
+\code{\link{Lrnr_multiple_ts}},
 \code{\link{Lrnr_multivariate}},
+\code{\link{Lrnr_nnet}},
 \code{\link{Lrnr_nnls}},
 \code{\link{Lrnr_optim}},
 \code{\link{Lrnr_pca}},
@@ -81,8 +94,10 @@ Other Learners:
 \code{\link{Lrnr_revere_task}},
 \code{\link{Lrnr_rpart}},
 \code{\link{Lrnr_rugarch}},
+\code{\link{Lrnr_screener_coefs}},
 \code{\link{Lrnr_screener_corP}},
 \code{\link{Lrnr_screener_corRank}},
+\code{\link{Lrnr_screener_importance}},
 \code{\link{Lrnr_screener_randomForest}},
 \code{\link{Lrnr_sl}},
 \code{\link{Lrnr_solnp_density}},

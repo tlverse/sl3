@@ -48,7 +48,9 @@ interpret_fold_number <- function(fold_number) {
 #'
 #' @importFrom R6 R6Class
 #' @importFrom assertthat assert_that is.count is.flag
-#' @importFrom origami training validation fold_index cross_validate
+#' @importFrom origami training validation fold_index cross_validate combiner_c
+#' @importFrom dplyr %>% group_by summarise_all select
+#'
 #'
 #' @export
 #'
@@ -95,11 +97,32 @@ Lrnr_cv <- R6Class(
       print(self$params$learner)
       # todo: check if fit
     },
-    predict_fold = function(task, fold_number = "validation") {
+    predict_fold = function(task, fold_number = "validation", pred_unique_ts = FALSE) {
       fold_number <- interpret_fold_number(fold_number)
       if (fold_number == "validation") {
         # return cross validation predicitons (what Lrnr_cv$predict does, so use that)
-        return(self$predict(task))
+        preds <- self$predict(task)
+
+        ### Time-series addition:
+        # Each time point gets an unique final prediction
+        if (pred_unique_ts) {
+          folds <- task$folds
+          index_val <- unlist(lapply(folds, function(fold) {
+            fold$validation_set
+          }))
+          preds_unique <- unique(index_val)
+
+          if (length(unique(index_val)) != length(index_val)) {
+            # Average over the same predictions:
+            preds <- data.table(index_val, preds)
+
+            preds <- preds %>%
+              group_by(index_val) %>%
+              summarise_all(mean) %>%
+              select(-1)
+          }
+        }
+        return(preds)
       } else if (fold_number == "full") {
         # check if we did a fold fit, and use that fit if available
         if (self$params$full_fit) {
@@ -123,11 +146,15 @@ Lrnr_cv <- R6Class(
     chain_fold = function(task, fold_number = "validation") {
       # TODO: make this respect custom_chain
 
-      # Add predictions as new columns
+      if (fold_number == "validation") {
+        return(self$chain(task))
+      }
+
       revere_task <- task$revere_fold_task(fold_number)
 
-      predictions <- self$predict_fold(revere_task, fold_number)
 
+      predictions <- self$predict_fold(revere_task, fold_number)
+      # TODO: make same fixes made to chain here
       if (nrow(revere_task$data) != nrow(predictions)) {
         # Gather validation indexes:
         val_index <- unlist(lapply(revere_task$folds, function(fold) {
@@ -310,19 +337,72 @@ Lrnr_cv <- R6Class(
         index <- validation()
         fit <- fold_index(fold_fits)[[1]]
         predictions <- fit$base_predict(validation_task)
-        list(index = index, predictions = predictions)
+        list(
+          index = index,
+          fold_index = rep(fold_index(), length(index)),
+          predictions = data.table(predictions)
+        )
       }
 
-      results <- cross_validate(cv_predict, folds, fold_fits, task, use_future = FALSE)
+      comb_ctrl <- list(combiners = list(
+        index = combiner_c, fold_index = combiner_c,
+        predictions = function(x) rbindlist(x, fill = TRUE)
+      ))
+      results <- cross_validate(cv_predict, folds, fold_fits, task,
+        use_future = FALSE,
+        .combine_control = comb_ctrl
+      )
       # Avoids issues with repeated validation samples in time-series cv
       preds <- as.data.table(results$predictions)
-      if (length(unique(results$index)) == nrow(preds)) {
-        predictions <- aorder(results$predictions, order(results$index))
+
+      # try to throw out columns with bad predictions
+      good_preds <- unlist(preds[, lapply(.SD, function(x) all(!is.na(x)))])
+      preds <- preds[, which(good_preds), with = FALSE]
+
+      predictions <- aorder(preds, order(results$index, results$fold_index))
+
+      # don't convert to vector if learner is stack, as stack won't
+      if ((ncol(predictions) == 1) && !inherits(self$params$learner, "Stack")) {
+        predictions <- unlist(predictions)
+      }
+      return(predictions)
+    },
+    .chain = function(task) {
+      task <- task$revere_fold_task("validation")
+      predictions <- self$predict(task)
+      predictions <- as.data.table(predictions)
+
+
+      # TODO: consider making this check a bit more careful
+      if (nrow(task$data) != nrow(predictions)) {
+        # TODO: this is copied from cv_risk, we should put in a function somewhere
+        get_obsdata <- function(fold, task) {
+          list(loss_dt = data.table(
+            fold_index = fold_index(),
+            index = validation(),
+            obs = validation(task$Y),
+            id = validation(task$id),
+            weights = validation(task$weights)
+          ))
+        }
+
+        loss_dt <- origami::cross_validate(get_obsdata, task$folds, task)$loss_dt
+        loss_dt <- loss_dt[order(index, fold_index)]
+
+        task_to_chain <- task$subset_task(loss_dt$index, drop_folds = TRUE)
       } else {
-        predictions <- aorder(results$predictions, seq(1, nrow(results$predictions)))
+        task_to_chain <- task
       }
 
-      return(predictions)
+      # Add predictions as new columns
+      new_col_names <- task_to_chain$add_columns(predictions, self$fit_uuid)
+      # new_covariates = union(names(predictions),task$nodes$covariates)
+      return(task_to_chain$next_in_chain(
+        covariates = names(predictions),
+        column_names = new_col_names,
+        offset = NULL,
+        folds = NULL
+      ))
     },
     .required_packages = c("origami")
   )

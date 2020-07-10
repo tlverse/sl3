@@ -91,62 +91,52 @@ cv_risk <- function(learner, loss_fun, coefs = NULL) {
     preds <- data.table(preds)
     setnames(preds, names(preds), learner$name)
   }
-  losses <- preds[, lapply(.SD, loss_fun, task$Y)]
-  # multiply each loss (L(O_i)) by the weights (w_i):
-  losses_by_id <- losses[, lapply(.SD, function(loss) {
-    task$weights *
-      loss
-  })]
-  # for clustered data, this will first evaluate the mean weighted loss
-  # within each cluster (subject) before evaluating SD
-  losses_by_id <- losses_by_id[, lapply(.SD, function(loss) {
-    mean(loss, na.rm = TRUE)
-  }), by = task$id]
-  losses_by_id[, "task" := NULL]
 
-  # n_obs for clustered data (person-time observations), should be equal to
-  # number of independent subjects
-  n_obs <- nrow(losses_by_id)
-  # evaluate risk SE for each learner incorporating: a) weights and b) using
-  # the number of independent subjects
-  se <- unlist((1 / sqrt(n_obs)) * losses_by_id[, lapply(
-    .SD, sd,
-    na.rm = TRUE
-  )])
-
-  # get fold specific risks
-  validation_means <- function(fold, losses, weight) {
-    risks <- lapply(
-      origami::validation(losses), weighted.mean,
-      origami::validation(weight)
-    )
-    return(as.data.frame(risks))
+  get_obsdata <- function(fold, task) {
+    list(loss_dt = data.table(
+      fold_index = fold_index(),
+      index = validation(),
+      obs = validation(task$Y),
+      id = validation(task$id),
+      weights = validation(task$weights)
+    ))
   }
 
-  fold_risks <- lapply(
-    task$folds,
-    validation_means,
-    losses,
-    task$weights
+  loss_dt <- origami::cross_validate(get_obsdata, task$folds, task)$loss_dt
+  loss_dt <- loss_dt[order(index, fold_index)]
+  loss_dt <- cbind(loss_dt, preds)
+  pred_cols <- colnames(preds)
+  loss_long <- melt(loss_dt,
+    measure.vars = pred_cols,
+    variable.name = "learner",
+    value.name = "pred"
   )
+  loss_long[, loss := weights * loss_fun(pred, obs)]
 
-  fold_risks <- rbindlist(fold_risks)
-  fold_mean_risk <- apply(fold_risks, 2, mean)
-  fold_min_risk <- apply(fold_risks, 2, min)
-  fold_max_risk <- apply(fold_risks, 2, max)
-  fold_SD <- apply(fold_risks, 2, sd)
+  # average loss in id-fold cluster
+  loss_by_id <- loss_long[, list(loss = mean(loss, na.rm = TRUE)),
+    by = list(learner, id, fold_index)
+  ]
 
-  learner_names <- names(preds)
+  # get learner level loss statistics
+  loss_stats <- loss_by_id[, list(
+    coefficients = NA_real_,
+    risk = mean(loss, na.rm = TRUE),
+    se = (1 / sqrt(.N)) * sd(loss)
+  ), by = list(learner)]
 
-  risk_dt <- data.table::data.table(
-    learner = learner_names,
-    coefficients = NA * 0.0,
-    mean_risk = fold_mean_risk,
-    SE_risk = se,
-    fold_SD = fold_SD,
-    fold_min_risk = fold_min_risk,
-    fold_max_risk = fold_max_risk
-  )
+  # get fold-learner level loss statistics
+  loss_fold_stats <- loss_by_id[, list(risk = mean(loss, na.rm = TRUE)), by = list(learner, fold_index)]
+  loss_stats_fold <- loss_fold_stats[, list(
+    fold_sd = sd(risk, na.rm = TRUE),
+    fold_min_risk = min(risk, na.rm = TRUE),
+    fold_max_risk = max(risk, na.rm = TRUE)
+  ),
+  by = list(learner)
+  ]
+
+  risk_dt <- loss_stats <- merge(loss_stats, loss_stats_fold, by = "learner")
+
   if (!is.null(coefs)) {
     set(risk_dt, , "coefficients", coefs)
   }

@@ -12,8 +12,8 @@ Learner object with methods for training and prediction. See
 \code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
-This learner supports exponential smoothing models using the \code{forecast}
-package. Fitting is done with the \code{\link[forecast]{ets}} function.
+This learner supports exponential smoothing models using \pkg{forecast}.
+Fitting is done with \code{\link[forecast]{ets}}.
 }
 \section{Parameters}{
 
@@ -87,13 +87,17 @@ Other Learners:
 \code{\link{Lrnr_glmnet}},
 \code{\link{Lrnr_glm}},
 \code{\link{Lrnr_grf}},
+\code{\link{Lrnr_gts}},
 \code{\link{Lrnr_h2o_grid}},
 \code{\link{Lrnr_hal9001}},
 \code{\link{Lrnr_haldensify}},
+\code{\link{Lrnr_hts}},
 \code{\link{Lrnr_independent_binomial}},
 \code{\link{Lrnr_lstm}},
 \code{\link{Lrnr_mean}},
+\code{\link{Lrnr_multiple_ts}},
 \code{\link{Lrnr_multivariate}},
+\code{\link{Lrnr_nnet}},
 \code{\link{Lrnr_nnls}},
 \code{\link{Lrnr_optim}},
 \code{\link{Lrnr_pca}},
@@ -105,8 +109,10 @@ Other Learners:
 \code{\link{Lrnr_revere_task}},
 \code{\link{Lrnr_rpart}},
 \code{\link{Lrnr_rugarch}},
+\code{\link{Lrnr_screener_coefs}},
 \code{\link{Lrnr_screener_corP}},
 \code{\link{Lrnr_screener_corRank}},
+\code{\link{Lrnr_screener_importance}},
 \code{\link{Lrnr_screener_randomForest}},
 \code{\link{Lrnr_sl}},
 \code{\link{Lrnr_solnp_density}},

@@ -40,7 +40,7 @@ test_that("Lrnr_cv_selector selects the learner that minimizes mean CV-risk", {
   # extract learner that minimizes risk
   cv_stack_fit <- fit$fit_object$cv_fit
   stack_risks <- cv_stack_fit$cv_risk(loss_squared_error)
-  cv_selector_index <- which.min(stack_risks$mean_risk)
+  cv_selector_index <- which.min(stack_risks$risk)
   fit_lrnrs <-
     fit$fit_object$cv_fit$fit_object$full_fit$fit_object$learner_fits
   cv_selector_fit <- fit_lrnrs[[cv_selector_index]]

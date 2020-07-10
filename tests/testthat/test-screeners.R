@@ -16,9 +16,16 @@ task <- sl3_Task$new(data.table::copy(cpp_imputed),
   covariates = covars,
   outcome = outcome
 )
+
+lrnr_glmnet <- make_learner(Lrnr_glmnet)
 lrnr_glm <- make_learner(Lrnr_glm)
 lrnr_mean <- make_learner(Lrnr_mean)
 lrnrs <- make_learner(Stack, lrnr_glm, lrnr_mean)
+
+# Glmnet coef screener
+glmnet_screener <- make_learner(Lrnr_screener_coefs, lrnr_glmnet)
+glmnet_screener_fit <- glmnet_screener$train(task)
+glmnet_screener_fit$fit_object$selected
 
 # Correlation P-value Screener
 screen_corP <- make_learner(Lrnr_screener_corP)

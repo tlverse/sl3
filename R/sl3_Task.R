@@ -29,18 +29,18 @@ sl3_Task <- R6Class(
   class = TRUE,
   public = list(
     initialize = function(data, covariates, outcome = NULL,
-                          outcome_type = NULL, outcome_levels = NULL,
-                          id = NULL, weights = NULL, offset = NULL,
-                          nodes = NULL, column_names = NULL, row_index = NULL,
-                          folds = NULL, flag = TRUE,
-                          drop_missing_outcome = FALSE) {
+                              outcome_type = NULL, outcome_levels = NULL,
+                              id = NULL, weights = NULL, offset = NULL, time = NULL,
+                              nodes = NULL, column_names = NULL, row_index = NULL,
+                              folds = NULL, flag = TRUE,
+                              drop_missing_outcome = FALSE) {
 
 
       # generate node list from other arguments if not explicitly specified
       if (is.null(nodes)) {
         nodes <- list(
           covariates = covariates, outcome = outcome, id = id,
-          weights = weights, offset = offset
+          weights = weights, offset = offset, time = time
         )
       }
 
@@ -50,9 +50,9 @@ sl3_Task <- R6Class(
 
       # get column names from data (and check data class in the process)
       if (inherits(data, "data.frame")) {
-        data_names <- names(data)
+        data_names <- copy(names(data))
       } else if (inherits(data, "Shared_Data")) {
-        data_names <- data$column_names
+        data_names <- copy(data$column_names)
       } else {
         stop(sprintf("Data of class %s not supported", class(data)[[1]]))
       }
@@ -199,8 +199,8 @@ sl3_Task <- R6Class(
     },
 
     next_in_chain = function(covariates = NULL, outcome = NULL, id = NULL,
-                             weights = NULL, offset = NULL, folds = NULL,
-                             column_names = NULL, new_nodes = NULL, ...) {
+                                 weights = NULL, offset = NULL, time = NULL, folds = NULL,
+                                 column_names = NULL, new_nodes = NULL, ...) {
       if (is.null(new_nodes)) {
         new_nodes <- self$nodes
 
@@ -222,6 +222,10 @@ sl3_Task <- R6Class(
 
         if (!missing(offset)) {
           new_nodes$offset <- offset
+        }
+
+        if (!missing(time)) {
+          new_nodes$time <- time
         }
       }
 
@@ -267,7 +271,6 @@ sl3_Task <- R6Class(
       )
       return(new_task)
     },
-
     subset_task = function(row_index, drop_folds = FALSE) {
       if (is.logical(row_index)) {
         row_index <- which(row_index)
@@ -277,15 +280,29 @@ sl3_Task <- R6Class(
         # index into the logical rows of this task
         row_index <- old_row_index[row_index]
       }
+
+      must_reindex <- any(duplicated(row_index))
+      if (must_reindex) {
+        new_shared_data <- private$.shared_data$clone()
+        new_shared_data$reindex(row_index)
+        row_index <- seq_along(row_index)
+      } else {
+        new_shared_data <- private$.shared_data
+      }
+
       new_task <- self$clone()
       if (drop_folds) {
         new_folds <- NULL
       } else {
-        new_folds <- subset_folds(self$folds, row_index)
+        if (must_reindex) {
+          stop("subset indicies have copies, this requires dropping folds for now")
+        }
+
+        new_folds <- subset_folds(private$.folds, row_index)
       }
 
       new_task$initialize(
-        private$.shared_data,
+        new_shared_data,
         nodes = private$.nodes,
         folds = new_folds,
         column_names = private$.column_names,
@@ -320,7 +337,7 @@ sl3_Task <- R6Class(
     },
 
     get_node = function(node_name, generator_fun = NULL,
-                        expand_factors = FALSE) {
+                            expand_factors = FALSE) {
       if (missing(generator_fun)) {
         generator_fun <- function(node_name, n) {
           stop(sprintf("Node %s not specified", node_name))
@@ -432,6 +449,15 @@ sl3_Task <- R6Class(
       }))
     },
 
+    time = function() {
+      return(self$get_node("time", function(node_var, n) {
+        if (self$has_node("id")) {
+          stop("times requested but not specified for this task")
+        } else {
+          self$row_index
+        }
+      }))
+    },
     folds = function(new_folds) {
       if (!missing(new_folds)) {
         private$.folds <- new_folds

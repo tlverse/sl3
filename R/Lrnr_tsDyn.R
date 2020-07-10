@@ -82,27 +82,31 @@ Lrnr_tsDyn <- R6Class(
   portable = TRUE, class = TRUE,
   public = list(
     initialize = function(learner, m = 1, size = 1, lag = 1, d = 1,
-                          include = "const", type = "level", n.ahead = NULL,
-                          mL = m, mH = m, mM = NULL, thDelay = 0,
-                          common = "none", ML = seq_len(mL), MM = NULL,
-                          MH = seq_len(mH), nthresh = 1, trim = 0.15,
-                          sig = 0.05, control = list(), r = 1, model = "VAR",
-                          I = "level", beta = NULL, estim = "2OLS",
-                          exogen = NULL, LRinclude = "none",
-                          commonInter = FALSE, mTh = 1, gamma = NULL,
-                          dummyToBothRegimes = TRUE, max.iter = 2,
-                          ngridBeta = 50, ngridTh = 50,
-                          th1 = list(
-                            exact = NULL, int = c("from", "to"),
-                            around = "val"
-                          ),
-                          th2 = list(
-                            exact = NULL, int = c("from", "to"),
-                            around = "val"
-                          ),
-                          beta0 = 0, ...) {
+                              include = "const", type = "level", n.ahead = NULL,
+                              mL = m, mH = m, mM = NULL, thDelay = 0,
+                              common = "none", ML = seq_len(mL), MM = NULL,
+                              MH = seq_len(mH), nthresh = 1, trim = 0.15,
+                              sig = 0.05, control = list(), r = 1, model = "VAR",
+                              I = "level", beta = NULL, estim = "2OLS",
+                              exogen = NULL, LRinclude = "none",
+                              commonInter = FALSE, mTh = 1, gamma = NULL,
+                              dummyToBothRegimes = TRUE, max.iter = 2,
+                              ngridBeta = 50, ngridTh = 50,
+                              th1 = list(
+                                exact = NULL, int = c("from", "to"),
+                                around = "val"
+                              ),
+                              th2 = list(
+                                exact = NULL, int = c("from", "to"),
+                                around = "val"
+                              ),
+                              beta0 = 0, ...) {
       params <- args_to_list()
       super$initialize(params = params)
+      if (!is.null(n.ahead)) {
+        warning("n.ahead paramater is specified- obtaining an ensemble will fail. 
+                Please only use for obtaining individual learner forcasts.")
+      }
     }
   ),
 
@@ -118,7 +122,13 @@ Lrnr_tsDyn <- R6Class(
         envir = asNamespace("tsDyn")
       )
       model <- args$model
-      args$data <- args$x <- as.matrix(task$X)
+
+      if (length(task$X) > 0) {
+        # TO DO: add option for extrenal regressors
+        args$data <- args$x <- as.matrix(task$Y)
+      } else {
+        args$data <- args$x <- as.matrix(task$Y)
+      }
 
       if (learner == "setar") {
         if (!model %in% c("TAR", "MTAR")) {
@@ -144,8 +154,7 @@ Lrnr_tsDyn <- R6Class(
       # kludge for tsDyn (https://groups.google.com/forum/#!topic/tsdyn/qgvR7mEqf64)
       attach(list(lag = stats::lag), name = "stats_lag_kludge", warn.conflicts = FALSE)
 
-
-      fit_object <- call_with_args(learner_fun, args)
+      fit_object <- call_with_args(learner_fun, args, silent = TRUE)
 
       detach("stats_lag_kludge")
       return(fit_object)
@@ -153,21 +162,20 @@ Lrnr_tsDyn <- R6Class(
 
     .predict = function(task = NULL) {
       params <- self$params
-      n.ahead <- params[["n.ahead"]]
+      h <- ts_get_pred_horizon(self$training_task, task)
       learner <- params[["learner"]]
 
-      if (is.null(n.ahead)) {
-        n.ahead <- task$nrow
-      }
+
       if (learner == "TVAR") {
         stop("No forecast for multivariate Threshold VAR model implemented.")
-      } else {
-        predictions <- predict(private$.fit_object, n.ahead = n.ahead)
-        # Create output as in glm
-        predictions <- as.numeric(predictions)
-        predictions <- structure(predictions, names = seq_len(n.ahead))
-        return(predictions)
       }
+
+      predictions <- predict(private$.fit_object, n.ahead = h)
+      predictions <- as.numeric(predictions)
+
+      requested_preds <- ts_get_requested_preds(self$training_task, task, predictions)
+
+      return(requested_preds)
     },
     .required_packages = c("tsDyn", "mgcv")
   )

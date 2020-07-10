@@ -21,9 +21,9 @@ section below.}
 Learner object with methods for training and prediction
 }
 \description{
-Generally this base learner class shouldn't be instantiated. It's intended to
-be an abstract class, although abstract classes aren't explicitly supported
-by \code{R6}. All learners support the methods and fields documented below.
+Generally this base learner class should not be instantiated. Intended to be
+an abstract class, although abstract classes are not explicitly supported
+by \pkg{R6}. All learners support the methods and fields documented below.
 For more information on a particular learner, see its help file.
 }
 \section{Common Parameters}{
@@ -192,13 +192,17 @@ Other Learners:
 \code{\link{Lrnr_glmnet}},
 \code{\link{Lrnr_glm}},
 \code{\link{Lrnr_grf}},
+\code{\link{Lrnr_gts}},
 \code{\link{Lrnr_h2o_grid}},
 \code{\link{Lrnr_hal9001}},
 \code{\link{Lrnr_haldensify}},
+\code{\link{Lrnr_hts}},
 \code{\link{Lrnr_independent_binomial}},
 \code{\link{Lrnr_lstm}},
 \code{\link{Lrnr_mean}},
+\code{\link{Lrnr_multiple_ts}},
 \code{\link{Lrnr_multivariate}},
+\code{\link{Lrnr_nnet}},
 \code{\link{Lrnr_nnls}},
 \code{\link{Lrnr_optim}},
 \code{\link{Lrnr_pca}},
@@ -210,8 +214,10 @@ Other Learners:
 \code{\link{Lrnr_revere_task}},
 \code{\link{Lrnr_rpart}},
 \code{\link{Lrnr_rugarch}},
+\code{\link{Lrnr_screener_coefs}},
 \code{\link{Lrnr_screener_corP}},
 \code{\link{Lrnr_screener_corRank}},
+\code{\link{Lrnr_screener_importance}},
 \code{\link{Lrnr_screener_randomForest}},
 \code{\link{Lrnr_sl}},
 \code{\link{Lrnr_solnp_density}},

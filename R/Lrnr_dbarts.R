@@ -106,9 +106,9 @@ Lrnr_dbarts <- R6Class(
   inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
     initialize = function(ndpost = 500, nskip = 100,
-                          ntree = 200L, verbose = FALSE, keeptrees = TRUE,
-                          serializeable = FALSE,
-                          ...) {
+                              ntree = 200L, verbose = FALSE, keeptrees = TRUE,
+                              serializeable = FALSE,
+                              ...) {
       super$initialize(params = args_to_list(), ...)
     }
   ),
@@ -134,9 +134,9 @@ Lrnr_dbarts <- R6Class(
 
       fit_object <- call_with_args(dbarts::bart, args)
 
-      if (self$params$serializeable) {
-        invisible(fit_object$fit$state)
-      }
+      # if (self$params$serializeable) {
+      #  invisible(fit_object$fit$state)
+      # }
 
       return(fit_object)
     },

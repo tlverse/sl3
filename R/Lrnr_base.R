@@ -1,8 +1,8 @@
 #' Base Class for all sl3 Learners.
 #'
-#' Generally this base learner class shouldn't be instantiated. It's intended to
-#' be an abstract class, although abstract classes aren't explicitly supported
-#' by \code{R6}. All learners support the methods and fields documented below.
+#' Generally this base learner class should not be instantiated. Intended to be
+#' an abstract class, although abstract classes are not explicitly supported
+#' by \pkg{R6}. All learners support the methods and fields documented below.
 #' For more information on a particular learner, see its help file.
 #'
 #' @docType class
@@ -25,7 +25,6 @@
 #' @importFrom BBmisc requirePackages
 #'
 #' @family Learners
-#
 Lrnr_base <- R6Class(
   classname = "Lrnr_base",
   portable = TRUE,
@@ -48,7 +47,12 @@ Lrnr_base <- R6Class(
       if ("covariates" %in% names(self$params) &&
         !is.null(self$params[["covariates"]])) {
         task_covariates <- task$nodes$covariates
-        subset_covariates <- intersect(task_covariates, self$params$covariates)
+        params_covariates <- self$params$covariates
+        missing_covariates <- setdiff(params_covariates, task_covariates)
+        if (length(missing_covariates) > 0) {
+          warning(sprintf("Missing the following covariates expected by %s: %s", self$name, paste(missing_covariates, collapse = ", ")))
+        }
+        subset_covariates <- intersect(task_covariates, params_covariates)
         return(task$next_in_chain(covariates = subset_covariates))
       } else {
         return(task)
@@ -103,9 +107,7 @@ Lrnr_base <- R6Class(
 
       # TODO: add error handling
       subsetted_task <- self$subset_covariates(task)
-
       verbose <- getOption("sl3.verbose")
-
 
       if (!is.null(trained_sublearners)) {
         fit_object <- private$.train(subsetted_task, trained_sublearners)
@@ -187,9 +189,10 @@ Lrnr_base <- R6Class(
     train = function(task) {
       delayed_fit <- delayed_learner_train(self, task)
       verbose <- getOption("sl3.verbose")
-
-
-      return(delayed_fit$compute(job_type = sl3_delayed_job_type(), progress = verbose))
+      return(delayed_fit$compute(
+        job_type = sl3_delayed_job_type(),
+        progress = verbose
+      ))
     },
 
     predict = function(task = NULL) {
@@ -219,7 +222,8 @@ Lrnr_base <- R6Class(
     predict_fold = function(task, fold_number = "full") {
       # support legacy "magic number" definitions
       fold_number <- interpret_fold_number(fold_number)
-      # for non cv learners, do full predict no matter what, but warn about it if fold_number is something else
+      # for non-CV learners, do full predict no matter what, but warn about it
+      # if fold_number is something else
       if (fold_number != "full") {
         warning(self$name, " is not a cv-aware learner, so self$predict_fold reverts to self$predict")
       }

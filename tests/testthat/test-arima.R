@@ -1,4 +1,4 @@
-context("test-arima.R -- time series methods")
+context("test-arima.R -- ARIMA and tsDyn")
 
 if (FALSE) {
   setwd("..")
@@ -12,93 +12,81 @@ if (FALSE) {
   install("sl3", build_vignettes = FALSE, dependencies = FALSE) # INSTALL W/ devtools:
 }
 
+library(origami)
+
 set.seed(1)
 attach(list(lag = stats::lag), name = "stats_lag_test_kludge", warn.conflicts = FALSE)
 data(bsds)
-covars <- c("cnt")
+bsds <- bsds[1:50, ]
+
+data <- as.data.table(bsds)
+data[, time := .I]
+
 outcome <- "cnt"
 
-task <- sl3_Task$new(bsds, covariates = covars, outcome = outcome)
+folds <- origami::make_folds(data,
+  fold_fun = folds_rolling_window, window_size = 20,
+  validation_size = 15, gap = 0, batch = 10
+)
+
+node_list <- list(outcome = outcome, time = "time")
+
+task <- sl3_Task$new(data, nodes = node_list, folds = folds)
+train_task <- training(task, fold = task$folds[[1]])
+valid_task <- validation(task, fold = task$folds[[1]])
+
 
 test_that("Lrnr_arima gives expected values with auto.arima", {
-  arima_learner <- Lrnr_arima$new(n.ahead = 1)
-  arima_fit <- arima_learner$train(task)
-  arima_preds <- arima_fit$predict(task)
+  arima_learner <- Lrnr_arima$new()
+  arima_fit <- arima_learner$train(train_task)
+  arima_preds <- arima_fit$predict(valid_task)
 
-  arima_fit_2 <- forecast::auto.arima(bsds$cnt)
+  arima_fit_2 <- forecast::auto.arima(train_task$Y)
   arima_preds_2 <- predict(arima_fit_2)
   arima_preds_2 <- as.numeric(arima_preds_2$pred)
   arima_preds_2 <- structure(arima_preds_2, names = 1)
 
-  expect_true(sum(arima_preds - arima_preds_2) < 10^(-10))
-  expect_true(all.equal(arima_preds_2, arima_preds))
+  expect_true(sum(arima_preds[1] - arima_preds_2) < 10^-1)
 })
 
 test_that("Lrnr_arima gives expected values with arima order set", {
-  arima_learner <- Lrnr_arima$new(order = c(3, 1, 6), n.ahead = 1)
-  arima_fit <- arima_learner$train(task)
-  arima_preds <- arima_fit$predict(task)
+  arima_learner <- Lrnr_arima$new(order = c(3, 1, 6))
+  arima_fit <- arima_learner$train(train_task)
+  arima_preds <- arima_fit$predict(valid_task)
 
-  arima_fit_2 <- arima(bsds$cnt, order = c(3, 1, 6))
+  arima_fit_2 <- arima(train_task$Y, order = c(3, 1, 6))
   arima_preds_2 <- predict(arima_fit_2)
   arima_preds_2 <- as.numeric(arima_preds_2$pred)
   arima_preds_2 <- structure(arima_preds_2, names = 1)
 
-  expect_true(sum(arima_preds - arima_preds_2) < 10^(-10))
-  expect_true(all.equal(arima_preds_2, arima_preds))
-})
-
-test_that("Lrnr_arima with further forecasts", {
-  arima_learner <- Lrnr_arima$new(n.ahead = 5)
-  arima_fit <- arima_learner$train(task)
-  arima_preds <- arima_fit$predict(task)
-
-  arima_fit_2 <- forecast::auto.arima(bsds$cnt)
-  arima_preds_2 <- predict(arima_fit_2, n.ahead = 5)
-  arima_preds_2 <- as.numeric(arima_preds_2$pred)
-  arima_preds_2 <- structure(arima_preds_2, names = 1:5)
-
-  expect_true(sum(arima_preds - arima_preds_2) < 10^(-10))
-  expect_true(all.equal(arima_preds_2, arima_preds))
+  expect_true(sum(arima_preds[1] - arima_preds_2) < 10^-1)
 })
 
 test_that("Lrnr_tsDyn with multiple different models, univariate", {
 
   # AR(m) model
-  tsDyn_learner <- Lrnr_tsDyn$new(learner = "linear", m = 1, n.ahead = 5)
-  fit_1 <- tsDyn_learner$train(task)
-  fit_1_preds <- fit_1$predict(task)
+  tsDyn_learner <- Lrnr_tsDyn$new(learner = "linear", m = 1)
+  fit_1 <- tsDyn_learner$train(train_task)
+  fit_1_preds <- fit_1$predict(valid_task)
 
-  fit_2 <- tsDyn::linear(bsds$cnt, m = 1)
-  fit_2_preds <- predict(fit_2, n.ahead = 5)
+  fit_2 <- tsDyn::linear(train_task$Y, m = 1)
+  fit_2_preds <- predict(fit_2)
   fit_2_preds <- as.numeric(fit_2_preds)
-  fit_2_preds <- structure(fit_2_preds, names = 1:5)
+  fit_2_preds <- structure(fit_2_preds)
 
-  expect_true(all.equal(fit_1_preds, fit_2_preds))
-
-  # self exciting threshold autoregressive model
-  tsDyn_learner <- Lrnr_tsDyn$new(learner = "setar", m = 1, model = "TAR", n.ahead = 5)
-  fit_1 <- tsDyn_learner$train(task)
-  fit_1_preds <- fit_1$predict(task)
-
-  fit_2 <- tsDyn::setar(bsds$cnt, m = 1)
-  fit_2_preds <- predict(fit_2, n.ahead = 5)
-  fit_2_preds <- as.numeric(fit_2_preds)
-  fit_2_preds <- structure(fit_2_preds, names = 1:5)
-
-  expect_true(all.equal(fit_1_preds, fit_2_preds))
+  expect_true(sum(fit_1_preds[1] - fit_2_preds) < 10^-1)
 
   # Logistic Smooth Transition autoregressive model
-  tsDyn_learner <- Lrnr_tsDyn$new(learner = "lstar", m = 1, n.ahead = 5)
-  fit_1 <- tsDyn_learner$train(task)
-  fit_1_preds <- fit_1$predict(task)
+  tsDyn_learner <- Lrnr_tsDyn$new(learner = "lstar", m = 1)
+  fit_1 <- tsDyn_learner$train(train_task)
+  fit_1_preds <- fit_1$predict(valid_task)
 
-  fit_2 <- tsDyn::lstar(bsds$cnt, m = 1)
-  fit_2_preds <- predict(fit_2, n.ahead = 5)
+  fit_2 <- tsDyn::lstar(train_task$Y, m = 1)
+  fit_2_preds <- predict(fit_2)
   fit_2_preds <- as.numeric(fit_2_preds)
-  fit_2_preds <- structure(fit_2_preds, names = 1:5)
+  fit_2_preds <- structure(fit_2_preds)
 
-  expect_true(all.equal(fit_1_preds, fit_2_preds))
+  expect_true(sum(fit_1_preds[1] - fit_2_preds) < 10^-1)
 })
 
 test_that("Lrnr_tsDyn with multiple different models, multivariate", {
@@ -109,31 +97,36 @@ test_that("Lrnr_tsDyn with multiple different models, multivariate", {
   covars <- c("temp", "atemp")
   outcome <- c("temp", "atemp")
 
-  task <- sl3_Task$new(bsds, covariates = covars, outcome = outcome)
+  data <- bsds[1:50, c("temp", "atemp")]
 
-  tsDyn_learner <- Lrnr_tsDyn$new(learner = "lineVar", lag = 2, n.ahead = 5)
-  fit_1 <- tsDyn_learner$train(task)
-  fit_1_preds <- fit_1$predict(task)
+  task <- sl3_Task$new(data, covariates = covars, outcome = outcome, folds = folds)
+  train_task <- training(task, fold = task$folds[[1]])
+  valid_task <- validation(task, fold = task$folds[[1]])
 
-  fit_2 <- tsDyn::lineVar(task$X, lag = 2)
-  fit_2_preds <- predict(fit_2, n.ahead = 5)
+
+  tsDyn_learner <- Lrnr_tsDyn$new(learner = "lineVar", lag = 2)
+  fit_1 <- tsDyn_learner$train(train_task)
+  fit_1_preds <- fit_1$predict(valid_task)
+
+  fit_2 <- tsDyn::lineVar(train_task$X, lag = 2)
+  fit_2_preds <- predict(fit_2)
   fit_2_preds <- as.numeric(fit_2_preds)
-  fit_2_preds <- structure(fit_2_preds, names = 1:5)
+  fit_2_preds <- structure(fit_2_preds)
 
-  expect_true(all.equal(fit_1_preds, fit_2_preds))
+  expect_true(sum(fit_1_preds[1] - fit_2_preds[1]) < 10^-1)
 
   # Estimation of Vector error correction model (VECM)
-  tsDyn_learner <- Lrnr_tsDyn$new(learner = "VECM", lag = 2, n.ahead = 5, type = "linear")
+  tsDyn_learner <- Lrnr_tsDyn$new(learner = "VECM", lag = 2, type = "linear")
   params <- tsDyn_learner$params
-  fit_1 <- tsDyn_learner$train(task)
-  fit_1_preds <- fit_1$predict(task)
+  fit_1 <- tsDyn_learner$train(train_task)
+  fit_1_preds <- fit_1$predict(valid_task)
 
   fit_2 <- tsDyn::VECM(task$X, lag = 2)
-  fit_2_preds <- predict(fit_2, n.ahead = 5)
+  fit_2_preds <- predict(fit_2)
   fit_2_preds <- as.numeric(fit_2_preds)
-  fit_2_preds <- structure(fit_2_preds, names = 1:5)
+  fit_2_preds <- structure(fit_2_preds)
 
-  expect_true(all.equal(fit_1_preds, fit_2_preds))
+  expect_true(sum(fit_1_preds[1] - fit_2_preds[1]) < 10^-1)
 
   # Multivariate Threshold autoregressive model (TVAR)
   # tsDyn_learner <- Lrnr_tsDyn$new(learner="TVAR", lag=2, model="TAR", thDelay=1, trim=0.1)

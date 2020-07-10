@@ -41,9 +41,13 @@ Lrnr_arima <- R6Class(
   class = TRUE,
   public = list(
     initialize = function(order = NULL,
-                          seasonal = list(order = c(0L, 0L, 0L), period = NA),
-                          n.ahead = NULL, ...) {
+                              seasonal = list(order = c(0L, 0L, 0L), period = NA),
+                              n.ahead = NULL, ...) {
       super$initialize(params = args_to_list(), ...)
+      if (!is.null(n.ahead)) {
+        warning("n.ahead paramater is specified- obtaining an ensemble will fail. 
+                Please only use for obtaining individual learner forcasts.")
+      }
     }
   ),
   private = list(
@@ -53,30 +57,46 @@ Lrnr_arima <- R6Class(
       ord <- params[["order"]]
       season <- params[["seasonal"]]
 
-      # Support for a single time-series
-      if (is.numeric(ord)) {
-        fit_object <- stats::arima(task$X, order = ord, seasonal = season)
+      # Add option to include external regressors:
+      if (length(task$X) > 0) {
+        # Support for a single time-series
+        if (is.numeric(ord)) {
+          fit_object <- stats::arima(task$Y, order = ord, seasonal = season, xreg = as.matrix(task$X))
+        } else {
+          fit_object <- forecast::auto.arima(task$Y, xreg = as.matrix(task$X))
+        }
       } else {
-        fit_object <- forecast::auto.arima(task$X)
+        # Support for a single time-series
+        if (is.numeric(ord)) {
+          fit_object <- stats::arima(task$Y, order = ord, seasonal = season)
+        } else {
+          fit_object <- forecast::auto.arima(task$Y)
+        }
       }
       return(fit_object)
     },
     .predict = function(task = NULL) {
-      params <- self$params
-      n.ahead <- params[["n.ahead"]]
+      h <- ts_get_pred_horizon(self$training_task, task)
 
-      if (is.null(n.ahead)) {
-        n.ahead <- task$nrow
+      # Include external regressors:
+      if (length(task$X) > 0) {
+        predictions <- predict(
+          private$.fit_object,
+          newdata = task$Y, newxreg = as.matrix(task$X),
+          type = "response", n.ahead = h
+        )
+      } else {
+        predictions <- predict(
+          private$.fit_object,
+          newdata = task$Y,
+          type = "response", n.ahead = h
+        )
       }
-      predictions <- predict(
-        private$.fit_object,
-        newdata = task$X,
-        type = "response", n.ahead = n.ahead
-      )
-      # Create output as in glm
-      predictions <- as.numeric(predictions$pred)
-      predictions <- structure(predictions, names = seq_len(n.ahead))
-      return(predictions)
+
+      preds <- as.numeric(predictions$pred)
+      requested_preds <- ts_get_requested_preds(self$training_task, task, preds)
+
+      return(requested_preds)
     },
     .required_packages = c("forecast")
   )

@@ -31,16 +31,15 @@ Lrnr_bilstm <- R6Class(
   classname = "Lrnr_bilstm", inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
     initialize = function(units = 4,
-                          loss = "mean_squared_error",
-                          optimizer = "adam",
-                          batch_size = 1,
-                          epochs = 500,
-                          window = 5,
-                          n.ahead = 1,
-                          activation = "linear",
-                          dense = 1,
-                          dropout = 0,
-                          ...) {
+                              loss = "mean_squared_error",
+                              optimizer = "adam",
+                              batch_size = 1,
+                              epochs = 500,
+                              window = 5,
+                              activation = "linear",
+                              dense = 1,
+                              dropout = 0,
+                              ...) {
       params <- list(
         units = units, loss = loss, optimizer = optimizer,
         batch_size = batch_size, epochs = epochs, window = window,
@@ -54,16 +53,19 @@ Lrnr_bilstm <- R6Class(
     .train = function(task) {
       args <- self$params
 
+      # Pad with NA:
+      data <- c(rep(NA, args$window), task$Y)
+
       # Convert to keras input shape:
       args$x <- t(data.frame(lapply(
-        1:(dim(task$X)[1] - args$window),
-        function(x) task$X[x:(x + args$window - 1)]
+        1:(length(data)[1] - args$window),
+        function(x) data[x:(x + args$window - 1)]
       )))
       row.names(args$x) <- NULL
 
-      args$y <- data.frame(sapply(
-        (args$window + 1):(dim(task$X)[1]),
-        function(x) task$X[x]
+      args$y <- as.numeric(sapply(
+        (args$window + 1):(length(data)[1]),
+        function(x) data[x]
       ))
       names(args$y) <- NULL
 
@@ -102,9 +104,14 @@ Lrnr_bilstm <- R6Class(
 
     .predict = function(task = NULL) {
       args <- self$params
+
+      # Pad with NA:
+      data <- c(rep(NA, args$window), task$Y)
+
+      # Convert to keras input shape:
       args$x <- t(data.frame(lapply(
-        1:(dim(task$X)[1] - args$window),
-        function(x) task$X[x:(x + args$window - 1)]
+        1:(length(data)[1] - args$window),
+        function(x) data[x:(x + args$window - 1)]
       )))
       row.names(args$x) <- NULL
       args$x <- kerasR::expand_dims(args$x, axis = 2)
