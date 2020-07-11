@@ -29,6 +29,7 @@ A vector of loss values
 }
 \description{
 Loss functions for use in evaluating learner fits.
-
+}
+\note{
 Assumes predicted probabilities are "packed" into a single vector.
 }

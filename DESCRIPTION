@@ -15,7 +15,7 @@ Authors@R: c(
            role = "aut",
            comment = c(ORCID = "0000-0002-7404-8088")),
     person("Rachael", "Phillips", email = "rachaelvphillips@berkeley.edu",
-           role = "ctb",
+           role = "aut",
            comment = c(ORCID = "0000-0002-8474-591X")),
     person("Weixin", "Cai", email = "wcai@berkeley.edu",
            role = "ctb",
@@ -33,7 +33,7 @@ Depends: R (>= 2.14.0)
 Imports:
     data.table,
     assertthat,
-    origami (>= 1.0.0),
+    origami (>= 1.0.3),
     R6,
     uuid,
     BBmisc,
@@ -42,7 +42,6 @@ Imports:
     utils,
     methods,
     ggplot2,
-    stringr,
     digest,
     imputeMissings,
     dplyr
@@ -53,6 +52,7 @@ Suggests:
     R.rsp,
     future,
     knitr,
+    stringr,
     reticulate,
     rgl,
     rJava,
