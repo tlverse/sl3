@@ -11,7 +11,6 @@ install:
   ps: Bootstrap
 
 cache:
-  #- C:\RLibrary
   - C:\RLibrary -> appveyor.yml
 
 # Adapt as necessary starting from here
@@ -27,12 +26,10 @@ environment:
     USE_RTOOLS: true
     R_REMOTES_STANDALONE: true
     R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
-    GITHUB_PAT:
-      secure: Nu6c5CmcVdYHDUVGej5ZIXGKOXVPBwqUwjrLV8d6UlbUaAtYuUhgpNuv9oLztAQQ
 
 build_script:
-  - travis-tool.sh install_github r-lib/covr r-lib/sessioninfo
   - travis-tool.sh install_deps
+  - travis-tool.sh install_github r-lib/covr r-lib/sessioninfo
 
 test_script:
   - travis-tool.sh run_tests
