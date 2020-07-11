@@ -50,10 +50,10 @@ Lrnr_screener_importance <- R6Class(
   inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
     initialize = function(learner, importance_fun, model_arg,
-                              importance_fun_control = NULL, feature_var,
-                              importance_var = NULL, min_retain = 2, max_retain = 10,
-                              threshold = NULL, format_importance_object_fun = NULL,
-                              verbose = FALSE, ...) {
+                          importance_fun_control = NULL, feature_var,
+                          importance_var = NULL, min_retain = 2, max_retain = 10,
+                          threshold = NULL, format_importance_object_fun = NULL,
+                          verbose = FALSE, ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }

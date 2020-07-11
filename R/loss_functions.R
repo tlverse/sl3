@@ -96,7 +96,7 @@ utils::globalVariables(c("id", "loss", "obs", "pred", "wts"))
 #'
 #' @param learner A trained learner object.
 #' @param loss_fun A valid loss function. See \code{\link{loss_functions}}.
-#' @param coefs A \code{numeric} vector of coefficients. 
+#' @param coefs A \code{numeric} vector of coefficients.
 #'
 #' @importFrom assertthat assert_that
 #' @importFrom data.table data.table ":=" set setnames setorderv
@@ -104,7 +104,8 @@ utils::globalVariables(c("id", "loss", "obs", "pred", "wts"))
 #' @importFrom stats sd
 cv_risk <- function(learner, loss_fun, coefs = NULL) {
   assertthat::assert_that("cv" %in% learner$properties,
-                          msg = "learner is not cv-aware")
+    msg = "learner is not cv-aware"
+  )
 
   task <- learner$training_task$revere_fold_task("validation")
   preds <- learner$predict_fold(task, "validation")
@@ -148,7 +149,8 @@ cv_risk <- function(learner, loss_fun, coefs = NULL) {
 
   # get fold-learner level loss statistics
   loss_fold_stats <- loss_by_id[, list(risk = mean(loss, na.rm = TRUE)),
-                                by = list(learner, fold_index)]
+    by = list(learner, fold_index)
+  ]
   loss_stats_fold <- loss_fold_stats[, list(
     fold_sd = stats::sd(risk, na.rm = TRUE),
     fold_min_risk = min(risk, na.rm = TRUE),
@@ -162,4 +164,3 @@ cv_risk <- function(learner, loss_fun, coefs = NULL) {
   }
   return(risk_dt)
 }
-

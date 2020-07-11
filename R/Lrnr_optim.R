@@ -44,8 +44,8 @@ Lrnr_optim <- R6Class(
   class = TRUE,
   public = list(
     initialize = function(learner_function = metalearner_linear,
-                              loss_function = loss_squared_error,
-                              intercept = FALSE, init_0 = FALSE, ...) {
+                          loss_function = loss_squared_error,
+                          intercept = FALSE, init_0 = FALSE, ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }

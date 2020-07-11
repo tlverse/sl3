@@ -49,9 +49,9 @@ Lrnr_gam <- R6Class(
   portable = TRUE, class = TRUE,
   public = list(
     initialize = function(formula = NULL,
-                              family = NULL,
-                              method = "GCV.Cp",
-                              ...) {
+                          family = NULL,
+                          method = "GCV.Cp",
+                          ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }
@@ -99,7 +99,7 @@ Lrnr_gam <- R6Class(
           colnames(X_continuous),
           function(iter) paste0("s(", iter, ")")
         )
-        if (length(X_continuous) > 0 & length(X_continuous) > 0) {
+        if (length(X_continuous) > 0 & length(X_discrete) > 0) {
           args$formula <- as.formula(paste(c(
             colnames(Y),
             paste(c(

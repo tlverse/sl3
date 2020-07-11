@@ -74,8 +74,8 @@ Lrnr_h2o_glm <- R6Class(
   portable = TRUE, class = TRUE,
   public = list(
     initialize = function(intercept = TRUE, standardize = TRUE, lambda = 0L,
-                              max_iterations = 100, ignore_const_cols = FALSE,
-                              missing_values_handling = "Skip", ...) {
+                          max_iterations = 100, ignore_const_cols = FALSE,
+                          missing_values_handling = "Skip", ...) {
       super$initialize(params = args_to_list(), ...)
     }
   ),

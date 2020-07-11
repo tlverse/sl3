@@ -56,7 +56,7 @@ test_that("Lrnr_cv on stack drops all learners that error on any fold", {
     broken_cv_fit <<- broken_cv$train(task)
   })
   cv_preds <- broken_cv_fit$predict()
-  expect_equal(dim(cv_preds),c(nrow(cpp_imputed), 1))
+  expect_equal(dim(cv_preds), c(nrow(cpp_imputed), 1))
   # expect_equal(names(cv_preds), "Lrnr_glm_TRUE")
 })
 
