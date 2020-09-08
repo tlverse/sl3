@@ -23,13 +23,14 @@
 #'   \item{\code{learner}}{An instantiated learner to use for estimating
 #'     coefficients used in screening.}
 #'   \item{\code{threshold = 1e-3}}{Minimum size of coefficients to be kept.}
+#'   \item{\code{max_retain = NULL}}{Maximum no. variables to be kept.}
 #'   \item{\code{...}}{Other parameters passed to \code{learner}.}
 #' }
 Lrnr_screener_coefs <- R6Class(
   classname = "Lrnr_screener_coefs",
   inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(learner, threshold = 1e-3, ...) {
+    initialize = function(learner, threshold = 1e-3, max_retain = NULL, ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }
@@ -55,6 +56,14 @@ Lrnr_screener_coefs <- R6Class(
       selected_coefs <- coef_names[which(abs(coefs) > self$params$threshold)]
       selected_coefs <- unique(gsub("\\..*", "", selected_coefs))
       selected <- intersect(selected_coefs, covs)
+
+      if (!is.null(self$params$max_retain) &&
+        (self$params$max_retain < length(selected))) {
+        ord_coefs <- coef_names[order(abs(coefs), decreasing = TRUE)]
+        ord_coefs <- unique(gsub("\\..*", "", ord_coefs))
+        selected <- intersect(ord_coefs, covs)[1:self$params$max_retain]
+      }
+
       fit_object <- list(selected = selected)
       return(fit_object)
     },
