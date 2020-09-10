@@ -65,3 +65,8 @@ test_that("Lrnr_caret:RF predictions match those from RF", {
   ## test equivalence of prediction from Lrnr_svm and svm::svm
   expect_equal(prd_lrnr_caret_rf, prd_caret_rf)
 })
+
+task_binaryY <- sl3_Task$new(mtcars, covariates = c(
+  "cyl", "disp", "hp", "drat", "wt", "qsec", "am", "gear", "carb"
+), outcome = "vs")
+test_learner(Lrnr_caret, task_binaryY, algorithm = "rf")

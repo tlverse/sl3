@@ -97,7 +97,6 @@ Other Learners:
 \code{\link{Lrnr_screener_coefs}},
 \code{\link{Lrnr_screener_corP}},
 \code{\link{Lrnr_screener_corRank}},
-\code{\link{Lrnr_screener_importance}},
 \code{\link{Lrnr_screener_randomForest}},
 \code{\link{Lrnr_solnp_density}},
 \code{\link{Lrnr_solnp}},
