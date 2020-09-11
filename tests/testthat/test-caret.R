@@ -65,12 +65,3 @@ test_that("Lrnr_caret:RF predictions match those from RF", {
   ## test equivalence of prediction from Lrnr_svm and svm::svm
   expect_equal(prd_lrnr_caret_rf, prd_caret_rf)
 })
-
-test_that("Lrnr_caret:RF works for binary outcome", {
-  task_binaryY <- sl3_Task$new(mtcars, covariates = c(
-    "cyl", "disp", "hp", "drat", "wt", "qsec", "am", "gear", "carb"
-    ), outcome = "vs")
-  lrnr_caret_rf <- Lrnr_caret$new(algorithm = "rf")
-  fit_obj <- lrnr_caret_rf$train(task_binaryY)
-  train_preds <- fit_obj$predict()
-})
