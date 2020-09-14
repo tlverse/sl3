@@ -106,9 +106,9 @@ Lrnr_dbarts <- R6Class(
   inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
     initialize = function(ndpost = 500, nskip = 100,
-                              ntree = 200L, verbose = FALSE, keeptrees = TRUE,
-                              serializeable = FALSE,
-                              ...) {
+                          ntree = 200L, verbose = FALSE, keeptrees = TRUE,
+                          serializeable = FALSE,
+                          ...) {
       super$initialize(params = args_to_list(), ...)
     }
   ),

@@ -62,9 +62,9 @@ Lrnr_bartMachine <- R6Class(
   inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
     initialize = function(num_trees = 50, num_burn_in = 250, verbose = F,
-                              alpha = 0.95, beta = 2, k = 2, q = 0.9, nu = 3,
-                              num_iterations_after_burn_in = 1000,
-                              prob_rule_class = 0.5, ...) {
+                          alpha = 0.95, beta = 2, k = 2, q = 0.9, nu = 3,
+                          num_iterations_after_burn_in = 1000,
+                          prob_rule_class = 0.5, ...) {
       super$initialize(params = args_to_list(), ...)
     }
   ),

@@ -70,3 +70,11 @@ test_that("Lrnr_svm predictions match those from svm", {
   ## test equivalence of prediction from Lrnr_svm and svm::svm
   expect_equal(prd_lrnr_svm, prd_svm)
 })
+
+
+task_binaryY <- sl3_Task$new(mtcars, covariates = c(
+  "cyl", "disp", "hp", "drat", "wt", "qsec",
+  "mpg", "am", "gear", "carb"
+), outcome = "vs")
+lrnr_svm <- Lrnr_svm$new()
+fit_lrnr_svm_binary_Y <- lrnr_svm$train(task_binaryY)

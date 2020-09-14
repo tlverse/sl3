@@ -76,6 +76,9 @@
     <loc>https://tlverse.org/sl3/reference/Lrnr_grf.html</loc>
   </url>
   <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_gts.html</loc>
+  </url>
+  <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_h2o_glm.html</loc>
   </url>
   <url>
@@ -88,6 +91,9 @@
     <loc>https://tlverse.org/sl3/reference/Lrnr_haldensify.html</loc>
   </url>
   <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_hts.html</loc>
+  </url>
+  <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_independent_binomial.html</loc>
   </url>
   <url>
@@ -97,7 +103,13 @@
     <loc>https://tlverse.org/sl3/reference/Lrnr_mean.html</loc>
   </url>
   <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_multiple_ts.html</loc>
+  </url>
+  <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_multivariate.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_nnet.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_nnls.html</loc>
@@ -128,6 +140,12 @@
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_rugarch.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_screener_augment.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_screener_coefs.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_screener_corP.html</loc>

@@ -83,7 +83,7 @@ convenience utility for reducing the number of covariates to be fit." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sl3</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.1</span>
       </span>
     </div>
 
@@ -163,7 +163,7 @@ convenience utility for reducing the number of covariates to be fit.</p>
 
     
 
-<dl'>
+<dl>
 <dt><code>...</code></dt><dd><p>Not currently used.</p></dd>
 
 </dl>
@@ -175,9 +175,9 @@ convenience utility for reducing the number of covariates to be fit.</p>
 
 <p>Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by <code>Lrnr_base</code>, and shared
 by all learners.</p>
-<dl'>
+<dl>
 <dt><code>covariates</code></dt><dd><p>A character vector of covariates. The learner will use this to subset the covariates for any specified task</p></dd>
-<dt><code>outcome_type</code></dt><dd><p>A <code><a href='variable_type.html'>variable_type</a></code> object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified</p></dd>
+<dt><code>outcome_type</code></dt><dd><p>A <code><a href='Variable_Type.html'>variable_type</a></code> object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified</p></dd>
 <dt><code>...</code></dt><dd><p>All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating</p></dd>
 
 </dl>
@@ -218,10 +218,11 @@ by all learners.</p>
 <code><a href='Lrnr_mean.html'>Lrnr_mean</a></code>,
 <code><a href='Lrnr_multiple_ts.html'>Lrnr_multiple_ts</a></code>,
 <code><a href='Lrnr_multivariate.html'>Lrnr_multivariate</a></code>,
+<code><a href='Lrnr_nnet.html'>Lrnr_nnet</a></code>,
 <code><a href='Lrnr_nnls.html'>Lrnr_nnls</a></code>,
 <code><a href='Lrnr_optim.html'>Lrnr_optim</a></code>,
 <code><a href='Lrnr_pca.html'>Lrnr_pca</a></code>,
-<code><a href='SuperLearner_interface.html'>Lrnr_pkg_SuperLearner</a></code>,
+<code><a href='Lrnr_pkg_SuperLearner.html'>Lrnr_pkg_SuperLearner</a></code>,
 <code><a href='Lrnr_polspline.html'>Lrnr_polspline</a></code>,
 <code><a href='Lrnr_pooled_hazards.html'>Lrnr_pooled_hazards</a></code>,
 <code><a href='Lrnr_randomForest.html'>Lrnr_randomForest</a></code>,
@@ -229,6 +230,7 @@ by all learners.</p>
 <code><a href='Lrnr_revere_task.html'>Lrnr_revere_task</a></code>,
 <code><a href='Lrnr_rpart.html'>Lrnr_rpart</a></code>,
 <code><a href='Lrnr_rugarch.html'>Lrnr_rugarch</a></code>,
+<code><a href='Lrnr_screener_augment.html'>Lrnr_screener_augment</a></code>,
 <code><a href='Lrnr_screener_coefs.html'>Lrnr_screener_coefs</a></code>,
 <code><a href='Lrnr_screener_corP.html'>Lrnr_screener_corP</a></code>,
 <code><a href='Lrnr_screener_corRank.html'>Lrnr_screener_corRank</a></code>,
@@ -242,7 +244,7 @@ by all learners.</p>
 <code><a href='Lrnr_xgboost.html'>Lrnr_xgboost</a></code>,
 <code><a href='Pipeline.html'>Pipeline</a></code>,
 <code><a href='Stack.html'>Stack</a></code>,
-<code><a href='Lrnr_h2o_glm.html'>define_h2o_X</a>()</code>,
+<code><a href='define_h2o_X.html'>define_h2o_X</a>()</code>,
 <code><a href='undocumented_learner.html'>undocumented_learner</a></code></p></div>
 
   </div>
@@ -260,7 +262,7 @@ by all learners.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
