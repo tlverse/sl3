@@ -142,6 +142,9 @@
     <loc>https://tlverse.org/sl3/reference/Lrnr_rugarch.html</loc>
   </url>
   <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_screener_augment.html</loc>
+  </url>
+  <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_screener_coefs.html</loc>
   </url>
   <url>
@@ -149,9 +152,6 @@
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_screener_corRank.html</loc>
-  </url>
-  <url>
-    <loc>https://tlverse.org/sl3/reference/Lrnr_screener_importance.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_screener_randomForest.html</loc>

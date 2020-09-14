@@ -21,6 +21,7 @@ their estimated coefficients in a (possibly regularized) GLM.
 \item{\code{learner}}{An instantiated learner to use for estimating
 coefficients used in screening.}
 \item{\code{threshold = 1e-3}}{Minimum size of coefficients to be kept.}
+\item{\code{max_retain = NULL}}{Maximum no. variables to be kept.}
 \item{\code{...}}{Other parameters passed to \code{learner}.}
 }
 }
@@ -72,9 +73,9 @@ Other Learners:
 \code{\link{Lrnr_revere_task}},
 \code{\link{Lrnr_rpart}},
 \code{\link{Lrnr_rugarch}},
+\code{\link{Lrnr_screener_augment}},
 \code{\link{Lrnr_screener_corP}},
 \code{\link{Lrnr_screener_corRank}},
-\code{\link{Lrnr_screener_importance}},
 \code{\link{Lrnr_screener_randomForest}},
 \code{\link{Lrnr_sl}},
 \code{\link{Lrnr_solnp_density}},

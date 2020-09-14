@@ -689,6 +689,94 @@ x
 
 <td style="text-align:left;">
 
+Lrnr\_condensier
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
 Lrnr\_cv
 
 </td>
@@ -1869,7 +1957,7 @@ x
 
 <td style="text-align:left;">
 
-√
+x
 
 </td>
 
@@ -2221,12 +2309,6 @@ x
 
 <td style="text-align:left;">
 
-√
-
-</td>
-
-<td style="text-align:left;">
-
 x
 
 </td>
@@ -2257,7 +2339,13 @@ x
 
 <td style="text-align:left;">
 
-√
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -3769,6 +3857,94 @@ x
 
 <td style="text-align:left;">
 
+Lrnr\_rfcde
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
 Lrnr\_rpart
 
 </td>
@@ -4964,8 +5140,8 @@ See file `LICENSE` for details.
 
 <div id="ref-breiman1996stacked">
 
-Breiman, Leo. 1996. “Stacked Regressions.” *Machine Learning* 24 (1).
-Springer: 49–64.
+Breiman, Leo. 1996. “Stacked Regressions.” *Machine Learning* 24 (1):
+49–64.
 
 </div>
 
@@ -4980,7 +5156,7 @@ Learner.” *Statistical Applications in Genetics and Molecular Biology* 6
 <div id="ref-wolpert1992stacked">
 
 Wolpert, David H. 1992. “Stacked Generalization.” *Neural Networks* 5
-(2). Elsevier: 241–59.
+(2): 241–59.
 
 </div>
 
