@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Bicycle sharing time series dataset — bsds • sl3</title>
+<title>Cross-validated Risk Estimation — cv_risk • sl3</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Bicycle sharing time series dataset — bsds" />
-<meta property="og:description" content="Bicycle sharing time series dataset from the UCI Machine Learning Repository." />
+<meta property="og:title" content="Cross-validated Risk Estimation — cv_risk" />
+<meta property="og:description" content="Estimates the cross-validated risk for a given learner and loss function." />
 
 
 
@@ -139,43 +139,35 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Bicycle sharing time series dataset</h1>
-    <small class="dont-index">Source: <a href='https://github.com/tlverse/sl3/blob/master/R/sl3-package.R'><code>R/sl3-package.R</code></a></small>
-    <div class="hidden name"><code>bsds.Rd</code></div>
+    <h1>Cross-validated Risk Estimation</h1>
+    <small class="dont-index">Source: <a href='https://github.com/tlverse/sl3/blob/master/R/loss_functions.R'><code>R/loss_functions.R</code></a></small>
+    <div class="hidden name"><code>cv_risk.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Bicycle sharing time series dataset from the UCI Machine Learning Repository.</p>
+    <p>Estimates the cross-validated risk for a given learner and loss function.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>bsds</span>)</pre>
+    <pre class="usage"><span class='fu'>cv_risk</span>(<span class='kw'>learner</span>, <span class='kw'>loss_fun</span>, coefs = <span class='kw'>NULL</span>)</pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>learner</th>
+      <td><p>A trained learner object.</p></td>
+    </tr>
+    <tr>
+      <th>loss_fun</th>
+      <td><p>A valid loss function. See <code><a href='loss_functions.html'>loss_functions</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>coefs</th>
+      <td><p>A <code>numeric</code> vector of coefficients.</p></td>
+    </tr>
+    </table>
 
 
-    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
-
-    <p><a href='https://archive.ics.uci.edu/ml/datasets/bike+sharing+dataset'>https://archive.ics.uci.edu/ml/datasets/bike+sharing+dataset</a></p>
-<p>Fanaee-T, Hadi, and Gama, Joao, 'Event labeling combining ensemble detectors
-and background knowledge', Progress in Artificial Intelligence (2013): pp.
-1-15, Springer Berlin Heidelberg</p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>bsds</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='kw'>bsds</span>)
-</div><div class='output co'>#&gt;   instant     dteday season yr mnth holiday weekday workingday weathersit
-#&gt; 1       1 2011-01-01      1  0    1       0       6          0          2
-#&gt; 2       2 2011-01-02      1  0    1       0       0          0          2
-#&gt; 3       3 2011-01-03      1  0    1       0       1          1          1
-#&gt; 4       4 2011-01-04      1  0    1       0       2          1          1
-#&gt; 5       5 2011-01-05      1  0    1       0       3          1          1
-#&gt; 6       6 2011-01-06      1  0    1       0       4          1          1
-#&gt;       temp    atemp      hum windspeed casual registered  cnt
-#&gt; 1 0.344167 0.363625 0.805833 0.1604460    331        654  985
-#&gt; 2 0.363478 0.353739 0.696087 0.2485390    131        670  801
-#&gt; 3 0.196364 0.189405 0.437273 0.2483090    120       1229 1349
-#&gt; 4 0.200000 0.212122 0.590435 0.1602960    108       1454 1562
-#&gt; 5 0.226957 0.229270 0.436957 0.1869000     82       1518 1600
-#&gt; 6 0.204348 0.233209 0.518261 0.0895652     88       1518 1606</div><div class='input'><span class='co'>#</span>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

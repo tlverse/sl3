@@ -21,7 +21,8 @@ v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org
 
 **Authors:** [Jeremy Coyle](https://github.com/jeremyrcoyle), [Nima
 Hejazi](https://nimahejazi.org), [Ivana
-Malenica](https://github.com/podTockom), [Oleg
+Malenica](https://github.com/podTockom), [Rachael
+Phillips](https://github.com/rachaelvphillips), and [Oleg
 Sofrygin](https://github.com/osofr)
 
 -----
@@ -73,7 +74,7 @@ may be installed by including the appropriate major version tag. For
 example,
 
 ``` r
-remotes::install_github("tlverse/sl3@v1.3.5")
+remotes::install_github("tlverse/sl3@v1.3.7")
 ```
 
 To contribute, check out the `devel` branch and consider submitting a
@@ -5106,7 +5107,7 @@ prior to submitting a pull request.
 After using the `sl3` R package, please cite the following:
 
 ``` 
-    @manual{coyle2020sl3,
+ @manual{coyle2020sl3,
       author = {Coyle, Jeremy R and Hejazi, Nima S and Malenica, Ivana and
         Sofrygin, Oleg},
       title = {{sl3}: Modern Pipelines for Machine Learning and {Super
@@ -5135,7 +5136,7 @@ See file `LICENSE` for details.
 
 ## References
 
-<div id="refs" class="references hanging-indent">
+<div id="refs" class="references">
 
 <div id="ref-breiman1996stacked">
 
