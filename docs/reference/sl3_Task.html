@@ -84,7 +84,7 @@ including which variables are to be used as covariates and outcomes." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sl3</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.1</span>
       </span>
     </div>
 
@@ -152,7 +152,7 @@ data. Contains metadata about the particular machine learning problem,
 including which variables are to be used as covariates and outcomes.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>make_sl3_Task</span>(<span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>make_sl3_Task</span>(<span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -178,15 +178,15 @@ Constructor below.</p></td>
 <p><code>make_sl3_Task(data, covariates, outcome = NULL, outcome_type = NULL, outcome_levels = NULL,
                       id = NULL, weights = NULL, offset = NULL, nodes = NULL, column_names = NULL,
                       row_index = NULL, folds = NULL)</code></p>
-<dl'>
+<dl>
 <dt><code>data</code></dt><dd><p>A <code>data.frame</code> or <code>data.table</code> containing the underlying data</p></dd>
 <dt><code>covariates</code></dt><dd><p>A character vector of variable names that define the set of covariates</p></dd>
-<dt><code>outcome</code></dt><dd><p>A character vector of variable names that define the set of outcomes. Usually just one variable, although some learners support multivariate outcomes. Use <code><a href='list_learners.html'>sl3_list_learners("multivariate_outcome")</a></code> to find such learners.</p></dd>
-<dt><code>outcome_type</code></dt><dd><p>A <code>Variable_type</code> object that defines the variable type of the outcome. Alternatively, a character specifying such a type. See <code><a href='variable_type.html'>variable_type</a></code> for details on defining variable types.</p></dd>
-<dt><code>outcome_levels</code></dt><dd><p>A vector of levels expected for the outcome variable. If <code>outcome_type</code> is a character, this will be used to construct an appropriate <code><a href='variable_type.html'>variable_type</a></code> object.</p></dd>
-<dt><code>id</code></dt><dd><p>A character indicating which variable (if any) to be used as an observation "id", for learners that support clustered observations. Use <code><a href='list_learners.html'>sl3_list_learners("id")</a></code> to find such learners.</p></dd>
-<dt><code>weights</code></dt><dd><p>A character indicating which variable (if any) to be used as observation weights, for learners that support that. Use <code><a href='list_learners.html'>sl3_list_learners("weights")</a></code> to find such learners.</p></dd>
-<dt><code>offset</code></dt><dd><p>A character indicating which variable (if any) to be used as an observation "id", for methods that support clustered observations.  Use <code><a href='list_learners.html'>sl3_list_learners("offset")</a></code> to find such learners.</p></dd>
+<dt><code>outcome</code></dt><dd><p>A character vector of variable names that define the set of outcomes. Usually just one variable, although some learners support multivariate outcomes. Use <code><a href='sl3_list_properties.html'>sl3_list_learners("multivariate_outcome")</a></code> to find such learners.</p></dd>
+<dt><code>outcome_type</code></dt><dd><p>A <code>Variable_type</code> object that defines the variable type of the outcome. Alternatively, a character specifying such a type. See <code><a href='Variable_Type.html'>variable_type</a></code> for details on defining variable types.</p></dd>
+<dt><code>outcome_levels</code></dt><dd><p>A vector of levels expected for the outcome variable. If <code>outcome_type</code> is a character, this will be used to construct an appropriate <code><a href='Variable_Type.html'>variable_type</a></code> object.</p></dd>
+<dt><code>id</code></dt><dd><p>A character indicating which variable (if any) to be used as an observation "id", for learners that support clustered observations. Use <code><a href='sl3_list_properties.html'>sl3_list_learners("id")</a></code> to find such learners.</p></dd>
+<dt><code>weights</code></dt><dd><p>A character indicating which variable (if any) to be used as observation weights, for learners that support that. Use <code><a href='sl3_list_properties.html'>sl3_list_learners("weights")</a></code> to find such learners.</p></dd>
+<dt><code>offset</code></dt><dd><p>A character indicating which variable (if any) to be used as an observation "id", for methods that support clustered observations.  Use <code><a href='sl3_list_properties.html'>sl3_list_learners("offset")</a></code> to find such learners.</p></dd>
 <dt><code>nodes</code></dt><dd><p>A list of character vectors as nodes. This will override the <code>covariates</code>, <code>outcome</code>, <code>id</code>, <code>weights</code>, and <code>offset</code> arguments if specified, and is an alternative way to specify those arguments.</p></dd>
 <dt><code>column_names</code></dt><dd><p>A named list of characters that maps between column names in <code>data</code> and how those variables are referenced in <code>sl3_Task</code> functions.</p></dd>
 
@@ -197,7 +197,7 @@ Constructor below.</p></td>
     
 
 
-<dl'>
+<dl>
 <dt><code>add_interactions(interactions, warn_on_existing = TRUE)</code></dt><dd><p>Adds interaction terms to task, returns a task with interaction terms added to covariate list.<ul>
 <li><p><code>interactions</code>: A list of lists, where each sublist describes one interaction term, listing the variables that comprise it</p></li>
 <li><p><code>warn_on_existing</code>: If TRUE, produce a warning if there is already a column with a name matching this interaction term</p></li>
@@ -248,7 +248,7 @@ Most of the parameter values are passed to the <code>sl3_Task</code> constructor
 
     
 
-<dl'>
+<dl>
 <dt><code>raw_data</code></dt><dd><p>Internal representation of the data</p></dd>
 <dt><code>data</code></dt><dd><p>Formatted task data</p></dd>
 <dt><code>nrow</code></dt><dd><p>Number of observations</p></dd>
@@ -262,7 +262,7 @@ Most of the parameter values are passed to the <code>sl3_Task</code> constructor
 <dt><code>folds</code></dt><dd><p>An origami fold object, as generated by <code><a href='http://tlverse.org/origami/reference/make_folds.html'>make_folds</a></code>, specifying a cross-validation scheme</p></dd>
 <dt><code>uuid</code></dt><dd><p>A unique identifier of this task</p></dd>
 <dt><code>column_names</code></dt><dd><p>The named list mapping variable names to internal column names</p></dd>
-<dt><code>outcome_type</code></dt><dd><p>A <code><a href='variable_type.html'>variable_type</a></code> object specifying the type of the outcome</p></dd>
+<dt><code>outcome_type</code></dt><dd><p>A <code><a href='Variable_Type.html'>variable_type</a></code> object specifying the type of the outcome</p></dd>
 
 </dl>
 
@@ -282,7 +282,7 @@ Most of the parameter values are passed to the <code>sl3_Task</code> constructor
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

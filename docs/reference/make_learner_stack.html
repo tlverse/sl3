@@ -83,7 +83,7 @@ The resultant stack of learners may then be used as normal." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sl3</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.1</span>
       </span>
     </div>
 
@@ -150,7 +150,7 @@ The resultant stack of learners may then be used as normal." />
 The resultant stack of learners may then be used as normal.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>make_learner_stack</span>(<span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>make_learner_stack</span>(<span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -170,19 +170,20 @@ all of the standard methods associated with such objects.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># constructing learners with default settings</span>
-<span class='no'>sl_stack_easy</span> <span class='kw'>&lt;-</span> <span class='fu'>make_learner_stack</span>(
+<span class='kw'>sl_stack_easy</span> <span class='op'>&lt;-</span> <span class='fu'>make_learner_stack</span>(
   <span class='st'>"Lrnr_mean"</span>, <span class='st'>"Lrnr_glm_fast"</span>,
   <span class='st'>"Lrnr_xgboost"</span>
 )
 
 <span class='co'># constructing learners with arguments passed in</span>
-<span class='no'>sl_stack</span> <span class='kw'>&lt;-</span> <span class='fu'>make_learner_stack</span>(
+<span class='kw'>sl_stack</span> <span class='op'>&lt;-</span> <span class='fu'>make_learner_stack</span>(
   <span class='st'>"Lrnr_mean"</span>,
   <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"Lrnr_hal9001"</span>,
-    <span class='kw'>n_folds</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-    <span class='kw'>use_min</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+    n_folds = <span class='fl'>10</span>,
+    use_min = <span class='fl'>TRUE</span>
   )
-)</div></pre>
+)
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -198,7 +199,7 @@ all of the standard methods associated with such objects.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
