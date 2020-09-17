@@ -19,14 +19,13 @@ function.
 \section{Parameters}{
 
 \describe{
-\item{\code{ntree=100}}{Number of trees in forest}
-\item{\code{keep.forest=TRUE}}{If \code{TRUE}, forest is stored, which is
+\item{\code{ntree = 500}}{Number of trees to grow. This should not be set
+to too small a number, to ensure that every input row gets predicted at
+least a few times.}
+\item{\code{keep.forest = TRUE}}{If \code{TRUE}, forest is stored, which is
 required for prediction.}
-\item{\code{nodesize=5}}{Minimum number of observations in terminal (leaf)
+\item{\code{nodesize = 5}}{Minimum number of observations in terminal
 nodes.}
-\item{\code{maxnodes=NULL}}{Maximum number of terminal (leaf) nodes in each
-tree.}
-\item{\code{importance=FALSE}}{Store variable importance information.}
 \item{\code{...}}{Other parameters passed to
 \code{\link[randomForest]{randomForest}}.}
 }
@@ -80,9 +79,8 @@ Other Learners:
 \code{\link{Lrnr_rugarch}},
 \code{\link{Lrnr_screener_augment}},
 \code{\link{Lrnr_screener_coefs}},
-\code{\link{Lrnr_screener_corP}},
-\code{\link{Lrnr_screener_corRank}},
-\code{\link{Lrnr_screener_randomForest}},
+\code{\link{Lrnr_screener_correlation}},
+\code{\link{Lrnr_screener_importance}},
 \code{\link{Lrnr_sl}},
 \code{\link{Lrnr_solnp_density}},
 \code{\link{Lrnr_solnp}},

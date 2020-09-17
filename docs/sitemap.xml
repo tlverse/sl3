@@ -148,13 +148,10 @@
     <loc>https://tlverse.org/sl3/reference/Lrnr_screener_coefs.html</loc>
   </url>
   <url>
-    <loc>https://tlverse.org/sl3/reference/Lrnr_screener_corP.html</loc>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_screener_correlation.html</loc>
   </url>
   <url>
-    <loc>https://tlverse.org/sl3/reference/Lrnr_screener_corRank.html</loc>
-  </url>
-  <url>
-    <loc>https://tlverse.org/sl3/reference/Lrnr_screener_randomForest.html</loc>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_screener_importance.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_sl.html</loc>
@@ -230,6 +227,9 @@
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/factors_to_indicators.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/reference/importance.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/inverse_sample.html</loc>
