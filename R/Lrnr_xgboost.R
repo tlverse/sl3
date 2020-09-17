@@ -37,18 +37,34 @@ Lrnr_xgboost <- R6Class(
     initialize = function(nrounds = 20, nthread = 1, ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
+    },
+    importance = function(...) {
+      self$assert_trained()
+
+      # initiate argument list for xgboost::xgb.importance
+      args <- list(...)
+      args$model <- self$fit_object
+
+      # calculate importance metrics, already sorted by decreasing importance
+      importance_result <- call_with_args(xgboost::xgb.importance, args)
+      rownames(importance_result) <- importance_result[["Feature"]]
+
+      return(importance_result)
     }
   ),
 
   private = list(
     .properties = c(
       "continuous", "binomial", "categorical", "weights",
-      "offset"
+      "offset", "importance"
     ),
 
     .train = function(task) {
-      verbose <- getOption("sl3.verbose")
       args <- self$params
+
+      verbose <- args$verbose
+      if (is.null(verbose)) verbose <- getOption("sl3.verbose")
+
       outcome_type <- self$get_outcome_type(task)
 
       Xmat <- as.matrix(task$X)
@@ -78,7 +94,6 @@ Lrnr_xgboost <- R6Class(
         link_fun <- NULL
       }
       args$verbose <- as.integer(verbose)
-      args$print_every_n <- 1000
       args$watchlist <- list(train = args$data)
 
       if (is.null(args$objective)) {

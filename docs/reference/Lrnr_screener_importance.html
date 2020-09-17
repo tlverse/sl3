@@ -40,8 +40,9 @@
 
 
 <meta property="og:title" content="Variable Importance Screener — Lrnr_screener_importance" />
-<meta property="og:description" content="This learner provides covariate screening procedures using variable
-importance measures as produced by learners that support variable importance." />
+<meta property="og:description" content="This learner provides screening of covariates based on the variables sorted
+in decreasing order of importance, where the importance metric is based on
+a learner that supports importance." />
 
 
 
@@ -146,8 +147,9 @@ importance measures as produced by learners that support variable importance." /
     </div>
 
     <div class="ref-description">
-    <p>This learner provides covariate screening procedures using variable
-importance measures as produced by learners that support variable importance.</p>
+    <p>This learner provides screening of covariates based on the variables sorted
+in decreasing order of importance, where the importance metric is based on
+a learner that supports importance.</p>
     </div>
 
 
@@ -163,30 +165,13 @@ importance measures as produced by learners that support variable importance.</p
 
     
 
-<dl'>
-<dt><code>learner</code></dt><dd><p>An instantiated learner to use for estimating
-variable importance.</p></dd>
-<dt><code>importance_fun</code></dt><dd><p>Name of the variable importance function.</p></dd>
-<dt><code>model_arg</code></dt><dd><p>Name of the argument that defines the fitted model.</p></dd>
-<dt><code>importance_fun_control</code></dt><dd><p>List of additional arguments to be
-passed to importance_fun, in addition to the fitted model.</p></dd>
-<dt><code>feature_var</code></dt><dd><p>Name of importance object column that corresponds
-to the covariates</p></dd>
-<dt><code>importance_var</code></dt><dd><p>Name of importance object column that corresponds
-to the importance metric of interest. This variable will be used to sort
-and screen variables. If NULL, importance object is assumed to be sorted,
-either by default or in user-supplied <code>format_importance_object_fun</code>
-function.</p></dd>
-<dt><code>min_retain = 2</code></dt><dd><p>Minimum number of variables to be kept.</p></dd>
-<dt><code>max_retain = 10</code></dt><dd><p>Maximum number of variables to be kept.</p></dd>
-<dt><code>threshold = NULL</code></dt><dd><p>Minimum size of importance_var to be kept.
-If NULL, will select max_retain variables.</p></dd>
-<dt><code>format_importance_object_fun</code></dt><dd><p>Function to customize
-formatting of importance object. This function must return a
-<code>data.table</code> or <code>data.frame</code>, number of rows must be greater than
-max_retain, and <code>feature_var</code> value as a column name.</p></dd>
-<dt><code>verbose = FALSE</code></dt><dd><p>Print selected variables.</p></dd>
-<dt><code>...</code></dt><dd><p>Other parameters passed to <code>learner</code>.</p></dd>
+<dl>
+<dt><code>learner</code></dt><dd><p>An instantiated learner that supports variable
+importance.</p></dd>
+<dt><code>num_screen = 5</code></dt><dd><p>The top number of most important variables
+to retain.</p></dd>
+<dt><code>...</code></dt><dd><p>Other parameters passed to <code>learner</code>'s
+<code>importance</code> function.</p></dd>
 
 </dl>
 
@@ -230,7 +215,7 @@ max_retain, and <code>feature_var</code> value as a column name.</p></dd>
 <code><a href='Lrnr_nnls.html'>Lrnr_nnls</a></code>,
 <code><a href='Lrnr_optim.html'>Lrnr_optim</a></code>,
 <code><a href='Lrnr_pca.html'>Lrnr_pca</a></code>,
-<code><a href='SuperLearner_interface.html'>Lrnr_pkg_SuperLearner</a></code>,
+<code><a href='Lrnr_pkg_SuperLearner.html'>Lrnr_pkg_SuperLearner</a></code>,
 <code><a href='Lrnr_polspline.html'>Lrnr_polspline</a></code>,
 <code><a href='Lrnr_pooled_hazards.html'>Lrnr_pooled_hazards</a></code>,
 <code><a href='Lrnr_randomForest.html'>Lrnr_randomForest</a></code>,
@@ -238,10 +223,9 @@ max_retain, and <code>feature_var</code> value as a column name.</p></dd>
 <code><a href='Lrnr_revere_task.html'>Lrnr_revere_task</a></code>,
 <code><a href='Lrnr_rpart.html'>Lrnr_rpart</a></code>,
 <code><a href='Lrnr_rugarch.html'>Lrnr_rugarch</a></code>,
+<code><a href='Lrnr_screener_augment.html'>Lrnr_screener_augment</a></code>,
 <code><a href='Lrnr_screener_coefs.html'>Lrnr_screener_coefs</a></code>,
-<code><a href='Lrnr_screener_corP.html'>Lrnr_screener_corP</a></code>,
-<code><a href='Lrnr_screener_corRank.html'>Lrnr_screener_corRank</a></code>,
-<code><a href='Lrnr_screener_randomForest.html'>Lrnr_screener_randomForest</a></code>,
+<code><a href='Lrnr_screener_correlation.html'>Lrnr_screener_correlation</a></code>,
 <code><a href='Lrnr_sl.html'>Lrnr_sl</a></code>,
 <code><a href='Lrnr_solnp_density.html'>Lrnr_solnp_density</a></code>,
 <code><a href='Lrnr_solnp.html'>Lrnr_solnp</a></code>,
@@ -252,7 +236,7 @@ max_retain, and <code>feature_var</code> value as a column name.</p></dd>
 <code><a href='Lrnr_xgboost.html'>Lrnr_xgboost</a></code>,
 <code><a href='Pipeline.html'>Pipeline</a></code>,
 <code><a href='Stack.html'>Stack</a></code>,
-<code><a href='Lrnr_h2o_glm.html'>define_h2o_X</a>()</code>,
+<code><a href='define_h2o_X.html'>define_h2o_X</a>()</code>,
 <code><a href='undocumented_learner.html'>undocumented_learner</a></code></p></div>
 
   </div>
@@ -270,7 +254,7 @@ max_retain, and <code>feature_var</code> value as a column name.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

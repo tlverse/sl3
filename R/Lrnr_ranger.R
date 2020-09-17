@@ -40,11 +40,30 @@ Lrnr_ranger <- R6Class(
                           ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
+    },
+    importance = function(...) {
+      if (self$fit_object$importance.mode == "none") {
+        stop(
+          "This learner was instantiated with default argument, ",
+          "importance=none. Modify this argument to measure importance."
+        )
+      }
+      self$assert_trained()
+
+      # initiate argument list for ranger::importance
+      args <- list(...)
+      args$x <- self$fit_object
+
+      # calculate importance metrics
+      importance_result <- call_with_args(ranger::importance, args)
+
+      # sort according to decreasing importance
+      return(importance_result[order(importance_result, decreasing = TRUE)])
     }
   ),
 
   private = list(
-    .properties = c("continuous", "binomial", "categorical"),
+    .properties = c("continuous", "binomial", "categorical", "importance"),
 
     .train = function(task) {
       args <- self$params
