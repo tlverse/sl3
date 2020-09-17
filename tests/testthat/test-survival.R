@@ -1,4 +1,5 @@
 context("test-survival.R -- Pooled hazards model")
+options(sl3.verbose = FALSE)
 library(data.table)
 library(origami)
 

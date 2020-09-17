@@ -29,7 +29,7 @@ Wnodes <- grep("^W", names(data), value = TRUE)
 Anode <- "A"
 task <- sl3_Task$new(data, covariates = Wnodes, outcome = Anode)
 learners <- list(
-  xgb = make_learner(Lrnr_xgboost),
+  xgb = make_learner(Lrnr_xgboost, verbose = 0),
   glm_fast = make_learner(Lrnr_glm_fast),
   mean = make_learner(Lrnr_mean)
 )

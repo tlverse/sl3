@@ -1,6 +1,6 @@
 context("test_multivariate.R -- Basic Multivariate functionality")
 
-options(sl3.verbose = TRUE)
+options(sl3.verbose = FALSE)
 library(origami)
 library(SuperLearner)
 

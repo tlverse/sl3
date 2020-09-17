@@ -1,5 +1,6 @@
 context("test-multinomial_learners.R -- multinomial learners in Super Learner")
 library(origami)
+options(sl3.verbose = FALSE)
 
 g0 <- function(W) {
   W1 <- W[, 1]

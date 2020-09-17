@@ -9,6 +9,7 @@
 #'
 #' @importFrom R6 R6Class
 #' @importFrom stats predict gaussian binomial
+#' @importFrom utils getS3method
 #'
 #' @export
 #'
@@ -93,7 +94,7 @@ Lrnr_earth <- R6Class(
       }
       args$glm <- glm
 
-      fit_object <- call_with_args(getS3method("earth", "default"), args)
+      fit_object <- call_with_args(utils::getS3method("earth", "default"), args)
       return(fit_object)
     },
 

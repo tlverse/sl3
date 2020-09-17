@@ -1,4 +1,5 @@
 context("test-make_stack.R -- Convenience function for building stacks.")
+options(sl3.verbose = FALSE)
 
 # example data and sl3 task
 data(cpp_imputed)
@@ -24,9 +25,11 @@ sl_stack_manual <- make_learner(Stack, list(sl_mean, sl_glm_fast, sl_xgboost))
 # train both models and compare prediction results
 # NOTE: the actual R6 objects produced contain trivial differences (e.g., uuid)
 #       that make reduce testing exactness to a comparison of predictions.
+set.seed(715)
 sl_stack_easy_fit <- sl_stack_easy$train(task)
 sl_stack_easy_fit_pred <- sl_stack_easy_fit$predict()
 
+set.seed(715)
 sl_stack_manual_fit <- sl_stack_manual$train(task)
 sl_stack_manual_fit_pred <- sl_stack_manual_fit$predict()
 
