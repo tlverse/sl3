@@ -52,7 +52,7 @@ task_moredata <- make_sl3_Task(
 
 lrnr_glm <- make_learner(Lrnr_glm)
 lrnr_mean <- make_learner(Lrnr_mean)
-lrnr_xgboost <- make_learner(Lrnr_xgboost)
+lrnr_xgboost <- make_learner(Lrnr_xgboost, verbose = 0)
 
 stack <- make_learner(
   Stack,

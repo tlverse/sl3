@@ -11,7 +11,8 @@ covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn"
 outcome <- "haz"
 task <- sl3_Task$new(data.table::copy(cpp_imputed),
   covariates = covars,
-  outcome = outcome
+  outcome = outcome,
+  folds = origami::make_folds(cpp_imputed, V = 3)
 )
 
 glm_learner <- Lrnr_glm$new()

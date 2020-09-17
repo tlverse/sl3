@@ -1,6 +1,6 @@
 context("test-binomial_learners.R -- binomial learners in a Super Learner")
 library(origami)
-
+options(sl3.verbose = FALSE)
 
 g0 <- function(W) {
   W1 <- W[, 1]
@@ -41,7 +41,6 @@ learners <- list(
   mean = make_learner(Lrnr_mean)
 )
 
-
 # define Super Learner
 binom_sl <- make_learner(Lrnr_sl, learners)
 
@@ -66,7 +65,7 @@ binom_sl <- make_learner(Lrnr_sl, learners)
 test_that("Lrnr_sl binomial integration test", {
   # fit and generate predictions
   sl_fit <- binom_sl$train(task)
-  coef(sl_fit$fit_object$cv_meta_fit)
+  coefs <- coef(sl_fit$fit_object$cv_meta_fit)
   preds <- sl_fit$predict()
-  sl_fit$cv_risk(loss_loglik_binomial)
+  loss <- sl_fit$cv_risk(loss_loglik_binomial)
 })
