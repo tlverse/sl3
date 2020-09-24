@@ -18,16 +18,17 @@ univariate time-series.
 \section{Parameters}{
 
 \describe{
-\item{\code{order=NULL}}{A specification of the non-seasonal part of the
-ARIMA model: the three integer components (p, d, q) are the AR order, the
-degree of differencing, and the MA order.}
-\item{\code{seasonal=list(order=c(0,0,0) period=NA)}}{ A specification of
-the seasonal part of the ARIMA model, plus the period (which defaults to
-frequency(x)). This should be a list with components order and period, but
-a specification of just a numeric vector of length 3 will be turned into a
-suitable list with the specification as the order.}
-\item{\code{n.ahead=NULL}}{ The forecast horizon. If not specified, returns
-forecast of size \code{task$X}.}
+\item{\code{order=NULL}}{An optional specification of the non-seasonal
+part of the ARIMA model: the three integer components (p, d, q) are the
+AR order, the degree of differencing, and the MA order. If order is
+specified, then \code{\link[stats]{arima}} will be called; otherwise,
+\code{\link[forecast]{auto.arima}} will be used to fit the "best" ARIMA
+model according to AIC (default), AICc or BIC. The information criterion
+to be used in \code{\link[forecast]{auto.arima}} model selection can be
+modified by specifying \code{ic} argument.}
+\item{\code{...}}{Other parameters passed to \code{\link[stats]{arima}} or
+\code{\link[forecast]{auto.arima}} function, depending on whether or not
+\code{order} argument is provided.}
 }
 }
 

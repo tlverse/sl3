@@ -135,7 +135,3 @@ test_that("Lrnr_tsDyn with multiple different models, multivariate", {
 
   # fit_2 <- tsDyn::TVAR(task$X, lag=2)
 })
-
-test_that("Lrnr_arima gives expected warning with n.ahead argument", {
-  expect_warning(Lrnr_arima$new(n.ahead = 3))
-})

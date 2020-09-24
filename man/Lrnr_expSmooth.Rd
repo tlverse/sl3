@@ -60,6 +60,7 @@ multiplicative trend are allowed when searching for a model.}
 \item{\code{n.ahead}}{The forecast horizon. If not specified, returns
 forecast of size \code{task$X}.}
 \item{\code{freq=1}}{the number of observations per unit of time.}
+\item{\code{...}}{Other parameters passed to \code{\link[forecast]{ets}.}
 }
 }
 
