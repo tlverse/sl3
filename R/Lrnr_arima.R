@@ -54,7 +54,14 @@ Lrnr_arima <- R6Class(
 
       # option to include external regressors
       if (length(task$X) > 0) {
-        params$xreg <- as.matrix(task$X)
+        numericX <- task$X[, sapply(task$X, is.numeric), with = FALSE]
+        if (length(task$X) != length(numericX)) {
+          message(
+            "ARIMA requires external regressors to be numeric, ",
+            "omitting non-numeric covariates for fitting this learner."
+          )
+        }
+        params$xreg <- as.matrix(numericX)
       }
 
       if (is.numeric(params$order)) {
