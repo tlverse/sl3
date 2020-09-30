@@ -44,7 +44,8 @@ Imports:
     ggplot2,
     digest,
     imputeMissings,
-    dplyr
+    dplyr,
+    caret
 Suggests:
     testthat,
     rmarkdown,

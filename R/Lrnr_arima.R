@@ -10,6 +10,7 @@
 #' @importFrom R6 R6Class
 #' @importFrom assertthat assert_that is.count is.flag
 #' @importFrom stats arima
+#' @importFrom caret findLinearCombos
 #'
 #' @export
 #'
@@ -54,14 +55,21 @@ Lrnr_arima <- R6Class(
 
       # option to include external regressors
       if (length(task$X) > 0) {
-        numericX <- task$X[, sapply(task$X, is.numeric), with = FALSE]
-        if (length(task$X) != length(numericX)) {
-          message(
-            "ARIMA requires external regressors to be numeric, ",
-            "omitting non-numeric covariates for fitting this learner."
-          )
+
+        # determines if the matrix is full rank & then identifies the sets of
+        # columns that are involved in the dependencies.
+        rm_idx <- caret::findLinearCombos(task$X)$remove
+
+        if (length(rm_idx) > 0) {
+          params$xreg <- as.matrix(task$X[, -rm_idx, with = FALSE])
+          print(paste(c(
+            "ARIMA requires matrix of external regressors to not be rank ",
+            "deficient. The following covariates were removed to counter the ",
+            "linear combinations:", names(task$X)[rm_idx]
+          ), collapse = " "))
+        } else {
+          params$xreg <- as.matrix(task$X)
         }
-        params$xreg <- as.matrix(numericX)
       }
 
       if (is.numeric(params$order)) {
@@ -78,9 +86,14 @@ Lrnr_arima <- R6Class(
     .predict = function(task = NULL) {
       h <- ts_get_pred_horizon(self$training_task, task)
 
-      # include external regressors
+      # include external regressors if they were used for training
       if (length(task$X) > 0) {
-        newxreg <- as.matrix(task$X)
+        rm_idx <- caret::findLinearCombos(task$X)$remove
+        if (length(rm_idx) > 0) {
+          newxreg <- as.matrix(task$X[, -rm_idx, with = FALSE])
+        } else {
+          newxreg <- as.matrix(task$X)
+        }
       } else {
         newxreg <- NULL
       }
