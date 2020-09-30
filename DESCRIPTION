@@ -84,7 +84,6 @@ Suggests:
     dbarts,
     gam (>= 1.15.0),
     haldensify (>= 0.0.5),
-    caret,
     mgcv,
     hts
 License: GPL-3
