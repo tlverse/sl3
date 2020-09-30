@@ -1,7 +1,7 @@
 #' Exponential Smoothing
 #'
-#' This learner supports exponential smoothing models using \pkg{forecast}.
-#' Fitting is done with \code{\link[forecast]{ets}}.
+#' This learner supports exponential smoothing models using
+#' \code{\link[forecast]{ets}}.
 #'
 #' @docType class
 #'
@@ -63,7 +63,7 @@
 #'   \item{\code{n.ahead}}{The forecast horizon. If not specified, returns
 #'     forecast of size \code{task$X}.}
 #'   \item{\code{freq=1}}{the number of observations per unit of time.}
-#'   \item{\code{...}}{Other parameters passed to \code{\link[forecast]{ets}.}
+#'   \item{\code{...}}{Other parameters passed to \code{\link[forecast]{ets}.}}
 #' }
 #
 Lrnr_expSmooth <- R6Class(
