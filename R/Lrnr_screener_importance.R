@@ -55,9 +55,8 @@ Lrnr_screener_importance <- R6Class(
       importance_args <- params[-which(names(params) %in% not_importance_args)]
 
       # calculate variable importance
-      learner <- params$learner
-      fit <- learner$train(task)
-      importance_result <- do.call(fit$importance, importance_args)
+      fit <- params$learner$train(task)
+      importance_result <- fit$importance(importance_args)
 
       # extract variable names from importance result object
       if (is.null(rownames(importance_result))) {
@@ -89,8 +88,7 @@ Lrnr_screener_importance <- R6Class(
       }
 
       # subset to num_screen "most important" covariates
-      num_screen <- params$num_screen
-      selected <- importance_names_sorted[1:num_screen]
+      selected <- importance_names_sorted[1:params$num_screen]
       fit_object <- list(selected = selected)
       return(fit_object)
     },

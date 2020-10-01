@@ -2,9 +2,6 @@ library(testthat)
 context("test_screeners.R -- Screening Procedures")
 
 options(sl3.verbose = TRUE)
-library(sl3)
-library(origami)
-library(SuperLearner)
 library(data.table)
 data(cpp_imputed)
 setDT(cpp_imputed)
@@ -103,7 +100,12 @@ test_that("Lrnr_screener_importance test with randomForest", {
 
 test_that("Lrnr_screener_importance test with ranger", {
 
-  # intialize without error
+  # induce error
+  lrnr_ranger <- make_learner(Lrnr_ranger)
+  fit <- lrnr_ranger$train(task)
+  expect_error(fit$importance(task))
+
+  # intialize correctly
   lrnr_ranger <- make_learner(Lrnr_ranger, importance = "impurity")
   screen_ranger <- make_learner(Lrnr_screener_importance, lrnr_ranger,
     num_screen = 3
