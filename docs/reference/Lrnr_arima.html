@@ -164,16 +164,17 @@ univariate time-series.</p>
     
 
 <dl>
-<dt><code>order=NULL</code></dt><dd><p>A specification of the non-seasonal part of the
-ARIMA model: the three integer components (p, d, q) are the AR order, the
-degree of differencing, and the MA order.</p></dd>
-<dt><code>seasonal=list(order=c(0,0,0) period=NA)</code></dt><dd><p>A specification of
-the seasonal part of the ARIMA model, plus the period (which defaults to
-frequency(x)). This should be a list with components order and period, but
-a specification of just a numeric vector of length 3 will be turned into a
-suitable list with the specification as the order.</p></dd>
-<dt><code>n.ahead=NULL</code></dt><dd><p>The forecast horizon. If not specified, returns
-forecast of size <code>task$X</code>.</p></dd>
+<dt><code>order=NULL</code></dt><dd><p>An optional specification of the non-seasonal
+part of the ARIMA model: the three integer components (p, d, q) are the
+AR order, the degree of differencing, and the MA order. If order is
+specified, then <code><a href='https://rdrr.io/r/stats/arima.html'>arima</a></code> will be called; otherwise,
+<code><a href='https://rdrr.io/pkg/forecast/man/auto.arima.html'>auto.arima</a></code> will be used to fit the "best" ARIMA
+model according to AIC (default), AICc or BIC. The information criterion
+to be used in <code><a href='https://rdrr.io/pkg/forecast/man/auto.arima.html'>auto.arima</a></code> model selection can be
+modified by specifying <code>ic</code> argument.</p></dd>
+<dt><code>...</code></dt><dd><p>Other parameters passed to <code><a href='https://rdrr.io/r/stats/arima.html'>arima</a></code> or
+<code><a href='https://rdrr.io/pkg/forecast/man/auto.arima.html'>auto.arima</a></code> function, depending on whether or not
+<code>order</code> argument is provided.</p></dd>
 
 </dl>
 

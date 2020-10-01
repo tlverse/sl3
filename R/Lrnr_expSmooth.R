@@ -1,7 +1,7 @@
 #' Exponential Smoothing
 #'
-#' This learner supports exponential smoothing models using \pkg{forecast}.
-#' Fitting is done with \code{\link[forecast]{ets}}.
+#' This learner supports exponential smoothing models using
+#' \code{\link[forecast]{ets}}.
 #'
 #' @docType class
 #'
@@ -63,6 +63,7 @@
 #'   \item{\code{n.ahead}}{The forecast horizon. If not specified, returns
 #'     forecast of size \code{task$X}.}
 #'   \item{\code{freq=1}}{the number of observations per unit of time.}
+#'   \item{\code{...}}{Other parameters passed to \code{\link[forecast]{ets}.}}
 #' }
 #
 Lrnr_expSmooth <- R6Class(
@@ -71,7 +72,7 @@ Lrnr_expSmooth <- R6Class(
   portable = TRUE,
   class = TRUE,
   public = list(
-    initialize = function(model = "ZZZ", damped = NULL, alpha = NULL, n.ahead = NULL,
+    initialize = function(model = "ZZZ", damped = NULL, alpha = NULL,
                           beta = NULL, gamma = NULL, phi = NULL, lambda = NULL,
                           additive.only = FALSE, biasadj = FALSE,
                           lower = c(rep(1e-04, 3), 0.8),
@@ -80,12 +81,7 @@ Lrnr_expSmooth <- R6Class(
                           ic = "aic", restrict = TRUE,
                           allow.multiplicative.trend = FALSE,
                           use.initial.values = FALSE, freq = 1, ...) {
-      params <- args_to_list()
-      super$initialize(params = params, ...)
-      if (!is.null(n.ahead)) {
-        warning("n.ahead paramater is specified- obtaining an ensemble will fail. 
-                Please only use for obtaining individual learner forcasts.")
-      }
+      super$initialize(params = args_to_list(), ...)
     }
   ),
 
@@ -95,11 +91,7 @@ Lrnr_expSmooth <- R6Class(
     .train = function(task) {
       args <- self$params
       args$y <- ts(task$Y, frequency = args$freq)
-      if (args$model == "ZZZ") {
-        fit_object <- forecast::ets(args$y)
-      } else {
-        fit_object <- call_with_args(forecast::ets, args)
-      }
+      fit_object <- call_with_args(forecast::ets, args)
       return(fit_object)
     },
 
@@ -108,6 +100,7 @@ Lrnr_expSmooth <- R6Class(
       raw_preds <- forecast::forecast(private$.fit_object, h = h)
       preds <- as.numeric(raw_preds$mean)
       requested_preds <- ts_get_requested_preds(self$training_task, task, preds)
+      return(requested_preds)
     },
     .required_packages = c("forecast")
   )

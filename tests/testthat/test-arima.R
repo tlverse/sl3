@@ -136,6 +136,33 @@ test_that("Lrnr_tsDyn with multiple different models, multivariate", {
   # fit_2 <- tsDyn::TVAR(task$X, lag=2)
 })
 
-test_that("Lrnr_arima gives expected warning with n.ahead argument", {
-  expect_warning(Lrnr_arima$new(n.ahead = 3))
+test_that("Lrnr_arima with external regressors", {
+
+  # Define new data:
+  data <- bsds
+  data$atemp2 <- data$atemp
+  covars <- c("atemp", "casual", "registered", "cnt")
+  covars_duplicate <- c("atemp", "casual", "registered", "cnt", "atemp2")
+  outcome <- c("temp")
+  task <- sl3_Task$new(
+    data,
+    covariates = covars, outcome = outcome, folds = folds
+  )
+  task_duplicate_covs <- sl3_Task$new(
+    data,
+    covariates = covars_duplicate, outcome = outcome, folds = folds
+  )
+
+  train_task <- training(task, fold = task$folds[[1]])
+  valid_task <- validation(task, fold = task$folds[[1]])
+  valid_task_duplicate_covs <- validation(task_duplicate_covs, task$folds[[2]])
+
+  arima_lrnr <- Lrnr_arima$new()
+  fit <- arima_lrnr$train(train_task)
+  preds <- fit$predict(valid_task)
+  preds_newX <- fit$predict(valid_task_duplicate_covs)
+
+  cv_arima_lrnr <- Lrnr_cv$new(arima_lrnr)
+  fit_cv <- cv_arima_lrnr$train(task)
+  preds_cv_newX <- fit_cv$predict(task_duplicate_covs)
 })

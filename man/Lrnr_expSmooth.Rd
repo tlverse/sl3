@@ -12,8 +12,8 @@ Learner object with methods for training and prediction. See
 \code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
-This learner supports exponential smoothing models using \pkg{forecast}.
-Fitting is done with \code{\link[forecast]{ets}}.
+This learner supports exponential smoothing models using
+\code{\link[forecast]{ets}}.
 }
 \section{Parameters}{
 
@@ -60,6 +60,7 @@ multiplicative trend are allowed when searching for a model.}
 \item{\code{n.ahead}}{The forecast horizon. If not specified, returns
 forecast of size \code{task$X}.}
 \item{\code{freq=1}}{the number of observations per unit of time.}
+\item{\code{...}}{Other parameters passed to \code{\link[forecast]{ets}.}}
 }
 }
 
