@@ -117,7 +117,7 @@ Lrnr_xgboost <- R6Class(
     .predict = function(task = NULL) {
       outcome_type <- private$.training_outcome_type
       verbose <- getOption("sl3.verbose")
-      
+
       fit_object <- private$.fit_object
 
       Xmat <- as.matrix(task$X)
