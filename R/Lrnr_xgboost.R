@@ -118,10 +118,14 @@ Lrnr_xgboost <- R6Class(
       outcome_type <- private$.training_outcome_type
       verbose <- getOption("sl3.verbose")
 
+      fit_object <- private$.fit_object
+
       Xmat <- as.matrix(task$X)
       if (is.integer(Xmat)) {
         Xmat[, 1] <- as.numeric(Xmat[, 1])
       }
+      # order of columns has to be the same in xgboost training and test data
+      Xmat <- Xmat[, match(fit_object$feature_names, colnames(Xmat))]
 
       xgb_data <- try(xgboost::xgb.DMatrix(Xmat))
 
@@ -132,7 +136,6 @@ Lrnr_xgboost <- R6Class(
         xgboost::setinfo(xgb_data, "base_margin", offset)
       }
 
-      fit_object <- private$.fit_object
       predictions <- rep.int(list(numeric()), 1)
 
       if (nrow(Xmat) > 0) {
