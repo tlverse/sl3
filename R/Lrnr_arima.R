@@ -84,21 +84,28 @@ Lrnr_arima <- R6Class(
     },
 
     .predict = function(task = NULL) {
+      fit_object <- private$.fit_object
       h <- ts_get_pred_horizon(self$training_task, task)
 
-      # include external regressors if they were used for training
+      # include external regressors 'newxreg' if 'xreg' was used for training
       if (length(task$X) > 0) {
-        rm_idx <- caret::findLinearCombos(task$X)$remove
-        if (length(rm_idx) > 0) {
-          newxreg <- as.matrix(task$X[, -rm_idx, with = FALSE])
-        } else {
+        xreg <- fit_object$xreg
+        if (!is.null(xreg)) {
           newxreg <- as.matrix(task$X)
+          # ensure 'xreg' and 'newxreg' have same number & order of columns
+          newxreg <- newxreg[, match(colnames(xreg), colnames(newxreg))]
+        } else {
+          warning(
+            "Cannot include external regressors for prediction, ",
+            "since they were not used for training."
+          )
+          newxreg <- NULL
         }
       } else {
         newxreg <- NULL
       }
 
-      raw_preds <- predict(private$.fit_object,
+      raw_preds <- predict(fit_object,
         newdata = task$Y, n.ahead = h,
         newxreg = newxreg, type = "response"
       )
