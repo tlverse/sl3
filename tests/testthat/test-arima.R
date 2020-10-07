@@ -142,7 +142,7 @@ test_that("Lrnr_arima with external regressors", {
   data <- bsds
   data$atemp2 <- data$atemp
   covars <- c("atemp", "casual", "registered", "cnt")
-  covars_duplicate <- c("atemp", "casual", "registered", "cnt", "atemp2")
+  covars_dups <- c("casual", "registered", "cnt", "atemp2", "atemp")
   outcome <- c("temp")
   task <- sl3_Task$new(
     data,
@@ -150,9 +150,8 @@ test_that("Lrnr_arima with external regressors", {
   )
   task_duplicate_covs <- sl3_Task$new(
     data,
-    covariates = covars_duplicate, outcome = outcome, folds = folds
+    covariates = covars_dups, outcome = outcome, folds = folds
   )
-
   train_task <- training(task, fold = task$folds[[1]])
   valid_task <- validation(task, fold = task$folds[[1]])
   valid_task_duplicate_covs <- validation(task_duplicate_covs, task$folds[[2]])
@@ -165,4 +164,10 @@ test_that("Lrnr_arima with external regressors", {
   cv_arima_lrnr <- Lrnr_cv$new(arima_lrnr)
   fit_cv <- cv_arima_lrnr$train(task)
   preds_cv_newX <- fit_cv$predict(task_duplicate_covs)
+
+  node_list <- list(outcome = outcome)
+  task_no_covs <- sl3_Task$new(data, nodes = node_list, folds = folds)
+  train_task_no_covs <- training(task_no_covs, fold = task_no_covs$folds[[1]])
+  fit_no_covs <- arima_lrnr$train(train_task_no_covs)
+  expect_warning(fit_no_covs$predict(valid_task))
 })
