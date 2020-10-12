@@ -143,6 +143,34 @@ Lrnr_sl <- R6Class(
       }
 
       return(preds)
+    },
+    update = function(task) {
+     if(!self$is_trained){
+       return(self$train(task))
+     }
+      
+     fit_object <- self$fit_object
+     fit_object$cv_fit <- fit_object$cv_fit$update(task)
+     
+     # fit meta-learner
+     fit_object$cv_meta_task <- fit_object$cv_fit$chain(task)
+     fit_object$cv_meta_fit <- self$params$metalearner$train(fit_object$cv_meta_task)
+
+     # construct full fit pipeline
+     full_stack_fit <- fit_object$cv_fit$fit_object$full_fit
+     full_stack_fit$custom_chain(drop_offsets_chain)
+     
+     full_fit <- make_learner(
+       Pipeline, full_stack_fit,
+       fit_object$cv_meta_fit
+     )
+     
+     fit_object$full_fit <- full_fit
+    
+     new_object <- self$clone() # copy parameters, and whatever else
+     new_object$set_train(fit_object, task)
+     return(new_object)
+     
     }
   ),
 
