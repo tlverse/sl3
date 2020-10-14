@@ -99,6 +99,7 @@ Other Learners:
 \code{\link{Lrnr_stratified}},
 \code{\link{Lrnr_subset_covariates}},
 \code{\link{Lrnr_tsDyn}},
+\code{\link{Lrnr_ts_weights}},
 \code{\link{Lrnr_xgboost}},
 \code{\link{Pipeline}},
 \code{\link{Stack}},

@@ -100,6 +100,7 @@ Other Learners:
 \code{\link{Lrnr_subset_covariates}},
 \code{\link{Lrnr_svm}},
 \code{\link{Lrnr_tsDyn}},
+\code{\link{Lrnr_ts_weights}},
 \code{\link{Lrnr_xgboost}},
 \code{\link{Stack}},
 \code{\link{define_h2o_X}()},
