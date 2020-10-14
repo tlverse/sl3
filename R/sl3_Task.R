@@ -263,7 +263,7 @@ sl3_Task <- R6Class(
       new_task$initialize(
         private$.shared_data,
         nodes = new_nodes,
-        folds = private$.folds,
+        folds = folds,
         column_names = column_names,
         row_index = private$.row_index,
         outcome_type = new_outcome_type,
