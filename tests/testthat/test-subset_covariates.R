@@ -30,3 +30,28 @@ glm_fit_pre_subset <- lrnr_glm$train(task_pre_subset)
 full_preds <- glm_fit_pre_subset$predict(task)
 training_preds <- glm_fit_pre_subset$predict()
 test_that("extra covariates in prediction set get dropped correctly", expect_equal(full_preds, training_preds))
+
+task_train <- sl3_Task$new(mtcars, covariates = covariates, outcome = outcome)
+task_predict <- sl3_Task$new(mtcars, covariates = covariate_subset, outcome = outcome)
+glm_fit <- lrnr_glm$train(task_train)
+test_that("missing covariates in prediction set throws error", {
+  expect_error(glm_fit$predict(task_predict))
+})
+
+missing_data <- data.table(mtcars[1, 1:7])
+colnames(missing_data) <- colnames(mtcars)[1:7]
+missing_data <- rbind(missing_data, data.table(mtcars[-1, ]), fill = T)
+covs <- c("cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "am", "gear", "carb")
+Y <- "mpg"
+task_missing_data <- suppressWarnings(
+  sl3_Task$new(missing_data, covariates = covs, outcome = Y)
+)
+
+lrnr_glm <- make_learner(Lrnr_glm_fast, name = "test")
+glm_fit <- lrnr_glm$train(task_missing_data)
+
+task_complete_data <- sl3_Task$new(mtcars, covariates = covs, outcome = Y)
+
+test_that("missingness indicators in prediction task works", {
+  expect_vector(glm_fit$predict(task_complete_data))
+})
