@@ -69,8 +69,8 @@ test_that("Lrnr_ts_weights fits SL differently for different windows/rates",{
   delay_decay_fit <- suppressWarnings(delay_decay_sl$train(training_task))
   delay_decay_preds <- suppressWarnings(delay_decay_fit$predict(forecast_task))
   
-  expect_false(all(identical(window5_preds, window10_preds)))
-  expect_false(all(identical(window10_preds, decay_preds)))
+  expect_false(all(identical(window5_preds, window1_preds)))
+  expect_false(all(identical(window1_preds, decay_preds)))
   expect_false(all(identical(decay_preds, delay_decay_preds)))
 })
 
