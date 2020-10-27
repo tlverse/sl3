@@ -173,17 +173,21 @@ Lrnr_cv <- R6Class(
     },
 
     update = function(task) {
+      if (!self$is_trained) {
+        return(self$base_train(task))
+      }
+
       # identify the folds that already have fold fits
       folds <- task$folds
       eval_past_fold <- lapply(seq_len(length(folds)), function(x) {
         if (x > length(self$training_task$folds)) {
           equal <- FALSE
         } else {
-          equal_training <- all.equal(
+          equal_training <- identical(
             self$training_task$folds[[x]]$training_set,
             task$folds[[x]]$training_set
           )
-          equal_validation <- all.equal(
+          equal_validation <- identical(
             self$training_task$folds[[x]]$validation_set,
             task$folds[[x]]$validation_set
           )
@@ -194,11 +198,23 @@ Lrnr_cv <- R6Class(
       # retain past fold fits
       past_folds <- which(unlist(eval_past_fold))
       past_fold_fits <- self$fit_object$fold_fits[past_folds]
+
       # subset new folds
       new_folds <- task$folds[which(!unlist(eval_past_fold))]
+
+
+      if (length(new_folds) == 0) {
+        # nothing to update
+        return(self)
+      }
       # construct new task with only new folds
       new_task <- task$next_in_chain(folds = new_folds)
+
       # set up training for new fold fits
+      new_object <- self$clone() # copy parameters, and whatever else
+      params <- self$params
+      params$folds <- NULL
+      do.call(new_object$initialize, params)
       new_fold_fits <- self$train(new_task)
 
       # update fit_object
@@ -207,7 +223,7 @@ Lrnr_cv <- R6Class(
       all_fold_fits <- c(past_fold_fits, new_fold_fits)
       fit_object$fold_fits <- all_fold_fits
       fit_object$folds <- folds
-      new_object <- self$clone() # copy parameters, and whatever else
+
       new_object$set_train(fit_object, task)
       return(new_object)
     }

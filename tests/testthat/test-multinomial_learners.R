@@ -39,6 +39,8 @@ data <- gen_data(1000)
 
 Wnodes <- grep("^W", names(data), value = TRUE)
 Anode <- "A"
+library(origami)
+folds <- make_folds(nrow(data), V = 10, fold_fun = folds_vfold)
 task <- sl3_Task$new(data, covariates = Wnodes, outcome = Anode)
 
 # define learners
@@ -76,3 +78,4 @@ test_that("Lrnr_sl multinomial integration test", {
   preds <- sl_fit$base_predict()
   sl_fit$cv_risk(loss_loglik_multinomial)
 })
+

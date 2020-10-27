@@ -38,8 +38,8 @@ Lrnr_randomForest <- R6Class(
   inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
     initialize = function(ntree = 500,
-                          keep.forest = TRUE,
-                          nodesize = 5, ...) {
+                              keep.forest = TRUE,
+                              nodesize = 5, ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     },

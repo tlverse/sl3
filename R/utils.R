@@ -182,11 +182,10 @@ reduce_fit_test <- function(learner_fit) {
     reduced_fit[component] <- NULL
     reduced$set_train(reduced_fit, task)
     reduced_predict <- NULL
-    try(
-      {
-        reduced_predict <- reduced$predict()
-      },
-      silent = TRUE
+    try({
+      reduced_predict <- reduced$predict()
+    },
+    silent = TRUE
     )
     if (!identical(original_predict, reduced_predict)) {
       reduced_fit[component] <- backup

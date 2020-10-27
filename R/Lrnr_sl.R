@@ -43,7 +43,7 @@ Lrnr_sl <- R6Class(
   class = TRUE,
   public = list(
     initialize = function(learners, metalearner = "default", folds = NULL,
-                          keep_extra = TRUE, ...) {
+                              keep_extra = TRUE, ...) {
       # kludge to deal with stack as learners
       if (inherits(learners, "Stack")) {
         learners <- learners$params$learners
@@ -112,7 +112,7 @@ Lrnr_sl <- R6Class(
       return(risks)
     },
     predict_fold = function(task, fold_number = "validation",
-                            pred_unique_ts = FALSE) {
+                                pred_unique_ts = FALSE) {
       fold_number <- interpret_fold_number(fold_number)
       revere_task <- task$revere_fold_task(fold_number)
       if (fold_number == "full") {
@@ -143,6 +143,33 @@ Lrnr_sl <- R6Class(
       }
 
       return(preds)
+    },
+    update = function(task) {
+      if (!self$is_trained) {
+        return(self$train(task))
+      }
+
+      fit_object <- self$fit_object
+      fit_object$cv_fit <- fit_object$cv_fit$update(task)
+
+      # fit meta-learner
+      fit_object$cv_meta_task <- fit_object$cv_fit$chain(task)
+      fit_object$cv_meta_fit <- self$params$metalearner$train(fit_object$cv_meta_task)
+
+      # construct full fit pipeline
+      full_stack_fit <- fit_object$cv_fit$fit_object$full_fit
+      full_stack_fit$custom_chain(drop_offsets_chain)
+
+      full_fit <- make_learner(
+        Pipeline, full_stack_fit,
+        fit_object$cv_meta_fit
+      )
+
+      fit_object$full_fit <- full_fit
+
+      new_object <- self$clone() # copy parameters, and whatever else
+      new_object$set_train(fit_object, task)
+      return(new_object)
     }
   ),
 

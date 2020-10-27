@@ -35,9 +35,9 @@ Lrnr_ranger <- R6Class(
   portable = TRUE, class = TRUE,
   public = list(
     initialize = function(num.trees = 500,
-                          write.forest = TRUE,
-                          num.threads = 1,
-                          ...) {
+                              write.forest = TRUE,
+                              num.threads = 1,
+                              ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     },
