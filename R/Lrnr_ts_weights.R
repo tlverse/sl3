@@ -47,41 +47,41 @@ Lrnr_ts_weights <- R6Class(
       print(self$params$learner)
       # todo: check if fit
     }
-
   ),
 
   active = list(
     name = function() {
-      name <- paste(self$params$learner$name, 
-                    "ts",self$params$window,self$params$rate,
-                    sep = "_")
+      name <- paste(self$params$learner$name,
+        "ts", self$params$window, self$params$rate,
+        sep = "_"
+      )
     }
   ),
 
   private = list(
     .properties = c("wrapper", "cv"),
 
-  
+
     .train = function(task, trained_sublearners) {
       verbose <- getOption("sl3.verbose")
       weights <- task$weights
       times <- task$time
       max_time <- max(times)
-      
-      if(!is.null(self$params$window)){
-        weights <- weights * ifelse(times<(max_time-self$params$window),0,1)
+
+      if (!is.null(self$params$window)) {
+        weights <- weights * ifelse(times < (max_time - self$params$window), 0, 1)
       }
-      
-      if(!is.null(self$params$rate)){
+
+      if (!is.null(self$params$rate)) {
         lag <- max_time - times
-        weights <- weights * (1-self$params$rate)^lag
+        weights <- weights * (1 - self$params$rate)^lag
       }
-      column_names <- task$add_columns(data.table(ts_weight=weights))
-      wt_task <- task$next_in_chain(column_names=column_names, weights = "ts_weight")
+      column_names <- task$add_columns(data.table(ts_weight = weights))
+      wt_task <- task$next_in_chain(column_names = column_names, weights = "ts_weight")
       learner <- self$params$learner
-      
+
       fit_object <- learner$train(wt_task)
-      
+
       return(fit_object)
     },
 

@@ -73,14 +73,14 @@ Lrnr_expSmooth <- R6Class(
   class = TRUE,
   public = list(
     initialize = function(model = "ZZZ", damped = NULL, alpha = NULL,
-                          beta = NULL, gamma = NULL, phi = NULL, lambda = NULL,
-                          additive.only = FALSE, biasadj = FALSE,
-                          lower = c(rep(1e-04, 3), 0.8),
-                          upper = c(rep(0.9999, 3), 0.98),
-                          opt.crit = "lik", nmse = 3, bounds = "both",
-                          ic = "aic", restrict = TRUE,
-                          allow.multiplicative.trend = FALSE,
-                          use.initial.values = FALSE, freq = 1, ...) {
+                              beta = NULL, gamma = NULL, phi = NULL, lambda = NULL,
+                              additive.only = FALSE, biasadj = FALSE,
+                              lower = c(rep(1e-04, 3), 0.8),
+                              upper = c(rep(0.9999, 3), 0.98),
+                              opt.crit = "lik", nmse = 3, bounds = "both",
+                              ic = "aic", restrict = TRUE,
+                              allow.multiplicative.trend = FALSE,
+                              use.initial.values = FALSE, freq = 1, ...) {
       super$initialize(params = args_to_list(), ...)
     }
   ),

@@ -66,18 +66,18 @@ Lrnr_hts <- R6Class(
   class = TRUE,
   public = list(
     initialize = function(method = "comb",
-                          weights = "wls",
-                          fmethod = "ets",
-                          algorithms = "lu",
-                          covariance = "shr",
-                          keep.fitted = FALSE,
-                          keep.resid = FALSE,
-                          positive = FALSE,
-                          lambda = NULL,
-                          level = NULL,
-                          parallel = FALSE,
-                          num.cores = 1,
-                          ...) {
+                              weights = "wls",
+                              fmethod = "ets",
+                              algorithms = "lu",
+                              covariance = "shr",
+                              keep.fitted = FALSE,
+                              keep.resid = FALSE,
+                              positive = FALSE,
+                              lambda = NULL,
+                              level = NULL,
+                              parallel = FALSE,
+                              num.cores = 1,
+                              ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }
