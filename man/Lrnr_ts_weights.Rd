@@ -3,7 +3,7 @@
 \docType{class}
 \name{Lrnr_ts_weights}
 \alias{Lrnr_ts_weights}
-\title{Time specific weights}
+\title{Time-specific weighting of prediction losses}
 \format{
 \code{\link{R6Class}} object.
 }
@@ -12,7 +12,12 @@ Learner object with methods for training and prediction. See
 \code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
-A wrapper around any learner that reweights observations
+A wrapper around any learner that reweights observations. This reweighted
+is intended for time series, and ultimately assigns weights to losses. This
+learner is particularly useful as a metalearner wrapper. It can be used to
+create a time-adaptive ensemble, where a super learner is created in a manner
+that places more weight (with max weight of 1) on recent losses, and less
+weight is placed on losses further in the past.
 }
 \section{Parameters}{
 
@@ -20,9 +25,34 @@ A wrapper around any learner that reweights observations
 \item{\code{learner}}{The learner to wrap}
 \item{\code{folds=NULL}}{An \code{origami} folds object. If \code{NULL},
 folds from the task are used}
-\item{\code{full_fit=FALSE}}{If \code{TRUE}, also fit the underlying learner on the full data.
-This can then be accessed with predict_fold(task, fold_number="full")
-}
+\item{\code{full_fit=FALSE}}{If \code{TRUE}, also fit the underlying
+learner on the full data. This can then be accessed with
+\code{predict_fold(task, fold_number="full")}}
+\item{\code{window}}{Observations corresponding to times outside of the
+window are assigned weight of 0, and obervations corresponding to times
+within the window are assigned weight of 1. The window is defined with
+respect to the difference from the maximum time, where all times are
+obtained from the task node for time. For example, if the maximum time is
+100 and the window is 10, then obervations corresponding to times 90-100
+are assigned weight 1 and obervations for times 1-89 are assigned weight 0.
+If \code{rate} is provided with \code{window}, then times within the
+window are assigned according to the \code{rate} argument (and potentially
+\code{delay_decay}), and the times outside of the window are still
+assigned weight of 0.}
+\item{\code{rate}}{A rate of decay to apply to the losses, where the decay
+function is (1-rate)^lag and the lag is the difference from all times to
+the maximum time.}
+\item{\code{delay_decay}}{The amount of time to delay decaying weights,
+for optional use with \code{rate} argument. The delay decay is subtracted
+from the lags, such that lags less than the delay decay have lag of 0 and
+thus weight of 1. For example, a delay decay of 10 assigns weight 1 to
+observations that are no more than 10 time points away from the maximum
+time; and for observations that are more than 10 time points away from the
+maximum time, the weight is assigned according to the decay function.
+In this example, observations corresponding to 11 time points away from the
+maximum time would be assigned lag=1, 11-10, when setting the weights
+with respect to (1-rate)^lag.}
+\item{\code{...}}{Not currently used.}
 }
 }
 

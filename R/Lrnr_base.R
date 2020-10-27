@@ -30,30 +30,64 @@ Lrnr_base <- R6Class(
   portable = TRUE,
   class = TRUE,
   public = list(
-    initialize = function(params = NULL, ...) {
+    initialize = function(params = NULL, name = NULL, ...) {
       private$.load_packages()
       if (is.null(params)) {
         params <- list(...)
       }
 
       private$.params <- params
+      private$.name <- name
       private$.learner_uuid <- UUIDgenerate(use.time = TRUE)
 
       invisible(self)
     },
 
     subset_covariates = function(task) {
-      # allows learners to use only a subset of covariates
+      # learners subset task covariates based on their covariate set
       if ("covariates" %in% names(self$params) &&
         !is.null(self$params[["covariates"]])) {
-        task_covariates <- task$nodes$covariates
-        params_covariates <- self$params$covariates
-        missing_covariates <- setdiff(params_covariates, task_covariates)
-        if (length(missing_covariates) > 0) {
-          warning(sprintf("Missing the following covariates expected by %s: %s", self$name, paste(missing_covariates, collapse = ", ")))
+        task_covs <- task$nodes$covariates
+        learner_covs <- self$params$covariates
+        task_covs_missing <- setdiff(learner_covs, task_covs)
+
+        # omit missingness indicators from covariates missing in the task
+        delta_idx <- grep("delta_", task_covs_missing)
+        if (length(delta_idx) > 0) {
+          delta_missing <- task_covs_missing[delta_idx]
+          task_covs_missing <- task_covs_missing[-delta_idx]
         }
-        subset_covariates <- intersect(task_covariates, params_covariates)
-        return(task$next_in_chain(covariates = subset_covariates))
+
+        # error when task is missing covariates
+        if (length(task_covs_missing) > 0) {
+          stop(
+            sprintf(
+              "Task missing the following covariates expected by %s: %s",
+              self$name, paste(task_covs_missing, collapse = ", ")
+            )
+          )
+        }
+
+        # subset task covariates to only includes those in learner covariates
+        covs_subset <- intersect(task_covs, learner_covs)
+
+        # return updated task
+        if (length(delta_idx) == 0) {
+          # re-order the covariate subset to match order of learner covariates
+          ordered_covs_subset <- covs_subset[match(covs_subset, learner_covs)]
+          return(task$next_in_chain(covariates = ordered_covs_subset))
+        } else {
+          # incorporate missingness indicators in task covariates subset & sort
+          covs_subset_delta <- c(covs_subset, delta_missing)
+          ord_covs <- covs_subset_delta[match(covs_subset_delta, learner_covs)]
+
+          # incorporate missingness indicators in task data
+          delta_missing_data <- matrix(0, nrow(task$data), length(delta_idx))
+          colnames(delta_missing_data) <- delta_missing
+          cols <- task$add_columns(data.table(delta_missing_data))
+
+          return(task$next_in_chain(covariates = ord_covs, column_names = cols))
+        }
       } else {
         return(task)
       }
@@ -105,7 +139,6 @@ Lrnr_base <- R6Class(
       # trains learner to data
       assert_that(is(task, "sl3_Task"))
 
-      # TODO: add error handling
       subsetted_task <- self$subset_covariates(task)
       verbose <- getOption("sl3.verbose")
 
