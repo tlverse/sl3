@@ -54,10 +54,10 @@ learners <- list(
   mean = make_learner(Lrnr_mean)
 )
 
-stack <- make_learner(Stack, learners)
-cv_stack <- make_learner(Lrnr_cv,stack)
-fit <- cv_stack$train(task)
-fit$fit_object$fold_fits[[1]]$predict()
+# stack <- make_learner(Stack, learners)
+# cv_stack <- make_learner(Lrnr_cv,stack)
+# fit <- cv_stack$train(task)
+# fit$fit_object$fold_fits[[1]]$predict()
 
 # define Super Learner
 mn_sl <- make_learner(Lrnr_sl, learners)
