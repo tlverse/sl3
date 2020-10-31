@@ -35,9 +35,9 @@ Lrnr_ranger <- R6Class(
   portable = TRUE, class = TRUE,
   public = list(
     initialize = function(num.trees = 500,
-                              write.forest = TRUE,
-                              num.threads = 1,
-                              ...) {
+                          write.forest = TRUE,
+                          num.threads = 1,
+                          ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     },
@@ -71,13 +71,13 @@ Lrnr_ranger <- R6Class(
       colnames(data_in)[1] <- task$nodes$outcome
       args$data <- data_in
       args$dependent.variable.name <- task$nodes$outcome
-      args$probability <- task$outcome_type$type=="categorical"
+      args$probability <- task$outcome_type$type == "categorical"
       fit_object <- call_with_args(ranger::ranger, args)
       return(fit_object)
     },
 
     .predict = function(task) {
-      
+
       # extract numeric predictions from custom class ranger.prediction
       predictions <- stats::predict(
         private$.fit_object,
@@ -85,11 +85,11 @@ Lrnr_ranger <- R6Class(
         type = "response",
         num.threads = self$params$num.threads
       )
-      
+
       predictions <- predictions[[1]]
-      
+
       if (task$outcome_type$type == "categorical") {
-      
+
         # pack predictions in a single column
         predictions <- pack_predictions(predictions)
       }

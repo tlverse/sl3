@@ -49,9 +49,9 @@ Lrnr_gam <- R6Class(
   portable = TRUE, class = TRUE,
   public = list(
     initialize = function(formula = NULL,
-                              family = NULL,
-                              method = "GCV.Cp",
-                              ...) {
+                          family = NULL,
+                          method = "GCV.Cp",
+                          ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }

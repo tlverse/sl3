@@ -85,4 +85,3 @@ test_that("Lrnr_sl multinomial integration test", {
   preds <- sl_fit$base_predict()
   sl_fit$cv_risk(loss_loglik_multinomial)
 })
-

@@ -48,11 +48,11 @@ Lrnr_svm <- R6Class(
   portable = TRUE, class = TRUE,
   public = list(
     initialize = function(scale = TRUE,
-                              type = NULL,
-                              kernel = "radial",
-                              fitted = TRUE,
-                              probability = FALSE,
-                              ...) {
+                          type = NULL,
+                          kernel = "radial",
+                          fitted = TRUE,
+                          probability = FALSE,
+                          ...) {
       # this captures all parameters to initialize and saves them as self$params
       params <- args_to_list()
       super$initialize(params = params, ...)
@@ -108,20 +108,20 @@ Lrnr_svm <- R6Class(
     # .predict takes a task and returns predictions from that task
     .predict = function(task) {
       # get predictions
-      
+
       predictions <- stats::predict(
         private$.fit_object,
         newdata = task$X,
-        probability = (task$outcome_type$type %in% c("binomial", "categorical")) 
+        probability = (task$outcome_type$type %in% c("binomial", "categorical"))
       )
-      
-   
-      
+
+
+
       if (task$outcome_type$type %in% c("binomial", "categorical")) {
         predictions <- attr(predictions, "probabilities")
         # pack predictions in a single column
         predictions <- pack_predictions(predictions)
-      } else { 
+      } else {
         predictions <- as.numeric(predictions)
       }
       return(predictions)
