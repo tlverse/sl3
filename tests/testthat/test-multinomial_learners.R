@@ -45,12 +45,19 @@ task <- sl3_Task$new(data, covariates = Wnodes, outcome = Anode)
 
 # define learners
 learners <- list(
-  rf <- make_learner(Lrnr_randomForest),
-  xgb <- make_learner(Lrnr_xgboost),
-  glmnet <- make_learner(Lrnr_glmnet),
-  multinom_gf <- make_learner(Lrnr_independent_binomial, make_learner(Lrnr_glm_fast)),
-  mean <- make_learner(Lrnr_mean)
+  rf = make_learner(Lrnr_ranger),
+  xgb = make_learner(Lrnr_xgboost),
+  # glmnet = make_learner(Lrnr_glmnet),
+  rpart = make_learner(Lrnr_rpart),
+  svm = make_learner(Lrnr_svm),
+  multinom_gf = make_learner(Lrnr_independent_binomial, make_learner(Lrnr_glm_fast)),
+  mean = make_learner(Lrnr_mean)
 )
+
+stack <- make_learner(Stack, learners)
+cv_stack <- make_learner(Lrnr_cv,stack)
+fit <- cv_stack$train(task)
+fit$fit_object$fold_fits[[1]]$predict()
 
 # define Super Learner
 mn_sl <- make_learner(Lrnr_sl, learners)
