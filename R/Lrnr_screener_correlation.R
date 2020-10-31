@@ -40,9 +40,9 @@ Lrnr_screener_correlation <- R6Class(
   inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
     initialize = function(method = "pearson",
-                              type = c("rank", "threshold"),
-                              num_screen = 5,
-                              pvalue_threshold = 0.1, min_screen = 2) {
+                          type = c("rank", "threshold"),
+                          num_screen = 5,
+                          pvalue_threshold = 0.1, min_screen = 2) {
       check_correlation_screener_args(
         type, num_screen, pvalue_threshold, min_screen
       )

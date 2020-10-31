@@ -48,11 +48,11 @@ Lrnr_svm <- R6Class(
   portable = TRUE, class = TRUE,
   public = list(
     initialize = function(scale = TRUE,
-                              type = NULL,
-                              kernel = "radial",
-                              fitted = TRUE,
-                              probability = FALSE,
-                              ...) {
+                          type = NULL,
+                          kernel = "radial",
+                          fitted = TRUE,
+                          probability = FALSE,
+                          ...) {
       # this captures all parameters to initialize and saves them as self$params
       params <- args_to_list()
       super$initialize(params = params, ...)
@@ -80,6 +80,7 @@ Lrnr_svm <- R6Class(
           args$type <- "eps-regression"
         } else if (outcome_type$type %in% c("binomial", "categorical")) {
           args$type <- "C-classification"
+          args$probability <- TRUE
         } else {
           stop("Specified outcome type is unsupported in Lrnr_svm.")
         }
@@ -107,11 +108,22 @@ Lrnr_svm <- R6Class(
     # .predict takes a task and returns predictions from that task
     .predict = function(task) {
       # get predictions
+
       predictions <- stats::predict(
         private$.fit_object,
-        newdata = task$X
+        newdata = task$X,
+        probability = (task$outcome_type$type %in% c("binomial", "categorical"))
       )
-      predictions <- as.numeric(predictions)
+
+
+
+      if (task$outcome_type$type %in% c("binomial", "categorical")) {
+        predictions <- attr(predictions, "probabilities")
+        # pack predictions in a single column
+        predictions <- pack_predictions(predictions)
+      } else {
+        predictions <- as.numeric(predictions)
+      }
       return(predictions)
     },
     .required_packages = c("e1071")

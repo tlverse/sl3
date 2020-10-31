@@ -40,9 +40,9 @@ Lrnr_rpart <- R6Class(
     # you can define default parameter values here
     # if possible, your learner should define defaults for all required parameters
     initialize = function(model = FALSE,
-                              x = FALSE,
-                              y = FALSE,
-                              ...) {
+                          x = FALSE,
+                          y = FALSE,
+                          ...) {
       # this captures all parameters to initialize and saves them as self$params
       params <- args_to_list()
       super$initialize(params = params, ...)
@@ -70,13 +70,13 @@ Lrnr_rpart <- R6Class(
       # what these arguments are called depends on the learner you are wrapping
       x <- as.matrix(task$X)
       y <- outcome_type$format(task$Y)
-      args$formula <- stats::as.formula(y ~ x)
+      if (outcome_type$type == "binary") {
+        y <- factor(y, levels = c(0, 1))
+      }
 
+      args$formula <- data.frame(y = y, x)
       # only add arguments on weights and offset
       # if those were specified when the task was generated
-      if (outcome_type$type == "binary") {
-        args$y <- factor(y, levels = c(0, 1))
-      }
 
       if (task$has_node("weights")) {
         args$weights <- task$weights
@@ -101,7 +101,12 @@ Lrnr_rpart <- R6Class(
       self$training_task
       self$training_outcome_type
       self$fit_object
-      predictions <- stats::predict(self$fit_object, task$X)
+      predictions <- stats::predict(self$fit_object, newdata = task$X)
+
+      if (task$outcome_type$type == "categorical") {
+        # pack predictions in a single column
+        predictions <- pack_predictions(predictions)
+      }
       return(predictions)
     },
     .required_packages = c("rpart")

@@ -43,7 +43,7 @@ Lrnr_arima <- R6Class(
   class = TRUE,
   public = list(
     initialize = function(order = NULL,
-                              ...) {
+                          ...) {
       super$initialize(params = args_to_list(), ...)
     }
   ),
