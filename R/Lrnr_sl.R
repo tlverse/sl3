@@ -144,13 +144,13 @@ Lrnr_sl <- R6Class(
 
       return(preds)
     },
-    update = function(task) {
+    update = function(task, drop_old = FALSE) {
       if (!self$is_trained) {
         return(self$train(task))
       }
 
       fit_object <- self$fit_object
-      fit_object$cv_fit <- fit_object$cv_fit$update(task)
+      fit_object$cv_fit <- fit_object$cv_fit$update(task, drop_old = drop_old)
 
       # fit meta-learner
       fit_object$cv_meta_task <- fit_object$cv_fit$chain(task)
