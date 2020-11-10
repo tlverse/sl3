@@ -143,7 +143,7 @@ Lrnr_xgboost <- R6Class(
         # Use it only for gbtree (not gblinear, i.e., glm -- not implemented)
         ntreelimit <- 0
         if (!is.null(fit_object[["best_ntreelimit"]]) &&
-          !(fit_object[["params"]][["booster"]] %in% "gblinear")) {
+          !("gblinear" %in% fit_object[["params"]][["booster"]])) {
           ntreelimit <- fit_object[["best_ntreelimit"]]
         }
         # will generally return vector, needs to be put into data.table column
