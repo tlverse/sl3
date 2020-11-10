@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Univariate ARIMA Models — Lrnr_arima • sl3</title>
+<title>Time-specific weighting of prediction losses — Lrnr_ts_weights • sl3</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,13 @@
 
 
 
-<meta property="og:title" content="Univariate ARIMA Models — Lrnr_arima" />
-<meta property="og:description" content="This learner supports autoregressive integrated moving average model for
-univariate time-series." />
+<meta property="og:title" content="Time-specific weighting of prediction losses — Lrnr_ts_weights" />
+<meta property="og:description" content="A wrapper around any learner that reweights observations. This reweighted
+is intended for time series, and ultimately assigns weights to losses. This
+learner is particularly useful as a metalearner wrapper. It can be used to
+create a time-adaptive ensemble, where a super learner is created in a manner
+that places more weight (with max weight of 1) on recent losses, and less
+weight is placed on losses further in the past." />
 
 
 
@@ -140,14 +144,18 @@ univariate time-series." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Univariate ARIMA Models</h1>
-    <small class="dont-index">Source: <a href='https://github.com/tlverse/sl3/blob/master/R/Lrnr_arima.R'><code>R/Lrnr_arima.R</code></a></small>
-    <div class="hidden name"><code>Lrnr_arima.Rd</code></div>
+    <h1>Time-specific weighting of prediction losses</h1>
+    <small class="dont-index">Source: <a href='https://github.com/tlverse/sl3/blob/master/R/Lrnr_ts_weights.R'><code>R/Lrnr_ts_weights.R</code></a></small>
+    <div class="hidden name"><code>Lrnr_ts_weights.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This learner supports autoregressive integrated moving average model for
-univariate time-series.</p>
+    <p>A wrapper around any learner that reweights observations. This reweighted
+is intended for time series, and ultimately assigns weights to losses. This
+learner is particularly useful as a metalearner wrapper. It can be used to
+create a time-adaptive ensemble, where a super learner is created in a manner
+that places more weight (with max weight of 1) on recent losses, and less
+weight is placed on losses further in the past.</p>
     </div>
 
 
@@ -164,17 +172,37 @@ univariate time-series.</p>
     
 
 <dl>
-<dt><code>order=NULL</code></dt><dd><p>An optional specification of the non-seasonal
-part of the ARIMA model: the three integer components (p, d, q) are the
-AR order, the degree of differencing, and the MA order. If order is
-specified, then <code><a href='https://rdrr.io/r/stats/arima.html'>arima</a></code> will be called; otherwise,
-<code><a href='https://rdrr.io/pkg/forecast/man/auto.arima.html'>auto.arima</a></code> will be used to fit the "best" ARIMA
-model according to AIC (default), AICc or BIC. The information criterion
-to be used in <code><a href='https://rdrr.io/pkg/forecast/man/auto.arima.html'>auto.arima</a></code> model selection can be
-modified by specifying <code>ic</code> argument.</p></dd>
-<dt><code>...</code></dt><dd><p>Other parameters passed to <code><a href='https://rdrr.io/r/stats/arima.html'>arima</a></code> or
-<code><a href='https://rdrr.io/pkg/forecast/man/auto.arima.html'>auto.arima</a></code> function, depending on whether or not
-<code>order</code> argument is provided.</p></dd>
+<dt><code>learner</code></dt><dd><p>The learner to wrap</p></dd>
+<dt><code>folds=NULL</code></dt><dd><p>An <code>origami</code> folds object. If <code>NULL</code>,
+folds from the task are used</p></dd>
+<dt><code>full_fit=FALSE</code></dt><dd><p>If <code>TRUE</code>, also fit the underlying
+learner on the full data. This can then be accessed with
+<code>predict_fold(task, fold_number="full")</code></p></dd>
+<dt><code>window</code></dt><dd><p>Observations corresponding to times outside of the
+window are assigned weight of 0, and obervations corresponding to times
+within the window are assigned weight of 1. The window is defined with
+respect to the difference from the maximum time, where all times are
+obtained from the task node for time. For example, if the maximum time is
+100 and the window is 10, then obervations corresponding to times 90-100
+are assigned weight 1 and obervations for times 1-89 are assigned weight 0.
+If <code>rate</code> is provided with <code>window</code>, then times within the
+window are assigned according to the <code>rate</code> argument (and potentially
+<code>delay_decay</code>), and the times outside of the window are still
+assigned weight of 0.</p></dd>
+<dt><code>rate</code></dt><dd><p>A rate of decay to apply to the losses, where the decay
+function is (1-rate)^lag and the lag is the difference from all times to
+the maximum time.</p></dd>
+<dt><code>delay_decay</code></dt><dd><p>The amount of time to delay decaying weights,
+for optional use with <code>rate</code> argument. The delay decay is subtracted
+from the lags, such that lags less than the delay decay have lag of 0 and
+thus weight of 1. For example, a delay decay of 10 assigns weight 1 to
+observations that are no more than 10 time points away from the maximum
+time; and for observations that are more than 10 time points away from the
+maximum time, the weight is assigned according to the decay function.
+In this example, observations corresponding to 11 time points away from the
+maximum time would be assigned lag=1, 11-10, when setting the weights
+with respect to (1-rate)^lag.</p></dd>
+<dt><code>...</code></dt><dd><p>Not currently used.</p></dd>
 
 </dl>
 
@@ -183,6 +211,7 @@ modified by specifying <code>ic</code> argument.</p></dd>
     <div class='dont-index'><p>Other Learners: 
 <code><a href='Custom_chain.html'>Custom_chain</a></code>,
 <code><a href='Lrnr_HarmonicReg.html'>Lrnr_HarmonicReg</a></code>,
+<code><a href='Lrnr_arima.html'>Lrnr_arima</a></code>,
 <code><a href='Lrnr_bartMachine.html'>Lrnr_bartMachine</a></code>,
 <code><a href='Lrnr_base.html'>Lrnr_base</a></code>,
 <code><a href='Lrnr_bilstm.html'>Lrnr_bilstm</a></code>,
@@ -236,7 +265,6 @@ modified by specifying <code>ic</code> argument.</p></dd>
 <code><a href='Lrnr_subset_covariates.html'>Lrnr_subset_covariates</a></code>,
 <code><a href='Lrnr_svm.html'>Lrnr_svm</a></code>,
 <code><a href='Lrnr_tsDyn.html'>Lrnr_tsDyn</a></code>,
-<code><a href='Lrnr_ts_weights.html'>Lrnr_ts_weights</a></code>,
 <code><a href='Lrnr_xgboost.html'>Lrnr_xgboost</a></code>,
 <code><a href='Pipeline.html'>Pipeline</a></code>,
 <code><a href='Stack.html'>Stack</a></code>,
