@@ -132,7 +132,9 @@ Lrnr_dbarts <- R6Class(
         args$offset <- task$offset
       }
 
-      fit_object <- call_with_args(dbarts::bart, args)
+      fit_object <- call_with_args(
+        dbarts::bart, args, names(formals(dbarts::dbartsControl))
+      )
 
       # if (self$params$serializeable) {
       #  invisible(fit_object$fit$state)

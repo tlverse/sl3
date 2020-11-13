@@ -55,7 +55,7 @@ Lrnr_ranger <- R6Class(
       args$x <- self$fit_object
 
       # calculate importance metrics
-      importance_result <- call_with_args(ranger::importance, args)
+      importance_result <- call_with_args(ranger::importance, args, keep_all = T)
 
       # sort according to decreasing importance
       return(importance_result[order(importance_result, decreasing = TRUE)])
@@ -72,7 +72,7 @@ Lrnr_ranger <- R6Class(
       args$data <- data_in
       args$dependent.variable.name <- task$nodes$outcome
       args$probability <- task$outcome_type$type == "categorical"
-      fit_object <- call_with_args(ranger::ranger, args)
+      fit_object <- call_with_args(ranger::ranger, args, )
       return(fit_object)
     },
 
