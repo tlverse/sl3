@@ -144,7 +144,6 @@ Lrnr_xgboost <- R6Class(
         ntreelimit <- 0
         if (!is.null(fit_object[["best_ntreelimit"]]) &&
           !("gblinear" %in% fit_object[["params"]][["booster"]])) {
-          
           ntreelimit <- fit_object[["best_ntreelimit"]]
         }
         # will generally return vector, needs to be put into data.table column

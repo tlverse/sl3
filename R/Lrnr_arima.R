@@ -77,7 +77,10 @@ Lrnr_arima <- R6Class(
         fit_object <- call_with_args(stats::arima, params)
       } else {
         params$y <- task$Y
-        fit_object <- call_with_args(forecast::auto.arima, params)
+        fit_object <- call_with_args(
+          forecast::auto.arima, params,
+          ignore = "order"
+        )
       }
 
       return(fit_object)
