@@ -1,4 +1,4 @@
-context("test-arima.R -- ARIMA and tsDyn")
+context("test-arima-tsDyn.R -- ARIMA and tsDyn")
 
 if (FALSE) {
   setwd("..")
