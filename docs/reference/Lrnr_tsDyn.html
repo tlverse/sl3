@@ -165,60 +165,9 @@ additive AR, neural nets, SETAR and LSTAR models, threshold VAR and VECM.</p>
 
 <dl>
 <dt><code>learner</code></dt><dd><p>Available built-in time series models. Currently
-available are listed by with availableModels() function.</p></dd>
-<dt><code>m=1</code></dt><dd><p>embedding dimension.</p></dd>
-<dt><code>size=1</code></dt><dd><p>number of hidden units in the neural network.</p></dd>
-<dt><code>lag=1</code></dt><dd><p>Number of lags to include in each regime.</p></dd>
-<dt><code>d=1</code></dt><dd><p>time delay.</p></dd>
-<dt><code>include="const"</code></dt><dd><p>Type of deterministic regressors to include.</p></dd>
-<dt><code>type="level"</code></dt><dd><p>Whether the variable is taken is level,
-difference or a mix as in the ADF test.</p></dd>
-<dt><code>n.ahead="null"</code></dt><dd><p>The forecast horizon.</p></dd>
-<dt><code>mL=m</code></dt><dd><p>autoregressive order for low regime.</p></dd>
-<dt><code>mH=m</code></dt><dd><p>autoregressive order for high regime.</p></dd>
-<dt><code>mM=NULL</code></dt><dd><p>autoregressive order for middle regime.</p></dd>
-<dt><code>thDelay=0</code></dt><dd><p>Delay Time delay for the threshold variable.</p></dd>
-<dt><code>common="none"</code></dt><dd><p>Indicates which elements are common to all
-regimes.</p></dd>
-<dt><code>ML=seq_len(mL)</code></dt><dd><p>vector of lags for order for low.</p></dd>
-<dt><code>MM=NULL</code></dt><dd><p>vector of lags for order for middle.</p></dd>
-<dt><code>MH=seq_len(mH)</code></dt><dd><p>vector of lags for order for high.</p></dd>
-<dt><code>nthresh=1</code></dt><dd><p>Threshold of the model.</p></dd>
-<dt><code>trim=0.15</code></dt><dd><p>trimming parameter indicating the minimal
-percentage of observations in each regime.</p></dd>
-<dt><code>sig=0.05</code></dt><dd><p>significance level for the tests to select the
-number of regimes.</p></dd>
-<dt><code>control=list()</code></dt><dd><p>further arguments to be passed as control list
-to <code>optim</code>.</p></dd>
-<dt><code>r=1</code></dt><dd><p>Number of cointegrating relationships.</p></dd>
-<dt><code>model="VAR"</code></dt><dd><p>Model to estimate. Choices: VAR/VECM/TAR/MTAR.</p></dd>
-<dt><code>I="level"</code></dt><dd><p>For VAR only: whether in the VAR variables are to
-be taken in levels or as a difference.</p></dd>
-<dt><code>beta=NULL</code></dt><dd><p>For VECM only: imposed cointegrating value.</p></dd>
-<dt><code>estim="2OLS"</code></dt><dd><p>Type of estimator for the VECM (two-step
-approach or Johansen MLE).</p></dd>
-<dt><code>exogen=NULL</code></dt><dd><p>Inclusion of exogenous variables.</p></dd>
-<dt><code>LRinclude="none"</code></dt><dd><p>Possibility to include in the long-run
-relationship and the ECT trend.</p></dd>
-<dt><code>commonInter=FALSE</code></dt><dd><p>Whether the deterministic regressors are
-regime specific.</p></dd>
-<dt><code>mTh=1</code></dt><dd><p>combination of variables with same lag order for the
-transition variable.</p></dd>
-<dt><code>gamma=NULL</code></dt><dd><p>prespecified threshold values.</p></dd>
-<dt><code>dummyToBothRegimes=TRUE</code></dt><dd><p>Whether the dummy in the one
-threshold model is applied to each regime.</p></dd>
-<dt><code>max.iter=2</code></dt><dd><p>Number of iterations for the algorithm.</p></dd>
-<dt><code>ngridBeta=50</code></dt><dd><p>Number of elements to search for the
-cointegrating value.</p></dd>
-<dt><code>ngridTh=50</code></dt><dd><p>Number of elements to search for the threshold
-value.</p></dd>
-<dt><code>th1</code></dt><dd><p>different possibilities to pre-specify an exact value, an
-interval or a central point for the search of the threshold.</p></dd>
-<dt><code>th2</code></dt><dd><p>different possibilities to pre-specify an exact value or
-a central point for the search of the second threshold.</p></dd>
-<dt><code>beta0=0</code></dt><dd><p>Additional regressors to include in the cointegrating
-relation.</p></dd>
-<dt><code>...</code></dt><dd><p>Not currently used.</p></dd>
+available can be listed with availableModels() function.</p></dd>
+<dt><code>m = 1</code></dt><dd><p>embedding dimension.</p></dd>
+<dt><code>...</code></dt><dd><p>Additional learner-specific arguments.</p></dd>
 
 </dl>
 

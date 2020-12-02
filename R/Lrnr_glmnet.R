@@ -23,8 +23,8 @@
 #'
 #' @section Parameters:
 #' \describe{
-#'   \item{\code{lambda=NULL}}{A vector of lambda values to compare}
-#'   \item{\code{type.measure="deviance"}}{The loss to use when selecting
+#'   \item{\code{lambda = NULL}}{An optional vector of lambda values to compare.}
+#'   \item{\code{type.measure = "deviance"}}{The loss to use when selecting
 #'     lambda. Options documented in \code{\link[glmnet]{cv.glmnet}}.}
 #'   \item{\code{nfolds = 10}}{Number of folds to use for internal
 #'     cross-validation.}
@@ -33,15 +33,15 @@
 #'     (L1-penalized) regression. Values in the closed unit interval specify a
 #'     weighted combination of the two penalties. This is further documented in
 #'     \code{\link[glmnet]{glmnet}}.}
-#'   \item{\code{nlambda=100}}{The number of lambda values to fit. Comparing
+#'   \item{\code{nlambda = 100}}{The number of lambda values to fit. Comparing
 #'     less values will speed up computation, but may decrease statistical
 #'     performance. Documented in \code{\link[glmnet]{cv.glmnet}}.}
-#'   \item{\code{use_min=TRUE}}{If \code{TRUE}, use
+#'   \item{\code{use_min = TRUE}}{If \code{TRUE}, use
 #'     \code{lambda = cv_fit$lambda.min} for prediction; otherwise, use
 #'     \code{lambda = cv_fit$lambda.1se}. The distinction between these is
 #'     clarified in \code{\link[glmnet]{cv.glmnet}}.}
 #'   \item{\code{...}}{Other parameters to be passed to
-#'     \code{\link[glmnet]{cv.glmnet}} and \code{\link[glmnet]{glmnet}}.}
+#'   \code{\link[glmnet]{cv.glmnet}} and \code{\link[glmnet]{glmnet}}.}
 #' }
 #'
 #' @template common_parameters
@@ -64,6 +64,7 @@ Lrnr_glmnet <- R6Class(
 
     .train = function(task) {
       args <- self$params
+
       outcome_type <- self$get_outcome_type(task)
 
       if (is.null(args$family)) {
@@ -97,7 +98,8 @@ Lrnr_glmnet <- R6Class(
 
       fit_object <- call_with_args(
         glmnet::cv.glmnet, args,
-        c(names(formals(glmnet::cv.glmnet)), names(formals(glmnet::glmnet)))
+        other_valid = names(formals(glmnet::glmnet)),
+        ignore = "use_min"
       )
       fit_object$glmnet.fit$call <- NULL
       return(fit_object)
