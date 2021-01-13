@@ -127,13 +127,11 @@ install.packages("sl3")
 ```
 -->
 <p>Install the <em>most recent version</em> from the <code>master</code> branch on GitHub via <a href="https://CRAN.R-project.org/package=remotes"><code>remotes</code></a>:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="kw">remotes</span>::<span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"tlverse/sl3"</span>)
-</pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"tlverse/sl3"</span><span class="op">)</span></code></pre></div>
 <p>Past stable releases may be located via the <a href="https://github.com/tlverse/sl3/releases">releases</a> page on GitHub and may be installed by including the appropriate major version tag. For example,</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="kw">remotes</span>::<span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"tlverse/sl3@v1.3.7"</span>)
-</pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"tlverse/sl3@v1.3.7"</span><span class="op">)</span></code></pre></div>
 <p>To contribute, check out the <code>devel</code> branch and consider submitting a pull request.</p>
 <hr>
 </div>
@@ -147,36 +145,36 @@ install.packages("sl3")
 <h2 class="hasAnchor">
 <a href="#examples" class="anchor"></a>Examples</h2>
 <p><code>sl3</code> makes the process of applying screening algorithms, learning algorithms, combining both types of algorithms into a stacked regression model, and cross-validating this whole process essentially trivial. The best way to understand this is to see the <code>sl3</code> package in action:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">49753</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://r-datatable.com">data.table</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/ecpolley/SuperLearner">SuperLearner</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://tlverse.org/origami">origami</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://tlverse.org/sl3">sl3</a></span>)
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">49753</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://Rdatatable.gitlab.io/data.table">data.table</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ecpolley/SuperLearner">SuperLearner</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tlverse.org/origami">origami</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tlverse.org/sl3">sl3</a></span><span class="op">)</span>
 
 <span class="co"># load example data set</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="kw">cpp</span>)
-<span class="kw">cpp</span> <span class="op">&lt;-</span> <span class="kw">cpp</span> <span class="op">%&gt;%</span>
-  <span class="kw">dplyr</span>::<span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(<span class="kw">haz</span>)) <span class="op">%&gt;%</span>
-  <span class="fu">mutate_all</span>(<span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/replace.html">replace</a></span>(<span class="kw">.</span>, <span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(<span class="kw">.</span>), <span class="fl">0</span>))
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">cpp</span><span class="op">)</span>
+<span class="va">cpp</span> <span class="op">&lt;-</span> <span class="va">cpp</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">haz</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">mutate_all</span><span class="op">(</span><span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/replace.html">replace</a></span><span class="op">(</span><span class="va">.</span>, <span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span>
 
 <span class="co"># use covariates of intest and the outcome to build a task object</span>
-<span class="kw">covars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"apgar1"</span>, <span class="st">"apgar5"</span>, <span class="st">"parity"</span>, <span class="st">"gagebrth"</span>, <span class="st">"mage"</span>, <span class="st">"meducyrs"</span>,
-            <span class="st">"sexn"</span>)
-<span class="kw">task</span> <span class="op">&lt;-</span> <span class="kw">sl3_Task</span><span class="op">$</span><span class="fu">new</span>(<span class="kw">cpp</span>, covariates = <span class="kw">covars</span>, outcome = <span class="st">"haz"</span>)
+<span class="va">covars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"apgar1"</span>, <span class="st">"apgar5"</span>, <span class="st">"parity"</span>, <span class="st">"gagebrth"</span>, <span class="st">"mage"</span>, <span class="st">"meducyrs"</span>,
+            <span class="st">"sexn"</span><span class="op">)</span>
+<span class="va">task</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/sl3_Task.html">sl3_Task</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">cpp</span>, covariates <span class="op">=</span> <span class="va">covars</span>, outcome <span class="op">=</span> <span class="st">"haz"</span><span class="op">)</span>
 
 <span class="co"># set up screeners and learners via built-in functions and pipelines</span>
-<span class="kw">slscreener</span> <span class="op">&lt;-</span> <span class="kw">Lrnr_pkg_SuperLearner_screener</span><span class="op">$</span><span class="fu">new</span>(<span class="st">"screen.glmnet"</span>)
-<span class="kw">glm_learner</span> <span class="op">&lt;-</span> <span class="kw">Lrnr_glm</span><span class="op">$</span><span class="fu">new</span>()
-<span class="kw">screen_and_glm</span> <span class="op">&lt;-</span> <span class="kw">Pipeline</span><span class="op">$</span><span class="fu">new</span>(<span class="kw">slscreener</span>, <span class="kw">glm_learner</span>)
-<span class="kw">SL.glmnet_learner</span> <span class="op">&lt;-</span> <span class="kw">Lrnr_pkg_SuperLearner</span><span class="op">$</span><span class="fu">new</span>(SL_wrapper = <span class="st">"SL.glmnet"</span>)
+<span class="va">slscreener</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/Lrnr_pkg_SuperLearner.html">Lrnr_pkg_SuperLearner_screener</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"screen.glmnet"</span><span class="op">)</span>
+<span class="va">glm_learner</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/Lrnr_glm.html">Lrnr_glm</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>
+<span class="va">screen_and_glm</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/Pipeline.html">Pipeline</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">slscreener</span>, <span class="va">glm_learner</span><span class="op">)</span>
+<span class="va">SL.glmnet_learner</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/Lrnr_pkg_SuperLearner.html">Lrnr_pkg_SuperLearner</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>SL_wrapper <span class="op">=</span> <span class="st">"SL.glmnet"</span><span class="op">)</span>
 
 <span class="co"># stack learners into a model (including screeners and pipelines)</span>
-<span class="kw">learner_stack</span> <span class="op">&lt;-</span> <span class="kw">Stack</span><span class="op">$</span><span class="fu">new</span>(<span class="kw">SL.glmnet_learner</span>, <span class="kw">glm_learner</span>, <span class="kw">screen_and_glm</span>)
-<span class="kw">stack_fit</span> <span class="op">&lt;-</span> <span class="kw">learner_stack</span><span class="op">$</span><span class="fu">train</span>(<span class="kw">task</span>)
-<span class="kw">preds</span> <span class="op">&lt;-</span> <span class="kw">stack_fit</span><span class="op">$</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>()
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">preds</span>)
+<span class="va">learner_stack</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/Stack.html">Stack</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">SL.glmnet_learner</span>, <span class="va">glm_learner</span>, <span class="va">screen_and_glm</span><span class="op">)</span>
+<span class="va">stack_fit</span> <span class="op">&lt;-</span> <span class="va">learner_stack</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span>
+<span class="va">preds</span> <span class="op">&lt;-</span> <span class="va">stack_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">preds</span><span class="op">)</span>
 <span class="co">#&gt;    Lrnr_pkg_SuperLearner_SL.glmnet Lrnr_glm_TRUE</span>
 <span class="co">#&gt; 1:                      0.35618966    0.36298498</span>
 <span class="co">#&gt; 2:                      0.35618966    0.36298498</span>
@@ -190,8 +188,7 @@ install.packages("sl3")
 <span class="co">#&gt; 3:                                                            0.25870995</span>
 <span class="co">#&gt; 4:                                                            0.25870995</span>
 <span class="co">#&gt; 5:                                                            0.25870995</span>
-<span class="co">#&gt; 6:                                                            0.05600958</span>
-</pre></div>
+<span class="co">#&gt; 6:                                                            0.05600958</span></code></pre></div>
 <hr>
 </div>
 <div id="learner-properties" class="section level2">
@@ -223,9 +220,6 @@ install.packages("sl3")
 </th>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 <p>importance</p>
-</th>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-<p>multivariate_outcome</p>
 </th>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 <p>offset</p>
@@ -262,9 +256,6 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -341,9 +332,6 @@ install.packages("sl3")
 <p>x</p>
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
 <p>√</p>
 </td>
 <td style="text-align:left;">
@@ -362,9 +350,6 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -412,9 +397,6 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -496,9 +478,6 @@ install.packages("sl3")
 <td style="text-align:left;">
 <p>x</p>
 </td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -544,9 +523,6 @@ install.packages("sl3")
 <p>x</p>
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
 <p>√</p>
 </td>
 </tr>
@@ -562,9 +538,6 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -641,9 +614,6 @@ install.packages("sl3")
 <p>x</p>
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
 <p>√</p>
 </td>
 <td style="text-align:left;">
@@ -653,9 +623,6 @@ install.packages("sl3")
 <tr>
 <td style="text-align:left;">
 <p>Lrnr_define_interactions</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -746,9 +713,6 @@ install.packages("sl3")
 <td style="text-align:left;">
 <p>x</p>
 </td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -796,9 +760,6 @@ install.packages("sl3")
 <td style="text-align:left;">
 <p>x</p>
 </td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -818,9 +779,6 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -896,9 +854,6 @@ install.packages("sl3")
 <td style="text-align:left;">
 <p>x</p>
 </td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -912,9 +867,6 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -996,9 +948,6 @@ install.packages("sl3")
 <td style="text-align:left;">
 <p>x</p>
 </td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1012,9 +961,6 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -1076,9 +1022,6 @@ install.packages("sl3")
 <p>x</p>
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
 <p>√</p>
 </td>
 <td style="text-align:left;">
@@ -1112,9 +1055,6 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -1191,9 +1131,6 @@ install.packages("sl3")
 <p>x</p>
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
 <p>√</p>
 </td>
 <td style="text-align:left;">
@@ -1212,9 +1149,6 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -1288,9 +1222,6 @@ install.packages("sl3")
 <p>x</p>
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
 <p>√</p>
 </td>
 <td style="text-align:left;">
@@ -1312,9 +1243,6 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -1362,9 +1290,6 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -1441,9 +1366,6 @@ install.packages("sl3")
 <p>x</p>
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
 <p>√</p>
 </td>
 <td style="text-align:left;">
@@ -1468,9 +1390,6 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -1538,9 +1457,6 @@ install.packages("sl3")
 <p>x</p>
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
 <p>√</p>
 </td>
 <td style="text-align:left;">
@@ -1562,9 +1478,6 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -1646,9 +1559,6 @@ install.packages("sl3")
 <td style="text-align:left;">
 <p>x</p>
 </td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1662,9 +1572,6 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -1726,9 +1633,6 @@ install.packages("sl3")
 <p>x</p>
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
 <p>√</p>
 </td>
 <td style="text-align:left;">
@@ -1762,9 +1666,6 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -1846,9 +1747,6 @@ install.packages("sl3")
 <td style="text-align:left;">
 <p>x</p>
 </td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1862,9 +1760,6 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -1946,9 +1841,6 @@ install.packages("sl3")
 <td style="text-align:left;">
 <p>x</p>
 </td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1962,9 +1854,6 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -2003,9 +1892,6 @@ install.packages("sl3")
 <tr>
 <td style="text-align:left;">
 <p>Lrnr_pca</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -2091,9 +1977,6 @@ install.packages("sl3")
 <p>x</p>
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
 <p>√</p>
 </td>
 <td style="text-align:left;">
@@ -2112,9 +1995,6 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -2191,9 +2071,6 @@ install.packages("sl3")
 <p>x</p>
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
 <p>√</p>
 </td>
 <td style="text-align:left;">
@@ -2246,9 +2123,6 @@ install.packages("sl3")
 <td style="text-align:left;">
 <p>x</p>
 </td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2259,9 +2133,6 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -2346,9 +2217,6 @@ install.packages("sl3")
 <td style="text-align:left;">
 <p>x</p>
 </td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2396,9 +2264,6 @@ install.packages("sl3")
 <td style="text-align:left;">
 <p>x</p>
 </td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2415,9 +2280,6 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -2491,9 +2353,6 @@ install.packages("sl3")
 <p>x</p>
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
 <p>√</p>
 </td>
 <td style="text-align:left;">
@@ -2512,9 +2371,6 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -2585,9 +2441,6 @@ install.packages("sl3")
 <p>x</p>
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
 <p>√</p>
 </td>
 <td style="text-align:left;">
@@ -2603,9 +2456,6 @@ install.packages("sl3")
 <tr>
 <td style="text-align:left;">
 <p>Lrnr_screener_coefs</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -2696,16 +2546,10 @@ install.packages("sl3")
 <td style="text-align:left;">
 <p>x</p>
 </td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
 <p>Lrnr_screener_importance</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -2794,9 +2638,6 @@ install.packages("sl3")
 <p>x</p>
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
 <p>√</p>
 </td>
 </tr>
@@ -2812,9 +2653,6 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -2896,9 +2734,6 @@ install.packages("sl3")
 <td style="text-align:left;">
 <p>x</p>
 </td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2946,16 +2781,10 @@ install.packages("sl3")
 <td style="text-align:left;">
 <p>x</p>
 </td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
 <p>Lrnr_subset_covariates</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -3046,9 +2875,6 @@ install.packages("sl3")
 <td style="text-align:left;">
 <p>x</p>
 </td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3065,9 +2891,6 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -3126,9 +2949,6 @@ install.packages("sl3")
 <p>x</p>
 </td>
 <td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
 <p>x</p>
 </td>
 <td style="text-align:left;">
@@ -3174,9 +2994,6 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>√</p>

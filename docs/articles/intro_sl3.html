@@ -91,14 +91,15 @@
 
       
 
-      </header><script src="intro_sl3_files/header-attrs-2.4/header-attrs.js"></script><script src="intro_sl3_files/accessible-code-block-0.0.1/empty-anchor.js"></script><script src="intro_sl3_files/htmlwidgets-1.5.2/htmlwidgets.js"></script><link href="intro_sl3_files/vis-4.20.1/vis.css" rel="stylesheet">
+      </header><script src="intro_sl3_files/header-attrs-2.5/header-attrs.js"></script><script src="intro_sl3_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="intro_sl3_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="intro_sl3_files/anchor-sections-1.0/anchor-sections.js"></script><script src="intro_sl3_files/htmlwidgets-1.5.2/htmlwidgets.js"></script><link href="intro_sl3_files/vis-4.20.1/vis.css" rel="stylesheet">
 <script src="intro_sl3_files/vis-4.20.1/vis.min.js"></script><script src="intro_sl3_files/visNetwork-binding-2.0.9/visNetwork.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Modern Machine Learning in R</h1>
                         <h4 class="author">Jeremy Coyle, Nima Hejazi, Ivana Malenica, Oleg Sofrygin</h4>
             
-            <h4 class="date">2020-12-01</h4>
+            <h4 class="date">2021-01-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tlverse/sl3/blob/master/vignettes/intro_sl3.Rmd"><code>vignettes/intro_sl3.Rmd</code></a></small>
       <div class="hidden name"><code>intro_sl3.Rmd</code></div>
@@ -115,23 +116,22 @@
 <h3 class="hasAnchor">
 <a href="#example-data" class="anchor"></a>Example Data</h3>
 <p>Throughout this vignette, we use data from the Collaborative Perinatal Project (CPP) to illustrate the features of <code>sl3</code> as well as its proper usage. For convenience, we’ve included an imputed version of this dataset in the <code>sl3</code> package. Below, we load some useful packages, load the <code>cpp_imputed</code> dataset, and define the variables (columns) from the data set we’re interested in:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">49753</span>)
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">49753</span><span class="op">)</span>
 
 <span class="co"># packages we'll be using</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://r-datatable.com">data.table</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/ecpolley/SuperLearner">SuperLearner</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://tlverse.org/origami">origami</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://tlverse.org/sl3">sl3</a></span>)
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://Rdatatable.gitlab.io/data.table">data.table</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ecpolley/SuperLearner">SuperLearner</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tlverse.org/origami">origami</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tlverse.org/sl3">sl3</a></span><span class="op">)</span>
 
 <span class="co"># load example data set</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="kw">cpp_imputed</span>)
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">cpp_imputed</span><span class="op">)</span>
 
 <span class="co"># here are the covariates we are interested in and, of course, the outcome</span>
-<span class="kw">covars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"apgar1"</span>, <span class="st">"apgar5"</span>, <span class="st">"parity"</span>, <span class="st">"gagebrth"</span>, <span class="st">"mage"</span>, <span class="st">"meducyrs"</span>,
-            <span class="st">"sexn"</span>)
-<span class="kw">outcome</span> <span class="op">&lt;-</span> <span class="st">"haz"</span>
-</pre></div>
+<span class="va">covars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"apgar1"</span>, <span class="st">"apgar5"</span>, <span class="st">"parity"</span>, <span class="st">"gagebrth"</span>, <span class="st">"mage"</span>, <span class="st">"meducyrs"</span>,
+            <span class="st">"sexn"</span><span class="op">)</span>
+<span class="va">outcome</span> <span class="op">&lt;-</span> <span class="st">"haz"</span></code></pre></div>
 </div>
 <div id="basics-of-object-oriented-programming" class="section level3">
 <h3 class="hasAnchor">
@@ -147,15 +147,13 @@
 <h3 class="hasAnchor">
 <a href="#tasks" class="anchor"></a>Tasks</h3>
 <p>The <code>sl3_Task</code> class defines machine learning problems. An <code>sl3_Task</code> object keeps track of the task data, as well as what variables play what roles in the machine learning problem. We can see an example of that here, using the <code>cpp</code> dataset described above:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="kw">task</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sl3_Task.html">make_sl3_Task</a></span>(data = <span class="kw">cpp_imputed</span>, covariates = <span class="kw">covars</span>,
-                      outcome = <span class="kw">outcome</span>, outcome_type=<span class="st">"continuous"</span>)
-</pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">task</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sl3_Task.html">make_sl3_Task</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">cpp_imputed</span>, covariates <span class="op">=</span> <span class="va">covars</span>,
+                      outcome <span class="op">=</span> <span class="va">outcome</span>, outcome_type<span class="op">=</span><span class="st">"continuous"</span><span class="op">)</span></code></pre></div>
 <p>We use the <code>make_sl3_Task</code> method to create a new <code>sl3_Task</code>, called <code>task</code>. Here, we specified the underlying data, <code>cpp_imputed</code>, and vectors indicating which varaibles to use as covariates and outcomes.</p>
 <p>Let’s take a look at this object:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="kw">task</span>
-</pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">task</span></code></pre></div>
 <pre><code>## A sl3 Task with 1441 obs and these nodes:
 ## $covariates
 ## [1] "apgar1"   "apgar5"   "parity"   "gagebrth" "mage"     "meducyrs" "sexn"    
@@ -181,26 +179,23 @@
 <h2 class="hasAnchor">
 <a href="#learners" class="anchor"></a>Learners</h2>
 <p><code>Lrnr_base</code> is the base class for defining machine learning algorithms, as well as <em>fits</em> for those algorithms to particular <code>sl3_Task</code>s. Different machine learning algorithms are defined in classes that inherit from <code>Lrnr_base</code>. For instance, the <code>Lrnr_glm</code> class inherits from <code>Lrnr_base</code>, and defines a learner that fits generalized linear models. We will use the term <em>learners</em> to refer to the family of classes that inherit from <code>Lrnr_base</code>. Learner objects can be constructed from their class definitions using the <code>make_learner</code> function:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="co"># make learner object</span>
-<span class="kw">lrnr_glm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Lrnr_base.html">make_learner</a></span>(<span class="kw">Lrnr_glm</span>)
-</pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># make learner object</span>
+<span class="va">lrnr_glm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Lrnr_base.html">make_learner</a></span><span class="op">(</span><span class="va">Lrnr_glm</span><span class="op">)</span></code></pre></div>
 <p>Because all learners inherit from <code>Lrnr_base</code>, they have many features in common, and can be used interchangeably. All learners define three main methods: <code>train</code>, <code>predict</code>, and <code>chain</code>. The first, <code>train</code>, takes a <code>sl3_task</code> object, and returns a learner_fit, which has the same class as the learner that was trained:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="co"># fit learner to task data</span>
-<span class="kw">lrnr_glm_fit</span> <span class="op">&lt;-</span> <span class="kw">lrnr_glm</span><span class="op">$</span><span class="fu">train</span>(<span class="kw">task</span>)
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># fit learner to task data</span>
+<span class="va">lrnr_glm_fit</span> <span class="op">&lt;-</span> <span class="va">lrnr_glm</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span>
 
 <span class="co"># verify that the learner is fit</span>
-<span class="kw">lrnr_glm_fit</span><span class="op">$</span><span class="kw">is_trained</span>
-</pre></div>
+<span class="va">lrnr_glm_fit</span><span class="op">$</span><span class="va">is_trained</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>Here, we fit the learner to the CPP task we defined above. Both <code>lrnr_glm</code> and <code>lrnr_glm_fit</code> are objects of class <code>Lrnr_glm</code>, although the former defines a learner and the latter defines a fit of that learner. We can distiguish between the learners and learner fits using the <code>is_trained</code> field, which is true for fits but not for learners.</p>
 <p>Now that we’ve fit a learner, we can generate predictions using the <code>predict</code> method:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="co"># get learner predictions</span>
-<span class="kw">preds</span> <span class="op">&lt;-</span> <span class="kw">lrnr_glm_fit</span><span class="op">$</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>(<span class="kw">task</span>)
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">preds</span>)
-</pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># get learner predictions</span>
+<span class="va">preds</span> <span class="op">&lt;-</span> <span class="va">lrnr_glm_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">task</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">preds</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 0.36298498 0.36298498 0.25993072 0.25993072 0.25993072 0.05680264</code></pre>
 <p>Here, we specified <code>task</code> as the task for which we wanted to generate predictions. If we had omitted this, we would have gotten the same predictions because <code>predict</code> defaults to using the task provided to <code>train</code> (called the training task). Alternatively, we could have provided a different task for which we want to generate predictions.</p>
 <p>The final important learner method, <code>chain</code>, will be discussed below, in the section on <strong>learner composition</strong>. As with <code>sl3_Task</code>, learners have a variety of fields and methods we haven’t discussed here. More information on these is available in the help for <a href="https://sl3.tlverse.org/reference/Lrnr_base.html"><code>Lrnr_base</code></a>.</p>
@@ -208,22 +203,19 @@
 <h3 class="hasAnchor">
 <a href="#finding-learners" class="anchor"></a>Finding Learners</h3>
 <p>Learners have <em>properties</em> that indicate what features they support. You can use <code>sl3_list_properties</code> to get a list of all properties supported by at least one learner. You can then use <code>sl3_list_learners</code> to find learners supporting any set of properties. For example:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="fu"><a href="../reference/sl3_list_properties.html">sl3_list_properties</a></span>()
-</pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/sl3_list_properties.html">sl3_list_properties</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>##  [1] "binomial"      "categorical"   "continuous"    "cv"           
 ##  [5] "density"       "ids"           "importance"    "offset"       
 ##  [9] "preprocessing" "sampling"      "screener"      "timeseries"   
 ## [13] "weights"       "wrapper"</code></pre>
-<div class="sourceCode" id="cb12"><pre class="downlit">
-<span class="fu"><a href="../reference/sl3_list_properties.html">sl3_list_learners</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"binomial"</span>, <span class="st">"offset"</span>))
-</pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/sl3_list_properties.html">sl3_list_learners</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"binomial"</span>, <span class="st">"offset"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] "Lrnr_glm"      "Lrnr_glm_fast" "Lrnr_h2o_glm"  "Lrnr_h2o_grid"
 ## [5] "Lrnr_mean"     "Lrnr_optim"    "Lrnr_solnp"    "Lrnr_xgboost"</code></pre>
 <p>The list of supported learners is currently somewhat limited. Despite current limitations, some learners not yet supported natively in <code>sl3</code> can be used via their corresponding wrappers in the <code>SuperLearner</code> package. <code>SuperLearner</code> wrappers, screeners, and methods can all be used as <code>sl3</code> learners via <code>Lrnr_pkg_SuperLearner</code>, <code>Lrnr_pkg_SuperLearner_screener</code>, and <code>Lrnr_pkg_SuperLearner_method</code> respectively. To learn more about <code>SuperLearner</code> wrappers, screeners, and methods, consult the documentation provided with that R package. Here’s an example of defining a <code>sl3</code> learner that uses the <code>SL.glmnet</code> wrapper from <code>SuperLearner</code>.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit">
-<span class="kw">lrnr_sl_glmnet</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Lrnr_base.html">make_learner</a></span>(<span class="kw">Lrnr_pkg_SuperLearner</span>, <span class="st">"SL.glmnet"</span>)
-</pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">lrnr_sl_glmnet</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Lrnr_base.html">make_learner</a></span><span class="op">(</span><span class="va">Lrnr_pkg_SuperLearner</span>, <span class="st">"SL.glmnet"</span><span class="op">)</span></code></pre></div>
 <p>In most cases, using these wrappers will not be as efficient as their native <code>sl3</code> counterparts. If your favorite learner is missing from <code>sl3</code>, please consider adding it by following the <a href="custom_lrnrs.html">“Defining New Learners”</a> vignette.</p>
 </div>
 <div id="learner-parameters" class="section level3">
@@ -247,19 +239,17 @@
 <a href="#pipelines" class="anchor"></a>Pipelines</h3>
 <p>A pipeline is a set of learners to be fit <em>sequentially</em>, where the fit from one learner is used to define the task for the next learner. There are many ways in which a learner can define the task for the downstream learner. The <code>chain</code> method defined by learners defines how this will work. Let’s look at the example of pre-screening variables. For now, we’ll rely on a screener from the <code>SuperLearner</code> package, although native <code>sl3</code> screening algorithms will be implemented soon.</p>
 <p>Below, we generate a screener object based on the <code>SuperLearner</code> function <code>screen.corP</code> and fit it to our task. Inspecting the fit, we see that it selected a subset of covariates:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit">
-<span class="kw">screen_cor</span> <span class="op">&lt;-</span> <span class="kw">Lrnr_pkg_SuperLearner_screener</span><span class="op">$</span><span class="fu">new</span>(<span class="st">"screen.corP"</span>)
-<span class="kw">screen_fit</span> <span class="op">&lt;-</span> <span class="kw">screen_cor</span><span class="op">$</span><span class="fu">train</span>(<span class="kw">task</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw">screen_fit</span>)
-</pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">screen_cor</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/Lrnr_pkg_SuperLearner.html">Lrnr_pkg_SuperLearner_screener</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"screen.corP"</span><span class="op">)</span>
+<span class="va">screen_fit</span> <span class="op">&lt;-</span> <span class="va">screen_cor</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">screen_fit</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] "Lrnr_pkg_SuperLearner_screener_screen.corP"
 ## $selected
 ## [1] "parity"   "gagebrth"</code></pre>
 <p>Now, <code>chain</code> may be called on this learner fit to define a downstream task:</p>
-<div class="sourceCode" id="cb17"><pre class="downlit">
-<span class="kw">screened_task</span> <span class="op">&lt;-</span> <span class="kw">screen_fit</span><span class="op">$</span><span class="fu">chain</span>()
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw">screened_task</span>)
-</pre></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">screened_task</span> <span class="op">&lt;-</span> <span class="va">screen_fit</span><span class="op">$</span><span class="fu">chain</span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">screened_task</span><span class="op">)</span></code></pre></div>
 <pre><code>## A sl3 Task with 1441 obs and these nodes:
 ## $covariates
 ## [1] "parity"   "gagebrth"
@@ -279,35 +269,32 @@
 ## $time
 ## NULL</code></pre>
 <p>As with <code>predict</code>, we can omit a task from the call to <code>chain</code>, in which case the call defaults to using the same task that was used for training. We can see that the chained task reduces the covariates to the subset selected by the screener. We can fit this new task using the <code>lrnr_glm</code> we defined above:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit">
-<span class="kw">screened_glm_fit</span> <span class="op">&lt;-</span> <span class="kw">lrnr_glm</span><span class="op">$</span><span class="fu">train</span>(<span class="kw">screened_task</span>)
-<span class="kw">screened_preds</span> <span class="op">&lt;-</span> <span class="kw">screened_glm_fit</span><span class="op">$</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>()
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">screened_preds</span>)
-</pre></div>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">screened_glm_fit</span> <span class="op">&lt;-</span> <span class="va">lrnr_glm</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">screened_task</span><span class="op">)</span>
+<span class="va">screened_preds</span> <span class="op">&lt;-</span> <span class="va">screened_glm_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">screened_preds</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1]  0.38084472  0.38084472  0.29887623  0.29887623  0.29887623 -0.00987784</code></pre>
 <p>The <code>Pipeline</code> class automates this process. It takes an arbitrary number of learners and fits them sequentially, training and chaining each one in turn. Since <code>Pipeline</code> is a learner like any other, it shares the same interface. We can define a pipeline using <code>make_learner</code>, and use <code>train</code> and <code>predict</code> just as we did before:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit">
-<span class="kw">sg_pipeline</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Lrnr_base.html">make_learner</a></span>(<span class="kw">Pipeline</span>, <span class="kw">screen_cor</span>, <span class="kw">lrnr_glm</span>)
-<span class="kw">sg_pipeline_fit</span> <span class="op">&lt;-</span> <span class="kw">sg_pipeline</span><span class="op">$</span><span class="fu">train</span>(<span class="kw">task</span>)
-<span class="kw">sg_pipeline_preds</span> <span class="op">&lt;-</span> <span class="kw">sg_pipeline_fit</span><span class="op">$</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>()
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">sg_pipeline_preds</span>)
-</pre></div>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">sg_pipeline</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Lrnr_base.html">make_learner</a></span><span class="op">(</span><span class="va">Pipeline</span>, <span class="va">screen_cor</span>, <span class="va">lrnr_glm</span><span class="op">)</span>
+<span class="va">sg_pipeline_fit</span> <span class="op">&lt;-</span> <span class="va">sg_pipeline</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span>
+<span class="va">sg_pipeline_preds</span> <span class="op">&lt;-</span> <span class="va">sg_pipeline_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">sg_pipeline_preds</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1]  0.38084472  0.38084472  0.29887623  0.29887623  0.29887623 -0.00987784</code></pre>
 <p>We see that the pipeline returns the same predictions as manually training <code>glm</code> on the chained task from the screening learner.</p>
 <p>We can visualize the pipeline we defined above:</p>
 <div id="htmlwidget-f612d16d56afdd02dbc6" style="width:100%;height:300px;" class="visNetwork html-widget"></div>
-<script type="application/json" data-for="htmlwidget-f612d16d56afdd02dbc6">{"x":{"nodes":{"id":["b53dbcb2-3427-11eb-afab-f45c89b7dd47","b53da13c-3427-11eb-afab-f45c89b7dd47","b53cbc36-3427-11eb-afab-f45c89b7dd47","b53d0c40-3427-11eb-afab-f45c89b7dd47","b53cd96e-3427-11eb-afab-f45c89b7dd47"],"label":["Pipeline(Lrnr_pkg_SuperLearner_screener_screen.corP->Lrnr_glm_TRUE)","bundle","Lrnr_pkg_SuperLearner_screener_screen.corP","Lrnr_glm_TRUE","chain"],"level":[1,2,5,3,4],"sequential":[true,true,false,false,true],"state":["waiting","waiting","ready","waiting","waiting"],"group":["none","none","none","none","none"]},"edges":{"from":["b53cbc36-3427-11eb-afab-f45c89b7dd47","b53cbc36-3427-11eb-afab-f45c89b7dd47","b53cd96e-3427-11eb-afab-f45c89b7dd47","b53d0c40-3427-11eb-afab-f45c89b7dd47","b53da13c-3427-11eb-afab-f45c89b7dd47"],"to":["b53da13c-3427-11eb-afab-f45c89b7dd47","b53cd96e-3427-11eb-afab-f45c89b7dd47","b53d0c40-3427-11eb-afab-f45c89b7dd47","b53da13c-3427-11eb-afab-f45c89b7dd47","b53dbcb2-3427-11eb-afab-f45c89b7dd47"],"label":["","","","",""]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot"},"manipulation":{"enabled":false},"edges":{"arrows":"to"},"layout":{"hierarchical":{"enabled":true,"levelSeparation":500,"nodeSpacing":200,"direction":"RL"}},"groups":{"useDefaultGroups":true,"none":{"color":{"border":"black","background":"white"}}}},"groups":["none"],"width":"100%","height":"300px","idselection":{"enabled":false},"byselection":{"enabled":false},"main":null,"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)"},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-f612d16d56afdd02dbc6">{"x":{"nodes":{"id":["2ca9f0d0-5463-11eb-9cce-f45c89b7dd47","2ca9e23e-5463-11eb-9cce-f45c89b7dd47","2ca996d0-5463-11eb-9cce-f45c89b7dd47","2ca9c736-5463-11eb-9cce-f45c89b7dd47","2ca9a65c-5463-11eb-9cce-f45c89b7dd47"],"label":["Pipeline(Lrnr_pkg_SuperLearner_screener_screen.corP->Lrnr_glm_TRUE)","bundle","Lrnr_pkg_SuperLearner_screener_screen.corP","Lrnr_glm_TRUE","chain"],"level":[1,2,5,3,4],"sequential":[true,true,false,false,true],"state":["waiting","waiting","ready","waiting","waiting"],"group":["none","none","none","none","none"]},"edges":{"from":["2ca996d0-5463-11eb-9cce-f45c89b7dd47","2ca996d0-5463-11eb-9cce-f45c89b7dd47","2ca9a65c-5463-11eb-9cce-f45c89b7dd47","2ca9c736-5463-11eb-9cce-f45c89b7dd47","2ca9e23e-5463-11eb-9cce-f45c89b7dd47"],"to":["2ca9e23e-5463-11eb-9cce-f45c89b7dd47","2ca9a65c-5463-11eb-9cce-f45c89b7dd47","2ca9c736-5463-11eb-9cce-f45c89b7dd47","2ca9e23e-5463-11eb-9cce-f45c89b7dd47","2ca9f0d0-5463-11eb-9cce-f45c89b7dd47"],"label":["","","","",""]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot"},"manipulation":{"enabled":false},"edges":{"arrows":"to"},"layout":{"hierarchical":{"enabled":true,"levelSeparation":500,"nodeSpacing":200,"direction":"RL"}},"groups":{"useDefaultGroups":true,"none":{"color":{"border":"black","background":"white"}}}},"groups":["none"],"width":"100%","height":"300px","idselection":{"enabled":false},"byselection":{"enabled":false},"main":null,"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)"},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="stacks" class="section level3">
 <h3 class="hasAnchor">
 <a href="#stacks" class="anchor"></a>Stacks</h3>
 <p>Like <code>Pipeline</code>s, <code>Stack</code>s combine multiple learners. <code>Stack</code>s train learners <em>simultaneously</em>, so that their predictions can be either combined or compared. Again, <code>Stack</code> is just a special learner and so has the same interface as all other learners:</p>
-<div class="sourceCode" id="cb23"><pre class="downlit">
-<span class="kw">stack</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Lrnr_base.html">make_learner</a></span>(<span class="kw">Stack</span>, <span class="kw">lrnr_glm</span>, <span class="kw">sg_pipeline</span>)
-<span class="kw">stack_fit</span> <span class="op">&lt;-</span> <span class="kw">stack</span><span class="op">$</span><span class="fu">train</span>(<span class="kw">task</span>)
-<span class="kw">stack_preds</span> <span class="op">&lt;-</span> <span class="kw">stack_fit</span><span class="op">$</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>()
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">stack_preds</span>)
-</pre></div>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">stack</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Lrnr_base.html">make_learner</a></span><span class="op">(</span><span class="va">Stack</span>, <span class="va">lrnr_glm</span>, <span class="va">sg_pipeline</span><span class="op">)</span>
+<span class="va">stack_fit</span> <span class="op">&lt;-</span> <span class="va">stack</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span>
+<span class="va">stack_preds</span> <span class="op">&lt;-</span> <span class="va">stack_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">stack_preds</span><span class="op">)</span></code></pre></div>
 <pre><code>##    Lrnr_glm_TRUE
 ## 1:    0.36298498
 ## 2:    0.36298498
@@ -325,23 +312,21 @@
 <p>Above, we’ve defined and fit a <code>stack</code> comprised of a simple <code>glm</code> learner as well as a pipeline that combines a screening algorithm with that same learner. We could have included any abitrary set of learners and pipelines, the latter of which are themselves just learners. We can see that the <code>predict</code> method now returns a matrix, with a column for each learner included in the stack.</p>
 <p>We can visualize the stack:</p>
 <div id="htmlwidget-3491101b1ca353fe6ecc" style="width:100%;height:500px;" class="visNetwork html-widget"></div>
-<script type="application/json" data-for="htmlwidget-3491101b1ca353fe6ecc">{"x":{"nodes":{"id":["b57a4bdc-3427-11eb-afab-f45c89b7dd47","b57a3b24-3427-11eb-afab-f45c89b7dd47","b579b0be-3427-11eb-afab-f45c89b7dd47","b57a28be-3427-11eb-afab-f45c89b7dd47","b57a17c0-3427-11eb-afab-f45c89b7dd47","b579c7f2-3427-11eb-afab-f45c89b7dd47","b579f920-3427-11eb-afab-f45c89b7dd47","b579d788-3427-11eb-afab-f45c89b7dd47"],"label":["Stack","bundle","Lrnr_glm_TRUE","Pipeline(Lrnr_pkg_SuperLearner_screener_screen.corP->Lrnr_glm_TRUE)","bundle","Lrnr_pkg_SuperLearner_screener_screen.corP","Lrnr_glm_TRUE","chain"],"level":[1,2,3,3,4,7,5,6],"sequential":[true,true,false,true,true,false,false,true],"state":["waiting","waiting","ready","waiting","waiting","ready","waiting","waiting"],"group":["none","none","none","none","none","none","none","none"]},"edges":{"from":["b579b0be-3427-11eb-afab-f45c89b7dd47","b579c7f2-3427-11eb-afab-f45c89b7dd47","b579c7f2-3427-11eb-afab-f45c89b7dd47","b579d788-3427-11eb-afab-f45c89b7dd47","b579f920-3427-11eb-afab-f45c89b7dd47","b57a17c0-3427-11eb-afab-f45c89b7dd47","b57a28be-3427-11eb-afab-f45c89b7dd47","b57a3b24-3427-11eb-afab-f45c89b7dd47"],"to":["b57a3b24-3427-11eb-afab-f45c89b7dd47","b57a17c0-3427-11eb-afab-f45c89b7dd47","b579d788-3427-11eb-afab-f45c89b7dd47","b579f920-3427-11eb-afab-f45c89b7dd47","b57a17c0-3427-11eb-afab-f45c89b7dd47","b57a28be-3427-11eb-afab-f45c89b7dd47","b57a3b24-3427-11eb-afab-f45c89b7dd47","b57a4bdc-3427-11eb-afab-f45c89b7dd47"],"label":["","","","","","","",""]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot"},"manipulation":{"enabled":false},"edges":{"arrows":"to"},"layout":{"hierarchical":{"enabled":true,"levelSeparation":500,"nodeSpacing":200,"direction":"RL"}},"groups":{"useDefaultGroups":true,"none":{"color":{"border":"black","background":"white"}}}},"groups":["none"],"width":"100%","height":"500px","idselection":{"enabled":false},"byselection":{"enabled":false},"main":null,"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)"},"evals":[],"jsHooks":[]}</script><p>We see one “branch” for each learner in the stack.</p>
+<script type="application/json" data-for="htmlwidget-3491101b1ca353fe6ecc">{"x":{"nodes":{"id":["2cf741dc-5463-11eb-9cce-f45c89b7dd47","2cf70780-5463-11eb-9cce-f45c89b7dd47","2cf530e0-5463-11eb-9cce-f45c89b7dd47","2cf6ae48-5463-11eb-9cce-f45c89b7dd47","2cf689fe-5463-11eb-9cce-f45c89b7dd47","2cf55be2-5463-11eb-9cce-f45c89b7dd47","2cf613ca-5463-11eb-9cce-f45c89b7dd47","2cf58a04-5463-11eb-9cce-f45c89b7dd47"],"label":["Stack","bundle","Lrnr_glm_TRUE","Pipeline(Lrnr_pkg_SuperLearner_screener_screen.corP->Lrnr_glm_TRUE)","bundle","Lrnr_pkg_SuperLearner_screener_screen.corP","Lrnr_glm_TRUE","chain"],"level":[1,2,3,3,4,7,5,6],"sequential":[true,true,false,true,true,false,false,true],"state":["waiting","waiting","ready","waiting","waiting","ready","waiting","waiting"],"group":["none","none","none","none","none","none","none","none"]},"edges":{"from":["2cf530e0-5463-11eb-9cce-f45c89b7dd47","2cf55be2-5463-11eb-9cce-f45c89b7dd47","2cf55be2-5463-11eb-9cce-f45c89b7dd47","2cf58a04-5463-11eb-9cce-f45c89b7dd47","2cf613ca-5463-11eb-9cce-f45c89b7dd47","2cf689fe-5463-11eb-9cce-f45c89b7dd47","2cf6ae48-5463-11eb-9cce-f45c89b7dd47","2cf70780-5463-11eb-9cce-f45c89b7dd47"],"to":["2cf70780-5463-11eb-9cce-f45c89b7dd47","2cf689fe-5463-11eb-9cce-f45c89b7dd47","2cf58a04-5463-11eb-9cce-f45c89b7dd47","2cf613ca-5463-11eb-9cce-f45c89b7dd47","2cf689fe-5463-11eb-9cce-f45c89b7dd47","2cf6ae48-5463-11eb-9cce-f45c89b7dd47","2cf70780-5463-11eb-9cce-f45c89b7dd47","2cf741dc-5463-11eb-9cce-f45c89b7dd47"],"label":["","","","","","","",""]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot"},"manipulation":{"enabled":false},"edges":{"arrows":"to"},"layout":{"hierarchical":{"enabled":true,"levelSeparation":500,"nodeSpacing":200,"direction":"RL"}},"groups":{"useDefaultGroups":true,"none":{"color":{"border":"black","background":"white"}}}},"groups":["none"],"width":"100%","height":"500px","idselection":{"enabled":false},"byselection":{"enabled":false},"main":null,"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)"},"evals":[],"jsHooks":[]}</script><p>We see one “branch” for each learner in the stack.</p>
 </div>
 <div id="cross-validation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#cross-validation" class="anchor"></a>Cross-validation</h3>
 <p>Having defined a stack, we might want to compare the performance of learners in the stack, which we may do using <em>cross-validation</em>. The <code>Lrnr_cv</code> learner wraps another learner and performs training and prediction in a cross-validated fashion, using separate training and validation splits as defined by <code>task$folds</code>.</p>
 <p>Below, we define a new <code>Lrnr_cv</code> object based on the previously defined <code>stack</code> and train it and generate predictions on the validation set:</p>
-<div class="sourceCode" id="cb25"><pre class="downlit">
-<span class="kw">cv_stack</span> <span class="op">&lt;-</span> <span class="kw">Lrnr_cv</span><span class="op">$</span><span class="fu">new</span>(<span class="kw">stack</span>)
-<span class="kw">cv_fit</span> <span class="op">&lt;-</span> <span class="kw">cv_stack</span><span class="op">$</span><span class="fu">train</span>(<span class="kw">task</span>)
-<span class="kw">cv_preds</span> <span class="op">&lt;-</span> <span class="kw">cv_fit</span><span class="op">$</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>()
-</pre></div>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">cv_stack</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/Lrnr_cv.html">Lrnr_cv</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">stack</span><span class="op">)</span>
+<span class="va">cv_fit</span> <span class="op">&lt;-</span> <span class="va">cv_stack</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span>
+<span class="va">cv_preds</span> <span class="op">&lt;-</span> <span class="va">cv_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>We can also use the special <code>Lrnr_cv</code> function <code>cv_risk</code> to estimate cross-validated risk values:</p>
-<div class="sourceCode" id="cb26"><pre class="downlit">
-<span class="kw">risks</span> <span class="op">&lt;-</span> <span class="kw">cv_fit</span><span class="op">$</span><span class="fu"><a href="../reference/cv_risk.html">cv_risk</a></span>(<span class="kw">loss_squared_error</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw">risks</span>)
-</pre></div>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">risks</span> <span class="op">&lt;-</span> <span class="va">cv_fit</span><span class="op">$</span><span class="fu">cv_risk</span><span class="op">(</span><span class="va">loss_squared_error</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">risks</span><span class="op">)</span></code></pre></div>
 <pre><code>##                                                                learner
 ## 1:                                                       Lrnr_glm_TRUE
 ## 2: Pipeline(Lrnr_pkg_SuperLearner_screener_screen.corP-&gt;Lrnr_glm_TRUE)
@@ -354,27 +339,24 @@
 <h3 class="hasAnchor">
 <a href="#the-super-learner-algorithm" class="anchor"></a>The Super Learner Algorithm</h3>
 <p>We can combine all of the above elements, <code>Pipeline</code>s, <code>Stack</code>s, and cross-validation using <code>Lrnr_cv</code>, to easily define a Super Learner. The Super Learner algorithm works by fitting a “meta-learner”, which combines predictions from multiple stacked learners. It does this while avoiding overfitting by training the meta-learner on validation-set predictions in a manner that is cross-validated. Using some of the objects we defined in the above examples, this becomes a very simple operation:</p>
-<div class="sourceCode" id="cb28"><pre class="downlit">
-<span class="kw">metalearner</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Lrnr_base.html">make_learner</a></span>(<span class="kw">Lrnr_nnls</span>)
-<span class="kw">cv_task</span> <span class="op">&lt;-</span> <span class="kw">cv_fit</span><span class="op">$</span><span class="fu">chain</span>()
-<span class="kw">ml_fit</span> <span class="op">&lt;-</span> <span class="kw">metalearner</span><span class="op">$</span><span class="fu">train</span>(<span class="kw">cv_task</span>)
-</pre></div>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">metalearner</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Lrnr_base.html">make_learner</a></span><span class="op">(</span><span class="va">Lrnr_nnls</span><span class="op">)</span>
+<span class="va">cv_task</span> <span class="op">&lt;-</span> <span class="va">cv_fit</span><span class="op">$</span><span class="fu">chain</span><span class="op">(</span><span class="op">)</span>
+<span class="va">ml_fit</span> <span class="op">&lt;-</span> <span class="va">metalearner</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">cv_task</span><span class="op">)</span></code></pre></div>
 <p>Here, we used a special learner, <code>Lrnr_nnls</code>, for the meta-learning step. This fits a non-negative least squares meta-learner. It is important to note that any learner can be used as a meta-learner.</p>
 <p>The Super Learner finally produced is defined as a pipeline with the learner stack trained on the full data and the meta-learner trained on the validation-set predictions. Below, we use a special behavior of pipelines: if all objects passed to a pipeline are learner fits (i.e., <code>learner$is_trained</code> is <code>TRUE</code>), the result will also be a fit:</p>
-<div class="sourceCode" id="cb29"><pre class="downlit">
-<span class="kw">sl_pipeline</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Lrnr_base.html">make_learner</a></span>(<span class="kw">Pipeline</span>, <span class="kw">stack_fit</span>, <span class="kw">ml_fit</span>)
-<span class="kw">sl_preds</span> <span class="op">&lt;-</span> <span class="kw">sl_pipeline</span><span class="op">$</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>()
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">sl_preds</span>)
-</pre></div>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">sl_pipeline</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Lrnr_base.html">make_learner</a></span><span class="op">(</span><span class="va">Pipeline</span>, <span class="va">stack_fit</span>, <span class="va">ml_fit</span><span class="op">)</span>
+<span class="va">sl_preds</span> <span class="op">&lt;-</span> <span class="va">sl_pipeline</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">sl_preds</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 0.34125504 0.34125504 0.25355166 0.25355166 0.25355166 0.02901442</code></pre>
 <p>A Super Learner may be fit in a more streamlined manner using the <code>Lrnr_sl</code> learner. For simplicity, we will use the same set of learners and meta-learning algorithm as we did before:</p>
-<div class="sourceCode" id="cb31"><pre class="downlit">
-<span class="kw">sl</span> <span class="op">&lt;-</span> <span class="kw">Lrnr_sl</span><span class="op">$</span><span class="fu">new</span>(learners = <span class="kw">stack</span>,
-                  metalearner = <span class="kw">metalearner</span>)
-<span class="kw">sl_fit</span> <span class="op">&lt;-</span> <span class="kw">sl</span><span class="op">$</span><span class="fu">train</span>(<span class="kw">task</span>)
-<span class="kw">lrnr_sl_preds</span> <span class="op">&lt;-</span> <span class="kw">sl_fit</span><span class="op">$</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>()
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">lrnr_sl_preds</span>)
-</pre></div>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">sl</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/Lrnr_sl.html">Lrnr_sl</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>learners <span class="op">=</span> <span class="va">stack</span>,
+                  metalearner <span class="op">=</span> <span class="va">metalearner</span><span class="op">)</span>
+<span class="va">sl_fit</span> <span class="op">&lt;-</span> <span class="va">sl</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span>
+<span class="va">lrnr_sl_preds</span> <span class="op">&lt;-</span> <span class="va">sl_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">lrnr_sl_preds</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 0.34125504 0.34125504 0.25355166 0.25355166 0.25355166 0.02901442</code></pre>
 <p>We can see that this generates the same predictions as the more hands-on definition above.</p>
 </div>
@@ -384,27 +366,25 @@
 <a href="#computation-with-delayed" class="anchor"></a>Computation with <code>delayed</code>
 </h2>
 <p>Fitting a Super Learner is composed of many different training and prediction steps, as the procedure requires that the learners in the stack and the meta-learner be fit on cross-validation folds and on the full data. For large datasets, this can be extremely time-consuming. To alleviate this complication, we’ve developed a specialized parallelization framework <code>delayed</code> that parallelizes across these tasks in a way that takes into account their inter-dependent nature. Consider a Super Learner with three learners:</p>
-<div class="sourceCode" id="cb33"><pre class="downlit">
-<span class="kw">lrnr_rf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Lrnr_base.html">make_learner</a></span>(<span class="kw">Lrnr_randomForest</span>)
-<span class="kw">lrnr_glmnet</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Lrnr_base.html">make_learner</a></span>(<span class="kw">Lrnr_glmnet</span>)
-<span class="kw">sl</span> <span class="op">&lt;-</span> <span class="kw">Lrnr_sl</span><span class="op">$</span><span class="fu">new</span>(learners = <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">lrnr_glm</span>, <span class="kw">lrnr_rf</span>, <span class="kw">lrnr_glmnet</span>),
-                  metalearner = <span class="kw">metalearner</span>)
-</pre></div>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">lrnr_rf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Lrnr_base.html">make_learner</a></span><span class="op">(</span><span class="va">Lrnr_randomForest</span><span class="op">)</span>
+<span class="va">lrnr_glmnet</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Lrnr_base.html">make_learner</a></span><span class="op">(</span><span class="va">Lrnr_glmnet</span><span class="op">)</span>
+<span class="va">sl</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/Lrnr_sl.html">Lrnr_sl</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>learners <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">lrnr_glm</span>, <span class="va">lrnr_rf</span>, <span class="va">lrnr_glmnet</span><span class="op">)</span>,
+                  metalearner <span class="op">=</span> <span class="va">metalearner</span><span class="op">)</span></code></pre></div>
 <p>We can plot the network of tasks required to train this Super Learner:</p>
-<div class="sourceCode" id="cb34"><pre class="downlit">
-<span class="kw">delayed_sl_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/delayed_make_learner.html">delayed_learner_train</a></span>(<span class="kw">sl</span>, <span class="kw">task</span>)
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">delayed_sl_fit</span>)
-</pre></div>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">delayed_sl_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/delayed_make_learner.html">delayed_learner_train</a></span><span class="op">(</span><span class="va">sl</span>, <span class="va">task</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">delayed_sl_fit</span><span class="op">)</span></code></pre></div>
 <div id="htmlwidget-b9d71806ac94e424789a" style="width:100%;height:500px;" class="visNetwork html-widget"></div>
-<script type="application/json" data-for="htmlwidget-b9d71806ac94e424789a">{"x":{"nodes":{"id":["b70d89fa-3427-11eb-afab-f45c89b7dd47","b70d7b5e-3427-11eb-afab-f45c89b7dd47","b70d4170-3427-11eb-afab-f45c89b7dd47","b70d32ca-3427-11eb-afab-f45c89b7dd47","b705f2a8-3427-11eb-afab-f45c89b7dd47","b705e20e-3427-11eb-afab-f45c89b7dd47","b705a8b6-3427-11eb-afab-f45c89b7dd47","b705be32-3427-11eb-afab-f45c89b7dd47","b705d264-3427-11eb-afab-f45c89b7dd47","b70d23d4-3427-11eb-afab-f45c89b7dd47","b7068ec0-3427-11eb-afab-f45c89b7dd47","b7067ee4-3427-11eb-afab-f45c89b7dd47","b706450a-3427-11eb-afab-f45c89b7dd47","b70656b2-3427-11eb-afab-f45c89b7dd47","b7067084-3427-11eb-afab-f45c89b7dd47","b7071e4e-3427-11eb-afab-f45c89b7dd47","b7070efe-3427-11eb-afab-f45c89b7dd47","b706df38-3427-11eb-afab-f45c89b7dd47","b706f054-3427-11eb-afab-f45c89b7dd47","b7070166-3427-11eb-afab-f45c89b7dd47","b707b20a-3427-11eb-afab-f45c89b7dd47","b707a31e-3427-11eb-afab-f45c89b7dd47","b7076f3e-3427-11eb-afab-f45c89b7dd47","b70784e2-3427-11eb-afab-f45c89b7dd47","b70795e0-3427-11eb-afab-f45c89b7dd47","b708424c-3427-11eb-afab-f45c89b7dd47","b7083338-3427-11eb-afab-f45c89b7dd47","b70803c2-3427-11eb-afab-f45c89b7dd47","b70814e8-3427-11eb-afab-f45c89b7dd47","b70825b4-3427-11eb-afab-f45c89b7dd47","b708d14e-3427-11eb-afab-f45c89b7dd47","b708c1ea-3427-11eb-afab-f45c89b7dd47","b70892d8-3427-11eb-afab-f45c89b7dd47","b708a3e0-3427-11eb-afab-f45c89b7dd47","b708b470-3427-11eb-afab-f45c89b7dd47","b7097e6e-3427-11eb-afab-f45c89b7dd47","b709644c-3427-11eb-afab-f45c89b7dd47","b7092892-3427-11eb-afab-f45c89b7dd47","b7093f3a-3427-11eb-afab-f45c89b7dd47","b709554c-3427-11eb-afab-f45c89b7dd47","b70a1630-3427-11eb-afab-f45c89b7dd47","b70a06b8-3427-11eb-afab-f45c89b7dd47","b709d792-3427-11eb-afab-f45c89b7dd47","b709e8cc-3427-11eb-afab-f45c89b7dd47","b709f93e-3427-11eb-afab-f45c89b7dd47","b70bda10-3427-11eb-afab-f45c89b7dd47","b70bc930-3427-11eb-afab-f45c89b7dd47","b70b9956-3427-11eb-afab-f45c89b7dd47","b70bab26-3427-11eb-afab-f45c89b7dd47","b70bbbf2-3427-11eb-afab-f45c89b7dd47","b70c883e-3427-11eb-afab-f45c89b7dd47","b70c78c6-3427-11eb-afab-f45c89b7dd47","b70c40d6-3427-11eb-afab-f45c89b7dd47","b70c574c-3427-11eb-afab-f45c89b7dd47","b70c6a5c-3427-11eb-afab-f45c89b7dd47","b70d1556-3427-11eb-afab-f45c89b7dd47","b70d069c-3427-11eb-afab-f45c89b7dd47","b70cd834-3427-11eb-afab-f45c89b7dd47","b70ce91e-3427-11eb-afab-f45c89b7dd47","b70cf97c-3427-11eb-afab-f45c89b7dd47","b70d503e-3427-11eb-afab-f45c89b7dd47","b70d6d94-3427-11eb-afab-f45c89b7dd47"],"label":["CV_","bundle","CV_Stack","bundle","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","bundle","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","chain","Lrnr_nnls_FALSE"],"level":[1,2,5,6,7,8,9,9,9,7,8,9,10,10,10,8,9,10,10,10,8,9,10,10,10,8,9,10,10,10,8,9,10,10,10,8,9,10,10,10,8,9,10,10,10,8,9,10,10,10,8,9,10,10,10,8,9,10,10,10,4,3],"sequential":[true,true,true,true,true,true,false,false,false,true,true,true,false,false,false,true,true,false,false,false,true,true,false,false,false,true,true,false,false,false,true,true,false,false,false,true,true,false,false,false,true,true,false,false,false,true,true,false,false,false,true,true,false,false,false,true,true,false,false,false,true,false],"state":["waiting","waiting","waiting","waiting","waiting","waiting","ready","ready","ready","waiting","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting"],"group":["waiting","waiting","waiting","waiting","waiting","waiting","ready","ready","ready","waiting","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting"],"shape":["square","square","square","square","square","square","dot","dot","dot","square","square","square","dot","dot","dot","square","square","dot","dot","dot","square","square","dot","dot","dot","square","square","dot","dot","dot","square","square","dot","dot","dot","square","square","dot","dot","dot","square","square","dot","dot","dot","square","square","dot","dot","dot","square","square","dot","dot","dot","square","square","dot","dot","dot","square","dot"]},"edges":{"from":["b705a8b6-3427-11eb-afab-f45c89b7dd47","b705be32-3427-11eb-afab-f45c89b7dd47","b705d264-3427-11eb-afab-f45c89b7dd47","b705e20e-3427-11eb-afab-f45c89b7dd47","b705f2a8-3427-11eb-afab-f45c89b7dd47","b706450a-3427-11eb-afab-f45c89b7dd47","b70656b2-3427-11eb-afab-f45c89b7dd47","b7067084-3427-11eb-afab-f45c89b7dd47","b7067ee4-3427-11eb-afab-f45c89b7dd47","b7068ec0-3427-11eb-afab-f45c89b7dd47","b706df38-3427-11eb-afab-f45c89b7dd47","b706f054-3427-11eb-afab-f45c89b7dd47","b7070166-3427-11eb-afab-f45c89b7dd47","b7070efe-3427-11eb-afab-f45c89b7dd47","b7071e4e-3427-11eb-afab-f45c89b7dd47","b7076f3e-3427-11eb-afab-f45c89b7dd47","b70784e2-3427-11eb-afab-f45c89b7dd47","b70795e0-3427-11eb-afab-f45c89b7dd47","b707a31e-3427-11eb-afab-f45c89b7dd47","b707b20a-3427-11eb-afab-f45c89b7dd47","b70803c2-3427-11eb-afab-f45c89b7dd47","b70814e8-3427-11eb-afab-f45c89b7dd47","b70825b4-3427-11eb-afab-f45c89b7dd47","b7083338-3427-11eb-afab-f45c89b7dd47","b708424c-3427-11eb-afab-f45c89b7dd47","b70892d8-3427-11eb-afab-f45c89b7dd47","b708a3e0-3427-11eb-afab-f45c89b7dd47","b708b470-3427-11eb-afab-f45c89b7dd47","b708c1ea-3427-11eb-afab-f45c89b7dd47","b708d14e-3427-11eb-afab-f45c89b7dd47","b7092892-3427-11eb-afab-f45c89b7dd47","b7093f3a-3427-11eb-afab-f45c89b7dd47","b709554c-3427-11eb-afab-f45c89b7dd47","b709644c-3427-11eb-afab-f45c89b7dd47","b7097e6e-3427-11eb-afab-f45c89b7dd47","b709d792-3427-11eb-afab-f45c89b7dd47","b709e8cc-3427-11eb-afab-f45c89b7dd47","b709f93e-3427-11eb-afab-f45c89b7dd47","b70a06b8-3427-11eb-afab-f45c89b7dd47","b70a1630-3427-11eb-afab-f45c89b7dd47","b70b9956-3427-11eb-afab-f45c89b7dd47","b70bab26-3427-11eb-afab-f45c89b7dd47","b70bbbf2-3427-11eb-afab-f45c89b7dd47","b70bc930-3427-11eb-afab-f45c89b7dd47","b70bda10-3427-11eb-afab-f45c89b7dd47","b70c40d6-3427-11eb-afab-f45c89b7dd47","b70c574c-3427-11eb-afab-f45c89b7dd47","b70c6a5c-3427-11eb-afab-f45c89b7dd47","b70c78c6-3427-11eb-afab-f45c89b7dd47","b70c883e-3427-11eb-afab-f45c89b7dd47","b70cd834-3427-11eb-afab-f45c89b7dd47","b70ce91e-3427-11eb-afab-f45c89b7dd47","b70cf97c-3427-11eb-afab-f45c89b7dd47","b70d069c-3427-11eb-afab-f45c89b7dd47","b70d1556-3427-11eb-afab-f45c89b7dd47","b70d23d4-3427-11eb-afab-f45c89b7dd47","b70d32ca-3427-11eb-afab-f45c89b7dd47","b70d4170-3427-11eb-afab-f45c89b7dd47","b70d4170-3427-11eb-afab-f45c89b7dd47","b70d503e-3427-11eb-afab-f45c89b7dd47","b70d503e-3427-11eb-afab-f45c89b7dd47","b70d6d94-3427-11eb-afab-f45c89b7dd47","b70d7b5e-3427-11eb-afab-f45c89b7dd47"],"to":["b705e20e-3427-11eb-afab-f45c89b7dd47","b705e20e-3427-11eb-afab-f45c89b7dd47","b705e20e-3427-11eb-afab-f45c89b7dd47","b705f2a8-3427-11eb-afab-f45c89b7dd47","b70d32ca-3427-11eb-afab-f45c89b7dd47","b7067ee4-3427-11eb-afab-f45c89b7dd47","b7067ee4-3427-11eb-afab-f45c89b7dd47","b7067ee4-3427-11eb-afab-f45c89b7dd47","b7068ec0-3427-11eb-afab-f45c89b7dd47","b70d23d4-3427-11eb-afab-f45c89b7dd47","b7070efe-3427-11eb-afab-f45c89b7dd47","b7070efe-3427-11eb-afab-f45c89b7dd47","b7070efe-3427-11eb-afab-f45c89b7dd47","b7071e4e-3427-11eb-afab-f45c89b7dd47","b70d23d4-3427-11eb-afab-f45c89b7dd47","b707a31e-3427-11eb-afab-f45c89b7dd47","b707a31e-3427-11eb-afab-f45c89b7dd47","b707a31e-3427-11eb-afab-f45c89b7dd47","b707b20a-3427-11eb-afab-f45c89b7dd47","b70d23d4-3427-11eb-afab-f45c89b7dd47","b7083338-3427-11eb-afab-f45c89b7dd47","b7083338-3427-11eb-afab-f45c89b7dd47","b7083338-3427-11eb-afab-f45c89b7dd47","b708424c-3427-11eb-afab-f45c89b7dd47","b70d23d4-3427-11eb-afab-f45c89b7dd47","b708c1ea-3427-11eb-afab-f45c89b7dd47","b708c1ea-3427-11eb-afab-f45c89b7dd47","b708c1ea-3427-11eb-afab-f45c89b7dd47","b708d14e-3427-11eb-afab-f45c89b7dd47","b70d23d4-3427-11eb-afab-f45c89b7dd47","b709644c-3427-11eb-afab-f45c89b7dd47","b709644c-3427-11eb-afab-f45c89b7dd47","b709644c-3427-11eb-afab-f45c89b7dd47","b7097e6e-3427-11eb-afab-f45c89b7dd47","b70d23d4-3427-11eb-afab-f45c89b7dd47","b70a06b8-3427-11eb-afab-f45c89b7dd47","b70a06b8-3427-11eb-afab-f45c89b7dd47","b70a06b8-3427-11eb-afab-f45c89b7dd47","b70a1630-3427-11eb-afab-f45c89b7dd47","b70d23d4-3427-11eb-afab-f45c89b7dd47","b70bc930-3427-11eb-afab-f45c89b7dd47","b70bc930-3427-11eb-afab-f45c89b7dd47","b70bc930-3427-11eb-afab-f45c89b7dd47","b70bda10-3427-11eb-afab-f45c89b7dd47","b70d23d4-3427-11eb-afab-f45c89b7dd47","b70c78c6-3427-11eb-afab-f45c89b7dd47","b70c78c6-3427-11eb-afab-f45c89b7dd47","b70c78c6-3427-11eb-afab-f45c89b7dd47","b70c883e-3427-11eb-afab-f45c89b7dd47","b70d23d4-3427-11eb-afab-f45c89b7dd47","b70d069c-3427-11eb-afab-f45c89b7dd47","b70d069c-3427-11eb-afab-f45c89b7dd47","b70d069c-3427-11eb-afab-f45c89b7dd47","b70d1556-3427-11eb-afab-f45c89b7dd47","b70d23d4-3427-11eb-afab-f45c89b7dd47","b70d32ca-3427-11eb-afab-f45c89b7dd47","b70d4170-3427-11eb-afab-f45c89b7dd47","b70d7b5e-3427-11eb-afab-f45c89b7dd47","b70d503e-3427-11eb-afab-f45c89b7dd47","b70d7b5e-3427-11eb-afab-f45c89b7dd47","b70d6d94-3427-11eb-afab-f45c89b7dd47","b70d7b5e-3427-11eb-afab-f45c89b7dd47","b70d89fa-3427-11eb-afab-f45c89b7dd47"],"label":["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot"},"manipulation":{"enabled":false},"edges":{"arrows":"to"},"layout":{"hierarchical":{"enabled":true,"levelSeparation":500,"nodeSpacing":200,"direction":"RL"}},"groups":{"waiting":{"color":{"border":"black","background":"white"}},"ready":{"color":{"border":"black","background":"orange"}},"running":{"color":{"border":"black","background":"lightgreen"}},"resolved":{"color":{"border":"black","background":"black"}},"useDefaultGroups":true,"error":{"color":{"border":"black","background":"lightpink"}}}},"groups":["waiting","ready"],"width":"100%","height":"500px","idselection":{"enabled":false},"byselection":{"enabled":false},"main":null,"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","legend":{"width":0.2,"useGroups":false,"position":"left","ncol":1,"stepX":100,"stepY":100,"zoom":true,"nodes":{"label":["waiting","ready","running","resolved","error","sequential","parallel"],"color":[{"border":"black","background":"white"},{"border":"black","background":"orange"},{"border":"black","background":"lightgreen"},{"border":"black","background":"black"},{"border":"black","background":"lightpink"},{"border":"black","background":"white"},{"border":"black","background":"white"}],"shape":["dot","dot","dot","dot","dot","square","dot"]},"nodesToDataframe":true}},"evals":[],"jsHooks":[]}</script><p><code>delayed</code> then allows us to parallelize the procedure across these tasks using the <a href="https://github.com/HenrikBengtsson/future"><code>future</code></a> package. For more information on specifying <code>future</code> <code>plan</code>s for parallelization, see the documentation of the <a href="https://github.com/HenrikBengtsson/future"><code>future</code></a> package. Performance comparisons can be found in the <a href="https://sl3.tlverse.org/articles/SuperLearner_benchmarks.html">“SuperLearner Benchmarks”</a> vignette that accompanies this package. This feature is currently experimental and hasn’t yet been throughly tested on a range of parallel backends.</p>
+<script type="application/json" data-for="htmlwidget-b9d71806ac94e424789a">{"x":{"nodes":{"id":["2f9f1d60-5463-11eb-9cce-f45c89b7dd47","2f9f0e88-5463-11eb-9cce-f45c89b7dd47","2f9ed2f6-5463-11eb-9cce-f45c89b7dd47","2f9ec3ce-5463-11eb-9cce-f45c89b7dd47","2f96151c-5463-11eb-9cce-f45c89b7dd47","2f960496-5463-11eb-9cce-f45c89b7dd47","2f95cd64-5463-11eb-9cce-f45c89b7dd47","2f95e218-5463-11eb-9cce-f45c89b7dd47","2f95f578-5463-11eb-9cce-f45c89b7dd47","2f9eb424-5463-11eb-9cce-f45c89b7dd47","2f96b12a-5463-11eb-9cce-f45c89b7dd47","2f96a0ea-5463-11eb-9cce-f45c89b7dd47","2f9665da-5463-11eb-9cce-f45c89b7dd47","2f9679da-5463-11eb-9cce-f45c89b7dd47","2f9691d6-5463-11eb-9cce-f45c89b7dd47","2f9754c2-5463-11eb-9cce-f45c89b7dd47","2f973316-5463-11eb-9cce-f45c89b7dd47","2f970008-5463-11eb-9cce-f45c89b7dd47","2f971278-5463-11eb-9cce-f45c89b7dd47","2f9724ac-5463-11eb-9cce-f45c89b7dd47","2f97f1b6-5463-11eb-9cce-f45c89b7dd47","2f97e28e-5463-11eb-9cce-f45c89b7dd47","2f97b2aa-5463-11eb-9cce-f45c89b7dd47","2f97c420-5463-11eb-9cce-f45c89b7dd47","2f97d500-5463-11eb-9cce-f45c89b7dd47","2f989800-5463-11eb-9cce-f45c89b7dd47","2f988784-5463-11eb-9cce-f45c89b7dd47","2f985084-5463-11eb-9cce-f45c89b7dd47","2f9864de-5463-11eb-9cce-f45c89b7dd47","2f987848-5463-11eb-9cce-f45c89b7dd47","2f992978-5463-11eb-9cce-f45c89b7dd47","2f991992-5463-11eb-9cce-f45c89b7dd47","2f98e6d4-5463-11eb-9cce-f45c89b7dd47","2f98f962-5463-11eb-9cce-f45c89b7dd47","2f990b46-5463-11eb-9cce-f45c89b7dd47","2f99e0c0-5463-11eb-9cce-f45c89b7dd47","2f99cf18-5463-11eb-9cce-f45c89b7dd47","2f998350-5463-11eb-9cce-f45c89b7dd47","2f99a704-5463-11eb-9cce-f45c89b7dd47","2f99be56-5463-11eb-9cce-f45c89b7dd47","2f9a7a8a-5463-11eb-9cce-f45c89b7dd47","2f9a6a68-5463-11eb-9cce-f45c89b7dd47","2f9a3606-5463-11eb-9cce-f45c89b7dd47","2f9a4948-5463-11eb-9cce-f45c89b7dd47","2f9a5bd6-5463-11eb-9cce-f45c89b7dd47","2f9b37fe-5463-11eb-9cce-f45c89b7dd47","2f9b255c-5463-11eb-9cce-f45c89b7dd47","2f9adf66-5463-11eb-9cce-f45c89b7dd47","2f9b0414-5463-11eb-9cce-f45c89b7dd47","2f9b172e-5463-11eb-9cce-f45c89b7dd47","2f9bc8ae-5463-11eb-9cce-f45c89b7dd47","2f9bb972-5463-11eb-9cce-f45c89b7dd47","2f9b89c0-5463-11eb-9cce-f45c89b7dd47","2f9b9b22-5463-11eb-9cce-f45c89b7dd47","2f9babe4-5463-11eb-9cce-f45c89b7dd47","2f9ea240-5463-11eb-9cce-f45c89b7dd47","2f9e840e-5463-11eb-9cce-f45c89b7dd47","2f9dbb46-5463-11eb-9cce-f45c89b7dd47","2f9e2f40-5463-11eb-9cce-f45c89b7dd47","2f9e61ea-5463-11eb-9cce-f45c89b7dd47","2f9ee232-5463-11eb-9cce-f45c89b7dd47","2f9f0078-5463-11eb-9cce-f45c89b7dd47"],"label":["CV_","bundle","CV_Stack","bundle","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","bundle","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","chain","Lrnr_nnls_FALSE"],"level":[1,2,5,6,7,8,9,9,9,7,8,9,10,10,10,8,9,10,10,10,8,9,10,10,10,8,9,10,10,10,8,9,10,10,10,8,9,10,10,10,8,9,10,10,10,8,9,10,10,10,8,9,10,10,10,8,9,10,10,10,4,3],"sequential":[true,true,true,true,true,true,false,false,false,true,true,true,false,false,false,true,true,false,false,false,true,true,false,false,false,true,true,false,false,false,true,true,false,false,false,true,true,false,false,false,true,true,false,false,false,true,true,false,false,false,true,true,false,false,false,true,true,false,false,false,true,false],"state":["waiting","waiting","waiting","waiting","waiting","waiting","ready","ready","ready","waiting","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting"],"group":["waiting","waiting","waiting","waiting","waiting","waiting","ready","ready","ready","waiting","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting"],"shape":["square","square","square","square","square","square","dot","dot","dot","square","square","square","dot","dot","dot","square","square","dot","dot","dot","square","square","dot","dot","dot","square","square","dot","dot","dot","square","square","dot","dot","dot","square","square","dot","dot","dot","square","square","dot","dot","dot","square","square","dot","dot","dot","square","square","dot","dot","dot","square","square","dot","dot","dot","square","dot"]},"edges":{"from":["2f95cd64-5463-11eb-9cce-f45c89b7dd47","2f95e218-5463-11eb-9cce-f45c89b7dd47","2f95f578-5463-11eb-9cce-f45c89b7dd47","2f960496-5463-11eb-9cce-f45c89b7dd47","2f96151c-5463-11eb-9cce-f45c89b7dd47","2f9665da-5463-11eb-9cce-f45c89b7dd47","2f9679da-5463-11eb-9cce-f45c89b7dd47","2f9691d6-5463-11eb-9cce-f45c89b7dd47","2f96a0ea-5463-11eb-9cce-f45c89b7dd47","2f96b12a-5463-11eb-9cce-f45c89b7dd47","2f970008-5463-11eb-9cce-f45c89b7dd47","2f971278-5463-11eb-9cce-f45c89b7dd47","2f9724ac-5463-11eb-9cce-f45c89b7dd47","2f973316-5463-11eb-9cce-f45c89b7dd47","2f9754c2-5463-11eb-9cce-f45c89b7dd47","2f97b2aa-5463-11eb-9cce-f45c89b7dd47","2f97c420-5463-11eb-9cce-f45c89b7dd47","2f97d500-5463-11eb-9cce-f45c89b7dd47","2f97e28e-5463-11eb-9cce-f45c89b7dd47","2f97f1b6-5463-11eb-9cce-f45c89b7dd47","2f985084-5463-11eb-9cce-f45c89b7dd47","2f9864de-5463-11eb-9cce-f45c89b7dd47","2f987848-5463-11eb-9cce-f45c89b7dd47","2f988784-5463-11eb-9cce-f45c89b7dd47","2f989800-5463-11eb-9cce-f45c89b7dd47","2f98e6d4-5463-11eb-9cce-f45c89b7dd47","2f98f962-5463-11eb-9cce-f45c89b7dd47","2f990b46-5463-11eb-9cce-f45c89b7dd47","2f991992-5463-11eb-9cce-f45c89b7dd47","2f992978-5463-11eb-9cce-f45c89b7dd47","2f998350-5463-11eb-9cce-f45c89b7dd47","2f99a704-5463-11eb-9cce-f45c89b7dd47","2f99be56-5463-11eb-9cce-f45c89b7dd47","2f99cf18-5463-11eb-9cce-f45c89b7dd47","2f99e0c0-5463-11eb-9cce-f45c89b7dd47","2f9a3606-5463-11eb-9cce-f45c89b7dd47","2f9a4948-5463-11eb-9cce-f45c89b7dd47","2f9a5bd6-5463-11eb-9cce-f45c89b7dd47","2f9a6a68-5463-11eb-9cce-f45c89b7dd47","2f9a7a8a-5463-11eb-9cce-f45c89b7dd47","2f9adf66-5463-11eb-9cce-f45c89b7dd47","2f9b0414-5463-11eb-9cce-f45c89b7dd47","2f9b172e-5463-11eb-9cce-f45c89b7dd47","2f9b255c-5463-11eb-9cce-f45c89b7dd47","2f9b37fe-5463-11eb-9cce-f45c89b7dd47","2f9b89c0-5463-11eb-9cce-f45c89b7dd47","2f9b9b22-5463-11eb-9cce-f45c89b7dd47","2f9babe4-5463-11eb-9cce-f45c89b7dd47","2f9bb972-5463-11eb-9cce-f45c89b7dd47","2f9bc8ae-5463-11eb-9cce-f45c89b7dd47","2f9dbb46-5463-11eb-9cce-f45c89b7dd47","2f9e2f40-5463-11eb-9cce-f45c89b7dd47","2f9e61ea-5463-11eb-9cce-f45c89b7dd47","2f9e840e-5463-11eb-9cce-f45c89b7dd47","2f9ea240-5463-11eb-9cce-f45c89b7dd47","2f9eb424-5463-11eb-9cce-f45c89b7dd47","2f9ec3ce-5463-11eb-9cce-f45c89b7dd47","2f9ed2f6-5463-11eb-9cce-f45c89b7dd47","2f9ed2f6-5463-11eb-9cce-f45c89b7dd47","2f9ee232-5463-11eb-9cce-f45c89b7dd47","2f9ee232-5463-11eb-9cce-f45c89b7dd47","2f9f0078-5463-11eb-9cce-f45c89b7dd47","2f9f0e88-5463-11eb-9cce-f45c89b7dd47"],"to":["2f960496-5463-11eb-9cce-f45c89b7dd47","2f960496-5463-11eb-9cce-f45c89b7dd47","2f960496-5463-11eb-9cce-f45c89b7dd47","2f96151c-5463-11eb-9cce-f45c89b7dd47","2f9ec3ce-5463-11eb-9cce-f45c89b7dd47","2f96a0ea-5463-11eb-9cce-f45c89b7dd47","2f96a0ea-5463-11eb-9cce-f45c89b7dd47","2f96a0ea-5463-11eb-9cce-f45c89b7dd47","2f96b12a-5463-11eb-9cce-f45c89b7dd47","2f9eb424-5463-11eb-9cce-f45c89b7dd47","2f973316-5463-11eb-9cce-f45c89b7dd47","2f973316-5463-11eb-9cce-f45c89b7dd47","2f973316-5463-11eb-9cce-f45c89b7dd47","2f9754c2-5463-11eb-9cce-f45c89b7dd47","2f9eb424-5463-11eb-9cce-f45c89b7dd47","2f97e28e-5463-11eb-9cce-f45c89b7dd47","2f97e28e-5463-11eb-9cce-f45c89b7dd47","2f97e28e-5463-11eb-9cce-f45c89b7dd47","2f97f1b6-5463-11eb-9cce-f45c89b7dd47","2f9eb424-5463-11eb-9cce-f45c89b7dd47","2f988784-5463-11eb-9cce-f45c89b7dd47","2f988784-5463-11eb-9cce-f45c89b7dd47","2f988784-5463-11eb-9cce-f45c89b7dd47","2f989800-5463-11eb-9cce-f45c89b7dd47","2f9eb424-5463-11eb-9cce-f45c89b7dd47","2f991992-5463-11eb-9cce-f45c89b7dd47","2f991992-5463-11eb-9cce-f45c89b7dd47","2f991992-5463-11eb-9cce-f45c89b7dd47","2f992978-5463-11eb-9cce-f45c89b7dd47","2f9eb424-5463-11eb-9cce-f45c89b7dd47","2f99cf18-5463-11eb-9cce-f45c89b7dd47","2f99cf18-5463-11eb-9cce-f45c89b7dd47","2f99cf18-5463-11eb-9cce-f45c89b7dd47","2f99e0c0-5463-11eb-9cce-f45c89b7dd47","2f9eb424-5463-11eb-9cce-f45c89b7dd47","2f9a6a68-5463-11eb-9cce-f45c89b7dd47","2f9a6a68-5463-11eb-9cce-f45c89b7dd47","2f9a6a68-5463-11eb-9cce-f45c89b7dd47","2f9a7a8a-5463-11eb-9cce-f45c89b7dd47","2f9eb424-5463-11eb-9cce-f45c89b7dd47","2f9b255c-5463-11eb-9cce-f45c89b7dd47","2f9b255c-5463-11eb-9cce-f45c89b7dd47","2f9b255c-5463-11eb-9cce-f45c89b7dd47","2f9b37fe-5463-11eb-9cce-f45c89b7dd47","2f9eb424-5463-11eb-9cce-f45c89b7dd47","2f9bb972-5463-11eb-9cce-f45c89b7dd47","2f9bb972-5463-11eb-9cce-f45c89b7dd47","2f9bb972-5463-11eb-9cce-f45c89b7dd47","2f9bc8ae-5463-11eb-9cce-f45c89b7dd47","2f9eb424-5463-11eb-9cce-f45c89b7dd47","2f9e840e-5463-11eb-9cce-f45c89b7dd47","2f9e840e-5463-11eb-9cce-f45c89b7dd47","2f9e840e-5463-11eb-9cce-f45c89b7dd47","2f9ea240-5463-11eb-9cce-f45c89b7dd47","2f9eb424-5463-11eb-9cce-f45c89b7dd47","2f9ec3ce-5463-11eb-9cce-f45c89b7dd47","2f9ed2f6-5463-11eb-9cce-f45c89b7dd47","2f9f0e88-5463-11eb-9cce-f45c89b7dd47","2f9ee232-5463-11eb-9cce-f45c89b7dd47","2f9f0e88-5463-11eb-9cce-f45c89b7dd47","2f9f0078-5463-11eb-9cce-f45c89b7dd47","2f9f0e88-5463-11eb-9cce-f45c89b7dd47","2f9f1d60-5463-11eb-9cce-f45c89b7dd47"],"label":["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot"},"manipulation":{"enabled":false},"edges":{"arrows":"to"},"layout":{"hierarchical":{"enabled":true,"levelSeparation":500,"nodeSpacing":200,"direction":"RL"}},"groups":{"waiting":{"color":{"border":"black","background":"white"}},"ready":{"color":{"border":"black","background":"orange"}},"running":{"color":{"border":"black","background":"lightgreen"}},"resolved":{"color":{"border":"black","background":"black"}},"useDefaultGroups":true,"error":{"color":{"border":"black","background":"lightpink"}}}},"groups":["waiting","ready"],"width":"100%","height":"500px","idselection":{"enabled":false},"byselection":{"enabled":false},"main":null,"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","legend":{"width":0.2,"useGroups":false,"position":"left","ncol":1,"stepX":100,"stepY":100,"zoom":true,"nodes":{"label":["waiting","ready","running","resolved","error","sequential","parallel"],"color":[{"border":"black","background":"white"},{"border":"black","background":"orange"},{"border":"black","background":"lightgreen"},{"border":"black","background":"black"},{"border":"black","background":"lightpink"},{"border":"black","background":"white"},{"border":"black","background":"white"}],"shape":["dot","dot","dot","dot","dot","square","dot"]},"nodesToDataframe":true}},"evals":[],"jsHooks":[]}</script><p><code>delayed</code> then allows us to parallelize the procedure across these tasks using the <a href="https://github.com/HenrikBengtsson/future"><code>future</code></a> package. For more information on specifying <code>future</code> <code>plan</code>s for parallelization, see the documentation of the <a href="https://github.com/HenrikBengtsson/future"><code>future</code></a> package. Performance comparisons can be found in the <a href="https://sl3.tlverse.org/articles/SuperLearner_benchmarks.html">“SuperLearner Benchmarks”</a> vignette that accompanies this package. This feature is currently experimental and hasn’t yet been throughly tested on a range of parallel backends.</p>
 <hr>
 </div>
 <div id="session-information" class="section level2">
 <h2 class="hasAnchor">
 <a href="#session-information" class="anchor"></a>Session Information</h2>
-<pre><code>## R version 4.0.2 (2020-06-22)
+<pre><code>## R version 4.0.3 (2020-10-10)
 ## Platform: x86_64-apple-darwin17.0 (64-bit)
-## Running under: macOS Mojave 10.14.6
+## Running under: macOS Big Sur 10.16
 ## 
 ## Matrix products: default
 ## BLAS:   /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRblas.dylib
@@ -418,40 +398,40 @@
 ## 
 ## other attached packages:
 ## [1] origami_1.0.4       SuperLearner_2.0-26 nnls_1.4           
-## [4] data.table_1.13.2   sl3_1.4.1          
+## [4] data.table_1.13.4   sl3_1.4.1          
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] jsonlite_1.7.1       splines_4.0.2        foreach_1.5.1       
-##  [4] prodlim_2019.11.13   assertthat_0.2.1     imputeMissings_0.0.3
-##  [7] stats4_4.0.2         yaml_2.2.1           progress_1.2.2      
-## [10] globals_0.14.0       ipred_0.9-9          pillar_1.4.7        
-## [13] backports_1.2.0      lattice_0.20-41      glue_1.4.2          
-## [16] pROC_1.16.2          uuid_0.1-4           digest_0.6.27       
-## [19] checkmate_2.0.0      randomForest_4.6-14  colorspace_2.0-0    
-## [22] recipes_0.1.15       htmltools_0.5.0      Matrix_1.2-18       
-## [25] plyr_1.8.6           timeDate_3043.102    pkgconfig_2.0.3     
-## [28] listenv_0.8.0        caret_6.0-86         purrr_0.3.4         
-## [31] scales_1.1.1         gower_0.2.2          lava_1.6.8.1        
-## [34] cpp11_0.2.4          tibble_3.0.4         generics_0.1.0      
-## [37] ggplot2_3.3.2        ellipsis_0.3.1       withr_2.3.0         
-## [40] nnet_7.3-14          survival_3.1-12      magrittr_2.0.1      
-## [43] crayon_1.3.4         memoise_1.1.0        evaluate_0.14       
-## [46] fs_1.5.0             future_1.20.1        delayed_0.3.0       
-## [49] parallelly_1.21.0    nlme_3.1-148         MASS_7.3-51.6       
-## [52] class_7.3-17         tools_4.0.2          prettyunits_1.1.1   
-## [55] hms_0.5.3            lifecycle_0.2.0      BBmisc_1.11         
-## [58] stringr_1.4.0        glmnet_4.0-2         munsell_0.5.0       
-## [61] compiler_4.0.2       pkgdown_1.6.1        systemfonts_0.3.1   
-## [64] rlang_0.4.9          grid_4.0.2           iterators_1.0.13    
-## [67] htmlwidgets_1.5.2    visNetwork_2.0.9     igraph_1.2.6        
-## [70] rmarkdown_2.4        ModelMetrics_1.2.2.2 gtable_0.3.0        
-## [73] codetools_0.2-16     abind_1.4-5          reshape2_1.4.4      
-## [76] R6_2.5.0             lubridate_1.7.9.2    knitr_1.30          
-## [79] dplyr_1.0.2          future.apply_1.6.0   rprojroot_2.0.2     
-## [82] ragg_0.3.1           shape_1.4.5          desc_1.2.0          
-## [85] stringi_1.5.3        rstackdeque_1.1.1    parallel_4.0.2      
-## [88] Rcpp_1.0.5           vctrs_0.3.5          rpart_4.1-15        
-## [91] tidyselect_1.1.0     xfun_0.18</code></pre>
+##  [1] nlme_3.1-149         fs_1.5.0             lubridate_1.7.9.2   
+##  [4] progress_1.2.2       rprojroot_2.0.2      tools_4.0.3         
+##  [7] backports_1.2.0      R6_2.5.0             rpart_4.1-15        
+## [10] colorspace_2.0-0     nnet_7.3-14          withr_2.3.0         
+## [13] tidyselect_1.1.0     prettyunits_1.1.1    compiler_4.0.3      
+## [16] glmnet_4.0-2         textshaping_0.2.1    desc_1.2.0          
+## [19] scales_1.1.1         checkmate_2.0.0      randomForest_4.6-14 
+## [22] pkgdown_1.6.1        systemfonts_0.3.2    stringr_1.4.0       
+## [25] digest_0.6.27        rmarkdown_2.5        pkgconfig_2.0.3     
+## [28] htmltools_0.5.0      parallelly_1.21.0    htmlwidgets_1.5.2   
+## [31] rlang_0.4.9          BBmisc_1.11          shape_1.4.5         
+## [34] visNetwork_2.0.9     generics_0.1.0       jsonlite_1.7.1      
+## [37] dplyr_1.0.2          ModelMetrics_1.2.2.2 magrittr_2.0.1      
+## [40] delayed_0.3.0        Matrix_1.2-18        Rcpp_1.0.5          
+## [43] munsell_0.5.0        abind_1.4-5          lifecycle_0.2.0     
+## [46] stringi_1.5.3        pROC_1.16.2          yaml_2.2.1          
+## [49] MASS_7.3-53          plyr_1.8.6           recipes_0.1.15      
+## [52] grid_4.0.3           parallel_4.0.3       listenv_0.8.0       
+## [55] crayon_1.3.4         lattice_0.20-41      splines_4.0.3       
+## [58] hms_0.5.3            knitr_1.30           pillar_1.4.7        
+## [61] igraph_1.2.6         uuid_0.1-4           future.apply_1.6.0  
+## [64] reshape2_1.4.4       codetools_0.2-16     stats4_4.0.3        
+## [67] glue_1.4.2           evaluate_0.14        vctrs_0.3.5         
+## [70] foreach_1.5.1        gtable_0.3.0         purrr_0.3.4         
+## [73] rstackdeque_1.1.1    future_1.20.1        assertthat_0.2.1    
+## [76] ggplot2_3.3.2        xfun_0.19            gower_0.2.2         
+## [79] prodlim_2019.11.13   ragg_0.4.0           class_7.3-17        
+## [82] survival_3.2-7       timeDate_3043.102    tibble_3.0.4        
+## [85] iterators_1.0.13     memoise_1.1.0        lava_1.6.8.1        
+## [88] globals_0.14.0       ellipsis_0.3.1       caret_6.0-86        
+## [91] imputeMissings_0.0.3 ipred_0.9-9</code></pre>
 <hr>
 </div>
 <div id="references" class="section level2 unnumbered">

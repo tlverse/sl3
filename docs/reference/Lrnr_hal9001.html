@@ -160,7 +160,7 @@ wide matrix, recovering a nonparametric functional form that describes the
 target prediction function as a composition of subset functions with finite
 variation norm. This implementation uses <span class="pkg">hal9001</span>, which provides both
 a custom implementation (based on <span class="pkg">origami</span>) of the cross-validated
-lasso as well the standard call to <code><a href='https://rdrr.io/pkg/glmnet/man/cv.glmnet.html'>cv.glmnet</a></code> from the
+lasso as well the standard call to <code><a href='https://glmnet.stanford.edu/reference/cv.glmnet.html'>cv.glmnet</a></code> from the
 <span class="pkg">glmnet</span>.</p>
     </div>
 
@@ -184,13 +184,13 @@ corresponds to generating basis functions up to all 3-way interactions of
 covariates in the input matrix, matching the default in <span class="pkg">hal9001</span>.</p></dd>
 <dt><code>fit_type="glmnet"</code></dt><dd><p>The specific routine to be called when
 fitting the Lasso regression in a cross-validated manner. Choosing the
-<code>"glmnet"</code> option calls either <code><a href='https://rdrr.io/pkg/glmnet/man/cv.glmnet.html'>cv.glmnet</a></code> or
-<code><a href='https://rdrr.io/pkg/glmnet/man/glmnet.html'>glmnet</a></code>.</p></dd>
+<code>"glmnet"</code> option calls either <code><a href='https://glmnet.stanford.edu/reference/cv.glmnet.html'>cv.glmnet</a></code> or
+<code><a href='https://glmnet.stanford.edu/reference/glmnet.html'>glmnet</a></code>.</p></dd>
 <dt><code>n_folds=10</code></dt><dd><p>Integer for the number of folds to be used
 when splitting the data for cross-validation. This defaults to 10 as this
 is the convention for V-fold cross-validation.</p></dd>
 <dt><code>use_min=TRUE</code></dt><dd><p>Determines which lambda is selected from
-<code><a href='https://rdrr.io/pkg/glmnet/man/cv.glmnet.html'>cv.glmnet</a></code>. <code>TRUE</code> corresponds to
+<code><a href='https://glmnet.stanford.edu/reference/cv.glmnet.html'>cv.glmnet</a></code>. <code>TRUE</code> corresponds to
 <code>"lambda.min"</code> and <code>FALSE</code> corresponds to <code>"lambda.1se"</code>.</p></dd>
 <dt><code>reduce_basis=NULL</code></dt><dd><p>A <code>numeric</code> value bounded in the open
 interval (0,1) indicating the minimum proportion of ones in a basis
@@ -200,7 +200,7 @@ of 1's than the specified cutoff will be removed. This argument defaults
 to <code>NULL</code>, in which case all basis functions are used in the Lasso
 stage of HAL.</p></dd>
 <dt><code>return_lasso=TRUE</code></dt><dd><p>A <code>logical</code> indicating whether or not
-to return the <code><a href='https://rdrr.io/pkg/glmnet/man/glmnet.html'>glmnet</a></code> fit of the Lasso model.</p></dd>
+to return the <code><a href='https://glmnet.stanford.edu/reference/glmnet.html'>glmnet</a></code> fit of the Lasso model.</p></dd>
 <dt><code>return_x_basis=FALSE</code></dt><dd><p>A <code>logical</code> indicating whether or
 not to return the matrix of (possibly reduced) basis functions used in
 the HAL Lasso fit.</p></dd>
@@ -209,10 +209,10 @@ from the input data (from <code><a href='https://rdrr.io/pkg/hal9001/man/enumera
 dimensionality of this structure is roughly (n * 2^(d - 1)), where n is
 the number of observations and d is the number of columns in the input.</p></dd>
 <dt><code>cv_select=TRUE</code></dt><dd><p>A <code>logical</code> specifying whether the array
-of values specified should be passed to <code><a href='https://rdrr.io/pkg/glmnet/man/cv.glmnet.html'>cv.glmnet</a></code>
+of values specified should be passed to <code><a href='https://glmnet.stanford.edu/reference/cv.glmnet.html'>cv.glmnet</a></code>
 in order to pick the optimal value (based on cross-validation) (when set
 to <code>TRUE</code>) or to fit along the sequence of values (or a single value
-using <code><a href='https://rdrr.io/pkg/glmnet/man/glmnet.html'>glmnet</a></code> (when set to <code>FALSE</code>).</p></dd>
+using <code><a href='https://glmnet.stanford.edu/reference/glmnet.html'>glmnet</a></code> (when set to <code>FALSE</code>).</p></dd>
 <dt><code>...</code></dt><dd><p>Other parameters passed directly to
 <code><a href='https://rdrr.io/pkg/hal9001/man/fit_hal.html'>fit_hal</a></code>. See its documentation for details.</p></dd>
 
