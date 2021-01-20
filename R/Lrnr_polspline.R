@@ -45,15 +45,11 @@ Lrnr_polspline <- R6Class(
   ),
 
   private = list(
-    .properties = c("continuous", "binomial", "categorical"),
+    .properties = c("continuous", "binomial", "categorical", "weights"),
 
     .train = function(task) {
       args <- self$params
       outcome_type <- self$get_outcome_type(task)
-
-      if (task$has_node("offset")) {
-        args$offset <- task$offset
-      }
 
       if (outcome_type$type == "continuous") {
         if (task$has_node("weights")) {

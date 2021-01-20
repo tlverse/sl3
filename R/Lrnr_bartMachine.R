@@ -70,7 +70,7 @@ Lrnr_bartMachine <- R6Class(
   ),
 
   private = list(
-    .properties = c("continuous", "binomial", "categorical", "weights"),
+    .properties = c("continuous", "binomial", "categorical"),
 
     .train = function(task) {
       args <- self$params
@@ -79,14 +79,6 @@ Lrnr_bartMachine <- R6Class(
       # specify data
       args$X <- as.data.frame(task$X)
       args$y <- outcome_type$format(task$Y)
-
-      if (task$has_node("weights")) {
-        args$weights <- task$weights
-      }
-
-      if (task$has_node("offset")) {
-        args$offset <- task$offset
-      }
 
       fit_object <- call_with_args(bartMachine::bartMachine, args)
 

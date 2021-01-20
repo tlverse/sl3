@@ -72,3 +72,34 @@ test_that("Lrnr_ranger predictions match those from ranger", {
   ## test equivalence of prediction from Lrnr_ranger and ranger::ranger
   expect_equal(prd_lrnr_ranger, prd_ranger)
 })
+
+test_that("Naive test of Lrnr_ranger weights", {
+  data(mtcars)
+  covariates <- colnames(mtcars)[-1]
+  mtcars$weights <- c(1, 1, rep(1 / 3, nrow(mtcars) - 2))
+  task <- sl3_Task$new(mtcars,
+    covariates = covariates, outcome = "mpg",
+    weights = "weights"
+  )
+
+  ## instantiate Lrnr_ranger, train on task, and predict on task
+  lrnr_ranger <- Lrnr_ranger$new()
+  set.seed(73964)
+  fit_lrnr_ranger <- lrnr_ranger$train(task)
+  prd_lrnr_ranger <- fit_lrnr_ranger$predict()
+
+  ## fit ranger using the data from the task
+  data <- cbind(task$Y, task$X)
+  colnames(data)[1] <- task$nodes$outcome
+  dependent.variable.name <- task$nodes$outcome
+  set.seed(73964)
+  fit_ranger <- ranger(
+    data = data,
+    dependent.variable.name = dependent.variable.name,
+    case.weights = task$weights
+  )
+  prd_ranger <- predict(fit_ranger, data = task$data)[[1]]
+
+  ## test equivalence of prediction from Lrnr_ranger and ranger::ranger
+  expect_equal(prd_lrnr_ranger, prd_ranger)
+})
