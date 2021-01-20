@@ -45,7 +45,7 @@ Lrnr_polspline <- R6Class(
   ),
 
   private = list(
-    .properties = c("continuous", "binomial", "categorical"),
+    .properties = c("continuous", "binomial", "categorical", "weights"),
 
     .train = function(task) {
       args <- self$params
