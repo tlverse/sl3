@@ -64,7 +64,9 @@ Lrnr_mean <- R6Class(
           y_levels,
           function(level) weighted.mean(y == level, weights)
         )
-        fit_object <- list(mean = pack_predictions(matrix(means, nrow = 1)))
+        named_matrix <- matrix(means, nrow = 1)
+        colnames(named_matrix) <- y_levels
+        fit_object <- list(mean = pack_predictions(named_matrix))
       } else {
         fit_object <- list(mean = weighted.mean(y - offset, weights))
       }
