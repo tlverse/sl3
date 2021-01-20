@@ -51,10 +51,6 @@ Lrnr_polspline <- R6Class(
       args <- self$params
       outcome_type <- self$get_outcome_type(task)
 
-      if (task$has_node("offset")) {
-        args$offset <- task$offset
-      }
-
       if (outcome_type$type == "continuous") {
         if (task$has_node("weights")) {
           args$weights <- task$weights
