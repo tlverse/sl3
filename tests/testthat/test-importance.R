@@ -1,5 +1,5 @@
 library(testthat)
-context("test_varimp.R -- Variable Importance")
+context("test_importance.R -- Variable Importance")
 
 options(sl3.verbose = TRUE)
 library(sl3)
