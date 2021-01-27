@@ -99,10 +99,10 @@ importance <- function(fit, loss = NULL, fold_number = "validation",
       x_permuted_pred <- fit$predict_fold(task_x_permuted, fold_number)
       no_x_risk <- mean(loss(x_permuted_pred, Y))
     } else if (type == "remove") {
-      # modify task to not include covariate x
-      x_removed_task <- task$next_in_chain(covariates = X[-which(X == x)])
-      x_removed_fit <- fit$train(x_removed_task)
-      x_removed_pred <- x_removed_fit$predict_fold(x_removed_task, fold_number)
+      # modify learner to not include covariate x
+      x_removed_lrnr <- fit$reparameterize(list(covariates = setdiff(X, x)))
+      x_removed_fit <- x_removed_lrnr$train(task)
+      x_removed_pred <- x_removed_fit$predict_fold(task, fold_number)
       no_x_risk <- mean(loss(x_removed_pred, Y))
     }
     # evaluate importance
@@ -155,7 +155,7 @@ importance_plot <- function(x, nvar = min(30, nrow(x)), ...) {
 
   # modify into named vector for dotchart
   importance_scores <- x_plotting[[2]]
-  names(importance_scores) <- x_plotting[, "X", with = F]
+  names(importance_scores) <- x_plotting[[1]]
   dotchart(importance_scores,
     xlab = xlab, ylab = "",
     xlim = c(min(importance_scores), max(importance_scores)), ...
