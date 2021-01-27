@@ -11,6 +11,7 @@ env:
 language: R
 sudo: required
 cache: packages
+
 cran: http://cran.rstudio.com
 warnings_are_errors: true
 r_build_args: "--no-manual"
@@ -20,12 +21,17 @@ r:
   - release
   - devel
 
+apt:
+  - packages:
+    - libx11-dev
+    - mesa-common-dev
+    - libglu1-mesa-dev
+    - python3
+    - python3-pip
+    - python3-setuptools
+
 before_install:
-  - sudo apt-get -y install libx11-dev mesa-common-dev libglu1-mesa-dev
-  - sudo apt-get -y install python3 python3-pip python3-setuptools
-  - sudo -H pip3 install --quiet --upgrade setuptools
-  - sudo -H pip3 install --quiet --ignore-installed numpy tensorflow keras
-  #- Rscript -e 'update.packages(ask = FALSE)'
+  - pip3 install --quiet --ignore-installed numpy tensorflow keras
 
 r_packages:
   - devtools
@@ -33,13 +39,13 @@ r_packages:
   - sessioninfo
   - data.table
   - hal9001
-  - haldensify
+  - delayed
 
 r_github_packages:
   - r-lib/covr
   - r-lib/sessioninfo
-  - tlverse/delayed
   - tlverse/origami
+  - nhejazi/haldensify
 
 after_success:
   - travis_wait 80 Rscript -e 'covr::codecov()'
