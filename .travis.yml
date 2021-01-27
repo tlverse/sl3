@@ -32,7 +32,8 @@ addons:
       - python3-setuptools
 
 before_install:
-  - python3 -m pip install --quiet --ignore-installed numpy tensorflow keras
+  - pip3 install --upgrade setuptools
+  - pip3 install --quiet --ignore-installed numpy tensorflow keras
 
 r_packages:
   - devtools
