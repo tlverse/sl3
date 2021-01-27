@@ -23,6 +23,8 @@ r:
 
 addons:
   apt:
+    - sources:
+      - deadsnakes
     - packages:
       - libx11-dev
       - mesa-common-dev
@@ -33,8 +35,8 @@ addons:
       - python3-setuptools
 
 before_install:
-  - sudo -H pip3 install --upgrade pip setuptools
-  - sudo -H pip3 install --quiet --ignore-installed numpy tensorflow keras
+  - pip3 install --upgrade pip setuptools
+  - pip3 install --quiet --ignore-installed numpy tensorflow keras
 
 r_packages:
   - devtools
