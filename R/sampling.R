@@ -5,8 +5,9 @@
 #' @param n_samples If \code{true}, remove entries after failure time for each
 #'  observation.
 #'
+#' @importFrom stats runif
+#'
 #' @export
-#
 inverse_sample <- function(n_samples, cdf = NULL, pdf = NULL) {
   if (is.null(cdf) && is.null(pdf)) {
     stop("CDF and PDF cannot both be NULL.")
@@ -19,16 +20,15 @@ inverse_sample <- function(n_samples, cdf = NULL, pdf = NULL) {
     }
   }
 
-  U <- runif(n_samples, 0, cdf$y[length(cdf$y)])
+  U <- stats::runif(n_samples, 0, cdf$y[length(cdf$y)])
   X <- vector(mode = "numeric", length = n_samples)
-  for (i in 1:n_samples) {
-    for (j in 1:length(cdf$x)) {
+  for (i in seq_len(n_samples)) {
+    for (j in seq_len(cdf$x)) {
       if (cdf$y[j] > U[i]) {
         X[i] <- cdf$x[j]
         break
       }
     }
   }
-
   return(X)
 }

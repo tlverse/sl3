@@ -10,6 +10,7 @@
 #' @docType class
 #'
 #' @importFrom R6 R6Class
+#' @importFrom stats runif
 #'
 #' @export
 #'
@@ -60,7 +61,7 @@ Lrnr_solnp_density <- R6Class(
         sum(alphas)
       }
       fit_object <- Rsolnp::solnp(
-        runif(ncol(task$X)), eval_fun_loss,
+        stats::runif(ncol(task$X)), eval_fun_loss,
         eqfun = eq_fun, eqB = 1,
         LB = rep(0L, ncol(task$X))
       )

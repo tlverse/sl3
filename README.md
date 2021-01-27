@@ -199,7 +199,7 @@ ids
 
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 
-importance
+multivariate\_outcome
 
 </th>
 
@@ -218,12 +218,6 @@ preprocessing
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 
 sampling
-
-</th>
-
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-
-screener
 
 </th>
 
@@ -274,12 +268,6 @@ x
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -421,12 +409,6 @@ x
 
 <td style="text-align:left;">
 
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
 
 </td>
@@ -462,12 +444,6 @@ x
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -556,12 +532,6 @@ Lrnr\_bound
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -713,6 +683,88 @@ x
 
 </td>
 
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Lrnr\_condensier
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
 <td style="text-align:left;">
 
 x
@@ -750,12 +802,6 @@ x
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -891,12 +937,6 @@ x
 
 <td style="text-align:left;">
 
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
 
 </td>
@@ -932,12 +972,6 @@ Lrnr\_dbarts
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -1089,12 +1123,6 @@ x
 
 </td>
 
-<td style="text-align:left;">
-
-x
-
-</td>
-
 </tr>
 
 <tr>
@@ -1132,12 +1160,6 @@ x
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -1277,12 +1299,6 @@ x
 
 </td>
 
-<td style="text-align:left;">
-
-x
-
-</td>
-
 </tr>
 
 <tr>
@@ -1350,12 +1366,6 @@ x
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -1465,12 +1475,6 @@ x
 
 </td>
 
-<td style="text-align:left;">
-
-x
-
-</td>
-
 </tr>
 
 <tr>
@@ -1496,12 +1500,6 @@ x
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -1653,12 +1651,6 @@ x
 
 </td>
 
-<td style="text-align:left;">
-
-x
-
-</td>
-
 </tr>
 
 <tr>
@@ -1684,12 +1676,6 @@ x
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -1831,12 +1817,6 @@ x
 
 <td style="text-align:left;">
 
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
 
 </td>
@@ -1925,12 +1905,6 @@ x
 
 <td style="text-align:left;">
 
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
 
 </td>
@@ -1978,12 +1952,6 @@ x
 <td style="text-align:left;">
 
 x
-
-</td>
-
-<td style="text-align:left;">
-
-√
 
 </td>
 
@@ -2113,107 +2081,7 @@ x
 
 <td style="text-align:left;">
 
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Lrnr\_gts
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -2278,12 +2146,6 @@ x
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -2395,12 +2257,6 @@ x
 
 <td style="text-align:left;">
 
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
 
 </td>
@@ -2453,12 +2309,6 @@ x
 
 <td style="text-align:left;">
 
-√
-
-</td>
-
-<td style="text-align:left;">
-
 x
 
 </td>
@@ -2495,7 +2345,7 @@ x
 
 <td style="text-align:left;">
 
-√
+x
 
 </td>
 
@@ -2593,12 +2443,6 @@ x
 
 </td>
 
-<td style="text-align:left;">
-
-x
-
-</td>
-
 </tr>
 
 <tr>
@@ -2624,106 +2468,6 @@ x
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Lrnr\_hts
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -2875,12 +2619,6 @@ x
 
 </td>
 
-<td style="text-align:left;">
-
-x
-
-</td>
-
 </tr>
 
 <tr>
@@ -2906,12 +2644,6 @@ x
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -3053,107 +2785,7 @@ x
 
 <td style="text-align:left;">
 
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Lrnr\_multiple\_ts
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -3251,106 +2883,6 @@ x
 
 </td>
 
-<td style="text-align:left;">
-
-x
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Lrnr\_nnet
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
 </tr>
 
 <tr>
@@ -3376,12 +2908,6 @@ x
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -3523,12 +3049,6 @@ x
 
 <td style="text-align:left;">
 
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
 
 </td>
@@ -3600,12 +3120,6 @@ x
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -3711,12 +3225,6 @@ x
 
 <td style="text-align:left;">
 
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
 
 </td>
@@ -3752,12 +3260,6 @@ x
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -3899,12 +3401,6 @@ x
 
 <td style="text-align:left;">
 
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
 
 </td>
@@ -3940,12 +3436,6 @@ Lrnr\_polspline
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -4097,12 +3587,6 @@ x
 
 </td>
 
-<td style="text-align:left;">
-
-x
-
-</td>
-
 </tr>
 
 <tr>
@@ -4146,12 +3630,6 @@ x
 <td style="text-align:left;">
 
 x
-
-</td>
-
-<td style="text-align:left;">
-
-√
 
 </td>
 
@@ -4240,12 +3718,6 @@ x
 <td style="text-align:left;">
 
 x
-
-</td>
-
-<td style="text-align:left;">
-
-√
 
 </td>
 
@@ -4375,6 +3847,40 @@ x
 
 <td style="text-align:left;">
 
+√
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Lrnr\_rfcde
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
 x
 
 </td>
@@ -4382,6 +3888,54 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -4410,12 +3964,6 @@ Lrnr\_rpart
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -4551,12 +4099,6 @@ x
 
 <td style="text-align:left;">
 
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
 
 </td>
@@ -4579,195 +4121,7 @@ x
 
 <td style="text-align:left;">
 
-Lrnr\_screener\_augment
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Lrnr\_screener\_coefs
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Lrnr\_screener\_correlation
+Lrnr\_screener\_corP
 
 </td>
 
@@ -4786,12 +4140,6 @@ Lrnr\_screener\_correlation
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -4861,73 +4209,155 @@ x
 
 <td style="text-align:left;">
 
-Lrnr\_screener\_importance
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
+Lrnr\_screener\_corRank
 
 </td>
 
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Lrnr\_screener\_randomForest
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -4980,12 +4410,6 @@ x
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -5121,12 +4545,6 @@ x
 
 <td style="text-align:left;">
 
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
 
 </td>
@@ -5174,12 +4592,6 @@ x
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -5319,12 +4731,6 @@ x
 
 </td>
 
-<td style="text-align:left;">
-
-x
-
-</td>
-
 </tr>
 
 <tr>
@@ -5332,12 +4738,6 @@ x
 <td style="text-align:left;">
 
 Lrnr\_subset\_covariates
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -5507,106 +4907,6 @@ x
 
 </td>
 
-<td style="text-align:left;">
-
-x
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Lrnr\_ts\_weights
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
 </tr>
 
 <tr>
@@ -5655,13 +4955,7 @@ x
 
 <td style="text-align:left;">
 
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
+√
 
 </td>
 
@@ -5749,19 +5043,13 @@ x
 
 <td style="text-align:left;">
 
-√
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
 x
+
+</td>
+
+<td style="text-align:left;">
+
+√
 
 </td>
 
@@ -5819,7 +5107,7 @@ prior to submitting a pull request.
 After using the `sl3` R package, please cite the following:
 
 ``` 
-    @manual{coyle2020sl3,
+ @manual{coyle2020sl3,
       author = {Coyle, Jeremy R and Hejazi, Nima S and Malenica, Ivana and
         Sofrygin, Oleg},
       title = {{sl3}: Modern Pipelines for Machine Learning and {Super
@@ -5848,7 +5136,7 @@ See file `LICENSE` for details.
 
 ## References
 
-<div id="refs" class="references hanging-indent">
+<div id="refs" class="references">
 
 <div id="ref-breiman1996stacked">
 
