@@ -27,13 +27,15 @@ addons:
       - libx11-dev
       - mesa-common-dev
       - libglu1-mesa-dev
+      - libmysqlclient-dev
       - python3
       - python3-pip
       - python3-setuptools
+      - python3-numpy
 
 before_install:
-  - pip3 install --upgrade setuptools
-  - pip3 install --quiet --ignore-installed numpy tensorflow keras
+  - sudo -H pip3 install --upgrade pip setuptools
+  - sudo -H pip3 install --quiet --ignore-installed tensorflow keras
 
 r_packages:
   - devtools
