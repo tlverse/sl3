@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Fitting Intercept Models — Lrnr_mean • sl3</title>
+<title>Long short-term memory Recurrent Neural Network (LSTM) with Keras — Lrnr_lstm_keras • sl3</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,12 @@
 
 
 
-<meta property="og:title" content="Fitting Intercept Models — Lrnr_mean" />
-<meta property="og:description" content="This learner provides fitting procedures for intercept models. Such models
-predict the outcome variable simply as the mean of the outcome vector." />
+<meta property="og:title" content="Long short-term memory Recurrent Neural Network (LSTM) with Keras — Lrnr_lstm_keras" />
+<meta property="og:description" content="This learner supports long short-term memory (LSTM) recurrent neural network
+algorithm. This learner uses the keras package. Note that all
+preprocessing, such as differencing and seasonal effects for time series
+should be addressed before using this learner. Desired lags of the time series
+should be added as predictors before using the learner." />
 
 
 
@@ -140,14 +143,17 @@ predict the outcome variable simply as the mean of the outcome vector." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Fitting Intercept Models</h1>
-    <small class="dont-index">Source: <a href='https://github.com/tlverse/sl3/blob/master/R/Lrnr_mean.R'><code>R/Lrnr_mean.R</code></a></small>
-    <div class="hidden name"><code>Lrnr_mean.Rd</code></div>
+    <h1>Long short-term memory Recurrent Neural Network (LSTM) with Keras</h1>
+    <small class="dont-index">Source: <a href='https://github.com/tlverse/sl3/blob/master/R/Lrnr_lstm_keras.R'><code>R/Lrnr_lstm_keras.R</code></a></small>
+    <div class="hidden name"><code>Lrnr_lstm_keras.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This learner provides fitting procedures for intercept models. Such models
-predict the outcome variable simply as the mean of the outcome vector.</p>
+    <p>This learner supports long short-term memory (LSTM) recurrent neural network
+algorithm. This learner uses the <code>keras</code> package. Note that all
+preprocessing, such as differencing and seasonal effects for time series
+should be addressed before using this learner. Desired lags of the time series
+should be added as predictors before using the learner.</p>
     </div>
 
 
@@ -157,31 +163,29 @@ predict the outcome variable simply as the mean of the outcome vector.</p>
     <p><code>R6Class</code> object.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Learner object with methods for training and prediction. See
-<code><a href='Lrnr_base.html'>Lrnr_base</a></code> for documentation on learners.</p>
-    <h2 class="hasAnchor" id="parameters"><a class="anchor" href="#parameters"></a>Parameters</h2>
+    <p><code><a href='Lrnr_base.html'>Lrnr_base</a></code> object with methods for training and prediction</p>
+    <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
 
     
 
 <dl>
-<dt><code>...</code></dt><dd><p>Not used.</p></dd>
+<dt><code>batch_size</code></dt><dd><p>How many times should the training data be used to train the neural network?</p></dd>
+
+<dt><code>units</code></dt><dd><p>Positive integer, dimensionality of the output space.</p></dd>
+
+<dt><code>dropout</code></dt><dd><p>Float between 0 and 1. Fraction of the input units to drop.</p></dd>
+
+<dt><code>recurrent_dropout</code></dt><dd><p>Float between 0 and 1. Fraction of the units to drop for the linear transformation of the recurrent state.</p></dd>
+
+<dt><code>activation</code></dt><dd><p>Activation function to use. If you pass NULL, no activation is applied (ie. "linear" activation: a(x) = x).</p></dd>
+
+<dt><code>recurrent_activation</code></dt><dd><p>Activation function to use for the recurrent step.</p></dd>
+
+<dt><code>epochs</code></dt><dd><p>Number of epochs to train the model.</p></dd>
+
+<dt><code>lr</code></dt><dd><p>Learning rate.</p></dd>
 
 </dl>
-
-    <h2 class="hasAnchor" id="common-parameters"><a class="anchor" href="#common-parameters"></a>Common Parameters</h2>
-
-    
-
-
-<p>Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by <code>Lrnr_base</code>, and shared
-by all learners.</p>
-<dl>
-<dt><code>covariates</code></dt><dd><p>A character vector of covariates. The learner will use this to subset the covariates for any specified task</p></dd>
-<dt><code>outcome_type</code></dt><dd><p>A <code><a href='Variable_Type.html'>variable_type</a></code> object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified</p></dd>
-<dt><code>...</code></dt><dd><p>All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating</p></dd>
-
-</dl>
-
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Learners: 
@@ -215,8 +219,8 @@ by all learners.</p>
 <code><a href='Lrnr_haldensify.html'>Lrnr_haldensify</a></code>,
 <code><a href='Lrnr_hts.html'>Lrnr_hts</a></code>,
 <code><a href='Lrnr_independent_binomial.html'>Lrnr_independent_binomial</a></code>,
-<code><a href='Lrnr_lstm_keras.html'>Lrnr_lstm_keras</a></code>,
 <code><a href='Lrnr_lstm.html'>Lrnr_lstm</a></code>,
+<code><a href='Lrnr_mean.html'>Lrnr_mean</a></code>,
 <code><a href='Lrnr_multiple_ts.html'>Lrnr_multiple_ts</a></code>,
 <code><a href='Lrnr_multivariate.html'>Lrnr_multivariate</a></code>,
 <code><a href='Lrnr_nnet.html'>Lrnr_nnet</a></code>,

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Fit/Predict a learner with Cross Validation — Lrnr_cv • sl3</title>
+<title>Variable Importance Plot — importance_plot • sl3</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Fit/Predict a learner with Cross Validation — Lrnr_cv" />
-<meta property="og:description" content="A wrapper around any learner that generates cross-validate predictions" />
+<meta property="og:title" content="Variable Importance Plot — importance_plot" />
+<meta property="og:description" content="Variable Importance Plot" />
 
 
 
@@ -139,103 +139,39 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Fit/Predict a learner with Cross Validation</h1>
-    <small class="dont-index">Source: <a href='https://github.com/tlverse/sl3/blob/master/R/Lrnr_cv.R'><code>R/Lrnr_cv.R</code></a></small>
-    <div class="hidden name"><code>Lrnr_cv.Rd</code></div>
+    <h1>Variable Importance Plot</h1>
+    <small class="dont-index">Source: <a href='https://github.com/tlverse/sl3/blob/master/R/importance.R'><code>R/importance.R</code></a></small>
+    <div class="hidden name"><code>importance_plot.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>A wrapper around any learner that generates cross-validate predictions</p>
+    <p>Variable Importance Plot</p>
     </div>
 
+    <pre class="usage"><span class='fu'>importance_plot</span><span class='op'>(</span><span class='va'>x</span>, nvar <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span><span class='op'>(</span><span class='fl'>30</span>, <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>The 2-column <code>data.table</code> returned by the call to
+<code>importance</code>, where the first column is the predictors and the second
+col</p></td>
+    </tr>
+    <tr>
+      <th>nvar</th>
+      <td><p>The maximum number of predictors to be plotted. Defaults to 30.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Other parameters passed to <code><a href='https://rdrr.io/r/graphics/dotchart.html'>dotchart</a></code>.</p></td>
+    </tr>
+    </table>
 
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
-
-    <p><code>R6Class</code> object.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Learner object with methods for training and prediction. See
-<code><a href='Lrnr_base.html'>Lrnr_base</a></code> for documentation on learners.</p>
-    <h2 class="hasAnchor" id="parameters"><a class="anchor" href="#parameters"></a>Parameters</h2>
-
-    
-
-<dl>
-<dt><code>learner</code></dt><dd><p>The learner to wrap</p></dd>
-<dt><code>folds=NULL</code></dt><dd><p>An <code>origami</code> folds object. If <code>NULL</code>,
-folds from the task are used</p></dd>
-<dt><code>full_fit=FALSE</code></dt><dd><p>If <code>TRUE</code>, also fit the underlying learner on the full data.
-This can then be accessed with predict_fold(task, fold_number="full")</p></dd>
-
-</dl>
-
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>Other Learners: 
-<code><a href='Custom_chain.html'>Custom_chain</a></code>,
-<code><a href='Lrnr_HarmonicReg.html'>Lrnr_HarmonicReg</a></code>,
-<code><a href='Lrnr_arima.html'>Lrnr_arima</a></code>,
-<code><a href='Lrnr_bartMachine.html'>Lrnr_bartMachine</a></code>,
-<code><a href='Lrnr_base.html'>Lrnr_base</a></code>,
-<code><a href='Lrnr_bilstm.html'>Lrnr_bilstm</a></code>,
-<code><a href='Lrnr_bound.html'>Lrnr_bound</a></code>,
-<code><a href='Lrnr_caret.html'>Lrnr_caret</a></code>,
-<code><a href='Lrnr_cv_selector.html'>Lrnr_cv_selector</a></code>,
-<code><a href='Lrnr_dbarts.html'>Lrnr_dbarts</a></code>,
-<code><a href='Lrnr_define_interactions.html'>Lrnr_define_interactions</a></code>,
-<code><a href='Lrnr_density_discretize.html'>Lrnr_density_discretize</a></code>,
-<code><a href='Lrnr_density_hse.html'>Lrnr_density_hse</a></code>,
-<code><a href='Lrnr_density_semiparametric.html'>Lrnr_density_semiparametric</a></code>,
-<code><a href='Lrnr_earth.html'>Lrnr_earth</a></code>,
-<code><a href='Lrnr_expSmooth.html'>Lrnr_expSmooth</a></code>,
-<code><a href='Lrnr_gam.html'>Lrnr_gam</a></code>,
-<code><a href='Lrnr_gbm.html'>Lrnr_gbm</a></code>,
-<code><a href='Lrnr_glm_fast.html'>Lrnr_glm_fast</a></code>,
-<code><a href='Lrnr_glmnet.html'>Lrnr_glmnet</a></code>,
-<code><a href='Lrnr_glm.html'>Lrnr_glm</a></code>,
-<code><a href='Lrnr_grf.html'>Lrnr_grf</a></code>,
-<code><a href='Lrnr_gru_keras.html'>Lrnr_gru_keras</a></code>,
-<code><a href='Lrnr_gts.html'>Lrnr_gts</a></code>,
-<code><a href='Lrnr_h2o_grid.html'>Lrnr_h2o_grid</a></code>,
-<code><a href='Lrnr_hal9001.html'>Lrnr_hal9001</a></code>,
-<code><a href='Lrnr_haldensify.html'>Lrnr_haldensify</a></code>,
-<code><a href='Lrnr_hts.html'>Lrnr_hts</a></code>,
-<code><a href='Lrnr_independent_binomial.html'>Lrnr_independent_binomial</a></code>,
-<code><a href='Lrnr_lstm_keras.html'>Lrnr_lstm_keras</a></code>,
-<code><a href='Lrnr_lstm.html'>Lrnr_lstm</a></code>,
-<code><a href='Lrnr_mean.html'>Lrnr_mean</a></code>,
-<code><a href='Lrnr_multiple_ts.html'>Lrnr_multiple_ts</a></code>,
-<code><a href='Lrnr_multivariate.html'>Lrnr_multivariate</a></code>,
-<code><a href='Lrnr_nnet.html'>Lrnr_nnet</a></code>,
-<code><a href='Lrnr_nnls.html'>Lrnr_nnls</a></code>,
-<code><a href='Lrnr_optim.html'>Lrnr_optim</a></code>,
-<code><a href='Lrnr_pca.html'>Lrnr_pca</a></code>,
-<code><a href='Lrnr_pkg_SuperLearner.html'>Lrnr_pkg_SuperLearner</a></code>,
-<code><a href='Lrnr_polspline.html'>Lrnr_polspline</a></code>,
-<code><a href='Lrnr_pooled_hazards.html'>Lrnr_pooled_hazards</a></code>,
-<code><a href='Lrnr_randomForest.html'>Lrnr_randomForest</a></code>,
-<code><a href='Lrnr_ranger.html'>Lrnr_ranger</a></code>,
-<code><a href='Lrnr_revere_task.html'>Lrnr_revere_task</a></code>,
-<code><a href='Lrnr_rpart.html'>Lrnr_rpart</a></code>,
-<code><a href='Lrnr_rugarch.html'>Lrnr_rugarch</a></code>,
-<code><a href='Lrnr_screener_augment.html'>Lrnr_screener_augment</a></code>,
-<code><a href='Lrnr_screener_coefs.html'>Lrnr_screener_coefs</a></code>,
-<code><a href='Lrnr_screener_correlation.html'>Lrnr_screener_correlation</a></code>,
-<code><a href='Lrnr_screener_importance.html'>Lrnr_screener_importance</a></code>,
-<code><a href='Lrnr_sl.html'>Lrnr_sl</a></code>,
-<code><a href='Lrnr_solnp_density.html'>Lrnr_solnp_density</a></code>,
-<code><a href='Lrnr_solnp.html'>Lrnr_solnp</a></code>,
-<code><a href='Lrnr_stratified.html'>Lrnr_stratified</a></code>,
-<code><a href='Lrnr_subset_covariates.html'>Lrnr_subset_covariates</a></code>,
-<code><a href='Lrnr_svm.html'>Lrnr_svm</a></code>,
-<code><a href='Lrnr_tsDyn.html'>Lrnr_tsDyn</a></code>,
-<code><a href='Lrnr_ts_weights.html'>Lrnr_ts_weights</a></code>,
-<code><a href='Lrnr_xgboost.html'>Lrnr_xgboost</a></code>,
-<code><a href='Pipeline.html'>Pipeline</a></code>,
-<code><a href='Stack.html'>Stack</a></code>,
-<code><a href='define_h2o_X.html'>define_h2o_X</a>()</code>,
-<code><a href='undocumented_learner.html'>undocumented_learner</a></code></p></div>
+    <p>A <code><a href='https://rdrr.io/r/graphics/dotchart.html'>dotchart</a></code> of variable importance.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
