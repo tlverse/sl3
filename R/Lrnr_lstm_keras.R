@@ -19,9 +19,10 @@
 #' @field recurrent_dropout Float between 0 and 1. Fraction of the units to drop for the linear transformation of the recurrent state.
 #' @field activation Activation function to use. If you pass NULL, no activation is applied (ie. "linear" activation: a(x) = x).                      
 #' @field recurrent_activation Activation function to use for the recurrent step. 
+#' @field recurrent_out Activation function to use for the output step. 
 #' @field epochs Number of epochs to train the model.
 #' @field lr Learning rate. 
-#'
+#' @field layers How many lstm layers. Only allows for 1 or 2.
 #'
 #' @importFrom assertthat assert_that is.count is.flag
 #'
@@ -37,14 +38,16 @@ Lrnr_lstm_keras <- R6Class(
                           recurrent_dropout = 0.2,
                           activation = "tanh",
                           recurrent_activation = "hard_sigmoid",
+                          activation_out = "linear",
                           epochs = 10,
                           lr = 0.001,
+                          layers = 1,
                           ...) {
       params <- list(
         batch_size=batch_size, units=units, dropout=dropout,
         recurrent_dropout=recurrent_dropout, activation=activation,
         recurrent_activation=recurrent_activation, epochs=epochs,
-        lr=lr, ...
+        lr=lr, layers = layers, ...
       )
       super$initialize(params = params, ...)
     }
@@ -64,14 +67,35 @@ Lrnr_lstm_keras <- R6Class(
       args$y = array(data = task$Y, 
                       dim = c(nrow(data), 1))
       
-      fit_object <- keras_model_sequential() %>% 
-        layer_lstm(units = args$units,
-                   activation = args$activation,
-                   recurrent_activation = args$recurrent_activation,
-                   dropout = args$dropout,
-                   recurrent_dropout = args$recurrent_dropout,
-                   input_shape = c(1, ncol(X))) %>%
-        layer_dense(units = 1)
+      if(args$layers == 1){
+        fit_object <- keras_model_sequential() %>% 
+          layer_lstm(units = args$units,
+                     activation = args$activation,
+                     recurrent_activation = args$recurrent_activation,
+                     dropout = args$dropout,
+                     recurrent_dropout = args$recurrent_dropout,
+                     input_shape = c(1, ncol(X))) %>%
+          layer_dense(units = 1,
+                      activation = args$activation_out)
+      }else{
+        fit_object <- keras_model_sequential() %>% 
+          layer_lstm(units = args$units,
+                     activation = args$activation,
+                     recurrent_activation = args$recurrent_activation,
+                     dropout = args$dropout,
+                     recurrent_dropout = args$recurrent_dropout,
+                     input_shape = c(1, ncol(X)),
+                     return_sequences=TRUE) %>%
+          #layer_dropout(rate = 0.5) %>%
+          layer_lstm(units = args$units,
+                     activation = args$activation,
+                     recurrent_activation = args$recurrent_activation,
+                     dropout = args$dropout,
+                     recurrent_dropout = args$recurrent_dropout,
+                     return_sequences = FALSE) %>%
+          layer_dense(units = 1, 
+                      activation = args$activation_out)
+      }
       
       #TO DO: allow for losses to be passed as well
       if(task$outcome_type$type=="continuous"){

@@ -32,9 +32,13 @@ should be added as predictors before using the learner.
 
 \item{\code{recurrent_activation}}{Activation function to use for the recurrent step.}
 
+\item{\code{recurrent_out}}{Activation function to use for the output step.}
+
 \item{\code{epochs}}{Number of epochs to train the model.}
 
 \item{\code{lr}}{Learning rate.}
+
+\item{\code{layers}}{How many lstm layers. Only allows for 1 or 2.}
 }}
 
 \seealso{
