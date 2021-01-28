@@ -23,7 +23,7 @@ inverse_sample <- function(n_samples, cdf = NULL, pdf = NULL) {
   U <- stats::runif(n_samples, 0, cdf$y[length(cdf$y)])
   X <- vector(mode = "numeric", length = n_samples)
   for (i in seq_len(n_samples)) {
-    for (j in 1:length(cdf$x)) {
+    for (j in seq_along(cdf$x)) {
       if (cdf$y[j] > U[i]) {
         X[i] <- cdf$x[j]
         break
