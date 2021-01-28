@@ -29,14 +29,13 @@ addons:
       - libx11-dev
       - mesa-common-dev
       - libglu1-mesa-dev
-      - libmysqlclient-dev
       - python3.6
-      - python3-pip
-      - python3-setuptools
+      - python3.6-venv
 
 before_install:
-  - python3 -m pip install --upgrade pip setuptools
-  - python3 -m pip install --quiet --ignore-installed numpy tensorflow keras
+  - curl https://bootstrap.pypa.io/get-pip.py | sudo -H python3.6
+  - python3.6 -m pip install --upgrade pip setuptools
+  - python3.6 -m pip install --quiet --ignore-installed numpy tensorflow keras
 
 r_packages:
   - devtools
