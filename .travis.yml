@@ -25,14 +25,10 @@ addons:
   apt:
     - sources:
       - deadsnakes
-    - packages:
-      - libx11-dev
-      - mesa-common-dev
-      - libglu1-mesa-dev
-      - python3.6
-      - python3.6-venv
 
 before_install:
+  - sudo apt-get -y install libx11-dev mesa-common-dev libglu1-mesa-dev
+  - sudo apt-get -y install python3.6 python3.6-dev
   - curl https://bootstrap.pypa.io/get-pip.py | sudo -H python3.6
   - python3.6 -m pip install --upgrade pip setuptools
   - python3.6 -m pip install --quiet --ignore-installed numpy tensorflow keras
