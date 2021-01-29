@@ -83,7 +83,7 @@ Suggests:
     xgboost,
     dbarts,
     gam (>= 1.15.0),
-    haldensify (>= 0.0.7),
+    haldensify,
     mgcv,
     hts
 License: GPL-3

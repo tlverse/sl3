@@ -29,7 +29,7 @@ environment:
 
 build_script:
   - travis-tool.sh install_deps
-  - travis-tool.sh install_github r-lib/covr r-lib/sessioninfo
+  - travis-tool.sh install_github r-lib/covr r-lib/sessioninfo tlverse/origami
 
 test_script:
   - travis-tool.sh run_tests
