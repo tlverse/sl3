@@ -252,6 +252,7 @@ Lrnr_base <- R6Class(
     custom_chain = function(new_chain_fun = NULL) {
       private$.custom_chain <- new_chain_fun
     },
+
     predict_fold = function(task, fold_number = "full") {
       # support legacy "magic number" definitions
       fold_number <- interpret_fold_number(fold_number)
@@ -261,6 +262,39 @@ Lrnr_base <- R6Class(
         warning(self$name, " is not a cv-aware learner, so self$predict_fold reverts to self$predict")
       }
       self$predict(task)
+    },
+
+    reparameterize = function(new_params) {
+      # modify learner parameters
+      new_self <- self$clone()
+      new_self$.__enclos_env__$private$.params[names(new_params)] <- new_params[]
+      return(new_self)
+    },
+
+    retrain = function(new_task, trained_sublearners = NULL) {
+
+      # retrains fitted learner on a new task
+      assert_that(is(new_task, "sl3_Task"))
+      stopifnot(self$is_trained)
+
+      verbose <- getOption("sl3.verbose")
+
+      # copy fit, reset covariates parameter, and retrain as new object
+      new_self <- self$clone()
+      if ("covariates" %in% names(new_self$params) &
+        !is.null(new_self$params[["covariates"]])) {
+        idx <- which(names(new_self$params) == "covariates")
+        params_no_covars <- new_self$.__enclos_env__$private$.params[-idx]
+        new_self$.__enclos_env__$private$.params <- params_no_covars
+      }
+      if (!is.null(trained_sublearners)) {
+        new_fit_object <- new_self$.__enclos_env__$private$.train(new_task, trained_sublearners)
+      } else {
+        new_fit_object <- new_self$.__enclos_env__$private$.train(new_task)
+      }
+      new_object <- new_self$clone() # copy parameters, and whatever else
+      new_object$set_train(new_fit_object, new_task)
+      return(new_object)
     }
   ),
 

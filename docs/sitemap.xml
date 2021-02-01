@@ -76,6 +76,9 @@
     <loc>https://tlverse.org/sl3/reference/Lrnr_grf.html</loc>
   </url>
   <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_gru_keras.html</loc>
+  </url>
+  <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_gts.html</loc>
   </url>
   <url>
@@ -98,6 +101,9 @@
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_lstm.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_lstm_keras.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_mean.html</loc>
@@ -235,6 +241,9 @@
     <loc>https://tlverse.org/sl3/reference/importance.html</loc>
   </url>
   <url>
+    <loc>https://tlverse.org/sl3/reference/importance_plot.html</loc>
+  </url>
+  <url>
     <loc>https://tlverse.org/sl3/reference/inverse_sample.html</loc>
   </url>
   <url>
@@ -302,9 +311,6 @@
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/variable_type.html</loc>
-  </url>
-  <url>
-    <loc>https://tlverse.org/sl3/reference/varimp.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/write_learner_template.html</loc>

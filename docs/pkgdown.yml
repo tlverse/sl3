@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   custom_lrnrs: custom_lrnrs.html
   intro_sl3: intro_sl3.html
-last_built: 2021-01-20T21:14Z
+last_built: 2021-01-28T19:22Z
 urls:
   reference: https://tlverse.org/sl3/reference
   article: https://tlverse.org/sl3/articles

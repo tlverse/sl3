@@ -199,8 +199,9 @@ sl3_Task <- R6Class(
     },
 
     next_in_chain = function(covariates = NULL, outcome = NULL, id = NULL,
-                             weights = NULL, offset = NULL, time = NULL, folds = NULL,
-                             column_names = NULL, new_nodes = NULL, ...) {
+                             weights = NULL, offset = NULL, time = NULL,
+                             folds = NULL, column_names = NULL,
+                             new_nodes = NULL, ...) {
       if (is.null(new_nodes)) {
         new_nodes <- self$nodes
 
@@ -295,9 +296,8 @@ sl3_Task <- R6Class(
         new_folds <- NULL
       } else {
         if (must_reindex) {
-          stop("subset indicies have copies, this requires dropping folds for now")
+          stop("subset indicies have copies, this requires dropping folds.")
         }
-
         new_folds <- subset_folds(private$.folds, row_index)
       }
 
@@ -458,6 +458,7 @@ sl3_Task <- R6Class(
         }
       }))
     },
+
     folds = function(new_folds) {
       if (!missing(new_folds)) {
         private$.folds <- new_folds

@@ -1,3 +1,20 @@
+# sl3 1.4.2
+* Updates to variable importance functionality, including calculation of risk
+  ratio and risk differences under covariate deletion or permutation.
+* Addition of a `importance_plot` to summarize variable importance findings.
+* Additions of new methods `reparameterize` and `retrain` to `Lrnr_base`, which
+  allows modification of the covariate set while training on a conserved task
+  and prediction on a new task using previously trained learners, respectively.
+
+# sl3 1.4.1
+* [TODO]
+
+# sl3 1.4.0
+* [TODO]
+
+# sl3 1.3.9
+* [TODO]
+
 # sl3 1.3.8
 * Updates to variable importance functionality, including use of risk ratios.
 * Change `Lrnr_hal9001` and `Lrnr_glmnet` to respect observation-level IDs.
