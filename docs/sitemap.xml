@@ -31,9 +31,6 @@
     <loc>https://tlverse.org/sl3/reference/Lrnr_caret.html</loc>
   </url>
   <url>
-    <loc>https://tlverse.org/sl3/reference/Lrnr_condensier.html</loc>
-  </url>
-  <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_cv.html</loc>
   </url>
   <url>
@@ -79,6 +76,12 @@
     <loc>https://tlverse.org/sl3/reference/Lrnr_grf.html</loc>
   </url>
   <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_gru_keras.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_gts.html</loc>
+  </url>
+  <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_h2o_glm.html</loc>
   </url>
   <url>
@@ -91,16 +94,28 @@
     <loc>https://tlverse.org/sl3/reference/Lrnr_haldensify.html</loc>
   </url>
   <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_hts.html</loc>
+  </url>
+  <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_independent_binomial.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_lstm.html</loc>
   </url>
   <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_lstm_keras.html</loc>
+  </url>
+  <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_mean.html</loc>
   </url>
   <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_multiple_ts.html</loc>
+  </url>
+  <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_multivariate.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_nnet.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_nnls.html</loc>
@@ -110,9 +125,6 @@
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_pca.html</loc>
-  </url>
-  <url>
-    <loc>https://tlverse.org/sl3/reference/Lrnr_pkg_condensier_logisfitR6.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_polspline.html</loc>
@@ -130,22 +142,22 @@
     <loc>https://tlverse.org/sl3/reference/Lrnr_revere_task.html</loc>
   </url>
   <url>
-    <loc>https://tlverse.org/sl3/reference/Lrnr_rfcde.html</loc>
-  </url>
-  <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_rpart.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_rugarch.html</loc>
   </url>
   <url>
-    <loc>https://tlverse.org/sl3/reference/Lrnr_screener_corP.html</loc>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_screener_augment.html</loc>
   </url>
   <url>
-    <loc>https://tlverse.org/sl3/reference/Lrnr_screener_corRank.html</loc>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_screener_coefs.html</loc>
   </url>
   <url>
-    <loc>https://tlverse.org/sl3/reference/Lrnr_screener_randomForest.html</loc>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_screener_correlation.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_screener_importance.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_sl.html</loc>
@@ -167,6 +179,9 @@
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_tsDyn.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_ts_weights.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_xgboost.html</loc>
@@ -205,6 +220,9 @@
     <loc>https://tlverse.org/sl3/reference/cv_helpers.html</loc>
   </url>
   <url>
+    <loc>https://tlverse.org/sl3/reference/cv_risk.html</loc>
+  </url>
+  <url>
     <loc>https://tlverse.org/sl3/reference/debug_helpers.html</loc>
   </url>
   <url>
@@ -218,6 +236,12 @@
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/factors_to_indicators.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/reference/importance.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/reference/importance_plot.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/inverse_sample.html</loc>
@@ -287,9 +311,6 @@
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/variable_type.html</loc>
-  </url>
-  <url>
-    <loc>https://tlverse.org/sl3/reference/varimp.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/write_learner_template.html</loc>

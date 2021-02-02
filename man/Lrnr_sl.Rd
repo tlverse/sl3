@@ -3,8 +3,10 @@
 \docType{class}
 \name{Lrnr_sl}
 \alias{Lrnr_sl}
-\title{SuperLearner Algorithm}
-\format{\code{\link{R6Class}} object.}
+\title{The Super Learner Algorithm}
+\format{
+\code{\link{R6Class}} object.
+}
 \value{
 Learner object with methods for training and prediction. See
 \code{\link{Lrnr_base}} for documentation on learners.
@@ -18,9 +20,9 @@ learners.
 
 \describe{
 \item{\code{learners}}{The "library" of learners to include}
-\item{\code{metalearner}}{The metalearner to be fit on predictions from the
-library.} If null, \code{\link{default_metalearner} is used to construct a
-    metalearner based on the outcome_type of the training task}
+\item{\code{metalearner}}{The metalearner to be fit on predictions from
+the library.} If null, \code{\link{default_metalearner} is used to
+    construct a metalearner based on the outcome_type of the training task.}
 \item{\code{folds=NULL}}{An \code{origami} folds object. If \code{NULL},
 folds from the task are used.}
 \item{\code{keep_extra=TRUE}}{Stores all sub-parts of the SL computation.
@@ -54,7 +56,6 @@ Other Learners:
 \code{\link{Lrnr_bilstm}},
 \code{\link{Lrnr_bound}},
 \code{\link{Lrnr_caret}},
-\code{\link{Lrnr_condensier}},
 \code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_cv}},
 \code{\link{Lrnr_dbarts}},
@@ -70,13 +71,19 @@ Other Learners:
 \code{\link{Lrnr_glmnet}},
 \code{\link{Lrnr_glm}},
 \code{\link{Lrnr_grf}},
+\code{\link{Lrnr_gru_keras}},
+\code{\link{Lrnr_gts}},
 \code{\link{Lrnr_h2o_grid}},
 \code{\link{Lrnr_hal9001}},
 \code{\link{Lrnr_haldensify}},
+\code{\link{Lrnr_hts}},
 \code{\link{Lrnr_independent_binomial}},
+\code{\link{Lrnr_lstm_keras}},
 \code{\link{Lrnr_lstm}},
 \code{\link{Lrnr_mean}},
+\code{\link{Lrnr_multiple_ts}},
 \code{\link{Lrnr_multivariate}},
+\code{\link{Lrnr_nnet}},
 \code{\link{Lrnr_nnls}},
 \code{\link{Lrnr_optim}},
 \code{\link{Lrnr_pca}},
@@ -86,18 +93,19 @@ Other Learners:
 \code{\link{Lrnr_randomForest}},
 \code{\link{Lrnr_ranger}},
 \code{\link{Lrnr_revere_task}},
-\code{\link{Lrnr_rfcde}},
 \code{\link{Lrnr_rpart}},
 \code{\link{Lrnr_rugarch}},
-\code{\link{Lrnr_screener_corP}},
-\code{\link{Lrnr_screener_corRank}},
-\code{\link{Lrnr_screener_randomForest}},
+\code{\link{Lrnr_screener_augment}},
+\code{\link{Lrnr_screener_coefs}},
+\code{\link{Lrnr_screener_correlation}},
+\code{\link{Lrnr_screener_importance}},
 \code{\link{Lrnr_solnp_density}},
 \code{\link{Lrnr_solnp}},
 \code{\link{Lrnr_stratified}},
 \code{\link{Lrnr_subset_covariates}},
 \code{\link{Lrnr_svm}},
 \code{\link{Lrnr_tsDyn}},
+\code{\link{Lrnr_ts_weights}},
 \code{\link{Lrnr_xgboost}},
 \code{\link{Pipeline}},
 \code{\link{Stack}},

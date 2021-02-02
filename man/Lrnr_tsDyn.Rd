@@ -4,7 +4,9 @@
 \name{Lrnr_tsDyn}
 \alias{Lrnr_tsDyn}
 \title{Nonlinear Time Series Analysis}
-\format{\code{\link{R6Class}} object.}
+\format{
+\code{\link{R6Class}} object.
+}
 \value{
 Learner object with methods for training and prediction. See
 \code{\link{Lrnr_base}} for documentation on learners.
@@ -17,60 +19,9 @@ additive AR, neural nets, SETAR and LSTAR models, threshold VAR and VECM.
 
 \describe{
 \item{\code{learner}}{Available built-in time series models. Currently
-available are listed by with availableModels() function.}
-\item{\code{m=1}}{embedding dimension.}
-\item{\code{size=1}}{number of hidden units in the neural network.}
-\item{\code{lag=1}}{Number of lags to include in each regime.}
-\item{\code{d=1}}{time delay.}
-\item{\code{include="const"}}{Type of deterministic regressors to include.}
-\item{\code{type="level"}}{Whether the variable is taken is level,
-difference or a mix as in the ADF test.}
-\item{\code{n.ahead="null"}}{The forecast horizon.}
-\item{\code{mL=m}}{ autoregressive order for low regime.}
-\item{\code{mH=m}}{ autoregressive order for high regime.}
-\item{\code{mM=NULL}}{ autoregressive order for middle regime.}
-\item{\code{thDelay=0}}{Delay Time delay for the threshold variable.}
-\item{\code{common="none"}}{Indicates which elements are common to all
-regimes.}
-\item{\code{ML=seq_len(mL)}}{vector of lags for order for low.}
-\item{\code{MM=NULL}}{vector of lags for order for middle.}
-\item{\code{MH=seq_len(mH)}}{vector of lags for order for high.}
-\item{\code{nthresh=1}}{Threshold of the model.}
-\item{\code{trim=0.15}}{trimming parameter indicating the minimal
-percentage of observations in each regime.}
-\item{\code{sig=0.05}}{significance level for the tests to select the
-number of regimes.}
-\item{\code{control=list()}}{further arguments to be passed as control list
-to \code{optim}.}
-\item{\code{r=1}}{Number of cointegrating relationships.}
-\item{\code{model="VAR"}}{Model to estimate. Choices: VAR/VECM/TAR/MTAR.}
-\item{\code{I="level"}}{For VAR only: whether in the VAR variables are to
-be taken in levels or as a difference.}
-\item{\code{beta=NULL}}{For VECM only: imposed cointegrating value.}
-\item{\code{estim="2OLS"}}{Type of estimator for the VECM (two-step
-approach or Johansen MLE).}
-\item{\code{exogen=NULL}}{Inclusion of exogenous variables.}
-\item{\code{LRinclude="none"}}{Possibility to include in the long-run
-relationship and the ECT trend.}
-\item{\code{commonInter=FALSE}}{Whether the deterministic regressors are
-regime specific.}
-\item{\code{mTh=1}}{combination of variables with same lag order for the
-transition variable.}
-\item{\code{gamma=NULL}}{prespecified threshold values.}
-\item{\code{dummyToBothRegimes=TRUE}}{Whether the dummy in the one
-threshold model is applied to each regime. }
-\item{\code{max.iter=2}}{Number of iterations for the algorithm.}
-\item{\code{ngridBeta=50}}{Number of elements to search for the
-cointegrating value.}
-\item{\code{ngridTh=50}}{Number of elements to search for the threshold
-value.}
-\item{\code{th1}}{different possibilities to pre-specify an exact value, an
-interval or a central point for the search of the threshold. }
-\item{\code{th2}}{different possibilities to pre-specify an exact value or
-a central point for the search of the second threshold. }
-\item{\code{beta0=0}}{Additional regressors to include in the cointegrating
-relation.}
-\item{\code{...}}{Not currently used.}
+available can be listed with availableModels() function.}
+\item{\code{m = 1}}{embedding dimension.}
+\item{\code{...}}{Additional learner-specific arguments.}
 }
 }
 
@@ -84,7 +35,6 @@ Other Learners:
 \code{\link{Lrnr_bilstm}},
 \code{\link{Lrnr_bound}},
 \code{\link{Lrnr_caret}},
-\code{\link{Lrnr_condensier}},
 \code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_cv}},
 \code{\link{Lrnr_dbarts}},
@@ -100,13 +50,19 @@ Other Learners:
 \code{\link{Lrnr_glmnet}},
 \code{\link{Lrnr_glm}},
 \code{\link{Lrnr_grf}},
+\code{\link{Lrnr_gru_keras}},
+\code{\link{Lrnr_gts}},
 \code{\link{Lrnr_h2o_grid}},
 \code{\link{Lrnr_hal9001}},
 \code{\link{Lrnr_haldensify}},
+\code{\link{Lrnr_hts}},
 \code{\link{Lrnr_independent_binomial}},
+\code{\link{Lrnr_lstm_keras}},
 \code{\link{Lrnr_lstm}},
 \code{\link{Lrnr_mean}},
+\code{\link{Lrnr_multiple_ts}},
 \code{\link{Lrnr_multivariate}},
+\code{\link{Lrnr_nnet}},
 \code{\link{Lrnr_nnls}},
 \code{\link{Lrnr_optim}},
 \code{\link{Lrnr_pca}},
@@ -116,18 +72,19 @@ Other Learners:
 \code{\link{Lrnr_randomForest}},
 \code{\link{Lrnr_ranger}},
 \code{\link{Lrnr_revere_task}},
-\code{\link{Lrnr_rfcde}},
 \code{\link{Lrnr_rpart}},
 \code{\link{Lrnr_rugarch}},
-\code{\link{Lrnr_screener_corP}},
-\code{\link{Lrnr_screener_corRank}},
-\code{\link{Lrnr_screener_randomForest}},
+\code{\link{Lrnr_screener_augment}},
+\code{\link{Lrnr_screener_coefs}},
+\code{\link{Lrnr_screener_correlation}},
+\code{\link{Lrnr_screener_importance}},
 \code{\link{Lrnr_sl}},
 \code{\link{Lrnr_solnp_density}},
 \code{\link{Lrnr_solnp}},
 \code{\link{Lrnr_stratified}},
 \code{\link{Lrnr_subset_covariates}},
 \code{\link{Lrnr_svm}},
+\code{\link{Lrnr_ts_weights}},
 \code{\link{Lrnr_xgboost}},
 \code{\link{Pipeline}},
 \code{\link{Stack}},

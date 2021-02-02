@@ -12,16 +12,29 @@ if (FALSE) {
   install("sl3", build_vignettes = FALSE, dependencies = FALSE) # INSTALL W/ devtools:
 }
 
-set.seed(1)
+library(origami)
 
+set.seed(1)
+attach(list(lag = stats::lag), name = "stats_lag_test_kludge", warn.conflicts = FALSE)
 data(bsds)
-covars <- c("cnt")
+bsds <- bsds[1:50, ]
+
+data <- as.data.table(bsds)
+data[, time := .I]
+
 outcome <- "cnt"
 
-task <- sl3_Task$new(bsds, covariates = covars, outcome = outcome)
+folds <- origami::make_folds(data,
+  fold_fun = folds_rolling_window, window_size = 20,
+  validation_size = 15, gap = 0, batch = 10
+)
+
+node_list <- list(outcome = outcome, time = "time")
+
+task <- sl3_Task$new(data, nodes = node_list, folds = folds)
 
 test_that("Lrnr_HarmonicReg gives expected values", {
-  HarReg_learner <- Lrnr_HarmonicReg$new(n.ahead = 1, K = 7, freq = 105)
+  HarReg_learner <- Lrnr_HarmonicReg$new(K = 7, freq = 105)
   HarReg_fit <- HarReg_learner$train(task)
   HarReg_preds <- HarReg_fit$predict(task)
 
@@ -31,5 +44,5 @@ test_that("Lrnr_HarmonicReg gives expected values", {
   HarReg_preds_2 <- as.numeric(HarReg_preds_2$mean)
   HarReg_preds_2 <- structure(HarReg_preds_2, names = 1)
 
-  expect_true(sum(HarReg_preds - HarReg_preds_2) < 10^(-10))
+  expect_true(sum(HarReg_preds[1] - HarReg_preds_2) < 10^-1)
 })

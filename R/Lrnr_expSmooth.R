@@ -1,7 +1,7 @@
 #' Exponential Smoothing
 #'
-#' This learner supports exponential smoothing models using the \code{forecast}
-#' package. Fitting is done with the \code{\link[forecast]{ets}} function.
+#' This learner supports exponential smoothing models using
+#' \code{\link[forecast]{ets}}.
 #'
 #' @docType class
 #'
@@ -63,6 +63,7 @@
 #'   \item{\code{n.ahead}}{The forecast horizon. If not specified, returns
 #'     forecast of size \code{task$X}.}
 #'   \item{\code{freq=1}}{the number of observations per unit of time.}
+#'   \item{\code{...}}{Other parameters passed to \code{\link[forecast]{ets}.}}
 #' }
 #
 Lrnr_expSmooth <- R6Class(
@@ -80,8 +81,7 @@ Lrnr_expSmooth <- R6Class(
                           ic = "aic", restrict = TRUE,
                           allow.multiplicative.trend = FALSE,
                           use.initial.values = FALSE, freq = 1, ...) {
-      params <- args_to_list()
-      super$initialize(params = params, ...)
+      super$initialize(params = args_to_list(), ...)
     }
   ),
 
@@ -90,27 +90,17 @@ Lrnr_expSmooth <- R6Class(
 
     .train = function(task) {
       args <- self$params
-      args$y <- ts(task$X, frequency = args$freq)
-      if (args$model == "ZZZ") {
-        fit_object <- forecast::ets(args$y)
-      } else {
-        fit_object <- call_with_args(forecast::ets, args)
-      }
+      args$y <- ts(task$Y, frequency = args$freq)
+      fit_object <- call_with_args(forecast::ets, args)
       return(fit_object)
     },
 
     .predict = function(task = NULL) {
-      params <- self$params
-      n.ahead <- params[["n.ahead"]]
-
-      if (is.null(n.ahead)) {
-        n.ahead <- task$nrow
-      }
-      predictions <- forecast::forecast(private$.fit_object, h = n.ahead)
-      # Create output as in glm
-      predictions <- as.numeric(predictions$mean)
-      predictions <- structure(predictions, names = seq_len(n.ahead))
-      return(predictions)
+      h <- ts_get_pred_horizon(self$training_task, task)
+      raw_preds <- forecast::forecast(private$.fit_object, h = h)
+      preds <- as.numeric(raw_preds$mean)
+      requested_preds <- ts_get_requested_preds(self$training_task, task, preds)
+      return(requested_preds)
     },
     .required_packages = c("forecast")
   )

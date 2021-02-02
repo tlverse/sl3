@@ -27,3 +27,8 @@ test_that("Lrnr_nnls with convex = TRUE normalizes coefficients to sum to 1", {
   fit <- lrnr_nnls$train(task)
   expect_equal(fit$coefficients, coef(fit), sum(coef(fit) == 1))
 })
+
+test_that("Lrnr_nnls prints", {
+  lrnr_nnls <- make_learner(Lrnr_nnls)
+  expect_output(print(lrnr_nnls))
+})

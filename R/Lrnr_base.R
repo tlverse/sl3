@@ -1,8 +1,8 @@
 #' Base Class for all sl3 Learners.
 #'
-#' Generally this base learner class shouldn't be instantiated. It's intended to
-#' be an abstract class, although abstract classes aren't explicitly supported
-#' by \code{R6}. All learners support the methods and fields documented below.
+#' Generally this base learner class should not be instantiated. Intended to be
+#' an abstract class, although abstract classes are not explicitly supported
+#' by \pkg{R6}. All learners support the methods and fields documented below.
 #' For more information on a particular learner, see its help file.
 #'
 #' @docType class
@@ -25,31 +25,69 @@
 #' @importFrom BBmisc requirePackages
 #'
 #' @family Learners
-#
 Lrnr_base <- R6Class(
   classname = "Lrnr_base",
   portable = TRUE,
   class = TRUE,
   public = list(
-    initialize = function(params = NULL, ...) {
+    initialize = function(params = NULL, name = NULL, ...) {
       private$.load_packages()
       if (is.null(params)) {
         params <- list(...)
       }
 
       private$.params <- params
+      private$.name <- name
       private$.learner_uuid <- UUIDgenerate(use.time = TRUE)
 
       invisible(self)
     },
 
     subset_covariates = function(task) {
-      # allows learners to use only a subset of covariates
+      # learners subset task covariates based on their covariate set
       if ("covariates" %in% names(self$params) &&
         !is.null(self$params[["covariates"]])) {
-        task_covariates <- task$nodes$covariates
-        subset_covariates <- intersect(task_covariates, self$params$covariates)
-        return(task$next_in_chain(covariates = subset_covariates))
+        task_covs <- task$nodes$covariates
+        learner_covs <- self$params$covariates
+        task_covs_missing <- setdiff(learner_covs, task_covs)
+
+        # omit missingness indicators from covariates missing in the task
+        delta_idx <- grep("delta_", task_covs_missing)
+        if (length(delta_idx) > 0) {
+          delta_missing <- task_covs_missing[delta_idx]
+          task_covs_missing <- task_covs_missing[-delta_idx]
+        }
+
+        # error when task is missing covariates
+        if (length(task_covs_missing) > 0) {
+          stop(
+            sprintf(
+              "Task missing the following covariates expected by %s: %s",
+              self$name, paste(task_covs_missing, collapse = ", ")
+            )
+          )
+        }
+
+        # subset task covariates to only includes those in learner covariates
+        covs_subset <- intersect(task_covs, learner_covs)
+
+        # return updated task
+        if (length(delta_idx) == 0) {
+          # re-order the covariate subset to match order of learner covariates
+          ordered_covs_subset <- covs_subset[match(covs_subset, learner_covs)]
+          return(task$next_in_chain(covariates = ordered_covs_subset))
+        } else {
+          # incorporate missingness indicators in task covariates subset & sort
+          covs_subset_delta <- c(covs_subset, delta_missing)
+          ord_covs <- covs_subset_delta[match(covs_subset_delta, learner_covs)]
+
+          # incorporate missingness indicators in task data
+          delta_missing_data <- matrix(0, nrow(task$data), length(delta_idx))
+          colnames(delta_missing_data) <- delta_missing
+          cols <- task$add_columns(data.table(delta_missing_data))
+
+          return(task$next_in_chain(covariates = ord_covs, column_names = cols))
+        }
       } else {
         return(task)
       }
@@ -101,11 +139,8 @@ Lrnr_base <- R6Class(
       # trains learner to data
       assert_that(is(task, "sl3_Task"))
 
-      # TODO: add error handling
       subsetted_task <- self$subset_covariates(task)
-
       verbose <- getOption("sl3.verbose")
-
 
       if (!is.null(trained_sublearners)) {
         fit_object <- private$.train(subsetted_task, trained_sublearners)
@@ -187,9 +222,10 @@ Lrnr_base <- R6Class(
     train = function(task) {
       delayed_fit <- delayed_learner_train(self, task)
       verbose <- getOption("sl3.verbose")
-
-
-      return(delayed_fit$compute(job_type = sl3_delayed_job_type(), progress = verbose))
+      return(delayed_fit$compute(
+        job_type = sl3_delayed_job_type(),
+        progress = verbose
+      ))
     },
 
     predict = function(task = NULL) {
@@ -216,14 +252,49 @@ Lrnr_base <- R6Class(
     custom_chain = function(new_chain_fun = NULL) {
       private$.custom_chain <- new_chain_fun
     },
+
     predict_fold = function(task, fold_number = "full") {
       # support legacy "magic number" definitions
       fold_number <- interpret_fold_number(fold_number)
-      # for non cv learners, do full predict no matter what, but warn about it if fold_number is something else
+      # for non-CV learners, do full predict no matter what, but warn about it
+      # if fold_number is something else
       if (fold_number != "full") {
         warning(self$name, " is not a cv-aware learner, so self$predict_fold reverts to self$predict")
       }
       self$predict(task)
+    },
+
+    reparameterize = function(new_params) {
+      # modify learner parameters
+      new_self <- self$clone()
+      new_self$.__enclos_env__$private$.params[names(new_params)] <- new_params[]
+      return(new_self)
+    },
+
+    retrain = function(new_task, trained_sublearners = NULL) {
+
+      # retrains fitted learner on a new task
+      assert_that(is(new_task, "sl3_Task"))
+      stopifnot(self$is_trained)
+
+      verbose <- getOption("sl3.verbose")
+
+      # copy fit, reset covariates parameter, and retrain as new object
+      new_self <- self$clone()
+      if ("covariates" %in% names(new_self$params) &
+        !is.null(new_self$params[["covariates"]])) {
+        idx <- which(names(new_self$params) == "covariates")
+        params_no_covars <- new_self$.__enclos_env__$private$.params[-idx]
+        new_self$.__enclos_env__$private$.params <- params_no_covars
+      }
+      if (!is.null(trained_sublearners)) {
+        new_fit_object <- new_self$.__enclos_env__$private$.train(new_task, trained_sublearners)
+      } else {
+        new_fit_object <- new_self$.__enclos_env__$private$.train(new_task)
+      }
+      new_object <- new_self$clone() # copy parameters, and whatever else
+      new_object$set_train(new_fit_object, new_task)
+      return(new_object)
     }
   ),
 

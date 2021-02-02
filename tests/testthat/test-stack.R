@@ -13,13 +13,19 @@ task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
 
 glm_learner <- Lrnr_glm$new()
 glmnet_learner <- Lrnr_pkg_SuperLearner$new("SL.glmnet")
-stack <- Stack$new(glm_learner, glmnet_learner)
+stack <- Stack$new(glm1 = glm_learner, glm2 = glmnet_learner)
 stack2 <- Stack$new(stack)
 test_that(
   "Stack$new copies original stack when learners is a Stack",
   expect_equivalent(stack$params$learners, stack2$params$learners)
 )
 
+stack_fit <- stack$train(task)
+stack_preds <- stack_fit$predict()
+test_that(
+  "Stack accepts custom names",
+  expect_equal(names(stack_preds), c("glm1", "glm2"))
+)
 # stack3 <- Stack$new(stack,glm_learner)
 # stack3$params$learners
 #
@@ -27,13 +33,12 @@ test_that(
 #           expect_length(stack3$params$learners,3))
 
 # test that unique names are created when there's repetition
-dens_bin10_glm <- Lrnr_condensier$new(
-  nbins = 10, bin_estimator = glm_learner,
-  bin_method = "dhist"
+dens_hse_glm <- make_learner(Lrnr_density_semiparametric,
+  mean_learner = make_learner(Lrnr_glm)
 )
 
 # check that stack gives unique names to input learners
-stack_dens <- Stack$new(dens_bin10_glm, dens_bin10_glm)
+stack_dens <- Stack$new(dens_hse_glm, dens_hse_glm)
 stack_lrnr_names <- as.character(stack_dens$print())
 test_that("Repetitive names of learners in stack differ after creation", {
   expect_false(stack_lrnr_names[1] == stack_lrnr_names[2])
@@ -76,6 +81,7 @@ mean_lrnr <- Lrnr_mean$new()
 old_fit <- mean_lrnr$train(task_old)
 stack_old_and_new <- Stack$new(old_fit, mean_lrnr)
 stack_fit <- stack_old_and_new$train(task)
+# debug_predict(stack_fit)
 preds <- stack_fit$predict()
 old_mean <- mean(task_old$Y)
 new_mean <- mean(task$Y)
@@ -83,4 +89,14 @@ new_mean <- mean(task$Y)
 test_that("A stack mixed from learners and fits does not retrain existing fits", {
   expect_equal(unlist(preds[1, 1, with = FALSE], use.names = FALSE), old_mean)
   expect_equal(unlist(preds[1, 2, with = FALSE], use.names = FALSE), new_mean)
+})
+
+# Example due to Lars van der Laan
+# check that stack can handle learners that return multiple predictions
+test_that("Stack will accept multiple predictions from a single learner", {
+  lrnr_hal <- make_learner(Lrnr_hal9001, max_degree = 1, lambda = c(5, 7, 8), yolo = F, cv_select = F)
+  hal_stack <- make_learner(Stack, mean_lrnr, lrnr_hal)
+  hs_fit <- hal_stack$train(task)
+  preds <- hs_fit$predict()
+  expect_equal(safe_dim(preds), c(task$nrow, 4))
 })

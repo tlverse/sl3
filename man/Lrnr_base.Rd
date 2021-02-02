@@ -5,7 +5,9 @@
 \alias{Lrnr_base}
 \alias{make_learner}
 \title{Base Class for all sl3 Learners.}
-\format{\code{\link{R6Class}} object.}
+\format{
+\code{\link{R6Class}} object.
+}
 \usage{
 make_learner(learner_class, ...)
 }
@@ -19,9 +21,9 @@ section below.}
 Learner object with methods for training and prediction
 }
 \description{
-Generally this base learner class shouldn't be instantiated. It's intended to
-be an abstract class, although abstract classes aren't explicitly supported
-by \code{R6}. All learners support the methods and fields documented below.
+Generally this base learner class should not be instantiated. Intended to be
+an abstract class, although abstract classes are not explicitly supported
+by \pkg{R6}. All learners support the methods and fields documented below.
 For more information on a particular learner, see its help file.
 }
 \section{Common Parameters}{
@@ -175,7 +177,6 @@ Other Learners:
 \code{\link{Lrnr_bilstm}},
 \code{\link{Lrnr_bound}},
 \code{\link{Lrnr_caret}},
-\code{\link{Lrnr_condensier}},
 \code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_cv}},
 \code{\link{Lrnr_dbarts}},
@@ -191,13 +192,19 @@ Other Learners:
 \code{\link{Lrnr_glmnet}},
 \code{\link{Lrnr_glm}},
 \code{\link{Lrnr_grf}},
+\code{\link{Lrnr_gru_keras}},
+\code{\link{Lrnr_gts}},
 \code{\link{Lrnr_h2o_grid}},
 \code{\link{Lrnr_hal9001}},
 \code{\link{Lrnr_haldensify}},
+\code{\link{Lrnr_hts}},
 \code{\link{Lrnr_independent_binomial}},
+\code{\link{Lrnr_lstm_keras}},
 \code{\link{Lrnr_lstm}},
 \code{\link{Lrnr_mean}},
+\code{\link{Lrnr_multiple_ts}},
 \code{\link{Lrnr_multivariate}},
+\code{\link{Lrnr_nnet}},
 \code{\link{Lrnr_nnls}},
 \code{\link{Lrnr_optim}},
 \code{\link{Lrnr_pca}},
@@ -207,12 +214,12 @@ Other Learners:
 \code{\link{Lrnr_randomForest}},
 \code{\link{Lrnr_ranger}},
 \code{\link{Lrnr_revere_task}},
-\code{\link{Lrnr_rfcde}},
 \code{\link{Lrnr_rpart}},
 \code{\link{Lrnr_rugarch}},
-\code{\link{Lrnr_screener_corP}},
-\code{\link{Lrnr_screener_corRank}},
-\code{\link{Lrnr_screener_randomForest}},
+\code{\link{Lrnr_screener_augment}},
+\code{\link{Lrnr_screener_coefs}},
+\code{\link{Lrnr_screener_correlation}},
+\code{\link{Lrnr_screener_importance}},
 \code{\link{Lrnr_sl}},
 \code{\link{Lrnr_solnp_density}},
 \code{\link{Lrnr_solnp}},
@@ -220,6 +227,7 @@ Other Learners:
 \code{\link{Lrnr_subset_covariates}},
 \code{\link{Lrnr_svm}},
 \code{\link{Lrnr_tsDyn}},
+\code{\link{Lrnr_ts_weights}},
 \code{\link{Lrnr_xgboost}},
 \code{\link{Pipeline}},
 \code{\link{Stack}},

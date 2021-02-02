@@ -15,7 +15,8 @@ test_that("task will self-generate folds for 10-fold CV", expect_length(
 glm_learner <- Lrnr_glm$new()
 cv_glm <- Lrnr_cv$new(glm_learner, full_fit = TRUE)
 cv_glm_fit <- cv_glm$train(task)
-
+# debug_predict(cv_glm_fit)
+cv_glm_fit$predict()
 test_that("Lrnr_cv will use folds from task", expect_equal(task$folds, cv_glm_fit$fit_object$folds))
 
 folds <- make_folds(cpp_imputed, V = 5)
@@ -60,3 +61,26 @@ test_that(
 test_that("Lrnr_cv$predict_fold throws an error on a bad fold_number", {
   expect_error(cv_glm_fit$predict_fold(task, "junk"))
 })
+
+
+#### verify cv risk for timeseries context
+library(origami)
+trend_all <- 11:130 + rnorm(120, sd = 2)
+trend_all <- data.frame(data = trend_all)
+
+folds <- origami::make_folds(trend_all$data,
+  fold_fun = folds_rolling_window, window_size = 50,
+  validation_size = 10, gap = 0, batch = 5
+)
+
+lrnr_glm <- make_learner(Lrnr_glm)
+lrnr_mean <- make_learner(Lrnr_mean)
+sl <- make_learner(Lrnr_sl, list(lrnr_glm, lrnr_mean))
+task <- sl3_Task$new(trend_all, covariates = "data", outcome = "data", folds = folds)
+fit <- sl$train(task)
+fit$predict_fold(task, "validation")
+cv_risk_table <- fit$cv_risk(loss_squared_error)
+
+# GLM should be perfect here because outcome=covariate
+expect_equal(cv_risk_table$coefficients[[1]], 1)
+expect_equal(cv_risk_table$risk[[1]], 0)

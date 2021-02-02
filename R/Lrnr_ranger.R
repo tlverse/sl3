@@ -40,32 +40,62 @@ Lrnr_ranger <- R6Class(
                           ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
+    },
+    importance = function(...) {
+      if (self$fit_object$importance.mode == "none") {
+        stop(
+          "This learner was instantiated with default argument, ",
+          "importance=none. Modify this argument to measure importance."
+        )
+      }
+      self$assert_trained()
+
+      # initiate argument list for ranger::importance
+      args <- list(...)
+      args$x <- self$fit_object
+
+      # calculate importance metrics
+      importance_result <- call_with_args(ranger::importance, args, keep_all = T)
+
+      # sort according to decreasing importance
+      return(importance_result[order(importance_result, decreasing = TRUE)])
     }
   ),
 
   private = list(
-    .properties = c("continuous", "binomial", "categorical"),
+    .properties = c("continuous", "binomial", "categorical", "importance", "weights"),
 
     .train = function(task) {
       args <- self$params
+      if (task$has_node("weights")) {
+        args$case.weights <- task$weights
+      }
       data_in <- cbind(task$Y, task$X)
       colnames(data_in)[1] <- task$nodes$outcome
       args$data <- data_in
       args$dependent.variable.name <- task$nodes$outcome
+      args$probability <- task$outcome_type$type == "categorical"
       fit_object <- call_with_args(ranger::ranger, args)
       return(fit_object)
     },
 
     .predict = function(task) {
+
+      # extract numeric predictions from custom class ranger.prediction
       predictions <- stats::predict(
         private$.fit_object,
         data = task$X,
         type = "response",
         num.threads = self$params$num.threads
       )
-      # extract numeric predictions from custom class ranger.prediction
-      preds <- predictions[[1]]
-      return(preds)
+
+      predictions <- predictions[[1]]
+
+      if (task$outcome_type$type == "categorical") {
+        # pack predictions in a single column
+        predictions <- pack_predictions(predictions)
+      }
+      return(predictions)
     },
     .required_packages = c("ranger")
   )

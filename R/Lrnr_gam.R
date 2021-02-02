@@ -99,7 +99,7 @@ Lrnr_gam <- R6Class(
           colnames(X_continuous),
           function(iter) paste0("s(", iter, ")")
         )
-        if (length(X_continuous) > 0 & length(X_continuous) > 0) {
+        if (length(X_continuous) > 0 & length(X_discrete) > 0) {
           args$formula <- as.formula(paste(c(
             colnames(Y),
             paste(c(

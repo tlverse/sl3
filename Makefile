@@ -2,7 +2,6 @@ md:
 	Rscript -e "rmarkdown::render('README.Rmd', output_file = 'README.md')"
 
 site:
-	Rscript -e "rmarkdown::render('README.Rmd', output_file = 'README.md')"
 	Rscript -e "pkgdown::build_site()"
 
 check:
@@ -32,5 +31,5 @@ coverage:
 style:
 	Rscript -e "styler::style_pkg()"
 
-pr: style doc check site
+pr: style check md site
 	echo "If all checks have passed, you are ready to submit PR"

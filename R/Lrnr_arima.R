@@ -10,6 +10,7 @@
 #' @importFrom R6 R6Class
 #' @importFrom assertthat assert_that is.count is.flag
 #' @importFrom stats arima
+#' @importFrom caret findLinearCombos
 #'
 #' @export
 #'
@@ -22,16 +23,17 @@
 #'
 #' @section Parameters:
 #' \describe{
-#'   \item{\code{order=NULL}}{A specification of the non-seasonal part of the
-#'    ARIMA model: the three integer components (p, d, q) are the AR order, the
-#'    degree of differencing, and the MA order.}
-#'   \item{\code{seasonal=list(order=c(0,0,0) period=NA)}}{ A specification of
-#'    the seasonal part of the ARIMA model, plus the period (which defaults to
-#'    frequency(x)). This should be a list with components order and period, but
-#'    a specification of just a numeric vector of length 3 will be turned into a
-#'    suitable list with the specification as the order.}
-#'   \item{\code{n.ahead=NULL}}{ The forecast horizon. If not specified, returns
-#'    forecast of size \code{task$X}.}
+#'   \item{\code{order=NULL}}{An optional specification of the non-seasonal
+#'    part of the ARIMA model: the three integer components (p, d, q) are the
+#'    AR order, the degree of differencing, and the MA order. If order is
+#'    specified, then \code{\link[stats]{arima}} will be called; otherwise,
+#'    \code{\link[forecast]{auto.arima}} will be used to fit the "best" ARIMA
+#'    model according to AIC (default), AICc or BIC. The information criterion
+#'    to be used in \code{\link[forecast]{auto.arima}} model selection can be
+#'    modified by specifying \code{ic} argument.}
+#'  \item{\code{...}}{Other parameters passed to \code{\link[stats]{arima}} or
+#'    \code{\link[forecast]{auto.arima}} function, depending on whether or not
+#'    \code{order} argument is provided.}
 #' }
 #
 Lrnr_arima <- R6Class(
@@ -41,42 +43,79 @@ Lrnr_arima <- R6Class(
   class = TRUE,
   public = list(
     initialize = function(order = NULL,
-                          seasonal = list(order = c(0L, 0L, 0L), period = NA),
-                          n.ahead = NULL, ...) {
+                          ...) {
       super$initialize(params = args_to_list(), ...)
     }
   ),
   private = list(
     .properties = c("timeseries", "continuous"),
+
     .train = function(task) {
       params <- self$params
-      ord <- params[["order"]]
-      season <- params[["seasonal"]]
 
-      # Support for a single time-series
-      if (is.numeric(ord)) {
-        fit_object <- stats::arima(task$X, order = ord, seasonal = season)
-      } else {
-        fit_object <- forecast::auto.arima(task$X)
+      # option to include external regressors
+      if (length(task$X) > 0) {
+
+        # determines if the matrix is full rank & then identifies the sets of
+        # columns that are involved in the dependencies.
+        rm_idx <- caret::findLinearCombos(task$X)$remove
+
+        if (length(rm_idx) > 0) {
+          params$xreg <- as.matrix(task$X[, -rm_idx, with = FALSE])
+          print(paste(c(
+            "ARIMA requires matrix of external regressors to not be rank ",
+            "deficient. The following covariates were removed to counter the ",
+            "linear combinations:", names(task$X)[rm_idx]
+          ), collapse = " "))
+        } else {
+          params$xreg <- as.matrix(task$X)
+        }
       }
+
+      if (is.numeric(params$order)) {
+        params$x <- task$Y
+        fit_object <- call_with_args(stats::arima, params)
+      } else {
+        params$y <- task$Y
+        fit_object <- call_with_args(
+          forecast::auto.arima, params,
+          ignore = "order"
+        )
+      }
+
       return(fit_object)
     },
-    .predict = function(task = NULL) {
-      params <- self$params
-      n.ahead <- params[["n.ahead"]]
 
-      if (is.null(n.ahead)) {
-        n.ahead <- task$nrow
+    .predict = function(task = NULL) {
+      fit_object <- private$.fit_object
+      h <- ts_get_pred_horizon(self$training_task, task)
+
+      # include external regressors 'newxreg' if 'xreg' was used for training
+      if (length(task$X) > 0) {
+        xreg <- fit_object$xreg
+        if (!is.null(xreg)) {
+          newxreg <- as.matrix(task$X)
+          # ensure 'xreg' and 'newxreg' have same number & order of columns
+          newxreg <- newxreg[, match(colnames(xreg), colnames(newxreg))]
+        } else {
+          warning(
+            "Cannot include external regressors for prediction, ",
+            "since they were not used for training."
+          )
+          newxreg <- NULL
+        }
+      } else {
+        newxreg <- NULL
       }
-      predictions <- predict(
-        private$.fit_object,
-        newdata = task$X,
-        type = "response", n.ahead = n.ahead
+
+      raw_preds <- predict(fit_object,
+        newdata = task$Y, n.ahead = h,
+        newxreg = newxreg, type = "response"
       )
-      # Create output as in glm
-      predictions <- as.numeric(predictions$pred)
-      predictions <- structure(predictions, names = seq_len(n.ahead))
-      return(predictions)
+      preds <- as.numeric(raw_preds$pred)
+
+      requested_preds <- ts_get_requested_preds(self$training_task, task, preds)
+      return(requested_preds)
     },
     .required_packages = c("forecast")
   )

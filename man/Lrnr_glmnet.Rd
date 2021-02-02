@@ -4,7 +4,9 @@
 \name{Lrnr_glmnet}
 \alias{Lrnr_glmnet}
 \title{GLMs with Elastic Net Regularization}
-\format{\code{\link{R6Class}} object.}
+\format{
+\code{\link{R6Class}} object.
+}
 \value{
 Learner object with methods for training and prediction. See
 \code{\link{Lrnr_base}} for documentation on learners.
@@ -17,20 +19,23 @@ appropriate value of lambda.
 \section{Parameters}{
 
 \describe{
-\item{\code{lambda=NULL}}{A vector of lambda values to compare}
-\item{\code{type.measure="deviance"}}{The loss to use when selecting
+\item{\code{lambda = NULL}}{An optional vector of lambda values to compare.}
+\item{\code{type.measure = "deviance"}}{The loss to use when selecting
 lambda. Options documented in \code{\link[glmnet]{cv.glmnet}}.}
-\item{\code{nfolds=10}}{Number of folds to use for internal
+\item{\code{nfolds = 10}}{Number of folds to use for internal
 cross-validation.}
-\item{\code{alpha=1}}{The elastic net parameter. 0 is Ridge Regression, 1
-is Lasso. Intermediate values are a combination. Documented in
+\item{\code{alpha = 1}}{The elastic net parameter: \code{alpha = 0} is
+Ridge (L2-penalized) regression, while \code{alpha = 1} specifies Lasso
+(L1-penalized) regression. Values in the closed unit interval specify a
+weighted combination of the two penalties. This is further documented in
 \code{\link[glmnet]{glmnet}}.}
-\item{\code{nlambda=100}}{The number of lambda values to compare. Comparing
+\item{\code{nlambda = 100}}{The number of lambda values to fit. Comparing
 less values will speed up computation, but may decrease statistical
 performance. Documented in \code{\link[glmnet]{cv.glmnet}}.}
-\item{\code{use_min=TRUE}}{If TRUE, use lambda=cv_fit$lambda.min for prediction,
-otherwise use lambda=cv_fit$lambda.1se.
-the distinction is clarified in \code{\link[glmnet]{cv.glmnet}}.}
+\item{\code{use_min = TRUE}}{If \code{TRUE}, use
+\code{lambda = cv_fit$lambda.min} for prediction; otherwise, use
+\code{lambda = cv_fit$lambda.1se}. The distinction between these is
+clarified in \code{\link[glmnet]{cv.glmnet}}.}
 \item{\code{...}}{Other parameters to be passed to
 \code{\link[glmnet]{cv.glmnet}} and \code{\link[glmnet]{glmnet}}.}
 }
@@ -59,7 +64,6 @@ Other Learners:
 \code{\link{Lrnr_bilstm}},
 \code{\link{Lrnr_bound}},
 \code{\link{Lrnr_caret}},
-\code{\link{Lrnr_condensier}},
 \code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_cv}},
 \code{\link{Lrnr_dbarts}},
@@ -74,13 +78,19 @@ Other Learners:
 \code{\link{Lrnr_glm_fast}},
 \code{\link{Lrnr_glm}},
 \code{\link{Lrnr_grf}},
+\code{\link{Lrnr_gru_keras}},
+\code{\link{Lrnr_gts}},
 \code{\link{Lrnr_h2o_grid}},
 \code{\link{Lrnr_hal9001}},
 \code{\link{Lrnr_haldensify}},
+\code{\link{Lrnr_hts}},
 \code{\link{Lrnr_independent_binomial}},
+\code{\link{Lrnr_lstm_keras}},
 \code{\link{Lrnr_lstm}},
 \code{\link{Lrnr_mean}},
+\code{\link{Lrnr_multiple_ts}},
 \code{\link{Lrnr_multivariate}},
+\code{\link{Lrnr_nnet}},
 \code{\link{Lrnr_nnls}},
 \code{\link{Lrnr_optim}},
 \code{\link{Lrnr_pca}},
@@ -90,12 +100,12 @@ Other Learners:
 \code{\link{Lrnr_randomForest}},
 \code{\link{Lrnr_ranger}},
 \code{\link{Lrnr_revere_task}},
-\code{\link{Lrnr_rfcde}},
 \code{\link{Lrnr_rpart}},
 \code{\link{Lrnr_rugarch}},
-\code{\link{Lrnr_screener_corP}},
-\code{\link{Lrnr_screener_corRank}},
-\code{\link{Lrnr_screener_randomForest}},
+\code{\link{Lrnr_screener_augment}},
+\code{\link{Lrnr_screener_coefs}},
+\code{\link{Lrnr_screener_correlation}},
+\code{\link{Lrnr_screener_importance}},
 \code{\link{Lrnr_sl}},
 \code{\link{Lrnr_solnp_density}},
 \code{\link{Lrnr_solnp}},
@@ -103,6 +113,7 @@ Other Learners:
 \code{\link{Lrnr_subset_covariates}},
 \code{\link{Lrnr_svm}},
 \code{\link{Lrnr_tsDyn}},
+\code{\link{Lrnr_ts_weights}},
 \code{\link{Lrnr_xgboost}},
 \code{\link{Pipeline}},
 \code{\link{Stack}},

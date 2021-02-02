@@ -1,6 +1,6 @@
 utils::globalVariables(c("self"))
 
-#' SuperLearner Algorithm
+#' The Super Learner Algorithm
 #'
 #' Learner that encapsulates the Super Learner algorithm. Fits metalearner on
 #' cross-validated predictions from learners. Then forms a pipeline with the
@@ -25,9 +25,9 @@ utils::globalVariables(c("self"))
 #' @section Parameters:
 #' \describe{
 #'   \item{\code{learners}}{The "library" of learners to include}
-#'   \item{\code{metalearner}}{The metalearner to be fit on predictions from the
-#'     library.} If null, \code{\link{default_metalearner} is used to construct a
-#'     metalearner based on the outcome_type of the training task}
+#'   \item{\code{metalearner}}{The metalearner to be fit on predictions from
+#'     the library.} If null, \code{\link{default_metalearner} is used to
+#'     construct a metalearner based on the outcome_type of the training task.}
 #'   \item{\code{folds=NULL}}{An \code{origami} folds object. If \code{NULL},
 #'     folds from the task are used.}
 #'   \item{\code{keep_extra=TRUE}}{Stores all sub-parts of the SL computation.
@@ -38,7 +38,6 @@ utils::globalVariables(c("self"))
 #' }
 #'
 #' @template common_parameters
-#
 Lrnr_sl <- R6Class(
   classname = "Lrnr_sl", inherit = Lrnr_base, portable = TRUE,
   class = TRUE,
@@ -97,9 +96,12 @@ Lrnr_sl <- R6Class(
       }
       set(stack_risks, , "coefficients", ordered_coefs)
 
-      # Make sure that coefficients is the second column, even if the metalearner
-      # did not provide coefficients.
-      data.table::setcolorder(stack_risks, c(names(stack_risks)[1], "coefficients"))
+      # Make sure that coefficients is the second column, even if the
+      # metalearner did not provide coefficients.
+      data.table::setcolorder(
+        stack_risks,
+        c(names(stack_risks)[1], "coefficients")
+      )
 
       # get risks for super learner (revere cv)
       sl_risk <- cv_risk(self, loss_fun)
@@ -109,17 +111,65 @@ Lrnr_sl <- R6Class(
       risks <- rbind(stack_risks, sl_risk)
       return(risks)
     },
-    predict_fold = function(task, fold_number = "validation") {
+    predict_fold = function(task, fold_number = "validation",
+                            pred_unique_ts = FALSE) {
       fold_number <- interpret_fold_number(fold_number)
       revere_task <- task$revere_fold_task(fold_number)
       if (fold_number == "full") {
         preds <- self$predict(revere_task)
       } else {
-        meta_task <- self$fit_object$cv_fit$chain_fold(revere_task, fold_number)
+        meta_task <- self$fit_object$cv_fit$chain_fold(
+          revere_task,
+          fold_number
+        )
         preds <- self$fit_object$cv_meta_fit$predict(meta_task)
+
+        if (pred_unique_ts) {
+          ### Time-series addition:
+          # Each time point gets an unique final prediction
+          folds <- revere_task$folds
+          index_val <- unlist(lapply(folds, function(fold) {
+            fold$validation_set
+          }))
+          preds_unique <- unique(index_val)
+
+          if (length(unique(index_val)) != length(index_val)) {
+            # Average over the same predictions:
+            preds <- data.table(index_val, preds)
+            preds <- preds[, mean(preds), index_val]
+            preds <- as.numeric(preds$V1)
+          }
+        }
       }
 
       return(preds)
+    },
+    update = function(task, drop_old = FALSE) {
+      if (!self$is_trained) {
+        return(self$train(task))
+      }
+
+      fit_object <- self$fit_object
+      fit_object$cv_fit <- fit_object$cv_fit$update(task, drop_old = drop_old)
+
+      # fit meta-learner
+      fit_object$cv_meta_task <- fit_object$cv_fit$chain(task)
+      fit_object$cv_meta_fit <- self$params$metalearner$train(fit_object$cv_meta_task)
+
+      # construct full fit pipeline
+      full_stack_fit <- fit_object$cv_fit$fit_object$full_fit
+      full_stack_fit$custom_chain(drop_offsets_chain)
+
+      full_fit <- make_learner(
+        Pipeline, full_stack_fit,
+        fit_object$cv_meta_fit
+      )
+
+      fit_object$full_fit <- full_fit
+
+      new_object <- self$clone() # copy parameters, and whatever else
+      new_object$set_train(fit_object, task)
+      return(new_object)
     }
   ),
 
@@ -141,10 +191,10 @@ Lrnr_sl <- R6Class(
 
   private = list(
     .properties = c("wrapper", "cv"),
-
     .train_sublearners = function(task) {
       # if we get a delayed task, evaluate it
-      # TODO: this is a kludge -- ideally we'd have Lrnr_sl work on delayed tasks like other learners
+      # TODO: this is a kludge:
+      # ideally we'd have Lrnr_sl work on delayed tasks like other learners
       if (inherits(task, "Delayed")) {
         task <- task$compute()
       }
@@ -155,7 +205,6 @@ Lrnr_sl <- R6Class(
         # TODO: this breaks if task is delayed
         folds <- task$folds
       }
-
 
       # construct default metalearner if necessary
       metalearner <- self$params$metalearner
@@ -168,7 +217,9 @@ Lrnr_sl <- R6Class(
       learners <- self$params$learners
       learner_stack <- do.call(Stack$new, list(learners))
       cv_stack <- Lrnr_cv$new(learner_stack, folds = folds, full_fit = TRUE)
-      cv_stack$custom_chain(drop_offsets_chain)
+
+      # TODO: readd custom chain w/ better cv chain code
+      # cv_stack$custom_chain(drop_offsets_chain)
 
       # fit stack on CV data
       cv_fit <- delayed_learner_train(cv_stack, task)
@@ -193,10 +244,10 @@ Lrnr_sl <- R6Class(
       full_stack_fit <- fit_object$cv_fit$fit_object$full_fit
       full_stack_fit$custom_chain(drop_offsets_chain)
 
-      full_fit <- make_learner(Pipeline, full_stack_fit, fit_object$cv_meta_fit)
-
-
-
+      full_fit <- make_learner(
+        Pipeline, full_stack_fit,
+        fit_object$cv_meta_fit
+      )
       fit_object$full_fit <- full_fit
 
       if (self$params$keep_extra) {
