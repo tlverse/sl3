@@ -43,7 +43,7 @@ folds_more <- origami::make_folds(
   gap = 0,
   batch = 25
 )
-folds_more <- tail(folds_more,5)
+folds_more <- tail(folds_more, 5)
 
 task_moredata <- make_sl3_Task(
   data = data_more,

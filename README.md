@@ -427,7 +427,7 @@ x
 
 <td style="text-align:left;">
 
-√
+x
 
 </td>
 
@@ -2135,6 +2135,100 @@ x
 
 <td style="text-align:left;">
 
+Lrnr\_gru\_keras
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
 Lrnr\_gts
 
 </td>
@@ -2888,6 +2982,100 @@ x
 <td style="text-align:left;">
 
 Lrnr\_lstm
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Lrnr\_lstm\_keras
 
 </td>
 
@@ -3999,7 +4187,7 @@ x
 
 <td style="text-align:left;">
 
-x
+√
 
 </td>
 
@@ -4281,7 +4469,7 @@ x
 
 <td style="text-align:left;">
 
-x
+√
 
 </td>
 
@@ -5819,14 +6007,14 @@ prior to submitting a pull request.
 After using the `sl3` R package, please cite the following:
 
 ``` 
-    @manual{coyle2020sl3,
+ @manual{coyle2021sl3,
       author = {Coyle, Jeremy R and Hejazi, Nima S and Malenica, Ivana and
         Sofrygin, Oleg},
       title = {{sl3}: Modern Pipelines for Machine Learning and {Super
         Learning}},
-      year = {2020},
+      year = {2021},
       howpublished = {\url{https://github.com/tlverse/sl3}},
-      note = {{R} package version 1.3.7},
+      note = {{R} package version 1.4.2},
       url = {https://doi.org/10.5281/zenodo.1342293},
       doi = {10.5281/zenodo.1342293}
     }
@@ -5836,7 +6024,7 @@ After using the `sl3` R package, please cite the following:
 
 ## License
 
-© 2017-2020 [Jeremy R. Coyle](https://github.com/jeremyrcoyle), [Nima S.
+© 2017-2021 [Jeremy R. Coyle](https://github.com/jeremyrcoyle), [Nima S.
 Hejazi](https://nimahejazi.org), [Ivana
 Malenica](https://github.com/podTockom), [Oleg
 Sofrygin](https://github.com/osofr)
@@ -5848,7 +6036,7 @@ See file `LICENSE` for details.
 
 ## References
 
-<div id="refs" class="references hanging-indent">
+<div id="refs" class="references">
 
 <div id="ref-breiman1996stacked">
 
@@ -5859,7 +6047,7 @@ Breiman, Leo. 1996. “Stacked Regressions.” *Machine Learning* 24 (1):
 
 <div id="ref-vdl2007super">
 
-van der Laan, Mark J., Eric C. Polley, and Alan E. Hubbard. 2007. “Super
+van der Laan, Mark J, Eric C Polley, and Alan E Hubbard. 2007. “Super
 Learner.” *Statistical Applications in Genetics and Molecular Biology* 6
 (1).
 
