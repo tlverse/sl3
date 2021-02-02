@@ -1,3 +1,7 @@
+# sl3 1.4.3
+* Extensive updates to documentation and examples in preparation for a CRAN
+  release.
+
 # sl3 1.4.2
 * Updates to variable importance functionality, including calculation of risk
   ratio and risk differences under covariate deletion or permutation.
