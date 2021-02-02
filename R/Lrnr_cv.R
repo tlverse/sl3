@@ -31,6 +31,10 @@ validation_task <- function(task, fold) {
   return(task$subset_task(validation(fold = fold), drop_folds = TRUE))
 }
 
+digest_fold <- function(fold){
+  digest(fold[c("training_set","validation_set")])
+}
+
 interpret_fold_number <- function(fold_number) {
   if (fold_number == -1) {
     fold_number <- "full"
@@ -172,35 +176,31 @@ Lrnr_cv <- R6Class(
       ))
     },
 
-    update = function(task) {
+    update = function(task, drop_old = FALSE) {
       if (!self$is_trained) {
         return(self$base_train(task))
       }
 
       # identify the folds that already have fold fits
       folds <- task$folds
-      eval_past_fold <- lapply(seq_len(length(folds)), function(x) {
-        if (x > length(self$training_task$folds)) {
-          equal <- FALSE
-        } else {
-          equal_training <- identical(
-            self$training_task$folds[[x]]$training_set,
-            task$folds[[x]]$training_set
-          )
-          equal_validation <- identical(
-            self$training_task$folds[[x]]$validation_set,
-            task$folds[[x]]$validation_set
-          )
-          equal <- equal_training & equal_validation
-        }
-        return(equal)
-      })
+      fold_digests <- sapply(folds, digest_fold)
+      
+      old_folds <- self$training_task$folds
+      old_fold_digests <- sapply(old_folds, digest_fold)
+      
       # retain past fold fits
-      past_folds <- which(unlist(eval_past_fold))
-      past_fold_fits <- self$fit_object$fold_fits[past_folds]
-
+      if(drop_old){
+        past_fold_idx <- which(old_fold_digests%in%fold_digests)
+        past_folds <- old_folds[past_fold_idx]
+        past_fold_fits <- self$fit_object$fold_fits[past_fold_idx]
+      } else {
+        past_folds <- old_folds
+        past_fold_fits <- self$fit_object$fold_fits
+      }
+      
       # subset new folds
-      new_folds <- task$folds[which(!unlist(eval_past_fold))]
+      new_fold_idx <- which(!(fold_digests%in%old_fold_digests))
+      new_folds <- folds[new_fold_idx]
 
 
       if (length(new_folds) == 0) {
@@ -344,7 +344,12 @@ Lrnr_cv <- R6Class(
     .predict = function(task) {
       folds <- task$folds
       fold_fits <- private$.fit_object$fold_fits
-
+      
+      # fix fold indicies
+      folds <- lapply(seq_along(folds), function(fold_index){
+        origami::make_fold(fold_index, folds[[fold_index]]$training_set, folds[[fold_index]]$validation_set)
+      })
+      
       cv_predict <- function(fold, fold_fits, task) {
         fold_number <- fold_index()
         revere_task <- task$revere_fold_task(fold_number)
