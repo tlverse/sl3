@@ -312,6 +312,9 @@ run_simulation_sequence <- function(bootstrap_seeds, gen_data, lrnr, save_path,
                                     N = 1e6, n_sequence = c(50, 100, 500, 1000, 5000),
                                     loss = loss_squared_error, outcome = "Y", 
                                     covariates = NULL, cores = 1){
+  
+  stopifnot(dir.exists(save_path))
+  
   t <- proc.time()
   
   # establish truth with very large training and test data
