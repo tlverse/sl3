@@ -14,13 +14,17 @@ DGP_linear <- function(n, sd = 1){
 
 RNGkind(sample.kind = "Rejection")
 set.seed(4917)
-Bseeds <- sample(1:2^15, 1000)
+Bseeds <- sample(1:2^15, 5)
+lrnr <- Lrnr_glm$new()
+relevant_covariates_rank <- list("X1"=c(1,2,3), "X2"=c(1,2,3), "X3"=c(1,2,3))
+irrelevant_covariates <- c("X4", "X5")
 run_simulation_sequence(bootstrap_seeds = Bseeds, gen_data = DGP_linear, 
-                        lrnr = Lrnr_glm$new(), N = 1e6, 
-                        n_sequence = c(50, 100, 500, 1000, 5000),
-                        loss = loss_squared_error, outcome = "Y", 
-                        covariates = NULL, cores = 22,
-                        save_path = "~/results/DGP_linear/")
+                        relevant_covariates_rank = relevant_covariates_rank,
+                        irrelevant_covariates = irrelevant_covariates, lrnr = lrnr, 
+                        cores = 22, save_path = "~/results/DGP_linear/")
+# timer:
+#   user  system elapsed
+# 20066     188     998
 
 ##################### data generated under mlbench.friedman1 ###################
 
@@ -50,9 +54,9 @@ DGP_friedman <- function(n, sd = 1){
 RNGkind(sample.kind = "Rejection")
 set.seed(4917)
 Bseeds <- sample(1:2^15, 1000)
-run_simulation_sequence(bootstrap_seeds = Bseeds, gen_data = DGP_friedman, 
-                        lrnr = Lrnr_glm$new(), cores = 22,
-                        save_path = "~/results/DGP_friedman/")
+relevant_covariates_rank <- list("V4"=1, "V2"=c(2,3), "V1"=c(2,3), 
+                                 "V3"=c(4,5), "V5"=c(4,5))
+irrelevant_covariates <- paste0("V", 6:10)
 
 lrn_glm <- Lrnr_glm$new()
 lrn_spline <- Lrnr_polspline$new()
@@ -62,6 +66,8 @@ xgb <- Lrnr_xgboost$new()
 lrnrs <- c(lrn_lasso, lrn_glm, lrn_spline, rf, xgb)
 names(lrnrs) <- c("lasso", "glm", "polspline", "ranger", "xgboost")
 lrnr <- Lrnr_sl$new(lrnrs, full_fit = TRUE)
+
 run_simulation_sequence(bootstrap_seeds = Bseeds, gen_data = DGP_friedman, 
-                        lrnr = Lrnr_glm$new(), cores = 22,
-                        save_path = "~/results/DGP_friedman/")
+                        lrnr = lrnr, cores = 22, save_path = "~/results/DGP_friedman/",
+                        relevant_covariates_rank = relevant_covariates_rank, 
+                        irrelevant_covariates = irrelevant_covariates)

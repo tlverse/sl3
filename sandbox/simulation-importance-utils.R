@@ -9,7 +9,129 @@ library(sl3)
 options("scipen" = 1, "digits" = 3)
 
 # ==============================================================================
-calc_risk <- function(lrnr, loss, data, covariates, outcome, seed = 4591){
+# main function that calls all other functions in this script
+# ==============================================================================
+
+# gen_data() is a function that generates a table
+
+# if covariates is NULL, all non-outcome columns are considered covariates
+
+# irrelevant_covariates is a character vector of irrelevant covariates
+
+# relevant_covariates_rank is a named list of length number of relevant 
+# covariates, with names being the relevant covariates. Each element contains
+# a valid rank for the covariate, ex/ list("X1"=1, "X2"=c(2,3), "X3"=c(2,3)).
+
+run_simulation_sequence <- function(bootstrap_seeds, gen_data, lrnr, save_path,
+                                    irrelevant_covariates, relevant_covariates_rank,
+                                    N = 1e6, n_sequence = c(50, 100, 500, 1000, 5000),
+                                    loss = loss_squared_error, outcome = "Y", 
+                                    covariates = NULL, cores = 1){
+  
+  stopifnot(dir.exists(save_path))
+  
+  t <- proc.time()
+  
+  # establish truth with very large training and test data
+  cat("\n CALCULATING TRUE IMPORTANCE WRT BIG N =", N, "\n")
+  training_data <- gen_data(N)
+  test_data <- gen_data(N)
+  if(is.null(covariates)){
+    covariates <- colnames(training_data)[-which(colnames(training_data) == outcome)]
+  }
+  truths <- calc_truth(big_training_data = training_data, big_test_data = test_data, 
+                       covariates = covariates, outcome = outcome, loss = loss, 
+                       lrnr = lrnr)
+  
+  mse_covariate_summary <- list()
+  mse_summary <- list()
+  risk_summary <- list()
+  rank_summary <- list()
+  
+  # each sample size considers B simulations 
+  B <- length(bootstrap_seeds)
+  for(i in 1:length(n_sequence)){
+    
+    n <- n_sequence[i]
+    cat("\n STARTING SIMULATIONS WITH n =", n, "\n")
+    
+    registerDoParallel(cores = cores)
+    getDoParWorkers()
+    Bres <- foreach(b = 1:B) %dopar% {
+      print(paste0("Starting simulation ", b))
+      set.seed(bootstrap_seeds[b])
+      d <- gen_data(n)
+      risk_dt <- calc_importance(lrnr = lrnr, loss = loss, data = d, 
+                                 covariates = covariates, outcome = outcome, 
+                                 seed = bootstrap_seeds[b])
+      mse_dt <- calc_mse(risk_dt = risk_dt, true_risk_ratio = truths[["risk_ratio"]], 
+                         true_risk_difference = truths[["risk_difference"]])
+      rank_check_dt <- check_rank(risk_dt = risk_dt, 
+                                  irrelevant_covariates = irrelevant_covariates,
+                                  relevant_covariates_rank = relevant_covariates_rank)
+      return(list(risk_dt = risk_dt, mse_dt = mse_dt, rank_check_dt = rank_check_dt))
+    }
+    n_res <- compile_simulation_results(Bres, n)
+    mse_covariate_summary[[i]] <- n_res[["mse_covariate_summary"]]
+    mse_summary[[i]] <- n_res[["mse_summary"]]
+    risk_summary[[i]] <- n_res[["risk_summary"]]
+    rank_summary[[i]] <- n_res[["rank_summary"]]
+  }
+  
+  # save results 
+  mse_summ <- do.call(rbind, mse_summary)
+  write.csv(mse_summ, row.names = F, file = paste0(save_path, "mse_summary.csv"))
+  mse_cov_summ <- do.call(rbind, mse_covariate_summary)
+  write.csv(mse_cov_summ, row.names = F, file = paste0(save_path, "mse_covariate_summary.csv"))
+  risk_summ <- do.call(rbind, risk_summary)
+  write.csv(risk_summ, row.names = F, file = paste0(save_path, "risk_summary.csv"))
+  rank_summ <- do.call(rbind, rank_summary)
+  write.csv(rank_summ, row.names = F, file = paste0(save_path, "rank_summary.csv"))
+  
+  # plot results
+  plot_results(save_path, mse_cov_summ, mse_summ, risk_summ, rank_summ)
+  
+  timer <- proc.time() - t
+  cat("\n DONE! \n\n timer: \n")
+  print(timer)
+}
+
+# ==============================================================================
+# get "true" importance using large training data & large independent test data
+# ==============================================================================
+calc_truth <- function(big_training_data, big_test_data, covariates, outcome,
+                       loss, lrnr, seed = 317){
+  # predictions & risk on test data, what we're calling the truth
+  set.seed(seed)
+  training_task <- make_sl3_Task(data = big_training_data, 
+                                 covariates = covariates, 
+                                 outcome = outcome)
+  fit <- lrnr$train(training_task)
+  
+  test_task <- make_sl3_Task(data = big_test_data, covariates = covariates, 
+                             outcome = outcome)
+  pred <- fit$predict(test_task)
+  true_risk <- mean(loss(pred, test_task$Y))
+  true_risk_remX <- lapply(seq_along(covariates), function(i){
+    training_task <- make_sl3_Task(
+      data = big_training_data, covariates = covariates[-i], outcome = outcome
+    )
+    test_task <- make_sl3_Task(
+      data = big_test_data, covariates = covariates[-i], outcome = outcome
+    )
+    fit <- lrnr$train(training_task)
+    pred <- fit$predict(test_task)
+    mean(loss(pred, test_task$Y))
+  })
+  names(true_risk_remX) <- covariates
+  true_risk_ratio <- t(unlist(lapply(true_risk_remX, function(x) x/true_risk)))
+  true_risk_diff <- t(unlist(lapply(true_risk_remX, function(x) x-true_risk)))
+  return(list(risk_ratio = true_risk_ratio, risk_difference = true_risk_diff))
+}
+# ==============================================================================
+# function to calculate the variable importance
+# ==============================================================================
+calc_importance <- function(lrnr, loss, data, covariates, outcome, seed = 4591){
   
   ################################## baseline risk #############################
   
@@ -84,64 +206,58 @@ calc_risk <- function(lrnr, loss, data, covariates, outcome, seed = 4591){
   )
 }
 # ==============================================================================
-calc_performance <- function(risk_dt, covariates, true_risk_ratio, 
-                             true_risk_difference){
+# functions to calculate performance metrics
+# ==============================================================================
+calc_mse <- function(risk_dt, true_risk_ratio, true_risk_difference){
+  not_covs <- c("importance_metric", "method", "evaluation")
+  covs <- colnames(risk_dt[, -not_covs, with=F])
   
-  res_ratio <- risk_dt[importance_metric == "risk_ratio", covariates, with=F]
-  res_diff <- risk_dt[importance_metric == "risk_difference", covariates, with=F]
+  res_ratio <- risk_dt[importance_metric == "risk_ratio", covs, with=F]
+  res_diff <- risk_dt[importance_metric == "risk_difference", covs, with=F]
   mse_ratio <- (res_ratio-true_risk_ratio)^2
   mse_diff <- (res_diff-true_risk_difference)^2
   
-  dt_ratio <- risk_dt[importance_metric == "risk_ratio", -covariates, with=F]
-  dt_diff <- risk_dt[importance_metric == "risk_difference", -covariates, with=F]
+  dt_ratio <- risk_dt[importance_metric == "risk_ratio", -covs, with=F]
+  dt_diff <- risk_dt[importance_metric == "risk_difference", -covs, with=F]
   rbind(data.table(dt_ratio, mse_ratio), data.table(dt_diff, mse_diff))
 }
-# ==============================================================================
-get_truth <- function(big_training_data, big_test_data, covariates, outcome,
-                      loss, lrnr, seed = 317){
-  # predictions & risk on test data, what we're calling the truth
-  set.seed(seed)
-  training_task <- make_sl3_Task(data = big_training_data, 
-                                 covariates = covariates, 
-                                 outcome = outcome)
-  fit <- lrnr$train(training_task)
+
+check_rank <- function(risk_dt, irrelevant_covariates, relevant_covariates_rank){
   
-  test_task <- make_sl3_Task(data = big_test_data, covariates = covariates, 
-                             outcome = outcome)
-  pred <- fit$predict(test_task)
-  true_risk <- mean(loss(pred, test_task$Y))
-  true_risk_remX <- lapply(seq_along(covariates), function(i){
-    training_task <- make_sl3_Task(
-      data = big_training_data, covariates = covariates[-i], outcome = outcome
-    )
-    test_task <- make_sl3_Task(
-      data = big_test_data, covariates = covariates[-i], outcome = outcome
-    )
-    fit <- lrnr$train(training_task)
-    pred <- fit$predict(test_task)
-    mean(loss(pred, test_task$Y))
-  })
-  names(true_risk_remX) <- covariates
-  true_risk_ratio <- t(unlist(lapply(true_risk_remX, function(x) x/true_risk)))
-  true_risk_diff <- t(unlist(lapply(true_risk_remX, function(x) x-true_risk)))
-  return(list(risk_ratio = true_risk_ratio, risk_difference = true_risk_diff))
+  not_covs <- c("importance_metric", "method", "evaluation")
+  cov_risk_dt <- risk_dt[, -not_covs, with=F]
+  
+  # irrelevant covariates are ranked last
+  max_irrel_risk <- apply(cov_risk_dt[, irrelevant_covariates, with=F], 1, max)
+  min_rel_risk <- apply(cov_risk_dt[, -irrelevant_covariates, with=F], 1, min) 
+  irrel_covs_last <- ifelse(min_rel_risk > max_irrel_risk, 1, 0)
+  
+  # relevant covariates are ranked appropriately
+  rank_dt <- data.table(apply(cov_risk_dt, 2, rank))
+  colnames(rank_dt) <- colnames(cov_risk_dt)
+  mat <- matrix(nrow = nrow(rank_dt), ncol = length(relevant_covariates_rank))
+  for(i in 1:length(relevant_covariates_rank)){
+    cov <- names(relevant_covariates_rank)[i]
+    true_rank <- relevant_covariates_rank[[i]]
+    cov_rank <- rank_dt[[cov]]
+    mat[,i] <- ifelse(cov_rank %in% true_rank, 1, 0)
+  }
+  rank_correct_dt <- cbind(data.table(mat), irrel_covs_last)
+  data.table(
+    risk_dt[, not_covs, with=F], 
+    prop_rank_correct = rowSums(rank_correct_dt)/ncol(rank_correct_dt),
+    rank_correct = ifelse(rowSums(rank_correct_dt) == ncol(rank_correct_dt), 1, 0)
+  )
 }
+
 # ==============================================================================
-get_result <- function(data, lrnr, loss, covariates, outcome, seed, 
-                       true_risk_ratio, true_risk_difference){
-  risk_dt <- calc_risk(lrnr = lrnr, loss = loss, data = data, 
-                       covariates = covariates, outcome = outcome, 
-                       seed = seed)
-  mse_dt <- calc_performance(risk_dt = risk_dt, covariates = covariates, 
-                             true_risk_ratio = true_risk_ratio, 
-                             true_risk_difference = true_risk_difference)
-  return(list(risk_dt = risk_dt, mse_dt = mse_dt))
-}
+# functions to compile & plot the results across the n-specific simulations
 # ==============================================================================
 compile_simulation_results <- function(simulation_results, n){
   
   mse_all <- do.call(rbind, lapply(simulation_results, '[[', 'mse_dt'))
   risk_all <- do.call(rbind, lapply(simulation_results, '[[', 'risk_dt'))
+  rank_all <- do.call(rbind, lapply(simulation_results, '[[', 'rank_check_dt'))
   
   not_covs <- c("importance_metric", "method", "evaluation")
   covs <- colnames(mse_all)[-which(colnames(mse_all) %in% not_covs)]
@@ -158,6 +274,14 @@ compile_simulation_results <- function(simulation_results, n){
   sumMSE <- rowSums(mse_cov_summary[, covs, with=F])
   mse_summary <- data.table(n = rep(n, nrow(mse_cov_summary)), 
                             mse_cov_summary[, -covs, with=F], sumMSE)
+  
+  ############################# summarize rank #################################
+  rank_summary <- data.table(
+    rank_all %>% 
+      dplyr::group_by(importance_metric, method, evaluation) %>%
+      dplyr::summarize_at(c("prop_rank_correct", "rank_correct"), mean)
+  )
+  rank_summary <- data.table(n = rep(n, nrow(rank_summary)), rank_summary)
   
   ############################# summarize risk #################################
   risk_covariate_summary <- data.table(
@@ -180,15 +304,16 @@ compile_simulation_results <- function(simulation_results, n){
                              risk_covariate_summary[, -covs, with=F], 
                              mean_risk, median_risk)
   
-  return(list(mse_summary = mse_summary, 
+  return(list(rank_summary = rank_summary,
+              mse_summary = mse_summary, 
               mse_covariate_summary = mse_covariate_summary,
               risk_summary = risk_summary))
 }
 
-# ==============================================================================
 # mse_covariate_summary, mse_summary, and risk_summary
 # are the data tables generated by compile_simulation_results function
-plot_results <- function(path, mse_covariate_summary, mse_summary, risk_summary){
+plot_results <- function(path, mse_covariate_summary, mse_summary, risk_summary,
+                         rank_summary){
   
   # folders to save performance plots
   dir.create(paste0(path, "MSE_plots"))
@@ -304,67 +429,31 @@ plot_results <- function(path, mse_covariate_summary, mse_summary, risk_summary)
     print(ratio_plot)
     dev.off()
   }
+  
+  # main rank summary plot
+  rank_summary$type <- paste0(rank_summary$importance_metric, "_", 
+                              rank_summary$method, "_", rank_summary$evaluation)
+  plot3 <- ggplot(rank_summary, aes(x = n, y = prop_rank_correct, color = type)) +
+    geom_point() + 
+    geom_line(linetype = "dotted") + 
+    theme(legend.title = element_blank()) +
+    labs(x = "Sample Size", y = "Correct Rank Proportion", 
+         title = "sl3 Importance Evaluation", 
+         subtitle = "Correct Rank Proportion over all Simulations")
+  pdf(paste0(path, "rank_proportion.pdf"))
+  print(plot3)
+  dev.off()
+  
+  plot4 <- ggplot(rank_summary, aes(x = n, y = rank_correct, color = type)) +
+    geom_point() + 
+    geom_line(linetype = "dotted") + 
+    theme(legend.title = element_blank()) +
+    labs(x = "Sample Size", y = "Correct Rank Coverage", 
+         title = "sl3 Importance Evaluation", 
+         subtitle = "Correct Rank Coverage over all Simulations")
+  pdf(paste0(path, "rank_coverage.pdf"))
+  print(plot4)
+  dev.off()
 }
-# ==============================================================================
-# gen_data() is a function that generates a table
-# if covariates is NULL, all non-outcome columns are considered covariates
-run_simulation_sequence <- function(bootstrap_seeds, gen_data, lrnr, save_path,
-                                    N = 1e6, n_sequence = c(50, 100, 500, 1000, 5000),
-                                    loss = loss_squared_error, outcome = "Y", 
-                                    covariates = NULL, cores = 1){
-  
-  stopifnot(dir.exists(save_path))
-  
-  t <- proc.time()
-  
-  # establish truth with very large training and test data
-  cat("\n CALCULATING TRUE IMPORTANCE WRT BIG N =", N, "\n")
-  training_data <- gen_data(N)
-  test_data <- gen_data(N)
-  if(is.null(covariates)){
-    covariates <- colnames(training_data)[-which(colnames(training_data) == outcome)]
-  }
-  truths <- get_truth(big_training_data = training_data, big_test_data = test_data, 
-                      covariates = covariates, outcome = outcome, loss = loss, lrnr = lrnr)
-  
-  mse_covariate_summary <- list()
-  mse_summary <- list()
-  risk_summary <- list()
-  
-  # each sample size considers B simulations 
-  B <- length(bootstrap_seeds)
-  for(i in 1:length(n_sequence)){
-    
-    n <- n_sequence[i]
-    cat("\n STARTING SIMULATIONS WITH n =", n, "\n")
-    
-    registerDoParallel(cores = cores)
-    getDoParWorkers()
-    Bres <- foreach(b = 1:B) %dopar% {
-      print(paste0("Starting simulation ", b))
-      set.seed(bootstrap_seeds[b])
-      d <- gen_data(n)
-      get_result(data = d, lrnr = lrnr, loss = loss, covariates = covariates, 
-                 outcome = outcome, seed = bootstrap_seeds[b], 
-                 true_risk_ratio = truths[["risk_ratio"]], 
-                 true_risk_difference = truths[["risk_difference"]])
-    }
-    n_res <- compile_simulation_results(Bres, n)
-    mse_covariate_summary[[i]] <- n_res[["mse_covariate_summary"]]
-    mse_summary[[i]] <- n_res[["mse_summary"]]
-    risk_summary[[i]] <- n_res[["risk_summary"]]
-  }
-  
-  # save & plot results 
-  mse_summ <- do.call(rbind, mse_summary)
-  write.csv(mse_summ, row.names = F, file = paste0(save_path, "mse_summary.csv"))
-  mse_cov_summ <- do.call(rbind, mse_covariate_summary)
-  write.csv(mse_cov_summ, row.names = F, file = paste0(save_path, "mse_covariate_summary.csv"))
-  risk_summ <- do.call(rbind, risk_summary)
-  write.csv(risk_summ, row.names = F, file = paste0(save_path, "risk_summary.csv"))
-  plot_results(save_path, mse_cov_summ, mse_summ, risk_summ)
-  
-  timer <- proc.time() - t
-  cat("\n DONE! \n\n timer: \n")
-  print(timer)
-}
+
+
