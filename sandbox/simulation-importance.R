@@ -67,4 +67,5 @@ lrnr <- Lrnr_sl$new(lrnrs, full_fit = TRUE)
 run_simulation_sequence(bootstrap_seeds = Bseeds, gen_data = DGP_friedman, 
                         lrnr = lrnr, cores = 22, save_path = "~/results/DGP_friedman/",
                         relevant_covariates_rank = relevant_covariates_rank, 
-                        irrelevant_covariates = irrelevant_covariates)
+                        irrelevant_covariates = irrelevant_covariates, 
+                        calculateMSE = FALSE)
