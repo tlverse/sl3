@@ -26,28 +26,35 @@ run_simulation_sequence <- function(bootstrap_seeds, gen_data, lrnr, save_path,
                                     irrelevant_covariates, relevant_covariates_rank,
                                     N = 1e6, n_sequence = c(50, 100, 500, 1000, 5000),
                                     loss = loss_squared_error, outcome = "Y", 
-                                    covariates = NULL, cores = 1){
-  
-  stopifnot(dir.exists(save_path))
+                                    covariates = NULL, cores = 1, 
+                                    calculateMSE = TRUE){
   
   t <- proc.time()
   
-  # establish truth with very large training and test data
-  cat("\n CALCULATING TRUE IMPORTANCE WRT BIG N =", N, "\n")
-  training_data <- gen_data(N)
-  test_data <- gen_data(N)
-  if(is.null(covariates)){
-    covariates <- colnames(training_data)[-which(colnames(training_data) == outcome)]
-  }
-  truths <- calc_truth(big_training_data = training_data, big_test_data = test_data, 
-                       covariates = covariates, outcome = outcome, loss = loss, 
-                       lrnr = lrnr)
+  stopifnot(dir.exists(save_path))
   
-  mse_covariate_summary <- list()
-  mse_summary <- list()
+  if(is.null(covariates)){
+    d <- gen_data(1)
+    covariates <- colnames(d)[-which(colnames(d) == outcome)]
+  }
+  
+  len_supplied <- length(irrelevant_covariates) + length(relevant_covariates_rank)
+  stopifnot(length(covariates) == len_supplied)
+  
+  if(calculateMSE){
+    # establish truth with very large training and test data
+    cat("\n CALCULATING TRUE IMPORTANCE WRT BIG N =", N, "\n")
+    training_dt <- gen_data(N)
+    test_dt <- gen_data(N)
+    truths <- calc_truth(big_training_data = training_dt, big_test_data = test_dt, 
+                         covariates = covariates, outcome = outcome, loss = loss, 
+                         lrnr = lrnr)
+    mse_covariate_summary <- list()
+    mse_summary <- list()                   
+  }
+  
   risk_summary <- list()
   rank_summary <- list()
-  
   # each sample size considers B simulations 
   B <- length(bootstrap_seeds)
   for(i in 1:length(n_sequence)){
@@ -64,33 +71,42 @@ run_simulation_sequence <- function(bootstrap_seeds, gen_data, lrnr, save_path,
       risk_dt <- calc_importance(lrnr = lrnr, loss = loss, data = d, 
                                  covariates = covariates, outcome = outcome, 
                                  seed = bootstrap_seeds[b])
-      mse_dt <- calc_mse(risk_dt = risk_dt, true_risk_ratio = truths[["risk_ratio"]], 
-                         true_risk_difference = truths[["risk_difference"]])
       rank_check_dt <- check_rank(risk_dt = risk_dt, 
                                   irrelevant_covariates = irrelevant_covariates,
                                   relevant_covariates_rank = relevant_covariates_rank)
+      if(calculateMSE){
+        mse_dt <- calc_mse(risk_dt = risk_dt, 
+                           true_risk_ratio = truths[["risk_ratio"]], 
+                           true_risk_difference = truths[["risk_difference"]])
+      } else {
+        mse_dt <- NULL
+      }            
       return(list(risk_dt = risk_dt, mse_dt = mse_dt, rank_check_dt = rank_check_dt))
     }
-    n_res <- compile_simulation_results(Bres, n)
-    mse_covariate_summary[[i]] <- n_res[["mse_covariate_summary"]]
-    mse_summary[[i]] <- n_res[["mse_summary"]]
+    n_res <- compile_simulation_results(Bres, n, covariates, calculateMSE)
     risk_summary[[i]] <- n_res[["risk_summary"]]
     rank_summary[[i]] <- n_res[["rank_summary"]]
+    if(calculateMSE){
+      mse_covariate_summary[[i]] <- n_res[["mse_covariate_summary"]]
+      mse_summary[[i]] <- n_res[["mse_summary"]]
+    }
   }
   
-  # save results 
-  mse_summ <- do.call(rbind, mse_summary)
-  write.csv(mse_summ, row.names = F, file = paste0(save_path, "mse_summary.csv"))
-  mse_cov_summ <- do.call(rbind, mse_covariate_summary)
-  write.csv(mse_cov_summ, row.names = F, file = paste0(save_path, "mse_covariate_summary.csv"))
+  # save & plot results 
   risk_summ <- do.call(rbind, risk_summary)
   write.csv(risk_summ, row.names = F, file = paste0(save_path, "risk_summary.csv"))
   rank_summ <- do.call(rbind, rank_summary)
   write.csv(rank_summ, row.names = F, file = paste0(save_path, "rank_summary.csv"))
-  
-  # plot results
-  plot_results(save_path, mse_cov_summ, mse_summ, risk_summ, rank_summ)
-  
+  if(calculateMSE){
+    mse_summ <- do.call(rbind, mse_summary)
+    write.csv(mse_summ, row.names = F, file = paste0(save_path, "mse_summary.csv"))
+    mse_cov_summ <- do.call(rbind, mse_covariate_summary)
+    write.csv(mse_cov_summ, row.names = F, file = paste0(save_path, "mse_covariate_summary.csv"))
+    plot_results(save_path, risk_summ, rank_summ, mse_cov_summ, mse_summ)
+  } else {
+    plot_results(save_path, risk_summ, rank_summ)
+  }
+
   timer <- proc.time() - t
   cat("\n DONE! \n\n timer: \n")
   print(timer)
@@ -253,29 +269,27 @@ check_rank <- function(risk_dt, irrelevant_covariates, relevant_covariates_rank)
 # ==============================================================================
 # functions to compile & plot the results across the n-specific simulations
 # ==============================================================================
-compile_simulation_results <- function(simulation_results, n){
+compile_simulation_results <- function(simulation_results, n, covariates, 
+                                       hasMSE){
   
-  mse_all <- do.call(rbind, lapply(simulation_results, '[[', 'mse_dt'))
-  risk_all <- do.call(rbind, lapply(simulation_results, '[[', 'risk_dt'))
-  rank_all <- do.call(rbind, lapply(simulation_results, '[[', 'rank_check_dt'))
-  
-  not_covs <- c("importance_metric", "method", "evaluation")
-  covs <- colnames(mse_all)[-which(colnames(mse_all) %in% not_covs)]
-  
-  ############################# summarize MSE ##################################
-  mse_cov_summary <- data.table(
-    mse_all %>% 
-      dplyr::group_by(importance_metric, method, evaluation) %>%
-      dplyr::summarize_at(covs, mean)
-  )
-  mse_covariate_summary <- data.table(n = rep(n, nrow(mse_cov_summary)), 
-                                      mse_cov_summary)
-  
-  sumMSE <- rowSums(mse_cov_summary[, covs, with=F])
-  mse_summary <- data.table(n = rep(n, nrow(mse_cov_summary)), 
-                            mse_cov_summary[, -covs, with=F], sumMSE)
+  if(hasMSE){
+    mse_all <- do.call(rbind, lapply(simulation_results, '[[', 'mse_dt'))
+    ############################# summarize MSE ##################################
+    mse_cov_summary <- data.table(
+      mse_all %>% 
+        dplyr::group_by(importance_metric, method, evaluation) %>%
+        dplyr::summarize_at(covariates, mean)
+    )
+    mse_covariate_summary <- data.table(n = rep(n, nrow(mse_cov_summary)), 
+                                        mse_cov_summary)
+                                        
+    sumMSE <- rowSums(mse_cov_summary[, covariates, with=F])
+    mse_summary <- data.table(n = rep(n, nrow(mse_cov_summary)), 
+                              mse_cov_summary[, -covariates, with=F], sumMSE)
+  }
   
   ############################# summarize rank #################################
+  rank_all <- do.call(rbind, lapply(simulation_results, '[[', 'rank_check_dt'))
   rank_summary <- data.table(
     rank_all %>% 
       dplyr::group_by(importance_metric, method, evaluation) %>%
@@ -284,111 +298,47 @@ compile_simulation_results <- function(simulation_results, n){
   rank_summary <- data.table(n = rep(n, nrow(rank_summary)), rank_summary)
   
   ############################# summarize risk #################################
+  risk_all <- do.call(rbind, lapply(simulation_results, '[[', 'risk_dt'))
   risk_covariate_summary <- data.table(
     risk_all %>% 
       dplyr::group_by(importance_metric, method, evaluation) %>%
-      dplyr::summarize_at(covs, mean)
+      dplyr::summarize_at(covariates, mean)
   )
-  mean_risk <- risk_covariate_summary[, covs, with=F]
+  mean_risk <- risk_covariate_summary[, covariates, with=F]
   colnames(mean_risk) <- paste0("mean_risk_", colnames(mean_risk))
   
   risk_covariate_summary <- data.table(
     risk_all %>% 
       dplyr::group_by(importance_metric, method, evaluation) %>%
-      dplyr::summarize_at(covs, median)
+      dplyr::summarize_at(covariates, median)
   )
-  median_risk <- risk_covariate_summary[, covs, with=F]
+  median_risk <- risk_covariate_summary[, covariates, with=F]
   colnames(median_risk) <- paste0("median_risk_", colnames(median_risk))
   
   risk_summary <- data.table(n = rep(n, nrow(mean_risk)),
-                             risk_covariate_summary[, -covs, with=F], 
+                             risk_covariate_summary[, -covariates, with=F], 
                              mean_risk, median_risk)
-  
-  return(list(rank_summary = rank_summary,
-              mse_summary = mse_summary, 
-              mse_covariate_summary = mse_covariate_summary,
-              risk_summary = risk_summary))
+  if(hasMSE){
+    return(list(rank_summary = rank_summary, mse_summary = mse_summary, 
+                mse_covariate_summary = mse_covariate_summary,
+                risk_summary = risk_summary))
+  } else {
+    return(list(rank_summary = rank_summary, risk_summary = risk_summary))
+  }
 }
 
 # mse_covariate_summary, mse_summary, and risk_summary
 # are the data tables generated by compile_simulation_results function
-plot_results <- function(path, mse_covariate_summary, mse_summary, risk_summary,
-                         rank_summary){
-  
-  # folders to save performance plots
-  dir.create(paste0(path, "MSE_plots"))
-  dir.create(paste0(path, "MSE_plots/risk_difference"))
-  dir.create(paste0(path, "MSE_plots/risk_ratio"))
+plot_results <- function(path, risk_summary, rank_summary, 
+                         mse_covariate_summary = NULL, mse_summary = NULL){
   
   # folders to save plots of the importance metric itself, summarized over sims
   dir.create(paste0(path, "importance_plots"))
   dir.create(paste0(path, "importance_plots/risk_difference"))
   dir.create(paste0(path, "importance_plots/risk_ratio"))
   
-  # main MSE summary table, MSE across all covariates combined
-  mse_summary$type <- paste(mse_summary$method, mse_summary$evaluation, sep = "_")
-  diff_tbl <- mse_summary[mse_summary$importance_metric == "risk_difference", ]
-  plot1 <- ggplot(diff_tbl, aes(x = n, y = sumMSE, color = type)) +
-    geom_point() + 
-    geom_line(linetype = "dotted") + 
-    theme(legend.position = "bottom", legend.title = element_blank()) +
-    labs(x = "Sample Size", y = "MSE", 
-         title = "sl3 Importance Evaluation", 
-         subtitle = "MSEs of Risk Difference Metric over all Simulations")
-  pdf(paste0(path, "MSE_plots/risk_difference/allX.pdf"))
-  print(plot1)
-  dev.off()
-  
-  ratio_tbl <- mse_summary[mse_summary$importance_metric == "risk_ratio", ]
-  plot2 <- ggplot(ratio_tbl, aes(x = n, y = sumMSE, color = type)) +
-    geom_point() + 
-    geom_line(linetype = "dotted") + 
-    theme(legend.position = "bottom", legend.title = element_blank()) +
-    labs(x = "Sample Size", y = "MSE", 
-         title = "sl3 Importance Evaluation", 
-         subtitle = "MSEs of Risk Ratio Metric over all Simulations")
-  pdf(paste0(path, "MSE_plots/risk_ratio/allX.pdf"))
-  print(plot2)
-  dev.off()
-  
-  mse_covariate_summary$type <- paste(mse_covariate_summary$method, 
-                                      mse_covariate_summary$evaluation, 
-                                      sep = "_")
-  ratio_tbl <- mse_covariate_summary[mse_covariate_summary$importance_metric == "risk_ratio", ]
-  diff_tbl <- mse_covariate_summary[mse_covariate_summary$importance_metric == "risk_difference", ]
-  not_covs <- c("n", "importance_metric", "method", "evaluation")
-  covs <- colnames(mse_covariate_summary)[-which(colnames(mse_covariate_summary) %in% not_covs)]
-  for(i in 1:length(covs)){
-    cov <- covs[i]
-    
-    diff_tbl$y <- diff_tbl[,which(colnames(diff_tbl) == cov)]
-    diff_plot <- ggplot(diff_tbl, aes(x = n, y = y, color = type)) +
-      geom_point() + 
-      geom_line(linetype = "dotted") + 
-      theme(legend.position = "bottom", legend.title = element_blank()) +
-      labs(x = "Sample Size", y = "MSE", 
-           title = "sl3 Importance Evaluation", 
-           subtitle = "MSEs of Risk Difference Metric over all Simulations")
-    
-    ratio_tbl$y <- ratio_tbl[,which(colnames(ratio_tbl) == cov)]
-    ratio_plot <- ggplot(ratio_tbl, aes(x = n, y = y, color = type)) +
-      geom_point() + 
-      geom_line(linetype = "dotted") + 
-      theme(legend.position = "bottom", legend.title = element_blank()) +
-      labs(x = "Sample Size", y = "MSE", 
-           title = "sl3 Importance Evaluation", 
-           subtitle = "MSEs of Risk Ratio Metric over all Simulations")
-    
-    pdf(paste0(path, "MSE_plots/risk_difference/", cov, ".pdf"))
-    print(diff_plot)
-    dev.off()
-    
-    pdf(paste0(path, "MSE_plots/risk_ratio/", cov, ".pdf"))
-    print(ratio_plot)
-    dev.off()
-  }
-  
   risk_summary$type <- paste(risk_summary$method, risk_summary$evaluation, sep = "_")
+  not_covs <- c("n", "importance_metric", "method", "evaluation", "type")
   covs <- colnames(risk_summary)[-which(colnames(risk_summary) %in% not_covs)]
   ratio_tbl <- risk_summary[risk_summary$importance_metric == "risk_ratio", ]
   diff_tbl <- risk_summary[risk_summary$importance_metric == "risk_difference", ]
@@ -433,7 +383,7 @@ plot_results <- function(path, mse_covariate_summary, mse_summary, risk_summary,
   # main rank summary plot
   rank_summary$type <- paste0(rank_summary$importance_metric, "_", 
                               rank_summary$method, "_", rank_summary$evaluation)
-  plot3 <- ggplot(rank_summary, aes(x = n, y = prop_rank_correct, color = type)) +
+  plot <- ggplot(rank_summary, aes(x = n, y = prop_rank_correct, color = type)) +
     geom_point() + 
     geom_line(linetype = "dotted") + 
     theme(legend.title = element_blank()) +
@@ -441,10 +391,10 @@ plot_results <- function(path, mse_covariate_summary, mse_summary, risk_summary,
          title = "sl3 Importance Evaluation", 
          subtitle = "Correct Rank Proportion over all Simulations")
   pdf(paste0(path, "rank_proportion.pdf"))
-  print(plot3)
+  print(plot)
   dev.off()
   
-  plot4 <- ggplot(rank_summary, aes(x = n, y = rank_correct, color = type)) +
+  plot <- ggplot(rank_summary, aes(x = n, y = rank_correct, color = type)) +
     geom_point() + 
     geom_line(linetype = "dotted") + 
     theme(legend.title = element_blank()) +
@@ -452,8 +402,75 @@ plot_results <- function(path, mse_covariate_summary, mse_summary, risk_summary,
          title = "sl3 Importance Evaluation", 
          subtitle = "Correct Rank Coverage over all Simulations")
   pdf(paste0(path, "rank_coverage.pdf"))
-  print(plot4)
+  print(plot)
   dev.off()
+  
+  if(!is.null(mse_covariate_summary)){
+    # folders to save performance plots
+    dir.create(paste0(path, "MSE_plots"))
+    dir.create(paste0(path, "MSE_plots/risk_difference"))
+    dir.create(paste0(path, "MSE_plots/risk_ratio"))
+    
+    # main MSE summary plot, MSE across all covariates combined
+    mse_summary$type <- paste(mse_summary$method, mse_summary$evaluation, sep = "_")
+    diff_tbl <- mse_summary[mse_summary$importance_metric == "risk_difference", ]
+    plot1 <- ggplot(diff_tbl, aes(x = n, y = sumMSE, color = type)) +
+      geom_point() + 
+      geom_line(linetype = "dotted") + 
+      theme(legend.position = "bottom", legend.title = element_blank()) +
+      labs(x = "Sample Size", y = "MSE", 
+           title = "sl3 Importance Evaluation", 
+           subtitle = "MSEs of Risk Difference Metric over all Simulations")
+    pdf(paste0(path, "MSE_plots/risk_difference/allX.pdf"))
+    print(plot1)
+    dev.off()
+    
+    ratio_tbl <- mse_summary[mse_summary$importance_metric == "risk_ratio", ]
+    plot2 <- ggplot(ratio_tbl, aes(x = n, y = sumMSE, color = type)) +
+      geom_point() + 
+      geom_line(linetype = "dotted") + 
+      theme(legend.position = "bottom", legend.title = element_blank()) +
+      labs(x = "Sample Size", y = "MSE", 
+           title = "sl3 Importance Evaluation", 
+           subtitle = "MSEs of Risk Ratio Metric over all Simulations")
+    pdf(paste0(path, "MSE_plots/risk_ratio/allX.pdf"))
+    print(plot2)
+    dev.off()
+    
+    mse_covariate_summary$type <- paste(mse_covariate_summary$method, 
+                                        mse_covariate_summary$evaluation, 
+                                        sep = "_")
+    ratio_tbl <- mse_covariate_summary[mse_covariate_summary$importance_metric == "risk_ratio", ]
+    diff_tbl <- mse_covariate_summary[mse_covariate_summary$importance_metric == "risk_difference", ]
+    covs <- colnames(mse_covariate_summary)[-which(colnames(mse_covariate_summary) %in% not_covs)]
+    for(i in 1:length(covs)){
+      cov <- covs[i]
+      
+      diff_tbl$y <- diff_tbl[,which(colnames(diff_tbl) == cov)]
+      diff_plot <- ggplot(diff_tbl, aes(x = n, y = y, color = type)) +
+        geom_point() + 
+        geom_line(linetype = "dotted") + 
+        theme(legend.position = "bottom", legend.title = element_blank()) +
+        labs(x = "Sample Size", y = "MSE", 
+             title = "sl3 Importance Evaluation", 
+             subtitle = "MSEs of Risk Difference Metric over all Simulations")
+      
+      ratio_tbl$y <- ratio_tbl[,which(colnames(ratio_tbl) == cov)]
+      ratio_plot <- ggplot(ratio_tbl, aes(x = n, y = y, color = type)) +
+        geom_point() + 
+        geom_line(linetype = "dotted") + 
+        theme(legend.position = "bottom", legend.title = element_blank()) +
+        labs(x = "Sample Size", y = "MSE", 
+             title = "sl3 Importance Evaluation", 
+             subtitle = "MSEs of Risk Ratio Metric over all Simulations")
+      
+      pdf(paste0(path, "MSE_plots/risk_difference/", cov, ".pdf"))
+      print(diff_plot)
+      dev.off()
+      
+      pdf(paste0(path, "MSE_plots/risk_ratio/", cov, ".pdf"))
+      print(ratio_plot)
+      dev.off()
+    }
+  }
 }
-
-

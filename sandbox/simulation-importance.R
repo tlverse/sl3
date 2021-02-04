@@ -14,7 +14,7 @@ DGP_linear <- function(n, sd = 1){
 
 RNGkind(sample.kind = "Rejection")
 set.seed(4917)
-Bseeds <- sample(1:2^15, 5)
+Bseeds <- sample(1:2^15, 1000)
 lrnr <- Lrnr_glm$new()
 relevant_covariates_rank <- list("X1"=c(1,2,3), "X2"=c(1,2,3), "X3"=c(1,2,3))
 irrelevant_covariates <- c("X4", "X5")
@@ -22,9 +22,6 @@ run_simulation_sequence(bootstrap_seeds = Bseeds, gen_data = DGP_linear,
                         relevant_covariates_rank = relevant_covariates_rank,
                         irrelevant_covariates = irrelevant_covariates, lrnr = lrnr, 
                         cores = 22, save_path = "~/results/DGP_linear/")
-# timer:
-#   user  system elapsed
-# 20066     188     998
 
 ##################### data generated under mlbench.friedman1 ###################
 
