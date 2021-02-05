@@ -60,7 +60,7 @@ Lrnr_lstm_keras <- R6Class(
                           epochs = 100,
                           lr = 0.001,
                           layers = 1,
-                          callbacks = list(callback_early_stopping(patience = 5)),
+                          callbacks = list(callback_early_stopping(patience = 10)),
                           ...) {
       params <- list(
         batch_size = batch_size, units = units, dropout = dropout,
