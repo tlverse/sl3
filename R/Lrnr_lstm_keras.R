@@ -7,28 +7,43 @@
 #' should be added as predictors before using the learner.
 #'
 #' @docType class
+#'
 #' @importFrom R6 R6Class
-#' @export
-#' @keywords data
-#' @return \code{\link{Lrnr_base}} object with methods for training and prediction
-#' @format \code{\link{R6Class}} object.
-#'
-#' @field batch_size How many times should the training data be used to train the neural network?
-#' @field units Positive integer, dimensionality of the output space.
-#' @field dropout Float between 0 and 1. Fraction of the input units to drop.
-#' @field recurrent_dropout Float between 0 and 1. Fraction of the units to drop for the linear transformation of the recurrent state.
-#' @field activation Activation function to use. If you pass NULL, no activation is applied (ie. "linear" activation: a(x) = x).
-#' @field recurrent_activation Activation function to use for the recurrent step.
-#' @field recurrent_out Activation function to use for the output step.
-#' @field epochs Number of epochs to train the model.
-#' @field lr Learning rate.
-#' @field layers How many lstm layers. Only allows for 1 or 2.
-#'
 #' @importFrom assertthat assert_that is.count is.flag
+#'
+#' @export
+#'
+#' @keywords data
 #'
 #' @family Learners
 #'
-
+#' @return \code{\link{Lrnr_base}} object with methods for training and prediction.
+#'
+#' @format \code{\link{R6Class}} object.
+#'
+#' @section Parameters:
+#' \describe{
+#'  \item{\code{batch_size}}{How many times should the training data be used to
+#'  train the neural network?}
+#'  \item{\code{units}}{Positive integer, dimensionality of the output space.}
+#'  \item{\code{dropout}}{Float between 0 and 1. Fraction of the input units to
+#'  drop.}
+#'  \item{\code{recurrent_dropout}}{Float between 0 and 1. Fraction of the
+#'  units to drop for the linear transformation of the recurrent state.}
+#'  \item{\code{activation}}{Activation function to use. If you pass NULL, no
+#'  activation is applied (e.g., "linear" activation: \code{a(x) = x}).}
+#'  \item{\code{recurrent_activation}}{Activation function to use for the
+#'  recurrent step.}
+#'  \item{\code{recurrent_out}}{Activation function to use for the output step.}
+#'  \item{\code{epochs}}{Number of epochs to train the model.}
+#'  \item{\code{lr}}{Learning rate.}
+#'  \item{\code{layers}}{How many lstm layers. Only allows for 1 or 2.}
+#'  \item{\code{callbacks}}{List of callbacks, which is a set of functions to
+#'  be applied at given stages of the training procedure. Default callback
+#'  function \code{callback_early_stopping} stops training if the validation
+#'  loss does not improve across \code{patience} number of epochs.}
+#'  }
+#'
 Lrnr_lstm_keras <- R6Class(
   classname = "Lrnr_lstm_keras",
   inherit = Lrnr_base,
@@ -42,10 +57,10 @@ Lrnr_lstm_keras <- R6Class(
                           activation = "tanh",
                           recurrent_activation = "hard_sigmoid",
                           activation_out = "linear",
-                          epochs = 10,
+                          epochs = 100,
                           lr = 0.001,
                           layers = 1,
-                          callbacks = list(callback_early_stopping(patience = 2)),
+                          callbacks = list(callback_early_stopping(patience = 5)),
                           ...) {
       params <- list(
         batch_size = batch_size, units = units, dropout = dropout,

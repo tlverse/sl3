@@ -19,29 +19,30 @@ preprocessing, such as differencing and seasonal effects for time series,
 should be addressed before using this learner. Desired lags of the time series
 should be added as predictors before using the learner.
 }
-\section{Fields}{
+\section{Parameters}{
 
 \describe{
-\item{\code{batch_size}}{How many times should the training data be used to train the neural network?}
-
+\item{\code{batch_size}}{How many times should the training data be used to
+train the neural network?}
 \item{\code{units}}{Positive integer, dimensionality of the output space.}
-
-\item{\code{dropout}}{Float between 0 and 1. Fraction of the input units to drop.}
-
-\item{\code{recurrent_dropout}}{Float between 0 and 1. Fraction of the units to drop for the linear transformation of the recurrent state.}
-
-\item{\code{activation}}{Activation function to use. If you pass NULL, no activation is applied (ie. "linear" activation: a(x) = x).}
-
-\item{\code{recurrent_activation}}{Activation function to use for the recurrent step.}
-
+\item{\code{dropout}}{Float between 0 and 1. Fraction of the input units to
+drop.}
+\item{\code{recurrent_dropout}}{Float between 0 and 1. Fraction of the
+units to drop for the linear transformation of the recurrent state.}
+\item{\code{activation}}{Activation function to use. If you pass NULL, no
+activation is applied (e.g., "linear" activation: \code{a(x) = x}).}
+\item{\code{recurrent_activation}}{Activation function to use for the
+recurrent step.}
 \item{\code{recurrent_out}}{Activation function to use for the output step.}
-
 \item{\code{epochs}}{Number of epochs to train the model.}
-
 \item{\code{lr}}{Learning rate.}
-
-\item{\code{layers}}{How many gru layers. Only allows for 1 or 2.}
-}}
+\item{\code{layers}}{How many lstm layers. Only allows for 1 or 2.}
+\item{\code{callbacks}}{List of callbacks, which is a set of functions to
+be applied at given stages of the training procedure. Default callback
+function \code{callback_early_stopping} stops training if the validation
+loss does not improve across \code{patience} number of epochs.}
+}
+}
 
 \seealso{
 Other Learners: 
