@@ -60,7 +60,7 @@ Lrnr_gru_keras <- R6Class(
                           epochs = 100,
                           lr = 0.001,
                           layers = 1,
-                          callbacks = list(callback_early_stopping(patience = 10)),
+                          callbacks = list(keras::callback_early_stopping(patience = 10)),
                           ...) {
       params <- list(
         batch_size = batch_size, units = units, dropout = dropout,
