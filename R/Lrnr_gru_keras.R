@@ -62,7 +62,7 @@ Lrnr_gru_keras <- R6Class(
                           layers = 1,
                           callbacks = list(callback_early_stopping(patience = 10)),
                           ...) {
-      params <- args_to_list(
+      params <- list(
         batch_size = batch_size, units = units, dropout = dropout,
         recurrent_dropout = recurrent_dropout, activation = activation,
         recurrent_activation = recurrent_activation,
