@@ -163,6 +163,12 @@ table:
 
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 
+binary
+
+</th>
+
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+
 binomial
 
 </th>
@@ -273,6 +279,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -350,6 +362,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_bartMachine
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -461,6 +479,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -538,6 +562,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_bound
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -632,6 +662,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_caret
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -749,6 +785,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -820,6 +862,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_cv\_selector
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -914,6 +962,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_dbarts
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -1061,6 +1115,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -1102,6 +1162,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_density\_discretize
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -1225,6 +1291,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -1319,6 +1391,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -1384,6 +1462,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_earth
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -1495,6 +1579,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -1572,6 +1662,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_gam
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -1671,6 +1767,12 @@ Lrnr\_gbm
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -1760,6 +1862,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_glm
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -1859,6 +1967,12 @@ Lrnr\_glm\_fast
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -1948,6 +2062,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_glmnet
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -2047,6 +2167,12 @@ Lrnr\_grf
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -2141,13 +2267,19 @@ Lrnr\_gru\_keras
 
 <td style="text-align:left;">
 
-x
+√
 
 </td>
 
 <td style="text-align:left;">
 
 x
+
+</td>
+
+<td style="text-align:left;">
+
+√
 
 </td>
 
@@ -2247,6 +2379,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -2324,6 +2462,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_h2o\_glm
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -2423,6 +2567,12 @@ Lrnr\_h2o\_grid
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -2512,6 +2662,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_hal9001
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -2635,6 +2791,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -2700,6 +2862,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_HarmonicReg
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -2811,6 +2979,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -2888,6 +3062,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_independent\_binomial
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -2999,6 +3179,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -3081,13 +3267,19 @@ Lrnr\_lstm\_keras
 
 <td style="text-align:left;">
 
-x
+√
 
 </td>
 
 <td style="text-align:left;">
 
 x
+
+</td>
+
+<td style="text-align:left;">
+
+√
 
 </td>
 
@@ -3170,6 +3362,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_mean
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -3281,6 +3479,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -3358,6 +3562,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_multivariate
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -3452,6 +3662,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_nnet
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -3563,6 +3779,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -3640,6 +3862,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_optim
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -3787,6 +4015,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -3828,6 +4062,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_pkg\_SuperLearner
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -3927,6 +4167,12 @@ Lrnr\_pkg\_SuperLearner\_method
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -4021,6 +4267,12 @@ Lrnr\_pkg\_SuperLearner\_screener
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -4110,6 +4362,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_polspline
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -4215,6 +4473,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -4298,6 +4562,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_randomForest
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -4392,6 +4662,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_ranger
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -4509,6 +4785,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -4580,6 +4862,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_rpart
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -4674,6 +4962,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_rugarch
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -4833,6 +5127,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -4927,6 +5227,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -4956,6 +5262,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_screener\_correlation
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -5115,6 +5427,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -5144,6 +5462,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_sl
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -5238,6 +5562,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_solnp
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -5361,6 +5691,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -5426,6 +5762,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_stratified
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -5607,6 +5949,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
@@ -5614,6 +5962,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_svm
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -5731,6 +6085,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -5802,6 +6162,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_tsDyn
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -5896,6 +6262,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_xgboost
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -6007,7 +6379,7 @@ prior to submitting a pull request.
 After using the `sl3` R package, please cite the following:
 
 ``` 
- @manual{coyle2021sl3,
+    @manual{coyle2021sl3,
       author = {Coyle, Jeremy R and Hejazi, Nima S and Malenica, Ivana and
         Sofrygin, Oleg},
       title = {{sl3}: Modern Pipelines for Machine Learning and {Super
@@ -6036,7 +6408,7 @@ See file `LICENSE` for details.
 
 ## References
 
-<div id="refs" class="references">
+<div id="refs" class="references hanging-indent">
 
 <div id="ref-breiman1996stacked">
 

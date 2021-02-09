@@ -1,3 +1,9 @@
+# sl3 1.4.3
+* Additional arguments for 'Keras' learners `Lrnr_lstm_keras` and 
+  `Lrnr_gru_keras` provide support for callback functions list and 2-layer 
+  networks. Default `callbacks` list provides early stopping criteria with 
+  respect to 'Keras' defaults and `patience` of 10 epochs.
+
 # sl3 1.4.2
 * Updates to variable importance functionality, including calculation of risk
   ratio and risk differences under covariate deletion or permutation.
