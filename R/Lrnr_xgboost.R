@@ -125,7 +125,7 @@ Lrnr_xgboost <- R6Class(
         Xmat[, 1] <- as.numeric(Xmat[, 1])
       }
       # order of columns has to be the same in xgboost training and test data
-      Xmat <- Xmat[, match(fit_object$feature_names, colnames(Xmat))]
+      Xmat <- as.matrix(Xmat[, match(fit_object$feature_names, colnames(Xmat))])
 
       xgb_data <- try(xgboost::xgb.DMatrix(Xmat))
 
