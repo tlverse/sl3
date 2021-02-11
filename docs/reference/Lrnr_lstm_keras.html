@@ -86,7 +86,7 @@ should be added as predictors before using the learner." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sl3</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.3</span>
       </span>
     </div>
 
@@ -126,7 +126,7 @@ should be added as predictors before using the learner." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/tlverse/sl3/">
-    <span class="fab fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -163,29 +163,34 @@ should be added as predictors before using the learner.</p>
     <p><code>R6Class</code> object.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='Lrnr_base.html'>Lrnr_base</a></code> object with methods for training and prediction</p>
-    <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
+    <p><code><a href='Lrnr_base.html'>Lrnr_base</a></code> object with methods for training and prediction.</p>
+    <h2 class="hasAnchor" id="parameters"><a class="anchor" href="#parameters"></a>Parameters</h2>
 
     
 
 <dl>
-<dt><code>batch_size</code></dt><dd><p>How many times should the training data be used to train the neural network?</p></dd>
-
+<dt><code>batch_size</code></dt><dd><p>How many times should the training data be used to
+train the neural network?</p></dd>
 <dt><code>units</code></dt><dd><p>Positive integer, dimensionality of the output space.</p></dd>
-
-<dt><code>dropout</code></dt><dd><p>Float between 0 and 1. Fraction of the input units to drop.</p></dd>
-
-<dt><code>recurrent_dropout</code></dt><dd><p>Float between 0 and 1. Fraction of the units to drop for the linear transformation of the recurrent state.</p></dd>
-
-<dt><code>activation</code></dt><dd><p>Activation function to use. If you pass NULL, no activation is applied (ie. "linear" activation: a(x) = x).</p></dd>
-
-<dt><code>recurrent_activation</code></dt><dd><p>Activation function to use for the recurrent step.</p></dd>
-
+<dt><code>dropout</code></dt><dd><p>Float between 0 and 1. Fraction of the input units to
+drop.</p></dd>
+<dt><code>recurrent_dropout</code></dt><dd><p>Float between 0 and 1. Fraction of the
+units to drop for the linear transformation of the recurrent state.</p></dd>
+<dt><code>activation</code></dt><dd><p>Activation function to use. If you pass NULL, no
+activation is applied (e.g., "linear" activation: <code>a(x) = x</code>).</p></dd>
+<dt><code>recurrent_activation</code></dt><dd><p>Activation function to use for the
+recurrent step.</p></dd>
+<dt><code>recurrent_out</code></dt><dd><p>Activation function to use for the output step.</p></dd>
 <dt><code>epochs</code></dt><dd><p>Number of epochs to train the model.</p></dd>
-
 <dt><code>lr</code></dt><dd><p>Learning rate.</p></dd>
+<dt><code>layers</code></dt><dd><p>How many lstm layers. Only allows for 1 or 2.</p></dd>
+<dt><code>callbacks</code></dt><dd><p>List of callbacks, which is a set of functions to
+be applied at given stages of the training procedure. Default callback
+function <code>callback_early_stopping</code> stops training if the validation
+loss does not improve across <code>patience</code> number of epochs.</p></dd>
 
 </dl>
+
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Learners: 

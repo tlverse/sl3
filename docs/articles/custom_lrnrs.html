@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sl3</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.3</span>
       </span>
     </div>
 
@@ -77,7 +77,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/tlverse/sl3/">
-    <span class="fab fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -91,13 +91,14 @@
 
       
 
-      </header><div class="row">
+      </header><script src="custom_lrnrs_files/header-attrs-2.5/header-attrs.js"></script><script src="custom_lrnrs_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="custom_lrnrs_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="custom_lrnrs_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Defining New <code>sl3</code> Learners</h1>
                         <h4 class="author">Jeremy Coyle, Nima Hejazi, Ivana Malenica, Oleg Sofrygin</h4>
             
-            <h4 class="date">2021-02-01</h4>
+            <h4 class="date">2021-02-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tlverse/sl3/blob/master/vignettes/custom_lrnrs.Rmd"><code>vignettes/custom_lrnrs.Rmd</code></a></small>
       <div class="hidden name"><code>custom_lrnrs.Rmd</code></div>
@@ -264,10 +265,10 @@
 <p>This field defines properties supported by your learner. This may include different outcome types that are supported, offsets and weights, amongst many other possibilities. To see a list of all properties supported/used by at least one learner, you may invoke <code>sl3_list_properties</code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/sl3_list_properties.html">sl3_list_properties</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code>##  [1] "binomial"      "categorical"   "continuous"    "cv"           
-##  [5] "density"       "ids"           "importance"    "offset"       
-##  [9] "preprocessing" "sampling"      "screener"      "timeseries"   
-## [13] "weights"       "wrapper"</code></pre>
+<pre><code>##  [1] "binary"        "binomial"      "categorical"   "continuous"   
+##  [5] "cv"            "density"       "ids"           "importance"   
+##  [9] "offset"        "preprocessing" "sampling"      "screener"     
+## [13] "timeseries"    "weights"       "wrapper"</code></pre>
 </div>
 <div id="private-required_packages" class="section level3">
 <h3 class="hasAnchor">
@@ -319,7 +320,7 @@
 <p>If, like these learners, your learner depends on sub-learners, you have two options:</p>
 <ol style="list-style-type: decimal">
 <li>Don’t worry about parallelizing sub-learners. Simply implement <code>private$.train</code> as discussed above, being sure to call <code>sublearner$base_train</code> and not <code>sublearner$train</code>, to avoid nesting calls to <code>delayed</code>, which may result in sub-optimal performance.</li>
-<li>Implement <code>private$.train_sublearners(task)</code> and <code>private$.train(task, trained_sublearners)</code>, to parallelize sub-learners using <code>delayed</code>. We suggest reviewing the implementations of the <code>Stack</code>, <code>Pipeline</code>, <code>Lrnr_cv</code> and <code>Lrnr_sl</code> to get a better understanding of how to implement parallelized sub-learners.</li>
+<li>Implement <code>private$.train_sublearners(task)</code> and <code>private$.train(task,    trained_sublearners)</code>, to parallelize sub-learners using <code>delayed</code>. We suggest reviewing the implementations of the <code>Stack</code>, <code>Pipeline</code>, <code>Lrnr_cv</code> and <code>Lrnr_sl</code> to get a better understanding of how to implement parallelized sub-learners.</li>
 </ol>
 <p>In either case, you should be careful to call <code>sublearner$base_predict</code> and <code>sublearner$base_chain</code>, instead of <code>sublearner$predict</code> and <code>sublearner$chain</code>, except in the context of the <code>private$.train_sublearners</code> function, where you should use <code>delayed_learner_fit_predict</code> and <code>delayed_learner_fit_chain</code>.</p>
 </div>
