@@ -85,3 +85,15 @@ test_that("Lrnr_sl multinomial integration test", {
   preds <- sl_fit$base_predict()
   sl_fit$cv_risk(loss_loglik_multinomial)
 })
+
+test_that("Lrnr_sl produces predictions with retained factor levels", {
+  # get predictions from Lrnr_* wrapper
+  sl_fit <- mn_sl$train(task)
+  preds <- sl_fit$base_predict()
+  
+  original_names <- levels(data$A)
+  predicted_names <- names(preds[[1]][[1]])
+  
+  # check equality of predictions
+  expect_equal(original_names, predicted_names)
+})
