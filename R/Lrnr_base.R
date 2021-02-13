@@ -86,7 +86,8 @@ Lrnr_base <- R6Class(
           colnames(delta_missing_data) <- delta_missing
           cols <- task$add_columns(data.table(delta_missing_data))
 
-          return(task$next_in_chain(covariates = ord_covs, column_names = cols))
+          return(task$next_in_chain(covariates = ord_covs,
+                                    column_names = cols))
         }
       } else {
         return(task)
@@ -172,7 +173,7 @@ Lrnr_base <- R6Class(
     assert_trained = function() {
       if (!self$is_trained) {
         stop(paste(
-          "Learner has not yet been train to data.",
+          "Learner has not yet been trained to data.",
           "Call learner$train(task) first."
         ))
       }
@@ -259,7 +260,10 @@ Lrnr_base <- R6Class(
       # for non-CV learners, do full predict no matter what, but warn about it
       # if fold_number is something else
       if (fold_number != "full") {
-        warning(self$name, " is not a cv-aware learner, so self$predict_fold reverts to self$predict")
+        warning(
+          self$name,
+          " is not cv-aware: self$predict_fold reverts to self$predict"
+        )
       }
       self$predict(task)
     },
@@ -267,7 +271,8 @@ Lrnr_base <- R6Class(
     reparameterize = function(new_params) {
       # modify learner parameters
       new_self <- self$clone()
-      new_self$.__enclos_env__$private$.params[names(new_params)] <- new_params[]
+      new_self$.__enclos_env__$private$.params[names(new_params)] <-
+        new_params[]
       return(new_self)
     },
 
@@ -288,7 +293,9 @@ Lrnr_base <- R6Class(
         new_self$.__enclos_env__$private$.params <- params_no_covars
       }
       if (!is.null(trained_sublearners)) {
-        new_fit_object <- new_self$.__enclos_env__$private$.train(new_task, trained_sublearners)
+        new_fit_object <-
+          new_self$.__enclos_env__$private$.train(new_task,
+                                                  trained_sublearners)
       } else {
         new_fit_object <- new_self$.__enclos_env__$private$.train(new_task)
       }
@@ -378,7 +385,7 @@ Lrnr_base <- R6Class(
     .train = function(task) {
       stop(paste(
         "Learner is meant to be abstract, you should instead use",
-        "specific learners. See listLearners()"
+        "specific learners. See sl3_list_learners()"
       ))
     },
 

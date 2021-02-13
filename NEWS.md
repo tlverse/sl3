@@ -1,10 +1,15 @@
 # sl3 1.4.3
-* Update `Lrnr_xgboost` to support prediction tasks consisting of one 
+* Update `Lrnr_xgboost` to support prediction tasks consisting of one
   observation (e.g., leave-one-out cross-validation).
-* Additional arguments for 'Keras' learners `Lrnr_lstm_keras` and 
-  `Lrnr_gru_keras` provide support for callback functions list and 2-layer 
-  networks. Default `callbacks` list provides early stopping criteria with 
+* Additional arguments for 'Keras' learners `Lrnr_lstm_keras` and
+  `Lrnr_gru_keras` provide support for callback functions list and 2-layer
+  networks. Default `callbacks` list provides early stopping criteria with
   respect to 'Keras' defaults and `patience` of 10 epochs.
+* Update `Lrnr_sl` by adding a new private slot `.cv_risk` to store the risk
+  estimates, using this to avoid unnecessary re-computation in the `print`
+  method (the `.cv_risk` slot is populated on the first `print` call, and only
+  ever re-printed thereafter).
+* Update documentation of `default_metalearner` to use native markdown tables.
 
 # sl3 1.4.2
 * Updates to variable importance functionality, including calculation of risk
