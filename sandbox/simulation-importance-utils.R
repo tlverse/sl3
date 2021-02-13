@@ -249,7 +249,7 @@ check_rank <- function(risk_dt, irrelevant_covariates, relevant_covariates_rank)
   irrel_covs_last <- ifelse(min_rel_risk > max_irrel_risk, 1, 0)
   
   # relevant covariates are ranked appropriately
-  rank_dt <- data.table(apply(cov_risk_dt, 1, rank))
+  rank_dt <- data.table(t(apply(cov_risk_dt, 1, function(x) frankv(-x))))
   colnames(rank_dt) <- colnames(cov_risk_dt)
   mat <- matrix(nrow = nrow(rank_dt), ncol = length(relevant_covariates_rank))
   for(i in 1:length(relevant_covariates_rank)){
