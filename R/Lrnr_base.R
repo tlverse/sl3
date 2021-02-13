@@ -86,8 +86,10 @@ Lrnr_base <- R6Class(
           colnames(delta_missing_data) <- delta_missing
           cols <- task$add_columns(data.table(delta_missing_data))
 
-          return(task$next_in_chain(covariates = ord_covs,
-                                    column_names = cols))
+          return(task$next_in_chain(
+            covariates = ord_covs,
+            column_names = cols
+          ))
         }
       } else {
         return(task)
@@ -294,8 +296,10 @@ Lrnr_base <- R6Class(
       }
       if (!is.null(trained_sublearners)) {
         new_fit_object <-
-          new_self$.__enclos_env__$private$.train(new_task,
-                                                  trained_sublearners)
+          new_self$.__enclos_env__$private$.train(
+            new_task,
+            trained_sublearners
+          )
       } else {
         new_fit_object <- new_self$.__enclos_env__$private$.train(new_task)
       }

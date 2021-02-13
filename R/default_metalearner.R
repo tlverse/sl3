@@ -16,17 +16,25 @@
 default_metalearner <- function(outcome_type) {
   outcome_type <- outcome_type$type
   if (outcome_type %in% c("constant", "binomial")) {
-    learner <- make_learner(Lrnr_solnp, metalearner_logistic_binomial,
-                            loss_squared_error)
+    learner <- make_learner(
+      Lrnr_solnp, metalearner_logistic_binomial,
+      loss_squared_error
+    )
   } else if (outcome_type == "categorical") {
-    learner <- make_learner(Lrnr_solnp, metalearner_linear_multinomial,
-                            loss_loglik_multinomial)
+    learner <- make_learner(
+      Lrnr_solnp, metalearner_linear_multinomial,
+      loss_loglik_multinomial
+    )
   } else if (outcome_type == "continuous") {
-    learner <- make_learner(Lrnr_solnp, metalearner_linear,
-                            loss_squared_error)
+    learner <- make_learner(
+      Lrnr_solnp, metalearner_linear,
+      loss_squared_error
+    )
   } else if (outcome_type == "multivariate") {
-    learner <- make_learner(Lrnr_solnp, metalearner_linear_multivariate,
-                            loss_squared_error_multivariate)
+    learner <- make_learner(
+      Lrnr_solnp, metalearner_linear_multivariate,
+      loss_squared_error_multivariate
+    )
   } else {
     stop(sprintf("Outcome type %s does not have a default metalearner."))
   }
