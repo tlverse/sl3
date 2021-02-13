@@ -63,7 +63,6 @@ Lrnr_sl <- R6Class(
       lrn_names <- lapply(self$params$learners, function(obj) obj$name)
       print("SuperLearner:")
       str(lrn_names)
-      browser()
       if (self$is_trained) {
         fit_object <- private$.fit_object
         if (self$params$keep_extra) {
