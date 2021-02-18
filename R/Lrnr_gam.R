@@ -146,7 +146,8 @@ Lrnr_gam <- R6Class(
       # get predictions
       predictions <- stats::predict(
         private$.fit_object,
-        newdata = task$X
+        newdata = task$X,
+        type = "response"
       )
       predictions <- as.numeric(predictions)
       return(predictions)
