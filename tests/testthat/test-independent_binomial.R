@@ -1,6 +1,6 @@
 context("test-independent_binomial.R -- Lrnr_independent_binomial")
 
-library(tidyverse)
+library(dplyr)
 
 data(cpp)
 
