@@ -58,7 +58,7 @@ Lrnr_gam <- R6Class(
   ),
 
   private = list(
-    .properties = c("continuous", "binomial", "categorical"),
+    .properties = c("continuous", "binomial"),
 
     .train = function(task) {
       # load args
