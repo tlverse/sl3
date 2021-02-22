@@ -3,32 +3,50 @@
 \docType{class}
 \name{Lrnr_ranger}
 \alias{Lrnr_ranger}
-\title{Ranger - A Fast Implementation of Random Forests}
+\title{Ranger: A Faster Implementation of Random Forests}
 \format{
-\code{\link{R6Class}} object.
+An \code{\link[R6]{R6Class}} object inheriting from
+\code{\link{Lrnr_base}}.
 }
 \value{
-Learner object with methods for training and prediction. See
-\code{\link{Lrnr_base}} for documentation on learners.
+A learner object inheriting from \code{\link{Lrnr_base}} with
+methods for training and prediction. For a full list of learner
+functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 }
 \description{
 This learner provides fitting procedures for a fast implementation of Random
-Forests, particularly suited for high dimensional data, using the
-\code{ranger} package, using the function \code{\link[ranger]{ranger}}.
+Forests, particularly suited for high dimensional data, using the routines
+from \pkg{ranger} thru a call to the function \code{\link[ranger]{ranger}}.
+Variable importance functionality is also provided through invocation of the
+\code{\link[ranger]{importance}} method.
 }
 \section{Parameters}{
 
-\describe{
-\item{\code{num.trees = 500}}{Number of trees to be used in growing the
-forest.}
-\item{\code{write.forest = TRUE}}{If \code{TRUE}, forest is stored, which
-is required for prediction. Set to \code{FALSE} to reduce memory usage if
-no prediction is intended.}
-\item{\code{...}}{Other parameters passed to \code{\link[ranger]{ranger}}.
-See its documentation for details.}
+\itemize{
+\item \code{num.trees = 500}: Number of trees to be used in growing the forest.
+\item \code{write.forest = TRUE}: If \code{TRUE}, forest is stored, which is
+required for prediction. Set to \code{FALSE} to reduce memory usage if
+downstream prediction is not intended.
+\item \code{...}: Other parameters passed to \code{\link[ranger]{ranger}}. See
+its documentation for details.
 }
 }
 
+\examples{
+data(mtcars)
+mtcars_task <- sl3_Task$new(
+  data = mtcars,
+  covariates = c("cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "am",
+                 "gear", "carb"),
+  outcome = "mpg"
+)
+# simple prediction
+ranger_learner <- Lrnr_ranger$new()
+ranger_fit <- ranger_learner$train(mtcars_task)
+ranger_preds <- ranger_fit$predict()
+
+# TODO: variable importance
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},
