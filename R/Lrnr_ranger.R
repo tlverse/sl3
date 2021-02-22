@@ -9,8 +9,6 @@
 #' @docType class
 #'
 #' @importFrom R6 R6Class
-#' @importFrom stats predict
-#' @importFrom ranger ranger importance
 #'
 #' @export
 #'
