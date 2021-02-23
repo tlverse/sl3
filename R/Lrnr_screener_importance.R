@@ -61,7 +61,7 @@ Lrnr_screener_importance <- R6Class(
       # extract variable names from importance result object
       if (is.null(rownames(importance_result))) {
         if (is.null(names(importance_result))) {
-          stop("Importance result missing variable names. Cannot subset covs.")
+          stop("Cannot find covariate names in importance result.")
         } else {
           importance_names_sorted <- names(importance_result)
         }
@@ -73,16 +73,15 @@ Lrnr_screener_importance <- R6Class(
       # e.g., cov "color" was one-hot encoded and renamed as "color_blue",
       # "color_green", "color_red", so we change all three back to "color"
       covs <- task$nodes$covariates
-      no_match_covs <- is.na(pmatch(covs, importance_names_sorted))
-      if (any(no_match_covs)) {
+      matched_covs <- match(covs, importance_names_sorted)
+      if (any(is.na(matched_covs))) {
         # which cov names do not exist in the importance_names_sorted?
-        no_match_covs_idx <- which(no_match_covs)
-        for (i in 1:length(no_match_covs_idx)) {
-          cov_idx <- no_match_covs_idx[i]
+        unmatched_covs <- covs[is.na(matched_covs)]
+        for (i in 1:length(unmatched_covs)) {
           # which importance_names_sorted correspond to one cov
-          idx <- grep(covs[cov_idx], importance_names_sorted)
+          idx <- grep(unmatched_covs[i], importance_names_sorted)
           # rename importance_names_sorted according to true cov name
-          importance_names_sorted[idx] <- rep(covs[cov_idx], length(idx))
+          importance_names_sorted[idx] <- rep(unmatched_covs[i], length(idx))
         }
         importance_names_sorted <- unique(importance_names_sorted)
       }
