@@ -45,15 +45,15 @@ test_that("Lrnr_dbarts produces results matching those of dbarts::barts", {
   lrnr_dbarts <- make_learner(Lrnr_dbarts)
   fit <- lrnr_dbarts$train(task)
   preds <- fit$predict(task)
-  
+
   # get predictions from classic implementation
   set.seed(123)
   fit_classic <- dbarts::bart(
     x.train = data.frame(task$X), y.train = task$Y, keeptrees = TRUE, ndpost = 500
   )
-  
+
   preds_classic <- rowMeans(t(predict(fit_classic, newdata = task$X)))
-  
+
   # check equality of predictions
   expect_equal(preds, as.numeric(preds_classic))
 })

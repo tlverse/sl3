@@ -72,16 +72,19 @@ Lrnr_sl <- R6Class(
           # compute MSE once and store, only compute if not available
           # (risk estimates are stored to avoid unnecessary re-calculation)
           if (is.null(private$.cv_risk)) {
-            tryCatch({
-              # try using loss function based on outcome type
-              loss_fun <- private$.params$metalearner$params$loss_function
-              private$.cv_risk <- self$cv_risk(loss_fun)
-            }, error = function(c) {
-              # check training outcome type explicitly
-              metalearner <- default_metalearner(self$training_outcome_type)
-              loss_fun <- metalearner$params$loss_function
-              private$.cv_risk <- self$cv_risk(loss_fun)
-            })
+            tryCatch(
+              {
+                # try using loss function based on outcome type
+                loss_fun <- private$.params$metalearner$params$loss_function
+                private$.cv_risk <- self$cv_risk(loss_fun)
+              },
+              error = function(c) {
+                # check training outcome type explicitly
+                metalearner <- default_metalearner(self$training_outcome_type)
+                loss_fun <- metalearner$params$loss_function
+                private$.cv_risk <- self$cv_risk(loss_fun)
+              }
+            )
           }
           print("Cross-validated risk:")
           print(private$.cv_risk)
