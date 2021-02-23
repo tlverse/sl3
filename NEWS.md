@@ -13,9 +13,9 @@
   method (the `.cv_risk` slot is populated on the first `print` call, and only
   ever re-printed thereafter).
 * Update documentation of `default_metalearner` to use native markdown tables.
-* Fix `Lrnr_screener_importance`'s pairing of covariates returned by the 
-  importance function to covariates as they are defined in the task. This issue 
-  was arising when discrete covariates were automatically one-hot encoded 
+* Fix `Lrnr_screener_importance`'s pairing of (a) covariates returned by the 
+  importance function with (b) covariates as they are defined in the task. This 
+  issue only arose when discrete covariates were automatically one-hot encoded 
   upon task initiation (i.e., when `colnames(task$X) != task$nodes$covariates`).
 * Reformat `importance_plot` to plot variables in decreasing order of 
   importance, so most important variables are placed at the top of the dotchart. 
