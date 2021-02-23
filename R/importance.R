@@ -149,14 +149,16 @@ importance_plot <- function(x, nvar = min(30, nrow(x)), ...) {
     xlab <- "Risk Difference"
   }
 
-  # sort by decreasing importance and then subset
+  # sort by decreasing importance
   x_sorted <- x[order(-x[, 2])]
-  x_plotting <- x_sorted[1:(min(nvar, nrow(x_sorted))), ]
+  # subset to include most at most nvar
+  x_sorted <- x_sorted[1:(min(nvar, nrow(x_sorted))), ]
+  # sort by increasing importance
+  x_sorted <- x_sorted[order(x_sorted[, 2])]
 
-  # modify into named vector for dotchart
-  importance_scores <- x_plotting[[2]]
-  names(importance_scores) <- x_plotting[[1]]
-  dotchart(importance_scores,
+  # make dotchart with most important variables on top
+  dotchart(
+    x = x_sorted[[2]], labels = x_sorted[[1]],
     xlab = xlab, ylab = "",
     xlim = c(min(importance_scores), max(importance_scores)), ...
   )
