@@ -62,21 +62,24 @@ Lrnr_lstm_keras <- R6Class(
                           layers = 1,
                           callbacks = list(keras::callback_early_stopping(patience = 10)),
                           ...) {
-      params <- list(
-        batch_size = batch_size, units = units, dropout = dropout,
-        recurrent_dropout = recurrent_dropout, activation = activation,
-        recurrent_activation = recurrent_activation, epochs = epochs,
-        lr = lr, layers = layers, callbacks = callbacks, ...
-      )
+      params <- args_to_list()
       super$initialize(params = params, ...)
     }
   ),
   private = list(
     .properties = c("timeseries", "continuous", "binary", "categorical"),
     .train = function(task) {
+
+      # set verbosity
+      verbose <- getOption("keras.fit_verbose")
+      if (is.null(verbose)) {
+        verbose <- as.numeric(getOption("sl3.verbose"))
+      }
+
+      # get arguments
       args <- self$params
 
-      # Get data
+      # get data
       data <- task$data
       X <- task$X
       Y <- task$Y
@@ -150,6 +153,7 @@ Lrnr_lstm_keras <- R6Class(
         batch_size = args$batch_size,
         epochs = args$epochs,
         callbacks = callbacks,
+        verbose = verbose,
         shuffle = FALSE
       )
 
