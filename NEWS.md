@@ -3,8 +3,8 @@
   `Lrnr_gru_keras` provide support for callback functions list and 2-layer
   networks. Default `callbacks` list provides early stopping criteria with
   respect to 'Keras' defaults and `patience` of 10 epochs. Also, these two 
-  'Keras' learners now call `args_to_list` about initialization, and set 
-  vebose argument with respect to `options("keras.fit_verbose")` or 
+  'Keras' learners now call `args_to_list` upon initialization, and set 
+  verbose argument according to `options("keras.fit_verbose")` or 
   `options("sl3.verbose")`.
 * Update `Lrnr_xgboost` to support prediction tasks consisting of one
   observation (e.g., leave-one-out cross-validation).
