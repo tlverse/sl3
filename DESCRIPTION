@@ -45,7 +45,8 @@ Imports:
     digest,
     imputeMissings,
     dplyr,
-    caret
+    caret,
+    arm
 Suggests:
     testthat,
     rmarkdown,
