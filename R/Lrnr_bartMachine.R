@@ -75,7 +75,7 @@ Lrnr_bartMachine <- R6Class(
     .train = function(task) {
       args <- self$params
       outcome_type <- self$get_outcome_type(task)
-      
+
       if (outcome_type$type == "categorical") {
         stop("Unsupported outcome type for Lrnr_bartMachine")
       }

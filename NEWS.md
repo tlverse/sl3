@@ -1,15 +1,25 @@
 # sl3 1.4.3
-* Update `Lrnr_xgboost` to support prediction tasks consisting of one
-  observation (e.g., leave-one-out cross-validation).
 * Additional arguments for 'Keras' learners `Lrnr_lstm_keras` and
   `Lrnr_gru_keras` provide support for callback functions list and 2-layer
   networks. Default `callbacks` list provides early stopping criteria with
-  respect to 'Keras' defaults and `patience` of 10 epochs.
+  respect to 'Keras' defaults and `patience` of 10 epochs. Also, these two 
+  'Keras' learners now call `args_to_list` upon initialization, and set 
+  verbose argument according to `options("keras.fit_verbose")` or 
+  `options("sl3.verbose")`.
+* Update `Lrnr_xgboost` to support prediction tasks consisting of one
+  observation (e.g., leave-one-out cross-validation).
 * Update `Lrnr_sl` by adding a new private slot `.cv_risk` to store the risk
   estimates, using this to avoid unnecessary re-computation in the `print`
   method (the `.cv_risk` slot is populated on the first `print` call, and only
   ever re-printed thereafter).
 * Update documentation of `default_metalearner` to use native markdown tables.
+* Fix `Lrnr_screener_importance`'s pairing of (a) covariates returned by the 
+  importance function with (b) covariates as they are defined in the task. This 
+  issue only arose when discrete covariates were automatically one-hot encoded 
+  upon task initiation (i.e., when `colnames(task$X) != task$nodes$covariates`).
+* Reformat `importance_plot` to plot variables in decreasing order of 
+  importance, so most important variables are placed at the top of the dotchart. 
+  
 
 # sl3 1.4.2
 * Updates to variable importance functionality, including calculation of risk

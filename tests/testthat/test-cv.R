@@ -22,8 +22,10 @@ test_that("Lrnr_cv will use folds from task", {
 })
 
 folds <- make_folds(cpp_imputed, V = 5)
-task_2 <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome,
-                       folds = folds)
+task_2 <- sl3_Task$new(cpp_imputed,
+  covariates = covars, outcome = outcome,
+  folds = folds
+)
 test_that("task will accept custom folds", expect_length(task_2$folds, 5))
 
 test_that("we can generate predictions", {
@@ -80,8 +82,10 @@ folds <- origami::make_folds(trend_all$data,
 lrnr_glm <- make_learner(Lrnr_glm)
 lrnr_mean <- make_learner(Lrnr_mean)
 sl <- make_learner(Lrnr_sl, list(lrnr_glm, lrnr_mean))
-task <- sl3_Task$new(trend_all, covariates = "data",
-                     outcome = "data", folds = folds)
+task <- sl3_Task$new(trend_all,
+  covariates = "data",
+  outcome = "data", folds = folds
+)
 fit <- sl$train(task)
 fit$predict_fold(task, "validation")
 cv_risk_table <- fit$cv_risk(loss_squared_error)
