@@ -157,9 +157,10 @@ importance_plot <- function(x, nvar = min(30, nrow(x)), ...) {
   x_sorted <- x_sorted[order(x_sorted[, 2])]
 
   # make dotchart with most important variables on top
+  # x_sorted[[2]] is importance scores & x_sorted[[1]] is covariate names
   dotchart(
     x = x_sorted[[2]], labels = x_sorted[[1]],
     xlab = xlab, ylab = "",
-    xlim = c(min(importance_scores), max(importance_scores)), ...
+    xlim = c(min(x_sorted[[2]]), max(x_sorted[[2]])), ...
   )
 }
