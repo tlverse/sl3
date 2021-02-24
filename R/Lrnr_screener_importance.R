@@ -1,12 +1,12 @@
 #' Variable Importance Screener
 #'
-#' This learner screens covariates based on their variable importance, where the 
+#' This learner screens covariates based on their variable importance, where the
 #' importance values are obtained from the \code{learner}. Any learner with an
 #' \code{importance} method can be used. The set of learners with support for
 #' \code{importance} can be found with \code{sl3_list_learners("importance")}.
-#' Like all other screeners, this learner is intended for use in a 
-#' \code{\link{Pipeline}}, so the output from this learner (i.e., the selected 
-#' covariates) can be used as input for the next learner in the pipeline. 
+#' Like all other screeners, this learner is intended for use in a
+#' \code{\link{Pipeline}}, so the output from this learner (i.e., the selected
+#' covariates) can be used as input for the next learner in the pipeline.
 #'
 #' @docType class
 #'
@@ -16,11 +16,11 @@
 #'
 #' @keywords data
 #'
-#' @return A learner object inheriting from \code{\link{Lrnr_base}} with 
+#' @return A learner object inheriting from \code{\link{Lrnr_base}} with
 #'  methods for training and prediction. For a full list of learner
 #'  functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 #'
-#' @format An \code{\link[R6]{R6Class}} object inheriting from 
+#' @format An \code{\link[R6]{R6Class}} object inheriting from
 #'  \code{\link{Lrnr_base}}.
 #'
 #' @family Learners
@@ -29,13 +29,13 @@
 #'  - \code{learner}: An instantiated learner that supports variable importance.
 #'      The set of learners with this support can be obtained via
 #'      \code{sl3_list_learners("importance")}.
-#'  - \code{num_screen = 5}: The top n number of "most impotant" variables to 
+#'  - \code{num_screen = 5}: The top n number of "most impotant" variables to
 #'      retain.
-#'  - \code{...}: Other parameters passed to \code{learner}'s \code{importance} 
+#'  - \code{...}: Other parameters passed to \code{learner}'s \code{importance}
 #'      function.
-#' 
+#'
 #' @examples
-#' 
+#'
 Lrnr_screener_importance <- R6Class(
   classname = "Lrnr_screener_importance",
   inherit = Lrnr_base, portable = TRUE, class = TRUE,

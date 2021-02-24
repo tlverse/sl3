@@ -40,9 +40,13 @@
 
 
 <meta property="og:title" content="Variable Importance Screener — Lrnr_screener_importance" />
-<meta property="og:description" content="This learner provides screening of covariates based on the variables sorted
-in decreasing order of importance, where the importance metric is based on
-a learner that supports importance." />
+<meta property="og:description" content="This learner screens covariates based on their variable importance, where the
+importance values are obtained from the learner. Any learner with an
+importance method can be used. The set of learners with support for
+importance can be found with sl3_list_learners(&quot;importance&quot;).
+Like all other screeners, this learner is intended for use in a
+Pipeline, so the output from this learner (i.e., the selected
+covariates) can be used as input for the next learner in the pipeline." />
 
 
 
@@ -147,33 +151,39 @@ a learner that supports importance." />
     </div>
 
     <div class="ref-description">
-    <p>This learner provides screening of covariates based on the variables sorted
-in decreasing order of importance, where the importance metric is based on
-a learner that supports importance.</p>
+    <p>This learner screens covariates based on their variable importance, where the
+importance values are obtained from the <code>learner</code>. Any learner with an
+<code>importance</code> method can be used. The set of learners with support for
+<code>importance</code> can be found with <code><a href='sl3_list_properties.html'>sl3_list_learners("importance")</a></code>.
+Like all other screeners, this learner is intended for use in a
+<code><a href='Pipeline.html'>Pipeline</a></code>, so the output from this learner (i.e., the selected
+covariates) can be used as input for the next learner in the pipeline.</p>
     </div>
 
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p><code>R6Class</code> object.</p>
+    <p>An <code><a href='https://r6.r-lib.org/reference/R6Class.html'>R6Class</a></code> object inheriting from
+<code><a href='Lrnr_base.html'>Lrnr_base</a></code>.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Learner object with methods for training and prediction. See
-<code><a href='Lrnr_base.html'>Lrnr_base</a></code> for documentation on learners.</p>
+    <p>A learner object inheriting from <code><a href='Lrnr_base.html'>Lrnr_base</a></code> with
+methods for training and prediction. For a full list of learner
+functionality, see the complete documentation of <code><a href='Lrnr_base.html'>Lrnr_base</a></code>.</p>
     <h2 class="hasAnchor" id="parameters"><a class="anchor" href="#parameters"></a>Parameters</h2>
 
     
 
-<dl>
-<dt><code>learner</code></dt><dd><p>An instantiated learner that supports variable
-importance.</p></dd>
-<dt><code>num_screen = 5</code></dt><dd><p>The top number of most important variables
-to retain.</p></dd>
-<dt><code>...</code></dt><dd><p>Other parameters passed to <code>learner</code>'s
-<code>importance</code> function.</p></dd>
-
-</dl>
+<ul>
+<li><p><code>learner</code>: An instantiated learner that supports variable importance.
+The set of learners with this support can be obtained via
+<code><a href='sl3_list_properties.html'>sl3_list_learners("importance")</a></code>.</p></li>
+<li><p><code>num_screen = 5</code>: The top n number of "most impotant" variables to
+retain.</p></li>
+<li><p><code>...</code>: Other parameters passed to <code>learner</code>'s <code>importance</code>
+function.</p></li>
+</ul>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -242,6 +252,9 @@ to retain.</p></dd>
 <code><a href='define_h2o_X.html'>define_h2o_X</a>()</code>,
 <code><a href='undocumented_learner.html'>undocumented_learner</a></code></p></div>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
