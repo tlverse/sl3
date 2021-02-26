@@ -40,16 +40,9 @@
 
 
 <meta property="og:title" content="Automatically Defined Metalearner — default_metalearner" />
-<meta property="og:description" content="A sensible metalearner based on Lrnr_solnp is chosen based on outcome type.
-This amounts to choosing an appropriate loss function and combination function.
-Outcome TypeCombination FunctionLoss Function
-binomialmetalearner_logistic_binomialloss_squared_error
-categoricalmetalearner_linear_multinomialloss_loglik_multinomial
-continuousmetalearner_linearloss_squared_error
-multivariatemetalearner_linear_multivariateloss_squared_error_multivariate
-
-
-" />
+<meta property="og:description" content="A sensible metalearner based on Lrnr_solnp is chosen based on
+outcome type. This amounts to choosing an appropriate loss function and
+combination function." />
 
 
 
@@ -91,7 +84,7 @@ multivariatemetalearner_linear_multivariateloss_squared_error_multivariate
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sl3</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.3</span>
       </span>
     </div>
 
@@ -154,16 +147,9 @@ multivariatemetalearner_linear_multivariateloss_squared_error_multivariate
     </div>
 
     <div class="ref-description">
-    <p>A sensible metalearner based on <code><a href='Lrnr_solnp.html'>Lrnr_solnp</a></code> is chosen based on outcome type.
-This amounts to choosing an appropriate loss function and combination function.</p><table class='table'>
-<tr><td>Outcome Type</td><td>Combination Function</td><td>Loss Function</td></tr>
-<tr><td>binomial</td><td>metalearner_logistic_binomial</td><td>loss_squared_error</td></tr>
-<tr><td>categorical</td><td>metalearner_linear_multinomial</td><td>loss_loglik_multinomial</td></tr>
-<tr><td>continuous</td><td>metalearner_linear</td><td>loss_squared_error</td></tr>
-<tr><td>multivariate</td><td>metalearner_linear_multivariate</td><td>loss_squared_error_multivariate</td></tr>
-</table>
-
-
+    <p>A sensible metalearner based on <code><a href='Lrnr_solnp.html'>Lrnr_solnp</a></code> is chosen based on
+outcome type. This amounts to choosing an appropriate loss function and
+combination function.</p>
     </div>
 
     <pre class="usage"><span class='fu'>default_metalearner</span><span class='op'>(</span><span class='va'>outcome_type</span><span class='op'>)</span></pre>
@@ -176,6 +162,18 @@ This amounts to choosing an appropriate loss function and combination function.<
       <td><p>a Variable_Type object</p></td>
     </tr>
     </table>
+
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    
+<table class='table'>
+<tr><td>Outcome Type</td><td>Combination Function</td><td>Loss Function</td></tr>
+<tr><td>binomial</td><td>metalearner_logistic_binomial</td><td>loss_squared_error</td></tr>
+<tr><td>categorical</td><td>metalearner_linear_multinomial</td><td>loss_loglik_multinomial</td></tr>
+<tr><td>continuous</td><td>metalearner_linear</td><td>loss_squared_error</td></tr>
+<tr><td>multivariate</td><td>metalearner_linear_multivariate</td><td>loss_squared_error_multivariate</td></tr>
+</table>
+
 
 
   </div>

@@ -93,6 +93,7 @@ Lrnr_independent_binomial <- R6Class(
       # compute other categories relative to baseline
       predictions <- baseline * transformed
       predictions <- cbind(baseline, predictions)
+      colnames(predictions) <- levels(task$Y)
       predictions <- pack_predictions(predictions)
       return(predictions)
     },

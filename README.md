@@ -22,7 +22,7 @@ v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org
 **Authors:** [Jeremy Coyle](https://github.com/jeremyrcoyle), [Nima
 Hejazi](https://nimahejazi.org), [Ivana
 Malenica](https://github.com/podTockom), [Rachael
-Phillips](https://github.com/rachaelvphillips), and [Oleg
+Phillips](https://github.com/rachaelvp), and [Oleg
 Sofrygin](https://github.com/osofr)
 
 -----
@@ -6007,7 +6007,7 @@ prior to submitting a pull request.
 After using the `sl3` R package, please cite the following:
 
 ``` 
- @manual{coyle2021sl3,
+    @manual{coyle2021sl3,
       author = {Coyle, Jeremy R and Hejazi, Nima S and Malenica, Ivana and
         Sofrygin, Oleg},
       title = {{sl3}: Modern Pipelines for Machine Learning and {Super
@@ -6036,7 +6036,7 @@ See file `LICENSE` for details.
 
 ## References
 
-<div id="refs" class="references">
+<div id="refs" class="references hanging-indent">
 
 <div id="ref-breiman1996stacked">
 
