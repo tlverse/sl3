@@ -28,29 +28,49 @@
 #'  - \code{write.forest = TRUE}: If \code{TRUE}, forest is stored, which is
 #'      required for prediction. Set to \code{FALSE} to reduce memory usage if
 #'      downstream prediction is not intended.
+#'  - \code{importance = "none"}: Variable importance mode, one of "none",
+#'      "impurity", "impurity_corrected", "permutation". The "impurity" measure
+#'      is the Gini index for classification, the variance of the responses for
+#'      regression and the sum of test statistics (see
+#'      \code{\link[ranger]{splitrule}) for survival.
+#'  - \code{num.threads = 1}: Number of threads.
 #'  - \code{...}: Other parameters passed to \code{\link[ranger]{ranger}}. See
-#'      its documentation for details.
+#'      it's documentation for details.
 #'
 #' @examples
 #' data(mtcars)
 #' mtcars_task <- sl3_Task$new(
 #'   data = mtcars,
-#'   covariates = c("cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "am",
-#'                  "gear", "carb"),
+#'   covariates = c(
+#'     "cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "am",
+#'     "gear", "carb"
+#'   ),
 #'   outcome = "mpg"
 #' )
 #' # simple prediction
-#' ranger_learner <- Lrnr_ranger$new()
-#' ranger_fit <- ranger_learner$train(mtcars_task)
+#' ranger_lrnr <- Lrnr_ranger$new()
+#' ranger_fit <- ranger_lrnr$train(mtcars_task)
 #' ranger_preds <- ranger_fit$predict()
 #'
-#' # TODO: variable importance
+#' # variable importance
+#' ranger_lrnr_importance <- Lrnr_ranger$new(importance = "impurity_corrected")
+#' ranger_fit_importance <- ranger_lrnr_importance$train(mtcars_task)
+#' ranger_importance <- ranger_fit_importance$importance()
+#'
+#' # screening based on variable importance, example in glm pipeline
+#' ranger_importance_screener <- Lrnr_screener_importance$new(
+#'   learner = ranger_lrnr_importance, num_screen = 3
+#' )
+#' glm_lrnr <- make_learner(Lrnr_glm)
+#' ranger_screen_glm_pipe <- Pipeline$new(ranger_importance_screener, glm_lrnr)
+#' ranger_screen_glm_pipe_fit <- ranger_screen_glm_pipe$train(mtcars_task)
 Lrnr_ranger <- R6Class(
   classname = "Lrnr_ranger", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
   public = list(
     initialize = function(num.trees = 500,
                           write.forest = TRUE,
+                          importance = "none",
                           num.threads = 1,
                           ...) {
       params <- args_to_list()
@@ -71,7 +91,8 @@ Lrnr_ranger <- R6Class(
 
       # calculate importance metrics
       importance_result <- call_with_args(ranger::importance, args,
-                                          keep_all = TRUE)
+        keep_all = TRUE
+      )
 
       # sort according to decreasing importance
       return(importance_result[order(importance_result, decreasing = TRUE)])
@@ -79,8 +100,10 @@ Lrnr_ranger <- R6Class(
   ),
 
   private = list(
-    .properties = c("continuous", "binomial", "categorical", "importance",
-                    "weights"),
+    .properties = c(
+      "continuous", "binomial", "categorical", "importance",
+      "weights"
+    ),
 
     .train = function(task) {
       args <- self$params
