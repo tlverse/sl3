@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Learner for Recursive Partitioning and Regression Trees. — Lrnr_rpart • sl3</title>
+<title>Bayesian Generalized Linear Models — Lrnr_bayesglm • sl3</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,9 @@
 
 
 
-<meta property="og:title" content="Learner for Recursive Partitioning and Regression Trees. — Lrnr_rpart" />
-<meta property="og:description" content="This learner uses rpart from rpart to fit
-recursive partitioning and regression trees." />
+<meta property="og:title" content="Bayesian Generalized Linear Models — Lrnr_bayesglm" />
+<meta property="og:description" content="This learner provides fitting procedures for bayesian generalized linear models using
+bayesglm.fit." />
 
 
 
@@ -140,14 +140,14 @@ recursive partitioning and regression trees." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Learner for Recursive Partitioning and Regression Trees.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/tlverse/sl3/blob/master/R/Lrnr_rpart.R'><code>R/Lrnr_rpart.R</code></a></small>
-    <div class="hidden name"><code>Lrnr_rpart.Rd</code></div>
+    <h1>Bayesian Generalized Linear Models</h1>
+    <small class="dont-index">Source: <a href='https://github.com/tlverse/sl3/blob/master/R/Lrnr_bayesglm.R'><code>R/Lrnr_bayesglm.R</code></a></small>
+    <div class="hidden name"><code>Lrnr_bayesglm.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This learner uses <code><a href='https://rdrr.io/pkg/rpart/man/rpart.html'>rpart</a></code> from <code>rpart</code> to fit
-recursive partitioning and regression trees.</p>
+    <p>This learner provides fitting procedures for bayesian generalized linear models using
+<code><a href='https://rdrr.io/pkg/arm/man/bayesglm.html'>bayesglm.fit</a></code>.</p>
     </div>
 
 
@@ -164,13 +164,32 @@ recursive partitioning and regression trees.</p>
     
 
 <dl>
-<dt><code>model</code></dt><dd><p>If logical: keep a copy of the model frame in the
-result?</p></dd>
-<dt><code>x</code></dt><dd><p>Whether to keep a copy of the x matrix in the result.</p></dd>
-<dt><code>y</code></dt><dd><p>Whether to keep a copy of the dependent variable in the
-result.</p></dd>
-<dt><code>...</code></dt><dd><p>Other parameters to be passed directly to
-<code><a href='https://rdrr.io/pkg/rpart/man/rpart.html'>rpart</a></code>. See its documentation for details.</p></dd>
+<dt><code>...</code></dt><dd><p>Parameters passed to <code><a href='https://rdrr.io/pkg/arm/man/bayesglm.html'>bayesglm</a></code>.</p></dd>
+
+</dl>
+
+    <h2 class="hasAnchor" id="common-parameters"><a class="anchor" href="#common-parameters"></a>Common Parameters</h2>
+
+    
+
+
+<p>Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by <code>Lrnr_base</code>, and shared
+by all learners.</p>
+<dl>
+<dt><code>covariates</code></dt><dd><p>A character vector of covariates. The learner will use this to subset the covariates for any specified task</p></dd>
+<dt><code>outcome_type</code></dt><dd><p>A <code><a href='Variable_Type.html'>variable_type</a></code> object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified</p></dd>
+<dt><code>...</code></dt><dd><p>All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating</p></dd>
+
+</dl>
+
+
+
+<p>Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by <code>Lrnr_base</code>, and shared
+by all learners.</p>
+<dl>
+<dt><code>covariates</code></dt><dd><p>A character vector of covariates. The learner will use this to subset the covariates for any specified task</p></dd>
+<dt><code>outcome_type</code></dt><dd><p>A <code><a href='Variable_Type.html'>variable_type</a></code> object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified</p></dd>
+<dt><code>...</code></dt><dd><p>All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating</p></dd>
 
 </dl>
 
@@ -182,7 +201,6 @@ result.</p></dd>
 <code><a href='Lrnr_arima.html'>Lrnr_arima</a></code>,
 <code><a href='Lrnr_bartMachine.html'>Lrnr_bartMachine</a></code>,
 <code><a href='Lrnr_base.html'>Lrnr_base</a></code>,
-<code><a href='Lrnr_bayesglm.html'>Lrnr_bayesglm</a></code>,
 <code><a href='Lrnr_bilstm.html'>Lrnr_bilstm</a></code>,
 <code><a href='Lrnr_bound.html'>Lrnr_bound</a></code>,
 <code><a href='Lrnr_caret.html'>Lrnr_caret</a></code>,
@@ -223,6 +241,7 @@ result.</p></dd>
 <code><a href='Lrnr_randomForest.html'>Lrnr_randomForest</a></code>,
 <code><a href='Lrnr_ranger.html'>Lrnr_ranger</a></code>,
 <code><a href='Lrnr_revere_task.html'>Lrnr_revere_task</a></code>,
+<code><a href='Lrnr_rpart.html'>Lrnr_rpart</a></code>,
 <code><a href='Lrnr_rugarch.html'>Lrnr_rugarch</a></code>,
 <code><a href='Lrnr_screener_augment.html'>Lrnr_screener_augment</a></code>,
 <code><a href='Lrnr_screener_coefs.html'>Lrnr_screener_coefs</a></code>,
