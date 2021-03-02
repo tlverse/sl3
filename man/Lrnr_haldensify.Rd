@@ -46,14 +46,15 @@ details.
 }
 
 \examples{
+library(dplyr)
 data(cpp_imputed)
 covars <- c("parity", "sexn")
 outcome <- "haz"
 
 # create task
 task <- cpp_imputed \%>\%
-  dplyr::slice(seq(1, nrow(.), by = 3)) \%>\%
-  dplyr::filter(agedays == 1) \%>\%
+  slice(seq(1, nrow(.), by = 3)) \%>\%
+  filter(agedays == 1) \%>\%
   sl3_Task$new(
     covariates = covars,
     outcome = outcome
