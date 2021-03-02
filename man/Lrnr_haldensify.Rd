@@ -5,40 +5,71 @@
 \alias{Lrnr_haldensify}
 \title{Conditional Density Estimation with the Highly Adaptive LASSO}
 \format{
-\code{\link{R6Class}} object.
+An \code{\link[R6]{R6Class}} object inheriting from
+\code{\link{Lrnr_base}}.
 }
 \value{
-Learner object with methods for training and prediction. See
-\code{\link{Lrnr_base}} for documentation on learners.
+A learner object inheriting from \code{\link{Lrnr_base}} with
+methods for training and prediction. For a full list of learner
+functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 }
 \description{
 Conditional Density Estimation with the Highly Adaptive LASSO
 }
 \section{Parameters}{
 
-\describe{
-\item{\code{grid_type = c("equal_range", "equal_mass")}}{\code{character}
-indicating the strategy to be used in creating bins along the observed
-support of the outcome variable. For bins of equal range, use
-"equal_range" (based on \code{\link[ggplot2]{cut_interval}}). To ensure
-each bin has the same number of observations, use "equal_mass" (based on
-\code{\link[ggplot2]{cut_number}}).
-}
-\item{\code{n_bins = c(5, 10)}}{Only used if \code{type} is set to
-\code{"equal_range"} or \code{"equal_mass"}. This \code{numeric} value
-indicates the number of bins that the support of the outcome variable is
-to be divided into.
-}
-\item{\code{lambda_seq = exp(seq(-1, -13, length = 1000L))}}{\code{numeric}
-sequence of values of the regulariztion parameter of the Lasso regression,
-to be passed to to \code{\link[hal9001]{fit_hal}}.
-}
-\item{\code{...}}{ Other parameters passed directly to
-\code{\link[haldensify]{haldensify}}. See its documentation for details.
-}
+\itemize{
+\item \code{grid_type = "equal_range"}: A \code{character} indicating the
+strategy to be used in creating bins along the observed support of
+\code{A}. For bins of equal range, use \code{"equal_range"}; consult
+the documentation of \code{\link[ggplot2]{cut_interval}} for further
+information. To ensure each bin has the same number of observations,
+use \code{"equal_mass"}; consult the documentation of
+\code{\link[ggplot2]{cut_number}} for details. The default is
+\code{"equal_range"} since this has been found to provide better
+performance in simulation experiments; however, both types may be
+specified (i.e., \code{c("equal_range", "equal_mass")}) together, in
+which case cross-validation will be used to select the optimal binning
+strategy.
+\item \code{n_bins = c(3, 5, 10)}: This \code{numeric} value indicates the
+number(s) of bins into which the support of \code{A} is to be divided.
+As with \code{grid_type}, multiple values may be specified, in which
+cross-validation will be used to select the optimal number of bins.
+\item \code{lambda_seq = exp(seq(-1, -13, length = 1000L))}: A \code{numeric}
+sequence of regularization parameter values of Lasso regression, which
+are passed to \code{\link[hal9001]{fit_hal}} via its argument
+\code{lambda}, itself passed to \code{\link[glmnet]{glmnet}}.
+\item \code{...}: Other arguments to be passed directly to
+\code{\link[haldensify]{haldensify}}. See its documentation for
+details.
 }
 }
 
+\examples{
+data(cpp_imputed)
+covars <- c("parity", "sexn")
+outcome <- "haz"
+
+# create task
+task <- cpp_imputed \%>\%
+  dplyr::slice(seq(1, nrow(.), by = 3)) \%>\%
+  dplyr::filter(agedays == 1) \%>\%
+  sl3_Task$new(
+    covariates = covars,
+    outcome = outcome
+  )
+
+# instantiate the learner
+hal_dens <- Lrnr_haldensify$new(
+  grid_type = "equal_range",
+  n_bins = c(3, 5),
+  lambda_seq = exp(seq(-1, -13, length = 100))
+)
+
+# fit and predict densities
+hal_dens_fit <- hal_dens$train(task)
+hal_dens_preds <- hal_dens_fit$predict()
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},

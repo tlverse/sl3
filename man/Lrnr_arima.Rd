@@ -35,29 +35,30 @@ retain.
 }
 
 \examples{
-data(bsds) 
+library(origami)
+data(bsds)
 
-folds <- origami::make_folds(bsds,
-fold_fun = folds_rolling_window, window_size = 500,
-validation_size = 100, gap = 0, batch = 50)
+folds <- make_folds(bsds,
+  fold_fun = folds_rolling_window, window_size = 500,
+  validation_size = 100, gap = 0, batch = 50
+)
 
 task <- sl3_Task$new(
   data = bsds,
   folds = folds,
   covariates = c(
-    "weekday","temp"
+    "weekday", "temp"
   ),
   outcome = "cnt"
-)       
+)
 
 arima_lrnr <- make_learner(Lrnr_arima)
 
 train_task <- training(task, fold = task$folds[[1]])
 valid_task <- validation(task, fold = task$folds[[1]])
 
-arima_fit <- arima_lrnr$train(train_task)   
-arima_preds <- arima_fit$predict(valid_task)   
-
+arima_fit <- arima_lrnr$train(train_task)
+arima_preds <- arima_fit$predict(valid_task)
 }
 \seealso{
 Other Learners: 

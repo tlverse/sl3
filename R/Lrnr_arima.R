@@ -37,9 +37,10 @@
 #'    \code{order} argument is provided.
 #'
 #' @examples
+#' library(origami)
 #' data(bsds)
 #'
-#' folds <- origami::make_folds(bsds,
+#' folds <- make_folds(bsds,
 #'   fold_fun = folds_rolling_window, window_size = 500,
 #'   validation_size = 100, gap = 0, batch = 50
 #' )
@@ -60,8 +61,6 @@
 #'
 #' arima_fit <- arima_lrnr$train(train_task)
 #' arima_preds <- arima_fit$predict(valid_task)
-#'
-#' #
 Lrnr_arima <- R6Class(
   classname = "Lrnr_arima",
   inherit = Lrnr_base,
