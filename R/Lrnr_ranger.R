@@ -31,8 +31,8 @@
 #'  - \code{importance = "none"}: Variable importance mode, one of "none",
 #'      "impurity", "impurity_corrected", "permutation". The "impurity" measure
 #'      is the Gini index for classification, the variance of the responses for
-#'      regression and the sum of test statistics (see
-#'      \code{\link[ranger]{splitrule}) for survival.
+#'      regression, and the sum of test statistics (for survival analysis, see
+#'      \code{\link[ranger]{splitrule}}).
 #'  - \code{num.threads = 1}: Number of threads.
 #'  - \code{...}: Other parameters passed to \code{\link[ranger]{ranger}}. See
 #'      it's documentation for details.
