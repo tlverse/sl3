@@ -32,7 +32,7 @@
 #'      "impurity", "impurity_corrected", "permutation". The "impurity" measure
 #'      is the Gini index for classification, the variance of the responses for
 #'      regression, and the sum of test statistics (for survival analysis, see
-#'      \code{\link[ranger]{splitrule}}).
+#'      the \code{splitrule} argument of \code{\link[ranger]{ranger}}).
 #'  - \code{num.threads = 1}: Number of threads.
 #'  - \code{...}: Other parameters passed to \code{\link[ranger]{ranger}}. See
 #'      it's documentation for details.
