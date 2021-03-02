@@ -49,7 +49,7 @@ performs ensemble learning in one of two fashions:
 
 Looking for long-form documentation or a walkthrough of the `sl3`
 package? Don’t worry\! Just take a look at [the chapter in our
-book](ihttps://tlverse.org/tlverse-handbook/sl3.html).
+book](https://tlverse.org/tlverse-handbook/sl3.html).
 
 -----
 
