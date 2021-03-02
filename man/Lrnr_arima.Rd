@@ -17,21 +17,48 @@ univariate time-series.
 }
 \section{Parameters}{
 
-\describe{
-\item{\code{order=NULL}}{An optional specification of the non-seasonal
-part of the ARIMA model: the three integer components (p, d, q) are the
+\itemize{
+\item \code{order}: An optional specification of the non-seasonal
+part of the ARIMA model; the three integer components (p, d, q) are the
 AR order, the degree of differencing, and the MA order. If order is
 specified, then \code{\link[stats]{arima}} will be called; otherwise,
 \code{\link[forecast]{auto.arima}} will be used to fit the "best" ARIMA
-model according to AIC (default), AICc or BIC. The information criterion
+model according to AIC (default), AIC or BIC. The information criterion
 to be used in \code{\link[forecast]{auto.arima}} model selection can be
-modified by specifying \code{ic} argument.}
-\item{\code{...}}{Other parameters passed to \code{\link[stats]{arima}} or
+modified by specifying \code{ic} argument.
+\item \code{num_screen = 5}: The top n number of "most impotant" variables to
+retain.
+\item \code{...}: Other parameters passed to \code{\link[stats]{arima}} or
 \code{\link[forecast]{auto.arima}} function, depending on whether or not
-\code{order} argument is provided.}
+\code{order} argument is provided.
 }
 }
 
+\examples{
+data(bsds) 
+
+folds <- origami::make_folds(bsds,
+fold_fun = folds_rolling_window, window_size = 500,
+validation_size = 100, gap = 0, batch = 50)
+
+task <- sl3_Task$new(
+  data = bsds,
+  folds = folds,
+  covariates = c(
+    "weekday","temp"
+  ),
+  outcome = "cnt"
+)       
+
+arima_lrnr <- make_learner(Lrnr_arima)
+
+train_task <- training(task, fold = task$folds[[1]])
+valid_task <- validation(task, fold = task$folds[[1]])
+
+arima_fit <- arima_lrnr$train(train_task)   
+arima_preds <- arima_fit$predict(valid_task)   
+
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},
