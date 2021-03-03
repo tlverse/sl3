@@ -52,7 +52,7 @@ Lrnr_screener_correlation <- R6Class(
   ),
 
   private = list(
-    .properties = c("binomial", "continuous", "categorical"),
+    .properties = c("binomial", "continuous", "categorical", "screener"),
 
     .train = function(task) {
       outcome_type <- self$get_outcome_type(task)

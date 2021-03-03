@@ -20,7 +20,7 @@ Lrnr_pkg_SuperLearner_method <- R6Class(
   ),
 
   private = list(
-    .properties = c("binomial", "continuous", "weights"),
+    .properties = c("binomial", "continuous", "weights", "wrapper"),
 
     .train = function(task) {
       method <- self$params$SL_wrapper
