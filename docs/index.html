@@ -112,6 +112,7 @@
 <li>The <em>discrete</em> Super Learner can be used to select the best prediction algorithm from among a supplied library of machine learning algorithms (“learners” in the <code>sl3</code> nomenclature) – that is, the discrete Super Learner is the single learning algorithm that minimizes the cross-validated risk with respect to an appropriate loss function.</li>
 <li>The <em>ensemble</em> Super Learner can be used to assign weights to a set of specified learning algorithms (from a user-supplied library of such algorithms) so as to create a combination of these learners that minimizes the cross-validated risk with respect to an appropriate loss function. This notion of weighted combinations has also been referred to as <em>stacked regression</em> (Breiman 1996) and <em>stacked generalization</em> (Wolpert 1992).</li>
 </ol>
+<p>Looking for long-form documentation or a walkthrough of the <code>sl3</code> package? Don’t worry! Just take a look at <a href="https://tlverse.org/tlverse-handbook/sl3.html">the chapter in our book</a>.</p>
 <hr>
 </div>
 <div id="installation" class="section level2">
@@ -148,7 +149,7 @@ install.packages("sl3")
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">49753</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://Rdatatable.gitlab.io/data.table">data.table</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com">data.table</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ecpolley/SuperLearner">SuperLearner</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tlverse.org/origami">origami</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tlverse.org/sl3">sl3</a></span><span class="op">)</span>
@@ -162,7 +163,11 @@ install.packages("sl3")
 <span class="co"># use covariates of intest and the outcome to build a task object</span>
 <span class="va">covars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"apgar1"</span>, <span class="st">"apgar5"</span>, <span class="st">"parity"</span>, <span class="st">"gagebrth"</span>, <span class="st">"mage"</span>, <span class="st">"meducyrs"</span>,
             <span class="st">"sexn"</span><span class="op">)</span>
-<span class="va">task</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/sl3_Task.html">sl3_Task</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">cpp</span>, covariates <span class="op">=</span> <span class="va">covars</span>, outcome <span class="op">=</span> <span class="st">"haz"</span><span class="op">)</span>
+<span class="va">task</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/sl3_Task.html">sl3_Task</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+  data <span class="op">=</span> <span class="va">cpp</span>,
+  covariates <span class="op">=</span> <span class="va">covars</span>,
+  outcome <span class="op">=</span> <span class="st">"haz"</span>
+<span class="op">)</span>
 
 <span class="co"># set up screeners and learners via built-in functions and pipelines</span>
 <span class="va">slscreener</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/Lrnr_pkg_SuperLearner.html">Lrnr_pkg_SuperLearner_screener</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"screen.glmnet"</span><span class="op">)</span>
@@ -189,7 +194,45 @@ install.packages("sl3")
 <span class="co">#&gt; 4:                                                            0.25870995</span>
 <span class="co">#&gt; 5:                                                            0.25870995</span>
 <span class="co">#&gt; 6:                                                            0.05600958</span></code></pre></div>
+<div id="parallelization-with-futures" class="section level3">
+<h3 class="hasAnchor">
+<a href="#parallelization-with-futures" class="anchor"></a>Parallelization with <code>future</code>s</h3>
+<p>While it’s straightforward to fit a stack of learners (as above), it’s easy to take advantage of <code>sl3</code>’s built-in parallelization support too. To do this, you can simply choose a <code><a href="https://rdrr.io/pkg/future/man/plan.html">plan()</a></code> from the <a href="https://CRAN.R-project.org/package=future"><code>future</code> ecosystem</a>.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># let's load the future package and set 4 cores for parallelization</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HenrikBengtsson/future">future</a></span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/future/man/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">4L</span><span class="op">)</span>
+
+<span class="co"># now, let's re-train our Stack in parallel</span>
+<span class="va">stack_fit</span> <span class="op">&lt;-</span> <span class="va">learner_stack</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span>
+<span class="va">preds</span> <span class="op">&lt;-</span> <span class="va">stack_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+</div>
+<div id="controlling-the-number-of-cv-folds" class="section level3">
+<h3 class="hasAnchor">
+<a href="#controlling-the-number-of-cv-folds" class="anchor"></a>Controlling the number of CV folds</h3>
+<p>In the above examples, we fit stacks of learners, but didn’t create a Super Learner ensemble, which uses cross-validation (CV) to build the ensemble model. For the sake of computational expedience, we may be interested in lowering the number of CV folds (from 10). Let’s take a look at how to do both below.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># first, let's instantiate some more learners and create a Super Learner</span>
+<span class="va">mean_learner</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/Lrnr_mean.html">Lrnr_mean</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>
+<span class="va">rf_learner</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/Lrnr_ranger.html">Lrnr_ranger</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>
+<span class="va">sl</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/Lrnr_sl.html">Lrnr_sl</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">mean_learner</span>, <span class="va">glm_learner</span>, <span class="va">rf_learner</span><span class="op">)</span>
+
+<span class="co"># CV folds are controlled in the sl3_Task object; we can lower the number of</span>
+<span class="co"># folds simply by specifying this in creating the Task</span>
+<span class="va">task</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/sl3_Task.html">sl3_Task</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+  data <span class="op">=</span> <span class="va">cpp</span>,
+  covariates <span class="op">=</span> <span class="va">covars</span>,
+  outcome <span class="op">=</span> <span class="st">"haz"</span>,
+  folds <span class="op">=</span> <span class="fl">5L</span>
+<span class="op">)</span>
+
+<span class="co"># now, let's fit the Super Learner with just 5-fold CV, then get predictions</span>
+<span class="va">sl_fit</span> <span class="op">&lt;-</span> <span class="va">sl</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span>
+<span class="va">sl_preds</span> <span class="op">&lt;-</span> <span class="va">sl_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p>The <code>folds</code> argument to <code>sl3_Task</code> supports both integers (for V-fold</p>
+<p>CV) and all of the CV schemes supported in the <a href="https://CRAN.R-project.org/package=origami"><code>origami</code> package</a>. To see the full list, query <code><a href="http://tlverse.org/origami/reference/fold_funs.html">?fold_funs</a></code> from within <code>R</code> or take a look at <a href="https://tlverse.org/origami/reference/"><code>origami</code>’s online documentation</a>.</p>
 <hr>
+</div>
 </div>
 <div id="learner-properties" class="section level2">
 <h2 class="hasAnchor">
@@ -3126,7 +3169,7 @@ install.packages("sl3")
 <h2 class="hasAnchor">
 <a href="#citation" class="anchor"></a>Citation</h2>
 <p>After using the <code>sl3</code> R package, please cite the following:</p>
-<pre><code>    @manual{coyle2021sl3,
+<pre><code> @software{coyle2021sl3-rpkg,
       author = {Coyle, Jeremy R and Hejazi, Nima S and Malenica, Ivana and
         Sofrygin, Oleg},
       title = {{sl3}: Modern Pipelines for Machine Learning and {Super
@@ -3149,7 +3192,7 @@ install.packages("sl3")
 <div id="references" class="section level2">
 <h2 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h2>
-<div id="refs" class="references hanging-indent">
+<div id="refs" class="references">
 <div id="ref-breiman1996stacked">
 <p>Breiman, Leo. 1996. “Stacked Regressions.” <em>Machine Learning</em> 24 (1): 49–64.</p>
 </div>
