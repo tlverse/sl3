@@ -93,3 +93,45 @@ cv_risk_table <- fit$cv_risk(loss_squared_error)
 # GLM should be perfect here because outcome=covariate
 expect_equal(cv_risk_table$coefficients[[1]], 1)
 expect_equal(cv_risk_table$risk[[1]], 0)
+
+######## test LOOCV
+smol_d <- cpp_imputed[1:40, ]
+expect_warning(
+  loo_folds <- make_folds(n = smol_d, fold_fun = folds_vfold, V = nrow(smol_d))
+)
+smol_task <- sl3_Task$new(
+  smol_d,
+  covariates = covars, outcome = outcome, folds = loo_folds
+)
+
+# all learners need to be tested, this is just a subset
+xgboost_learner <- Lrnr_xgboost$new()
+lasso_learner <- Lrnr_glmnet$new()
+polspline_learner <- Lrnr_polspline$new()
+ranger_learner <- Lrnr_ranger$new()
+glm_learner <- Lrnr_glm$new()
+all_learners <- c(
+  xgboost_learner, lasso_learner, glm_learner, polspline_learner,
+  ranger_learner
+)
+names(all_learners) <- c("xgboost", "lasso", "glm", "polpsline", "ranger")
+stack <- make_learner(Stack, all_learners)
+
+cv_learner <- Lrnr_cv$new(stack, full_fit = TRUE)
+smol_cv_fit <- cv_learner$train(smol_task)
+
+preds <- smol_cv_fit$predict()
+preds_fold1 <- smol_cv_fit$predict_fold(smol_task, 1)
+preds_full <- smol_cv_fit$predict_fold(smol_task, "full")
+preds_valid <- smol_cv_fit$predict_fold(smol_task, "validation")
+
+n1_task <- validation(smol_task, fold = smol_task$folds[[2]])
+n1_preds <- smol_cv_fit$fit_object$fold_fits[[2]]$predict(n1_task)
+
+test_that("Learners do not error under LOOCV", {
+  expect_false(any(is.na(preds_valid)))
+  expect_false(any(is.na(preds_fold1)))
+  expect_false(any(is.na(preds_full)))
+  expect_false(any(is.na(preds)))
+  expect_false(any(is.na(n1_preds)))
+})
