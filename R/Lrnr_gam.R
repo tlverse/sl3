@@ -95,10 +95,10 @@ Lrnr_gam <- R6Class(
         i_continuous <- covars_type == "continuous"
         X_continuous <- task$X[, ..i_continuous]
         "y ~ s(x1) + s(x2) + x3"
-        X_smooth <- sapply(colnames(X_continuous), function(x){
-          unique_x <- unlist(unique(task$X[,x, with=F]))
-          if(length(unique_x) < 10){
-            paste0("s(", x, ", k=", length(unique_x),")")
+        X_smooth <- sapply(colnames(X_continuous), function(x) {
+          unique_x <- unlist(unique(task$X[, x, with = F]))
+          if (length(unique_x) < 10) {
+            paste0("s(", x, ", k=", length(unique_x), ")")
           } else {
             paste0("s(", x, ")")
           }
@@ -141,7 +141,7 @@ Lrnr_gam <- R6Class(
       } else {
         args$formula <- as.formula(args$formula)
       }
-    
+
       # fit
       fit_object <- call_with_args(mgcv::gam, args)
       return(fit_object)

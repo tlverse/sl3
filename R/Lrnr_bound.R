@@ -39,7 +39,7 @@ Lrnr_bound <- R6Class(
   ),
   private = list(
     .properties = c(
-      "continuous", "binomial", "categorical", "weights",  "wrapper"
+      "continuous", "binomial", "categorical", "weights", "wrapper"
     ),
 
     .train = function(task) {

@@ -1,7 +1,6 @@
 context("test-cv.R -- Cross-validation fold handling")
 library(origami)
 
-
 data(cpp_imputed)
 covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")
 outcome <- "haz"
@@ -94,44 +93,88 @@ cv_risk_table <- fit$cv_risk(loss_squared_error)
 expect_equal(cv_risk_table$coefficients[[1]], 1)
 expect_equal(cv_risk_table$risk[[1]], 0)
 
-######## test LOOCV
-smol_d <- cpp_imputed[1:40, ]
+################################# test LOOCV ###################################
+test_loocv_learner <- function(learner, loocv_task, ...) {
+  # test learner definition this requires that a learner can be instantiated with
+  # only default arguments. Not sure if this is a reasonable requirement
+  learner_obj <- make_learner(learner, ...)
+  print(sprintf("Testing LOOCV with Learner: %s", learner_obj$name))
+  cv_learner <- Lrnr_cv$new(learner_obj, full_fit = TRUE)
+
+  # test learner training
+  fit_obj <- cv_learner$train(loocv_task)
+  test_that("Learner can be trained on data", expect_true(fit_obj$is_trained))
+
+  # test learner prediction
+  train_preds <- fit_obj$predict()
+  test_that("Learner can generate training set predictions", expect_equal(
+    sl3:::safe_dim(train_preds)[1],
+    length(loocv_task$Y)
+  ))
+
+  # test learner chaining
+  chained_task <- fit_obj$chain()
+  test_that("Chaining returns a task", expect_true(is(chained_task, "sl3_Task")))
+  test_that("Chaining returns the correct number of rows", expect_equal(
+    nrow(chained_task$X),
+    nrow(loocv_task$X)
+  ))
+
+  preds_fold1 <- fit_obj$predict_fold(loocv_task, 1)
+  preds_full <- fit_obj$predict_fold(loocv_task, "full")
+  preds_valid <- fit_obj$predict_fold(loocv_task, "validation")
+  validation_task <- validation(loocv_task, fold = loocv_task$folds[[1]])
+  validation_preds <- fit_obj$fit_object$fold_fits[[1]]$predict(validation_task)
+  test_that("Learners do not error under LOOCV", {
+    expect_false(any(is.na(preds_valid)))
+    expect_false(any(is.na(preds_fold1)))
+    expect_false(any(is.na(preds_full)))
+    expect_false(any(is.na(validation_preds)))
+  })
+}
+
+# make task
+smol_d <- cpp_imputed[1:20, ]
 expect_warning(
-  loo_folds <- make_folds(n = smol_d, fold_fun = folds_vfold, V = nrow(smol_d))
+  loocv_folds <- make_folds(n = smol_d, fold_fun = folds_vfold, V = nrow(smol_d))
 )
-smol_task <- sl3_Task$new(
+
+loocv_task <- sl3_Task$new(
   smol_d,
-  covariates = covars, outcome = outcome, folds = loo_folds
+  covariates = covars, outcome = outcome, folds = loocv_folds
 )
 
-# all learners need to be tested, this is just a subset
-xgboost_learner <- Lrnr_xgboost$new()
-lasso_learner <- Lrnr_glmnet$new()
-polspline_learner <- Lrnr_polspline$new()
-ranger_learner <- Lrnr_ranger$new()
-glm_learner <- Lrnr_glm$new()
-all_learners <- c(
-  xgboost_learner, lasso_learner, glm_learner, polspline_learner,
-  ranger_learner
-)
-names(all_learners) <- c("xgboost", "lasso", "glm", "polpsline", "ranger")
-stack <- make_learner(Stack, all_learners)
+# get learners
+cont_learners <- sl3::sl3_list_learners("continuous")
+bin_learners <- sl3::sl3_list_learners("binomial")
+# bin_learners[-which(bin_learners %in% cont_learners)] 0
+ts <- sl3::sl3_list_learners("timeseries")
+screen <- sl3::sl3_list_learners("screener")
+wrap <- sl3::sl3_list_learners("wrapper")
+h2o <- sl3::sl3_list_learners("h2o")
+learners <- cont_learners[-which(cont_learners %in% c(ts, screen, wrap, h2o))]
 
-cv_learner <- Lrnr_cv$new(stack, full_fit = TRUE)
-smol_cv_fit <- cv_learner$train(smol_task)
+# test all learners
+result <- lapply(learners, test_loocv_learner, loocv_task)
+# Failed on Lrnr_gam_NULL_NULL_GCV.Cp
+# Error in (function (formula, family = gaussian(), data = list(), weights = NULL,  :
+# Model has more coefficients than data
 
-preds <- smol_cv_fit$predict()
-preds_fold1 <- smol_cv_fit$predict_fold(smol_task, 1)
-preds_full <- smol_cv_fit$predict_fold(smol_task, "full")
-preds_valid <- smol_cv_fit$predict_fold(smol_task, "validation")
+error_idx <- grep("Lrnr_gam", learners)
+learners2 <- learners[-error_idx]
+result2 <- lapply(learners2[error_idx:length(learners2)], test_loocv_learner, loocv_task)
+# Failed on Lrnr_gbm_10000_2_0.001
+# Error in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli",  :
+# The data set is too small or the subsampling rate is too large: `nTrain * bag.fraction <= n.minobsinnode`
 
-n1_task <- validation(smol_task, fold = smol_task$folds[[2]])
-n1_preds <- smol_cv_fit$fit_object$fold_fits[[2]]$predict(n1_task)
+error_idx <- grep("Lrnr_gbm", learners2)
+learners3 <- learners2[-error_idx]
+result3 <- lapply(learners3[error_idx:length(learners3)], test_loocv_learner, loocv_task)
+# Failed on Lrnr_hal9001_3_glmnet_10_TRUE_NULL_TRUE_FALSE_NULL_TRUE
+# Error in h(simpleError(msg, call)) :
+#   error in evaluating the argument 'x' in selecting a method for function 'as.matrix': error in evaluating the argument 'x' in selecting a method for function 'cbind2': data is too long
 
-test_that("Learners do not error under LOOCV", {
-  expect_false(any(is.na(preds_valid)))
-  expect_false(any(is.na(preds_fold1)))
-  expect_false(any(is.na(preds_full)))
-  expect_false(any(is.na(preds)))
-  expect_false(any(is.na(n1_preds)))
-})
+error_idx <- grep("Lrnr_hal", learners3)
+learners4 <- learners3[-error_idx]
+result4 <- lapply(learners4[error_idx:length(learners4)], test_loocv_learner, loocv_task)
+# all pass
