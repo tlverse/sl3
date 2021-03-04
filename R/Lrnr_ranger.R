@@ -37,6 +37,7 @@ Lrnr_ranger <- R6Class(
     initialize = function(num.trees = 500,
                           write.forest = TRUE,
                           num.threads = 1,
+                          predict.all = FALSE,
                           ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
@@ -86,7 +87,8 @@ Lrnr_ranger <- R6Class(
         private$.fit_object,
         data = task$X,
         type = "response",
-        num.threads = self$params$num.threads
+        num.threads = self$params$num.threads,
+        predict.all = self$params$predict.all
       )
 
       predictions <- predictions[[1]]
