@@ -34,7 +34,7 @@ Lrnr_xgboost <- R6Class(
   classname = "Lrnr_xgboost", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(nrounds = 20, nthread = 1, predleaf = FALSE, predict.all.rounds = FALSE, predict.all.trees = FALSE, ...) {
+    initialize = function(nrounds = 20, nthread = 1, ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     },
@@ -141,60 +141,22 @@ Lrnr_xgboost <- R6Class(
       if (nrow(Xmat) > 0) {
         # Use ntreelimit for prediction, if used during model training.
         # Use it only for gbtree (not gblinear, i.e., glm -- not implemented)
-        if(self$params$predict.all.rounds || self$params$predict.all.trees) {
-          prediction_by_round <- list()
-          # Loop through all predictions at each round 
-          for(index in 1:self$params$nrounds) {
-            predictions <- stats::predict(
-              fit_object,
-              newdata = xgb_data,
-              ntreelimit = index, reshape = TRUE, predleaf = FALSE
-            )
-            if (outcome_type$type == "categorical") {
-              # pack predictions in a single column
-              predictions <- pack_predictions(predictions)
-            }
-            prediction_by_round[[index]] <- predictions
-          }
-          
-          if(self$params$predict.all.trees) {
-            prediction_by_tree <- list()
-            for(index in 1:self$params$nrounds) {
-              if(index == 1){
-                prediction_by_tree[[index]] <- prediction_by_round[[index]]
-              } else {
-                if (outcome_type$type == "categorical") {
-                  prediction_by_tree[[index]] <- pack_predictions(unpack_predictions(prediction_by_round[[index]]) - unpack_predictions(prediction_by_round[[index-1]]))
-                } else {
-                  prediction_by_tree[[index]] <- prediction_by_round[[index]] - prediction_by_round[[index-1]]
-                }
-              }
-            }
-            # Store the predictions for each round as a stacked matrix
-            predictions <- do.call(cbind, prediction_by_tree)
-          } else {
-            predictions <- do.call(cbind, prediction_by_round)
-          }
-          
-        } else {
-          ntreelimit <- 0
-          if (!is.null(fit_object[["best_ntreelimit"]]) &&
-              !("gblinear" %in% fit_object[["params"]][["booster"]])) {
-            ntreelimit <- fit_object[["best_ntreelimit"]]
-          }
-          # will generally return vector, needs to be put into data.table column
-          predictions <- stats::predict(
-            fit_object,
-            newdata = xgb_data,
-            ntreelimit = ntreelimit, reshape = TRUE, predleaf = self$params$predleaf
-          )
-          if (outcome_type$type == "categorical") {
-            # pack predictions in a single column
-            predictions <- pack_predictions(predictions)
-          }
+        ntreelimit <- 0
+        if (!is.null(fit_object[["best_ntreelimit"]]) &&
+          !("gblinear" %in% fit_object[["params"]][["booster"]])) {
+          ntreelimit <- fit_object[["best_ntreelimit"]]
         }
+        # will generally return vector, needs to be put into data.table column
+        predictions <- stats::predict(
+          fit_object,
+          newdata = xgb_data,
+          ntreelimit = ntreelimit, reshape = TRUE
+        )
       }
-      
+      if (outcome_type$type == "categorical") {
+        # pack predictions in a single column
+        predictions <- pack_predictions(predictions)
+      }
       # names(pAoutDT) <- names(models_list)
       return(predictions)
     },
