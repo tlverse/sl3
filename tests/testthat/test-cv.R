@@ -101,11 +101,13 @@ test_loocv_learner <- function(learner, loocv_task, ...) {
   print(sprintf("Testing LOOCV with Learner: %s", learner_obj$name))
   cv_learner <- Lrnr_cv$new(learner_obj, full_fit = TRUE)
 
+  print("Testing training")
   # test learner training
   fit_obj <- cv_learner$train(loocv_task)
   test_that("Learner can be trained on data", expect_true(fit_obj$is_trained))
 
   # test learner prediction
+  print("Testing predict")
   train_preds <- fit_obj$predict()
   test_that("Learner can generate training set predictions", expect_equal(
     sl3:::safe_dim(train_preds)[1],
@@ -134,7 +136,7 @@ test_loocv_learner <- function(learner, loocv_task, ...) {
 }
 
 # make task
-smol_d <- cpp_imputed[1:20, ]
+smol_d <- cpp_imputed[1:50, ]
 expect_warning(
   loocv_folds <- make_folds(n = smol_d, fold_fun = folds_vfold, V = nrow(smol_d))
 )
@@ -155,26 +157,4 @@ h2o <- sl3::sl3_list_learners("h2o")
 learners <- cont_learners[-which(cont_learners %in% c(ts, screen, wrap, h2o))]
 
 # test all learners
-result <- lapply(learners, test_loocv_learner, loocv_task)
-# Failed on Lrnr_gam_NULL_NULL_GCV.Cp
-# Error in (function (formula, family = gaussian(), data = list(), weights = NULL,  :
-# Model has more coefficients than data
-
-error_idx <- grep("Lrnr_gam", learners)
-learners2 <- learners[-error_idx]
-result2 <- lapply(learners2[error_idx:length(learners2)], test_loocv_learner, loocv_task)
-# Failed on Lrnr_gbm_10000_2_0.001
-# Error in (function (x, y, offset = NULL, misc = NULL, distribution = "bernoulli",  :
-# The data set is too small or the subsampling rate is too large: `nTrain * bag.fraction <= n.minobsinnode`
-
-error_idx <- grep("Lrnr_gbm", learners2)
-learners3 <- learners2[-error_idx]
-result3 <- lapply(learners3[error_idx:length(learners3)], test_loocv_learner, loocv_task)
-# Failed on Lrnr_hal9001_3_glmnet_10_TRUE_NULL_TRUE_FALSE_NULL_TRUE
-# Error in h(simpleError(msg, call)) :
-#   error in evaluating the argument 'x' in selecting a method for function 'as.matrix': error in evaluating the argument 'x' in selecting a method for function 'cbind2': data is too long
-
-error_idx <- grep("Lrnr_hal", learners3)
-learners4 <- learners3[-error_idx]
-result4 <- lapply(learners4[error_idx:length(learners4)], test_loocv_learner, loocv_task)
-# all pass
+lapply(learners, test_loocv_learner, loocv_task)
