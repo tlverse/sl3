@@ -69,15 +69,19 @@ Lrnr_gbm <- R6Class(
         args$offset <- task$offset
       }
 
-      if (outcome_type$type == "continuous") {
-        distribution <- "gaussian"
-      } else if (outcome_type$type == "binomial") {
-        distribution <- "bernoulli"
-      } else {
-        stop("Unsupported outcome type for Lrnr_gbm.")
+      if (is.null(args$distribution)) {
+        if (outcome_type$type == "continuous") {
+          args$distribution <- "gaussian"
+        } else if (outcome_type$type == "binomial") {
+          args$distribution <- "bernoulli"
+        } else {
+          stop("Unsupported outcome type for Lrnr_gbm.")
+        }
       }
-      args$distribution <- distribution
-      args$verbose <- FALSE
+
+      if (is.null(args$verbose)) {
+        args$verbose <- getOption("sl3.verbose")
+      }
 
       fit_object <- call_with_args(gbm::gbm.fit, args)
       return(fit_object)
