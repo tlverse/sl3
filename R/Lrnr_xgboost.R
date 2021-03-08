@@ -124,10 +124,18 @@ Lrnr_xgboost <- R6Class(
       if (is.integer(Xmat)) {
         Xmat[, 1] <- as.numeric(Xmat[, 1])
       }
-      # order of columns has to be the same in xgboost training and test data
-      Xmat <- as.matrix(Xmat[, match(fit_object$feature_names, colnames(Xmat))])
 
-      xgb_data <- try(xgboost::xgb.DMatrix(Xmat))
+      # order of columns has to be the same in xgboost training and test data
+      Xmat_matched <- as.matrix(
+        Xmat[, match(fit_object$feature_names, colnames(Xmat))]
+      )
+      if (nrow(Xmat_matched) != nrow(Xmat) & ncol(Xmat_matched) == nrow(Xmat)) {
+        Xmat_matched <- t(Xmat_matched)
+      }
+      stopifnot(nrow(Xmat_matched) == nrow(Xmat))
+
+      # convert to xgb.DMatrix
+      xgb_data <- try(xgboost::xgb.DMatrix(Xmat_matched))
 
       if (self$fit_object$training_offset) {
         offset <- task$offset_transformed(self$fit_object$link_fun,

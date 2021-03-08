@@ -25,7 +25,7 @@ Lrnr_pkg_SuperLearner_screener <- R6Class(
   ),
 
   private = list(
-    .properties = c("binomial", "continuous", "weights", "ids"),
+    .properties = c("binomial", "continuous", "weights", "ids", "wrapper"),
 
     .train = function(task) {
       args <- self$params

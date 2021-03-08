@@ -67,7 +67,7 @@ Lrnr_gru_keras <- R6Class(
     }
   ),
   private = list(
-    .properties = c("timeseries", "continuous", "binary", "categorical"),
+    .properties = c("timeseries", "continuous", "binomial", "categorical"),
     .train = function(task) {
 
       # set verbosity
