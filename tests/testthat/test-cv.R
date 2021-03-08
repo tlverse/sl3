@@ -1,75 +1,68 @@
 context("test-cv.R -- Cross-validation fold handling")
+
 library(origami)
+options(java.parameters = "-Xmx2500m")
 
 data(cpp_imputed)
 covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")
 outcome <- "haz"
 task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
 
-test_that("task will self-generate folds for 10-fold CV", expect_length(
-  task$folds,
-  10
-))
+test_that("Task will self-generate 10-fold CV folds", {
+  expect_length(task$folds, 10)
+})
 
 glm_learner <- Lrnr_glm$new()
 cv_glm <- Lrnr_cv$new(glm_learner, full_fit = TRUE)
 cv_glm_fit <- cv_glm$train(task)
 # debug_predict(cv_glm_fit)
-cv_glm_fit$predict()
+preds <- cv_glm_fit$predict()
+
 test_that("Lrnr_cv will use folds from task", {
   expect_equal(task$folds, cv_glm_fit$fit_object$folds)
 })
 
 folds <- make_folds(cpp_imputed, V = 5)
-task_2 <- sl3_Task$new(cpp_imputed,
-  covariates = covars, outcome = outcome,
-  folds = folds
-)
-test_that("task will accept custom folds", expect_length(task_2$folds, 5))
+task_2 <- sl3_Task$new(cpp_imputed, covars, outcome, folds = folds)
+test_that("Task will accept custom folds", expect_length(task_2$folds, 5))
 
-test_that("we can generate predictions", {
+test_that("We can generate predictions", {
   expect_equal(length(cv_glm_fit$predict()), task_2$nrow)
 })
 
 cv_glm_2 <- Lrnr_cv$new(glm_learner, folds = make_folds(cpp_imputed, V = 10))
 cv_glm_fit_2 <- cv_glm_2$train(task_2)
-cv_glm_fit_2$cv_risk(loss_squared_error)
+risk <- cv_glm_fit_2$cv_risk(loss_squared_error)
 test_that("Lrnr_cv can override folds from task", {
   expect_equal(cv_glm_fit_2$params$folds, cv_glm_fit_2$fit_object$folds)
 })
 
 glm_fit <- glm_learner$train(task)
-test_that(
-  "Lrnr_cv$predict_fold can generate full sample predictions",
-  expect_equal(
-    cv_glm_fit$predict_fold(task, "full"),
-    glm_fit$predict(task)
-  )
-)
+test_that("Lrnr_cv$predict_fold can generate full sample predictions",{
+  expect_equal(cv_glm_fit$predict_fold(task, "full"), glm_fit$predict(task))
+})
 
-test_that(
-  "Lrnr_cv$predict_fold can generate split specific predictions",
+
+test_that("Lrnr_cv$predict_fold can generate split specific predictions",{
   expect_equal(
     cv_glm_fit$predict_fold(task, 1),
     cv_glm_fit$fit_object$fold_fits[[1]]$predict(task)
   )
-)
+})
 
-test_that(
-  "Lrnr_cv$predict_fold can generate cross-validated predictions",
+test_that("Lrnr_cv$predict_fold can generate cross-validated predictions",{
   expect_equal(
     cv_glm_fit$predict_fold(task, "validation"),
     cv_glm_fit$predict(task)
   )
-)
+})
 
 test_that("Lrnr_cv$predict_fold throws an error on a bad fold_number", {
   expect_error(cv_glm_fit$predict_fold(task, "junk"))
 })
 
 
-#### verify cv risk for timeseries context
-library(origami)
+##################### verify cv risk for timeseries context ####################
 trend_all <- 11:130 + rnorm(120, sd = 2)
 trend_all <- data.frame(data = trend_all)
 
@@ -80,23 +73,18 @@ folds <- origami::make_folds(trend_all$data,
 
 lrnr_glm <- make_learner(Lrnr_glm)
 lrnr_mean <- make_learner(Lrnr_mean)
-sl <- make_learner(Lrnr_sl, list(lrnr_glm, lrnr_mean))
-task <- sl3_Task$new(trend_all,
-  covariates = "data",
-  outcome = "data", folds = folds
-)
+sl <- make_learner(Lrnr_sl, learners = list(lrnr_glm, lrnr_mean))
+task <- sl3_Task$new(trend_all, "data", "data", folds = folds)
 fit <- sl$train(task)
-fit$predict_fold(task, "validation")
+preds <- fit$predict_fold(task, "validation")
 cv_risk_table <- fit$cv_risk(loss_squared_error)
 
-# GLM should be perfect here because outcome=covariate
+# GLM should be perfect here because outcome = covariate
 expect_equal(cv_risk_table$coefficients[[1]], 1)
 expect_equal(cv_risk_table$risk[[1]], 0)
 
 ################################# test LOOCV ###################################
 test_loocv_learner <- function(learner, loocv_task, ...) {
-  # test learner definition this requires that a learner can be instantiated with
-  # only default arguments. Not sure if this is a reasonable requirement
   learner_obj <- make_learner(learner, ...)
   print(sprintf("Testing LOOCV with Learner: %s", learner_obj$name))
   cv_learner <- Lrnr_cv$new(learner_obj, full_fit = TRUE)
@@ -135,16 +123,10 @@ test_loocv_learner <- function(learner, loocv_task, ...) {
   })
 }
 
-# make task
-smol_d <- cpp_imputed[1:50, ]
-expect_warning(
-  loocv_folds <- make_folds(n = smol_d, fold_fun = folds_vfold, V = nrow(smol_d))
-)
-
-loocv_task <- sl3_Task$new(
-  smol_d,
-  covariates = covars, outcome = outcome, folds = loocv_folds
-)
+# make task with LOOCV
+d <- cpp_imputed[1:50, ]
+expect_warning(loocv_folds <- make_folds(n=d, fold_fun=folds_vfold, V=50))
+loocv_task <- sl3_Task$new(d, covars, outcome, folds = loocv_folds)
 
 # get learners
 cont_learners <- sl3::sl3_list_learners("continuous")
@@ -156,6 +138,5 @@ wrap <- sl3::sl3_list_learners("wrapper")
 h2o <- sl3::sl3_list_learners("h2o")
 learners <- cont_learners[-which(cont_learners %in% c(ts, screen, wrap, h2o))]
 
-# test all learners, aside from bartMachine because it's failing
-learners <- learners[-grep("bartMachine", learners)]
+# test all relevant learners
 lapply(learners, test_loocv_learner, loocv_task)
