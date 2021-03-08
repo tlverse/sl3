@@ -22,13 +22,6 @@
 #'
 #' @section Parameters:
 #' \describe{
-#'   \item{\code{Y}}{Outcome variable.}
-#'   \item{\code{X}}{Covariate dataframe.}
-#'   \item{\code{newX}}{Optional dataframe to predict the outcome.}
-#'   \item{\code{obsWeights}}{Optional observation-level weights (supported but not tested).}
-#'   \item{\code{id}}{Optional id to group observations from the same unit (not used
-#'   currently).}
-#'   \item{\code{family}}{"gaussian" for regression, "binomial" for binary classification.}
 #'   \item{\code{num_trees }}{The number of trees to be grown in the sum-of-trees model.}
 #'   \item{\code{num_burn_in}}{Number of MCMC samples to be discarded as "burn-in".}
 #'   \item{\code{num_iterations_after_burn_in}}{Number of MCMC samples to draw from the
