@@ -1,4 +1,4 @@
-#' Ranger: A Faster Implementation of Random Forests
+#' Ranger: Fast(er) Random Forests
 #'
 #' This learner provides fitting procedures for a fast implementation of Random
 #' Forests, particularly suited for high dimensional data, using the routines
@@ -31,8 +31,8 @@
 #'  - \code{importance = "none"}: Variable importance mode, one of "none",
 #'      "impurity", "impurity_corrected", "permutation". The "impurity" measure
 #'      is the Gini index for classification, the variance of the responses for
-#'      regression and the sum of test statistics (see
-#'      \code{\link[ranger]{splitrule}) for survival.
+#'      regression, and the sum of test statistics (for survival analysis, see
+#'      the \code{splitrule} argument of \code{\link[ranger]{ranger}}).
 #'  - \code{num.threads = 1}: Number of threads.
 #'  - \code{...}: Other parameters passed to \code{\link[ranger]{ranger}}. See
 #'      it's documentation for details.

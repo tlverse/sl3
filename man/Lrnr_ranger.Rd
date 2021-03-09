@@ -3,7 +3,7 @@
 \docType{class}
 \name{Lrnr_ranger}
 \alias{Lrnr_ranger}
-\title{Ranger: A Faster Implementation of Random Forests}
+\title{Ranger: Fast(er) Random Forests}
 \format{
 An \code{\link[R6]{R6Class}} object inheriting from
 \code{\link{Lrnr_base}}.
@@ -30,8 +30,8 @@ downstream prediction is not intended.
 \item \code{importance = "none"}: Variable importance mode, one of "none",
 "impurity", "impurity_corrected", "permutation". The "impurity" measure
 is the Gini index for classification, the variance of the responses for
-regression and the sum of test statistics (see
-\code{\link[ranger]{splitrule}) for survival.
+regression, and the sum of test statistics (for survival analysis, see
+the \code{splitrule} argument of \code{\link[ranger]{ranger}}).
 \item \code{num.threads = 1}: Number of threads.
 \item \code{...}: Other parameters passed to \code{\link[ranger]{ranger}}. See
 it's documentation for details.
@@ -42,8 +42,10 @@ it's documentation for details.
 data(mtcars)
 mtcars_task <- sl3_Task$new(
   data = mtcars,
-  covariates = c("cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "am",
-                 "gear", "carb"),
+  covariates = c(
+    "cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "am",
+    "gear", "carb"
+  ),
   outcome = "mpg"
 )
 # simple prediction
@@ -51,14 +53,14 @@ ranger_lrnr <- Lrnr_ranger$new()
 ranger_fit <- ranger_lrnr$train(mtcars_task)
 ranger_preds <- ranger_fit$predict()
 
-# variable importance 
-ranger_lrnr_importance <- Lrnr_ranger$new(importance = "impurity_corrected") 
+# variable importance
+ranger_lrnr_importance <- Lrnr_ranger$new(importance = "impurity_corrected")
 ranger_fit_importance <- ranger_lrnr_importance$train(mtcars_task)
 ranger_importance <- ranger_fit_importance$importance()
 
 # screening based on variable importance, example in glm pipeline
 ranger_importance_screener <- Lrnr_screener_importance$new(
-   learner = ranger_lrnr_importance, num_screen = 3
+  learner = ranger_lrnr_importance, num_screen = 3
 )
 glm_lrnr <- make_learner(Lrnr_glm)
 ranger_screen_glm_pipe <- Pipeline$new(ranger_importance_screener, glm_lrnr)

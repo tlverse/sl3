@@ -4,7 +4,7 @@
 \name{Lrnr_base}
 \alias{Lrnr_base}
 \alias{make_learner}
-\title{Base Class for all sl3 Learners.}
+\title{Base Class for all sl3 Learners}
 \format{
 \code{\link{R6Class}} object.
 }

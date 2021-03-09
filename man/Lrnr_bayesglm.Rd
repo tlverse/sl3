@@ -5,47 +5,45 @@
 \alias{Lrnr_bayesglm}
 \title{Bayesian Generalized Linear Models}
 \format{
-\code{\link{R6Class}} object.
+An \code{\link[R6]{R6Class}} object inheriting from
+\code{\link{Lrnr_base}}.
 }
 \value{
-Learner object with methods for training and prediction. See
-\code{\link{Lrnr_base}} for documentation on learners.
+A learner object inheriting from \code{\link{Lrnr_base}} with
+methods for training and prediction. For a full list of learner
+functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 }
 \description{
-This learner provides fitting procedures for bayesian generalized linear models using
-\code{\link[arm]{bayesglm.fit}}.
+This learner provides fitting procedures for bayesian generalized linear
+models (GLMs) from \pkg{ar} using \code{\link[arm]{bayesglm.fit}}. The GLMs
+fitted in this way can incorporate independent normal, t, or Cauchy prior
+distribution for the coefficients.
 }
 \section{Parameters}{
 
-\describe{
-\item{\code{...}}{Parameters passed to \code{\link[arm]{bayesglm}}.}
+\itemize{
+\item \code{intercept = TRUE}: A \code{logical} specifying whether an intercept
+term should be included in the fitted null model.
+\item \code{...}: Other parameters passed to \code{\link[arm]{bayesglm.fit}}.
+See it's documentation for details.
 }
 }
 
-\section{Common Parameters}{
-
-
-Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by \code{Lrnr_base}, and shared
-by all learners.
-
-\describe{
-\item{\code{covariates}}{A character vector of covariates. The learner will use this to subset the covariates for any specified task}
-\item{\code{outcome_type}}{A \code{\link{variable_type}} object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified}
-\item{\code{...}}{All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating}
+\examples{
+data(cpp_imputed)
+covars <- c(
+  "apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn"
+)
+outcome <- "haz"
+task <- sl3_Task$new(cpp_imputed,
+  covariates = covars,
+  outcome = outcome
+)
+# fit and predict from a bayesian GLM
+bayesglm_lrnr <- make_learner(Lrnr_bayesglm)
+bayesglm_fit <- bayesglm_lrnr$train(task)
+bayesglm_preds <- bayesglm_fit$predict(task)
 }
-
-
-
-Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by \code{Lrnr_base}, and shared
-by all learners.
-
-\describe{
-\item{\code{covariates}}{A character vector of covariates. The learner will use this to subset the covariates for any specified task}
-\item{\code{outcome_type}}{A \code{\link{variable_type}} object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified}
-\item{\code{...}}{All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating}
-}
-}
-
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},

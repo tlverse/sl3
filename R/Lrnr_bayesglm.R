@@ -1,32 +1,47 @@
 #' Bayesian Generalized Linear Models
 #'
-#' This learner provides fitting procedures for bayesian generalized linear models using
-#' \code{\link[arm]{bayesglm.fit}}.
+#' This learner provides fitting procedures for bayesian generalized linear
+#' models (GLMs) from \pkg{ar} using \code{\link[arm]{bayesglm.fit}}. The GLMs
+#' fitted in this way can incorporate independent normal, t, or Cauchy prior
+#' distribution for the coefficients.
 #'
 #' @docType class
 #'
 #' @importFrom R6 R6Class
-#' @importFrom arm bayesglm
 #'
 #' @export
 #'
 #' @keywords data
 #'
-#' @return Learner object with methods for training and prediction. See
-#'  \code{\link{Lrnr_base}} for documentation on learners.
+#' @return A learner object inheriting from \code{\link{Lrnr_base}} with
+#'  methods for training and prediction. For a full list of learner
+#'  functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 #'
-#' @format \code{\link{R6Class}} object.
+#' @format An \code{\link[R6]{R6Class}} object inheriting from
+#'  \code{\link{Lrnr_base}}.
 #'
 #' @family Learners
 #'
 #' @section Parameters:
-#' \describe{
-#'   \item{\code{...}}{Parameters passed to \code{\link[arm]{bayesglm}}.}
-#' }
+#'  - \code{intercept = TRUE}: A \code{logical} specifying whether an intercept
+#'      term should be included in the fitted null model.
+#'  - \code{...}: Other parameters passed to \code{\link[arm]{bayesglm.fit}}.
+#'      See it's documentation for details.
 #'
-#' @template common_parameters
-#
-#' @template common_parameters
+#' @examples
+#' data(cpp_imputed)
+#' covars <- c(
+#'   "apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn"
+#' )
+#' outcome <- "haz"
+#' task <- sl3_Task$new(cpp_imputed,
+#'   covariates = covars,
+#'   outcome = outcome
+#' )
+#' # fit and predict from a bayesian GLM
+#' bayesglm_lrnr <- make_learner(Lrnr_bayesglm)
+#' bayesglm_fit <- bayesglm_lrnr$train(task)
+#' bayesglm_preds <- bayesglm_fit$predict(task)
 Lrnr_bayesglm <- R6Class(
   classname = "Lrnr_bayesglm", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
@@ -102,7 +117,8 @@ Lrnr_bayesglm <- R6Class(
           ]) %*% coef[!is.na(coef)]
 
           if (self$fit_object$training_offset) {
-            offset <- task$offset_transformed(self$fit_object$link_fun, for_prediction = TRUE)
+            offset <- task$offset_transformed(self$fit_object$link_fun,
+                                              for_prediction = TRUE)
             eta <- eta + offset
           }
 
