@@ -1,4 +1,4 @@
-#' Ranger: A Faster Implementation of Random Forests
+#' Ranger: Fast(er) Random Forests
 #'
 #' This learner provides fitting procedures for a fast implementation of Random
 #' Forests, particularly suited for high dimensional data, using the routines

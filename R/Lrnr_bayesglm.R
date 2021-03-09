@@ -38,7 +38,7 @@
 #'   covariates = covars,
 #'   outcome = outcome
 #' )
-#' # fit a bayesian GLM
+#' # fit and predict from a bayesian GLM
 #' bayesglm_lrnr <- make_learner(Lrnr_bayesglm)
 #' bayesglm_fit <- bayesglm_lrnr$train(task)
 #' bayesglm_preds <- bayesglm_fit$predict(task)

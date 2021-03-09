@@ -1,4 +1,4 @@
-#' Base Class for all sl3 Learners.
+#' Base Class for all sl3 Learners
 #'
 #' Generally this base learner class should not be instantiated. Intended to be
 #' an abstract class, although abstract classes are not explicitly supported
@@ -8,6 +8,7 @@
 #' @docType class
 #'
 #' @importFrom R6 R6Class
+#' @importFrom Rdpack reprompt
 #'
 #' @export
 #'

@@ -3,7 +3,7 @@
 \docType{class}
 \name{Lrnr_ranger}
 \alias{Lrnr_ranger}
-\title{Ranger: A Faster Implementation of Random Forests}
+\title{Ranger: Fast(er) Random Forests}
 \format{
 An \code{\link[R6]{R6Class}} object inheriting from
 \code{\link{Lrnr_base}}.

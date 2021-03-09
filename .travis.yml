@@ -39,6 +39,7 @@ r_packages:
   - covr
   - sessioninfo
   - data.table
+  - Rdpack
   - delayed
   - hal9001
   - haldensify
