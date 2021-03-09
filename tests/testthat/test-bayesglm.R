@@ -1,7 +1,8 @@
 context("test-bayesglm -- Lrnr_bayesglm")
 
-library(arm)
 library(dplyr)
+library(arm)
+library(SuperLearner)
 
 data(cpp_imputed)
 covars <- c(
@@ -33,7 +34,7 @@ test_that("Lrnr_bayesglm produces results matching those of arm::bayesglm", {
   expect_equal(preds, as.numeric(preds_classic))
 })
 
-test_that("Lrnr_bayesglm produces results matching those of legacy superLearner", {
+test_that("Lrnr_bayesglm results match those of legacy SuperLearner", {
   # get predictions from Lrnr_* wrapper
   set.seed(1234)
   lrnr_bayesglm_sl3 <- make_learner(Lrnr_bayesglm)
@@ -50,7 +51,7 @@ test_that("Lrnr_bayesglm produces results matching those of legacy superLearner"
   expect_equal(preds_sl3, as.numeric(preds_legacy))
 })
 
-test_that("Lrnr_bayesglm makes training set predictions for a continuous outcome", {
+test_that("Lrnr_bayesglm makes training predictions for continuous outcome", {
   con_covars <- c(
     "apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
     "sexn"
@@ -67,7 +68,7 @@ test_that("Lrnr_bayesglm makes training set predictions for a continuous outcome
   expect_equal(sl3:::safe_dim(preds)[1], length(con_task$Y))
 })
 
-test_that("Lrnr_bayesglm makes training set predictions for a binary outcome", {
+test_that("Lrnr_bayesglm makes training predictions for binary outcome", {
   bin_covars <- c(
     "apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
     "sexn"
@@ -113,7 +114,7 @@ test_that("Lrnr_bayesglm with intercept=FALSE works", {
   expect_equal(task$nrow, length(preds))
 })
 
-test_that("Lrnr_bayesglm generates predictions when specifying a custom prior distribution", {
+test_that("Lrnr_bayesglm generates predictions for custom priors", {
   bin_covars <- c(
     "apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
     "sexn"
@@ -123,7 +124,8 @@ test_that("Lrnr_bayesglm generates predictions when specifying a custom prior di
     covariates = bin_covars,
     outcome = bin_outcome
   )
-  lrnr_bayesglm <- Lrnr_bayesglm$new(family = binomial(link = "logit"), prior.scale = 2.5, prior.df = 1)
+  lrnr_bayesglm <- Lrnr_bayesglm$new(family = binomial(link = "logit"),
+                                     prior.scale = 2.5, prior.df = 1)
   fit_bayesglm <- lrnr_bayesglm$train(bin_task)
   preds_bayesglm <- fit_bayesglm$predict(bin_task)
 
