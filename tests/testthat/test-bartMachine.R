@@ -1,31 +1,33 @@
 context("test-bartMachine.R -- Lrnr_bartMachine")
 
-library(bartMachine)
+test_that("Lrnr_bartMachine produces warning when java parameters are not set", {
+  expect_warning(Lrnr_bartMachine$new())
+})
+
 
 data(cpp_imputed)
-covars <- c(
-  "apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
-  "sexn"
-)
+covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")
 outcome <- "haz"
-task <- sl3_Task$new(cpp_imputed,
-  covariates = covars,
-  outcome = outcome
-)
+task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = outcome)
 
 test_that("Lrnr_bartMachine produces results matching those of bartMachine::bartMachine", {
-  # get predictions from Lrnr_* wrapper
-  lrnr_bartMachine <- make_learner(Lrnr_bartMachine, seed = 123)
-  fit <- lrnr_bartMachine$train(task)
-  preds <- fit$predict(task)
+  # sl3 fit
+  lrnr_bartMachine <- suppressWarnings(Lrnr_bartMachine$new(seed = 196))
+  fit_sl3 <- lrnr_bartMachine$train(task)
+  preds_sl3 <- fit_sl3$predict(task)
 
-  # get predictions from classic implementation
+  # classic fit
   fit_classic <- bartMachine::bartMachine(
-    X = data.frame(task$X), y = task$Y, num_trees = 50,
-    num_burn_in = 250, seed = 123
+    X = data.frame(task$X), y = task$Y, seed = 196
   )
-  preds_classic <- predict(fit_classic, new_data = task$X)
+  preds_classic <- as.numeric(predict(fit_classic, new_data = task$X))
 
-  # check equality of predictions
-  expect_equal(preds, as.numeric(preds_classic))
+  # check equality
+  expect_equal(preds_sl3, preds_classic)
 })
+
+# test Lrnr_bartMachine does not fail when cross-validated
+lrnr_bartMachine <- suppressWarnings(make_learner(Lrnr_bartMachine))
+cv_lrnr_bartMachine <- Lrnr_cv$new(lrnr_bartMachine)
+fit_cv <- cv_lrnr_bartMachine$train(task)
+preds_cv <- fit_cv$predict(task)

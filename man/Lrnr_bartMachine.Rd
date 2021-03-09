@@ -18,49 +18,10 @@ This learner implements Bayesian Additive Regression Trees, using the
 \section{Parameters}{
 
 \describe{
-\item{\code{Y}}{Outcome variable.}
-\item{\code{X}}{Covariate dataframe.}
-\item{\code{newX}}{Optional dataframe to predict the outcome.}
-\item{\code{obsWeights}}{Optional observation-level weights (supported but not tested).}
-\item{\code{id}}{Optional id to group observations from the same unit (not used
-currently).}
-\item{\code{family}}{"gaussian" for regression, "binomial" for binary classification.}
-\item{\code{num_trees }}{The number of trees to be grown in the sum-of-trees model.}
-\item{\code{num_burn_in}}{Number of MCMC samples to be discarded as "burn-in".}
-\item{\code{num_iterations_after_burn_in}}{Number of MCMC samples to draw from the
-posterior distribution of f(x).}
-\item{\code{alpha}}{Base hyperparameter in tree prior for whether a node is
-nonterminal or not.}
-\item{\code{beta}}{Power hyperparameter in tree prior for whether a node is
-nonterminal or not.}
-\item{\code{k}}{For regression, k determines the prior probability that E(Y|X) is
-contained in the interval (y_{min}, y_{max}), based on a normal
-distribution. For example, when k=2, the prior probability is 95\\%. For
-classification, k determines the prior probability that E(Y|X) is between
-(-3,3). Note that a larger value of k results in more shrinkage and a more
-conservative fit.}
-\item{\code{q}}{Quantile of the prior on the error variance at which the data-based
-estimate is placed. Note that the larger the value of q, the more
-aggressive the fit as you are placing more prior weight on values lower
-than the data-based estimate. Not used for classification.}
-\item{\code{nu}}{Degrees of freedom for the inverse chi^2 prior. Not used for
-classification.}
-\item{\code{verbose }}{Prints information about progress of the algorithm to the
-screen.}
-
-}
-}
-
-\section{Common Parameters}{
-
-
-Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by \code{Lrnr_base}, and shared
-by all learners.
-
-\describe{
-\item{\code{covariates}}{A character vector of covariates. The learner will use this to subset the covariates for any specified task}
-\item{\code{outcome_type}}{A \code{\link{variable_type}} object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified}
-\item{\code{...}}{All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating}
+\item{\code{...}}{Parameters passed to
+\code{\link[bartMachine]{bartMachine}} and
+\code{\link[bartMachine]{build_bart_machine}}. See it's documentation for
+details.}
 }
 }
 
