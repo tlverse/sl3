@@ -24,12 +24,24 @@
 #'
 #' @section Parameters:
 #'  - \code{intercept = TRUE}: A \code{logical} specifying whether an intercept
-#'      term should be included in the null model.
+#'      term should be included in the fitted null model.
 #'  - \code{...}: Other parameters passed to \code{\link[arm]{bayesglm.fit}}.
 #'      See it's documentation for details.
 #'
 #' @examples
-#'
+#' data(cpp_imputed)
+#' covars <- c(
+#'   "apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn"
+#' )
+#' outcome <- "haz"
+#' task <- sl3_Task$new(cpp_imputed,
+#'   covariates = covars,
+#'   outcome = outcome
+#' )
+#' # fit a bayesian GLM
+#' bayesglm_lrnr <- make_learner(Lrnr_bayesglm)
+#' bayesglm_fit <- bayesglm_lrnr$train(task)
+#' bayesglm_preds <- bayesglm_fit$predict(task)
 Lrnr_bayesglm <- R6Class(
   classname = "Lrnr_bayesglm", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
