@@ -3,23 +3,24 @@
 \name{Variable_Type}
 \alias{Variable_Type}
 \alias{variable_type}
-\title{Specify variable type}
+\title{Specify Variable Type}
 \usage{
 variable_type(type = NULL, levels = NULL, bounds = NULL, x = NULL,
   pcontinuous = getOption("sl3.pcontinuous"))
 }
 \arguments{
-\item{type}{A type name.}
+\item{type}{A type name. Valid choices include "binomial", "categorical",
+"continuous", and "multivariate". When not specified, this is inferred.}
 
 \item{levels}{Valid levels for discrete types.}
 
-\item{bounds}{Bounds for continous variables.}
+\item{bounds}{Bounds for continuous variables.}
 
 \item{x}{Data to use for inferring type if not specified.}
 
-\item{pcontinuous}{If \code{type} above is inferred, the proportion of unique
-observations above which variable is continuous}
+\item{pcontinuous}{If \code{type} above is inferred, the proportion of
+unique observations above which the variable is considered continuous.}
 }
 \description{
-Specify variable type
+Specify Variable Type
 }

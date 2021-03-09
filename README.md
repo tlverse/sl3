@@ -47,6 +47,10 @@ performs ensemble learning in one of two fashions:
     also been referred to as *stacked regression* (Breiman 1996) and
     *stacked generalization* (Wolpert 1992).
 
+Looking for long-form documentation or a walkthrough of the `sl3`
+package? Don’t worry\! Just take a look at [the chapter in our
+book](https://tlverse.org/tlverse-handbook/sl3.html).
+
 -----
 
 ## Installation
@@ -113,7 +117,11 @@ cpp <- cpp %>%
 # use covariates of intest and the outcome to build a task object
 covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
             "sexn")
-task <- sl3_Task$new(cpp, covariates = covars, outcome = "haz")
+task <- sl3_Task$new(
+  data = cpp,
+  covariates = covars,
+  outcome = "haz"
+)
 
 # set up screeners and learners via built-in functions and pipelines
 slscreener <- Lrnr_pkg_SuperLearner_screener$new("screen.glmnet")
@@ -141,6 +149,57 @@ head(preds)
 #> 5:                                                            0.25870995
 #> 6:                                                            0.05600958
 ```
+
+### Parallelization with `future`s
+
+While it’s straightforward to fit a stack of learners (as above), it’s
+easy to take advantage of `sl3`’s built-in parallelization support too.
+To do this, you can simply choose a `plan()` from the [`future`
+ecosystem](https://CRAN.R-project.org/package=future).
+
+``` r
+# let's load the future package and set 4 cores for parallelization
+library(future)
+plan(multisession, workers = 4L)
+
+# now, let's re-train our Stack in parallel
+stack_fit <- learner_stack$train(task)
+preds <- stack_fit$predict()
+```
+
+### Controlling the number of CV folds
+
+In the above examples, we fit stacks of learners, but didn’t create a
+Super Learner ensemble, which uses cross-validation (CV) to build the
+ensemble model. For the sake of computational expedience, we may be
+interested in lowering the number of CV folds (from 10). Let’s take a
+look at how to do both below.
+
+``` r
+# first, let's instantiate some more learners and create a Super Learner
+mean_learner <- Lrnr_mean$new()
+rf_learner <- Lrnr_ranger$new()
+sl <- Lrnr_sl$new(mean_learner, glm_learner, rf_learner)
+
+# CV folds are controlled in the sl3_Task object; we can lower the number of
+# folds simply by specifying this in creating the Task
+task <- sl3_Task$new(
+  data = cpp,
+  covariates = covars,
+  outcome = "haz",
+  folds = 5L
+)
+
+# now, let's fit the Super Learner with just 5-fold CV, then get predictions
+sl_fit <- sl$train(task)
+sl_preds <- sl_fit$predict()
+```
+
+The `folds` argument to `sl3_Task` supports both integers (for V-fold
+CV) and all of the CV schemes supported in the [`origami`
+package](https://CRAN.R-project.org/package=origami). To see the full
+list, query `?fold_funs` from within `R` or take a look at [`origami`’s
+online documentation](https://tlverse.org/origami/reference/).
 
 -----
 
@@ -6007,7 +6066,7 @@ prior to submitting a pull request.
 After using the `sl3` R package, please cite the following:
 
 ``` 
-    @manual{coyle2021sl3,
+ @software{coyle2021sl3-rpkg,
       author = {Coyle, Jeremy R and Hejazi, Nima S and Malenica, Ivana and
         Sofrygin, Oleg},
       title = {{sl3}: Modern Pipelines for Machine Learning and {Super
@@ -6036,7 +6095,7 @@ See file `LICENSE` for details.
 
 ## References
 
-<div id="refs" class="references hanging-indent">
+<div id="refs" class="references">
 
 <div id="ref-breiman1996stacked">
 

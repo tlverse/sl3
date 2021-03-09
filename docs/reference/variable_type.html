@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Specify variable type — Variable_Type • sl3</title>
+<title>Specify Variable Type — Variable_Type • sl3</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Specify variable type — Variable_Type" />
-<meta property="og:description" content="Specify variable type" />
+<meta property="og:title" content="Specify Variable Type — Variable_Type" />
+<meta property="og:description" content="Specify Variable Type" />
 
 
 
@@ -139,13 +139,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Specify variable type</h1>
+    <h1>Specify Variable Type</h1>
     <small class="dont-index">Source: <a href='https://github.com/tlverse/sl3/blob/master/R/variable_type.R'><code>R/variable_type.R</code></a></small>
     <div class="hidden name"><code>variable_type.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Specify variable type</p>
+    <p>Specify Variable Type</p>
     </div>
 
     <pre class="usage"><span class='fu'>variable_type</span><span class='op'>(</span>type <span class='op'>=</span> <span class='cn'>NULL</span>, levels <span class='op'>=</span> <span class='cn'>NULL</span>, bounds <span class='op'>=</span> <span class='cn'>NULL</span>, x <span class='op'>=</span> <span class='cn'>NULL</span>,
@@ -156,7 +156,8 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>type</th>
-      <td><p>A type name.</p></td>
+      <td><p>A type name. Valid choices include "binomial", "categorical",
+"continuous", and "multivariate". When not specified, this is inferred.</p></td>
     </tr>
     <tr>
       <th>levels</th>
@@ -164,7 +165,7 @@
     </tr>
     <tr>
       <th>bounds</th>
-      <td><p>Bounds for continous variables.</p></td>
+      <td><p>Bounds for continuous variables.</p></td>
     </tr>
     <tr>
       <th>x</th>
@@ -172,8 +173,8 @@
     </tr>
     <tr>
       <th>pcontinuous</th>
-      <td><p>If <code>type</code> above is inferred, the proportion of unique
-observations above which variable is continuous</p></td>
+      <td><p>If <code>type</code> above is inferred, the proportion of
+unique observations above which the variable is considered continuous.</p></td>
     </tr>
     </table>
 

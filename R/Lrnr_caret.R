@@ -71,7 +71,7 @@ Lrnr_caret <- R6Class(
     }
   ),
   private = list(
-    .properties = c("continuous", "binomial", "categorical"),
+    .properties = c("continuous", "binomial", "categorical", "wrapper"),
 
     .train = function(task) {
       # set type

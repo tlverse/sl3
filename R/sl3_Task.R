@@ -159,22 +159,55 @@ sl3_Task <- R6Class(
         interaction_names <- sapply(interactions, paste0, collapse = "_")
       }
       is_new <- !(interaction_names %in% old_names)
-      interaction_data <- lapply(interactions[is_new], function(interaction) {
-        self$X[, prod.DT(.SD), .SD = interaction]
-      })
       if (any(!is_new)) {
         warning(
           "The following interactions already exist:",
           paste0(interaction_names[!is_new], collapse = ", ")
         )
       }
-      setDT(interaction_data)
-      setnames(interaction_data, interaction_names[is_new])
-      interaction_columns <- self$add_columns(interaction_data)
-      new_covariates <- c(self$nodes$covariates, interaction_names[is_new])
+      interaction_data <- lapply(interactions[is_new], function(int) {
+        # check if interaction terms numeric
+        int_numeric <- sapply(int, function(i) is.numeric(self$X[[i]]))
+        if (all(int_numeric)) {
+          d_int <- data.table(self$X[, prod.DT(.SD), .SD = int])
+          setnames(d_int, paste0(int, collapse = "_"))
+          return(d_int)
+        } else {
+          # match interaction terms to X
+          Xmatch <- lapply(int, function(i) grep(i, colnames(self$X), value = T))
+          Xint <- as.list(as.data.frame(t(expand.grid(Xmatch))))
+
+          d_Xint <- lapply(Xint, function(Xint) self$X[, prod.DT(.SD), .SD = Xint])
+          setDT(d_Xint)
+          setnames(d_Xint, sapply(Xint, paste0, collapse = "_"))
+
+          no_Xint <- rowSums(d_Xint) == 0 # happens when we omit 1 factor level
+          if (any(int_numeric)) {
+            d_Xint$other <- rep(0, nrow(d_Xint))
+            d_Xint[no_Xint, "other"] <- 1
+            if (any(int_numeric)) {
+              # we actually need to take the product if we have a numeric covariate
+              d_Xint[no_Xint, "other"] <- prod.DT(data.table(
+                rep(1, sum(no_Xint)),
+                self$X[no_Xint, names(which(int_numeric)), with = F]
+              ))
+            }
+            other_name <- paste0("other.", paste0(int, collapse = "_"))
+            colnames(d_Xint)[ncol(d_Xint)] <- other_name
+          }
+          return(d_Xint)
+        }
+      })
+
+      interaction_names <- unlist(lapply(interaction_data, colnames))
+      interaction_data <- data.table(do.call(cbind, interaction_data))
+      setnames(interaction_data, interaction_names)
+
+      interaction_cols <- self$add_columns(interaction_data, column_uuid = NULL)
+      new_covariates <- c(self$nodes$covariates, interaction_names)
       return(self$next_in_chain(
         covariates = new_covariates,
-        column_names = interaction_columns
+        column_names = interaction_cols
       ))
     },
 

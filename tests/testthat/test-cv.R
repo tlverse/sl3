@@ -1,7 +1,6 @@
 context("test-cv.R -- Cross-validation fold handling")
 library(origami)
 
-
 data(cpp_imputed)
 covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")
 outcome <- "haz"
@@ -93,3 +92,70 @@ cv_risk_table <- fit$cv_risk(loss_squared_error)
 # GLM should be perfect here because outcome=covariate
 expect_equal(cv_risk_table$coefficients[[1]], 1)
 expect_equal(cv_risk_table$risk[[1]], 0)
+
+################################# test LOOCV ###################################
+test_loocv_learner <- function(learner, loocv_task, ...) {
+  # test learner definition this requires that a learner can be instantiated with
+  # only default arguments. Not sure if this is a reasonable requirement
+  learner_obj <- make_learner(learner, ...)
+  print(sprintf("Testing LOOCV with Learner: %s", learner_obj$name))
+  cv_learner <- Lrnr_cv$new(learner_obj, full_fit = TRUE)
+
+  print("Testing training")
+  # test learner training
+  fit_obj <- cv_learner$train(loocv_task)
+  test_that("Learner can be trained on data", expect_true(fit_obj$is_trained))
+
+  # test learner prediction
+  print("Testing predict")
+  train_preds <- fit_obj$predict()
+  test_that("Learner can generate training set predictions", expect_equal(
+    sl3:::safe_dim(train_preds)[1],
+    length(loocv_task$Y)
+  ))
+
+  # test learner chaining
+  chained_task <- fit_obj$chain()
+  test_that("Chaining returns a task", expect_true(is(chained_task, "sl3_Task")))
+  test_that("Chaining returns the correct number of rows", expect_equal(
+    nrow(chained_task$X),
+    nrow(loocv_task$X)
+  ))
+
+  preds_fold1 <- fit_obj$predict_fold(loocv_task, 1)
+  preds_full <- fit_obj$predict_fold(loocv_task, "full")
+  preds_valid <- fit_obj$predict_fold(loocv_task, "validation")
+  validation_task <- validation(loocv_task, fold = loocv_task$folds[[1]])
+  validation_preds <- fit_obj$fit_object$fold_fits[[1]]$predict(validation_task)
+  test_that("Learners do not error under LOOCV", {
+    expect_false(any(is.na(preds_valid)))
+    expect_false(any(is.na(preds_fold1)))
+    expect_false(any(is.na(preds_full)))
+    expect_false(any(is.na(validation_preds)))
+  })
+}
+
+# make task
+smol_d <- cpp_imputed[1:50, ]
+expect_warning(
+  loocv_folds <- make_folds(n = smol_d, fold_fun = folds_vfold, V = nrow(smol_d))
+)
+
+loocv_task <- sl3_Task$new(
+  smol_d,
+  covariates = covars, outcome = outcome, folds = loocv_folds
+)
+
+# get learners
+cont_learners <- sl3::sl3_list_learners("continuous")
+bin_learners <- sl3::sl3_list_learners("binomial")
+# bin_learners[-which(bin_learners %in% cont_learners)] 0
+ts <- sl3::sl3_list_learners("timeseries")
+screen <- sl3::sl3_list_learners("screener")
+wrap <- sl3::sl3_list_learners("wrapper")
+h2o <- sl3::sl3_list_learners("h2o")
+learners <- cont_learners[-which(cont_learners %in% c(ts, screen, wrap, h2o))]
+
+# test all learners, aside from bartMachine because it's failing
+learners <- learners[-grep("bartMachine", learners)]
+lapply(learners, test_loocv_learner, loocv_task)

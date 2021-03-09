@@ -1,7 +1,6 @@
 #' @rdname variable_type
 #'
 #' @export
-#
 Variable_Type <- R6Class(
   classname = "Variable_Type",
   portable = TRUE,
@@ -11,7 +10,7 @@ Variable_Type <- R6Class(
                           pcontinuous = getOption("sl3.pcontinuous")) {
       if (is.null(type)) {
         if (is.null(x)) {
-          stop("type not specified, and no x from which to infer it")
+          stop("type not specified, and no x from which to infer it.")
         }
         nunique <- length(na.exclude(unique(x)))
         if (!is.null(ncol(x))) {
@@ -20,7 +19,8 @@ Variable_Type <- R6Class(
           type <- "constant"
         } else if (nunique == 2) {
           type <- "binomial"
-        } else if ((is.factor(x)) || (((nunique / length(x)) < pcontinuous) && (nunique < 20))) {
+        } else if ((is.factor(x)) || (((nunique / length(x)) < pcontinuous) &&
+          (nunique < 20))) {
           type <- "categorical"
         } else {
           type <- "continuous"
@@ -119,17 +119,17 @@ Variable_Type <- R6Class(
   )
 )
 
-#' Specify variable type
+#' Specify Variable Type
 #'
-#' @param type A type name.
+#' @param type A type name. Valid choices include "binomial", "categorical",
+#'  "continuous", and "multivariate". When not specified, this is inferred.
 #' @param levels Valid levels for discrete types.
-#' @param bounds Bounds for continous variables.
+#' @param bounds Bounds for continuous variables.
 #' @param x Data to use for inferring type if not specified.
-#' @param pcontinuous If \code{type} above is inferred, the proportion of unique
-#'  observations above which variable is continuous
+#' @param pcontinuous If \code{type} above is inferred, the proportion of
+#'  unique observations above which the variable is considered continuous.
 #'
 #' @export
-#
 variable_type <- function(type = NULL, levels = NULL, bounds = NULL, x = NULL,
                           pcontinuous = getOption("sl3.pcontinuous")) {
   return(Variable_Type$new(

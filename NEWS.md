@@ -19,7 +19,14 @@
   upon task initiation (i.e., when `colnames(task$X) != task$nodes$covariates`).
 * Reformat `importance_plot` to plot variables in decreasing order of 
   importance, so most important variables are placed at the top of the dotchart. 
-  
+* Enhanced functionality in `sl3` task's `add_interactions` method to support 
+  interactions that involve factors. This method is most commonly used by 
+  `Lrnr_define_interactions`, which is intended for use with another learner 
+  (e.g., `Lrnr_glmnet` or `Lrnr_glm`) in a `Pipeline`.
+* Modified `Lrnr_gam` formula (if not specified by user) to not use `mgcv`'s 
+  default `k=10` degrees of freedom for each smooth `s` term when there are 
+  less than `k=10` degrees of freedom. This bypasses an `mgcv::gam` error, and 
+  tends to be relevant only for small n. 
 
 # sl3 1.4.2
 * Updates to variable importance functionality, including calculation of risk
