@@ -153,6 +153,7 @@
 <li>Fix <code>Lrnr_screener_importance</code>’s pairing of (a) covariates returned by the importance function with (b) covariates as they are defined in the task. This issue only arose when discrete covariates were automatically one-hot encoded upon task initiation (i.e., when <code>colnames(task$X) != task$nodes$covariates</code>).</li>
 <li>Reformat <code>importance_plot</code> to plot variables in decreasing order of importance, so most important variables are placed at the top of the dotchart.</li>
 <li>Enhanced functionality in <code>sl3</code> task’s <code>add_interactions</code> method to support interactions that involve factors. This method is most commonly used by <code>Lrnr_define_interactions</code>, which is intended for use with another learner (e.g., <code>Lrnr_glmnet</code> or <code>Lrnr_glm</code>) in a <code>Pipeline</code>.</li>
+<li>Modified <code>Lrnr_gam</code> formula (if not specified by user) to not use <code>mgcv</code>’s default <code>k=10</code> degrees of freedom for each smooth <code>s</code> term when there are less than <code>k=10</code> degrees of freedom. This bypasses an <code><a href="https://rdrr.io/pkg/mgcv/man/gam.html">mgcv::gam</a></code> error, and tends to be relevant only for small n. </li>
 </ul>
 </div>
     <div id="sl3-142" class="section level1">

@@ -38,19 +38,19 @@ test_that("Lrnr_cv can override folds from task", {
 })
 
 glm_fit <- glm_learner$train(task)
-test_that("Lrnr_cv$predict_fold can generate full sample predictions",{
+test_that("Lrnr_cv$predict_fold can generate full sample predictions", {
   expect_equal(cv_glm_fit$predict_fold(task, "full"), glm_fit$predict(task))
 })
 
 
-test_that("Lrnr_cv$predict_fold can generate split specific predictions",{
+test_that("Lrnr_cv$predict_fold can generate split specific predictions", {
   expect_equal(
     cv_glm_fit$predict_fold(task, 1),
     cv_glm_fit$fit_object$fold_fits[[1]]$predict(task)
   )
 })
 
-test_that("Lrnr_cv$predict_fold can generate cross-validated predictions",{
+test_that("Lrnr_cv$predict_fold can generate cross-validated predictions", {
   expect_equal(
     cv_glm_fit$predict_fold(task, "validation"),
     cv_glm_fit$predict(task)
@@ -125,7 +125,7 @@ test_loocv_learner <- function(learner, loocv_task, ...) {
 
 # make task with LOOCV
 d <- cpp_imputed[1:50, ]
-expect_warning(loocv_folds <- make_folds(n=d, fold_fun=folds_vfold, V=50))
+expect_warning(loocv_folds <- make_folds(n = d, fold_fun = folds_vfold, V = 50))
 loocv_task <- sl3_Task$new(d, covars, outcome, folds = loocv_folds)
 
 # get learners

@@ -21,9 +21,9 @@
 #'
 #' @section Parameters:
 #' \describe{
-#'   \item{\code{...}}{Parameters passed to 
-#'   \code{\link[bartMachine]{bartMachine}} and 
-#'   \code{\link[bartMachine]{build_bart_machine}}. See it's documentation for 
+#'   \item{\code{...}}{Parameters passed to
+#'   \code{\link[bartMachine]{bartMachine}} and
+#'   \code{\link[bartMachine]{build_bart_machine}}. See it's documentation for
 #'   details.}
 #' }
 #'
@@ -32,8 +32,7 @@ Lrnr_bartMachine <- R6Class(
   inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
     initialize = function(...) {
-      
-      if(is.null(getOption("java.parameters"))){
+      if (is.null(getOption("java.parameters"))) {
         warning(
           "User did not specify Java RAM option, and this learner often fails",
           " with the default RAM of 500MB,\n",
@@ -43,9 +42,9 @@ Lrnr_bartMachine <- R6Class(
           "than 1500m), \n",
           "so ideally this option should be specified by the user."
         )
-        options(java.parameters = '-Xmx2500m')
+        options(java.parameters = "-Xmx2500m")
       }
-      
+
       super$initialize(params = args_to_list(), ...)
     }
   ),
@@ -55,12 +54,12 @@ Lrnr_bartMachine <- R6Class(
 
     .train = function(task) {
       args <- self$params
-      
+
       # get verbosity
       if (is.null(args$verbose)) {
         args$verbose <- getOption("sl3.verbose")
       }
-      
+
       # specify data
       args$X <- as.data.frame(task$X)
       outcome_type <- self$get_outcome_type(task)
@@ -76,7 +75,8 @@ Lrnr_bartMachine <- R6Class(
 
     .predict = function(task) {
       predictions <- stats::predict(
-        private$.fit_object, new_data = data.frame(task$X)
+        private$.fit_object,
+        new_data = data.frame(task$X)
       )
       return(predictions)
     },
