@@ -164,50 +164,10 @@ bartMachine package." />
     
 
 <dl>
-<dt><code>Y</code></dt><dd><p>Outcome variable.</p></dd>
-<dt><code>X</code></dt><dd><p>Covariate dataframe.</p></dd>
-<dt><code>newX</code></dt><dd><p>Optional dataframe to predict the outcome.</p></dd>
-<dt><code>obsWeights</code></dt><dd><p>Optional observation-level weights (supported but not tested).</p></dd>
-<dt><code>id</code></dt><dd><p>Optional id to group observations from the same unit (not used
-currently).</p></dd>
-<dt><code>family</code></dt><dd><p>"gaussian" for regression, "binomial" for binary classification.</p></dd>
-<dt><code>num_trees </code></dt><dd><p>The number of trees to be grown in the sum-of-trees model.</p></dd>
-<dt><code>num_burn_in</code></dt><dd><p>Number of MCMC samples to be discarded as "burn-in".</p></dd>
-<dt><code>num_iterations_after_burn_in</code></dt><dd><p>Number of MCMC samples to draw from the
-posterior distribution of f(x).</p></dd>
-<dt><code>alpha</code></dt><dd><p>Base hyperparameter in tree prior for whether a node is
-nonterminal or not.</p></dd>
-<dt><code>beta</code></dt><dd><p>Power hyperparameter in tree prior for whether a node is
-nonterminal or not.</p></dd>
-<dt><code>k</code></dt><dd><p>For regression, k determines the prior probability that E(Y|X) is
-contained in the interval (y_min, y_max), based on a normal
-distribution. For example, when k=2, the prior probability is 95\<!-- %. For -->
-classification, k determines the prior probability that E(Y|X) is between
-(-3,3). Note that a larger value of k results in more shrinkage and a more
-conservative fit.</p></dd>
-<dt><code>q</code></dt><dd><p>Quantile of the prior on the error variance at which the data-based
-estimate is placed. Note that the larger the value of q, the more
-aggressive the fit as you are placing more prior weight on values lower
-than the data-based estimate. Not used for classification.</p></dd>
-<dt><code>nu</code></dt><dd><p>Degrees of freedom for the inverse chi^2 prior. Not used for
-classification.</p></dd>
-<dt><code>verbose </code></dt><dd><p>Prints information about progress of the algorithm to the
-screen.</p></dd>
-
-
-</dl>
-
-    <h2 class="hasAnchor" id="common-parameters"><a class="anchor" href="#common-parameters"></a>Common Parameters</h2>
-
-    
-
-
-<p>Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by <code>Lrnr_base</code>, and shared
-by all learners.</p>
-<dl>
-<dt><code>covariates</code></dt><dd><p>A character vector of covariates. The learner will use this to subset the covariates for any specified task</p></dd>
-<dt><code>outcome_type</code></dt><dd><p>A <code><a href='Variable_Type.html'>variable_type</a></code> object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified</p></dd>
-<dt><code>...</code></dt><dd><p>All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating</p></dd>
+<dt><code>...</code></dt><dd><p>Parameters passed to
+<code><a href='https://rdrr.io/pkg/bartMachine/man/bartMachine.html'>bartMachine</a></code> and
+<code><a href='https://rdrr.io/pkg/bartMachine/man/bartMachine.html'>build_bart_machine</a></code>. See it's documentation for
+details.</p></dd>
 
 </dl>
 
