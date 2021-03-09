@@ -50,6 +50,7 @@ r_github_packages:
 
 after_success:
   - travis_wait 80 Rscript -e 'covr::codecov()'
+  - Rscript -e "devtools::test_file('$TRAVIS_BUILD_DIR/tests/testthat/test-keras.R')"
 
 on_failure:
   - "./travis-tool.sh dump_logs"
