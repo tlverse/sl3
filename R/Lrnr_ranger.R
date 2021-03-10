@@ -1,14 +1,15 @@
 #' Ranger: Fast(er) Random Forests
 #'
-#' This learner provides fitting procedures for a fast implementation of Random
-#' Forests, particularly suited for high dimensional data, using the routines
-#' from \pkg{ranger} thru a call to the function \code{\link[ranger]{ranger}}.
-#' Variable importance functionality is also provided through invocation of the
-#' \code{\link[ranger]{importance}} method.
+#' This learner provides fitting procedures for a faster implementation of
+#' Random Forests, using the routines from \pkg{ranger} (described
+#' in \insertCite{ranger;textual}{sl3}) through a call to the function
+#' \code{\link[ranger]{ranger}}. Variable importance functionality is also
+#' provided through invocation of the \code{\link[ranger]{importance}} method.
 #'
 #' @docType class
 #'
 #' @importFrom R6 R6Class
+#' @importFrom stats predict
 #'
 #' @export
 #'
@@ -36,6 +37,9 @@
 #'  - \code{num.threads = 1}: Number of threads.
 #'  - \code{...}: Other parameters passed to \code{\link[ranger]{ranger}}. See
 #'      it's documentation for details.
+#'
+#' @references
+#'  \insertAllCited{}
 #'
 #' @examples
 #' data(mtcars)
