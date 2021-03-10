@@ -163,20 +163,21 @@ univariate time-series.</p>
 
     
 
-<dl>
-<dt><code>order=NULL</code></dt><dd><p>An optional specification of the non-seasonal
-part of the ARIMA model: the three integer components (p, d, q) are the
+<ul>
+<li><p><code>order</code>: An optional specification of the non-seasonal
+part of the ARIMA model; the three integer components (p, d, q) are the
 AR order, the degree of differencing, and the MA order. If order is
 specified, then <code><a href='https://rdrr.io/r/stats/arima.html'>arima</a></code> will be called; otherwise,
 <code><a href='https://pkg.robjhyndman.com/forecast/reference/auto.arima.html'>auto.arima</a></code> will be used to fit the "best" ARIMA
-model according to AIC (default), AICc or BIC. The information criterion
+model according to AIC (default), AIC or BIC. The information criterion
 to be used in <code><a href='https://pkg.robjhyndman.com/forecast/reference/auto.arima.html'>auto.arima</a></code> model selection can be
-modified by specifying <code>ic</code> argument.</p></dd>
-<dt><code>...</code></dt><dd><p>Other parameters passed to <code><a href='https://rdrr.io/r/stats/arima.html'>arima</a></code> or
+modified by specifying <code>ic</code> argument.</p></li>
+<li><p><code>num_screen = 5</code>: The top n number of "most impotant" variables to
+retain.</p></li>
+<li><p><code>...</code>: Other parameters passed to <code><a href='https://rdrr.io/r/stats/arima.html'>arima</a></code> or
 <code><a href='https://pkg.robjhyndman.com/forecast/reference/auto.arima.html'>auto.arima</a></code> function, depending on whether or not
-<code>order</code> argument is provided.</p></dd>
-
-</dl>
+<code>order</code> argument is provided.</p></li>
+</ul>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -246,6 +247,34 @@ modified by specifying <code>ic</code> argument.</p></dd>
 <code><a href='define_h2o_X.html'>define_h2o_X</a>()</code>,
 <code><a href='undocumented_learner.html'>undocumented_learner</a></code></p></div>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tlverse.org/origami'>origami</a></span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>origami v1.0.4: Generalized Framework for Cross-Validation</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>bsds</span><span class='op'>)</span>
+
+<span class='va'>folds</span> <span class='op'>&lt;-</span> <span class='fu'><a href='http://tlverse.org/origami/reference/make_folds.html'>make_folds</a></span><span class='op'>(</span><span class='va'>bsds</span>,
+  fold_fun <span class='op'>=</span> <span class='va'>folds_rolling_window</span>, window_size <span class='op'>=</span> <span class='fl'>500</span>,
+  validation_size <span class='op'>=</span> <span class='fl'>100</span>, gap <span class='op'>=</span> <span class='fl'>0</span>, batch <span class='op'>=</span> <span class='fl'>50</span>
+<span class='op'>)</span>
+
+<span class='va'>task</span> <span class='op'>&lt;-</span> <span class='va'><a href='sl3_Task.html'>sl3_Task</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>
+  data <span class='op'>=</span> <span class='va'>bsds</span>,
+  folds <span class='op'>=</span> <span class='va'>folds</span>,
+  covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
+    <span class='st'>"weekday"</span>, <span class='st'>"temp"</span>
+  <span class='op'>)</span>,
+  outcome <span class='op'>=</span> <span class='st'>"cnt"</span>
+<span class='op'>)</span>
+
+<span class='va'>arima_lrnr</span> <span class='op'>&lt;-</span> <span class='fu'><a href='Lrnr_base.html'>make_learner</a></span><span class='op'>(</span><span class='va'>Lrnr_arima</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Registered S3 method overwritten by 'quantmod':</span>
+#&gt; <span class='message'>  method            from</span>
+#&gt; <span class='message'>  as.zoo.data.frame zoo </span></div><div class='input'>
+<span class='va'>train_task</span> <span class='op'>&lt;-</span> <span class='fu'><a href='http://tlverse.org/origami/reference/fold_helpers.html'>training</a></span><span class='op'>(</span><span class='va'>task</span>, fold <span class='op'>=</span> <span class='va'>task</span><span class='op'>$</span><span class='va'>folds</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
+<span class='va'>valid_task</span> <span class='op'>&lt;-</span> <span class='fu'><a href='http://tlverse.org/origami/reference/fold_helpers.html'>validation</a></span><span class='op'>(</span><span class='va'>task</span>, fold <span class='op'>=</span> <span class='va'>task</span><span class='op'>$</span><span class='va'>folds</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
+
+<span class='va'>arima_fit</span> <span class='op'>&lt;-</span> <span class='va'>arima_lrnr</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>train_task</span><span class='op'>)</span>
+<span class='va'>arima_preds</span> <span class='op'>&lt;-</span> <span class='va'>arima_fit</span><span class='op'>$</span><span class='fu'>predict</span><span class='op'>(</span><span class='va'>valid_task</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

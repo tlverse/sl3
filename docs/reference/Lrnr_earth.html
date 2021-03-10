@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Earth - multivariate adaptive regression splines — Lrnr_earth • sl3</title>
+<title>Earth: Multivariate Adaptive Regression Splines — Lrnr_earth • sl3</title>
 
 
 <!-- jquery -->
@@ -39,11 +39,14 @@
 
 
 
-<meta property="og:title" content="Earth - multivariate adaptive regression splines — Lrnr_earth" />
-<meta property="og:description" content="This learner provides fitting procedures for building regression models using
-the techniques in Friedman’s papers &quot;Multivariate Adaptive Regres-sion
-Splines&quot; and &quot;Fast MARS&quot;, using the function earth from
-the earth package." />
+<meta property="og:title" content="Earth: Multivariate Adaptive Regression Splines — Lrnr_earth" />
+<meta property="og:description" content="This learner provides fitting procedures for building regression models thru
+the spline regression techniques described in
+Friedman (1991)
+ and
+Friedman (1993)
+, via earth and the function
+earth." />
 
 
 
@@ -142,56 +145,69 @@ the earth package." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Earth - multivariate adaptive regression splines</h1>
+    <h1>Earth: Multivariate Adaptive Regression Splines</h1>
     <small class="dont-index">Source: <a href='https://github.com/tlverse/sl3/blob/master/R/Lrnr_earth.R'><code>R/Lrnr_earth.R</code></a></small>
     <div class="hidden name"><code>Lrnr_earth.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This learner provides fitting procedures for building regression models using
-the techniques in Friedman’s papers "Multivariate Adaptive Regres-sion
-Splines" and "Fast MARS", using the function <code><a href='https://rdrr.io/pkg/earth/man/earth.html'>earth</a></code> from
-the <code>earth</code> package.</p>
+    <p>This learner provides fitting procedures for building regression models thru
+the spline regression techniques described in
+Friedman (1991)
+ and
+Friedman (1993)
+, via <span class="pkg">earth</span> and the function
+<code><a href='https://rdrr.io/pkg/earth/man/earth.html'>earth</a></code>.</p>
     </div>
 
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p><code>R6Class</code> object.</p>
+    <p>An <code><a href='https://r6.r-lib.org/reference/R6Class.html'>R6Class</a></code> object inheriting from
+<code><a href='Lrnr_base.html'>Lrnr_base</a></code>.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Learner object with methods for training and prediction. See
-<code><a href='Lrnr_base.html'>Lrnr_base</a></code> for documentation on learners.</p>
+    <p>A learner object inheriting from <code><a href='Lrnr_base.html'>Lrnr_base</a></code> with
+methods for training and prediction. For a full list of learner
+functionality, see the complete documentation of <code><a href='Lrnr_base.html'>Lrnr_base</a></code>.</p>
     <h2 class="hasAnchor" id="parameters"><a class="anchor" href="#parameters"></a>Parameters</h2>
 
     
 
-<dl>
-<dt><code>degree</code></dt><dd><p>A <code>numeric</code> specifying the maximum degree of
-interactions to be used in the model. This defaults to 2, specifying up
-through one-way interaction terms. Note that this differs from the
-default of <code><a href='https://rdrr.io/pkg/earth/man/earth.html'>earth::earth</a></code>.</p></dd>
-<dt><code>penalty</code></dt><dd><p>Generalized Cross Validation (GCV) penalty per knot.
-Defaults to 3 as recommended for <code>degree</code> &gt; 1 in the documentation
-of <code><a href='https://rdrr.io/pkg/earth/man/earth.html'>earth::earth</a></code>. Special values (for use by knowledgeable users):
-The value 0 penalizes only terms, not knots. The value -1 means no
-penalty.</p></dd>
-<dt><code>pmethod</code></dt><dd><p>Pruning method, defaulting to <code>"backward"</code>.
-Other options include <code>"none"</code>, <code>"exhaustive"</code>,</p></dd>
-<dt><code>nfold</code></dt><dd><p>Number of cross-validation folds. Default is0, no
-cross validation.</p></dd>
-<dt><code>ncross</code></dt><dd><p>Only applies if <code>nfold</code> &gt; 1. Number of
-cross-validations. Each cross-validation has <code>nfold</code> folds.
-Defaults to 1.</p></dd>
-<dt><code>minspan</code></dt><dd><p>Minimum number of observations between knots.</p></dd>
-<dt><code>endspan</code></dt><dd><p>Minimum number of observations before the first and
-after the final knot.</p></dd>
-<dt><code>...</code></dt><dd><p>Other parameters passed to <code><a href='https://rdrr.io/pkg/earth/man/earth.html'>earth</a></code>.
-See its documentation for details.</p></dd>
+<ul>
+<li><p><code>degree</code>: A <code>numeric</code> specifying the maximum degree of
+interactions to be used in the model. This defaults to 2, specifying
+up through one-way interaction terms. Note that this differs from the
+default of <code><a href='https://rdrr.io/pkg/earth/man/earth.html'>earth</a></code>.</p></li>
+<li><p><code>penalty</code>: Generalized Cross Validation (GCV) penalty per knot.
+Defaults to 3 as per the recommendation for <code>degree</code> &gt; 1 in the
+documentation of <code><a href='https://rdrr.io/pkg/earth/man/earth.html'>earth</a></code>. Special values (for use
+by knowledgeable users): The value 0 penalizes only terms, not knots.
+The value -1 translates to no penalty.</p></li>
+<li><p><code>pmethod</code>: Pruning method, defaulting to <code>"backward"</code>. Other
+options include <code>"none"</code>, <code>"exhaustive"</code>, <code>"forward"</code>,
+<code>"seqrep"</code>, <code>"cv"</code>.</p></li>
+<li><p><code>nfold</code>: Number of cross-validation folds. The default is 0, for no
+cross-validation.</p></li>
+<li><p><code>ncross</code>: Only applies if <code>nfold</code> &gt; 1, indicating the number
+of cross-validation rounds. Each cross-validation has <code>nfold</code>
+folds. Defaults to 1.</p></li>
+<li><p><code>minspan</code>: Minimum number of observations between knots.</p></li>
+<li><p><code>endspan</code>: Minimum number of observations before the first and
+after the final knot.</p></li>
+<li><p><code>...</code>: Other parameters passed to <code><a href='https://rdrr.io/pkg/earth/man/earth.html'>earth</a></code>. See
+its documentation for details.</p></li>
+</ul>
 
-</dl>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
+    <p>Friedman JH (1991).
+&#8220;Multivariate adaptive regression splines.&#8221;
+<em>The Annals of Statistics</em>, 1--67.<br /><br /> Friedman JH (1993).
+&#8220;Fast MARS.&#8221;
+Stanford University.
+<a href='https://statistics.stanford.edu/sites/g/files/sbiybj6031/f/LCS%20110.pdf'>https://statistics.stanford.edu/sites/g/files/sbiybj6031/f/LCS%20110.pdf</a>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Learners: 
@@ -260,6 +276,21 @@ See its documentation for details.</p></dd>
 <code><a href='define_h2o_X.html'>define_h2o_X</a>()</code>,
 <code><a href='undocumented_learner.html'>undocumented_learner</a></code></p></div>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>cpp_imputed</span><span class='op'>)</span>
+<span class='va'>covars</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
+  <span class='st'>"apgar1"</span>, <span class='st'>"apgar5"</span>, <span class='st'>"parity"</span>, <span class='st'>"gagebrth"</span>, <span class='st'>"mage"</span>, <span class='st'>"meducyrs"</span>, <span class='st'>"sexn"</span>
+<span class='op'>)</span>
+<span class='va'>outcome</span> <span class='op'>&lt;-</span> <span class='st'>"haz"</span>
+<span class='va'>task</span> <span class='op'>&lt;-</span> <span class='va'><a href='sl3_Task.html'>sl3_Task</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>cpp_imputed</span>,
+  covariates <span class='op'>=</span> <span class='va'>covars</span>,
+  outcome <span class='op'>=</span> <span class='va'>outcome</span>
+<span class='op'>)</span>
+<span class='co'># fit and predict from a MARS model</span>
+<span class='va'>earth_lrnr</span> <span class='op'>&lt;-</span> <span class='fu'><a href='Lrnr_base.html'>make_learner</a></span><span class='op'>(</span><span class='va'>Lrnr_earth</span><span class='op'>)</span>
+<span class='va'>earth_fit</span> <span class='op'>&lt;-</span> <span class='va'>earth_lrnr</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>task</span><span class='op'>)</span>
+<span class='va'>earth_preds</span> <span class='op'>&lt;-</span> <span class='va'>earth_fit</span><span class='op'>$</span><span class='fu'>predict</span><span class='op'>(</span><span class='va'>task</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

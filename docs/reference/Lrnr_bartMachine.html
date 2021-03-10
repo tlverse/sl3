@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>BART Machine Learner — Lrnr_bartMachine • sl3</title>
+<title>bartMachine: Bayesian Additive Regression Trees (BART) — Lrnr_bartMachine • sl3</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,11 @@
 
 
 
-<meta property="og:title" content="BART Machine Learner — Lrnr_bartMachine" />
-<meta property="og:description" content="This learner implements Bayesian Additive Regression Trees, using the
-bartMachine package." />
+<meta property="og:title" content="bartMachine: Bayesian Additive Regression Trees (BART) — Lrnr_bartMachine" />
+<meta property="og:description" content="This learner implements Bayesian Additive Regression Trees via
+bartMachine (described in Kapelner and Bleich (2016)
+)
+and the function bartMachine." />
 
 
 
@@ -140,37 +142,45 @@ bartMachine package." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>BART Machine Learner</h1>
+    <h1>bartMachine: Bayesian Additive Regression Trees (BART)</h1>
     <small class="dont-index">Source: <a href='https://github.com/tlverse/sl3/blob/master/R/Lrnr_bartMachine.R'><code>R/Lrnr_bartMachine.R</code></a></small>
     <div class="hidden name"><code>Lrnr_bartMachine.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This learner implements Bayesian Additive Regression Trees, using the
-<code>bartMachine</code> package.</p>
+    <p>This learner implements Bayesian Additive Regression Trees via
+<span class="pkg">bartMachine</span> (described in Kapelner and Bleich (2016)
+)
+and the function <code><a href='https://rdrr.io/pkg/bartMachine/man/bartMachine.html'>bartMachine</a></code>.</p>
     </div>
 
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p><code>R6Class</code> object.</p>
+    <p>An <code><a href='https://r6.r-lib.org/reference/R6Class.html'>R6Class</a></code> object inheriting from
+<code><a href='Lrnr_base.html'>Lrnr_base</a></code>.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Learner object with methods for training and prediction. See
-<code><a href='Lrnr_base.html'>Lrnr_base</a></code> for documentation on learners.</p>
+    <p>A learner object inheriting from <code><a href='Lrnr_base.html'>Lrnr_base</a></code> with
+methods for training and prediction. For a full list of learner
+functionality, see the complete documentation of <code><a href='Lrnr_base.html'>Lrnr_base</a></code>.</p>
     <h2 class="hasAnchor" id="parameters"><a class="anchor" href="#parameters"></a>Parameters</h2>
 
     
 
-<dl>
-<dt><code>...</code></dt><dd><p>Parameters passed to
-<code><a href='https://rdrr.io/pkg/bartMachine/man/bartMachine.html'>bartMachine</a></code> and
-<code><a href='https://rdrr.io/pkg/bartMachine/man/bartMachine.html'>build_bart_machine</a></code>. See it's documentation for
-details.</p></dd>
+<ul>
+<li><p><code>...</code>: Parameters passed to <code><a href='https://rdrr.io/pkg/bartMachine/man/bartMachine.html'>bartMachine</a></code>.
+See it's documentation for details.</p></li>
+</ul>
 
-</dl>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
+    <p>Kapelner A, Bleich J (2016).
+&#8220;bartMachine: Machine Learning with Bayesian Additive Regression Trees.&#8221;
+<em>Journal of Statistical Software</em>, <b>70</b>(4), 1--40.
+doi: <a href='https://doi.org/10.18637/jss.v070.i04'>10.18637/jss.v070.i04</a>
+, <a href='https://doi.org/10.18637/jss.v070.i04'>https://doi.org/10.18637/jss.v070.i04</a>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Learners: 
@@ -239,6 +249,22 @@ details.</p></dd>
 <code><a href='define_h2o_X.html'>define_h2o_X</a>()</code>,
 <code><a href='undocumented_learner.html'>undocumented_learner</a></code></p></div>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># set up ML task</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>cpp_imputed</span><span class='op'>)</span>
+<span class='va'>covs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"apgar1"</span>, <span class='st'>"apgar5"</span>, <span class='st'>"parity"</span>, <span class='st'>"gagebrth"</span>, <span class='st'>"mage"</span>, <span class='st'>"meducyrs"</span><span class='op'>)</span>
+<span class='va'>task</span> <span class='op'>&lt;-</span> <span class='va'><a href='sl3_Task.html'>sl3_Task</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>cpp_imputed</span>, covariates <span class='op'>=</span> <span class='va'>covs</span>, outcome <span class='op'>=</span> <span class='st'>"haz"</span><span class='op'>)</span>
+
+<span class='co'># fit a bartMachine model and predict from it</span>
+<span class='va'>bartMachine_learner</span> <span class='op'>&lt;-</span> <span class='fu'><a href='Lrnr_base.html'>make_learner</a></span><span class='op'>(</span><span class='va'>Lrnr_bartMachine</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: User did not specify Java RAM option, and this learner often fails with the default RAM of 500MB,</span>
+#&gt; <span class='warning'>so setting that now as `options(java.parameters = '-Xmx2500m')`.</span>
+#&gt; <span class='warning'></span>
+#&gt; <span class='warning'>Note that Xmx parameter's upper limit is system dependent </span>
+#&gt; <span class='warning'>(e.g., 32bit Windows will fail to work with anything much largerthan 1500m), </span>
+#&gt; <span class='warning'>so ideally this option should be specified by the user.</span></div><div class='input'><span class='va'>bartMachine_fit</span> <span class='op'>&lt;-</span> <span class='va'>bartMachine_learner</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>task</span><span class='op'>)</span>
+<span class='va'>preds</span> <span class='op'>&lt;-</span> <span class='va'>bartMachine_fit</span><span class='op'>$</span><span class='fu'>predict</span><span class='op'>(</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -124,8 +124,10 @@ test_that("Lrnr_bayesglm generates predictions for custom priors", {
     covariates = bin_covars,
     outcome = bin_outcome
   )
-  lrnr_bayesglm <- Lrnr_bayesglm$new(family = binomial(link = "logit"),
-                                     prior.scale = 2.5, prior.df = 1)
+  lrnr_bayesglm <- Lrnr_bayesglm$new(
+    family = binomial(link = "logit"),
+    prior.scale = 2.5, prior.df = 1
+  )
   fit_bayesglm <- lrnr_bayesglm$train(bin_task)
   preds_bayesglm <- fit_bayesglm$predict(bin_task)
 

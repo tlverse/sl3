@@ -14,11 +14,11 @@ methods for training and prediction. For a full list of learner
 functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 }
 \description{
-This learner provides fitting procedures for a fast implementation of Random
-Forests, particularly suited for high dimensional data, using the routines
-from \pkg{ranger} thru a call to the function \code{\link[ranger]{ranger}}.
-Variable importance functionality is also provided through invocation of the
-\code{\link[ranger]{importance}} method.
+This learner provides fitting procedures for a faster implementation of
+Random Forests, using the routines from \pkg{ranger} (described
+in \insertCite{ranger;textual}{sl3}) through a call to the function
+\code{\link[ranger]{ranger}}. Variable importance functionality is also
+provided through invocation of the \code{\link[ranger]{importance}} method.
 }
 \section{Parameters}{
 
@@ -65,6 +65,9 @@ ranger_importance_screener <- Lrnr_screener_importance$new(
 glm_lrnr <- make_learner(Lrnr_glm)
 ranger_screen_glm_pipe <- Pipeline$new(ranger_importance_screener, glm_lrnr)
 ranger_screen_glm_pipe_fit <- ranger_screen_glm_pipe$train(mtcars_task)
+}
+\references{
+\insertAllCited{}
 }
 \seealso{
 Other Learners: 

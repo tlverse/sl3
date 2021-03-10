@@ -118,7 +118,8 @@ Lrnr_bayesglm <- R6Class(
 
           if (self$fit_object$training_offset) {
             offset <- task$offset_transformed(self$fit_object$link_fun,
-                                              for_prediction = TRUE)
+              for_prediction = TRUE
+            )
             eta <- eta + offset
           }
 
