@@ -1,10 +1,10 @@
 #' xgboost: eXtreme Gradient Boosting
 #'
-#' This learner provides fitting procedures for \code{xgboost} models, using the
-#' \code{xgboost} package, using the \code{\link[xgboost]{xgb.train}} function.
-#' Such models are classification and regression trees with extreme gradient
+#' This learner provides fitting procedures for \code{xgboost} models, using
+#' the \pkg{xgboost} package, using \code{\link[xgboost]{xgb.train}}. Such
+#' models are classification and regression trees with extreme gradient
 #' boosting. For details on the fitting procedure, consult the documentation of
-#' the \code{xgboost} package.
+#' the \pkg{xgboost}.
 #'
 #' @docType class
 #'
@@ -99,6 +99,7 @@ Lrnr_xgboost <- R6Class(
       if (is.null(args$objective)) {
         if (outcome_type$type == "binomial") {
           args$objective <- "binary:logistic"
+          args$eval_metric <- "logloss"
         } else if (outcome_type$type == "quasibinomial") {
           args$objective <- "reg:logistic"
         } else if (outcome_type$type == "categorical") {
