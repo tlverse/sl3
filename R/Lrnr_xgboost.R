@@ -105,6 +105,7 @@ Lrnr_xgboost <- R6Class(
         } else if (outcome_type$type == "categorical") {
           args$objective <- "multi:softprob"
           args$num_class <- length(outcome_type$levels)
+          args$eval_metric <- "mlogloss"
         }
       }
       fit_object <- call_with_args(xgboost::xgb.train, args, keep_all = TRUE)
