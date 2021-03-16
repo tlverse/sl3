@@ -9,7 +9,7 @@
 #'
 #' @importFrom R6 R6Class
 #' @importFrom assertthat assert_that is.count is.flag
-#' @importFrom stats arima
+#' @importFrom stats arima predict
 #' @importFrom caret findLinearCombos
 #'
 #' @export
@@ -108,7 +108,7 @@ Lrnr_arima <- R6Class(
         newxreg <- NULL
       }
 
-      raw_preds <- predict(fit_object,
+      raw_preds <- stats::predict(fit_object,
         newdata = task$Y, n.ahead = h,
         newxreg = newxreg, type = "response"
       )
