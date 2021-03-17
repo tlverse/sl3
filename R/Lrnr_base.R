@@ -23,6 +23,7 @@
 #' @importFrom assertthat assert_that is.count is.flag
 #' @importFrom uuid UUIDgenerate
 #' @importFrom BBmisc requirePackages
+#' @importFrom R.utils withTimeout
 #'
 #' @family Learners
 Lrnr_base <- R6Class(
@@ -38,6 +39,7 @@ Lrnr_base <- R6Class(
 
       private$.params <- params
       private$.name <- name
+      private$.timeout <- params$timeout
       private$.learner_uuid <- UUIDgenerate(use.time = TRUE)
 
       invisible(self)
@@ -145,11 +147,16 @@ Lrnr_base <- R6Class(
       subsetted_task <- self$subset_covariates(task)
       verbose <- getOption("sl3.verbose")
 
-      if (!is.null(trained_sublearners)) {
-        fit_object <- private$.train(subsetted_task, trained_sublearners)
-      } else {
-        fit_object <- private$.train(subsetted_task)
-      }
+      private$.runtime <- system.time({
+        withTimeout({
+          if (!is.null(trained_sublearners)) {
+            fit_object <- private$.train(subsetted_task, trained_sublearners)
+          } else {
+            fit_object <- private$.train(subsetted_task)
+          }
+        }, timeout = self$timeout)
+      })[[3]]
+      
       new_object <- self$clone() # copy parameters, and whatever else
       new_object$set_train(fit_object, subsetted_task)
       return(new_object)
@@ -366,6 +373,26 @@ Lrnr_base <- R6Class(
       } else {
         return(coefs)
       }
+    },
+    
+    timeout = function(){
+      # first, use learner-specific timeout
+      timeout <- private$.timeout
+      
+      # then, use global option
+      if(is.null(timeout)){
+        timeout <- getOption("sl3.timeout")
+      }
+      
+      # finally, don't force a timeout
+      if(is.null(timeout)){
+        timeout = Inf
+      }
+      
+      return(timeout)
+    },
+    runtime = function(){
+      return(private$.runtime)
     }
   ),
 
@@ -380,7 +407,8 @@ Lrnr_base <- R6Class(
     .required_packages = NULL,
     .properties = list(),
     .custom_chain = NULL,
-
+    .timeout = NULL,
+    .runtime = NULL,
     .train_sublearners = function(task) {
       # train sublearners here
       return(NULL)

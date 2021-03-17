@@ -46,7 +46,8 @@ Imports:
     imputeMissings,
     dplyr,
     caret,
-    arm
+    arm,
+    R.utils
 Suggests:
     testthat,
     rmarkdown,

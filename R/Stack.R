@@ -167,11 +167,12 @@ Stack <- R6Class(
         current_fit <- learner_fits[[i]]
 
         current_preds <- rep(NA, n_to_pred)
-        try({
-          current_preds <- current_fit$base_predict(task)
-        })
-
-
+        if(!is.null(current_fit)){
+          try({
+            current_preds <- current_fit$base_predict(task)
+          })
+        }
+        
         pred_names <- private$.name_preds(learner_names[i], current_preds)
 
 
