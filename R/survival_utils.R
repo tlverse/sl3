@@ -32,9 +32,9 @@ pooled_hazard_task <- function(task, trim = TRUE) {
   repeated_data <- underlying_data[index, ]
   new_folds <- origami::id_folds_to_folds(task$folds, index)
 
-  rnodes <- task$nodes
+  nodes <- task$nodes
   nodes$id <- "id"
-  repeated_task <- sl3_Task$new(repeated_data, column_names = column_names, nodes = task$nodes, folds = new_folds, outcome_levels = outcome_levels, outcome_type = task$outcome_type)
+  repeated_task <- sl3_Task$new(repeated_data, column_names = column_names, nodes = task$nodes, folds = new_folds, outcome_levels = outcome_levels, outcome_type = task$outcome_type$type)
   # If "task" has a non-null row_index then this will fail.
   # The next_in_chain function does not reset the row_index if data is passed in.
   # So CV learners and pooled hazards don't work
