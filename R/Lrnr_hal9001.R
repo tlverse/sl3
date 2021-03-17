@@ -121,7 +121,7 @@ Lrnr_hal9001 <- R6Class(
         args$id <- task$id
       }
 
-      fit_object <- call_with_args(hal9001::fit_hal, args)
+      fit_object <- call_with_args(hal9001::fit_hal, args, keep_all = TRUE)
       return(fit_object)
     },
     .predict = function(task = NULL) {
