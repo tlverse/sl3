@@ -70,6 +70,8 @@
 #'    to \code{TRUE}) or to fit along the sequence of values (or a single value
 #'    using \code{\link[glmnet]{glmnet}} (when set to \code{FALSE}).
 #'   }
+#'   \item{\code{squash=TRUE}}{A \code{logical} specifying whether to call \code{\link[hal9001]{squash_hal_fit}} on the returned hal9001 fit object.
+#'   }
 #'   \item{\code{...}}{Other parameters passed directly to
 #'    \code{\link[hal9001]{fit_hal}}. See its documentation for details.
 #'   }
