@@ -91,6 +91,7 @@ Lrnr_hal9001 <- R6Class(
                           basis_list = NULL,
                           cv_select = TRUE,
                           squash = TRUE,
+                          p_reserve = 0.5,
                           ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
@@ -131,7 +132,7 @@ Lrnr_hal9001 <- R6Class(
       return(fit_object)
     },
     .predict = function(task = NULL) {
-      predictions <- predict(self$fit_object, new_data = as.matrix(task$X))
+      predictions <- predict(self$fit_object, new_data = as.matrix(task$X), p_reserve = self$params$p_reserve)
       if (!is.na(safe_dim(predictions)[2])) {
         p <- ncol(predictions)
         colnames(predictions) <- sprintf("lambda_%0.3e", self$params$lambda)
