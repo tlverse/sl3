@@ -88,6 +88,7 @@ Lrnr_hal9001 <- R6Class(
                           return_x_basis = FALSE,
                           basis_list = NULL,
                           cv_select = TRUE,
+                          squash = TRUE,
                           ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
@@ -122,6 +123,9 @@ Lrnr_hal9001 <- R6Class(
       }
 
       fit_object <- call_with_args(hal9001::fit_hal, args, keep_all = TRUE)
+      if(self$params$squash) {
+        fit_object <- hal9001::squash_hal_fit(fit_object)
+       }
       return(fit_object)
     },
     .predict = function(task = NULL) {
