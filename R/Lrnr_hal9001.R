@@ -92,6 +92,7 @@ Lrnr_hal9001 <- R6Class(
                           cv_select = TRUE,
                           squash = TRUE,
                           p_reserve = 0.5,
+                          formula = NULL,
                           ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
@@ -124,8 +125,13 @@ Lrnr_hal9001 <- R6Class(
       if (task$has_node("id")) {
         args$id <- task$id
       }
-
-      fit_object <- call_with_args(hal9001::fit_hal, args, keep_all = TRUE)
+      if(!is.null(self$params$formula)) {
+        args$data <- task$data
+        formula <- call_with_args(hal9001::formula_hal(self$params$formula, args), keep_all = TRUE)
+        fit_object <- hal9001::fit_hal_formula(formula)
+      } else {
+        fit_object <- call_with_args(hal9001::fit_hal, args, keep_all = TRUE)
+      }
       if(self$params$squash) {
         fit_object <- hal9001::squash_hal_fit(fit_object)
        }
