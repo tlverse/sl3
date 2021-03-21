@@ -127,7 +127,7 @@ Lrnr_hal9001 <- R6Class(
       }
       if(!is.null(self$params$formula)) {
         args$data <- task$data
-        formula <- call_with_args(hal9001::formula_hal, args, keep_all = TRUE)
+        formula <- call_with_args(hal9001::formula_hal, args, ignore = c("X", "Y"))
         fit_object <- hal9001::fit_hal_formula(formula)
       } else {
         fit_object <- call_with_args(hal9001::fit_hal, args, keep_all = TRUE)
