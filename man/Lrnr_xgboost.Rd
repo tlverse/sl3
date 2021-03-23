@@ -13,7 +13,7 @@ Learner object with methods for training and prediction. See
 }
 \description{
 This learner provides fitting procedures for \code{xgboost} models, using
-the \pkg{xgboost} package, using \code{\link[xgboost]{xgb.train}}. Such
+the \pkg{xgboost} package, via \code{\link[xgboost]{xgb.train}}. Such
 models are classification and regression trees with extreme gradient
 boosting. For details on the fitting procedure, consult the documentation of
 the \pkg{xgboost}.
