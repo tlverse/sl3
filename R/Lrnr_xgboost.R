@@ -4,7 +4,7 @@
 #' the \pkg{xgboost} package, via \code{\link[xgboost]{xgb.train}}. Such
 #' models are classification and regression trees with extreme gradient
 #' boosting. For details on the fitting procedure, consult the documentation of
-#' the \pkg{xgboost}.
+#' the \pkg{xgboost} and \insertCite{xgboost;textual}{sl3}).
 #'
 #' @docType class
 #'
@@ -14,22 +14,36 @@
 #'
 #' @keywords data
 #'
-#' @return Learner object with methods for training and prediction. See
-#'  \code{\link{Lrnr_base}} for documentation on learners.
+#' @return A learner object inheriting from \code{\link{Lrnr_base}} with
+#'  methods for training and prediction. For a full list of learner
+#'  functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 #'
-#' @format \code{\link{R6Class}} object.
+#' @format An \code{\link[R6]{R6Class}} object inheriting from
+#'  \code{\link{Lrnr_base}}.
 #'
 #' @family Learners
 #'
 #' @section Parameters:
-#' \describe{
-#'   \item{\code{nrounds=20}}{Number of fitting iterations.}
-#'   \item{\code{...}}{Other parameters passed to
-#'     \code{\link[xgboost]{xgb.train}}.}
-#' }
+#'   - \code{nrounds=20}: Number of fitting iterations.
+#'   - \code{...}: Other parameters passed to \code{\link[xgboost]{xgb.train}}.
 #'
-#' @template common_parameters
-#
+#' @references
+#'  \insertAllCited{}
+#'
+#' @examples
+#' data(mtcars)
+#' mtcars_task <- sl3_Task$new(
+#'   data = mtcars,
+#'   covariates = c(
+#'     "cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "am",
+#'     "gear", "carb"
+#'   ),
+#'   outcome = "mpg"
+#' )
+#' # simple prediction
+#' xgb_lrnr <- Lrnr_xgboost$new()
+#' xgb_fit <- xgb_lrnr$train(mtcars_task)
+#' xgb_preds <- xgb_fit$predict()
 Lrnr_xgboost <- R6Class(
   classname = "Lrnr_xgboost", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
