@@ -43,7 +43,7 @@ regularization parameter is used for prediction (i.e.,
 (i.e., \code{lambda = cv_fit$lambda.1se}). The distinction between the
 two variants is clarified in the documentation of
 \code{\link[glmnet]{cv.glmnet}}.
-\item \code{...}: Other parameters to be passed to \link[glmnet]{cv.glmnet}}
+\item \code{...}: Other parameters passed to \code{\link[glmnet]{cv.glmnet}}
 and \code{\link[glmnet]{glmnet}}.
 }
 }
