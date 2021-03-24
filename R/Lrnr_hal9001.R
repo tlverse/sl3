@@ -70,6 +70,8 @@
 #'    to \code{TRUE}) or to fit along the sequence of values (or a single value
 #'    using \code{\link[glmnet]{glmnet}} (when set to \code{FALSE}).
 #'   }
+#'   \item{\code{squash=TRUE}}{A \code{logical} specifying whether to call \code{\link[hal9001]{squash_hal_fit}} on the returned hal9001 fit object.
+#'   }
 #'   \item{\code{...}}{Other parameters passed directly to
 #'    \code{\link[hal9001]{fit_hal}}. See its documentation for details.
 #'   }
@@ -88,6 +90,9 @@ Lrnr_hal9001 <- R6Class(
                           return_x_basis = FALSE,
                           basis_list = NULL,
                           cv_select = TRUE,
+                          squash = TRUE,
+                          p_reserve = 0.5,
+                          formula = NULL,
                           ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
@@ -120,12 +125,20 @@ Lrnr_hal9001 <- R6Class(
       if (task$has_node("id")) {
         args$id <- task$id
       }
-
-      fit_object <- call_with_args(hal9001::fit_hal, args)
+      if(!is.null(self$params$formula)) {
+        args$data <- task$data
+        formula <- call_with_args(hal9001::formula_hal, args, ignore = c("X", "Y"))
+        fit_object <- hal9001::fit_hal_formula(formula)
+      } else {
+        fit_object <- call_with_args(hal9001::fit_hal, args, keep_all = TRUE)
+      }
+      if(self$params$squash) {
+        fit_object <- hal9001::squash_hal_fit(fit_object)
+       }
       return(fit_object)
     },
     .predict = function(task = NULL) {
-      predictions <- predict(self$fit_object, new_data = as.matrix(task$X))
+      predictions <- predict(self$fit_object, new_data = as.matrix(task$X), p_reserve = self$params$p_reserve)
       if (!is.na(safe_dim(predictions)[2])) {
         p <- ncol(predictions)
         colnames(predictions) <- sprintf("lambda_%0.3e", self$params$lambda)

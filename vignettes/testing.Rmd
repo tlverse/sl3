@@ -1,0 +1,89 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(sl3)
+
+
+```
+
+```{r}
+n <- 2500
+library(simcausal)
+#library(sl3)
+D <- DAG.empty()
+
+
+D <- D +
+  node("W1f", distr = "runif", min = -1, max = 1) +
+  node("W2f", distr = "runif", min = -1, max = 1) +
+  node("W3f", distr = "runif", min = -1, max = 1) +
+   node("W1", distr = "rconst", const = W1f) +
+   node("W2", distr = "rconst", const = W2f) +
+   node("W3", distr = "rconst", const = W3f) +
+  node("g", distr = "rconst", const = 0.2 + 0.65*plogis(sin(W1*5) + W1*sin(W1*5) + cos(W2*5) + 2*W1*W2 - sin(W3*5) + sin(5*W1*W3) + 2*W1*W2*W3 + W3*sin(W1*5) + cos(W2*4)*sin(W1*5) ) ) +
+  node("A", distr = "rbinom", size = 1, prob = g )+
+   node("gR", distr = "rconst",  const =  2*(W1 + W2 + W3) + A*(W1 + W2 + W3 + W1*W2 + W2*W3 + W1*W3 ) + W1*W2 + W2*W3 + W1*W3 + W1^2 -W2^2 + W3^2 ) +
+  node("R", distr = "rnorm",  mean = gR, sd = 1)
+
+setD <- set.DAG(D)
+data <- sim(setD, n = n)
+data
+
+```
+
+
+```{r}
+#call_with_args <- sl3:::call_with_args
+library(R6)
+task <- sl3_Task$new(data, covariates = c("W1", "W2", "W3", "A"), outcome  = "R")
+task$data
+
+lrnr_ranger <- Lrnr_ranger$new(num.trees = 50, predict.all = TRUE )
+lrnr_ranger <- lrnr_ranger$train(task) 
+data.table::as.data.table(lrnr_ranger$predict(task))
+```
+
+
+
+```{r}
+lrnr_xgboost <- Lrnr_xgboost$new(nrounds  = 20, predict.all.trees = FALSE )
+lrnr_xgboost <- lrnr_xgboost$train(task) 
+data.table::as.data.table(lrnr_xgboost$predict(task))
+
+lrnr_xgboost_stacked <- make_learner(Pipeline, Lrnr_cv$new(Lrnr_xgboost$new(nrounds  = 20, predict.all.trees = TRUE )), Lrnr_nnls$new(convex = FALSE))
+lrnr_xgboost_stacked <- lrnr_xgboost_stacked$train(task)
+data.table::as.data.table(lrnr_xgboost_stacked$predict(task))
+```
+
+
+```{r}
+
+lrnr_xg_stack <- make_learner(Stack, Lrnr_xgboost$new(nrounds  = 20, predict.all.rounds = TRUE, max_depth = 3 ), Lrnr_xgboost$new(nrounds  = 20, predict.all.rounds = TRUE, max_depth = 5 ),
+             Lrnr_xgboost$new(nrounds  = 20, predict.all.rounds = TRUE, max_depth = 7 ),
+             Lrnr_xgboost$new(nrounds  = 20, predict.all.rounds = TRUE, max_depth = 10 ))
+lrnr_xg_stack <- Lrnr_sl$new(lrnr_xg_stack, metalearner = Lrnr_$new())
+```
+```{r}
+lrnr_stack <- make_learner(Stack,
+                           Lrnr_xgboost$new(nrounds  = 20, predict.all.trees = FALSE, max_depth = 3 ),
+                           Lrnr_xgboost$new(nrounds  = 20, predict.all.trees = FALSE, max_depth = 5 ),
+                           Lrnr_xgboost$new(nrounds  = 20, predict.all.trees = FALSE, max_depth = 7 ), Lrnr_xgboost$new(nrounds  = 20, predict.all.trees = FALSE, max_depth = 10 ), lrnr_xg_stack)
+lrnr_stack <- lrnr_stack$train(task)
+preds <- lrnr_stack$predict(task)
+as.data.frame(apply(preds - data$gR, 2, function(v) {mean(v^2)}))
+#lrnr_cv <- Lrnr_cv$new(lrnr_stack)
+#lrnr_cv <- lrnr_cv$train(task)
+#lrnr_cv$cv_risk(loss_squared_error)
+```
+
+
+
+
+
