@@ -70,7 +70,7 @@ Lrnr_rpart <- R6Class(
       # what these arguments are called depends on the learner you are wrapping
       x <- as.matrix(task$X)
       y <- outcome_type$format(task$Y)
-      if (outcome_type$type == "binary") {
+      if (outcome_type$type == "binomial") {
         y <- factor(y, levels = c(0, 1))
       }
 

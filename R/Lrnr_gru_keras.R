@@ -136,7 +136,7 @@ Lrnr_gru_keras <- R6Class(
       # TO DO: allow for losses to be passed as well
       if (task$outcome_type$type == "continuous") {
         loss <- "mse"
-      } else if (task$outcome_type$type == "binary") {
+      } else if (task$outcome_type$type == "binomial") {
         loss <- "binary_crossentropy"
       } else if (task$outcome_type$type == "categorical") {
         loss <- "categorical_crossentropy"
