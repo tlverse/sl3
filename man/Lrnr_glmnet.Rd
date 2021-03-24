@@ -5,55 +5,72 @@
 \alias{Lrnr_glmnet}
 \title{GLMs with Elastic Net Regularization}
 \format{
-\code{\link{R6Class}} object.
+An \code{\link[R6]{R6Class}} object inheriting from
+\code{\link{Lrnr_base}}.
 }
 \value{
-Learner object with methods for training and prediction. See
-\code{\link{Lrnr_base}} for documentation on learners.
+A learner object inheriting from \code{\link{Lrnr_base}} with
+methods for training and prediction. For a full list of learner
+functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 }
 \description{
-This learner provides fitting procedures for elastic net models, using the
-\code{glmnet} package, using \code{\link[glmnet]{cv.glmnet}} to select an
-appropriate value of lambda.
+This learner provides fitting procedures for elastic net models, including
+both lasso (L1) and ridge (L2) penalized regression, using the \pkg{glmnet}
+package. The function \code{\link[glmnet]{cv.glmnet}} is used to select an
+appropriate value of the regularization parameter lambda. For details on
+these regularized regression models and \pkg{glmnet}, consider consulting
+\insertCite{glmnet;textual}{sl3}).
 }
 \section{Parameters}{
 
-\describe{
-\item{\code{lambda = NULL}}{An optional vector of lambda values to compare.}
-\item{\code{type.measure = "deviance"}}{The loss to use when selecting
-lambda. Options documented in \code{\link[glmnet]{cv.glmnet}}.}
-\item{\code{nfolds = 10}}{Number of folds to use for internal
-cross-validation.}
-\item{\code{alpha = 1}}{The elastic net parameter: \code{alpha = 0} is
-Ridge (L2-penalized) regression, while \code{alpha = 1} specifies Lasso
+\itemize{
+\item \code{lambda = NULL}: An optional vector of lambda values to compare.
+\item \code{type.measure = "deviance"}: The loss to use when selecting
+lambda. Options documented in \code{\link[glmnet]{cv.glmnet}}.
+\item \code{nfolds = 10}: Number of folds to use for internal cross-validation.
+\item \code{alpha = 1}: The elastic net parameter: \code{alpha = 0} is Ridge
+(L2-penalized) regression, while \code{alpha = 1} specifies Lasso
 (L1-penalized) regression. Values in the closed unit interval specify a
-weighted combination of the two penalties. This is further documented in
-\code{\link[glmnet]{glmnet}}.}
-\item{\code{nlambda = 100}}{The number of lambda values to fit. Comparing
-less values will speed up computation, but may decrease statistical
-performance. Documented in \code{\link[glmnet]{cv.glmnet}}.}
-\item{\code{use_min = TRUE}}{If \code{TRUE}, use
-\code{lambda = cv_fit$lambda.min} for prediction; otherwise, use
-\code{lambda = cv_fit$lambda.1se}. The distinction between these is
-clarified in \code{\link[glmnet]{cv.glmnet}}.}
-\item{\code{...}}{Other parameters to be passed to
-\code{\link[glmnet]{cv.glmnet}} and \code{\link[glmnet]{glmnet}}.}
+weighted combination of the two penalties. For further details, consult
+the documentation of \code{\link[glmnet]{glmnet}}.
+\item \code{nlambda = 100}: The number of lambda values to fit. Comparing
+fewer values will speed up computation, but may hurt the statistical
+performance. For further details, consult the documentation of
+\code{\link[glmnet]{cv.glmnet}}.
+\item \code{use_min = TRUE}: If \code{TRUE}, the smallest value of the lambda
+regularization parameter is used for prediction (i.e.,
+\code{lambda = cv_fit$lambda.min}); otherwise, a larger value is used
+(i.e., \code{lambda = cv_fit$lambda.1se}). The distinction between the
+two variants is clarified in the documentation of
+\code{\link[glmnet]{cv.glmnet}}.
+\item \code{...}: Other parameters passed to \code{\link[glmnet]{cv.glmnet}}
+and \code{\link[glmnet]{glmnet}}.
 }
 }
 
-\section{Common Parameters}{
+\examples{
+data(mtcars)
+mtcars_task <- sl3_Task$new(
+  data = mtcars,
+  covariates = c(
+    "cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "am",
+    "gear", "carb"
+  ),
+  outcome = "mpg"
+)
+# simple prediction with lasso penalty
+lasso_lrnr <- Lrnr_glmnet$new()
+lasso_fit <- lasso_lrnr$train(mtcars_task)
+lasso_preds <- lasso_fit$predict()
 
-
-Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by \code{Lrnr_base}, and shared
-by all learners.
-
-\describe{
-\item{\code{covariates}}{A character vector of covariates. The learner will use this to subset the covariates for any specified task}
-\item{\code{outcome_type}}{A \code{\link{variable_type}} object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified}
-\item{\code{...}}{All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating}
+# simple prediction with ridge penalty
+ridge_lrnr <- Lrnr_glmnet$new(alpha = 0)
+ridge_fit <- ridge_lrnr$train(mtcars_task)
+ridge_preds <- ridge_fit$predict()
 }
+\references{
+\insertAllCited{}
 }
-
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},
