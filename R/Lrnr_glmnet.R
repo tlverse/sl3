@@ -23,11 +23,12 @@
 #'
 #' @section Parameters:
 #' \describe{
-#'   \item{\code{lambda = NULL}}{An optional vector of lambda values to compare.}
+#'   \item{\code{lambda = NULL}}{An optional vector of lambda values to
+#'     compare.}
 #'   \item{\code{type.measure = "deviance"}}{The loss to use when selecting
 #'     lambda. Options documented in \code{\link[glmnet]{cv.glmnet}}.}
 #'   \item{\code{nfolds = 10}}{Number of folds to use for internal
-#'     cross-validation.}
+#'     cross-validation. Smallest value allowable is 3.}
 #'   \item{\code{alpha = 1}}{The elastic net parameter: \code{alpha = 0} is
 #'     Ridge (L2-penalized) regression, while \code{alpha = 1} specifies Lasso
 #'     (L1-penalized) regression. Values in the closed unit interval specify a
@@ -40,8 +41,15 @@
 #'     \code{lambda = cv_fit$lambda.min} for prediction; otherwise, use
 #'     \code{lambda = cv_fit$lambda.1se}. The distinction between these is
 #'     clarified in \code{\link[glmnet]{cv.glmnet}}.}
+#'   \item{\code{stratify_cv = FALSE}}{Stratify internal cross-validation
+#'     folds, so that a binary outcome's prevalence for training is roughly the
+#'     same in the training and validation sets of the inner cross-validation
+#'     folds? This argument can only be used when the outcome type for training
+#'     is binomial; and either the \code{id} node in the task is not specified,
+#'     or \code{\link[glmnet]{cv.glmnet}}'s \code{foldid} argument is not
+#'     specified upon initializing the learner.}
 #'   \item{\code{...}}{Other parameters to be passed to
-#'   \code{\link[glmnet]{cv.glmnet}} and \code{\link[glmnet]{glmnet}}.}
+#'     \code{\link[glmnet]{cv.glmnet}} and \code{\link[glmnet]{glmnet}}.}
 #' }
 #'
 #' @template common_parameters
@@ -51,7 +59,7 @@ Lrnr_glmnet <- R6Class(
   public = list(
     initialize = function(lambda = NULL, type.measure = "deviance",
                           nfolds = 10, alpha = 1, nlambda = 100,
-                          use_min = TRUE, ...) {
+                          use_min = TRUE, stratify_cv = FALSE, ...) {
       super$initialize(params = args_to_list(), ...)
     }
   ),
@@ -96,10 +104,25 @@ Lrnr_glmnet <- R6Class(
         args$foldid <- origami::folds2foldvec(task$folds)
       }
 
+      if (args$stratify_cv) {
+        if (outcome_type$type == "binomial" & is.null(args$foldid)) {
+          args$foldid <- origami::folds2foldvec(origami::make_folds(
+            n = task$data, strata_ids = task$Y, V = args$nfolds
+          ))
+        } else {
+          warning(
+            "stratify_cv is TRUE; but inner cross-validation folds cannot ",
+            "be stratified. Either the outcome is not binomial, or foldid ",
+            "has already been established (user specified foldid upon ",
+            "initializing the learner, or it was set according to task id's)."
+          )
+        }
+      }
+
       fit_object <- call_with_args(
         glmnet::cv.glmnet, args,
         other_valid = names(formals(glmnet::glmnet)),
-        ignore = "use_min"
+        ignore = c("use_min", "stratify_cv")
       )
       fit_object$glmnet.fit$call <- NULL
       return(fit_object)
