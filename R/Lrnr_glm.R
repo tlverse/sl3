@@ -6,7 +6,7 @@
 #' @docType class
 #'
 #' @importFrom R6 R6Class
-#' @importFrom stats glm
+#' @importFrom stats glm predict family
 #'
 #' @export
 #'
