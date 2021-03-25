@@ -94,6 +94,10 @@ Stack <- R6Class(
     learner_fits = function() {
       result <- self$fit_object$learner_fits
       return(result)
+    },
+    runtimes = function(){
+      runtimes <- sapply(self$learner_fits,`[[`, "runtime")
+      return(runtimes)
     }
   ),
 

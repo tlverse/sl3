@@ -140,25 +140,30 @@ Lrnr_base <- R6Class(
     },
 
     base_train = function(task, trained_sublearners = NULL) {
-
+      start_time <- proc.time()
+      
+      
       # trains learner to data
       assert_that(is(task, "sl3_Task"))
 
       subsetted_task <- self$subset_covariates(task)
       verbose <- getOption("sl3.verbose")
-
-      private$.runtime <- system.time({
-        withTimeout({
-          if (!is.null(trained_sublearners)) {
-            fit_object <- private$.train(subsetted_task, trained_sublearners)
-          } else {
-            fit_object <- private$.train(subsetted_task)
-          }
-        }, timeout = self$timeout)
-      })[[3]]
-      
+    
+      if (!is.null(trained_sublearners)) {
+        sl_runtime <- private$.sublearners$runtime
+        fit_object <- private$.train(subsetted_task, trained_sublearners)
+      } else {
+        sl_runtime <- 0
+        fit_object <- private$.train(subsetted_task)
+      }
+    
+    
+   
       new_object <- self$clone() # copy parameters, and whatever else
       new_object$set_train(fit_object, subsetted_task)
+    
+      new_object$runtime <- (proc.time()-start_time)[[3]]+sl_runtime
+      
       return(new_object)
     },
 
@@ -177,6 +182,7 @@ Lrnr_base <- R6Class(
         private$.training_outcome_type <- self$get_outcome_type(training_task)
       }
       private$.fit_uuid <- UUIDgenerate(use.time = TRUE)
+      # private$.runtime <- (proc.time()-self$start_time)[[3]]
     },
 
     assert_trained = function() {
@@ -225,17 +231,23 @@ Lrnr_base <- R6Class(
     train_sublearners = function(task) {
       # TODO: add error handling
       subsetted_task <- delayed_learner_subset_covariates(self, task)
-
-      return(private$.train_sublearners(subsetted_task))
+      sublearners <- private$.train_sublearners(subsetted_task)
+      private$.sublearners <- sublearners
+      return(sublearners)
     },
 
     train = function(task) {
       delayed_fit <- delayed_learner_train(self, task)
       verbose <- getOption("sl3.verbose")
-      return(delayed_fit$compute(
+      
+      # private$.start_time <- proc.time()
+    
+      result <- delayed_fit$compute(
         job_type = sl3_delayed_job_type(),
         progress = verbose
-      ))
+      )
+      result$runtime <- delayed_fit$runtime
+      return(result)
     },
 
     predict = function(task = NULL) {
@@ -299,6 +311,8 @@ Lrnr_base <- R6Class(
         !is.null(new_self$params[["covariates"]])) {
         idx <- which(names(new_self$params) == "covariates")
         params_no_covars <- new_self$.__enclos_env__$private$.params[-idx]
+        new_self <- do.call(new_self$initialize,params_no_covars)
+        result <- new_self2$train(task)
         new_self$.__enclos_env__$private$.params <- params_no_covars
       }
       if (!is.null(trained_sublearners)) {
@@ -391,9 +405,22 @@ Lrnr_base <- R6Class(
       
       return(timeout)
     },
-    runtime = function(){
+    start_time = function(start_time = NULL){
+      if(!is.null(start_time)){
+        browser()
+        private$.start_time <- start_time
+      }
+      
+      return(private$.start_time)
+    },
+    
+    runtime = function(runtime = NULL){
+      if(!is.null(runtime)){
+        private$.runtime <- runtime
+      }
       return(private$.runtime)
     }
+    
   ),
 
   private = list(
@@ -409,6 +436,8 @@ Lrnr_base <- R6Class(
     .custom_chain = NULL,
     .timeout = NULL,
     .runtime = NULL,
+    .runtime_total = NULL,
+    .sublearners = NULL, 
     .train_sublearners = function(task) {
       # train sublearners here
       return(NULL)

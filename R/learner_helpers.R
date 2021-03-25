@@ -39,9 +39,7 @@ learner_train <- function(learner, task, trained_sublearners) {
 #' @export
 #
 delayed_learner_train <- function(learner, task, name = NULL) {
-  start <- proc.time()
   trained_sublearners <- learner$train_sublearners(task)
-  timer_trained_sublearners <- proc.time() - start
 
   train_delayed <- delayed_fun(learner_train)(learner, task,
     trained_sublearners)

@@ -103,3 +103,21 @@ test_that("Naive test of Lrnr_ranger weights", {
   ## test equivalence of prediction from Lrnr_ranger and ranger::ranger
   expect_equal(prd_lrnr_ranger, prd_ranger)
 })
+
+
+lrnr_ranger <- Lrnr_ranger$new()
+
+set.seed(1234)
+fit1 <- lrnr_ranger$train(task)
+set.seed(1234)
+fit2 <- lrnr_ranger$train(task[1:10])
+set.seed(1234)
+fit3 <- lrnr_ranger$train(task[11:20])
+
+fit1$fit_object$forest$child.nodeIDs[[1]]
+fit2$fit_object$forest$child.nodeIDs[[1]]
+fit3$fit_object$forest$child.nodeIDs[[1]]
+
+X1 <- task$X
+pred1 <- predict(fit1$fit_object,data=X1,predict.all=TRUE)$predictions
+

@@ -102,6 +102,11 @@ Lrnr_sl <- R6Class(
     cv_risk = function(loss_fun) {
       # get risks for cv learners (nested cv)
       cv_stack_fit <- self$fit_object$cv_fit
+      
+      # get total runtimes
+      runtimes <- sapply(cv_stack_fit$fit_object$fold_fits, `[[`,"runtimes")
+      runtimes <- cbind(runtimes, cv_stack_fit$fit_object$full_fit$runtimes)
+      runtimes <- rowSums(runtimes)
       stack_risks <- cv_stack_fit$cv_risk(loss_fun)
 
       coefs <- self$coefficients
@@ -112,17 +117,19 @@ Lrnr_sl <- R6Class(
         ordered_coefs <- rep(NA, length(stack_risks$learner))
       }
       set(stack_risks, , "coefficients", ordered_coefs)
+      set(stack_risks, , "runtime", runtimes)
 
-      # make sure that coefficients is the second column, even if the
+      # make sure that runtimes and coefficients are at the front, even if the
       # metalearner did not provide coefficients.
       data.table::setcolorder(
         stack_risks,
-        c(names(stack_risks)[1], "coefficients")
+        c(names(stack_risks)[1], "runtime", "coefficients")
       )
 
       # get risks for super learner ("revere" CV)
       sl_risk <- cv_risk(self, loss_fun)
       set(sl_risk, , "learner", "SuperLearner")
+      set(sl_risk, , "runtime", self$runtime)
 
       # combine and return
       risks <- rbind(stack_risks, sl_risk)
