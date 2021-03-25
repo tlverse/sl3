@@ -66,7 +66,7 @@ task <- sl3_Task$new(
   outcome = "cnt"
 )
 
-gru_lrnr <- Lrnr_gru_keras$new(batch_size=1,epochs=200)
+gru_lrnr <- Lrnr_gru_keras$new(batch_size = 1, epochs = 200)
 
 train_task <- training(task, fold = task$folds[[1]])
 valid_task <- validation(task, fold = task$folds[[1]])

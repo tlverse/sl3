@@ -38,7 +38,7 @@ glm_preds <- glm_fit$predict()
 
 # We can include interaction terms by 'piping' them into this learner.
 # Note that both main terms and the specified interactions will be included
-# in the regression model. 
+# in the regression model.
 interaction <- list(c("apgar1", "parity"))
 lrnr_interaction <- Lrnr_define_interactions$new(interactions = interaction)
 lrnr_glm_w_interaction <- make_learner(Pipeline, lrnr_interaction, lrnr_glm)

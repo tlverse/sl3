@@ -41,7 +41,7 @@
 
 <meta property="og:title" content="Generalized Linear Models — Lrnr_glm" />
 <meta property="og:description" content="This learner provides fitting procedures for generalized linear models using
-glm.fit." />
+the stats package glm.fit function." />
 
 
 
@@ -147,40 +147,29 @@ glm.fit." />
 
     <div class="ref-description">
     <p>This learner provides fitting procedures for generalized linear models using
-<code><a href='https://rdrr.io/r/stats/glm.html'>glm.fit</a></code>.</p>
+the <span class="pkg">stats</span> package <code><a href='https://rdrr.io/r/stats/glm.html'>glm.fit</a></code> function.</p>
     </div>
 
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p><code>R6Class</code> object.</p>
+    <p>An <code><a href='https://r6.r-lib.org/reference/R6Class.html'>R6Class</a></code> object inheriting from
+<code><a href='Lrnr_base.html'>Lrnr_base</a></code>.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Learner object with methods for training and prediction. See
-<code><a href='Lrnr_base.html'>Lrnr_base</a></code> for documentation on learners.</p>
+    <p>A learner object inheriting from <code><a href='Lrnr_base.html'>Lrnr_base</a></code> with
+methods for training and prediction. For a full list of learner
+functionality, see the complete documentation of <code><a href='Lrnr_base.html'>Lrnr_base</a></code>.</p>
     <h2 class="hasAnchor" id="parameters"><a class="anchor" href="#parameters"></a>Parameters</h2>
 
     
 
-<dl>
-<dt><code>...</code></dt><dd><p>Parameters passed to <code><a href='https://rdrr.io/r/stats/glm.html'>glm</a></code>.</p></dd>
-
-</dl>
-
-    <h2 class="hasAnchor" id="common-parameters"><a class="anchor" href="#common-parameters"></a>Common Parameters</h2>
-
-    
-
-
-<p>Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by <code>Lrnr_base</code>, and shared
-by all learners.</p>
-<dl>
-<dt><code>covariates</code></dt><dd><p>A character vector of covariates. The learner will use this to subset the covariates for any specified task</p></dd>
-<dt><code>outcome_type</code></dt><dd><p>A <code><a href='Variable_Type.html'>variable_type</a></code> object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified</p></dd>
-<dt><code>...</code></dt><dd><p>All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating</p></dd>
-
-</dl>
+<ul>
+<li><p><code>intercept = TRUE</code>: Should an intercept be included in the model?</p></li>
+<li><p><code>...</code>: Other parameters passed to <code><a href='https://rdrr.io/r/stats/glm.html'>glm</a></code> or
+<code><a href='https://rdrr.io/r/stats/glm.html'>glm.fit</a></code>.</p></li>
+</ul>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -250,6 +239,25 @@ by all learners.</p>
 <code><a href='define_h2o_X.html'>define_h2o_X</a>()</code>,
 <code><a href='undocumented_learner.html'>undocumented_learner</a></code></p></div>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>cpp_imputed</span><span class='op'>)</span>
+<span class='va'>covs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"apgar1"</span>, <span class='st'>"apgar5"</span>, <span class='st'>"parity"</span>, <span class='st'>"gagebrth"</span>, <span class='st'>"mage"</span>, <span class='st'>"meducyrs"</span><span class='op'>)</span>
+<span class='va'>task</span> <span class='op'>&lt;-</span> <span class='va'><a href='sl3_Task.html'>sl3_Task</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>cpp_imputed</span>, covariates <span class='op'>=</span> <span class='va'>covs</span>, outcome <span class='op'>=</span> <span class='st'>"haz"</span><span class='op'>)</span>
+
+<span class='co'># simple, main-terms GLM</span>
+<span class='va'>lrnr_glm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='Lrnr_base.html'>make_learner</a></span><span class='op'>(</span><span class='va'>Lrnr_glm</span><span class='op'>)</span>
+<span class='va'>glm_fit</span> <span class='op'>&lt;-</span> <span class='va'>lrnr_glm</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>task</span><span class='op'>)</span>
+<span class='va'>glm_preds</span> <span class='op'>&lt;-</span> <span class='va'>glm_fit</span><span class='op'>$</span><span class='fu'>predict</span><span class='op'>(</span><span class='op'>)</span>
+
+<span class='co'># We can include interaction terms by 'piping' them into this learner.</span>
+<span class='co'># Note that both main terms and the specified interactions will be included</span>
+<span class='co'># in the regression model.</span>
+<span class='va'>interaction</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"apgar1"</span>, <span class='st'>"parity"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>lrnr_interaction</span> <span class='op'>&lt;-</span> <span class='va'><a href='Lrnr_define_interactions.html'>Lrnr_define_interactions</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>interactions <span class='op'>=</span> <span class='va'>interaction</span><span class='op'>)</span>
+<span class='va'>lrnr_glm_w_interaction</span> <span class='op'>&lt;-</span> <span class='fu'><a href='Lrnr_base.html'>make_learner</a></span><span class='op'>(</span><span class='va'>Pipeline</span>, <span class='va'>lrnr_interaction</span>, <span class='va'>lrnr_glm</span><span class='op'>)</span>
+<span class='va'>fit</span> <span class='op'>&lt;-</span> <span class='va'>lrnr_glm_w_interaction</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>task</span><span class='op'>)</span>
+<span class='va'>coefs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/coef.html'>coef</a></span><span class='op'>(</span><span class='va'>fit</span><span class='op'>$</span><span class='va'>learner_fits</span><span class='op'>$</span><span class='va'>Lrnr_glm_TRUE</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

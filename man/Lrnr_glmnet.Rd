@@ -43,6 +43,13 @@ regularization parameter is used for prediction (i.e.,
 (i.e., \code{lambda = cv_fit$lambda.1se}). The distinction between the
 two variants is clarified in the documentation of
 \code{\link[glmnet]{cv.glmnet}}.
+\item \code{stratify_cv = FALSE}: Stratify internal cross-validation folds, so
+that a binary outcome's prevalence for training is roughly the same in
+the training and validation sets of the internal cross-validation
+folds? This argument can only be used when the outcome type for
+training is binomial; and either the \code{id} node in the task is not
+specified, or \code{\link[glmnet]{cv.glmnet}}'s \code{foldid} argument
+is not specified upon initializing the learner.
 \item \code{...}: Other parameters passed to \code{\link[glmnet]{cv.glmnet}}
 and \code{\link[glmnet]{glmnet}}.
 }
