@@ -1,4 +1,4 @@
-context("test-keras.R -- time series methods")
+context("test-kerasR.R -- time series methods")
 
 if (FALSE) {
   setwd("..")
