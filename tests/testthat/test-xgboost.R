@@ -65,9 +65,11 @@ test_that("Lrnr_xgboost predictions match xgboost's: continuous outcome", {
 
   ## fit xgboost using the data from the task
   set.seed(73964)
-  fit_xgboost <- xgboost(data = as.matrix(task$X), label = task$Y,
-                         nrounds = lrnr_xgboost$params$nrounds,
-                         nthread = lrnr_xgboost$params$nthread)
+  fit_xgboost <- xgboost(
+    data = as.matrix(task$X), label = task$Y,
+    nrounds = lrnr_xgboost$params$nrounds,
+    nthread = lrnr_xgboost$params$nthread
+  )
   prd_xgboost <- predict(fit_xgboost, as.matrix(task$X))
 
   ## test equivalence of prediction from Lrnr_xgboost and xgboost::xgboost
@@ -89,11 +91,13 @@ test_that("Lrnr_xgboost predictions match xgboost's: binary outcome", {
 
   ## fit xgboost using the data from the task
   set.seed(73964)
-  fit_xgboost <- xgboost(data = as.matrix(task$X), label = task$Y,
-                         nrounds = lrnr_xgboost$params$nrounds,
-                         nthread = lrnr_xgboost$params$nthread,
-                         objective = "binary:logistic",
-                         eval_metric = "logloss")
+  fit_xgboost <- xgboost(
+    data = as.matrix(task$X), label = task$Y,
+    nrounds = lrnr_xgboost$params$nrounds,
+    nthread = lrnr_xgboost$params$nthread,
+    objective = "binary:logistic",
+    eval_metric = "logloss"
+  )
   prd_xgboost <- predict(fit_xgboost, as.matrix(task$X))
 
   ## test equivalence of prediction from Lrnr_xgboost and xgboost::xgboost
@@ -117,10 +121,12 @@ test_that("Naive test of Lrnr_xgboost weights", {
 
   ## fit xgboost using the data from the task
   set.seed(73964)
-  fit_xgboost <- xgboost(data = as.matrix(task$X), label = task$Y,
-                         nrounds = lrnr_xgboost$params$nrounds,
-                         nthread = lrnr_xgboost$params$nthread,
-                         weight = task$weights)
+  fit_xgboost <- xgboost(
+    data = as.matrix(task$X), label = task$Y,
+    nrounds = lrnr_xgboost$params$nrounds,
+    nthread = lrnr_xgboost$params$nthread,
+    weight = task$weights
+  )
   prd_xgboost <- predict(fit_xgboost, as.matrix(task$X))
 
   ## test equivalence of prediction from Lrnr_xgboost and xgboost::xgboost

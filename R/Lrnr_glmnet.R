@@ -77,7 +77,7 @@ Lrnr_glmnet <- R6Class(
   public = list(
     initialize = function(lambda = NULL, type.measure = "deviance",
                           nfolds = 10, alpha = 1, nlambda = 100,
-                          use_min = TRUE, ...) {
+                          use_min = TRUE, stratify_cv = FALSE, ...) {
       super$initialize(params = args_to_list(), ...)
     }
   ),
@@ -117,10 +117,25 @@ Lrnr_glmnet <- R6Class(
         args$foldid <- origami::folds2foldvec(task$folds)
       }
 
+      if (args$stratify_cv) {
+        if (outcome_type$type == "binomial" & is.null(args$foldid)) {
+          args$foldid <- origami::folds2foldvec(origami::make_folds(
+            n = task$data, strata_ids = task$Y, V = args$nfolds
+          ))
+        } else {
+          warning(
+            "stratify_cv is TRUE; but inner cross-validation folds cannot ",
+            "be stratified. Either the outcome is not binomial, or foldid ",
+            "has already been established (user specified foldid upon ",
+            "initializing the learner, or it was set according to task id's)."
+          )
+        }
+      }
+
       fit_object <- call_with_args(
         glmnet::cv.glmnet, args,
         other_valid = names(formals(glmnet::glmnet)),
-        ignore = "use_min"
+        ignore = c("use_min", "stratify_cv")
       )
       fit_object$glmnet.fit$call <- NULL
       return(fit_object)
