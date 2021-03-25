@@ -31,6 +31,10 @@
   `Lrnr_bartMachine` is initialized, if this option has not already been set. 
   This option was incorporated since the default RAM of 500MB for a Java 
   virtual machine often errors due to memory issues with `Lrnr_bartMachine`.
+* Incorporated `stratify_cv` argument in `Lrnr_glmnet`, which stratifies 
+  internal cross-validation folds such that binary outcome prevalence in 
+  training and validation folds roughly matches the prevalence in the training 
+  task. 
 
 # sl3 1.4.2
 * Updates to variable importance functionality, including calculation of risk

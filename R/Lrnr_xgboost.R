@@ -133,7 +133,7 @@ Lrnr_xgboost <- R6Class(
         Xmat[, match(fit_object$feature_names, colnames(Xmat))]
       )
       if (nrow(Xmat_matched) != nrow(Xmat) &
-          ncol(Xmat_matched) == nrow(Xmat)) {
+        ncol(Xmat_matched) == nrow(Xmat)) {
         Xmat_matched <- t(Xmat_matched)
       }
       stopifnot(nrow(Xmat_matched) == nrow(Xmat))

@@ -166,11 +166,12 @@ appropriate value of lambda.</p>
     
 
 <dl>
-<dt><code>lambda = NULL</code></dt><dd><p>An optional vector of lambda values to compare.</p></dd>
+<dt><code>lambda = NULL</code></dt><dd><p>An optional vector of lambda values to
+compare.</p></dd>
 <dt><code>type.measure = "deviance"</code></dt><dd><p>The loss to use when selecting
 lambda. Options documented in <code><a href='https://glmnet.stanford.edu/reference/cv.glmnet.html'>cv.glmnet</a></code>.</p></dd>
 <dt><code>nfolds = 10</code></dt><dd><p>Number of folds to use for internal
-cross-validation.</p></dd>
+cross-validation. Smallest value allowable is 3.</p></dd>
 <dt><code>alpha = 1</code></dt><dd><p>The elastic net parameter: <code>alpha = 0</code> is
 Ridge (L2-penalized) regression, while <code>alpha = 1</code> specifies Lasso
 (L1-penalized) regression. Values in the closed unit interval specify a
@@ -183,6 +184,13 @@ performance. Documented in <code><a href='https://glmnet.stanford.edu/reference/
 <code>lambda = cv_fit$lambda.min</code> for prediction; otherwise, use
 <code>lambda = cv_fit$lambda.1se</code>. The distinction between these is
 clarified in <code><a href='https://glmnet.stanford.edu/reference/cv.glmnet.html'>cv.glmnet</a></code>.</p></dd>
+<dt><code>stratify_cv = FALSE</code></dt><dd><p>Stratify internal cross-validation
+folds, so that a binary outcome's prevalence for training is roughly the
+same in the training and validation sets of the inner cross-validation
+folds? This argument can only be used when the outcome type for training
+is binomial; and either the <code>id</code> node in the task is not specified,
+or <code><a href='https://glmnet.stanford.edu/reference/cv.glmnet.html'>cv.glmnet</a></code>'s <code>foldid</code> argument is not
+specified upon initializing the learner.</p></dd>
 <dt><code>...</code></dt><dd><p>Other parameters to be passed to
 <code><a href='https://glmnet.stanford.edu/reference/cv.glmnet.html'>cv.glmnet</a></code> and <code><a href='https://glmnet.stanford.edu/reference/glmnet.html'>glmnet</a></code>.</p></dd>
 
