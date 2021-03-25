@@ -14,13 +14,13 @@ methods for training and prediction. For a full list of learner
 functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 }
 \description{
-This learner supports the Recurrent Neural Network (RNN) with
-Gated Recurrent Unit. This learner leverages the same principle as a LSTM,
-but it is more streamlined and thus cheaper to run, at the expense of
-representational power. This learner uses the \pkg{keras} package. Note that all
-preprocessing, such as differencing and seasonal effects for time series,
-should be addressed before using this learner. Desired lags of the time series
-should be added as predictors before using the learner.
+This learner supports Recurrent Neural Networks (RNNs) with Gated Recurrent
+Units (GRU). This learner leverages the same principles as LSTM networks but
+is more streamlined and thus cheaper to run, at the expense of some loss in
+representational power. This learner uses the \pkg{keras} package. Note that
+all preprocessing, such as differencing and seasonal effects for time
+series, should be addressed before using this learner. Desired lags of the
+time series should be added as predictors before using the learner.
 }
 \section{Parameters}{
 
@@ -30,8 +30,8 @@ train the neural network?
 \item \code{units}: Positive integer, dimensionality of the output space.
 \item \code{dropout}: Float between 0 and 1. Fraction of the input units to
 drop.
-\item \code{recurrent_dropout}: Float between 0 and 1. Fraction of the
-units to drop for the linear transformation of the recurrent state.
+\item \code{recurrent_dropout}: Float between 0 and 1. Fraction of the units
+to drop for the linear transformation of the recurrent state.
 \item \code{activation}: Activation function to use. If you pass NULL, no
 activation is applied (e.g., "linear" activation: \code{a(x) = x}).
 \item \code{recurrent_activation}: Activation function to use for the
@@ -39,7 +39,7 @@ recurrent step.
 \item \code{recurrent_out}: Activation function to use for the output step.
 \item \code{epochs}: Number of epochs to train the model.
 \item \code{lr}: Learning rate.
-\item \code{layers}: How many lstm layers. Only allows for 1 or 2.
+\item \code{layers}: How many LSTM layers. Only allows for 1 or 2.
 \item \code{callbacks}: List of callbacks, which is a set of functions to
 be applied at given stages of the training procedure. Default callback
 function \code{callback_early_stopping} stops training if the validation
@@ -49,6 +49,7 @@ loss does not improve across \code{patience} number of epochs.
 }
 
 \examples{
+\dontrun{
 library(origami)
 data(bsds)
 
@@ -73,6 +74,7 @@ valid_task <- validation(task, fold = task$folds[[1]])
 
 gru_fit <- gru_lrnr$train(train_task)
 gru_preds <- gru_fit$predict(valid_task)
+}
 }
 \seealso{
 Other Learners: 
