@@ -70,6 +70,7 @@ Other Learners:
 \code{\link{Lrnr_independent_binomial}},
 \code{\link{Lrnr_lstm_keras}},
 \code{\link{Lrnr_lstm}},
+\code{\link{Lrnr_modify_task}},
 \code{\link{Lrnr_multiple_ts}},
 \code{\link{Lrnr_multivariate}},
 \code{\link{Lrnr_nnet}},
