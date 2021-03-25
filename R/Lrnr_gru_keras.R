@@ -1,17 +1,17 @@
 #' Recurrent Neural Network with Gated Recurrent Unit (GRU) with Keras
 #'
-#' This learner supports the Recurrent Neural Network (RNN) with
-#' Gated Recurrent Unit. This learner leverages the same principle as a LSTM,
-#' but it is more streamlined and thus cheaper to run, at the expense of
-#' representational power. This learner uses the \pkg{keras} package. Note that all
-#' preprocessing, such as differencing and seasonal effects for time series,
-#' should be addressed before using this learner. Desired lags of the time series
-#' should be added as predictors before using the learner.
+#' This learner supports Recurrent Neural Networks (RNNs) with Gated Recurrent
+#' Units (GRU). This learner leverages the same principles as LSTM networks but
+#' is more streamlined and thus cheaper to run, at the expense of some loss in
+#' representational power. This learner uses the \pkg{keras} package. Note that
+#' all preprocessing, such as differencing and seasonal effects for time
+#' series, should be addressed before using this learner. Desired lags of the
+#' time series should be added as predictors before using the learner.
 #'
 #' @docType class
 #'
 #' @importFrom R6 R6Class
-#' @importFrom assertthat assert_that is.count is.flag
+#' @importFrom dplyr "%>%"
 #'
 #' @export
 #'
@@ -28,20 +28,20 @@
 #'
 #' @section Parameters:
 #'   - \code{batch_size}: How many times should the training data be used to
-#'  train the neural network?
+#'       train the neural network?
 #'   - \code{units}: Positive integer, dimensionality of the output space.
 #'   - \code{dropout}: Float between 0 and 1. Fraction of the input units to
-#'   drop.
-#'   - \code{recurrent_dropout}: Float between 0 and 1. Fraction of the
-#'   units to drop for the linear transformation of the recurrent state.
+#'       drop.
+#'   - \code{recurrent_dropout}: Float between 0 and 1. Fraction of the units
+#'       to drop for the linear transformation of the recurrent state.
 #'   - \code{activation}: Activation function to use. If you pass NULL, no
-#'   activation is applied (e.g., "linear" activation: \code{a(x) = x}).
+#'       activation is applied (e.g., "linear" activation: \code{a(x) = x}).
 #'   - \code{recurrent_activation}: Activation function to use for the
-#'   recurrent step.
+#'       recurrent step.
 #'   - \code{recurrent_out}: Activation function to use for the output step.
 #'   - \code{epochs}: Number of epochs to train the model.
 #'   - \code{lr}: Learning rate.
-#'   - \code{layers}: How many lstm layers. Only allows for 1 or 2.
+#'   - \code{layers}: How many LSTM layers. Only allows for 1 or 2.
 #'   - \code{callbacks}: List of callbacks, which is a set of functions to
 #'   be applied at given stages of the training procedure. Default callback
 #'   function \code{callback_early_stopping} stops training if the validation
@@ -49,6 +49,7 @@
 #'   - \code{...}: Other parameters passed to \code{\link[keras]{keras}}.
 #'
 #' @examples
+#' \dontrun{
 #' library(origami)
 #' data(bsds)
 #'
@@ -73,8 +74,10 @@
 #'
 #' gru_fit <- gru_lrnr$train(train_task)
 #' gru_preds <- gru_fit$predict(valid_task)
+#' }
 Lrnr_gru_keras <- R6Class(
-  classname = "Lrnr_gru_keras", inherit = Lrnr_base, portable = TRUE, class = TRUE,
+  classname = "Lrnr_gru_keras", inherit = Lrnr_base, portable = TRUE,
+  class = TRUE,
   public = list(
     initialize = function(batch_size = 10,
                           units = 32,
@@ -86,7 +89,9 @@ Lrnr_gru_keras <- R6Class(
                           epochs = 100,
                           lr = 0.001,
                           layers = 1,
-                          callbacks = list(keras::callback_early_stopping(patience = 10)),
+                          callbacks = list(
+                            keras::callback_early_stopping(patience = 10)
+                          ),
                           ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
