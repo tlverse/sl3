@@ -31,13 +31,10 @@ test_that("Lrnr_screener_coefs works selected max_screen no. covs", {
 })
 
 test_that("Lrnr_screener_coefs works selected min_screen no. covs", {
-  glmnet_screener <- make_learner(Lrnr_screener_coefs, lrnr_glmnet, min_screen = 2)
-  glmnet_screener_fit <- glmnet_screener$train(task)
-  expect_equal(length(glmnet_screener_fit$fit_object$selected), 2)
-
-  glmnet_screener <- make_learner(Lrnr_screener_coefs, lrnr_glmnet, min_screen = 4)
-  glmnet_screener_fit <- glmnet_screener$train(task)
-  expect_equal(length(glmnet_screener_fit$fit_object$selected), 4)
+  glmnet_screener <- make_learner(Lrnr_screener_coefs, lrnr_glmnet, 
+                                  min_screen = 3)
+  glmnet_screener_fit <- glmnet_screener0$train(task)
+  expect_equal(length(glmnet_screener_fit$fit_object$selected), 3)
 })
 
 
