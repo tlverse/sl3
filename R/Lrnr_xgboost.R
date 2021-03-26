@@ -9,6 +9,7 @@
 #' @docType class
 #'
 #' @importFrom R6 R6Class
+#' @importFrom stats predict
 #'
 #' @export
 #'
@@ -65,38 +66,45 @@ Lrnr_xgboost <- R6Class(
       if (is.null(verbose)) {
         verbose <- getOption("sl3.verbose")
       }
+      args$verbose <- as.integer(verbose)
 
+      # set up outcome
       outcome_type <- self$get_outcome_type(task)
-
-      Xmat <- as.matrix(task$X)
-      if (is.integer(Xmat)) {
-        Xmat[, 1] <- as.numeric(Xmat[, 1])
-      }
       Y <- outcome_type$format(task$Y)
       if (outcome_type$type == "categorical") {
         Y <- as.numeric(Y) - 1
       }
-      args$data <- try(xgboost::xgb.DMatrix(Xmat, label = Y))
 
-      if (task$has_node("weights")) {
-        try(xgboost::setinfo(args$data, "weight", task$weights))
+      # set up predictor data
+      Xmat <- as.matrix(task$X)
+      if (is.integer(Xmat)) {
+        Xmat[, 1] <- as.numeric(Xmat[, 1])
       }
+      if (nrow(Xmat) != nrow(task$X) & ncol(Xmat) == nrow(task$X)) {
+        Xmat <- t(Xmat)
+      }
+      args$data <- try(xgboost::xgb.DMatrix(Xmat, label = Y), silent = TRUE)
+
+      # specify weights
+      if (task$has_node("weights")) {
+        try(xgboost::setinfo(args$data, "weight", task$weights), silent = TRUE)
+      }
+
+      # specify offset
       if (task$has_node("offset")) {
         if (outcome_type$type == "categorical") {
           # TODO: fix
           stop("offsets not yet supported for outcome_type='categorical'")
         }
-
         family <- outcome_type$glm_family(return_object = TRUE)
         link_fun <- args$family$linkfun
         offset <- task$offset_transformed(link_fun)
-        try(xgboost::setinfo(args$data, "base_margin", offset))
+        try(xgboost::setinfo(args$data, "base_margin", offset), silent = TRUE)
       } else {
         link_fun <- NULL
       }
-      args$verbose <- as.integer(verbose)
-      args$watchlist <- list(train = args$data)
 
+      # specify objective if it's NULL to avoid xgb warnings
       if (is.null(args$objective)) {
         if (outcome_type$type == "binomial") {
           args$objective <- "binary:logistic"
@@ -109,8 +117,9 @@ Lrnr_xgboost <- R6Class(
           args$eval_metric <- "mlogloss"
         }
       }
-      fit_object <- call_with_args(xgboost::xgb.train, args, keep_all = TRUE)
 
+      args$watchlist <- list(train = args$data)
+      fit_object <- call_with_args(xgboost::xgb.train, args, keep_all = TRUE)
       fit_object$training_offset <- task$has_node("offset")
       fit_object$link_fun <- link_fun
 
@@ -118,60 +127,55 @@ Lrnr_xgboost <- R6Class(
     },
 
     .predict = function(task = NULL) {
-      outcome_type <- private$.training_outcome_type
-      verbose <- getOption("sl3.verbose")
-
       fit_object <- private$.fit_object
 
+      # set up test data for prediction
       Xmat <- as.matrix(task$X)
       if (is.integer(Xmat)) {
         Xmat[, 1] <- as.numeric(Xmat[, 1])
       }
-
       # order of columns has to be the same in xgboost training and test data
-      Xmat_matched <- as.matrix(
-        Xmat[, match(fit_object$feature_names, colnames(Xmat))]
-      )
-      if (nrow(Xmat_matched) != nrow(Xmat) &
-        ncol(Xmat_matched) == nrow(Xmat)) {
-        Xmat_matched <- t(Xmat_matched)
+      Xmat_ord <- as.matrix(Xmat[, match(fit_object$feature_names, colnames(Xmat))])
+      if ((nrow(Xmat_ord) != nrow(Xmat)) & (ncol(Xmat_ord) == nrow(Xmat))) {
+        Xmat_ord <- t(Xmat_ord)
       }
-      stopifnot(nrow(Xmat_matched) == nrow(Xmat))
-
+      stopifnot(nrow(Xmat_ord) == nrow(Xmat))
       # convert to xgb.DMatrix
-      xgb_data <- try(xgboost::xgb.DMatrix(Xmat_matched))
+      xgb_data <- try(xgboost::xgb.DMatrix(Xmat_ord), silent = TRUE)
 
+      # incorporate offset, if it wasspecified in training
       if (self$fit_object$training_offset) {
-        offset <- task$offset_transformed(self$fit_object$link_fun,
+        offset <- task$offset_transformed(
+          self$fit_object$link_fun,
           for_prediction = TRUE
         )
-        xgboost::setinfo(xgb_data, "base_margin", offset)
+        try(xgboost::setinfo(xgb_data, "base_margin", offset), silent = TRUE)
+      }
+
+      # incorporate ntreelimit, if training model was not a gblinear-based fit
+      ntreelimit <- 0
+      if (!is.null(fit_object[["best_ntreelimit"]]) &
+        !("gblinear" %in% fit_object[["params"]][["booster"]])) {
+        ntreelimit <- fit_object[["best_ntreelimit"]]
       }
 
       predictions <- rep.int(list(numeric()), 1)
-
       if (nrow(Xmat) > 0) {
-        # Use ntreelimit for prediction, if used during model training.
-        # Use it only for gbtree (not gblinear, i.e., glm -- not implemented)
-        ntreelimit <- 0
-        if (!is.null(fit_object[["best_ntreelimit"]]) &&
-          !("gblinear" %in% fit_object[["params"]][["booster"]])) {
-          ntreelimit <- fit_object[["best_ntreelimit"]]
-        }
         # will generally return vector, needs to be put into data.table column
         predictions <- stats::predict(
           fit_object,
-          newdata = xgb_data,
-          ntreelimit = ntreelimit, reshape = TRUE
+          newdata = xgb_data, ntreelimit = ntreelimit, reshape = TRUE
         )
+
+        if (private$.training_outcome_type$type == "categorical") {
+          # pack predictions in a single column
+          predictions <- pack_predictions(predictions)
+        }
       }
-      if (outcome_type$type == "categorical") {
-        # pack predictions in a single column
-        predictions <- pack_predictions(predictions)
-      }
-      # names(pAoutDT) <- names(models_list)
+
       return(predictions)
     },
+
     .required_packages = c("xgboost")
   )
 )
