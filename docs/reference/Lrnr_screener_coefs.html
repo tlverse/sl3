@@ -167,7 +167,9 @@ their estimated coefficients in a (possibly regularized) GLM.</p>
 <dt><code>learner</code></dt><dd><p>An instantiated learner to use for estimating
 coefficients used in screening.</p></dd>
 <dt><code>threshold = 1e-3</code></dt><dd><p>Minimum size of coefficients to be kept.</p></dd>
-<dt><code>max_retain = NULL</code></dt><dd><p>Maximum no. variables to be kept.</p></dd>
+<dt><code>max_screen = NULL</code></dt><dd><p>Maximum number of covariates to be kept.</p></dd>
+<dt><code>min_screen = 2</code></dt><dd><p>Maximum number of covariates to be kept. Only
+applicable when supplied <code>learner</code> is a <code><a href='Lrnr_glmnet.html'>Lrnr_glmnet</a></code>.</p></dd>
 <dt><code>...</code></dt><dd><p>Other parameters passed to <code>learner</code>.</p></dd>
 
 </dl>
