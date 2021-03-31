@@ -20,19 +20,24 @@ lrnr_mean <- make_learner(Lrnr_mean)
 lrnrs <- make_learner(Stack, lrnr_glm, lrnr_mean)
 
 ########################### coef screener ######################################
-glmnet_screener <- make_learner(Lrnr_screener_coefs, lrnr_glmnet)
-glmnet_screener_fit <- glmnet_screener$train(task)
-glmnet_screener_fit$fit_object$selected
-
-glm_screener <- make_learner(Lrnr_screener_coefs, lrnr_glm, max_retain = 2)
+glm_screener <- make_learner(Lrnr_screener_coefs, lrnr_glm, max_screen = 2)
 glm_screener_pipeline <- make_learner(Pipeline, glm_screener, lrnrs)
 fit_glm_screener_pipeline <- glm_screener_pipeline$train(task)
 preds_glm_screener_pipeline <- fit_glm_screener_pipeline$predict()
-test_that("Lrnr_screener_coefs works selected max_retain no. covs", {
+test_that("Lrnr_screener_coefs works selected max_screen no. covs", {
   glm_screener_fit <- glm_screener$train(task)
   selected <- glm_screener_fit$fit_object$selected
   expect_equal(length(selected), 2)
 })
+
+# test_that("Lrnr_screener_coefs works selected min_screen no. covs", {
+#   glmnet_screener <- make_learner(Lrnr_screener_coefs, lrnr_glmnet, 
+#                                   min_screen = 2)
+#   glmnet_screener_fit <- glmnet_screener$train(task)
+#   expect_equal(length(glmnet_screener_fit$fit_object$selected), 2)
+# })
+
+
 
 ###########################  correlation screener ##############################
 # Correlation P-value Threshold Screener
