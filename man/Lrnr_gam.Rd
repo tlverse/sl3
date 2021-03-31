@@ -3,56 +3,65 @@
 \docType{class}
 \name{Lrnr_gam}
 \alias{Lrnr_gam}
-\title{Generalized Additive Models}
+\title{GAM: Generalized Additive Models}
 \format{
-\code{\link{R6Class}} object.
+An \code{\link[R6]{R6Class}} object inheriting from
+\code{\link{Lrnr_base}}.
 }
 \value{
-Learner object with methods for training and prediction. See
-\code{\link{Lrnr_base}} for documentation on learners.
+A learner object inheriting from \code{\link{Lrnr_base}} with
+methods for training and prediction. For a full list of learner
+functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 }
 \description{
-This learner provides fitting procedures for generalized additive models
-using \code{\link[mgcv]{gam}}.
+This learner provides fitting procedures for generalized additive models,
+using the routines from \pkg{mgcv} through a call to the function
+\code{\link[mgcv]{gam}}. The \pkg{mgcv} package and the use of GAMs are
+described thoroughly (with examples) in \insertCite{mgcv;textual}{sl3},
+while \insertCite{hastie-gams;textual}{sl3} also provided an earlier quite
+thorough look at GAMs.
 }
 \section{Parameters}{
 
-\describe{
-\item{\code{formula}}{An optional argument specifying the formula of GAM.
-Input type can be formula or string, or a list of them. If not specified,
-continuous covariates will be smoothen with the smooth terms represented
-using `penalized thin plate regression splines'. For a detailed
-description, please consult the documentation for \code{\link[mgcv]{gam}}.}
-
-\item{\code{family}}{An optional argument specifying the family of GAM. See
-\code{\link{family}} and \code{\link[mgcv]{family.mgcv}} for a list of
-available families. If not specified, it will be inferred depending on the
-type of the outcome. For now the GAM supports binomial and gaussian if
-\code{formula} is not specified. For a detailed description, please consult
-the documentation for \code{\link[mgcv]{gam}}.}
-
-\item{\code{method}}{An optional argument specifying the method for
-smoothing parameter selection criterion. Default is set to GCV. For a
-detailed description, please consult the documentation for
-\code{\link[mgcv]{gam}}.}
-
-\item{\code{...}}{Other parameters passed to \code{\link[mgcv]{gam}}.}
+\itemize{
+\item \code{formula}: An optional argument specifying the formula of GAM.
+Input type can be formula or string, or a list of them. If not
+specified, continuous covariates will be smoothened with the smooth
+terms represented using "penalized thin plate regression splines". For
+a more detailed description, please consult the documentation for
+\code{\link[mgcv]{gam}}.
+\item \code{family}: An optional argument specifying the family of the GAM.
+See \code{\link[stats]{family}} and \code{\link[mgcv]{family.mgcv}}
+for a list of available family functions. If left unspecified, it will
+be inferred depending on the detected type of the outcome. For now,
+GAM supports binomial and gaussian outcome types, if \code{formula} is
+unspecified. For a more detailed description of this argument, please
+consult the documentation of \code{\link[mgcv]{gam}}.
+\item \code{method}: An optional argument specifying the method for smoothing
+parameter selection. The default is global cross-validation (GCV). For
+more detaileds on this argument, consult the documentation of
+\code{\link[mgcv]{gam}}.
+\item \code{...}: Other parameters passed to \code{\link[mgcv]{gam}}. See its
+documentation for details.
 }
 }
 
-\section{Common Parameters}{
-
-
-Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by \code{Lrnr_base}, and shared
-by all learners.
-
-\describe{
-\item{\code{covariates}}{A character vector of covariates. The learner will use this to subset the covariates for any specified task}
-\item{\code{outcome_type}}{A \code{\link{variable_type}} object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified}
-\item{\code{...}}{All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating}
+\examples{
+data(cpp_imputed)
+# create task for prediction
+cpp_task <- sl3_Task$new(
+  data = cpp_imputed,
+  covariates = c("bmi", "parity", "mage", "sexn"),
+  outcome = "haz"
+)
+# simple prediction
+gam_lrnr <- Lrnr_gam$new()
+gam_fit <- gam_lrnr$train(cpp_task)
+gam_preds <- gam_fit$predict()
 }
+\references{
+\insertAllCited{}
 }
-
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},

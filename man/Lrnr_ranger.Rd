@@ -34,12 +34,13 @@ regression, and the sum of test statistics (for survival analysis, see
 the \code{splitrule} argument of \code{\link[ranger]{ranger}}).
 \item \code{num.threads = 1}: Number of threads.
 \item \code{...}: Other parameters passed to \code{\link[ranger]{ranger}}. See
-it's documentation for details.
+its documentation for details.
 }
 }
 
 \examples{
 data(mtcars)
+# create task for prediction
 mtcars_task <- sl3_Task$new(
   data = mtcars,
   covariates = c(

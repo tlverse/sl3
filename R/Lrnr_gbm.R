@@ -1,8 +1,11 @@
-#' GBM - generalized boosted regression models
+#' GBM: Generalized Boosted Regression Models
 #'
 #' This learner provides fitting procedures for building generalized boosted
 #' regression models, using the function \code{\link[gbm]{gbm}} from the
 #' \code{gbm} package.
+#' \insertCite{friedman-gbm1;textual}{sl3}
+#' \insertCite{friedman-gbm2;textual}{sl3}
+
 #'
 #' @docType class
 #'

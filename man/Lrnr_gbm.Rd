@@ -3,7 +3,7 @@
 \docType{class}
 \name{Lrnr_gbm}
 \alias{Lrnr_gbm}
-\title{GBM - generalized boosted regression models}
+\title{GBM: Generalized Boosted Regression Models}
 \format{
 \code{\link{R6Class}} object.
 }
@@ -15,6 +15,8 @@ Learner object with methods for training and prediction. See
 This learner provides fitting procedures for building generalized boosted
 regression models, using the function \code{\link[gbm]{gbm}} from the
 \code{gbm} package.
+\insertCite{friedman-gbm1;textual}{sl3}
+\insertCite{friedman-gbm2;textual}{sl3}
 }
 \section{Parameters}{
 

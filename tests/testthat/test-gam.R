@@ -14,9 +14,7 @@ if (FALSE) {
   install("sl3", build_vignettes = FALSE, dependencies = FALSE) # INSTALL W/ devtools:
 }
 
-# library(data.table) library(origami)
-set.seed(1)
-
+set.seed(973)
 data(cpp_imputed)
 covars <- c("bmi", "parity", "mage", "sexn")
 outcome <- "haz"

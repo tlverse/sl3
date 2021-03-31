@@ -36,13 +36,14 @@
 #'      the \code{splitrule} argument of \code{\link[ranger]{ranger}}).
 #'  - \code{num.threads = 1}: Number of threads.
 #'  - \code{...}: Other parameters passed to \code{\link[ranger]{ranger}}. See
-#'      it's documentation for details.
+#'      its documentation for details.
 #'
 #' @references
 #'  \insertAllCited{}
 #'
 #' @examples
 #' data(mtcars)
+#' # create task for prediction
 #' mtcars_task <- sl3_Task$new(
 #'   data = mtcars,
 #'   covariates = c(
