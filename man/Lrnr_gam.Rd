@@ -54,7 +54,7 @@ cpp_task <- sl3_Task$new(
   covariates = c("bmi", "parity", "mage", "sexn"),
   outcome = "haz"
 )
-# simple prediction
+# initialization, training, and prediction with the defaults
 gam_lrnr <- Lrnr_gam$new()
 gam_fit <- gam_lrnr$train(cpp_task)
 gam_preds <- gam_fit$predict()

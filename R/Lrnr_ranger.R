@@ -24,6 +24,8 @@
 #'
 #' @family Learners
 #'
+#' @seealso [Lrnr_randomForest] for a similar learner using \pkg{randomForest}
+#'
 #' @section Parameters:
 #'  - \code{num.trees = 500}: Number of trees to be used in growing the forest.
 #'  - \code{write.forest = TRUE}: If \code{TRUE}, forest is stored, which is
@@ -52,7 +54,7 @@
 #'   ),
 #'   outcome = "mpg"
 #' )
-#' # simple prediction
+#' # initialization, training, and prediction with the defaults
 #' ranger_lrnr <- Lrnr_ranger$new()
 #' ranger_fit <- ranger_lrnr$train(mtcars_task)
 #' ranger_preds <- ranger_fit$predict()

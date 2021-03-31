@@ -49,7 +49,7 @@ mtcars_task <- sl3_Task$new(
   ),
   outcome = "mpg"
 )
-# simple prediction
+# initialization, training, and prediction with the defaults
 ranger_lrnr <- Lrnr_ranger$new()
 ranger_fit <- ranger_lrnr$train(mtcars_task)
 ranger_preds <- ranger_fit$predict()
@@ -71,6 +71,8 @@ ranger_screen_glm_pipe_fit <- ranger_screen_glm_pipe$train(mtcars_task)
 \insertAllCited{}
 }
 \seealso{
+\link{Lrnr_randomForest} for a similar learner using \pkg{randomForest}
+
 Other Learners: 
 \code{\link{Custom_chain}},
 \code{\link{Lrnr_HarmonicReg}},
