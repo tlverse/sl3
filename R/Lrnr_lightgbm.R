@@ -76,7 +76,7 @@ Lrnr_lightgbm <- R6Class(
       }
 
       # set up training data in custom format
-      args$data <- try(lgb.Dataset(
+      args$data <- try(lightgbm::lgb.Dataset(
         data = as.matrix(task$X),
         label = as.numeric(Y)
       ))
@@ -102,14 +102,14 @@ Lrnr_lightgbm <- R6Class(
       # specify objective if it's NULL for fitting lightgbm
       if (is.null(args$objective)) {
         if (outcome_type$type == "continuous") {
-          args$objective <- "regression"
+          args$obj <- "regression"
         } else if (outcome_type$type == "binomial") {
-          args$objective <- "binary"
+          args$obj <- "binary"
           args$eval <- "binary_logloss"
         } else if (outcome_type$type == "quasibinomial") {
-          args$objective <- "regression"
+          args$obj <- "regression"
         } else if (outcome_type$type == "categorical") {
-          args$objective <- "multiclass"
+          args$obj <- "multiclass"
           args$eval <- "multi_error"
           args$num_class <- as.integer(length(outcome_type$levels))
         }
