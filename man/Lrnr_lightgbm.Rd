@@ -13,31 +13,20 @@ Learner object with methods for training and prediction. See
 }
 \description{
 This learner provides fitting procedures for \code{lightgbm} models, using
-\pkg{lightgbm}, via \code{\link[lightgbm]{lighttrain}}. These gradient
+\pkg{lightgbm}, via \code{\link[lightgbm]{lgb.train}}. These gradient
 boosted classification and regression tree models feature faster training
 speed and higher efficiency, Lower memory usage, better accuracy, and
 improved handling large-scale data. For details on the fitting procedure,
-consult the documentation of the \pkg{lightgbm}.
+consult the documentation of the \pkg{lightgbm} package.
 }
 \section{Parameters}{
 
-\describe{
-\item{\code{nrounds=20}}{Number of fitting iterations.}
-\item{\code{...}}{Other parameters passed to
-\code{\link[xgboost]{xgb.train}}.}
-}
-}
-
-\section{Common Parameters}{
-
-
-Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by \code{Lrnr_base}, and shared
-by all learners.
-
-\describe{
-\item{\code{covariates}}{A character vector of covariates. The learner will use this to subset the covariates for any specified task}
-\item{\code{outcome_type}}{A \code{\link{variable_type}} object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified}
-\item{\code{...}}{All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating}
+\itemize{
+\item \code{num_leaves = 4L}: Maximum number of leaves in a single tree.
+\item \code{nrounds = 10L}: Number of training rounds.
+\item \code{num_threads = 1L}: Number of threads for hyperthreading.
+\item \code{...}: Other arguments passed to \code{\link[lightgbm]{lgb.train}}.
+See its documentation for further details.
 }
 }
 

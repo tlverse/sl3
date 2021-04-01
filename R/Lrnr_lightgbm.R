@@ -1,7 +1,7 @@
 #' LightGBM: Light Gradient Boosting Machine
 #'
 #' This learner provides fitting procedures for \code{lightgbm} models, using
-#' \pkg{lightgbm}, via \code{\link[lightgbm]{lighttrain}}. These gradient
+#' \pkg{lightgbm}, via \code{\link[lightgbm]{lgb.train}}. These gradient
 #' boosted classification and regression tree models feature faster training
 #' speed and higher efficiency, Lower memory usage, better accuracy, and
 #' improved handling large-scale data. For details on the fitting procedure,
