@@ -3,20 +3,10 @@ context("test-lightgbm.R -- General testing for LightGBM")
 library(lightgbm)
 
 # define test dataset
-data(mtcars)
-task <- sl3_Task$new(mtcars, covariates = c(
-  "cyl", "disp", "hp", "drat", "wt", "qsec",
-  "vs", "am", "gear", "carb"
-), outcome = "mpg")
-
-task2 <- sl3_Task$new(mtcars, covariates = c(
-  "cyl", "disp", "hp", "drat", "wt", "qsec",
-  "vs", "am", "gear", "carb"
-), outcome = "mpg")
-
-interactions <- list(c("cyl", "disp"), c("hp", "drat"))
-task_with_interactions <- task$add_interactions(interactions)
-task2 <- task2$add_interactions(interactions)
+data(cpp_imputed)
+covars <- c("bmi", "parity", "mage", "sexn")
+outcome <- "haz"
+task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
 
 test_learner <- function(learner, task, ...) {
   # test learner definition: this requires that a learner can be instantiated
@@ -50,60 +40,59 @@ test_learner <- function(learner, task, ...) {
   })
 }
 
-## test xgboost learner:
+## test lightgbm learner:
 options(sl3.verbose = TRUE)
-test_learner(Lrnr_xgboost, task)
-test_learner(Lrnr_xgboost, task2)
+test_learner(Lrnr_lightgbm, task)
 
-test_that("Lrnr_xgboost predictions match xgboost's: continuous outcome", {
-  ## instantiate Lrnr_xgboost, train on task, and predict on task
+test_that("Lrnr_lightgbm predictions match lightgbm's: continuous outcome", {
+  ## instantiate Lrnr_lightgbm, train on task, and predict on task
   set.seed(73964)
-  lrnr_xgboost <- Lrnr_xgboost$new()
-  fit_lrnr_xgboost <- lrnr_xgboost$train(task)
-  prd_lrnr_xgboost <- fit_lrnr_xgboost$predict()
+  lrnr_lightgbm <- Lrnr_lightgbm$new()
+  fit_lrnr_lightgbm <- lrnr_lightgbm$train(task)
+  prd_lrnr_lightgbm <- fit_lrnr_lightgbm$predict()
 
-  ## fit xgboost using the data from the task
+  ## fit lightgbm using the data from the task
   set.seed(73964)
-  fit_xgboost <- xgboost(
+  fit_lightgbm <- lightgbm(
     data = as.matrix(task$X), label = task$Y,
-    nrounds = lrnr_xgboost$params$nrounds,
-    nthread = lrnr_xgboost$params$nthread
+    nrounds = lrnr_lightgbm$params$nrounds,
+    nthread = lrnr_lightgbm$params$nthread
   )
-  prd_xgboost <- predict(fit_xgboost, as.matrix(task$X))
+  prd_lightgbm <- predict(fit_lightgbm, as.matrix(task$X))
 
-  ## test equivalence of prediction from Lrnr_xgboost and xgboost::xgboost
-  expect_equal(prd_lrnr_xgboost, prd_xgboost)
+  ## test equivalence of prediction from Lrnr_lightgbm and lightgbm::lightgbm
+  expect_equal(prd_lrnr_lightgbm, prd_lightgbm)
 })
 
-test_that("Lrnr_xgboost predictions match xgboost's: binary outcome", {
+test_that("Lrnr_lightgbm predictions match lightgbm's: binary outcome", {
   ## create task with binary outcome
   task <- sl3_Task$new(mtcars, covariates = c(
     "cyl", "disp", "hp", "drat", "wt", "qsec",
     "vs", "mpg", "gear", "carb"
   ), outcome = "am")
 
-  ## instantiate Lrnr_xgboost, train on task, and predict on task
+  ## instantiate Lrnr_lightgbm, train on task, and predict on task
   set.seed(73964)
-  lrnr_xgboost <- Lrnr_xgboost$new()
-  fit_lrnr_xgboost <- lrnr_xgboost$train(task)
-  prd_lrnr_xgboost <- fit_lrnr_xgboost$predict()
+  lrnr_lightgbm <- Lrnr_lightgbm$new()
+  fit_lrnr_lightgbm <- lrnr_lightgbm$train(task)
+  prd_lrnr_lightgbm <- fit_lrnr_lightgbm$predict()
 
-  ## fit xgboost using the data from the task
+  ## fit lightgbm using the data from the task
   set.seed(73964)
-  fit_xgboost <- xgboost(
+  fit_lightgbm <- lightgbm(
     data = as.matrix(task$X), label = task$Y,
-    nrounds = lrnr_xgboost$params$nrounds,
-    nthread = lrnr_xgboost$params$nthread,
+    nrounds = lrnr_lightgbm$params$nrounds,
+    nthread = lrnr_lightgbm$params$nthread,
     objective = "binary:logistic",
     eval_metric = "logloss"
   )
-  prd_xgboost <- predict(fit_xgboost, as.matrix(task$X))
+  prd_lightgbm <- predict(fit_lightgbm, as.matrix(task$X))
 
-  ## test equivalence of prediction from Lrnr_xgboost and xgboost::xgboost
-  expect_equal(prd_lrnr_xgboost, prd_xgboost)
+  ## test equivalence of prediction from Lrnr_lightgbm and lightgbm::lightgbm
+  expect_equal(prd_lrnr_lightgbm, prd_lightgbm)
 })
 
-test_that("Naive test of Lrnr_xgboost weights", {
+test_that("Cursory test of Lrnr_lightgbm with weights", {
   data(mtcars)
   covariates <- colnames(mtcars)[-1]
   mtcars$weights <- c(1, 1, rep(1 / 3, nrow(mtcars) - 2))
@@ -112,22 +101,22 @@ test_that("Naive test of Lrnr_xgboost weights", {
     weights = "weights"
   )
 
-  ## instantiate Lrnr_xgboost, train on task, and predict on task
-  lrnr_xgboost <- Lrnr_xgboost$new()
+  ## instantiate Lrnr_lightgbm, train on task, and predict on task
+  lrnr_lightgbm <- Lrnr_lightgbm$new()
   set.seed(73964)
-  fit_lrnr_xgboost <- lrnr_xgboost$train(task)
-  prd_lrnr_xgboost <- fit_lrnr_xgboost$predict()
+  fit_lrnr_lightgbm <- lrnr_lightgbm$train(task)
+  prd_lrnr_lightgbm <- fit_lrnr_lightgbm$predict()
 
-  ## fit xgboost using the data from the task
+  ## fit lightgbm using the data from the task
   set.seed(73964)
-  fit_xgboost <- xgboost(
+  fit_lightgbm <- lightgbm(
     data = as.matrix(task$X), label = task$Y,
-    nrounds = lrnr_xgboost$params$nrounds,
-    nthread = lrnr_xgboost$params$nthread,
+    nrounds = lrnr_lightgbm$params$nrounds,
+    nthread = lrnr_lightgbm$params$nthread,
     weight = task$weights
   )
-  prd_xgboost <- predict(fit_xgboost, as.matrix(task$X))
+  prd_lightgbm <- predict(fit_lightgbm, as.matrix(task$X))
 
-  ## test equivalence of prediction from Lrnr_xgboost and xgboost::xgboost
-  expect_equal(prd_lrnr_xgboost, prd_xgboost)
+  ## test equivalence of prediction from Lrnr_lightgbm and lightgbm::lightgbm
+  expect_equal(prd_lrnr_lightgbm, prd_lightgbm)
 })

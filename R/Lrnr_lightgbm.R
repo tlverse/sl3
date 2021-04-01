@@ -37,7 +37,7 @@ Lrnr_lightgbm <- R6Class(
   portable = TRUE, class = TRUE,
   public = list(
     initialize = function(num_leaves = 4L, learning_rate = 1.0, nrounds = 10L,
-                          num_threads = 1L, ...) {
+                          force_col_wise = TRUE, num_threads = 1L, ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     },
@@ -73,18 +73,19 @@ Lrnr_lightgbm <- R6Class(
       outcome_type <- self$get_outcome_type(task)
       Y <- outcome_type$format(task$Y)
       if (outcome_type$type == "categorical") {
-        Y <- as.numeric(Y) - 1
+        # multiclass labels must start from zero
+        Y <- as.numeric(Y) - 1L
       }
 
       # set up training data in custom format
       args$data <- try(lgb.Dataset(
-        data = task$X,
-        label = Y
+        data = as.matrix(task$X),
+        label = as.numeric(Y)
       ))
 
       # add observation-level weights if detected
       if (task$has_node("weights")) {
-        try(lightgbm::setinfo(args$data, "weight", task$weights))
+        try(lightgbm::setinfo(args$data, "weight", as.numeric(task$weights)))
       }
 
       # specify offset
@@ -92,7 +93,7 @@ Lrnr_lightgbm <- R6Class(
         # get outcome type and transform offset accordingly
         family <- outcome_type$glm_family(return_object = TRUE)
         link_fun <- args$family$linkfun
-        offset <- task$offset_transformed(link_fun)
+        offset <- as.numeric(task$offset_transformed(link_fun))
 
         # append offset to data
         try(lightgbm::setinfo(args$data, "init_score", offset))
@@ -100,44 +101,41 @@ Lrnr_lightgbm <- R6Class(
         link_fun <- NULL
       }
 
-      # specify objective if it's NULL for lightgbm fitting 
+      # specify objective if it's NULL for fitting lightgbm
       if (is.null(args$objective)) {
-        if (outcome_type$type == "binomial") {
+        if (outcome_type$type == "continuous") {
+          args$objective <- "regression"
+        } else if (outcome_type$type == "binomial") {
           args$objective <- "binary"
           args$eval <- "binary_logloss"
         } else if (outcome_type$type == "quasibinomial") {
           args$objective <- "regression"
         } else if (outcome_type$type == "categorical") {
-          args$objective <- "multi:softprob"
-          args$num_class <- length(outcome_type$levels)
-          args$eval_metric <- "mlogloss"
+          args$objective <- "multiclass"
+          args$eval <- "multi_error"
+          args$num_class <- as.integer(length(outcome_type$levels))
         }
       }
 
       fit_object <- call_with_args(lightgbm::lgb.train, args, keep_all = TRUE)
-      fit_object$training_offset <- task$has_node("offset")
-      fit_object$link_fun <- link_fun
+      #fit_object$training_offset <- task$has_node("offset")
+      #fit_object$link_fun <- link_fun
       return(fit_object)
     },
 
     .predict = function(task = NULL) {
       fit_object <- private$.fit_object
 
-      # set up test data for prediction
+      # set up test data for prediction (must be matrix or sparse matrix)
       Xmat <- as.matrix(task$X)
-      if (is.integer(Xmat)) {
-        Xmat[, 1] <- as.numeric(Xmat[, 1])
-      }
-      # order of columns has to be the same in xgboost training and test data
-      Xmat_ord <- as.matrix(Xmat[, match(fit_object$feature_names, colnames(Xmat))])
-      if ((nrow(Xmat_ord) != nrow(Xmat)) & (ncol(Xmat_ord) == nrow(Xmat))) {
-        Xmat_ord <- t(Xmat_ord)
-      }
-      stopifnot(nrow(Xmat_ord) == nrow(Xmat))
-      # convert to xgb.DMatrix
-      xgb_data <- try(xgboost::xgb.DMatrix(Xmat_ord), silent = TRUE)
 
-      # incorporate offset, if it wasspecified in training
+      # order of columns has to be the same in xgboost training and test data
+      train_name_ord <- match(names(private$.training_task$X), colnames(Xmat))
+      Xmat_ord <- as.matrix(Xmat[, train_name_ord])
+
+      browser()
+
+      # incorporate offset, if it was specified in training
       if (self$fit_object$training_offset) {
         offset <- task$offset_transformed(
           self$fit_object$link_fun,
@@ -146,27 +144,15 @@ Lrnr_lightgbm <- R6Class(
         try(xgboost::setinfo(xgb_data, "base_margin", offset), silent = TRUE)
       }
 
-      # incorporate ntreelimit, if training model was not a gblinear-based fit
-      ntreelimit <- 0
-      if (!is.null(fit_object[["best_ntreelimit"]]) &
-        !("gblinear" %in% fit_object[["params"]][["booster"]])) {
-        ntreelimit <- fit_object[["best_ntreelimit"]]
+      # will generally return vector, needs to be put into data.table column
+      predictions <- stats::predict(
+        fit_object, Xmat_ord, reshape = TRUE
+      )
+
+      if (private$.training_outcome_type$type == "categorical") {
+        # pack predictions in a single column
+        predictions <- pack_predictions(predictions)
       }
-
-      predictions <- rep.int(list(numeric()), 1)
-      if (nrow(Xmat) > 0) {
-        # will generally return vector, needs to be put into data.table column
-        predictions <- stats::predict(
-          fit_object,
-          newdata = xgb_data, ntreelimit = ntreelimit, reshape = TRUE
-        )
-
-        if (private$.training_outcome_type$type == "categorical") {
-          # pack predictions in a single column
-          predictions <- pack_predictions(predictions)
-        }
-      }
-
       return(predictions)
     },
     .required_packages = c("lightgbm")

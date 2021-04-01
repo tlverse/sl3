@@ -113,8 +113,8 @@ Lrnr_xgboost <- R6Class(
           args$objective <- "reg:logistic"
         } else if (outcome_type$type == "categorical") {
           args$objective <- "multi:softprob"
-          args$num_class <- length(outcome_type$levels)
           args$eval_metric <- "mlogloss"
+          args$num_class <- as.integer(length(outcome_type$levels))
         }
       }
 
