@@ -24,12 +24,6 @@ test_learner <- function(learner, task, ...) {
     length(task$Y)
   ))
 
-  holdout_preds <- fit_obj$predict(task2)
-  test_that("Learner can generate holdout set predictions", expect_equal(
-    train_preds,
-    holdout_preds
-  ))
-
   # test learner chaining
   chained_task <- fit_obj$chain()
   test_that("Chaining returns a task", {
@@ -53,10 +47,14 @@ test_that("Lrnr_lightgbm predictions match lightgbm's: continuous outcome", {
 
   ## fit lightgbm using the data from the task
   set.seed(73964)
-  fit_lightgbm <- lightgbm(
-    data = as.matrix(task$X), label = task$Y,
-    nrounds = lrnr_lightgbm$params$nrounds,
-    nthread = lrnr_lightgbm$params$nthread
+  lgb_data <- lgb.Dataset(
+    data = as.matrix(task$X),
+    label = as.numeric(task$Y)
+  )
+  fit_lightgbm <- lgb.train(
+    params = lrnr_lightgbm$params,
+    obj = "regression",
+    data = lgb_data
   )
   prd_lightgbm <- predict(fit_lightgbm, as.matrix(task$X))
 
@@ -79,12 +77,15 @@ test_that("Lrnr_lightgbm predictions match lightgbm's: binary outcome", {
 
   ## fit lightgbm using the data from the task
   set.seed(73964)
-  fit_lightgbm <- lightgbm(
-    data = as.matrix(task$X), label = task$Y,
-    nrounds = lrnr_lightgbm$params$nrounds,
-    nthread = lrnr_lightgbm$params$nthread,
-    objective = "binary:logistic",
-    eval_metric = "logloss"
+  lgb_data <- lgb.Dataset(
+    data = as.matrix(task$X),
+    label = as.numeric(task$Y)
+  )
+  fit_lightgbm <- lgb.train(
+    params = lrnr_lightgbm$params,
+    obj = "binary",
+    eval = "binary_logloss",
+    data = lgb_data
   )
   prd_lightgbm <- predict(fit_lightgbm, as.matrix(task$X))
 
@@ -93,27 +94,30 @@ test_that("Lrnr_lightgbm predictions match lightgbm's: binary outcome", {
 })
 
 test_that("Cursory test of Lrnr_lightgbm with weights", {
-  data(mtcars)
-  covariates <- colnames(mtcars)[-1]
-  mtcars$weights <- c(1, 1, rep(1 / 3, nrow(mtcars) - 2))
-  task <- sl3_Task$new(mtcars,
-    covariates = covariates, outcome = "mpg",
-    weights = "weights"
-  )
+  ## create task, continuous outcome with observation-level weights
+  covars <- c("bmi", "parity", "mage", "sexn")
+  outcome <- "haz"
+  cpp_imputed$weights <- runif(nrow(cpp_imputed), 0.3, 0.7)
+  task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome,
+                       weights = "weights")
 
   ## instantiate Lrnr_lightgbm, train on task, and predict on task
-  lrnr_lightgbm <- Lrnr_lightgbm$new()
   set.seed(73964)
+  lrnr_lightgbm <- Lrnr_lightgbm$new()
   fit_lrnr_lightgbm <- lrnr_lightgbm$train(task)
   prd_lrnr_lightgbm <- fit_lrnr_lightgbm$predict()
 
   ## fit lightgbm using the data from the task
   set.seed(73964)
-  fit_lightgbm <- lightgbm(
-    data = as.matrix(task$X), label = task$Y,
-    nrounds = lrnr_lightgbm$params$nrounds,
-    nthread = lrnr_lightgbm$params$nthread,
-    weight = task$weights
+  lgb_data <- lgb.Dataset(
+    data = as.matrix(task$X),
+    label = as.numeric(task$Y),
+    weight = as.numeric(task$weights)
+  )
+  fit_lightgbm <- lgb.train(
+    params = lrnr_lightgbm$params,
+    obj = "regression",
+    data = lgb_data
   )
   prd_lightgbm <- predict(fit_lightgbm, as.matrix(task$X))
 

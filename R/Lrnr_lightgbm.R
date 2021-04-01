@@ -5,7 +5,7 @@
 #' boosted classification and regression tree models feature faster training
 #' speed and higher efficiency, Lower memory usage, better accuracy, and
 #' improved handling large-scale data. For details on the fitting procedure,
-#' consult the documentation of the \pkg{lightgbm}.
+#' consult the documentation of the \pkg{lightgbm} package.
 #'
 #' @docType class
 #'
@@ -24,20 +24,18 @@
 #' @family Learners
 #'
 #' @section Parameters:
-#' \describe{
-#'   \item{\code{nrounds=20}}{Number of fitting iterations.}
-#'   \item{\code{...}}{Other parameters passed to
-#'     \code{\link[xgboost]{xgb.train}}.}
-#' }
+#'   - \code{num_leaves = 4L}: Maximum number of leaves in a single tree.
+#'   - \code{nrounds = 10L}: Number of training rounds.
+#'   - \code{num_threads = 1L}: Number of threads for hyperthreading.
+#'   - \code{...}: Other arguments passed to \code{\link[lightgbm]{lgb.train}}.
+#'       See its documentation for further details.
 #'
-#' @template common_parameters
-#
 Lrnr_lightgbm <- R6Class(
   classname = "Lrnr_lightgbm", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(num_leaves = 4L, learning_rate = 1.0, nrounds = 10L,
-                          force_col_wise = TRUE, num_threads = 1L, ...) {
+    initialize = function(num_leaves = 4L, nrounds = 10L, num_threads = 1L,
+                          ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     },
@@ -118,8 +116,6 @@ Lrnr_lightgbm <- R6Class(
       }
 
       fit_object <- call_with_args(lightgbm::lgb.train, args, keep_all = TRUE)
-      #fit_object$training_offset <- task$has_node("offset")
-      #fit_object$link_fun <- link_fun
       return(fit_object)
     },
 
@@ -133,16 +129,8 @@ Lrnr_lightgbm <- R6Class(
       train_name_ord <- match(names(private$.training_task$X), colnames(Xmat))
       Xmat_ord <- as.matrix(Xmat[, train_name_ord])
 
-      browser()
-
-      # incorporate offset, if it was specified in training
-      if (self$fit_object$training_offset) {
-        offset <- task$offset_transformed(
-          self$fit_object$link_fun,
-          for_prediction = TRUE
-        )
-        try(xgboost::setinfo(xgb_data, "base_margin", offset), silent = TRUE)
-      }
+      # NOTE: cannot incorporate offset in prediction, at least for now
+      # see https://github.com/microsoft/LightGBM/issues/1978
 
       # will generally return vector, needs to be put into data.table column
       predictions <- stats::predict(
