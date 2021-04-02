@@ -22,9 +22,7 @@ consult the documentation of the \pkg{lightgbm} package.
 \section{Parameters}{
 
 \itemize{
-\item \code{num_leaves = 31L}: Maximum number of leaves in a single tree.
-\item \code{num_rounds = 10L}: Number of training rounds.
-\item \code{num_threads = 1L}: Number of threads used for hyperthreading.
+\item \code{num_threads = 1L}: Number of threads for hyperthreading.
 \item \code{...}: Other arguments passed to \code{\link[lightgbm]{lgb.train}}.
 See its documentation for further details.
 }

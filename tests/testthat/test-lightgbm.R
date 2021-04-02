@@ -128,8 +128,10 @@ test_that("Cursory test of Lrnr_lightgbm with weights", {
   covars <- c("bmi", "parity", "mage", "sexn")
   outcome <- "haz"
   cpp_imputed$weights <- runif(nrow(cpp_imputed), 0.3, 0.7)
-  task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome,
-                       weights = "weights")
+  task <- sl3_Task$new(cpp_imputed,
+    covariates = covars, outcome = outcome,
+    weights = "weights"
+  )
 
   ## instantiate Lrnr_lightgbm, train on task, and predict on task
   set.seed(73964)
