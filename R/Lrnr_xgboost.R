@@ -24,6 +24,10 @@
 #'
 #' @family Learners
 #'
+#' @seealso [Lrnr_gbm] for standard gradient boosting models (via the \pkg{gbm}
+#'  package) and [Lrnr_lightgbm] for the faster and more efficient gradient
+#'  boosted trees from the LightGBM framework (via the \pkg{lightgbm} package).
+#'
 #' @section Parameters:
 #'   - \code{nrounds=20}: Number of fitting iterations.
 #'   - \code{...}: Other parameters passed to \code{\link[xgboost]{xgb.train}}.
@@ -41,10 +45,14 @@
 #'   ),
 #'   outcome = "mpg"
 #' )
+#'
 #' # initialization, training, and prediction with the defaults
 #' xgb_lrnr <- Lrnr_xgboost$new()
 #' xgb_fit <- xgb_lrnr$train(mtcars_task)
 #' xgb_preds <- xgb_fit$predict()
+#'
+#' # get feature importance from fitted model
+#' xgb_varimp <- xgb_fit$importance()
 Lrnr_xgboost <- R6Class(
   classname = "Lrnr_xgboost", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,

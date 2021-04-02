@@ -38,15 +38,23 @@ mtcars_task <- sl3_Task$new(
   ),
   outcome = "mpg"
 )
+
 # initialization, training, and prediction with the defaults
 xgb_lrnr <- Lrnr_xgboost$new()
 xgb_fit <- xgb_lrnr$train(mtcars_task)
 xgb_preds <- xgb_fit$predict()
+
+# get feature importance from fitted model
+xgb_varimp <- xgb_fit$importance()
 }
 \references{
 \insertAllCited{}
 }
 \seealso{
+\link{Lrnr_gbm} for standard gradient boosting models (via the \pkg{gbm}
+package) and \link{Lrnr_lightgbm} for the faster and more efficient gradient
+boosted trees from the LightGBM framework (via the \pkg{lightgbm} package).
+
 Other Learners: 
 \code{\link{Custom_chain}},
 \code{\link{Lrnr_HarmonicReg}},
