@@ -48,6 +48,7 @@ cpp_task <- sl3_Task$new(
   covariates = c("apgar1", "apgar5", "parity", "gagebrth", "mage", "sexn"),
   outcome = "haz"
 )
+
 # initialization, training, and prediction with the defaults
 gbm_lrnr <- Lrnr_gbm$new()
 gbm_fit <- gbm_lrnr$train(cpp_task)
@@ -57,7 +58,10 @@ gbm_preds <- gbm_fit$predict()
 \insertAllCited{}
 }
 \seealso{
-\link{Lrnr_xgboost} for extreme gradient boosting via \pkg{xgboost}
+\link{Lrnr_xgboost} for the extreme gradient boosted tree models from
+the Xgboost framework (via the \pkg{xgboost} package) and \link{Lrnr_lightgbm}
+for the faster and more efficient gradient boosted trees from the LightGBM
+framework (via the \pkg{lightgbm} package).
 
 Other Learners: 
 \code{\link{Custom_chain}},
