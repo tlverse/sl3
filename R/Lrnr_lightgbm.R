@@ -81,7 +81,7 @@ Lrnr_lightgbm <- R6Class(
       # add observation-level weights if detected
       if (task$has_node("weights")) {
         try(lightgbm::setinfo(args$data, "weight", as.numeric(task$weights)),
-          silent = TRUE
+            silent = TRUE
         )
       }
 

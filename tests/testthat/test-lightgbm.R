@@ -96,13 +96,14 @@ test_that("Lrnr_lightgbm predictions match lightgbm's: categorical outcome", {
   ## create task with binary outcome
   covars <- c("bmi", "haz", "mage", "sexn")
   outcome <- "parity"
+  cpp_imputed[[outcome]] <- as.numeric(as.factor(cpp_imputed[[outcome]]))
   task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
 
   ## instantiate Lrnr_lightgbm, train on task, and predict on task
   set.seed(73964)
   lrnr_lightgbm <- Lrnr_lightgbm$new(num_leaves = 40L)
   fit_lrnr_lightgbm <- lrnr_lightgbm$train(task)
-  prd_lrnr_lightgbm <- fit_lrnr_lightgbm$predict()
+  prd_lrnr_lightgbm <- unpack_predictions(fit_lrnr_lightgbm$predict())
 
   ## fit lightgbm using the data from the task
   set.seed(73964)
@@ -117,7 +118,7 @@ test_that("Lrnr_lightgbm predictions match lightgbm's: categorical outcome", {
     eval = "multi_error",
     data = lgb_data
   )
-  prd_lightgbm <- predict(fit_lightgbm, as.matrix(task$X))
+  prd_lightgbm <- predict(fit_lightgbm, as.matrix(task$X), reshape = TRUE)
 
   ## test equivalence of prediction from Lrnr_lightgbm and lightgbm::lightgbm
   expect_equal(prd_lrnr_lightgbm, prd_lightgbm)
