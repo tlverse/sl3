@@ -23,24 +23,27 @@
 #'   \item{\code{learner}}{An instantiated learner to use for estimating
 #'     coefficients used in screening.}
 #'   \item{\code{threshold = 1e-3}}{Minimum size of coefficients to be kept.}
-#'   \item{\code{max_retain = NULL}}{Maximum no. variables to be kept.}
+#'   \item{\code{max_screen = NULL}}{Maximum number of covariates to be kept.}
+#'   \item{\code{min_screen = 2}}{Maximum number of covariates to be kept. Only
+#'     applicable when supplied \code{learner} is a \code{\link{Lrnr_glmnet}}.}
 #'   \item{\code{...}}{Other parameters passed to \code{learner}.}
 #' }
 Lrnr_screener_coefs <- R6Class(
   classname = "Lrnr_screener_coefs",
   inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(learner, threshold = 1e-3, max_retain = NULL, ...) {
-      params <- args_to_list()
-      super$initialize(params = params, ...)
+    initialize = function(learner, threshold = 1e-3, max_screen = NULL,
+                          min_screen = 2, ...) {
+      super$initialize(params = args_to_list(), ...)
     }
   ),
   private = list(
     .properties = c("screener"),
 
     .train = function(task) {
-      learner <- self$params$learner
-      fit <- learner$train(task)
+      args <- self$params
+
+      fit <- args$learner$train(task)
       coefs <- as.vector(coef(fit))
       coef_names <- rownames(coef(fit))
       if (is.null(coef_names)) {
@@ -53,15 +56,47 @@ Lrnr_screener_coefs <- R6Class(
 
       covs <- task$nodes$covariates
 
-      selected_coefs <- coef_names[which(abs(coefs) > self$params$threshold)]
+      selected_coefs <- coef_names[which(abs(coefs) > args$threshold)]
       selected_coefs <- unique(gsub("\\..*", "", selected_coefs))
       selected <- intersect(selected_coefs, covs)
 
-      if (!is.null(self$params$max_retain) &&
-        (self$params$max_retain < length(selected))) {
-        ord_coefs <- coef_names[order(abs(coefs), decreasing = TRUE)]
-        ord_coefs <- unique(gsub("\\..*", "", ord_coefs))
-        selected <- intersect(ord_coefs, covs)[1:self$params$max_retain]
+      if (!is.null(args$max_screen)) {
+        if (args$max_screen < length(selected)) {
+          ord_coefs <- coef_names[order(abs(coefs), decreasing = TRUE)]
+          ord_coefs <- unique(gsub("\\..*", "", ord_coefs))
+          selected <- intersect(ord_coefs, covs)[1:args$max_screen]
+        }
+      }
+
+      if (length(selected) < args$min_screen) {
+        if ("lambda" %in% names(args$learner$params)) {
+          warning(
+            "Less than min_screen covariates selected. Increasing ",
+            "Lrnr_glmnet's lambda to select min_screen covariates."
+          )
+          selected <- list()
+          for (i in 1:(length(task$X) - args$min_screen)) {
+            selectedX <- get_selectedX(fit, args$threshold, i)
+            selected[[i]] <- intersect(selectedX, covs)
+            if (length(selected[[i]]) >= args$min_screen) {
+              break
+            }
+          }
+          selected <- selected[[length(selected)]]
+          if (selected < args$min_screen) {
+            stop(
+              "Could not increase Lrnr_glmnet's lambda enough select ",
+              "min_screen covariates. Try increasing the values in ",
+              "Lrnr_glmnet's lambda sequence, or decreasing min_screen."
+            )
+          }
+        } else {
+          stop(
+            "Less than min_screen covariates selected, and supplied ",
+            "learner is not Lrnr_glmnet, so lambda cannot be increased to ",
+            "select min_screen covariates."
+          )
+        }
       }
 
       fit_object <- list(selected = selected)
@@ -75,6 +110,17 @@ Lrnr_screener_coefs <- R6Class(
     .chain = function(task) {
       return(task$next_in_chain(covariates = private$.fit_object$selected))
     },
+
     .required_packages = c()
   )
 )
+
+get_selectedX <- function(fit, threshold, min_screen) {
+  coef_matrix <- fit$fit_object$glmnet.fit$beta
+  new_lambda <- which.max(
+    apply(coef_matrix, 2, function(x) sum(abs(x) > threshold)) >= min_screen
+  )
+  which_screen <- which(abs(coef_matrix[, new_lambda]) > threshold)
+  selected_coefs <- rownames(coef_matrix)[which_screen]
+  return(unique(gsub("\\..*", "", selected_coefs)))
+}

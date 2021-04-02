@@ -21,7 +21,9 @@ their estimated coefficients in a (possibly regularized) GLM.
 \item{\code{learner}}{An instantiated learner to use for estimating
 coefficients used in screening.}
 \item{\code{threshold = 1e-3}}{Minimum size of coefficients to be kept.}
-\item{\code{max_retain = NULL}}{Maximum no. variables to be kept.}
+\item{\code{max_screen = NULL}}{Maximum number of covariates to be kept.}
+\item{\code{min_screen = 2}}{Maximum number of covariates to be kept. Only
+applicable when supplied \code{learner} is a \code{\link{Lrnr_glmnet}}.}
 \item{\code{...}}{Other parameters passed to \code{learner}.}
 }
 }
@@ -59,6 +61,7 @@ Other Learners:
 \code{\link{Lrnr_haldensify}},
 \code{\link{Lrnr_hts}},
 \code{\link{Lrnr_independent_binomial}},
+\code{\link{Lrnr_lightgbm}},
 \code{\link{Lrnr_lstm_keras}},
 \code{\link{Lrnr_lstm}},
 \code{\link{Lrnr_mean}},

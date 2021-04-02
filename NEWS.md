@@ -35,7 +35,14 @@
   internal cross-validation folds such that binary outcome prevalence in 
   training and validation folds roughly matches the prevalence in the training 
   task. 
-
+* Incorporated `min_screen` argument `Lrnr_screener_coefs`, which tries to 
+  ensure that at least `min_screen` number of covariates are selected. If this 
+  argument is specified and the `learner` argument in `Lrnr_screener_coefs` is 
+  a `Lrnr_glmnet`, then `lambda` is increased until `min_screen` number of 
+  covariates are selected and a warning is produced. If `min_screen` is 
+  specified and the `learner` argument in `Lrnr_screener_coefs` is not a 
+  `Lrnr_glmnet` then it will error. 
+  
 # sl3 1.4.2
 * Updates to variable importance functionality, including calculation of risk
   ratio and risk differences under covariate deletion or permutation.
