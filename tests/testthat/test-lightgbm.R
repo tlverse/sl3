@@ -64,14 +64,13 @@ test_that("Lrnr_lightgbm predictions match lightgbm's: continuous outcome", {
 
 test_that("Lrnr_lightgbm predictions match lightgbm's: binary outcome", {
   ## create task with binary outcome
-  task <- sl3_Task$new(mtcars, covariates = c(
-    "cyl", "disp", "hp", "drat", "wt", "qsec",
-    "vs", "mpg", "gear", "carb"
-  ), outcome = "am")
+  covars <- c("bmi", "haz", "mage", "sexn")
+  outcome <- "smoked"
+  task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
 
   ## instantiate Lrnr_lightgbm, train on task, and predict on task
   set.seed(73964)
-  lrnr_lightgbm <- Lrnr_lightgbm$new()
+  lrnr_lightgbm <- Lrnr_lightgbm$new(num_leaves = 30L)
   fit_lrnr_lightgbm <- lrnr_lightgbm$train(task)
   prd_lrnr_lightgbm <- fit_lrnr_lightgbm$predict()
 
@@ -85,6 +84,37 @@ test_that("Lrnr_lightgbm predictions match lightgbm's: binary outcome", {
     params = lrnr_lightgbm$params,
     obj = "binary",
     eval = "binary_logloss",
+    data = lgb_data
+  )
+  prd_lightgbm <- predict(fit_lightgbm, as.matrix(task$X))
+
+  ## test equivalence of prediction from Lrnr_lightgbm and lightgbm::lightgbm
+  expect_equal(prd_lrnr_lightgbm, prd_lightgbm)
+})
+
+test_that("Lrnr_lightgbm predictions match lightgbm's: categorical outcome", {
+  ## create task with binary outcome
+  covars <- c("bmi", "haz", "mage", "sexn")
+  outcome <- "parity"
+  task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
+
+  ## instantiate Lrnr_lightgbm, train on task, and predict on task
+  set.seed(73964)
+  lrnr_lightgbm <- Lrnr_lightgbm$new(num_leaves = 40L)
+  fit_lrnr_lightgbm <- lrnr_lightgbm$train(task)
+  prd_lrnr_lightgbm <- fit_lrnr_lightgbm$predict()
+
+  ## fit lightgbm using the data from the task
+  set.seed(73964)
+  lgb_data <- lgb.Dataset(
+    data = as.matrix(task$X),
+    label = as.numeric(task$Y) - 1L
+  )
+  fit_lightgbm <- lgb.train(
+    params = lrnr_lightgbm$params,
+    num_class = as.integer(length(unique(task$Y))),
+    obj = "multiclass",
+    eval = "multi_error",
     data = lgb_data
   )
   prd_lightgbm <- predict(fit_lightgbm, as.matrix(task$X))

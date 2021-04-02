@@ -24,9 +24,9 @@
 #' @family Learners
 #'
 #' @section Parameters:
-#'   - \code{num_leaves = 4L}: Maximum number of leaves in a single tree.
-#'   - \code{nrounds = 10L}: Number of training rounds.
-#'   - \code{num_threads = 1L}: Number of threads for hyperthreading.
+#'   - \code{num_leaves = 31L}: Maximum number of leaves in a single tree.
+#'   - \code{num_rounds = 10L}: Number of training rounds.
+#'   - \code{num_threads = 1L}: Number of threads used for hyperthreading.
 #'   - \code{...}: Other arguments passed to \code{\link[lightgbm]{lgb.train}}.
 #'       See its documentation for further details.
 #'
@@ -34,7 +34,7 @@ Lrnr_lightgbm <- R6Class(
   classname = "Lrnr_lightgbm", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(num_leaves = 4L, nrounds = 10L, num_threads = 1L,
+    initialize = function(num_leaves = 31L, num_rounds = 10L, num_threads = 1L,
                           ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
