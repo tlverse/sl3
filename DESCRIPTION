@@ -82,6 +82,7 @@ Suggests:
     SuperLearner,
     tsDyn,
     xgboost,
+    lightgbm,
     dbarts,
     gam (>= 1.15.0),
     haldensify,
@@ -96,5 +97,5 @@ LazyLoad: yes
 VignetteBuilder:
     knitr,
     R.rsp
-RoxygenNote: 7.1.1.9000
+RoxygenNote: 7.1.1.9001
 Roxygen: list(markdown = TRUE, old_usage = TRUE, r6 = FALSE)
