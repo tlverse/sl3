@@ -24,8 +24,6 @@
 #' @family Learners
 #'
 #' @section Parameters:
-#'   - \code{num_leaves = 4L}: Maximum number of leaves in a single tree.
-#'   - \code{nrounds = 10L}: Number of training rounds.
 #'   - \code{num_threads = 1L}: Number of threads for hyperthreading.
 #'   - \code{...}: Other arguments passed to \code{\link[lightgbm]{lgb.train}}.
 #'       See its documentation for further details.
@@ -34,8 +32,7 @@ Lrnr_lightgbm <- R6Class(
   classname = "Lrnr_lightgbm", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(num_leaves = 4L, nrounds = 10L, num_threads = 1L,
-                          ...) {
+    initialize = function(num_threads = 1L, ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     },
@@ -79,11 +76,13 @@ Lrnr_lightgbm <- R6Class(
       args$data <- try(lightgbm::lgb.Dataset(
         data = as.matrix(task$X),
         label = as.numeric(Y)
-      ))
+      ), silent = TRUE)
 
       # add observation-level weights if detected
       if (task$has_node("weights")) {
-        try(lightgbm::setinfo(args$data, "weight", as.numeric(task$weights)))
+        try(lightgbm::setinfo(args$data, "weight", as.numeric(task$weights)),
+          silent = TRUE
+        )
       }
 
       # specify offset
@@ -94,7 +93,7 @@ Lrnr_lightgbm <- R6Class(
         offset <- as.numeric(task$offset_transformed(link_fun))
 
         # append offset to data
-        try(lightgbm::setinfo(args$data, "init_score", offset))
+        try(lightgbm::setinfo(args$data, "init_score", offset), silent = TRUE)
       } else {
         link_fun <- NULL
       }
@@ -124,17 +123,25 @@ Lrnr_lightgbm <- R6Class(
 
       # set up test data for prediction (must be matrix or sparse matrix)
       Xmat <- as.matrix(task$X)
+      if (is.integer(Xmat)) {
+        Xmat[, 1] <- as.numeric(Xmat[, 1])
+      }
 
       # order of columns has to be the same in xgboost training and test data
       train_name_ord <- match(names(private$.training_task$X), colnames(Xmat))
       Xmat_ord <- as.matrix(Xmat[, train_name_ord])
+      if ((nrow(Xmat_ord) != nrow(Xmat)) & (ncol(Xmat_ord) == nrow(Xmat))) {
+        Xmat_ord <- t(Xmat_ord)
+      }
+      stopifnot(nrow(Xmat_ord) == nrow(Xmat))
 
       # NOTE: cannot incorporate offset in prediction, at least for now
       # see https://github.com/microsoft/LightGBM/issues/1978
 
       # will generally return vector, needs to be put into data.table column
       predictions <- stats::predict(
-        fit_object, Xmat_ord, reshape = TRUE
+        fit_object, Xmat_ord,
+        reshape = TRUE
       )
 
       if (private$.training_outcome_type$type == "categorical") {
