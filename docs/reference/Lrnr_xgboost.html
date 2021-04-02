@@ -217,6 +217,7 @@ In <em>Proceedings of the 22nd ACM SIGKDD international conference on knowledge 
 <code><a href='Lrnr_haldensify.html'>Lrnr_haldensify</a></code>,
 <code><a href='Lrnr_hts.html'>Lrnr_hts</a></code>,
 <code><a href='Lrnr_independent_binomial.html'>Lrnr_independent_binomial</a></code>,
+<code><a href='Lrnr_lightgbm.html'>Lrnr_lightgbm</a></code>,
 <code><a href='Lrnr_lstm_keras.html'>Lrnr_lstm_keras</a></code>,
 <code><a href='Lrnr_lstm.html'>Lrnr_lstm</a></code>,
 <code><a href='Lrnr_mean.html'>Lrnr_mean</a></code>,
@@ -261,7 +262,7 @@ In <em>Proceedings of the 22nd ACM SIGKDD international conference on knowledge 
   <span class='op'>)</span>,
   outcome <span class='op'>=</span> <span class='st'>"mpg"</span>
 <span class='op'>)</span>
-<span class='co'># simple prediction</span>
+<span class='co'># initialization, training, and prediction with the defaults</span>
 <span class='va'>xgb_lrnr</span> <span class='op'>&lt;-</span> <span class='va'>Lrnr_xgboost</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>xgb_fit</span> <span class='op'>&lt;-</span> <span class='va'>xgb_lrnr</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>mtcars_task</span><span class='op'>)</span>
 <span class='va'>xgb_preds</span> <span class='op'>&lt;-</span> <span class='va'>xgb_fit</span><span class='op'>$</span><span class='fu'>predict</span><span class='op'>(</span><span class='op'>)</span>

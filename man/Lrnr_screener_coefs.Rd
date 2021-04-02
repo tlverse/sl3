@@ -61,6 +61,7 @@ Other Learners:
 \code{\link{Lrnr_haldensify}},
 \code{\link{Lrnr_hts}},
 \code{\link{Lrnr_independent_binomial}},
+\code{\link{Lrnr_lightgbm}},
 \code{\link{Lrnr_lstm_keras}},
 \code{\link{Lrnr_lstm}},
 \code{\link{Lrnr_mean}},
