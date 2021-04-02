@@ -23,6 +23,9 @@ consult the documentation of the \pkg{lightgbm} package.
 
 \itemize{
 \item \code{num_threads = 1L}: Number of threads for hyperthreading.
+\item \code{verbose = -1}: Verbosity for output. This differs from the default
+in \code{\link[lightgbm]{lgb.train}}, disableing the printing of all
+messages, including evaluation during training.
 \item \code{...}: Other arguments passed to \code{\link[lightgbm]{lgb.train}}.
 See its documentation for further details.
 }

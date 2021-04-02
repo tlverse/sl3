@@ -25,6 +25,9 @@
 #'
 #' @section Parameters:
 #'   - \code{num_threads = 1L}: Number of threads for hyperthreading.
+#'   - \code{verbose = -1}: Verbosity for output. This differs from the default
+#'       in \code{\link[lightgbm]{lgb.train}}, disableing the printing of all
+#'       messages, including evaluation during training.
 #'   - \code{...}: Other arguments passed to \code{\link[lightgbm]{lgb.train}}.
 #'       See its documentation for further details.
 #'
@@ -32,7 +35,7 @@ Lrnr_lightgbm <- R6Class(
   classname = "Lrnr_lightgbm", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(num_threads = 1L, ...) {
+    initialize = function(num_threads = 1L, verbose = -1, ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     },
