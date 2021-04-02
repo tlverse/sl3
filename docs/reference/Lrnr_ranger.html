@@ -185,7 +185,7 @@ regression, and the sum of test statistics (for survival analysis, see
 the <code>splitrule</code> argument of <code><a href='https://rdrr.io/pkg/ranger/man/ranger.html'>ranger</a></code>).</p></li>
 <li><p><code>num.threads = 1</code>: Number of threads.</p></li>
 <li><p><code>...</code>: Other parameters passed to <code><a href='https://rdrr.io/pkg/ranger/man/ranger.html'>ranger</a></code>. See
-it's documentation for details.</p></li>
+its documentation for details.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
@@ -197,7 +197,8 @@ doi: <a href='https://doi.org/10.18637/jss.v077.i01'>10.18637/jss.v077.i01</a>
 , <a href='https://doi.org/10.18637/jss.v077.i01'>https://doi.org/10.18637/jss.v077.i01</a>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other Learners: 
+    <div class='dont-index'><p><a href='Lrnr_randomForest.html'>Lrnr_randomForest</a> for a similar learner using <span class="pkg">randomForest</span></p>
+<p>Other Learners: 
 <code><a href='Custom_chain.html'>Custom_chain</a></code>,
 <code><a href='Lrnr_HarmonicReg.html'>Lrnr_HarmonicReg</a></code>,
 <code><a href='Lrnr_arima.html'>Lrnr_arima</a></code>,
@@ -266,6 +267,7 @@ doi: <a href='https://doi.org/10.18637/jss.v077.i01'>10.18637/jss.v077.i01</a>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>)</span>
+<span class='co'># create task for prediction</span>
 <span class='va'>mtcars_task</span> <span class='op'>&lt;-</span> <span class='va'><a href='sl3_Task.html'>sl3_Task</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>mtcars</span>,
   covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
@@ -274,7 +276,7 @@ doi: <a href='https://doi.org/10.18637/jss.v077.i01'>10.18637/jss.v077.i01</a>
   <span class='op'>)</span>,
   outcome <span class='op'>=</span> <span class='st'>"mpg"</span>
 <span class='op'>)</span>
-<span class='co'># simple prediction</span>
+<span class='co'># initialization, training, and prediction with the defaults</span>
 <span class='va'>ranger_lrnr</span> <span class='op'>&lt;-</span> <span class='va'>Lrnr_ranger</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>ranger_fit</span> <span class='op'>&lt;-</span> <span class='va'>ranger_lrnr</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>mtcars_task</span><span class='op'>)</span>
 <span class='va'>ranger_preds</span> <span class='op'>&lt;-</span> <span class='va'>ranger_fit</span><span class='op'>$</span><span class='fu'>predict</span><span class='op'>(</span><span class='op'>)</span>

@@ -38,7 +38,7 @@ mtcars_task <- sl3_Task$new(
   ),
   outcome = "mpg"
 )
-# simple prediction
+# initialization, training, and prediction with the defaults
 xgb_lrnr <- Lrnr_xgboost$new()
 xgb_fit <- xgb_lrnr$train(mtcars_task)
 xgb_preds <- xgb_fit$predict()

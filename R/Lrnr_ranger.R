@@ -24,6 +24,8 @@
 #'
 #' @family Learners
 #'
+#' @seealso [Lrnr_randomForest] for a similar learner using \pkg{randomForest}
+#'
 #' @section Parameters:
 #'  - \code{num.trees = 500}: Number of trees to be used in growing the forest.
 #'  - \code{write.forest = TRUE}: If \code{TRUE}, forest is stored, which is
@@ -36,13 +38,14 @@
 #'      the \code{splitrule} argument of \code{\link[ranger]{ranger}}).
 #'  - \code{num.threads = 1}: Number of threads.
 #'  - \code{...}: Other parameters passed to \code{\link[ranger]{ranger}}. See
-#'      it's documentation for details.
+#'      its documentation for details.
 #'
 #' @references
 #'  \insertAllCited{}
 #'
 #' @examples
 #' data(mtcars)
+#' # create task for prediction
 #' mtcars_task <- sl3_Task$new(
 #'   data = mtcars,
 #'   covariates = c(
@@ -51,7 +54,7 @@
 #'   ),
 #'   outcome = "mpg"
 #' )
-#' # simple prediction
+#' # initialization, training, and prediction with the defaults
 #' ranger_lrnr <- Lrnr_ranger$new()
 #' ranger_fit <- ranger_lrnr$train(mtcars_task)
 #' ranger_preds <- ranger_fit$predict()

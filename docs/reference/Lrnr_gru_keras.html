@@ -40,13 +40,13 @@
 
 
 <meta property="og:title" content="Recurrent Neural Network with Gated Recurrent Unit (GRU) with Keras — Lrnr_gru_keras" />
-<meta property="og:description" content="This learner supports the Recurrent Neural Network (RNN) with
-Gated Recurrent Unit. This learner leverages the same principle as a LSTM,
-but it is more streamlined and thus cheaper to run, at the expense of
-representational power. This learner uses the keras package. Note that all
-preprocessing, such as differencing and seasonal effects for time series,
-should be addressed before using this learner. Desired lags of the time series
-should be added as predictors before using the learner." />
+<meta property="og:description" content="This learner supports Recurrent Neural Networks (RNNs) with Gated Recurrent
+Units (GRU). This learner leverages the same principles as LSTM networks but
+is more streamlined and thus cheaper to run, at the expense of some loss in
+representational power. This learner uses the keras package. Note that
+all preprocessing, such as differencing and seasonal effects for time
+series, should be addressed before using this learner. Desired lags of the
+time series should be added as predictors before using the learner." />
 
 
 
@@ -151,49 +151,52 @@ should be added as predictors before using the learner." />
     </div>
 
     <div class="ref-description">
-    <p>This learner supports the Recurrent Neural Network (RNN) with
-Gated Recurrent Unit. This learner leverages the same principle as a LSTM,
-but it is more streamlined and thus cheaper to run, at the expense of
-representational power. This learner uses the <code>keras</code> package. Note that all
-preprocessing, such as differencing and seasonal effects for time series,
-should be addressed before using this learner. Desired lags of the time series
-should be added as predictors before using the learner.</p>
+    <p>This learner supports Recurrent Neural Networks (RNNs) with Gated Recurrent
+Units (GRU). This learner leverages the same principles as LSTM networks but
+is more streamlined and thus cheaper to run, at the expense of some loss in
+representational power. This learner uses the <span class="pkg">keras</span> package. Note that
+all preprocessing, such as differencing and seasonal effects for time
+series, should be addressed before using this learner. Desired lags of the
+time series should be added as predictors before using the learner.</p>
     </div>
 
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p><code>R6Class</code> object.</p>
+    <p>An <code><a href='https://r6.r-lib.org/reference/R6Class.html'>R6Class</a></code> object inheriting from
+<code><a href='Lrnr_base.html'>Lrnr_base</a></code>.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='Lrnr_base.html'>Lrnr_base</a></code> object with methods for training and prediction</p>
+    <p>A learner object inheriting from <code><a href='Lrnr_base.html'>Lrnr_base</a></code> with
+methods for training and prediction. For a full list of learner
+functionality, see the complete documentation of <code><a href='Lrnr_base.html'>Lrnr_base</a></code>.</p>
     <h2 class="hasAnchor" id="parameters"><a class="anchor" href="#parameters"></a>Parameters</h2>
 
     
 
-<dl>
-<dt><code>batch_size</code></dt><dd><p>How many times should the training data be used to
-train the neural network?</p></dd>
-<dt><code>units</code></dt><dd><p>Positive integer, dimensionality of the output space.</p></dd>
-<dt><code>dropout</code></dt><dd><p>Float between 0 and 1. Fraction of the input units to
-drop.</p></dd>
-<dt><code>recurrent_dropout</code></dt><dd><p>Float between 0 and 1. Fraction of the
-units to drop for the linear transformation of the recurrent state.</p></dd>
-<dt><code>activation</code></dt><dd><p>Activation function to use. If you pass NULL, no
-activation is applied (e.g., "linear" activation: <code>a(x) = x</code>).</p></dd>
-<dt><code>recurrent_activation</code></dt><dd><p>Activation function to use for the
-recurrent step.</p></dd>
-<dt><code>recurrent_out</code></dt><dd><p>Activation function to use for the output step.</p></dd>
-<dt><code>epochs</code></dt><dd><p>Number of epochs to train the model.</p></dd>
-<dt><code>lr</code></dt><dd><p>Learning rate.</p></dd>
-<dt><code>layers</code></dt><dd><p>How many lstm layers. Only allows for 1 or 2.</p></dd>
-<dt><code>callbacks</code></dt><dd><p>List of callbacks, which is a set of functions to
+<ul>
+<li><p><code>batch_size</code>: How many times should the training data be used to
+train the neural network?</p></li>
+<li><p><code>units</code>: Positive integer, dimensionality of the output space.</p></li>
+<li><p><code>dropout</code>: Float between 0 and 1. Fraction of the input units to
+drop.</p></li>
+<li><p><code>recurrent_dropout</code>: Float between 0 and 1. Fraction of the units
+to drop for the linear transformation of the recurrent state.</p></li>
+<li><p><code>activation</code>: Activation function to use. If you pass NULL, no
+activation is applied (e.g., "linear" activation: <code>a(x) = x</code>).</p></li>
+<li><p><code>recurrent_activation</code>: Activation function to use for the
+recurrent step.</p></li>
+<li><p><code>recurrent_out</code>: Activation function to use for the output step.</p></li>
+<li><p><code>epochs</code>: Number of epochs to train the model.</p></li>
+<li><p><code>lr</code>: Learning rate.</p></li>
+<li><p><code>layers</code>: How many LSTM layers. Only allows for 1 or 2.</p></li>
+<li><p><code>callbacks</code>: List of callbacks, which is a set of functions to
 be applied at given stages of the training procedure. Default callback
 function <code>callback_early_stopping</code> stops training if the validation
-loss does not improve across <code>patience</code> number of epochs.</p></dd>
-
-</dl>
+loss does not improve across <code>patience</code> number of epochs.</p></li>
+<li><p><code>...</code>: Other parameters passed to <code><a href='https://rdrr.io/pkg/keras/man/keras-package.html'>keras</a></code>.</p></li>
+</ul>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -264,6 +267,34 @@ loss does not improve across <code>patience</code> number of epochs.</p></dd>
 <code><a href='define_h2o_X.html'>define_h2o_X</a>()</code>,
 <code><a href='undocumented_learner.html'>undocumented_learner</a></code></p></div>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tlverse.org/origami'>origami</a></span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>bsds</span><span class='op'>)</span>
+
+<span class='va'>folds</span> <span class='op'>&lt;-</span> <span class='fu'><a href='http://tlverse.org/origami/reference/make_folds.html'>make_folds</a></span><span class='op'>(</span><span class='va'>bsds</span>,
+  fold_fun <span class='op'>=</span> <span class='va'>folds_rolling_window</span>, window_size <span class='op'>=</span> <span class='fl'>500</span>,
+  validation_size <span class='op'>=</span> <span class='fl'>100</span>, gap <span class='op'>=</span> <span class='fl'>0</span>, batch <span class='op'>=</span> <span class='fl'>50</span>
+<span class='op'>)</span>
+
+<span class='va'>task</span> <span class='op'>&lt;-</span> <span class='va'><a href='sl3_Task.html'>sl3_Task</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>
+  data <span class='op'>=</span> <span class='va'>bsds</span>,
+  folds <span class='op'>=</span> <span class='va'>folds</span>,
+  covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
+    <span class='st'>"weekday"</span>, <span class='st'>"temp"</span>
+  <span class='op'>)</span>,
+  outcome <span class='op'>=</span> <span class='st'>"cnt"</span>
+<span class='op'>)</span>
+
+<span class='va'>gru_lrnr</span> <span class='op'>&lt;-</span> <span class='va'>Lrnr_gru_keras</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>batch_size <span class='op'>=</span> <span class='fl'>1</span>, epochs <span class='op'>=</span> <span class='fl'>200</span><span class='op'>)</span>
+
+<span class='va'>train_task</span> <span class='op'>&lt;-</span> <span class='fu'><a href='http://tlverse.org/origami/reference/fold_helpers.html'>training</a></span><span class='op'>(</span><span class='va'>task</span>, fold <span class='op'>=</span> <span class='va'>task</span><span class='op'>$</span><span class='va'>folds</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
+<span class='va'>valid_task</span> <span class='op'>&lt;-</span> <span class='fu'><a href='http://tlverse.org/origami/reference/fold_helpers.html'>validation</a></span><span class='op'>(</span><span class='va'>task</span>, fold <span class='op'>=</span> <span class='va'>task</span><span class='op'>$</span><span class='va'>folds</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
+
+<span class='va'>gru_fit</span> <span class='op'>&lt;-</span> <span class='va'>gru_lrnr</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>train_task</span><span class='op'>)</span>
+<span class='va'>gru_preds</span> <span class='op'>&lt;-</span> <span class='va'>gru_fit</span><span class='op'>$</span><span class='fu'>predict</span><span class='op'>(</span><span class='va'>valid_task</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
