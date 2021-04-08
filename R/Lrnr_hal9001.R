@@ -121,7 +121,21 @@ Lrnr_hal9001 <- R6Class(
         args$id <- task$id
       }
 
-      fit_object <- call_with_args(hal9001::fit_hal, args)
+      # pass in formals of glmnet versus cv.glmnet based on cv_select
+      if (args$cv_select) {
+        glmnet_other_valid <- union(
+          names(formals(glmnet::cv.glmnet)),
+          names(formals(glmnet::glmnet))
+        )
+      } else {
+        glmnet_other_valid <- names(formals(glmnet::glmnet))
+      }
+
+      # fit HAL, allowing glmnet-fitting arguments
+      fit_object <- call_with_args(
+        hal9001::fit_hal, args,
+        other_valid = glmnet_other_valid
+      )
       return(fit_object)
     },
     .predict = function(task = NULL) {
@@ -132,6 +146,6 @@ Lrnr_hal9001 <- R6Class(
       }
       return(predictions)
     },
-    .required_packages = c("hal9001")
+    .required_packages = c("hal9001", "glmnet")
   )
 )
