@@ -122,7 +122,7 @@ Lrnr_hal9001 <- R6Class(
       }
 
       # pass in formals of glmnet versus cv.glmnet based on cv_select
-      if (cv_select) {
+      if (args$cv_select) {
         glmnet_other_valid <- names(formals(glmnet::cv.glmnet))
       } else {
         glmnet_other_valid <- names(formals(glmnet::glmnet))
