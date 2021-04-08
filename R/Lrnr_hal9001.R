@@ -9,7 +9,7 @@
 #' this learner use \code{\link[hal9001]{fit_hal}} from the \pkg{hal9001}
 #' package. For details on HAL regression, consider consulting the following
 #' \insertCite{benkeser2016hal;textual}{sl3}),
-#' \insertCite{coyle2020hal9001-pkg;textual}{sl3}),
+#' \insertCite{coyle2020hal9001-rpkg;textual}{sl3}),
 #' \insertCite{hejazi2020hal9001-joss;textual}{sl3}).
 #'
 #' @docType class

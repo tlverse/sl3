@@ -48,6 +48,7 @@ r_github_packages:
   - r-lib/covr
   - r-lib/sessioninfo
   - tlverse/origami
+  - tlverse/hal9001@devel
 
 after_success:
   - travis_wait 80 Rscript -e 'covr::codecov()'

@@ -28,8 +28,9 @@ environment:
     R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
 
 build_script:
-  - travis-tool.sh install_deps
   - travis-tool.sh install_github r-lib/covr r-lib/sessioninfo tlverse/origami
+  - travis-tool.sh install_github tlverse/origami tlverse/hal9001@devel
+  - travis-tool.sh install_deps
 
 test_script:
   - travis-tool.sh run_tests
