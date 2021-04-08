@@ -145,12 +145,12 @@ Lrnr_hal9001 <- R6Class(
       } else {
         glmnet_formals <- names(formals(glmnet::glmnet))
       }
-      glmnet_formals <- setdiff(glmnet_formals, c("x", "y"))
 
       # fit HAL, allowing formal glmnet and cv.glmnet arguments
       fit_object <- call_with_args(
         hal9001::fit_hal, args,
-        other_valid = glmnet_formals
+        other_valid = glmnet_formals,
+        ignore = c("x", "y")
       )
       return(fit_object)
     },
