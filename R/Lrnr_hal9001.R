@@ -120,7 +120,9 @@ Lrnr_hal9001 <- R6Class(
         args$family <- stats::quasibinomial()
       }
 
-      args$X <- as.matrix(task$X)
+      # NOTE: data.matrix() here instead of as.matrix() because of glmnet WTF:
+      # https://stackoverflow.com/questions/8458233/r-glmnet-as-matrix-error-message
+      args$X <- data.matrix(task$X)
       args$Y <- outcome_type$format(task$Y)
       args$yolo <- FALSE
 
@@ -157,7 +159,7 @@ Lrnr_hal9001 <- R6Class(
     .predict = function(task = NULL) {
       predictions <- stats::predict(
         self$fit_object,
-        new_data = as.matrix(task$X)
+        new_data = data.matrix(task$X)
       )
       if (!is.na(safe_dim(predictions)[2])) {
         p <- ncol(predictions)
