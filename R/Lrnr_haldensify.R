@@ -23,7 +23,7 @@
 #'    each bin has the same number of observations, use "equal_mass" (based on
 #'    \code{\link[ggplot2]{cut_number}}).
 #'   }
-#'   \item{\code{n_bins = c(5, 10)}}{Only used if \code{type} is set to
+#'   \item{\code{n_bins = c(3, 5)}}{Only used if \code{type} is set to
 #'    \code{"equal_range"} or \code{"equal_mass"}. This \code{numeric} value
 #'    indicates the number of bins that the support of the outcome variable is
 #'    to be divided into.
@@ -41,8 +41,8 @@ Lrnr_haldensify <- R6Class(
   classname = "Lrnr_haldensify", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(grid_type = c("equal_range", "equal_mass"),
-                          n_bins = c(5, 10),
+    initialize = function(grid_type = "equal_range",
+                          n_bins = c(3, 5),
                           lambda_seq = exp(seq(-1, -13, length = 1000L)),
                           ...) {
       params <- args_to_list()
@@ -77,19 +77,27 @@ Lrnr_haldensify <- R6Class(
         args$family <- outcome_type$glm_family(return_object = TRUE)$family
       }
 
+      # extract input data
       args$W <- as.matrix(task$X)
       args$A <- as.numeric(outcome_type$format(task$Y))
-      args$use_future <- FALSE
 
+      # handle weights
       if (task$has_node("weights")) {
         args$wts <- task$weights
       }
 
+      # extract offset
       if (task$has_node("offset")) {
         args$offset <- task$offset
       }
 
-      fit_object <- call_with_args(haldensify::haldensify, args)
+      # fit haldensify conditional density estimator
+      fit_object <- call_with_args(
+        haldensify::haldensify, args,
+        other_valid = c("max_degree", "smoothness_orders", "num_knots",
+                        "adaptive_smoothing", "reduce_basis", "use_min"),
+        ignore = c("cv_select", "weights", "family", "fit_type")
+      )
       return(fit_object)
     },
     .predict = function(task = NULL) {
@@ -99,6 +107,6 @@ Lrnr_haldensify <- R6Class(
       )
       return(predictions)
     },
-    .required_packages = c("haldensify")
+    .required_packages = c("haldensify", "hal9001", "glmnet")
   )
 )

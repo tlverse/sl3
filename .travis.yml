@@ -39,14 +39,17 @@ r_packages:
   - covr
   - sessioninfo
   - data.table
+  - Rdpack
   - delayed
-  - hal9001
-  - haldensify
+  #- hal9001
+  #- haldensify
 
 r_github_packages:
   - r-lib/covr
   - r-lib/sessioninfo
   - tlverse/origami
+  - tlverse/hal9001@devel
+  - nhejazi/haldensify
 
 after_success:
   - travis_wait 80 Rscript -e 'covr::codecov()'
