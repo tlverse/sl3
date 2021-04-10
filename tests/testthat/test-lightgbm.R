@@ -39,6 +39,7 @@ options(sl3.verbose = TRUE)
 test_learner(Lrnr_lightgbm, task)
 
 test_that("Lrnr_lightgbm predictions match lightgbm's: continuous outcome", {
+  skip_on_os("windows")
   ## instantiate Lrnr_lightgbm, train on task, and predict on task
   set.seed(73964)
   lrnr_lightgbm <- Lrnr_lightgbm$new()
@@ -63,6 +64,7 @@ test_that("Lrnr_lightgbm predictions match lightgbm's: continuous outcome", {
 })
 
 test_that("Lrnr_lightgbm predictions match lightgbm's: binary outcome", {
+  skip_on_os("windows")
   ## create task with binary outcome
   covars <- c("bmi", "haz", "mage", "sexn")
   outcome <- "smoked"
@@ -93,6 +95,7 @@ test_that("Lrnr_lightgbm predictions match lightgbm's: binary outcome", {
 })
 
 test_that("Lrnr_lightgbm predictions match lightgbm's: categorical outcome", {
+  skip_on_os("windows")
   ## create task with binary outcome
   covars <- c("bmi", "haz", "mage", "sexn")
   outcome <- "parity"
@@ -125,6 +128,7 @@ test_that("Lrnr_lightgbm predictions match lightgbm's: categorical outcome", {
 })
 
 test_that("Cursory test of Lrnr_lightgbm with weights", {
+  skip_on_os("windows")
   ## create task, continuous outcome with observation-level weights
   covars <- c("bmi", "parity", "mage", "sexn")
   outcome <- "haz"
