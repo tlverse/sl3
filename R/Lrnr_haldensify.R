@@ -107,6 +107,6 @@ Lrnr_haldensify <- R6Class(
       )
       return(predictions)
     },
-    .required_packages = c("haldensify", "hal9001", "glmnet")
+    .required_packages = c("haldensify")
   )
 )
