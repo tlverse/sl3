@@ -71,7 +71,6 @@ Lrnr_randomForest <- R6Class(
       return(importance_result)
     }
   ),
-
   private = list(
     .properties = c("continuous", "binomial", "categorical", "importance"),
     .train = function(task) {

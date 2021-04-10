@@ -97,7 +97,6 @@ Lrnr_haldensify <- R6Class(
   ),
   private = list(
     .properties = c("density"),
-
     .train = function(task) {
       args <- self$params
 

@@ -37,10 +37,8 @@ Lrnr_tsDyn <- R6Class(
       super$initialize(params = params)
     }
   ),
-
   private = list(
     .properties = c("timeseries", "continuous"),
-
     .train = function(task) {
       args <- self$params
       learner <- args$learner
@@ -60,7 +58,6 @@ Lrnr_tsDyn <- R6Class(
       fit_object <- call_with_args(learner_fun, args)
       return(fit_object)
     },
-
     .predict = function(task = NULL) {
       params <- self$params
       h <- ts_get_pred_horizon(self$training_task, task)

@@ -82,7 +82,6 @@ Stack <- R6Class(
       private$.fit_object$is_error <- is_error
     }
   ),
-
   active = list(
     name = function() {
       # learners = self$params$learners
@@ -96,11 +95,9 @@ Stack <- R6Class(
       return(result)
     }
   ),
-
   private = list(
     # modified names of learners
     .learner_names = NULL,
-
     .train_sublearners = function(task) {
       # generate training subtasks
       learners <- self$params$learners

@@ -5,8 +5,10 @@ library(data.table)
 data(cpp_imputed)
 setDT(cpp_imputed)
 cpp_imputed[, parity_cat := factor(ifelse(parity < 4, parity, 4))]
-covars <- c("apgar1", "apgar5", "parity_cat", "gagebrth", "mage", "meducyrs",
-            "sexn")
+covars <- c(
+  "apgar1", "apgar5", "parity_cat", "gagebrth", "mage", "meducyrs",
+  "sexn"
+)
 outcome <- "haz"
 
 task <- sl3_Task$new(data.table::copy(cpp_imputed),
@@ -87,11 +89,14 @@ test_importance_screener <- function(learner) {
   } else {
     learner_obj <- make_learner(learner)
   }
-  print(sprintf("Testing importance screener with Learner: %s",
-                learner_obj$name))
+  print(sprintf(
+    "Testing importance screener with Learner: %s",
+    learner_obj$name
+  ))
 
   importance_screener <- Lrnr_screener_importance$new(learner_obj,
-                                                      num_screen = 3)
+    num_screen = 3
+  )
 
   # screening fit & preds
   fit <- importance_screener$train(task)
@@ -101,8 +106,10 @@ test_importance_screener <- function(learner) {
   expect_equal(nrow(preds), nrow(task$data))
 
   # pipeline fit & preds
-  importance_screener_pipeline <- make_learner(Pipeline, importance_screener,
-                                               lrnrs)
+  importance_screener_pipeline <- make_learner(
+    Pipeline, importance_screener,
+    lrnrs
+  )
   fit_pipe <- importance_screener_pipeline$train(task)
   preds_pipe <- fit_pipe$predict(task)
   expect_equal(nrow(preds_pipe), nrow(task$data))

@@ -74,13 +74,11 @@ Lrnr_xgboost <- R6Class(
       return(importance_result)
     }
   ),
-
   private = list(
     .properties = c(
       "continuous", "binomial", "categorical", "weights",
       "offset", "importance"
     ),
-
     .train = function(task) {
       args <- self$params
 
@@ -147,7 +145,6 @@ Lrnr_xgboost <- R6Class(
 
       return(fit_object)
     },
-
     .predict = function(task = NULL) {
       fit_object <- private$.fit_object
 
@@ -197,7 +194,6 @@ Lrnr_xgboost <- R6Class(
 
       return(predictions)
     },
-
     .required_packages = c("xgboost")
   )
 )

@@ -74,7 +74,6 @@ Lrnr_arima <- R6Class(
   ),
   private = list(
     .properties = c("timeseries", "continuous"),
-
     .train = function(task) {
       params <- self$params
 
@@ -110,7 +109,6 @@ Lrnr_arima <- R6Class(
 
       return(fit_object)
     },
-
     .predict = function(task = NULL) {
       fit_object <- private$.fit_object
       h <- ts_get_pred_horizon(self$training_task, task)

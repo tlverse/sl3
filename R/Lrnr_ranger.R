@@ -105,13 +105,11 @@ Lrnr_ranger <- R6Class(
       return(importance_result[order(importance_result, decreasing = TRUE)])
     }
   ),
-
   private = list(
     .properties = c(
       "continuous", "binomial", "categorical", "importance",
       "weights"
     ),
-
     .train = function(task) {
       args <- self$params
       if (task$has_node("weights")) {
@@ -125,7 +123,6 @@ Lrnr_ranger <- R6Class(
       fit_object <- call_with_args(ranger::ranger, args)
       return(fit_object)
     },
-
     .predict = function(task) {
       # extract numeric predictions from custom class ranger.prediction
       predictions <- stats::predict(

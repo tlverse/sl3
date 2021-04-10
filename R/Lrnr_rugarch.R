@@ -58,15 +58,13 @@ Lrnr_rugarch <- R6Class(
       params <- args_to_list()
       super$initialize(params = params, ...)
       if (!is.null(n.ahead)) {
-        warning("n.ahead paramater is specified- obtaining an ensemble will fail. 
+        warning("n.ahead paramater is specified- obtaining an ensemble will fail.
                 Please only use for obtaining individual learner forcasts.")
       }
     }
   ),
-
   private = list(
     .properties = c("timeseries", "continuous"),
-
     .train = function(task) {
       args <- self$params
       # Support for a single time-series
@@ -115,7 +113,7 @@ Lrnr_rugarch <- R6Class(
         predictions <- structure(predictions, names = seq_len(length(predictions)))
         return(predictions)
       } else if (gap < 1) {
-        warning("Validation samples come before Training samples; 
+        warning("Validation samples come before Training samples;
                 please specify one of the time-series fold structures.")
 
         if (is.null(n.ahead)) {

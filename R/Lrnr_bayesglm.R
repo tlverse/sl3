@@ -51,10 +51,8 @@ Lrnr_bayesglm <- R6Class(
       super$initialize(params = params, ...)
     }
   ),
-
   private = list(
     .properties = c("continuous", "binomial", "weights", "offset"),
-
     .train = function(task) {
       args <- self$params
       outcome_type <- self$get_outcome_type(task)
@@ -97,7 +95,6 @@ Lrnr_bayesglm <- R6Class(
 
       return(fit_object)
     },
-
     .predict = function(task) {
       verbose <- getOption("sl3.verbose")
       if (self$params$intercept) {
@@ -128,7 +125,6 @@ Lrnr_bayesglm <- R6Class(
       }
       return(predictions)
     },
-
     .required_packages = c("arm")
   )
 )

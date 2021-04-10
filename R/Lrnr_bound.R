@@ -41,12 +41,10 @@ Lrnr_bound <- R6Class(
     .properties = c(
       "continuous", "binomial", "categorical", "weights", "wrapper"
     ),
-
     .train = function(task) {
       fit_object <- list()
       return(fit_object)
     },
-
     .predict = function(task = NULL) {
       verbose <- getOption("sl3.verbose")
       X <- as.matrix(task$X)

@@ -42,10 +42,8 @@ Lrnr_mean <- R6Class(
       super$initialize(params = params, ...)
     }
   ),
-
   private = list(
     .properties = c("continuous", "binomial", "categorical", "weights", "offset"),
-
     .train = function(task) {
       outcome_type <- self$get_outcome_type(task)
       y <- outcome_type$format(task$Y)
@@ -78,7 +76,6 @@ Lrnr_mean <- R6Class(
 
       return(fit_object)
     },
-
     .predict = function(task = NULL) {
       predictions <- rep(private$.fit_object$mean, task$nrow)
 

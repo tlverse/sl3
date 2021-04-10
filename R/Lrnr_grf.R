@@ -91,10 +91,8 @@ Lrnr_grf <- R6Class(
       super$initialize(params = args_to_list(), ...)
     }
   ),
-
   private = list(
     .properties = c("continuous", "binomial", "categorical", "weights"),
-
     .train = function(task) {
       args <- self$params
       outcome_type <- self$get_outcome_type(task)
@@ -120,7 +118,6 @@ Lrnr_grf <- R6Class(
       fit_object <- call_with_args(grf::quantile_forest, args)
       return(fit_object)
     },
-
     .predict = function(task) {
       # quantiles for which to predict
       quantiles_pred <- private$.params$quantiles_pred

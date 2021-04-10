@@ -43,7 +43,6 @@ Lrnr_cv_selector <- R6Class(
     .properties = c(
       "continuous", "binomial", "categorical", "weights", "wrapper"
     ),
-
     .train = function(task) {
       verbose <- getOption("sl3.verbose")
       params <- self$params
@@ -71,7 +70,6 @@ Lrnr_cv_selector <- R6Class(
 
       return(fit_object)
     },
-
     .predict = function(task = NULL) {
       verbose <- getOption("sl3.verbose")
       X <- as.matrix(task$X)

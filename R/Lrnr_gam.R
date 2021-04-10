@@ -73,10 +73,8 @@ Lrnr_gam <- R6Class(
       super$initialize(params = params, ...)
     }
   ),
-
   private = list(
     .properties = c("continuous", "binomial"),
-
     .train = function(task) {
       # load args
       args <- self$params
@@ -162,7 +160,6 @@ Lrnr_gam <- R6Class(
       fit_object <- call_with_args(mgcv::gam, args)
       return(fit_object)
     },
-
     .predict = function(task) {
       # get predictions
       predictions <- stats::predict(
@@ -173,7 +170,6 @@ Lrnr_gam <- R6Class(
       predictions <- as.numeric(predictions)
       return(predictions)
     },
-
     .required_packages = c("mgcv")
   )
 )

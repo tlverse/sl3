@@ -39,7 +39,6 @@ Lrnr_multivariate <- R6Class(
       super$initialize(params = params, ...)
     }
   ),
-
   active = list(
     name = function() {
       learner_name <- self$params$learner$name
@@ -75,7 +74,6 @@ Lrnr_multivariate <- R6Class(
       )
       return(fit_object)
     },
-
     .predict = function(task) {
       predict_univariate_learner <- function(outcome_col, outcome_fits, task) {
         univariate_task <- task$next_in_chain(outcome = outcome_col)

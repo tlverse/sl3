@@ -70,12 +70,12 @@ See its documentation for details.
 }
 
 \examples{
+# load data and make task
 data(mtcars)
 mtcars_task <- sl3_Task$new(
   data = mtcars,
   covariates = c(
-    "cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "am",
-    "gear", "carb"
+    "cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "am", "gear", "carb"
   ),
   outcome = "mpg"
 )

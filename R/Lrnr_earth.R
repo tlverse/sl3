@@ -75,10 +75,8 @@ Lrnr_earth <- R6Class(
       super$initialize(params = params, ...)
     }
   ),
-
   private = list(
     .properties = c("continuous", "binomial"),
-
     .train = function(task) {
       args <- self$params
       outcome_type <- self$get_outcome_type(task)
@@ -107,7 +105,6 @@ Lrnr_earth <- R6Class(
       fit_object <- call_with_args(earth_fun, args)
       return(fit_object)
     },
-
     .predict = function(task) {
       preds <- stats::predict(
         object = private$.fit_object, newdata = task$X,

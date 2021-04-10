@@ -50,13 +50,11 @@ Lrnr_optim <- R6Class(
       super$initialize(params = params, ...)
     }
   ),
-
   private = list(
     .properties = c(
       "continuous", "binomial", "categorical", "weights",
       "offset"
     ),
-
     .train = function(task) {
       verbose <- getOption("sl3.verbose")
       params <- self$params
@@ -102,7 +100,6 @@ Lrnr_optim <- R6Class(
       fit_object$name <- "optim"
       return(fit_object)
     },
-
     .predict = function(task = NULL) {
       verbose <- getOption("sl3.verbose")
 

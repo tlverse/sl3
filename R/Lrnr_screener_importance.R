@@ -87,7 +87,6 @@ Lrnr_screener_importance <- R6Class(
   ),
   private = list(
     .properties = c("screener"),
-
     .train = function(task) {
       params <- self$params
 

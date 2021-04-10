@@ -40,7 +40,6 @@ Lrnr_density_semiparametric <- R6Class(
 
       super$initialize(params = params, ...)
     },
-
     sample = function(task, n_samples = 30, fold_number = "full") {
       # TODO: fold
       # method: inverse cdf
@@ -67,7 +66,6 @@ Lrnr_density_semiparametric <- R6Class(
 
       return(t(obs_samples))
     },
-
     get_outcome_range = function(task = NULL, fold_number = "full") {
       # TODO: fold
       mean_fit <- self$fit_object$mean_fit
@@ -87,10 +85,8 @@ Lrnr_density_semiparametric <- R6Class(
       return(range)
     }
   ),
-
   private = list(
     .properties = c("density", "sampling"),
-
     .train = function(task) {
       mean_learner <- self$params$mean_learner
       var_learner <- self$params$var_learner
@@ -131,7 +127,6 @@ Lrnr_density_semiparametric <- R6Class(
 
       return(fit_object)
     },
-
     .predict = function(task) {
       mean_fit <- self$fit_object$mean_fit
       var_fit <- self$fit_object$var_fit

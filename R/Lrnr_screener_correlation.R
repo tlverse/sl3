@@ -50,10 +50,8 @@ Lrnr_screener_correlation <- R6Class(
       super$initialize(params = params)
     }
   ),
-
   private = list(
     .properties = c("binomial", "continuous", "categorical", "screener"),
-
     .train = function(task) {
       outcome_type <- self$get_outcome_type(task)
       X <- task$X
@@ -82,11 +80,9 @@ Lrnr_screener_correlation <- R6Class(
       fit_object <- list(selected = covs[selected_covs])
       return(fit_object)
     },
-
     .predict = function(task) {
       task$X[, private$.fit_object$selected, with = FALSE, drop = FALSE]
     },
-
     .chain = function(task) {
       return(task$next_in_chain(covariates = private$.fit_object$selected))
     }

@@ -58,7 +58,6 @@ Lrnr_sl <- R6Class(
       )
       super$initialize(params = params, ...)
     },
-
     print = function() {
       lrn_names <- lapply(self$params$learners, function(obj) obj$name)
       print("SuperLearner:")
@@ -94,7 +93,6 @@ Lrnr_sl <- R6Class(
         }
       }
     },
-
     metalearner_fit = function() {
       self$assert_trained()
       return(private$.fit_object$cv_meta_fit$fit_object)
@@ -189,26 +187,21 @@ Lrnr_sl <- R6Class(
       return(new_object)
     }
   ),
-
   active = list(
     name = function() {
       name <- paste("CV", self$params$learner$name, sep = "_")
     },
-
     coefficients = function() {
       self$assert_trained()
       return(coef(self$fit_object$cv_meta_fit))
     },
-
     learner_fits = function() {
       result <- self$fit_object$full_fit$learner_fits[[1]]$learner_fits
       return(result)
     }
   ),
-
   private = list(
     .properties = c("wrapper", "cv"),
-
     .cv_risk = NULL, # store risk estimates (avoid re-calculation on print)
 
     .train_sublearners = function(task) {
@@ -256,7 +249,6 @@ Lrnr_sl <- R6Class(
       )
       return(bundle_delayed(fit_object))
     },
-
     .train = function(task, trained_sublearners) {
       fit_object <- trained_sublearners
 
@@ -280,7 +272,6 @@ Lrnr_sl <- R6Class(
       }
       return(fit_object[keep])
     },
-
     .predict = function(task) {
       full_task <- task$revere_fold_task("full")
       predictions <- private$.fit_object$full_fit$base_predict(full_task)

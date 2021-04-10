@@ -190,7 +190,6 @@ Lrnr_gru_keras <- R6Class(
 
       return(fit_object)
     },
-
     .predict = function(task = NULL) {
       args <- self$params
 

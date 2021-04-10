@@ -36,19 +36,15 @@ Lrnr_define_interactions <- R6Class(
       super$initialize(params = params, ...)
     }
   ),
-
   private = list(
     .properties = c("preprocessing"),
-
     .train = function(task) {
       fit_object <- list(interaction_names = self$params$interactions)
       return(fit_object)
     },
-
     .predict = function(task = NULL) {
       stop("This learner should be used for chaining only")
     },
-
     .chain = function(task = NULL) {
       new_task <- task$add_interactions(
         self$params$interactions,

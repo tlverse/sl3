@@ -77,20 +77,19 @@ Lrnr_HarmonicReg <- R6Class(
   ),
   private = list(
     .properties = c("timeseries", "continuous"),
-
     .train = function(task) {
       args <- self$params
       args$x <- ts(task$Y, frequency = args$freq)
 
-      #Checks
+      # Checks
       if (length(args$freq) != length(args$K)) {
         stop("Number of periods does not match number of orders")
       } else if (any(2 * args$K > args$freq)) {
         stop("K must be not be greater than period/2")
       }
 
-      #Passes a warning for an extra argument: that's ok
-      #forecast::fourier doesn't take freq as an argument anymore
+      # Passes a warning for an extra argument: that's ok
+      # forecast::fourier doesn't take freq as an argument anymore
       fourier_fit <- call_with_args(
         forecast::fourier, args,
         ignore = "freq"
@@ -98,7 +97,6 @@ Lrnr_HarmonicReg <- R6Class(
       fit_object <- forecast::tslm(args$x ~ fourier_fit)
       return(fit_object)
     },
-
     .predict = function(task = NULL) {
       h <- ts_get_pred_horizon(self$training_task, task)
       x <- ts(task$Y, frequency = self$params$freq)
@@ -116,7 +114,6 @@ Lrnr_HarmonicReg <- R6Class(
       )
       return(requested_preds)
     },
-
     .required_packages = c("forecast")
   )
 )

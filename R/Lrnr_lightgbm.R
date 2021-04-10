@@ -81,7 +81,6 @@ Lrnr_lightgbm <- R6Class(
       "continuous", "binomial", "categorical", "weights", "offset",
       "importance"
     ),
-
     .train = function(task) {
       args <- self$params
 
@@ -108,7 +107,7 @@ Lrnr_lightgbm <- R6Class(
       # add observation-level weights if detected
       if (task$has_node("weights")) {
         try(lightgbm::setinfo(args$data, "weight", as.numeric(task$weights)),
-            silent = TRUE
+          silent = TRUE
         )
       }
 
@@ -144,7 +143,6 @@ Lrnr_lightgbm <- R6Class(
       fit_object <- call_with_args(lightgbm::lgb.train, args, keep_all = TRUE)
       return(fit_object)
     },
-
     .predict = function(task = NULL) {
       fit_object <- private$.fit_object
 
