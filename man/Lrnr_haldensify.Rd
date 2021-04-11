@@ -31,14 +31,22 @@ performance in simulation experiments; however, both types may be
 specified (i.e., \code{c("equal_range", "equal_mass")}) together, in
 which case cross-validation will be used to select the optimal binning
 strategy.
-\item \code{n_bins = c(3, 5, 10)}: This \code{numeric} value indicates the
-number(s) of bins into which the support of \code{A} is to be divided.
-As with \code{grid_type}, multiple values may be specified, in which
+\item \code{n_bins = c(3, 5)}: This \code{numeric} value indicates the number
+of bins into which the support of \code{A} is to be divided. As with
+\code{grid_type}, multiple values may be specified, in which
 cross-validation will be used to select the optimal number of bins.
 \item \code{lambda_seq = exp(seq(-1, -13, length = 1000L))}: A \code{numeric}
 sequence of regularization parameter values of Lasso regression, which
 are passed to \code{\link[hal9001]{fit_hal}} via its argument
 \code{lambda}, itself passed to \code{\link[glmnet]{glmnet}}.
+\item \code{trim_dens = 1/sqrt(n)}: A \code{numeric} giving the minimum
+allowed value of the resultant density predictions. Any predicted
+density values below this tolerance threshold are set to the indicated
+minimum. The default is to use the inverse of the square root of the
+sample size of the prediction set, i.e., 1/sqrt(n); another notable
+choice is 1/sqrt(n)/log(n). If there are observations in the
+prediction set with values of \code{new_A} outside of the support of
+the training set, their predictions are similarly truncated.
 \item \code{...}: Other arguments to be passed directly to
 \code{\link[haldensify]{haldensify}}. See its documentation for
 details.

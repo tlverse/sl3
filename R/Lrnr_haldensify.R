@@ -30,14 +30,22 @@
 #'       specified (i.e., \code{c("equal_range", "equal_mass")}) together, in
 #'       which case cross-validation will be used to select the optimal binning
 #'       strategy.
-#'   - \code{n_bins = c(3, 5, 10)}: This \code{numeric} value indicates the
-#'       number(s) of bins into which the support of \code{A} is to be divided.
-#'       As with \code{grid_type}, multiple values may be specified, in which
+#'   - \code{n_bins = c(3, 5)}: This \code{numeric} value indicates the number
+#'       of bins into which the support of \code{A} is to be divided. As with
+#'       \code{grid_type}, multiple values may be specified, in which
 #'       cross-validation will be used to select the optimal number of bins.
 #'   - \code{lambda_seq = exp(seq(-1, -13, length = 1000L))}: A \code{numeric}
 #'       sequence of regularization parameter values of Lasso regression, which
 #'       are passed to \code{\link[hal9001]{fit_hal}} via its argument
 #'       \code{lambda}, itself passed to \code{\link[glmnet]{glmnet}}.
+#'   - \code{trim_dens = 1/sqrt(n)}: A \code{numeric} giving the minimum
+#'       allowed value of the resultant density predictions. Any predicted
+#'       density values below this tolerance threshold are set to the indicated
+#'       minimum. The default is to use the inverse of the square root of the
+#'       sample size of the prediction set, i.e., 1/sqrt(n); another notable
+#'       choice is 1/sqrt(n)/log(n). If there are observations in the
+#'       prediction set with values of \code{new_A} outside of the support of
+#'       the training set, their predictions are similarly truncated.
 #'   - \code{...}: Other arguments to be passed directly to
 #'       \code{\link[haldensify]{haldensify}}. See its documentation for
 #'       details.
@@ -72,8 +80,9 @@ Lrnr_haldensify <- R6Class(
   portable = TRUE, class = TRUE,
   public = list(
     initialize = function(grid_type = "equal_range",
-                          n_bins = c(3, 5, 10),
+                          n_bins = c(3, 5),
                           lambda_seq = exp(seq(-1, -13, length = 1000L)),
+                          trim_dens = NULL,
                           ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
@@ -106,25 +115,42 @@ Lrnr_haldensify <- R6Class(
         args$family <- outcome_type$glm_family(return_object = TRUE)$family
       }
 
+      # extract input data
       args$W <- as.matrix(task$X)
       args$A <- as.numeric(outcome_type$format(task$Y))
-      args$use_future <- FALSE
 
+      # handle weights
       if (task$has_node("weights")) {
         args$wts <- task$weights
       }
 
+      # extract offset
       if (task$has_node("offset")) {
         args$offset <- task$offset
       }
 
-      fit_object <- call_with_args(haldensify::haldensify, args)
+      # fit haldensify conditional density estimator
+      fit_object <- call_with_args(
+        haldensify::haldensify, args,
+        other_valid = c("max_degree", "smoothness_orders", "num_knots",
+                        "adaptive_smoothing", "reduce_basis", "use_min"),
+        ignore = c("cv_select", "weights", "family", "fit_type", "trim_dens")
+      )
       return(fit_object)
     },
     .predict = function(task = NULL) {
+      # set density trimming to haldensify::predict default if NULL
+      if (is.null(self$params[["trim_dens"]])) {
+        trim_dens <- 1 / sqrt(task$nrow)
+      } else {
+        trim_dens <- self$params[["trim_dens"]]
+      }
+
+      # predict density
       predictions <- predict(self$fit_object,
         new_A = as.numeric(task$Y),
-        new_W = as.matrix(task$X)
+        new_W = as.matrix(task$X),
+        trim_dens = trim_dens
       )
       return(predictions)
     },

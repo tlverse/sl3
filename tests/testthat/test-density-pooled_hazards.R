@@ -10,16 +10,24 @@ data <- data.table(x = x, y = y)
 task <- sl3_Task$new(data, covariates = c("x"), outcome = "y")
 
 # instantiate learners
-hal <- Lrnr_hal9001$new(lambda_seq = exp(seq(-1, -13, length = 100)))
+hal <- Lrnr_hal9001$new(
+  lambda = exp(seq(-1, -13, length = 100)),
+  max_degree = 6,
+  smoothness_orders = 0
+)
 haldensify <- Lrnr_haldensify$new(
-  grid_type = "equal_mass",
-  n_bins = 10,
-  lambda_seq = exp(seq(-1, -13, length = 100))
+  grid_type = "equal_range",
+  n_bins = 5,
+  lambda_seq = exp(seq(-1, -13, length = 100)),
+  max_degree = 6,
+  smoothness_orders = 0,
+  trim_dens = 0
 )
 hazard_learner <- Lrnr_pooled_hazards$new(hal)
-density_learner <- Lrnr_density_discretize$new(hazard_learner,
-  type = "equal_mass",
-  n_bins = 10
+density_learner <- Lrnr_density_discretize$new(
+  hazard_learner,
+  type = "equal_range",
+  n_bins = 5
 )
 
 # fit discrete density model to pooled hazards data

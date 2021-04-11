@@ -86,7 +86,7 @@ Suggests:
     lightgbm,
     dbarts,
     gam (>= 1.15.0),
-    haldensify,
+    haldensify (>= 0.1.0),
     mgcv,
     hts
 License: GPL-3
