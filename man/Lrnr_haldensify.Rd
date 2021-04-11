@@ -24,7 +24,7 @@ support of the outcome variable. For bins of equal range, use
 each bin has the same number of observations, use "equal_mass" (based on
 \code{\link[ggplot2]{cut_number}}).
 }
-\item{\code{n_bins = c(5, 10)}}{Only used if \code{type} is set to
+\item{\code{n_bins = c(3, 5)}}{Only used if \code{type} is set to
 \code{"equal_range"} or \code{"equal_mass"}. This \code{numeric} value
 indicates the number of bins that the support of the outcome variable is
 to be divided into.

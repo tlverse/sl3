@@ -43,10 +43,10 @@ Imports:
     methods,
     ggplot2,
     digest,
+    Rdpack,
     imputeMissings,
     dplyr,
-    caret,
-    arm
+    caret
 Suggests:
     testthat,
     rmarkdown,
@@ -58,6 +58,7 @@ Suggests:
     reticulate,
     rgl,
     rJava,
+    arm,
     bartMachine,
     cvAUC,
     e1071,
@@ -67,7 +68,7 @@ Suggests:
     glmnet,
     grf,
     gbm,
-    hal9001 (>= 0.2.5),
+    hal9001 (>= 0.3.0),
     h2o,
     keras,
     kerasR,
@@ -85,10 +86,11 @@ Suggests:
     lightgbm,
     dbarts,
     gam (>= 1.15.0),
-    haldensify,
+    haldensify (>= 0.1.0),
     mgcv,
     hts
 License: GPL-3
+Language: en-US
 URL: https://tlverse.org/sl3
 BugReports: https://github.com/tlverse/sl3/issues
 Encoding: UTF-8
@@ -97,5 +99,6 @@ LazyLoad: yes
 VignetteBuilder:
     knitr,
     R.rsp
-RoxygenNote: 7.1.1.9001
 Roxygen: list(markdown = TRUE, old_usage = TRUE, r6 = FALSE)
+RoxygenNote: 7.1.1.9001
+RdMacros: Rdpack

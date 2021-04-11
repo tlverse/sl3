@@ -15,21 +15,28 @@ test_learner <- function(learner, task, ...) {
   print(sprintf("Testing Learner: %s", learner_obj$name))
   # test learner training
   fit_obj <- learner_obj$train(task)
-  test_that("Learner can be trained on data", expect_true(fit_obj$is_trained))
+  test_that("Learner can be trained on data", {
+    skip_on_os("windows")
+    expect_true(fit_obj$is_trained)
+  })
 
   # test learner prediction
   train_preds <- fit_obj$predict()
-  test_that("Learner can generate training set predictions", expect_equal(
-    sl3:::safe_dim(train_preds)[1],
-    length(task$Y)
-  ))
+  test_that("Learner can generate training set predictions", {
+    skip_on_os("windows")
+    expect_equal(
+      sl3:::safe_dim(train_preds)[1], length(task$Y)
+    )
+  })
 
   # test learner chaining
   chained_task <- fit_obj$chain()
   test_that("Chaining returns a task", {
+    skip_on_os("windows")
     expect_true(is(chained_task, "sl3_Task"))
   })
   test_that("Chaining returns the correct number of rows", {
+    skip_on_os("windows")
     expect_equal(nrow(chained_task$X), nrow(task$X))
   })
 }
@@ -39,6 +46,7 @@ options(sl3.verbose = TRUE)
 test_learner(Lrnr_lightgbm, task)
 
 test_that("Lrnr_lightgbm predictions match lightgbm's: continuous outcome", {
+  skip_on_os("windows")
   ## instantiate Lrnr_lightgbm, train on task, and predict on task
   set.seed(73964)
   lrnr_lightgbm <- Lrnr_lightgbm$new()
@@ -63,6 +71,7 @@ test_that("Lrnr_lightgbm predictions match lightgbm's: continuous outcome", {
 })
 
 test_that("Lrnr_lightgbm predictions match lightgbm's: binary outcome", {
+  skip_on_os("windows")
   ## create task with binary outcome
   covars <- c("bmi", "haz", "mage", "sexn")
   outcome <- "smoked"
@@ -93,6 +102,7 @@ test_that("Lrnr_lightgbm predictions match lightgbm's: binary outcome", {
 })
 
 test_that("Lrnr_lightgbm predictions match lightgbm's: categorical outcome", {
+  skip_on_os("windows")
   ## create task with binary outcome
   covars <- c("bmi", "haz", "mage", "sexn")
   outcome <- "parity"
@@ -125,6 +135,7 @@ test_that("Lrnr_lightgbm predictions match lightgbm's: categorical outcome", {
 })
 
 test_that("Cursory test of Lrnr_lightgbm with weights", {
+  skip_on_os("windows")
   ## create task, continuous outcome with observation-level weights
   covars <- c("bmi", "parity", "mage", "sexn")
   outcome <- "haz"

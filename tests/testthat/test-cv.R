@@ -2,7 +2,6 @@ context("test-cv.R -- Cross-validation fold handling")
 
 library(origami)
 options(java.parameters = "-Xmx2500m")
-
 data(cpp_imputed)
 covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")
 outcome <- "haz"
@@ -104,7 +103,8 @@ test_loocv_learner <- function(learner, loocv_task, ...) {
 
   # test learner chaining
   chained_task <- fit_obj$chain()
-  test_that("Chaining returns a task", expect_true(is(chained_task, "sl3_Task")))
+  test_that("Chaining returns a task", expect_true(is(chained_task,
+                                                      "sl3_Task")))
   test_that("Chaining returns the correct number of rows", expect_equal(
     nrow(chained_task$X),
     nrow(loocv_task$X)
@@ -114,7 +114,8 @@ test_loocv_learner <- function(learner, loocv_task, ...) {
   preds_full <- fit_obj$predict_fold(loocv_task, "full")
   preds_valid <- fit_obj$predict_fold(loocv_task, "validation")
   validation_task <- validation(loocv_task, fold = loocv_task$folds[[1]])
-  validation_preds <- fit_obj$fit_object$fold_fits[[1]]$predict(validation_task)
+  validation_preds <-
+    fit_obj$fit_object$fold_fits[[1]]$predict(validation_task)
   test_that("Learners do not error under LOOCV", {
     expect_false(any(is.na(preds_valid)))
     expect_false(any(is.na(preds_fold1)))
@@ -125,7 +126,9 @@ test_loocv_learner <- function(learner, loocv_task, ...) {
 
 # make task with LOOCV
 d <- cpp_imputed[1:50, ]
-expect_warning(loocv_folds <- make_folds(n = d, fold_fun = folds_vfold, V = 50))
+expect_warning({
+  loocv_folds <- make_folds(n = d, fold_fun = folds_vfold, V = 50)
+})
 loocv_task <- sl3_Task$new(d, covars, outcome, folds = loocv_folds)
 
 # get learners
@@ -137,6 +140,11 @@ screen <- sl3::sl3_list_learners("screener")
 wrap <- sl3::sl3_list_learners("wrapper")
 h2o <- sl3::sl3_list_learners("h2o")
 learners <- cont_learners[-which(cont_learners %in% c(ts, screen, wrap, h2o))]
+
+# remove LightGBM on Windows
+if (Sys.info()["sysname"] == "Windows") {
+  learners <- learners[!(learners == "Lrnr_lightgbm")]
+}
 
 # test all relevant learners
 lapply(learners, test_loocv_learner, loocv_task)

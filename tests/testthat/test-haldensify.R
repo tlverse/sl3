@@ -6,7 +6,8 @@ if (FALSE) {
   getwd()
   library("devtools")
   document()
-  load_all("./") # load all R files in /R and datasets in /data. Ignores NAMESPACE:
+  load_all("./") # load all R files in /R and datasets in /data.
+  # Ignores NAMESPACE:
   devtools::check() # runs full check
   setwd("..")
   install("sl3",
@@ -34,9 +35,10 @@ task <- cpp_imputed %>%
   )
 
 hal_dens <- Lrnr_haldensify$new(
-  grid_type = "equal_mass",
-  n_bins = 10,
-  lambda_seq = exp(seq(-1, -13, length = 100))
+  grid_type = "equal_range",
+  n_bins = c(3, 5),
+  lambda_seq = exp(seq(-1, -13, length = 100)),
+  max_degree = 6, smoothness_orders = 0
 )
 
 test_that("Lrnr_haldensify produces predictions identical to haldensify", {
@@ -48,11 +50,13 @@ test_that("Lrnr_haldensify produces predictions identical to haldensify", {
   haldensify_fit <- haldensify::haldensify(
     A = as.numeric(task$Y),
     W = as.matrix(task$X),
-    grid_type = "equal_mass",
-    n_bins = 10,
+    grid_type = "equal_range",
+    n_bins = c(3, 5),
     lambda_seq = exp(seq(-1, -13,
       length = 100
-    ))
+    )),
+    max_degree = 6,
+    smoothness_orders = 0
   )
   haldensify_preds <- predict(haldensify_fit,
     new_A = as.numeric(task$Y),

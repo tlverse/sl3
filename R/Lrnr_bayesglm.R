@@ -6,7 +6,6 @@
 #' @docType class
 #'
 #' @importFrom R6 R6Class
-#' @importFrom arm bayesglm
 #'
 #' @export
 #'
