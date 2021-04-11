@@ -32,6 +32,15 @@
 #'    sequence of values of the regulariztion parameter of the Lasso regression,
 #'    to be passed to to \code{\link[hal9001]{fit_hal}}.
 #'   }
+#'   \item{\code{trim_dens = 1/sqrt(n)}}{A \code{numeric} giving the minimum
+#'     allowed value of the resultant density predictions. Any predicted
+#'     density values below this tolerance threshold are set to the indicated
+#'     minimum. The default is to use the inverse of the square root of the
+#'     sample size of the prediction set, i.e., 1/sqrt(n); another notable
+#'     choice is 1/sqrt(n)/log(n). If there are observations in the prediction
+#'     set with values of \code{new_A} outside of the support of the training
+#'     set, their predictions are similarly truncated.
+#'   }
 #'   \item{\code{...}}{ Other parameters passed directly to
 #'    \code{\link[haldensify]{haldensify}}. See its documentation for details.
 #'   }
@@ -44,6 +53,7 @@ Lrnr_haldensify <- R6Class(
     initialize = function(grid_type = "equal_range",
                           n_bins = c(3, 5),
                           lambda_seq = exp(seq(-1, -13, length = 1000L)),
+                          trim_dens = NULL,
                           ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
@@ -96,14 +106,23 @@ Lrnr_haldensify <- R6Class(
         haldensify::haldensify, args,
         other_valid = c("max_degree", "smoothness_orders", "num_knots",
                         "adaptive_smoothing", "reduce_basis", "use_min"),
-        ignore = c("cv_select", "weights", "family", "fit_type")
+        ignore = c("cv_select", "weights", "family", "fit_type", "trim_dens")
       )
       return(fit_object)
     },
     .predict = function(task = NULL) {
+      # set density trimming to haldensify::predict default if NULL
+      if (is.null(self$params[["trim_dens"]])) {
+        trim_dens <- 1 / sqrt(task$nrow)
+      } else {
+        trim_dens <- self$params[["trim_dens"]]
+      }
+
+      # predict density
       predictions <- predict(self$fit_object,
         new_A = as.numeric(task$Y),
-        new_W = as.matrix(task$X)
+        new_W = as.matrix(task$X),
+        trim_dens = trim_dens
       )
       return(predictions)
     },
