@@ -46,24 +46,6 @@ task <- sl3_Task$new(data, nodes = node_list, folds = folds)
 # install.packages("keras")
 # keras::install_keras()
 
-test_that("Lrnr_lstm does what we expect", {
-  have_foo <- reticulate::py_module_available("keras.models")
-
-  if (!(have_foo)) {
-    skip("keras.models not available for testing")
-  } else {
-    reticulate::import("keras.models")
-
-    lstm_learner <- Lrnr_lstm$new(epochs = 1)
-    lstm_fit <- lstm_learner$train(task)
-    lstm_preds <- lstm_fit$predict(task)
-
-    # At epochs=1 (saves time) the prediction is too variable to be tested
-    # expect_true(sum(lstm_preds)-28.95605 < 10^(-1))
-    expect_equal(length(lstm_preds), length(task$Y))
-  }
-})
-
 test_that("Lrnr_bilstm does what we expect", {
   have_foo <- reticulate::py_module_available("keras.models")
 
