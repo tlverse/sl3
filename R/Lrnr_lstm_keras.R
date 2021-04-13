@@ -17,33 +17,65 @@
 #'
 #' @family Learners
 #'
-#' @return \code{\link{Lrnr_base}} object with methods for training and prediction.
+#' @return A learner object inheriting from \code{\link{Lrnr_base}} with
+#' methods for training and prediction. For a full list of learner
+#' functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 #'
-#' @format \code{\link{R6Class}} object.
+#' @format An \code{\link[R6]{R6Class}} object inheriting from
+#'  \code{\link{Lrnr_base}}.
 #'
 #' @section Parameters:
-#' \describe{
-#'  \item{\code{batch_size}}{How many times should the training data be used to
-#'  train the neural network?}
-#'  \item{\code{units}}{Positive integer, dimensionality of the output space.}
-#'  \item{\code{dropout}}{Float between 0 and 1. Fraction of the input units to
-#'  drop.}
-#'  \item{\code{recurrent_dropout}}{Float between 0 and 1. Fraction of the
-#'  units to drop for the linear transformation of the recurrent state.}
-#'  \item{\code{activation}}{Activation function to use. If you pass NULL, no
-#'  activation is applied (e.g., "linear" activation: \code{a(x) = x}).}
-#'  \item{\code{recurrent_activation}}{Activation function to use for the
-#'  recurrent step.}
-#'  \item{\code{recurrent_out}}{Activation function to use for the output step.}
-#'  \item{\code{epochs}}{Number of epochs to train the model.}
-#'  \item{\code{lr}}{Learning rate.}
-#'  \item{\code{layers}}{How many lstm layers. Only allows for 1 or 2.}
-#'  \item{\code{callbacks}}{List of callbacks, which is a set of functions to
-#'  be applied at given stages of the training procedure. Default callback
-#'  function \code{callback_early_stopping} stops training if the validation
-#'  loss does not improve across \code{patience} number of epochs.}
-#'  }
+#'   - \code{batch_size}: How many times should the training data be used to
+#'       train the neural network?
+#'   - \code{units}: Positive integer, dimensionality of the output space.
+#'   - \code{dropout}: Float between 0 and 1. Fraction of the input units to
+#'       drop.
+#'   - \code{recurrent_dropout}: Float between 0 and 1. Fraction of the units
+#'       to drop for the linear transformation of the recurrent state.
+#'   - \code{activation}: Activation function to use. If you pass NULL, no
+#'       activation is applied (e.g., "linear" activation: \code{a(x) = x}).
+#'   - \code{recurrent_activation}: Activation function to use for the
+#'       recurrent step.
+#'   - \code{recurrent_out}: Activation function to use for the output step.
+#'   - \code{epochs}: Number of epochs to train the model.
+#'   - \code{lr}: Learning rate.
+#'   - \code{layers}: How many LSTM layers. Only allows for 1 or 2.
+#'   - \code{callbacks}: List of callbacks, which is a set of functions to
+#'   be applied at given stages of the training procedure. Default callback
+#'   function \code{callback_early_stopping} stops training if the validation
+#'   loss does not improve across \code{patience} number of epochs.
+#'   - \code{...}: Other parameters passed to \code{\link[keras]{keras}}.
+#'   
+#' @examples
+#' \dontrun{
+#' library(origami)
+#' data(bsds)
 #'
+#' # make folds appropriate for time-series cross-validation
+#' folds <- make_folds(bsds,
+#'   fold_fun = folds_rolling_window, window_size = 500,
+#'   validation_size = 100, gap = 0, batch = 50
+#' )
+#'
+#' # build task by passing in external folds structure
+#' task <- sl3_Task$new(
+#'   data = bsds,
+#'   folds = folds,
+#'   covariates = c(
+#'     "weekday", "temp"
+#'   ),
+#'   outcome = "cnt"
+#' )
+#' 
+#' # create tasks for taining and validation (simplifed example)
+#' train_task <- training(task, fold = task$folds[[1]])
+#' valid_task <- validation(task, fold = task$folds[[1]])
+#'
+#' # instantiate learner, then fit and predict (simplifed example)
+#' lstm_lrnr <- Lrnr_lstm_keras$new(batch_size = 1, epochs = 200)
+#' lstm_fit <- lstm_lrnr$train(train_task)
+#' lstm_preds <- lstm_fit$predict(valid_task)
+#' } 
 Lrnr_lstm_keras <- R6Class(
   classname = "Lrnr_lstm_keras",
   inherit = Lrnr_base,
