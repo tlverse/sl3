@@ -45,7 +45,7 @@
 #'   function \code{callback_early_stopping} stops training if the validation
 #'   loss does not improve across \code{patience} number of epochs.
 #'   - \code{...}: Other parameters passed to \code{\link[keras]{keras}}.
-#'   
+#'
 #' @examples
 #' \dontrun{
 #' library(origami)
@@ -66,7 +66,7 @@
 #'   ),
 #'   outcome = "cnt"
 #' )
-#' 
+#'
 #' # create tasks for taining and validation (simplifed example)
 #' train_task <- training(task, fold = task$folds[[1]])
 #' valid_task <- validation(task, fold = task$folds[[1]])
@@ -75,7 +75,7 @@
 #' lstm_lrnr <- Lrnr_lstm_keras$new(batch_size = 1, epochs = 200)
 #' lstm_fit <- lstm_lrnr$train(train_task)
 #' lstm_preds <- lstm_fit$predict(valid_task)
-#' } 
+#' }
 Lrnr_lstm_keras <- R6Class(
   classname = "Lrnr_lstm_keras",
   inherit = Lrnr_base,

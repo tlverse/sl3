@@ -5,37 +5,70 @@
 \alias{Lrnr_rugarch}
 \title{Univariate GARCH Models}
 \format{
-\code{\link{R6Class}} object.
+An \code{\link[R6]{R6Class}} object inheriting from
+\code{\link{Lrnr_base}}.
 }
 \value{
-Learner object with methods for training and prediction. See
-\code{\link{Lrnr_base}} for documentation on learners.
+A learner object inheriting from \code{\link{Lrnr_base}} with
+methods for training and prediction. For a full list of learner
+functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 }
 \description{
-This learner supports autoregressive fractionally integrated moving average
-and various flavors of generalized autoregressive conditional
-heteroskedasticity models for univariate time-series.
+This learner supports autoregressive fractionally integrated moving
+average  and various flavors of generalized autoregressive conditional
+heteroskedasticity models for univariate time-series. All the models
+are fit using \code{\link[rugarch]{ugarchfit}}.
 }
 \section{Parameters}{
 
-\describe{
-\item{\code{variance.model}}{List containing variance model specification.
+\itemize{
+\item \code{variance.model}: List containing variance model specification.
 This includes model, GARCH order, submodel, external regressors and
-variance tageting. Refer to \code{ugarchspec} for more information.}
-\item{\code{mean.model}}{List containing the mean model specification. This
+variance tageting. Refer to \code{\link{ugarchspec}} for more information.
+\item \code{mean.model}: List containing the mean model specification. This
 includes ARMA model, whether the mean should be included, and external
-regressors among others. Refer to \code{ugarchspec} for more
-information.}
-\item{\code{distribution.model="norm"}}{Conditional density to use for the
-innovations.}
-\item{\code{start.pars=list()}}{List of staring parameters for the
-optimization routine.}
-\item{\code{fixed.pars=list()}}{List of parameters which are to be kept
-fixed during the optimization.}
-\item{\code{n.ahead=NULL}}{The forecast horizon.}
+regressors among others.
+\item \code{distribution.model}:Conditional density to use for the
+innovations.
+\item \code{start.pars}:List of staring parameters for the
+optimization routine.
+\item \code{fixed.pars}:List of parameters which are to be kept
+fixed during the optimization.
+\item \code{...}: Other parameters passed to \code{\link[rugarch]{ugarchfit}}.
 }
 }
 
+\examples{
+library(origami)
+library(data.table)
+data(bsds)
+
+# make folds appropriate for time-series cross-validation
+folds <- make_folds(bsds,
+  fold_fun = folds_rolling_window, window_size = 500,
+  validation_size = 100, gap = 0, batch = 50
+)
+
+# build task by passing in external folds structure
+task <- sl3_Task$new(
+  data = bsds,
+  folds = folds,
+  covariates = c(
+    "weekday", "temp"
+  ),
+  outcome = "cnt"
+)
+
+# create tasks for taining and validation
+train_task <- training(task, fold = task$folds[[1]])
+valid_task <- validation(task, fold = task$folds[[1]])
+
+# instantiate learner, then fit and predict
+HarReg_learner <- Lrnr_HarmonicReg$new(K = 7, freq = 105)
+HarReg_fit <- HarReg_learner$train(train_task)
+HarReg_preds <- HarReg_fit$predict(valid_task)
+ 
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},
