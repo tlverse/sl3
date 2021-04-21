@@ -11,28 +11,29 @@ task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
 test_learner <- function(learner, task, ...) {
   # test learner definition: this requires that a learner can be instantiated
   # with only default arguments. Not sure if this is a reasonable requirement
-  learner_obj <- learner$new(...)
   print(sprintf("Testing Learner: %s", learner_obj$name))
+
   # test learner training
-  fit_obj <- learner_obj$train(task)
   test_that("Learner can be trained on data", {
     skip_on_os("windows")
+    learner_obj <- learner$new(...)
+    fit_obj <- learner_obj$train(task)
     expect_true(fit_obj$is_trained)
   })
 
   # test learner prediction
-  train_preds <- fit_obj$predict()
   test_that("Learner can generate training set predictions", {
     skip_on_os("windows")
+    train_preds <- fit_obj$predict()
     expect_equal(
       sl3:::safe_dim(train_preds)[1], length(task$Y)
     )
   })
 
   # test learner chaining
-  chained_task <- fit_obj$chain()
   test_that("Chaining returns a task", {
     skip_on_os("windows")
+    chained_task <- fit_obj$chain()
     expect_true(is(chained_task, "sl3_Task"))
   })
   test_that("Chaining returns the correct number of rows", {
