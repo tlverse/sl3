@@ -109,7 +109,16 @@ test_importance_screener <- function(learner) {
 }
 
 test_that("Lrnr_screener_importance tests", {
+  # get all learners supporting variable importance
   importance_learners <- sl3::sl3_list_learners("importance")
+
+  # remove LightGBM on Windows
+  if (Sys.info()["sysname"] == "Windows") {
+    importance_learners <-
+      importance_learners[!(importance_learners == "Lrnr_lightgbm")]
+  }
+
+  # test all learners supporting variable importance
   lapply(importance_learners, test_importance_screener)
 })
 
