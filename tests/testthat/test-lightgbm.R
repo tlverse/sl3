@@ -11,12 +11,12 @@ task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
 test_learner <- function(learner, task, ...) {
   # test learner definition: this requires that a learner can be instantiated
   # with only default arguments. Not sure if this is a reasonable requirement
+  learner_obj <- learner$new(...)
   print(sprintf("Testing Learner: %s", learner_obj$name))
 
   # test learner training
   test_that("Learner can be trained on data", {
     skip_on_os("windows")
-    learner_obj <- learner$new(...)
     fit_obj <- learner_obj$train(task)
     expect_true(fit_obj$is_trained)
   })
