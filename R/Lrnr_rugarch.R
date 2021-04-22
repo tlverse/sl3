@@ -1,9 +1,9 @@
 #' Univariate GARCH Models
 #'
-#' @description This learner supports autoregressive fractionally integrated moving
-#' average  and various flavors of generalized autoregressive conditional
-#' heteroskedasticity models for univariate time-series. All the models
-#' are fit using \code{\link[rugarch]{ugarchfit}}.
+#' @description This learner supports autoregressive fractionally integrated
+#'  moving average  and various flavors of generalized autoregressive
+#'  conditional heteroskedasticity models for univariate time-series. All the
+#'  models are fit using \code{\link[rugarch]{ugarchfit}}.
 #'
 #' @docType class
 #'
@@ -24,17 +24,18 @@
 #'
 #' @section Parameters:
 #'  - \code{variance.model}: List containing variance model specification.
-#'     This includes model, GARCH order, submodel, external regressors and
-#'     variance tageting. Refer to \code{\link{ugarchspec}} for more information.
+#'      This includes model, GARCH order, submodel, external regressors and
+#'      variance tageting. Refer to \code{\link[rugarch]{ugarchspec}} for more
+#'      information.
 #'  - \code{mean.model}: List containing the mean model specification. This
-#'     includes ARMA model, whether the mean should be included, and external
-#'     regressors among others.
-#'  - \code{distribution.model}:Conditional density to use for the
-#'     innovations.
-#'  - \code{start.pars}:List of staring parameters for the
-#'     optimization routine.
-#'  - \code{fixed.pars}:List of parameters which are to be kept
-#'     fixed during the optimization.
+#'      includes ARMA model, whether the mean should be included, and external
+#'      regressors among others.
+#'  - \code{distribution.model}: Conditional density to be used for the
+#'      innovations.
+#'  - \code{start.pars}:List of staring parameters for the optimization
+#'      routine.
+#'  - \code{fixed.pars}:List of parameters which are to be kept fixed during
+#'      the optimization routine.
 #'  - \code{...}: Other parameters passed to \code{\link[rugarch]{ugarchfit}}.
 #'
 #' @examples
@@ -66,8 +67,6 @@
 #' HarReg_learner <- Lrnr_HarmonicReg$new(K = 7, freq = 105)
 #' HarReg_fit <- HarReg_learner$train(train_task)
 #' HarReg_preds <- HarReg_fit$predict(valid_task)
-#'
-#' #
 Lrnr_rugarch <- R6Class(
   classname = "Lrnr_rugarch", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
@@ -114,8 +113,8 @@ Lrnr_rugarch <- R6Class(
       )
 
       preds <- as.numeric(predictions@forecast$seriesFor)
-      requested_preds <- ts_get_requested_preds(self$training_task, task, preds)
-
+      requested_preds <- ts_get_requested_preds(self$training_task, task,
+                                                preds)
       return(requested_preds)
     },
     .required_packages = c("rugarch")

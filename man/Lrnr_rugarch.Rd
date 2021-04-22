@@ -14,26 +14,27 @@ methods for training and prediction. For a full list of learner
 functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 }
 \description{
-This learner supports autoregressive fractionally integrated moving
-average  and various flavors of generalized autoregressive conditional
-heteroskedasticity models for univariate time-series. All the models
-are fit using \code{\link[rugarch]{ugarchfit}}.
+This learner supports autoregressive fractionally integrated
+moving average  and various flavors of generalized autoregressive
+conditional heteroskedasticity models for univariate time-series. All the
+models are fit using \code{\link[rugarch]{ugarchfit}}.
 }
 \section{Parameters}{
 
 \itemize{
 \item \code{variance.model}: List containing variance model specification.
 This includes model, GARCH order, submodel, external regressors and
-variance tageting. Refer to \code{\link{ugarchspec}} for more information.
+variance tageting. Refer to \code{\link[rugarch]{ugarchspec}} for more
+information.
 \item \code{mean.model}: List containing the mean model specification. This
 includes ARMA model, whether the mean should be included, and external
 regressors among others.
-\item \code{distribution.model}:Conditional density to use for the
+\item \code{distribution.model}: Conditional density to be used for the
 innovations.
-\item \code{start.pars}:List of staring parameters for the
-optimization routine.
-\item \code{fixed.pars}:List of parameters which are to be kept
-fixed during the optimization.
+\item \code{start.pars}:List of staring parameters for the optimization
+routine.
+\item \code{fixed.pars}:List of parameters which are to be kept fixed during
+the optimization routine.
 \item \code{...}: Other parameters passed to \code{\link[rugarch]{ugarchfit}}.
 }
 }
@@ -67,7 +68,6 @@ valid_task <- validation(task, fold = task$folds[[1]])
 HarReg_learner <- Lrnr_HarmonicReg$new(K = 7, freq = 105)
 HarReg_fit <- HarReg_learner$train(train_task)
 HarReg_preds <- HarReg_fit$predict(valid_task)
- 
 }
 \seealso{
 Other Learners: 

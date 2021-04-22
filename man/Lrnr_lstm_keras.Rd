@@ -75,7 +75,7 @@ valid_task <- validation(task, fold = task$folds[[1]])
 lstm_lrnr <- Lrnr_lstm_keras$new(batch_size = 1, epochs = 200)
 lstm_fit <- lstm_lrnr$train(train_task)
 lstm_preds <- lstm_fit$predict(valid_task)
-} 
+}
 }
 \seealso{
 Other Learners: 
