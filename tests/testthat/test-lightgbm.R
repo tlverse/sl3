@@ -13,30 +13,36 @@ test_learner <- function(learner, task, ...) {
   # with only default arguments. Not sure if this is a reasonable requirement
   learner_obj <- learner$new(...)
   print(sprintf("Testing Learner: %s", learner_obj$name))
+
   # test learner training
-  fit_obj <- learner_obj$train(task)
   test_that("Learner can be trained on data", {
     skip_on_os("windows")
+    fit_obj <- learner_obj$train(task)
     expect_true(fit_obj$is_trained)
   })
 
   # test learner prediction
-  train_preds <- fit_obj$predict()
   test_that("Learner can generate training set predictions", {
     skip_on_os("windows")
+    fit_obj <- learner_obj$train(task)
+    train_preds <- fit_obj$predict()
     expect_equal(
       sl3:::safe_dim(train_preds)[1], length(task$Y)
     )
   })
 
   # test learner chaining
-  chained_task <- fit_obj$chain()
   test_that("Chaining returns a task", {
     skip_on_os("windows")
+    fit_obj <- learner_obj$train(task)
+    chained_task <- fit_obj$chain()
     expect_true(is(chained_task, "sl3_Task"))
   })
+
   test_that("Chaining returns the correct number of rows", {
     skip_on_os("windows")
+    fit_obj <- learner_obj$train(task)
+    chained_task <- fit_obj$chain()
     expect_equal(nrow(chained_task$X), nrow(task$X))
   })
 }
