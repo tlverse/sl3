@@ -33,6 +33,15 @@ to be divided into.
 sequence of values of the regulariztion parameter of the Lasso regression,
 to be passed to to \code{\link[hal9001]{fit_hal}}.
 }
+\item{\code{trim_dens = 1/sqrt(n)}}{A \code{numeric} giving the minimum
+allowed value of the resultant density predictions. Any predicted
+density values below this tolerance threshold are set to the indicated
+minimum. The default is to use the inverse of the square root of the
+sample size of the prediction set, i.e., 1/sqrt(n); another notable
+choice is 1/sqrt(n)/log(n). If there are observations in the prediction
+set with values of \code{new_A} outside of the support of the training
+set, their predictions are similarly truncated.
+}
 \item{\code{...}}{ Other parameters passed directly to
 \code{\link[haldensify]{haldensify}}. See its documentation for details.
 }
