@@ -168,13 +168,21 @@ support of the outcome variable. For bins of equal range, use
 "equal_range" (based on <code><a href='https://ggplot2.tidyverse.org/reference/cut_interval.html'>cut_interval</a></code>). To ensure
 each bin has the same number of observations, use "equal_mass" (based on
 <code><a href='https://ggplot2.tidyverse.org/reference/cut_interval.html'>cut_number</a></code>).</p></dd>
-<dt><code>n_bins = c(5, 10)</code></dt><dd><p>Only used if <code>type</code> is set to
+<dt><code>n_bins = c(3, 5)</code></dt><dd><p>Only used if <code>type</code> is set to
 <code>"equal_range"</code> or <code>"equal_mass"</code>. This <code>numeric</code> value
 indicates the number of bins that the support of the outcome variable is
 to be divided into.</p></dd>
 <dt><code>lambda_seq = exp(seq(-1, -13, length = 1000L))</code></dt><dd><p><code>numeric</code>
 sequence of values of the regulariztion parameter of the Lasso regression,
 to be passed to to <code><a href='https://rdrr.io/pkg/hal9001/man/fit_hal.html'>fit_hal</a></code>.</p></dd>
+<dt><code>trim_dens = 1/sqrt(n)</code></dt><dd><p>A <code>numeric</code> giving the minimum
+allowed value of the resultant density predictions. Any predicted
+density values below this tolerance threshold are set to the indicated
+minimum. The default is to use the inverse of the square root of the
+sample size of the prediction set, i.e., 1/sqrt(n); another notable
+choice is 1/sqrt(n)/log(n). If there are observations in the prediction
+set with values of <code>new_A</code> outside of the support of the training
+set, their predictions are similarly truncated.</p></dd>
 <dt><code>...</code></dt><dd><p>Other parameters passed directly to
 <code><a href='https://rdrr.io/pkg/haldensify/man/haldensify.html'>haldensify</a></code>. See its documentation for details.</p></dd>
 

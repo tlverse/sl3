@@ -26,6 +26,7 @@
 #'   \item{\code{write.forest = TRUE}}{If \code{TRUE}, forest is stored, which
 #'     is required for prediction. Set to \code{FALSE} to reduce memory usage if
 #'     no prediction is intended.}
+#'   \item{\code{num.threads = 1}}{Number of threads.}
 #'   \item{\code{...}}{Other parameters passed to \code{\link[ranger]{ranger}}.
 #'     See its documentation for details.}
 #' }
@@ -67,14 +68,32 @@ Lrnr_ranger <- R6Class(
 
     .train = function(task) {
       args <- self$params
+
+      # format data
+      if (task$outcome_type$type == "binomial") {
+        args$data <- cbind(factor(task$Y), task$X)
+      } else if (task == "categorical") {
+        args$data <- cbind(task$outcome_type$format(task$Y), task$X)
+      } else {
+        args$data <- cbind(task$Y, task$X)
+      }
+      colnames(args$data)[1] <- task$nodes$outcome
+      args$dependent.variable.name <- task$nodes$outcome
+
+      # specify tree type
+      if (is.null(args$classification) & task$outcome_type$type == "binomial") {
+        args$classification <- TRUE
+      }
+      args$probability <- task$outcome_type$type == "categorical"
+
       if (task$has_node("weights")) {
         args$case.weights <- task$weights
       }
-      data_in <- cbind(task$Y, task$X)
-      colnames(data_in)[1] <- task$nodes$outcome
-      args$data <- data_in
-      args$dependent.variable.name <- task$nodes$outcome
-      args$probability <- task$outcome_type$type == "categorical"
+
+      if (is.null(args$verbose)) {
+        args$verbose <- getOption("sl3.verbose")
+      }
+
       fit_object <- call_with_args(ranger::ranger, args)
       return(fit_object)
     },

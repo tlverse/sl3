@@ -24,6 +24,7 @@ forest.}
 \item{\code{write.forest = TRUE}}{If \code{TRUE}, forest is stored, which
 is required for prediction. Set to \code{FALSE} to reduce memory usage if
 no prediction is intended.}
+\item{\code{num.threads = 1}}{Number of threads.}
 \item{\code{...}}{Other parameters passed to \code{\link[ranger]{ranger}}.
 See its documentation for details.}
 }

@@ -104,8 +104,10 @@ Lrnr_haldensify <- R6Class(
       # fit haldensify conditional density estimator
       fit_object <- call_with_args(
         haldensify::haldensify, args,
-        other_valid = c("max_degree", "smoothness_orders", "num_knots",
-                        "adaptive_smoothing", "reduce_basis", "use_min"),
+        other_valid = c(
+          "max_degree", "smoothness_orders", "num_knots",
+          "adaptive_smoothing", "reduce_basis", "use_min"
+        ),
         ignore = c("cv_select", "weights", "family", "fit_type", "trim_dens")
       )
       return(fit_object)
