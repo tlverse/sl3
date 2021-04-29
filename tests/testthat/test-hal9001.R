@@ -45,7 +45,10 @@ test_that("Lrnr_hal9001 produces prediction similar to standard hal9001", {
   hal_lrnr_preds <- hal_lrnr_fit$predict()
 
   set.seed(67391)
-  hal_fit <- hal9001::fit_hal(X = as.matrix(task$X), Y = task$Y, yolo = FALSE)
+  hal_fit <- hal9001::fit_hal(
+    X = as.matrix(task$X), Y = task$Y,
+    fit_control = list(foldid = origami::folds2foldvec(task$folds))
+  )
   hal_fit_preds <- predict(hal_fit, new_data = as.matrix(task$X))
 
   expect_equal(hal_lrnr_preds, expected = hal_fit_preds, tolerance = 1e-15)
