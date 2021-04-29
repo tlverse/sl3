@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>The Scalable Highly Adaptive Lasso — Lrnr_hal9001 • sl3</title>
+<title>Scalable Highly Adaptive Lasso (HAL) — Lrnr_hal9001 • sl3</title>
 
 
 <!-- jquery -->
@@ -39,16 +39,13 @@
 
 
 
-<meta property="og:title" content="The Scalable Highly Adaptive Lasso — Lrnr_hal9001" />
-<meta property="og:description" content="The Highly Adaptive Lasso is an estimation procedure that generates a design
-matrix consisting of basis functions corresponding to covariates and
-interactions of covariates and fits Lasso regression to this (usually) very
-wide matrix, recovering a nonparametric functional form that describes the
-target prediction function as a composition of subset functions with finite
-variation norm. This implementation uses hal9001, which provides both
-a custom implementation (based on origami) of the cross-validated
-lasso as well the standard call to cv.glmnet from the
-glmnet." />
+<meta property="og:title" content="Scalable Highly Adaptive Lasso (HAL) — Lrnr_hal9001" />
+<meta property="og:description" content="HAL is an estimation procedure that generates a design matrix consisting of
+basis functions corresponding to covariates and interactions of covariates
+and fits Lasso regression to this (usually) very wide matrix, recovering a
+nonparametric functional form that describes the target prediction function
+as a composition of subset functions with finite variation norm. This
+implementation uses hal9001." />
 
 
 
@@ -147,21 +144,18 @@ glmnet." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>The Scalable Highly Adaptive Lasso</h1>
+    <h1>Scalable Highly Adaptive Lasso (HAL)</h1>
     <small class="dont-index">Source: <a href='https://github.com/tlverse/sl3/blob/master/R/Lrnr_hal9001.R'><code>R/Lrnr_hal9001.R</code></a></small>
     <div class="hidden name"><code>Lrnr_hal9001.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The Highly Adaptive Lasso is an estimation procedure that generates a design
-matrix consisting of basis functions corresponding to covariates and
-interactions of covariates and fits Lasso regression to this (usually) very
-wide matrix, recovering a nonparametric functional form that describes the
-target prediction function as a composition of subset functions with finite
-variation norm. This implementation uses <span class="pkg">hal9001</span>, which provides both
-a custom implementation (based on <span class="pkg">origami</span>) of the cross-validated
-lasso as well the standard call to <code><a href='https://glmnet.stanford.edu/reference/cv.glmnet.html'>cv.glmnet</a></code> from the
-<span class="pkg">glmnet</span>.</p>
+    <p>HAL is an estimation procedure that generates a design matrix consisting of
+basis functions corresponding to covariates and interactions of covariates
+and fits Lasso regression to this (usually) very wide matrix, recovering a
+nonparametric functional form that describes the target prediction function
+as a composition of subset functions with finite variation norm. This
+implementation uses <span class="pkg">hal9001</span>.</p>
     </div>
 
 
@@ -178,43 +172,8 @@ lasso as well the standard call to <code><a href='https://glmnet.stanford.edu/re
     
 
 <dl>
-<dt><code>max_degree=3</code></dt><dd><p>The highest order of interaction
-terms for which the basis functions ought to be generated. The default
-corresponds to generating basis functions up to all 3-way interactions of
-covariates in the input matrix, matching the default in <span class="pkg">hal9001</span>.</p></dd>
-<dt><code>fit_type="glmnet"</code></dt><dd><p>The specific routine to be called when
-fitting the Lasso regression in a cross-validated manner. Choosing the
-<code>"glmnet"</code> option calls either <code><a href='https://glmnet.stanford.edu/reference/cv.glmnet.html'>cv.glmnet</a></code> or
-<code><a href='https://glmnet.stanford.edu/reference/glmnet.html'>glmnet</a></code>.</p></dd>
-<dt><code>n_folds=10</code></dt><dd><p>Integer for the number of folds to be used
-when splitting the data for cross-validation. This defaults to 10 as this
-is the convention for V-fold cross-validation.</p></dd>
-<dt><code>use_min=TRUE</code></dt><dd><p>Determines which lambda is selected from
-<code><a href='https://glmnet.stanford.edu/reference/cv.glmnet.html'>cv.glmnet</a></code>. <code>TRUE</code> corresponds to
-<code>"lambda.min"</code> and <code>FALSE</code> corresponds to <code>"lambda.1se"</code>.</p></dd>
-<dt><code>reduce_basis=NULL</code></dt><dd><p>A <code>numeric</code> value bounded in the open
-interval (0,1) indicating the minimum proportion of ones in a basis
-function column needed for the basis function to be included in the
-procedure to fit the Lasso. Any basis functions with a lower proportion
-of 1's than the specified cutoff will be removed. This argument defaults
-to <code>NULL</code>, in which case all basis functions are used in the Lasso
-stage of HAL.</p></dd>
-<dt><code>return_lasso=TRUE</code></dt><dd><p>A <code>logical</code> indicating whether or not
-to return the <code><a href='https://glmnet.stanford.edu/reference/glmnet.html'>glmnet</a></code> fit of the Lasso model.</p></dd>
-<dt><code>return_x_basis=FALSE</code></dt><dd><p>A <code>logical</code> indicating whether or
-not to return the matrix of (possibly reduced) basis functions used in
-the HAL Lasso fit.</p></dd>
-<dt><code>basis_list=NULL</code></dt><dd><p>The full set of basis functions generated
-from the input data (from <code><a href='https://rdrr.io/pkg/hal9001/man/enumerate_basis.html'>enumerate_basis</a></code>). The
-dimensionality of this structure is roughly (n * 2^(d - 1)), where n is
-the number of observations and d is the number of columns in the input.</p></dd>
-<dt><code>cv_select=TRUE</code></dt><dd><p>A <code>logical</code> specifying whether the array
-of values specified should be passed to <code><a href='https://glmnet.stanford.edu/reference/cv.glmnet.html'>cv.glmnet</a></code>
-in order to pick the optimal value (based on cross-validation) (when set
-to <code>TRUE</code>) or to fit along the sequence of values (or a single value
-using <code><a href='https://glmnet.stanford.edu/reference/glmnet.html'>glmnet</a></code> (when set to <code>FALSE</code>).</p></dd>
-<dt><code>...</code></dt><dd><p>Other parameters passed directly to
-<code><a href='https://rdrr.io/pkg/hal9001/man/fit_hal.html'>fit_hal</a></code>. See its documentation for details.</p></dd>
+<dt><code>...</code></dt><dd><p>Arguments passed to <code><a href='https://rdrr.io/pkg/hal9001/man/fit_hal.html'>fit_hal</a></code>. See
+it's documentation for details.</p></dd>
 
 </dl>
 
