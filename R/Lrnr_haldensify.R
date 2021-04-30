@@ -105,8 +105,8 @@ Lrnr_haldensify <- R6Class(
       fit_object <- call_with_args(
         haldensify::haldensify, args,
         other_valid = c(
-          "max_degree", "smoothness_orders", "num_knots",
-          "adaptive_smoothing", "reduce_basis", "use_min"
+          "max_degree", "smoothness_orders", "num_knots", "reduce_basis",
+          "fit_control"
         ),
         ignore = c("cv_select", "weights", "family", "fit_type", "trim_dens")
       )
