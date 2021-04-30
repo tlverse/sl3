@@ -42,6 +42,7 @@
   covariates are selected and a warning is produced. If `min_screen` is 
   specified and the `learner` argument in `Lrnr_screener_coefs` is not a 
   `Lrnr_glmnet` then it will error. 
+* Updated `Lrnr_hal9001` to work with v0.4.0 of the `hal9001` package.
   
 # sl3 1.4.2
 * Updates to variable importance functionality, including calculation of risk
