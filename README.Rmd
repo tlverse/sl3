@@ -28,7 +28,7 @@ knitr::opts_chunk$set(
 
 __Authors:__ [Jeremy Coyle](https://github.com/jeremyrcoyle),
 [Nima Hejazi](https://nimahejazi.org),
-[Ivana Malenica](https://github.com/podTockom),
+[Ivana Malenica](https://github.com/imalenica),
 [Rachael Phillips](https://github.com/rachaelvphillips), and
 [Oleg Sofrygin](https://github.com/osofr)
 
