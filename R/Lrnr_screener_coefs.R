@@ -32,7 +32,7 @@ Lrnr_screener_coefs <- R6Class(
   classname = "Lrnr_screener_coefs",
   inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(learner, threshold = 1e-3, max_screen = NULL,
+    initialize = function(learner, threshold = 0, max_screen = NULL,
                           min_screen = 2, ...) {
       super$initialize(params = args_to_list(), ...)
     }
@@ -83,19 +83,22 @@ Lrnr_screener_coefs <- R6Class(
             }
           }
           selected <- selected[[length(selected)]]
-          if (selected < args$min_screen) {
-            stop(
+          if (length(selected) < args$min_screen) {
+            warning(
               "Could not increase Lrnr_glmnet's lambda enough select ",
               "min_screen covariates. Try increasing the values in ",
-              "Lrnr_glmnet's lambda sequence, or decreasing min_screen."
+              "Lrnr_glmnet's lambda sequence, or decreasing min_screen. ",
+              "Selecting all covariates."
             )
+            selected <- covs
           }
         } else {
-          stop(
+          warning(
             "Less than min_screen covariates selected, and supplied ",
             "learner is not Lrnr_glmnet, so lambda cannot be increased to ",
-            "select min_screen covariates."
+            "select min_screen covariates. Selecting all covariates."
           )
+          selected <- covs
         }
       }
 
@@ -104,7 +107,7 @@ Lrnr_screener_coefs <- R6Class(
     },
 
     .predict = function(task) {
-      task$X[, private$.fit_object$selected, with = FALSE, drop = FALSE]
+      task$data[, private$.fit_object$selected, with = FALSE, drop = FALSE]
     },
 
     .chain = function(task) {

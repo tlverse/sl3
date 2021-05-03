@@ -103,8 +103,10 @@ test_loocv_learner <- function(learner, loocv_task, ...) {
 
   # test learner chaining
   chained_task <- fit_obj$chain()
-  test_that("Chaining returns a task", expect_true(is(chained_task,
-                                                      "sl3_Task")))
+  test_that("Chaining returns a task", expect_true(is(
+    chained_task,
+    "sl3_Task"
+  )))
   test_that("Chaining returns the correct number of rows", expect_equal(
     nrow(chained_task$X),
     nrow(loocv_task$X)
