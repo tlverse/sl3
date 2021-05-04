@@ -16,20 +16,31 @@
 #'
 #' @keywords data
 #'
-#' @return Learner object with methods for training and prediction. See
-#'  \code{\link{Lrnr_base}} for documentation on learners.
+#' @return A learner object inheriting from \code{\link{Lrnr_base}} with
+#'  methods for training and prediction. For a full list of learner
+#'  functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 #'
-#' @format \code{\link{R6Class}} object.
+#' @format An \code{\link[R6]{R6Class}} object inheriting from
+#'  \code{\link{Lrnr_base}}.
 #'
 #' @family Learners
 #'
 #' @section Parameters:
-#' \describe{
-#'   \item{\code{...}}{Arguments passed to \code{\link[hal9001]{fit_hal}}. See
-#'   it's documentation for details.
-#'   }
-#' }
-#
+#'   - \code{...}: Arguments passed to \code{\link[hal9001]{fit_hal}}. See
+#'    it's documentation for details.
+#'
+#' @examples
+#' data(cpp_imputed)
+#' covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
+#' task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
+#'
+#' # instantiate with max 2-way interactions, 0-order splines, and binning
+#' # (i.e., num_knots) that decreases with increasing interaction degree
+#' hal_lrnr <- Lrnr_hal9001$new(
+#'   max_degree = 2, num_knots = c(20, 10), smoothness_orders = 0
+#' )
+#' hal_fit <- hal_lrnr$train(task)
+#' hal_preds <- hal_fit$predict()
 Lrnr_hal9001 <- R6Class(
   classname = "Lrnr_hal9001",
   inherit = Lrnr_base, portable = TRUE, class = TRUE,
