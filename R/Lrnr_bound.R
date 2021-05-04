@@ -54,7 +54,6 @@ Lrnr_bound <- R6Class(
     .properties = c(
       "continuous", "binomial", "categorical", "weights", "wrapper"
     ),
-
     .train = function(task) {
       outcome_type <- self$get_outcome_type(task)
       if (outcome_type == "continuous" & length(self$params$bound) == 1) {
@@ -66,7 +65,6 @@ Lrnr_bound <- R6Class(
       fit_object <- list()
       return(fit_object)
     },
-
     .predict = function(task = NULL) {
       X <- as.matrix(task$X)
       bounds <- self$params$bound

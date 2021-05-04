@@ -54,10 +54,8 @@ Lrnr_pca <- R6Class(
       super$initialize(params = params, ...)
     }
   ),
-
   private = list(
     .properties = c("preprocessing"),
-
     .train = function(task) {
       verbose <- getOption("sl3.verbose")
       fit_args <- self$params[names(self$params) != "n_comp"]

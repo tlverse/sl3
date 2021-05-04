@@ -50,7 +50,6 @@ Lrnr_stratified <- R6Class(
   ),
   private = list(
     .properties = c("continuous", "binomial", "wrapper"),
-
     .train = function(task) {
       args <- self$params
       args$X <- as.matrix(task$X)

@@ -39,7 +39,6 @@ Lrnr_screener_coefs <- R6Class(
   ),
   private = list(
     .properties = c("screener"),
-
     .train = function(task) {
       args <- self$params
 
@@ -105,15 +104,12 @@ Lrnr_screener_coefs <- R6Class(
       fit_object <- list(selected = selected)
       return(fit_object)
     },
-
     .predict = function(task) {
       task$data[, private$.fit_object$selected, with = FALSE, drop = FALSE]
     },
-
     .chain = function(task) {
       return(task$next_in_chain(covariates = private$.fit_object$selected))
     },
-
     .required_packages = c()
   )
 )

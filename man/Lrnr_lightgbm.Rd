@@ -33,6 +33,9 @@ See its documentation for further details.
 }
 
 \examples{
+\dontrun{
+# currently disabled since LightGBM crashes R on Windows
+# more info at https://github.com/tlverse/sl3/issues/344
 data(cpp_imputed)
 # create task for prediction
 cpp_task <- sl3_Task$new(
@@ -48,6 +51,7 @@ lgb_preds <- lgb_fit$predict()
 
 # get feature importance from fitted model
 lgb_varimp <- lgb_fit$importance()
+}
 }
 \references{
 \insertAllCited{}
@@ -89,7 +93,6 @@ Other Learners:
 \code{\link{Lrnr_hts}},
 \code{\link{Lrnr_independent_binomial}},
 \code{\link{Lrnr_lstm_keras}},
-\code{\link{Lrnr_lstm}},
 \code{\link{Lrnr_mean}},
 \code{\link{Lrnr_multiple_ts}},
 \code{\link{Lrnr_multivariate}},

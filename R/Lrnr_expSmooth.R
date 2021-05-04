@@ -107,17 +107,14 @@ Lrnr_expSmooth <- R6Class(
       super$initialize(params = args_to_list(), ...)
     }
   ),
-
   private = list(
     .properties = c("timeseries", "continuous"),
-
     .train = function(task) {
       args <- self$params
       args$y <- ts(task$Y, frequency = args$freq)
       fit_object <- call_with_args(forecast::ets, args)
       return(fit_object)
     },
-
     .predict = function(task = NULL) {
       h <- ts_get_pred_horizon(self$training_task, task)
       raw_preds <- forecast::forecast(private$.fit_object, h = h)

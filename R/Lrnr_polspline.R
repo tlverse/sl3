@@ -43,10 +43,8 @@ Lrnr_polspline <- R6Class(
       super$initialize(params = params, ...)
     }
   ),
-
   private = list(
     .properties = c("continuous", "binomial", "categorical", "weights"),
-
     .train = function(task) {
       args <- self$params
       outcome_type <- self$get_outcome_type(task)
@@ -70,7 +68,6 @@ Lrnr_polspline <- R6Class(
       }
       return(fit_object)
     },
-
     .predict = function(task) {
       outcome_type <- self$get_outcome_type(task)
       if (outcome_type$type == "continuous") {

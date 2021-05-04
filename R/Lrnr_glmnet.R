@@ -11,7 +11,6 @@
 #'
 #' @importFrom R6 R6Class
 #' @importFrom stats predict
-#' @importFrom assertthat assert_that is.count is.flag
 #' @importFrom origami folds2foldvec make_folds
 #'
 #' @export
@@ -89,13 +88,11 @@ Lrnr_glmnet <- R6Class(
       super$initialize(params = args_to_list(), ...)
     }
   ),
-
   private = list(
     .properties = c(
       "continuous", "binomial", "categorical",
       "weights", "ids"
     ),
-
     .train = function(task) {
       args <- self$params
 
@@ -150,7 +147,6 @@ Lrnr_glmnet <- R6Class(
       fit_object$glmnet.fit$call <- NULL
       return(fit_object)
     },
-
     .predict = function(task) {
       outcome_type <- private$.training_outcome_type
 

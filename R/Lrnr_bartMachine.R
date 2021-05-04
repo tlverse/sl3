@@ -59,10 +59,8 @@ Lrnr_bartMachine <- R6Class(
       super$initialize(params = args_to_list(), ...)
     }
   ),
-
   private = list(
     .properties = c("continuous", "binomial"),
-
     .train = function(task) {
       args <- self$params
 
@@ -83,7 +81,6 @@ Lrnr_bartMachine <- R6Class(
 
       return(fit_object)
     },
-
     .predict = function(task) {
       predictions <- stats::predict(
         private$.fit_object,

@@ -59,7 +59,6 @@ Lrnr_nnls <- R6Class(
       print(self$fits)
     }
   ),
-
   active = list(
     fits = function() {
       fit_object <- private$.fit_object
@@ -70,7 +69,6 @@ Lrnr_nnls <- R6Class(
       }
     }
   ),
-
   private = list(
     .properties = c("continuous"),
     .train = function(task) {
@@ -93,7 +91,6 @@ Lrnr_nnls <- R6Class(
       }
       return(fit_object)
     },
-
     .predict = function(task = NULL) {
       predictions <- as.matrix(task$X) %*% coef(private$.fit_object)
       return(predictions)

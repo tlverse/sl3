@@ -138,7 +138,6 @@ sl3_Task <- R6Class(
 
       invisible(self)
     },
-
     add_interactions = function(interactions, warn_on_existing = TRUE) {
       ## ----------------------------------------------------------------------
       ## Add columns with interactions (by reference) to input design matrix
@@ -210,7 +209,6 @@ sl3_Task <- R6Class(
         column_names = interaction_cols
       ))
     },
-
     add_columns = function(new_data, column_uuid = uuid::UUIDgenerate()) {
       if (is.numeric(private$.row_index)) {
         new_col_map <- private$.shared_data$add_columns(
@@ -230,7 +228,6 @@ sl3_Task <- R6Class(
       # return an updated column_names map
       return(column_names)
     },
-
     next_in_chain = function(covariates = NULL, outcome = NULL, id = NULL,
                              weights = NULL, offset = NULL, time = NULL,
                              folds = NULL, column_names = NULL,
@@ -344,7 +341,6 @@ sl3_Task <- R6Class(
       )
       return(new_task)
     },
-
     get_data = function(rows = NULL, columns, expand_factors = FALSE) {
       if (missing(rows)) {
         rows <- private$.row_index
@@ -363,12 +359,10 @@ sl3_Task <- R6Class(
       }
       return(subset)
     },
-
     has_node = function(node_name) {
       node_var <- private$.nodes[[node_name]]
       return(!is.null(node_var))
     },
-
     get_node = function(node_name, generator_fun = NULL,
                         expand_factors = FALSE) {
       if (missing(generator_fun)) {
@@ -390,7 +384,6 @@ sl3_Task <- R6Class(
         }
       }
     },
-
     offset_transformed = function(link_fun = NULL, for_prediction = FALSE) {
       if (self$has_node("offset")) {
         offset <- self$offset
@@ -405,27 +398,22 @@ sl3_Task <- R6Class(
       }
       return(offset)
     },
-
     print = function() {
       cat(sprintf("A sl3 Task with %d obs and these nodes:\n", self$nrow))
       print(self$nodes)
     },
-
     revere_fold_task = function(fold_number) {
       return(self)
     }
   ),
-
   active = list(
     internal_data = function() {
       return(private$.shared_data)
     },
-
     data = function() {
       all_nodes <- unique(unlist(private$.nodes))
       return(self$get_data(, all_nodes))
     },
-
     nrow = function() {
       if (is.null(private$.row_index)) {
         return(private$.shared_data$nrow)
@@ -433,17 +421,14 @@ sl3_Task <- R6Class(
         return(length(private$.row_index))
       }
     },
-
     nodes = function() {
       return(private$.nodes)
     },
-
     X = function() {
       covariates <- private$.nodes$covariates
       X_dt <- self$get_data(, covariates, expand_factors = TRUE)
       return(X_dt)
     },
-
     X_intercept = function() {
       # returns X matrix with manually generated intercept column
       X_dt <- self$X
@@ -461,27 +446,22 @@ sl3_Task <- R6Class(
 
       return(X_dt)
     },
-
     Y = function() {
       return(self$get_node("outcome"))
     },
-
     offset = function() {
       return(self$get_node("offset"))
     },
-
     weights = function() {
       return(self$get_node("weights", function(node_var, n) {
         rep(1, n)
       }))
     },
-
     id = function() {
       return(self$get_node("id", function(node_var, n) {
         seq_len(n)
       }))
     },
-
     time = function() {
       return(self$get_node("time", function(node_var, n) {
         if (self$has_node("id")) {
@@ -491,7 +471,6 @@ sl3_Task <- R6Class(
         }
       }))
     },
-
     folds = function(new_folds) {
       if (!missing(new_folds)) {
         private$.folds <- new_folds
@@ -517,24 +496,19 @@ sl3_Task <- R6Class(
       }
       return(private$.folds)
     },
-
     uuid = function() {
       return(private$.uuid)
     },
-
     column_names = function() {
       return(private$.column_names)
     },
-
     outcome_type = function() {
       return(private$.outcome_type)
     },
-
     row_index = function() {
       return(private$.row_index)
     }
   ),
-
   private = list(
     .shared_data = NULL,
     .nodes = NULL,

@@ -18,10 +18,8 @@ Lrnr_pkg_SuperLearner_method <- R6Class(
       super$initialize(params = params, ...)
     }
   ),
-
   private = list(
     .properties = c("binomial", "continuous", "weights", "wrapper"),
-
     .train = function(task) {
       method <- self$params$SL_wrapper
       X <- as.matrix(task$X)
@@ -34,7 +32,6 @@ Lrnr_pkg_SuperLearner_method <- R6Class(
       )
       return(fit_object)
     },
-
     .predict = function(task) {
       coef <- private$.fit_object$coef
       X <- as.matrix(task$X)

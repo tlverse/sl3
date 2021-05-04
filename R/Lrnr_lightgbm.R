@@ -40,6 +40,9 @@
 #'  \insertAllCited{}
 #'
 #' @examples
+#' \dontrun{
+#' # currently disabled since LightGBM crashes R on Windows
+#' # more info at https://github.com/tlverse/sl3/issues/344
 #' data(cpp_imputed)
 #' # create task for prediction
 #' cpp_task <- sl3_Task$new(
@@ -55,6 +58,7 @@
 #'
 #' # get feature importance from fitted model
 #' lgb_varimp <- lgb_fit$importance()
+#' }
 Lrnr_lightgbm <- R6Class(
   classname = "Lrnr_lightgbm", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
@@ -81,7 +85,6 @@ Lrnr_lightgbm <- R6Class(
       "continuous", "binomial", "categorical", "weights", "offset",
       "importance"
     ),
-
     .train = function(task) {
       args <- self$params
 
@@ -144,7 +147,6 @@ Lrnr_lightgbm <- R6Class(
       fit_object <- call_with_args(lightgbm::lgb.train, args, keep_all = TRUE)
       return(fit_object)
     },
-
     .predict = function(task = NULL) {
       fit_object <- private$.fit_object
 

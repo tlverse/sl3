@@ -55,7 +55,6 @@ Lrnr_h2o_grid <- R6Class(
       super$initialize(params = args_to_list(), ...)
     }
   ),
-
   private = list(
     .classify = FALSE,
     .return_prediction_as_vector = TRUE,
@@ -63,7 +62,6 @@ Lrnr_h2o_grid <- R6Class(
       "continuous", "binomial", "categorical", "weights",
       "offset", "h2o"
     ),
-
     .train = function(task) {
       verbose <- getOption("sl3.verbose")
       args <- self$params

@@ -50,7 +50,6 @@ Lrnr_solnp_density <- R6Class(
   private = list(
     .covariates = NULL,
     .properties = "density",
-
     .train = function(task) {
       verbose <- getOption("sl3.verbose")
       params <- self$params
@@ -74,7 +73,6 @@ Lrnr_solnp_density <- R6Class(
       fit_object$name <- "solnp"
       return(fit_object)
     },
-
     .predict = function(task = NULL) {
       verbose <- getOption("sl3.verbose")
       X <- task$X

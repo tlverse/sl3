@@ -37,7 +37,6 @@ Lrnr_screener_augment <- R6Class(
   ),
   private = list(
     .properties = c("screener"),
-
     .train = function(task) {
       screener <- self$params$screener
       screener_fit <- screener$train(task)
@@ -51,11 +50,9 @@ Lrnr_screener_augment <- R6Class(
       )
       return(fit_object)
     },
-
     .predict = function(task) {
       task$data[, private$.fit_object$selected, with = FALSE, drop = FALSE]
     },
-
     .chain = function(task) {
       return(task$next_in_chain(covariates = private$.fit_object$selected))
     },

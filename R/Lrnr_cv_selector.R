@@ -59,7 +59,6 @@ Lrnr_cv_selector <- R6Class(
     .properties = c(
       "continuous", "binomial", "categorical", "weights", "wrapper"
     ),
-
     .train = function(task) {
       loss_function <- self$params$loss_function
 
@@ -86,7 +85,6 @@ Lrnr_cv_selector <- R6Class(
 
       return(fit_object)
     },
-
     .predict = function(task = NULL) {
       X <- as.matrix(task$X)
       predictions <- X[, self$fit_object$name]

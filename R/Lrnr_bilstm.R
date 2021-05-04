@@ -101,7 +101,6 @@ Lrnr_bilstm <- R6Class(
 
       return(fit_object)
     },
-
     .predict = function(task = NULL) {
       args <- self$params
 

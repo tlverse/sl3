@@ -14,12 +14,17 @@ methods for training and prediction. For a full list of learner
 functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 }
 \description{
-HAL is an estimation procedure that generates a design matrix consisting of
-basis functions corresponding to covariates and interactions of covariates
-and fits Lasso regression to this (usually) very wide matrix, recovering a
-nonparametric functional form that describes the target prediction function
-as a composition of subset functions with finite variation norm. This
-implementation uses \pkg{hal9001}.
+The Highly Adaptive Lasso (HAL) is a nonparametric regression function that
+has been demonstrated to optimally estimate functions with bounded (finite)
+variation norm. The algorithm proceeds by first building an adaptive basis
+(i.e., the HAL basis) based on indicator basis functions (or higher-order
+spline basis functions) representing covariates and interactions of the
+covariates up to a pre-specified degree. The fitting procedures included in
+this learner use \code{\link[hal9001]{fit_hal}} from the \pkg{hal9001}
+package. For details on HAL regression, consider consulting the following
+\insertCite{benkeser2016hal;textual}{sl3}),
+\insertCite{coyle2020hal9001-rpkg;textual}{sl3}),
+\insertCite{hejazi2020hal9001-joss;textual}{sl3}).
 }
 \section{Parameters}{
 
@@ -75,7 +80,6 @@ Other Learners:
 \code{\link{Lrnr_independent_binomial}},
 \code{\link{Lrnr_lightgbm}},
 \code{\link{Lrnr_lstm_keras}},
-\code{\link{Lrnr_lstm}},
 \code{\link{Lrnr_mean}},
 \code{\link{Lrnr_multiple_ts}},
 \code{\link{Lrnr_multivariate}},

@@ -40,10 +40,8 @@ Lrnr_independent_binomial <- R6Class(
       super$initialize(params = params, ...)
     }
   ),
-
   private = list(
     .properties = c("categorical"),
-
     .train = function(task) {
       outcome_type <- self$get_outcome_type(task)
 
@@ -80,7 +78,6 @@ Lrnr_independent_binomial <- R6Class(
       }
       return(fit_object)
     },
-
     .predict = function(task) {
       raw_preds <- lapply(self$fit_object, learner_fit_predict, task)
       raw_preds <- as.matrix(do.call(cbind, raw_preds))

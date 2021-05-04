@@ -63,7 +63,6 @@ Lrnr_multiple_ts <- R6Class(
   ),
   private = list(
     .properties = c("continuous", "timeseries"),
-
     .train = function(task) {
       args <- self$params
       learners <- args$learner

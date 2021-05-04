@@ -82,7 +82,6 @@ Lrnr_hts <- R6Class(
       super$initialize(params = params, ...)
     }
   ),
-
   private = list(
     .properties = c("timeseries", "continuous"),
     .train = function(task) {
@@ -94,7 +93,6 @@ Lrnr_hts <- R6Class(
       fit_object <- call_with_args(hts, args, silent = TRUE)
       return(fit_object)
     },
-
     .predict = function(task = NULL) {
       args <- self$params
       # get horizon based on training and testing tasks

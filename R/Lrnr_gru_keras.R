@@ -53,11 +53,13 @@
 #' library(origami)
 #' data(bsds)
 #'
+#' # make folds appropriate for time-series cross-validation
 #' folds <- make_folds(bsds,
 #'   fold_fun = folds_rolling_window, window_size = 500,
 #'   validation_size = 100, gap = 0, batch = 50
 #' )
 #'
+#' # build task by passing in external folds structure
 #' task <- sl3_Task$new(
 #'   data = bsds,
 #'   folds = folds,
@@ -67,11 +69,12 @@
 #'   outcome = "cnt"
 #' )
 #'
-#' gru_lrnr <- Lrnr_gru_keras$new(batch_size = 1, epochs = 200)
-#'
+#' # create tasks for taining and validation (simplifed example)
 #' train_task <- training(task, fold = task$folds[[1]])
 #' valid_task <- validation(task, fold = task$folds[[1]])
 #'
+#' # instantiate learner, then fit and predict (simplifed example)
+#' gru_lrnr <- Lrnr_gru_keras$new(batch_size = 1, epochs = 200)
 #' gru_fit <- gru_lrnr$train(train_task)
 #' gru_preds <- gru_fit$predict(valid_task)
 #' }
@@ -190,7 +193,6 @@ Lrnr_gru_keras <- R6Class(
 
       return(fit_object)
     },
-
     .predict = function(task = NULL) {
       args <- self$params
 

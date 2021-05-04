@@ -72,7 +72,6 @@ Lrnr_caret <- R6Class(
   ),
   private = list(
     .properties = c("continuous", "binomial", "categorical", "wrapper"),
-
     .train = function(task) {
       # set type
       outcome_type <- self$get_outcome_type(task)
@@ -101,7 +100,6 @@ Lrnr_caret <- R6Class(
       fit_object <- call_with_args(caret::train, args, keep_all = TRUE)
       return(fit_object)
     },
-
     .predict = function(task) {
       outcome_type <- self$training_outcome_type
       if (outcome_type$type == "continuous") {
@@ -123,7 +121,6 @@ Lrnr_caret <- R6Class(
       predictions <- as.numeric(predictions)
       return(predictions)
     },
-
     .required_packages = c("caret")
   )
 )
