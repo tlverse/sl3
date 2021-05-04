@@ -133,7 +133,7 @@ Lrnr_screener_importance <- R6Class(
       return(fit_object)
     },
     .predict = function(task) {
-      task$X[, private$.fit_object$selected, with = FALSE, drop = FALSE]
+      task$data[, private$.fit_object$selected, with = FALSE, drop = FALSE]
     },
     .chain = function(task) {
       return(task$next_in_chain(covariates = private$.fit_object$selected))

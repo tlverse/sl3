@@ -84,7 +84,7 @@ Lrnr_screener_correlation <- R6Class(
     },
 
     .predict = function(task) {
-      task$X[, private$.fit_object$selected, with = FALSE, drop = FALSE]
+      task$data[, private$.fit_object$selected, with = FALSE, drop = FALSE]
     },
 
     .chain = function(task) {

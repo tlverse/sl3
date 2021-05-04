@@ -12,6 +12,7 @@
 #' @importFrom R6 R6Class
 #' @importFrom stats predict
 #' @importFrom assertthat assert_that is.count is.flag
+#' @importFrom origami folds2foldvec make_folds
 #'
 #' @export
 #'
@@ -126,9 +127,11 @@ Lrnr_glmnet <- R6Class(
 
       if (args$stratify_cv) {
         if (outcome_type$type == "binomial" & is.null(args$foldid)) {
-          args$foldid <- origami::folds2foldvec(origami::make_folds(
-            n = task$data, strata_ids = task$Y, V = args$nfolds
-          ))
+          folds <- origami::make_folds(
+            n = length(args$y), strata_ids = args$y, fold_fun = folds_vfold, 
+            V = as.integer(args$nfolds)
+          )
+          args$foldid <- origami::folds2foldvec(folds)
         } else {
           warning(
             "stratify_cv is TRUE; but inner cross-validation folds cannot ",

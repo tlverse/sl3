@@ -7,17 +7,14 @@ library(origami)
 library(hal9001)
 
 # load example data set
-data(cpp)
-cpp <- cpp %>%
-  dplyr::filter(!is.na(haz)) %>%
-  mutate_all(funs(replace(., is.na(.), 0)))
+data(cpp_imputed)
 
 # use covariates of intest and the outcome to build a task object
 covars <- c("apgar1", "apgar5", "sexn")
-task <- sl3_Task$new(cpp, covariates = covars, outcome = "haz")
+task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = "haz")
 
 # TRY stratified lrnr
-hal_lrnr <- Lrnr_hal9001$new(fit_type = "glmnet", n_folds = 3, use_min = TRUE)
+hal_lrnr <- Lrnr_hal9001$new(fit_control = list(n_folds = 3))
 stratified_hal <- Lrnr_stratified$new(
   learner = hal_lrnr,
   variable_stratify = "sexn"
