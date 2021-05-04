@@ -176,7 +176,6 @@ Other Learners:
 \code{\link{Lrnr_bartMachine}},
 \code{\link{Lrnr_bayesglm}},
 \code{\link{Lrnr_bilstm}},
-\code{\link{Lrnr_bound}},
 \code{\link{Lrnr_caret}},
 \code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_cv}},

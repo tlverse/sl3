@@ -41,11 +41,14 @@
 
 <meta property="og:title" content="LightGBM: Light Gradient Boosting Machine — Lrnr_lightgbm" />
 <meta property="og:description" content="This learner provides fitting procedures for lightgbm models, using
-lightgbm, via lgb.train. These gradient
-boosted classification and regression tree models feature faster training
-speed and higher efficiency, Lower memory usage, better accuracy, and
-improved handling large-scale data. For details on the fitting procedure,
-consult the documentation of the lightgbm package." />
+the lightgbm package, via lgb.train. These
+gradient boosted decision tree models feature faster training speed and
+efficiency, lower memory usage than competing frameworks (e.g., from the
+xgboost package), better prediction accuracy, and improved handling of
+large-scale data. For details on the fitting procedure and its tuning
+parameters, consult the documentation of the lightgbm package. The
+LightGBM framework was introduced in Ke et al. (2017)
+)." />
 
 
 
@@ -151,22 +154,27 @@ consult the documentation of the lightgbm package." />
 
     <div class="ref-description">
     <p>This learner provides fitting procedures for <code>lightgbm</code> models, using
-<span class="pkg">lightgbm</span>, via <code><a href='https://rdrr.io/pkg/lightgbm/man/lgb.train.html'>lgb.train</a></code>. These gradient
-boosted classification and regression tree models feature faster training
-speed and higher efficiency, Lower memory usage, better accuracy, and
-improved handling large-scale data. For details on the fitting procedure,
-consult the documentation of the <span class="pkg">lightgbm</span> package.</p>
+the <span class="pkg">lightgbm</span> package, via <code><a href='https://rdrr.io/pkg/lightgbm/man/lgb.train.html'>lgb.train</a></code>. These
+gradient boosted decision tree models feature faster training speed and
+efficiency, lower memory usage than competing frameworks (e.g., from the
+<span class="pkg">xgboost</span> package), better prediction accuracy, and improved handling of
+large-scale data. For details on the fitting procedure and its tuning
+parameters, consult the documentation of the <span class="pkg">lightgbm</span> package. The
+LightGBM framework was introduced in Ke et al. (2017)
+).</p>
     </div>
 
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p><code>R6Class</code> object.</p>
+    <p>An <code><a href='https://r6.r-lib.org/reference/R6Class.html'>R6Class</a></code> object inheriting from
+<code><a href='Lrnr_base.html'>Lrnr_base</a></code>.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Learner object with methods for training and prediction. See
-<code><a href='Lrnr_base.html'>Lrnr_base</a></code> for documentation on learners.</p>
+    <p>A learner object inheriting from <code><a href='Lrnr_base.html'>Lrnr_base</a></code> with
+methods for training and prediction. For a full list of learner
+functionality, see the complete documentation of <code><a href='Lrnr_base.html'>Lrnr_base</a></code>.</p>
     <h2 class="hasAnchor" id="parameters"><a class="anchor" href="#parameters"></a>Parameters</h2>
 
     
@@ -177,9 +185,17 @@ consult the documentation of the <span class="pkg">lightgbm</span> package.</p>
 See its documentation for further details.</p></li>
 </ul>
 
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Ke G, Meng Q, Finley T, Wang T, Chen W, Ma W, Ye Q, Liu T (2017).
+&#8220;LightGBM: A Highly Efficient Gradient Boosting Decision Tree.&#8221;
+In <em>Advances in Neural Information Processing Systems</em>, volume 30, 3146--3154.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other Learners: 
+    <div class='dont-index'><p><a href='Lrnr_gbm.html'>Lrnr_gbm</a> for standard gradient boosting models (via the <span class="pkg">gbm</span>
+package) and <a href='Lrnr_xgboost.html'>Lrnr_xgboost</a> for the extreme gradient boosted tree models
+from the Xgboost framework (via the <span class="pkg">xgboost</span> package).</p>
+<p>Other Learners: 
 <code><a href='Custom_chain.html'>Custom_chain</a></code>,
 <code><a href='Lrnr_HarmonicReg.html'>Lrnr_HarmonicReg</a></code>,
 <code><a href='Lrnr_arima.html'>Lrnr_arima</a></code>,
@@ -187,7 +203,6 @@ See its documentation for further details.</p></li>
 <code><a href='Lrnr_base.html'>Lrnr_base</a></code>,
 <code><a href='Lrnr_bayesglm.html'>Lrnr_bayesglm</a></code>,
 <code><a href='Lrnr_bilstm.html'>Lrnr_bilstm</a></code>,
-<code><a href='Lrnr_bound.html'>Lrnr_bound</a></code>,
 <code><a href='Lrnr_caret.html'>Lrnr_caret</a></code>,
 <code><a href='Lrnr_cv_selector.html'>Lrnr_cv_selector</a></code>,
 <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
@@ -246,6 +261,25 @@ See its documentation for further details.</p></li>
 <code><a href='define_h2o_X.html'>define_h2o_X</a>()</code>,
 <code><a href='undocumented_learner.html'>undocumented_learner</a></code></p></div>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>cpp_imputed</span><span class='op'>)</span>
+<span class='co'># create task for prediction</span>
+<span class='va'>cpp_task</span> <span class='op'>&lt;-</span> <span class='va'><a href='sl3_Task.html'>sl3_Task</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>
+  data <span class='op'>=</span> <span class='va'>cpp_imputed</span>,
+  covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"bmi"</span>, <span class='st'>"parity"</span>, <span class='st'>"mage"</span>, <span class='st'>"sexn"</span><span class='op'>)</span>,
+  outcome <span class='op'>=</span> <span class='st'>"haz"</span>
+<span class='op'>)</span>
+
+<span class='co'># initialization, training, and prediction with the defaults</span>
+<span class='va'>lgb_lrnr</span> <span class='op'>&lt;-</span> <span class='va'>Lrnr_lightgbm</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>lgb_fit</span> <span class='op'>&lt;-</span> <span class='va'>lgb_lrnr</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>cpp_task</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [LightGBM] [Warning] Auto-choosing row-wise multi-threading, the overhead of testing was 0.000084 seconds.
+#&gt; You can set `force_row_wise=true` to remove the overhead.
+#&gt; And if memory is not enough, you can set `force_col_wise=true`.</div><div class='input'><span class='va'>lgb_preds</span> <span class='op'>&lt;-</span> <span class='va'>lgb_fit</span><span class='op'>$</span><span class='fu'>predict</span><span class='op'>(</span><span class='op'>)</span>
+
+<span class='co'># get feature importance from fitted model</span>
+<span class='va'>lgb_varimp</span> <span class='op'>&lt;-</span> <span class='va'>lgb_fit</span><span class='op'>$</span><span class='fu'>importance</span><span class='op'>(</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

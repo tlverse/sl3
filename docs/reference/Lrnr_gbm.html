@@ -202,7 +202,10 @@ documentation for details.</p></li>
 <em>Computational statistics \&amp; data analysis</em>, <b>38</b>(4), 367--378.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='Lrnr_xgboost.html'>Lrnr_xgboost</a> for extreme gradient boosting via <span class="pkg">xgboost</span></p>
+    <div class='dont-index'><p><a href='Lrnr_xgboost.html'>Lrnr_xgboost</a> for the extreme gradient boosted tree models from
+the Xgboost framework (via the <span class="pkg">xgboost</span> package) and <a href='Lrnr_lightgbm.html'>Lrnr_lightgbm</a>
+for the faster and more efficient gradient boosted trees from the LightGBM
+framework (via the <span class="pkg">lightgbm</span> package).</p>
 <p>Other Learners: 
 <code><a href='Custom_chain.html'>Custom_chain</a></code>,
 <code><a href='Lrnr_HarmonicReg.html'>Lrnr_HarmonicReg</a></code>,
@@ -211,7 +214,6 @@ documentation for details.</p></li>
 <code><a href='Lrnr_base.html'>Lrnr_base</a></code>,
 <code><a href='Lrnr_bayesglm.html'>Lrnr_bayesglm</a></code>,
 <code><a href='Lrnr_bilstm.html'>Lrnr_bilstm</a></code>,
-<code><a href='Lrnr_bound.html'>Lrnr_bound</a></code>,
 <code><a href='Lrnr_caret.html'>Lrnr_caret</a></code>,
 <code><a href='Lrnr_cv_selector.html'>Lrnr_cv_selector</a></code>,
 <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
@@ -278,6 +280,7 @@ documentation for details.</p></li>
   covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"apgar1"</span>, <span class='st'>"apgar5"</span>, <span class='st'>"parity"</span>, <span class='st'>"gagebrth"</span>, <span class='st'>"mage"</span>, <span class='st'>"sexn"</span><span class='op'>)</span>,
   outcome <span class='op'>=</span> <span class='st'>"haz"</span>
 <span class='op'>)</span>
+
 <span class='co'># initialization, training, and prediction with the defaults</span>
 <span class='va'>gbm_lrnr</span> <span class='op'>&lt;-</span> <span class='va'>Lrnr_gbm</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>gbm_fit</span> <span class='op'>&lt;-</span> <span class='va'>gbm_lrnr</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>cpp_task</span><span class='op'>)</span>

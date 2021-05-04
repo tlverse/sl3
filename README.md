@@ -135,12 +135,12 @@ stack_fit <- learner_stack$train(task)
 preds <- stack_fit$predict()
 head(preds)
 #>    Lrnr_pkg_SuperLearner_SL.glmnet Lrnr_glm_TRUE
-#> 1:                      0.35767321    0.36298498
-#> 2:                      0.35767321    0.36298498
-#> 3:                      0.25185377    0.25993072
-#> 4:                      0.25185377    0.25993072
-#> 5:                      0.25185377    0.25993072
-#> 6:                      0.04220823    0.05680264
+#> 1:                      0.35259458    0.36298498
+#> 2:                      0.35259458    0.36298498
+#> 3:                      0.24425929    0.25993072
+#> 4:                      0.24425929    0.25993072
+#> 5:                      0.24425929    0.25993072
+#> 6:                      0.02695039    0.05680264
 #>    Pipeline(Lrnr_pkg_SuperLearner_screener_screen.glmnet->Lrnr_glm_TRUE)
 #> 1:                                                            0.36228209
 #> 2:                                                            0.36228209
@@ -3305,6 +3305,106 @@ x
 <td style="text-align:left;">
 
 x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Lrnr\_lightgbm
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+√
 
 </td>
 
@@ -6538,7 +6638,7 @@ prior to submitting a pull request.
 After using the `sl3` R package, please cite the following:
 
 ``` 
- @software{coyle2021sl3-rpkg,
+    @software{coyle2021sl3-rpkg,
       author = {Coyle, Jeremy R and Hejazi, Nima S and Malenica, Ivana and
         Sofrygin, Oleg},
       title = {{sl3}: Modern Pipelines for Machine Learning and {Super
@@ -6567,7 +6667,7 @@ See file `LICENSE` for details.
 
 ## References
 
-<div id="refs" class="references">
+<div id="refs" class="references hanging-indent">
 
 <div id="ref-breiman1996stacked">
 

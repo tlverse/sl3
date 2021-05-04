@@ -5,39 +5,49 @@
 \alias{Lrnr_cv_selector}
 \title{Cross-Validated Selector}
 \format{
-\code{\link{R6Class}} object.
+An \code{\link[R6]{R6Class}} object inheriting from
+\code{\link{Lrnr_base}}.
 }
 \value{
-Learner object with methods for training and prediction. See
-\code{\link{Lrnr_base}} for documentation on learners.
+A learner object inheriting from \code{\link{Lrnr_base}} with
+methods for training and prediction. For a full list of learner
+functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 }
 \description{
-This meta-learner identifies the cross-validated selector (i.e. discrete
+This meta-learner identifies the cross-validated selector (i.e., discrete
 super learner) for any loss function.
 }
 \section{Parameters}{
 
-\describe{
-\item{\code{loss_function=loss_squared_error}}{A function(pred, truth)
-that takes prediction and truth vectors and returns a loss vector. See
-\link{loss_functions} for options.}
-\item{\code{...}}{Not currently used.}
+\itemize{
+\item \code{loss_function}: A function that takes a vector of predictions as
+it's first argument, and a vector of truths/observations as it's second
+argument, and then returns a vector of losses. See \link{loss_functions}
+for options.
 }
 }
 
-\section{Common Parameters}{
+\examples{
+data(cpp_imputed)
+covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
+task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
 
-
-Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by \code{Lrnr_base}, and shared
-by all learners.
-
-\describe{
-\item{\code{covariates}}{A character vector of covariates. The learner will use this to subset the covariates for any specified task}
-\item{\code{outcome_type}}{A \code{\link{variable_type}} object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified}
-\item{\code{...}}{All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating}
+hal_lrnr <- Lrnr_hal9001$new(
+  max_degree = 1, num_knots = c(20, 10), smoothness_orders = 0
+)
+lasso_lrnr <- Lrnr_glmnet$new()
+glm_lrnr <- Lrnr_glm$new()
+ranger_lrnr <- Lrnr_ranger$new()
+lrnrs <- c(hal_lrnr, lasso_lrnr, glm_lrnr, ranger_lrnr)
+names(lrnrs) <- c("hal", "lasso", "glm", "ranger")
+lrnr_stack <- make_learner(Stack, lrnrs)
+metalrnr_discrete_MSE <- Lrnr_cv_selector$new(loss_squared_error)
+discrete_sl <- Lrnr_sl$new(
+  learners = lrnr_stack, metalearner = metalrnr_discrete_MSE
+)
+discrete_sl_fit <- discrete_sl$train(task)
+discrete_sl_fit$cv_risk
 }
-}
-
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},
@@ -47,7 +57,6 @@ Other Learners:
 \code{\link{Lrnr_base}},
 \code{\link{Lrnr_bayesglm}},
 \code{\link{Lrnr_bilstm}},
-\code{\link{Lrnr_bound}},
 \code{\link{Lrnr_caret}},
 \code{\link{Lrnr_cv}},
 \code{\link{Lrnr_dbarts}},

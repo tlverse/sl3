@@ -190,7 +190,6 @@ doi: <a href='https://doi.org/10.18637/jss.v070.i04'>10.18637/jss.v070.i04</a>
 <code><a href='Lrnr_base.html'>Lrnr_base</a></code>,
 <code><a href='Lrnr_bayesglm.html'>Lrnr_bayesglm</a></code>,
 <code><a href='Lrnr_bilstm.html'>Lrnr_bilstm</a></code>,
-<code><a href='Lrnr_bound.html'>Lrnr_bound</a></code>,
 <code><a href='Lrnr_caret.html'>Lrnr_caret</a></code>,
 <code><a href='Lrnr_cv_selector.html'>Lrnr_cv_selector</a></code>,
 <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
@@ -263,9 +262,9 @@ doi: <a href='https://doi.org/10.18637/jss.v070.i04'>10.18637/jss.v070.i04</a>
 #&gt; <span class='warning'></span>
 #&gt; <span class='warning'>Note that Xmx parameter's upper limit is system dependent </span>
 #&gt; <span class='warning'>(e.g., 32bit Windows will fail to work with anything much largerthan 1500m), </span>
-#&gt; <span class='warning'>so ideally this option should be specified by the user.</span></div><div class='output co'>#&gt; <span class='error'>Error in requirePackages(private$.required_packages, why = class(self)[1],     default.method = "load"): For Lrnr_bartMachine please install the following packages: rJava,bartMachine</span></div><div class='input'><span class='va'>bartMachine_fit</span> <span class='op'>&lt;-</span> <span class='va'>bartMachine_learner</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>task</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'bartMachine_learner' not found</span></div><div class='input'><span class='va'>preds</span> <span class='op'>&lt;-</span> <span class='va'>bartMachine_fit</span><span class='op'>$</span><span class='fu'>predict</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'bartMachine_fit' not found</span></div></pre>
+#&gt; <span class='warning'>so ideally this option should be specified by the user.</span></div><div class='input'><span class='va'>bartMachine_fit</span> <span class='op'>&lt;-</span> <span class='va'>bartMachine_learner</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>task</span><span class='op'>)</span>
+<span class='va'>preds</span> <span class='op'>&lt;-</span> <span class='va'>bartMachine_fit</span><span class='op'>$</span><span class='fu'>predict</span><span class='op'>(</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

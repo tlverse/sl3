@@ -128,7 +128,7 @@ Lrnr_glmnet <- R6Class(
       if (args$stratify_cv) {
         if (outcome_type$type == "binomial" & is.null(args$foldid)) {
           folds <- origami::make_folds(
-            n = length(args$y), strata_ids = args$y, fold_fun = folds_vfold, 
+            n = length(args$y), strata_ids = args$y, fold_fun = folds_vfold,
             V = as.integer(args$nfolds)
           )
           args$foldid <- origami::folds2foldvec(folds)

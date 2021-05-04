@@ -185,7 +185,10 @@ functionality, see the complete documentation of <code><a href='Lrnr_base.html'>
 In <em>Proceedings of the 22nd ACM SIGKDD international conference on knowledge discovery and data mining</em>, 785--794.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other Learners: 
+    <div class='dont-index'><p><a href='Lrnr_gbm.html'>Lrnr_gbm</a> for standard gradient boosting models (via the <span class="pkg">gbm</span>
+package) and <a href='Lrnr_lightgbm.html'>Lrnr_lightgbm</a> for the faster and more efficient gradient
+boosted trees from the LightGBM framework (via the <span class="pkg">lightgbm</span> package).</p>
+<p>Other Learners: 
 <code><a href='Custom_chain.html'>Custom_chain</a></code>,
 <code><a href='Lrnr_HarmonicReg.html'>Lrnr_HarmonicReg</a></code>,
 <code><a href='Lrnr_arima.html'>Lrnr_arima</a></code>,
@@ -193,7 +196,6 @@ In <em>Proceedings of the 22nd ACM SIGKDD international conference on knowledge 
 <code><a href='Lrnr_base.html'>Lrnr_base</a></code>,
 <code><a href='Lrnr_bayesglm.html'>Lrnr_bayesglm</a></code>,
 <code><a href='Lrnr_bilstm.html'>Lrnr_bilstm</a></code>,
-<code><a href='Lrnr_bound.html'>Lrnr_bound</a></code>,
 <code><a href='Lrnr_caret.html'>Lrnr_caret</a></code>,
 <code><a href='Lrnr_cv_selector.html'>Lrnr_cv_selector</a></code>,
 <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
@@ -262,10 +264,14 @@ In <em>Proceedings of the 22nd ACM SIGKDD international conference on knowledge 
   <span class='op'>)</span>,
   outcome <span class='op'>=</span> <span class='st'>"mpg"</span>
 <span class='op'>)</span>
+
 <span class='co'># initialization, training, and prediction with the defaults</span>
 <span class='va'>xgb_lrnr</span> <span class='op'>&lt;-</span> <span class='va'>Lrnr_xgboost</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>xgb_fit</span> <span class='op'>&lt;-</span> <span class='va'>xgb_lrnr</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>mtcars_task</span><span class='op'>)</span>
 <span class='va'>xgb_preds</span> <span class='op'>&lt;-</span> <span class='va'>xgb_fit</span><span class='op'>$</span><span class='fu'>predict</span><span class='op'>(</span><span class='op'>)</span>
+
+<span class='co'># get feature importance from fitted model</span>
+<span class='va'>xgb_varimp</span> <span class='op'>&lt;-</span> <span class='va'>xgb_fit</span><span class='op'>$</span><span class='fu'>importance</span><span class='op'>(</span><span class='op'>)</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
