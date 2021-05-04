@@ -18,7 +18,6 @@
 #' @family Learners
 #'
 #' @section Parameters:
-<<<<<<< HEAD
 #'   - \code{grid_type = "equal_range"}: A \code{character} indicating the
 #'       strategy to be used in creating bins along the observed support of
 #'       \code{A}. For bins of equal range, use \code{"equal_range"}; consult
@@ -68,49 +67,12 @@
 #' # fit and predict densities
 #' hal_dens_fit <- hal_dens$train(task)
 #' hal_dens_preds <- hal_dens_fit$predict()
-=======
-#' \describe{
-#'   \item{\code{grid_type = c("equal_range", "equal_mass")}}{\code{character}
-#'    indicating the strategy to be used in creating bins along the observed
-#'    support of the outcome variable. For bins of equal range, use
-#'    "equal_range" (based on \code{\link[ggplot2]{cut_interval}}). To ensure
-#'    each bin has the same number of observations, use "equal_mass" (based on
-#'    \code{\link[ggplot2]{cut_number}}).
-#'   }
-#'   \item{\code{n_bins = c(3, 5)}}{Only used if \code{type} is set to
-#'    \code{"equal_range"} or \code{"equal_mass"}. This \code{numeric} value
-#'    indicates the number of bins that the support of the outcome variable is
-#'    to be divided into.
-#'   }
-#'   \item{\code{lambda_seq = exp(seq(-1, -13, length = 1000L))}}{\code{numeric}
-#'    sequence of values of the regulariztion parameter of the Lasso regression,
-#'    to be passed to to \code{\link[hal9001]{fit_hal}}.
-#'   }
-#'   \item{\code{trim_dens = 1/sqrt(n)}}{A \code{numeric} giving the minimum
-#'     allowed value of the resultant density predictions. Any predicted
-#'     density values below this tolerance threshold are set to the indicated
-#'     minimum. The default is to use the inverse of the square root of the
-#'     sample size of the prediction set, i.e., 1/sqrt(n); another notable
-#'     choice is 1/sqrt(n)/log(n). If there are observations in the prediction
-#'     set with values of \code{new_A} outside of the support of the training
-#'     set, their predictions are similarly truncated.
-#'   }
-#'   \item{\code{...}}{ Other parameters passed directly to
-#'    \code{\link[haldensify]{haldensify}}. See its documentation for details.
-#'   }
-#' }
-#
->>>>>>> 04bddc56e99b00f4f8809d8a1f8e2fef8e822db0
 Lrnr_haldensify <- R6Class(
   classname = "Lrnr_haldensify", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
   public = list(
     initialize = function(grid_type = "equal_range",
-<<<<<<< HEAD
                           n_bins = c(3, 5, 10),
-=======
-                          n_bins = c(3, 5),
->>>>>>> 04bddc56e99b00f4f8809d8a1f8e2fef8e822db0
                           lambda_seq = exp(seq(-1, -13, length = 1000L)),
                           trim_dens = NULL,
                           ...) {
