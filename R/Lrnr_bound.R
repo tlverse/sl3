@@ -1,6 +1,7 @@
 #' Bound Predictions
 #'
-#' This learner bounds predictions. Intended for use in a pipeline.
+#' This learner bounds predictions. Intended for use as part of
+#' \code{\link{Pipeline}}.
 #'
 #' @docType class
 #'
@@ -15,10 +16,10 @@
 #'  functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 #'
 #' @section Parameters:
-#'   - \code{bound}: Either a vector of length two, with lower and upper bounds,
-#'     or a vector of length 1 with a lower bound, and the upper will be set
-#'     symmetrically as 1 - the lower bound. Both bounds must be provided when
-#'     the variable type of the task's outcome is continuous.
+#'  - \code{bound}: Either a vector of length two, with lower and upper
+#'      bounds, or a vector of length 1 with a lower bound, and the upper will
+#'      be set symmetrically as 1 - the lower bound. Both bounds must be
+#'      provided when the variable type of the task's outcome is continuous.
 #'
 #' @examples
 #' data(cpp_imputed)
