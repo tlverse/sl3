@@ -6,6 +6,7 @@
 #' @docType class
 #'
 #' @importFrom R6 R6Class
+#' @importFrom assertthat assert_that
 #'
 #' @export
 #'
@@ -56,11 +57,14 @@ Lrnr_bound <- R6Class(
       "continuous", "binomial", "categorical", "weights", "wrapper"
     ),
     .train = function(task) {
+      args <- self$params
       outcome_type <- self$get_outcome_type(task)
-      if (outcome_type == "continuous" & length(self$params$bound) == 1) {
-        stop(
-          "Both upper and lower bounds are required when the outcome is",
-          "continuous."
+
+      # check compatibility of bounding limits with outcome type
+      if (outcome_type$type == "continuous") {
+        assertthat::assert_that(
+          length(args$bound) > 1,
+          msg = "Both upper and lower bounds required for continous outcomes."
         )
       }
       fit_object <- list()
@@ -79,7 +83,6 @@ Lrnr_bound <- R6Class(
         }
         pmin(pmax(x, lower), upper)
       }
-
       predictions <- bound(X, bounds)
       return(predictions)
     }
