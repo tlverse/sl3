@@ -14,9 +14,7 @@ if (FALSE) {
   install("sl3", build_vignettes = FALSE, dependencies = FALSE) # INSTALL W/ devtools:
 }
 
-# library(data.table) library(origami)
-set.seed(1)
-
+set.seed(973)
 data(cpp_imputed)
 covars <- c("bmi", "parity", "mage", "sexn")
 outcome <- "haz"
@@ -32,7 +30,7 @@ test_that("Lrnr_gam with specifying formula and family works", {
   expect_equal(task$nrow, length(preds))
 })
 
-test_that("Lrnr_gam without specifying formula gives the predictions 
+test_that("Lrnr_gam without specifying formula gives the predictions
           that match those from gam", {
   ## instantiate Lrnr_gam, train on task, and predict on task
   lrnr_gam <- Lrnr_gam$new()

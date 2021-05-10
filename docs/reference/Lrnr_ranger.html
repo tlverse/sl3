@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Ranger - A Fast Implementation of Random Forests — Lrnr_ranger • sl3</title>
+<title>Ranger: Fast(er) Random Forests — Lrnr_ranger • sl3</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,13 @@
 
 
 
-<meta property="og:title" content="Ranger - A Fast Implementation of Random Forests — Lrnr_ranger" />
-<meta property="og:description" content="This learner provides fitting procedures for a fast implementation of Random
-Forests, particularly suited for high dimensional data, using the
-ranger package, using the function ranger." />
+<meta property="og:title" content="Ranger: Fast(er) Random Forests — Lrnr_ranger" />
+<meta property="og:description" content="This learner provides fitting procedures for a faster implementation of
+Random Forests, using the routines from ranger (described
+in Wright and Ziegler (2017)
+) through a call to the function
+ranger. Variable importance functionality is also
+provided through invocation of the importance method." />
 
 
 
@@ -141,44 +144,61 @@ ranger package, using the function ranger." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Ranger - A Fast Implementation of Random Forests</h1>
+    <h1>Ranger: Fast(er) Random Forests</h1>
     <small class="dont-index">Source: <a href='https://github.com/tlverse/sl3/blob/master/R/Lrnr_ranger.R'><code>R/Lrnr_ranger.R</code></a></small>
     <div class="hidden name"><code>Lrnr_ranger.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This learner provides fitting procedures for a fast implementation of Random
-Forests, particularly suited for high dimensional data, using the
-<code>ranger</code> package, using the function <code><a href='https://rdrr.io/pkg/ranger/man/ranger.html'>ranger</a></code>.</p>
+    <p>This learner provides fitting procedures for a faster implementation of
+Random Forests, using the routines from <span class="pkg">ranger</span> (described
+in Wright and Ziegler (2017)
+) through a call to the function
+<code><a href='https://rdrr.io/pkg/ranger/man/ranger.html'>ranger</a></code>. Variable importance functionality is also
+provided through invocation of the <code><a href='https://rdrr.io/pkg/ranger/man/importance.ranger.html'>importance</a></code> method.</p>
     </div>
 
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p><code>R6Class</code> object.</p>
+    <p>An <code><a href='https://r6.r-lib.org/reference/R6Class.html'>R6Class</a></code> object inheriting from
+<code><a href='Lrnr_base.html'>Lrnr_base</a></code>.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Learner object with methods for training and prediction. See
-<code><a href='Lrnr_base.html'>Lrnr_base</a></code> for documentation on learners.</p>
+    <p>A learner object inheriting from <code><a href='Lrnr_base.html'>Lrnr_base</a></code> with
+methods for training and prediction. For a full list of learner
+functionality, see the complete documentation of <code><a href='Lrnr_base.html'>Lrnr_base</a></code>.</p>
     <h2 class="hasAnchor" id="parameters"><a class="anchor" href="#parameters"></a>Parameters</h2>
 
     
 
-<dl>
-<dt><code>num.trees = 500</code></dt><dd><p>Number of trees to be used in growing the
-forest.</p></dd>
-<dt><code>write.forest = TRUE</code></dt><dd><p>If <code>TRUE</code>, forest is stored, which
-is required for prediction. Set to <code>FALSE</code> to reduce memory usage if
-no prediction is intended.</p></dd>
-<dt><code>...</code></dt><dd><p>Other parameters passed to <code><a href='https://rdrr.io/pkg/ranger/man/ranger.html'>ranger</a></code>.
-See its documentation for details.</p></dd>
+<ul>
+<li><p><code>num.trees = 500</code>: Number of trees to be used in growing the forest.</p></li>
+<li><p><code>write.forest = TRUE</code>: If <code>TRUE</code>, forest is stored, which is
+required for prediction. Set to <code>FALSE</code> to reduce memory usage if
+downstream prediction is not intended.</p></li>
+<li><p><code>importance = "none"</code>: Variable importance mode, one of "none",
+"impurity", "impurity_corrected", "permutation". The "impurity" measure
+is the Gini index for classification, the variance of the responses for
+regression, and the sum of test statistics (for survival analysis, see
+the <code>splitrule</code> argument of <code><a href='https://rdrr.io/pkg/ranger/man/ranger.html'>ranger</a></code>).</p></li>
+<li><p><code>num.threads = 1</code>: Number of threads.</p></li>
+<li><p><code>...</code>: Other parameters passed to <code><a href='https://rdrr.io/pkg/ranger/man/ranger.html'>ranger</a></code>. See
+its documentation for details.</p></li>
+</ul>
 
-</dl>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
+    <p>Wright MN, Ziegler A (2017).
+&#8220;ranger: A Fast Implementation of Random Forests for High Dimensional Data in C++ and R.&#8221;
+<em>Journal of Statistical Software</em>, <b>77</b>(1), 1--17.
+doi: <a href='https://doi.org/10.18637/jss.v077.i01'>10.18637/jss.v077.i01</a>
+, <a href='https://doi.org/10.18637/jss.v077.i01'>https://doi.org/10.18637/jss.v077.i01</a>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other Learners: 
+    <div class='dont-index'><p><a href='Lrnr_randomForest.html'>Lrnr_randomForest</a> for a similar learner using <span class="pkg">randomForest</span></p>
+<p>Other Learners: 
 <code><a href='Custom_chain.html'>Custom_chain</a></code>,
 <code><a href='Lrnr_HarmonicReg.html'>Lrnr_HarmonicReg</a></code>,
 <code><a href='Lrnr_arima.html'>Lrnr_arima</a></code>,
@@ -186,7 +206,6 @@ See its documentation for details.</p></dd>
 <code><a href='Lrnr_base.html'>Lrnr_base</a></code>,
 <code><a href='Lrnr_bayesglm.html'>Lrnr_bayesglm</a></code>,
 <code><a href='Lrnr_bilstm.html'>Lrnr_bilstm</a></code>,
-<code><a href='Lrnr_bound.html'>Lrnr_bound</a></code>,
 <code><a href='Lrnr_caret.html'>Lrnr_caret</a></code>,
 <code><a href='Lrnr_cv_selector.html'>Lrnr_cv_selector</a></code>,
 <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
@@ -245,6 +264,35 @@ See its documentation for details.</p></dd>
 <code><a href='define_h2o_X.html'>define_h2o_X</a>()</code>,
 <code><a href='undocumented_learner.html'>undocumented_learner</a></code></p></div>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>)</span>
+<span class='co'># create task for prediction</span>
+<span class='va'>mtcars_task</span> <span class='op'>&lt;-</span> <span class='va'><a href='sl3_Task.html'>sl3_Task</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>
+  data <span class='op'>=</span> <span class='va'>mtcars</span>,
+  covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
+    <span class='st'>"cyl"</span>, <span class='st'>"disp"</span>, <span class='st'>"hp"</span>, <span class='st'>"drat"</span>, <span class='st'>"wt"</span>, <span class='st'>"qsec"</span>, <span class='st'>"vs"</span>, <span class='st'>"am"</span>,
+    <span class='st'>"gear"</span>, <span class='st'>"carb"</span>
+  <span class='op'>)</span>,
+  outcome <span class='op'>=</span> <span class='st'>"mpg"</span>
+<span class='op'>)</span>
+<span class='co'># initialization, training, and prediction with the defaults</span>
+<span class='va'>ranger_lrnr</span> <span class='op'>&lt;-</span> <span class='va'>Lrnr_ranger</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>ranger_fit</span> <span class='op'>&lt;-</span> <span class='va'>ranger_lrnr</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>mtcars_task</span><span class='op'>)</span>
+<span class='va'>ranger_preds</span> <span class='op'>&lt;-</span> <span class='va'>ranger_fit</span><span class='op'>$</span><span class='fu'>predict</span><span class='op'>(</span><span class='op'>)</span>
+
+<span class='co'># variable importance</span>
+<span class='va'>ranger_lrnr_importance</span> <span class='op'>&lt;-</span> <span class='va'>Lrnr_ranger</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>importance <span class='op'>=</span> <span class='st'>"impurity_corrected"</span><span class='op'>)</span>
+<span class='va'>ranger_fit_importance</span> <span class='op'>&lt;-</span> <span class='va'>ranger_lrnr_importance</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>mtcars_task</span><span class='op'>)</span>
+<span class='va'>ranger_importance</span> <span class='op'>&lt;-</span> <span class='va'>ranger_fit_importance</span><span class='op'>$</span><span class='fu'>importance</span><span class='op'>(</span><span class='op'>)</span>
+
+<span class='co'># screening based on variable importance, example in glm pipeline</span>
+<span class='va'>ranger_importance_screener</span> <span class='op'>&lt;-</span> <span class='va'><a href='Lrnr_screener_importance.html'>Lrnr_screener_importance</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>
+  learner <span class='op'>=</span> <span class='va'>ranger_lrnr_importance</span>, num_screen <span class='op'>=</span> <span class='fl'>3</span>
+<span class='op'>)</span>
+<span class='va'>glm_lrnr</span> <span class='op'>&lt;-</span> <span class='fu'><a href='Lrnr_base.html'>make_learner</a></span><span class='op'>(</span><span class='va'>Lrnr_glm</span><span class='op'>)</span>
+<span class='va'>ranger_screen_glm_pipe</span> <span class='op'>&lt;-</span> <span class='va'><a href='Pipeline.html'>Pipeline</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>ranger_importance_screener</span>, <span class='va'>glm_lrnr</span><span class='op'>)</span>
+<span class='va'>ranger_screen_glm_pipe_fit</span> <span class='op'>&lt;-</span> <span class='va'>ranger_screen_glm_pipe</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>mtcars_task</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

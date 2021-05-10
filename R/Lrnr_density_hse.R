@@ -39,10 +39,8 @@ Lrnr_density_hse <- R6Class(
       super$initialize(params = params, ...)
     }
   ),
-
   private = list(
     .properties = c("density"),
-
     .train = function(task) {
       mean_learner <- self$params$mean_learner
       mean_fit <- mean_learner$train(task)
@@ -54,7 +52,6 @@ Lrnr_density_hse <- R6Class(
       fit_object <- list(mean_fit = mean_fit, dens_fit = dens_fit)
       return(fit_object)
     },
-
     .predict = function(task) {
       mean_fit <- self$fit_object$mean_fit
       dens_fit <- self$fit_object$dens_fit

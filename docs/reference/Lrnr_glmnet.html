@@ -40,9 +40,13 @@
 
 
 <meta property="og:title" content="GLMs with Elastic Net Regularization — Lrnr_glmnet" />
-<meta property="og:description" content="This learner provides fitting procedures for elastic net models, using the
-glmnet package, using cv.glmnet to select an
-appropriate value of lambda." />
+<meta property="og:description" content="This learner provides fitting procedures for elastic net models, including
+both lasso (L1) and ridge (L2) penalized regression, using the glmnet
+package. The function cv.glmnet is used to select an
+appropriate value of the regularization parameter lambda. For details on
+these regularized regression models and glmnet, consider consulting
+Friedman et al. (2010)
+)." />
 
 
 
@@ -147,69 +151,66 @@ appropriate value of lambda." />
     </div>
 
     <div class="ref-description">
-    <p>This learner provides fitting procedures for elastic net models, using the
-<code>glmnet</code> package, using <code><a href='https://glmnet.stanford.edu/reference/cv.glmnet.html'>cv.glmnet</a></code> to select an
-appropriate value of lambda.</p>
+    <p>This learner provides fitting procedures for elastic net models, including
+both lasso (L1) and ridge (L2) penalized regression, using the <span class="pkg">glmnet</span>
+package. The function <code><a href='https://glmnet.stanford.edu/reference/cv.glmnet.html'>cv.glmnet</a></code> is used to select an
+appropriate value of the regularization parameter lambda. For details on
+these regularized regression models and <span class="pkg">glmnet</span>, consider consulting
+Friedman et al. (2010)
+).</p>
     </div>
 
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p><code>R6Class</code> object.</p>
+    <p>An <code><a href='https://r6.r-lib.org/reference/R6Class.html'>R6Class</a></code> object inheriting from
+<code><a href='Lrnr_base.html'>Lrnr_base</a></code>.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Learner object with methods for training and prediction. See
-<code><a href='Lrnr_base.html'>Lrnr_base</a></code> for documentation on learners.</p>
+    <p>A learner object inheriting from <code><a href='Lrnr_base.html'>Lrnr_base</a></code> with
+methods for training and prediction. For a full list of learner
+functionality, see the complete documentation of <code><a href='Lrnr_base.html'>Lrnr_base</a></code>.</p>
     <h2 class="hasAnchor" id="parameters"><a class="anchor" href="#parameters"></a>Parameters</h2>
 
     
 
-<dl>
-<dt><code>lambda = NULL</code></dt><dd><p>An optional vector of lambda values to
-compare.</p></dd>
-<dt><code>type.measure = "deviance"</code></dt><dd><p>The loss to use when selecting
-lambda. Options documented in <code><a href='https://glmnet.stanford.edu/reference/cv.glmnet.html'>cv.glmnet</a></code>.</p></dd>
-<dt><code>nfolds = 10</code></dt><dd><p>Number of folds to use for internal
-cross-validation. Smallest value allowable is 3.</p></dd>
-<dt><code>alpha = 1</code></dt><dd><p>The elastic net parameter: <code>alpha = 0</code> is
-Ridge (L2-penalized) regression, while <code>alpha = 1</code> specifies Lasso
+<ul>
+<li><p><code>lambda = NULL</code>: An optional vector of lambda values to compare.</p></li>
+<li><p><code>type.measure = "deviance"</code>: The loss to use when selecting
+lambda. Options documented in <code><a href='https://glmnet.stanford.edu/reference/cv.glmnet.html'>cv.glmnet</a></code>.</p></li>
+<li><p><code>nfolds = 10</code>: Number of folds to use for internal cross-validation.</p></li>
+<li><p><code>alpha = 1</code>: The elastic net parameter: <code>alpha = 0</code> is Ridge
+(L2-penalized) regression, while <code>alpha = 1</code> specifies Lasso
 (L1-penalized) regression. Values in the closed unit interval specify a
-weighted combination of the two penalties. This is further documented in
-<code><a href='https://glmnet.stanford.edu/reference/glmnet.html'>glmnet</a></code>.</p></dd>
-<dt><code>nlambda = 100</code></dt><dd><p>The number of lambda values to fit. Comparing
-less values will speed up computation, but may decrease statistical
-performance. Documented in <code><a href='https://glmnet.stanford.edu/reference/cv.glmnet.html'>cv.glmnet</a></code>.</p></dd>
-<dt><code>use_min = TRUE</code></dt><dd><p>If <code>TRUE</code>, use
-<code>lambda = cv_fit$lambda.min</code> for prediction; otherwise, use
-<code>lambda = cv_fit$lambda.1se</code>. The distinction between these is
-clarified in <code><a href='https://glmnet.stanford.edu/reference/cv.glmnet.html'>cv.glmnet</a></code>.</p></dd>
-<dt><code>stratify_cv = FALSE</code></dt><dd><p>Stratify internal cross-validation
-folds, so that a binary outcome's prevalence for training is roughly the
-same in the training and validation sets of the inner cross-validation
-folds? This argument can only be used when the outcome type for training
-is binomial; and either the <code>id</code> node in the task is not specified,
-or <code><a href='https://glmnet.stanford.edu/reference/cv.glmnet.html'>cv.glmnet</a></code>'s <code>foldid</code> argument is not
-specified upon initializing the learner.</p></dd>
-<dt><code>...</code></dt><dd><p>Other parameters to be passed to
-<code><a href='https://glmnet.stanford.edu/reference/cv.glmnet.html'>cv.glmnet</a></code> and <code><a href='https://glmnet.stanford.edu/reference/glmnet.html'>glmnet</a></code>.</p></dd>
+weighted combination of the two penalties. For further details, consult
+the documentation of <code><a href='https://glmnet.stanford.edu/reference/glmnet.html'>glmnet</a></code>.</p></li>
+<li><p><code>nlambda = 100</code>: The number of lambda values to fit. Comparing
+fewer values will speed up computation, but may hurt the statistical
+performance. For further details, consult the documentation of
+<code><a href='https://glmnet.stanford.edu/reference/cv.glmnet.html'>cv.glmnet</a></code>.</p></li>
+<li><p><code>use_min = TRUE</code>: If <code>TRUE</code>, the smallest value of the lambda
+regularization parameter is used for prediction (i.e.,
+<code>lambda = cv_fit$lambda.min</code>); otherwise, a larger value is used
+(i.e., <code>lambda = cv_fit$lambda.1se</code>). The distinction between the
+two variants is clarified in the documentation of
+<code><a href='https://glmnet.stanford.edu/reference/cv.glmnet.html'>cv.glmnet</a></code>.</p></li>
+<li><p><code>stratify_cv = FALSE</code>: Stratify internal cross-validation folds, so
+that a binary outcome's prevalence for training is roughly the same in
+the training and validation sets of the internal cross-validation
+folds? This argument can only be used when the outcome type for
+training is binomial; and either the <code>id</code> node in the task is not
+specified, or <code><a href='https://glmnet.stanford.edu/reference/cv.glmnet.html'>cv.glmnet</a></code>'s <code>foldid</code> argument
+is not specified upon initializing the learner.</p></li>
+<li><p><code>...</code>: Other parameters passed to <code><a href='https://glmnet.stanford.edu/reference/cv.glmnet.html'>cv.glmnet</a></code>
+and <code><a href='https://glmnet.stanford.edu/reference/glmnet.html'>glmnet</a></code>.</p></li>
+</ul>
 
-</dl>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <h2 class="hasAnchor" id="common-parameters"><a class="anchor" href="#common-parameters"></a>Common Parameters</h2>
-
-    
-
-
-<p>Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by <code>Lrnr_base</code>, and shared
-by all learners.</p>
-<dl>
-<dt><code>covariates</code></dt><dd><p>A character vector of covariates. The learner will use this to subset the covariates for any specified task</p></dd>
-<dt><code>outcome_type</code></dt><dd><p>A <code><a href='Variable_Type.html'>variable_type</a></code> object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified</p></dd>
-<dt><code>...</code></dt><dd><p>All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating</p></dd>
-
-</dl>
-
+    <p>Friedman J, Hastie T, Tibshirani R (2010).
+&#8220;Regularization paths for generalized linear models via coordinate descent.&#8221;
+<em>Journal of statistical software</em>, <b>33</b>(1), 1.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Learners: 
@@ -220,7 +221,6 @@ by all learners.</p>
 <code><a href='Lrnr_base.html'>Lrnr_base</a></code>,
 <code><a href='Lrnr_bayesglm.html'>Lrnr_bayesglm</a></code>,
 <code><a href='Lrnr_bilstm.html'>Lrnr_bilstm</a></code>,
-<code><a href='Lrnr_bound.html'>Lrnr_bound</a></code>,
 <code><a href='Lrnr_caret.html'>Lrnr_caret</a></code>,
 <code><a href='Lrnr_cv_selector.html'>Lrnr_cv_selector</a></code>,
 <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
@@ -279,6 +279,26 @@ by all learners.</p>
 <code><a href='define_h2o_X.html'>define_h2o_X</a>()</code>,
 <code><a href='undocumented_learner.html'>undocumented_learner</a></code></p></div>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>)</span>
+<span class='va'>mtcars_task</span> <span class='op'>&lt;-</span> <span class='va'><a href='sl3_Task.html'>sl3_Task</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>
+  data <span class='op'>=</span> <span class='va'>mtcars</span>,
+  covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
+    <span class='st'>"cyl"</span>, <span class='st'>"disp"</span>, <span class='st'>"hp"</span>, <span class='st'>"drat"</span>, <span class='st'>"wt"</span>, <span class='st'>"qsec"</span>, <span class='st'>"vs"</span>, <span class='st'>"am"</span>,
+    <span class='st'>"gear"</span>, <span class='st'>"carb"</span>
+  <span class='op'>)</span>,
+  outcome <span class='op'>=</span> <span class='st'>"mpg"</span>
+<span class='op'>)</span>
+<span class='co'># simple prediction with lasso penalty</span>
+<span class='va'>lasso_lrnr</span> <span class='op'>&lt;-</span> <span class='va'>Lrnr_glmnet</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>lasso_fit</span> <span class='op'>&lt;-</span> <span class='va'>lasso_lrnr</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>mtcars_task</span><span class='op'>)</span>
+<span class='va'>lasso_preds</span> <span class='op'>&lt;-</span> <span class='va'>lasso_fit</span><span class='op'>$</span><span class='fu'>predict</span><span class='op'>(</span><span class='op'>)</span>
+
+<span class='co'># simple prediction with ridge penalty</span>
+<span class='va'>ridge_lrnr</span> <span class='op'>&lt;-</span> <span class='va'>Lrnr_glmnet</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>alpha <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
+<span class='va'>ridge_fit</span> <span class='op'>&lt;-</span> <span class='va'>ridge_lrnr</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>mtcars_task</span><span class='op'>)</span>
+<span class='va'>ridge_preds</span> <span class='op'>&lt;-</span> <span class='va'>ridge_fit</span><span class='op'>$</span><span class='fu'>predict</span><span class='op'>(</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -4,7 +4,7 @@
 \name{Lrnr_base}
 \alias{Lrnr_base}
 \alias{make_learner}
-\title{Base Class for all sl3 Learners.}
+\title{Base Class for all sl3 Learners}
 \format{
 \code{\link{R6Class}} object.
 }
@@ -176,7 +176,6 @@ Other Learners:
 \code{\link{Lrnr_bartMachine}},
 \code{\link{Lrnr_bayesglm}},
 \code{\link{Lrnr_bilstm}},
-\code{\link{Lrnr_bound}},
 \code{\link{Lrnr_caret}},
 \code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_cv}},
@@ -202,7 +201,6 @@ Other Learners:
 \code{\link{Lrnr_independent_binomial}},
 \code{\link{Lrnr_lightgbm}},
 \code{\link{Lrnr_lstm_keras}},
-\code{\link{Lrnr_lstm}},
 \code{\link{Lrnr_mean}},
 \code{\link{Lrnr_multiple_ts}},
 \code{\link{Lrnr_multivariate}},

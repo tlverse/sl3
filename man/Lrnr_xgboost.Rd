@@ -5,42 +5,56 @@
 \alias{Lrnr_xgboost}
 \title{xgboost: eXtreme Gradient Boosting}
 \format{
-\code{\link{R6Class}} object.
+An \code{\link[R6]{R6Class}} object inheriting from
+\code{\link{Lrnr_base}}.
 }
 \value{
-Learner object with methods for training and prediction. See
-\code{\link{Lrnr_base}} for documentation on learners.
+A learner object inheriting from \code{\link{Lrnr_base}} with
+methods for training and prediction. For a full list of learner
+functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 }
 \description{
 This learner provides fitting procedures for \code{xgboost} models, using
 the \pkg{xgboost} package, via \code{\link[xgboost]{xgb.train}}. Such
 models are classification and regression trees with extreme gradient
 boosting. For details on the fitting procedure, consult the documentation of
-the \pkg{xgboost}.
+the \pkg{xgboost} and \insertCite{xgboost;textual}{sl3}).
 }
 \section{Parameters}{
 
-\describe{
-\item{\code{nrounds=20}}{Number of fitting iterations.}
-\item{\code{...}}{Other parameters passed to
-\code{\link[xgboost]{xgb.train}}.}
+\itemize{
+\item \code{nrounds=20}: Number of fitting iterations.
+\item \code{...}: Other parameters passed to \code{\link[xgboost]{xgb.train}}.
 }
 }
 
-\section{Common Parameters}{
+\examples{
+data(mtcars)
+mtcars_task <- sl3_Task$new(
+  data = mtcars,
+  covariates = c(
+    "cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "am",
+    "gear", "carb"
+  ),
+  outcome = "mpg"
+)
 
+# initialization, training, and prediction with the defaults
+xgb_lrnr <- Lrnr_xgboost$new()
+xgb_fit <- xgb_lrnr$train(mtcars_task)
+xgb_preds <- xgb_fit$predict()
 
-Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by \code{Lrnr_base}, and shared
-by all learners.
-
-\describe{
-\item{\code{covariates}}{A character vector of covariates. The learner will use this to subset the covariates for any specified task}
-\item{\code{outcome_type}}{A \code{\link{variable_type}} object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified}
-\item{\code{...}}{All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating}
+# get feature importance from fitted model
+xgb_varimp <- xgb_fit$importance()
 }
+\references{
+\insertAllCited{}
 }
-
 \seealso{
+\link{Lrnr_gbm} for standard gradient boosting models (via the \pkg{gbm}
+package) and \link{Lrnr_lightgbm} for the faster and more efficient gradient
+boosted trees from the LightGBM framework (via the \pkg{lightgbm} package).
+
 Other Learners: 
 \code{\link{Custom_chain}},
 \code{\link{Lrnr_HarmonicReg}},
@@ -49,7 +63,6 @@ Other Learners:
 \code{\link{Lrnr_base}},
 \code{\link{Lrnr_bayesglm}},
 \code{\link{Lrnr_bilstm}},
-\code{\link{Lrnr_bound}},
 \code{\link{Lrnr_caret}},
 \code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_cv}},
@@ -75,7 +88,6 @@ Other Learners:
 \code{\link{Lrnr_independent_binomial}},
 \code{\link{Lrnr_lightgbm}},
 \code{\link{Lrnr_lstm_keras}},
-\code{\link{Lrnr_lstm}},
 \code{\link{Lrnr_mean}},
 \code{\link{Lrnr_multiple_ts}},
 \code{\link{Lrnr_multivariate}},

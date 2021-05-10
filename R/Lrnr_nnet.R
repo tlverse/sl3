@@ -42,10 +42,8 @@ Lrnr_nnet <- R6Class(
       super$initialize(params = args_to_list(), ...)
     }
   ),
-
   private = list(
     .properties = c("continuous", "binomial", "categorical", "weights"),
-
     .train = function(task) {
       args <- self$params
       outcome_type <- self$get_outcome_type(task)
@@ -70,7 +68,6 @@ Lrnr_nnet <- R6Class(
 
       return(fit_object)
     },
-
     .predict = function(task) {
       outcome_type <- private$.training_outcome_type
 

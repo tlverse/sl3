@@ -1,17 +1,17 @@
 #' Recurrent Neural Network with Gated Recurrent Unit (GRU) with Keras
 #'
-#' This learner supports the Recurrent Neural Network (RNN) with
-#' Gated Recurrent Unit. This learner leverages the same principle as a LSTM,
-#' but it is more streamlined and thus cheaper to run, at the expense of
-#' representational power. This learner uses the \code{keras} package. Note that all
-#' preprocessing, such as differencing and seasonal effects for time series,
-#' should be addressed before using this learner. Desired lags of the time series
-#' should be added as predictors before using the learner.
+#' This learner supports Recurrent Neural Networks (RNNs) with Gated Recurrent
+#' Units (GRU). This learner leverages the same principles as LSTM networks but
+#' is more streamlined and thus cheaper to run, at the expense of some loss in
+#' representational power. This learner uses the \pkg{keras} package. Note that
+#' all preprocessing, such as differencing and seasonal effects for time
+#' series, should be addressed before using this learner. Desired lags of the
+#' time series should be added as predictors before using the learner.
 #'
 #' @docType class
 #'
 #' @importFrom R6 R6Class
-#' @importFrom assertthat assert_that is.count is.flag
+#' @importFrom dplyr "%>%"
 #'
 #' @export
 #'
@@ -19,36 +19,68 @@
 #'
 #' @family Learners
 #'
-#' @return \code{\link{Lrnr_base}} object with methods for training and prediction
+#' @return A learner object inheriting from \code{\link{Lrnr_base}} with
+#'  methods for training and prediction. For a full list of learner
+#'  functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 #'
-#' @format \code{\link{R6Class}} object.
+#' @format An \code{\link[R6]{R6Class}} object inheriting from
+#'  \code{\link{Lrnr_base}}.
 #'
 #' @section Parameters:
-#' \describe{
-#'  \item{\code{batch_size}}{How many times should the training data be used to
-#'  train the neural network?}
-#'  \item{\code{units}}{Positive integer, dimensionality of the output space.}
-#'  \item{\code{dropout}}{Float between 0 and 1. Fraction of the input units to
-#'  drop.}
-#'  \item{\code{recurrent_dropout}}{Float between 0 and 1. Fraction of the
-#'  units to drop for the linear transformation of the recurrent state.}
-#'  \item{\code{activation}}{Activation function to use. If you pass NULL, no
-#'  activation is applied (e.g., "linear" activation: \code{a(x) = x}).}
-#'  \item{\code{recurrent_activation}}{Activation function to use for the
-#'  recurrent step.}
-#'  \item{\code{recurrent_out}}{Activation function to use for the output step.}
-#'  \item{\code{epochs}}{Number of epochs to train the model.}
-#'  \item{\code{lr}}{Learning rate.}
-#'  \item{\code{layers}}{How many lstm layers. Only allows for 1 or 2.}
-#'  \item{\code{callbacks}}{List of callbacks, which is a set of functions to
-#'  be applied at given stages of the training procedure. Default callback
-#'  function \code{callback_early_stopping} stops training if the validation
-#'  loss does not improve across \code{patience} number of epochs.}
-#'  }
+#'   - \code{batch_size}: How many times should the training data be used to
+#'       train the neural network?
+#'   - \code{units}: Positive integer, dimensionality of the output space.
+#'   - \code{dropout}: Float between 0 and 1. Fraction of the input units to
+#'       drop.
+#'   - \code{recurrent_dropout}: Float between 0 and 1. Fraction of the units
+#'       to drop for the linear transformation of the recurrent state.
+#'   - \code{activation}: Activation function to use. If you pass NULL, no
+#'       activation is applied (e.g., "linear" activation: \code{a(x) = x}).
+#'   - \code{recurrent_activation}: Activation function to use for the
+#'       recurrent step.
+#'   - \code{recurrent_out}: Activation function to use for the output step.
+#'   - \code{epochs}: Number of epochs to train the model.
+#'   - \code{lr}: Learning rate.
+#'   - \code{layers}: How many LSTM layers. Only allows for 1 or 2.
+#'   - \code{callbacks}: List of callbacks, which is a set of functions to
+#'   be applied at given stages of the training procedure. Default callback
+#'   function \code{callback_early_stopping} stops training if the validation
+#'   loss does not improve across \code{patience} number of epochs.
+#'   - \code{...}: Other parameters passed to \code{\link[keras]{keras}}.
 #'
+#' @examples
+#' \dontrun{
+#' library(origami)
+#' data(bsds)
 #'
+#' # make folds appropriate for time-series cross-validation
+#' folds <- make_folds(bsds,
+#'   fold_fun = folds_rolling_window, window_size = 500,
+#'   validation_size = 100, gap = 0, batch = 50
+#' )
+#'
+#' # build task by passing in external folds structure
+#' task <- sl3_Task$new(
+#'   data = bsds,
+#'   folds = folds,
+#'   covariates = c(
+#'     "weekday", "temp"
+#'   ),
+#'   outcome = "cnt"
+#' )
+#'
+#' # create tasks for taining and validation (simplifed example)
+#' train_task <- training(task, fold = task$folds[[1]])
+#' valid_task <- validation(task, fold = task$folds[[1]])
+#'
+#' # instantiate learner, then fit and predict (simplifed example)
+#' gru_lrnr <- Lrnr_gru_keras$new(batch_size = 1, epochs = 200)
+#' gru_fit <- gru_lrnr$train(train_task)
+#' gru_preds <- gru_fit$predict(valid_task)
+#' }
 Lrnr_gru_keras <- R6Class(
-  classname = "Lrnr_gru_keras", inherit = Lrnr_base, portable = TRUE, class = TRUE,
+  classname = "Lrnr_gru_keras", inherit = Lrnr_base, portable = TRUE,
+  class = TRUE,
   public = list(
     initialize = function(batch_size = 10,
                           units = 32,
@@ -60,7 +92,9 @@ Lrnr_gru_keras <- R6Class(
                           epochs = 100,
                           lr = 0.001,
                           layers = 1,
-                          callbacks = list(keras::callback_early_stopping(patience = 10)),
+                          callbacks = list(
+                            keras::callback_early_stopping(patience = 10)
+                          ),
                           ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
@@ -159,7 +193,6 @@ Lrnr_gru_keras <- R6Class(
 
       return(fit_object)
     },
-
     .predict = function(task = NULL) {
       args <- self$params
 

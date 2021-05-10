@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Generalized Additive Models — Lrnr_gam • sl3</title>
+<title>GAM: Generalized Additive Models — Lrnr_gam • sl3</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,15 @@
 
 
 
-<meta property="og:title" content="Generalized Additive Models — Lrnr_gam" />
-<meta property="og:description" content="This learner provides fitting procedures for generalized additive models
-using gam." />
+<meta property="og:title" content="GAM: Generalized Additive Models — Lrnr_gam" />
+<meta property="og:description" content="This learner provides fitting procedures for generalized additive models,
+using the routines from mgcv through a call to the function
+gam. The mgcv package and the use of GAMs are
+described thoroughly (with examples) in Wood (2017)
+,
+while Hastie and Tibshirani (1990)
+ also provided an earlier quite
+thorough look at GAMs." />
 
 
 
@@ -140,66 +146,66 @@ using gam." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Generalized Additive Models</h1>
+    <h1>GAM: Generalized Additive Models</h1>
     <small class="dont-index">Source: <a href='https://github.com/tlverse/sl3/blob/master/R/Lrnr_gam.R'><code>R/Lrnr_gam.R</code></a></small>
     <div class="hidden name"><code>Lrnr_gam.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This learner provides fitting procedures for generalized additive models
-using <code><a href='https://rdrr.io/pkg/mgcv/man/gam.html'>gam</a></code>.</p>
+    <p>This learner provides fitting procedures for generalized additive models,
+using the routines from <span class="pkg">mgcv</span> through a call to the function
+<code><a href='https://rdrr.io/pkg/mgcv/man/gam.html'>gam</a></code>. The <span class="pkg">mgcv</span> package and the use of GAMs are
+described thoroughly (with examples) in Wood (2017)
+,
+while Hastie and Tibshirani (1990)
+ also provided an earlier quite
+thorough look at GAMs.</p>
     </div>
 
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p><code>R6Class</code> object.</p>
+    <p>An <code><a href='https://r6.r-lib.org/reference/R6Class.html'>R6Class</a></code> object inheriting from
+<code><a href='Lrnr_base.html'>Lrnr_base</a></code>.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Learner object with methods for training and prediction. See
-<code><a href='Lrnr_base.html'>Lrnr_base</a></code> for documentation on learners.</p>
+    <p>A learner object inheriting from <code><a href='Lrnr_base.html'>Lrnr_base</a></code> with
+methods for training and prediction. For a full list of learner
+functionality, see the complete documentation of <code><a href='Lrnr_base.html'>Lrnr_base</a></code>.</p>
     <h2 class="hasAnchor" id="parameters"><a class="anchor" href="#parameters"></a>Parameters</h2>
 
     
 
-<dl>
-<dt><code>formula</code></dt><dd><p>An optional argument specifying the formula of GAM.
-Input type can be formula or string, or a list of them. If not specified,
-continuous covariates will be smoothen with the smooth terms represented
-using `penalized thin plate regression splines'. For a detailed
-description, please consult the documentation for <code><a href='https://rdrr.io/pkg/mgcv/man/gam.html'>gam</a></code>.</p></dd>
+<ul>
+<li><p><code>formula</code>: An optional argument specifying the formula of GAM.
+Input type can be formula or string, or a list of them. If not
+specified, continuous covariates will be smoothened with the smooth
+terms represented using "penalized thin plate regression splines". For
+a more detailed description, please consult the documentation for
+<code><a href='https://rdrr.io/pkg/mgcv/man/gam.html'>gam</a></code>.</p></li>
+<li><p><code>family</code>: An optional argument specifying the family of the GAM.
+See <code><a href='https://rdrr.io/r/stats/family.html'>family</a></code> and <code><a href='https://rdrr.io/pkg/mgcv/man/family.mgcv.html'>family.mgcv</a></code>
+for a list of available family functions. If left unspecified, it will
+be inferred depending on the detected type of the outcome. For now,
+GAM supports binomial and gaussian outcome types, if <code>formula</code> is
+unspecified. For a more detailed description of this argument, please
+consult the documentation of <code><a href='https://rdrr.io/pkg/mgcv/man/gam.html'>gam</a></code>.</p></li>
+<li><p><code>method</code>: An optional argument specifying the method for smoothing
+parameter selection. The default is global cross-validation (GCV). For
+more detaileds on this argument, consult the documentation of
+<code><a href='https://rdrr.io/pkg/mgcv/man/gam.html'>gam</a></code>.</p></li>
+<li><p><code>...</code>: Other parameters passed to <code><a href='https://rdrr.io/pkg/mgcv/man/gam.html'>gam</a></code>. See its
+documentation for details.</p></li>
+</ul>
 
-<dt><code>family</code></dt><dd><p>An optional argument specifying the family of GAM. See
-<code><a href='https://rdrr.io/r/stats/family.html'>family</a></code> and <code><a href='https://rdrr.io/pkg/mgcv/man/family.mgcv.html'>family.mgcv</a></code> for a list of
-available families. If not specified, it will be inferred depending on the
-type of the outcome. For now the GAM supports binomial and gaussian if
-<code>formula</code> is not specified. For a detailed description, please consult
-the documentation for <code><a href='https://rdrr.io/pkg/mgcv/man/gam.html'>gam</a></code>.</p></dd>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-<dt><code>method</code></dt><dd><p>An optional argument specifying the method for
-smoothing parameter selection criterion. Default is set to GCV. For a
-detailed description, please consult the documentation for
-<code><a href='https://rdrr.io/pkg/mgcv/man/gam.html'>gam</a></code>.</p></dd>
-
-<dt><code>...</code></dt><dd><p>Other parameters passed to <code><a href='https://rdrr.io/pkg/mgcv/man/gam.html'>gam</a></code>.</p></dd>
-
-</dl>
-
-    <h2 class="hasAnchor" id="common-parameters"><a class="anchor" href="#common-parameters"></a>Common Parameters</h2>
-
-    
-
-
-<p>Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by <code>Lrnr_base</code>, and shared
-by all learners.</p>
-<dl>
-<dt><code>covariates</code></dt><dd><p>A character vector of covariates. The learner will use this to subset the covariates for any specified task</p></dd>
-<dt><code>outcome_type</code></dt><dd><p>A <code><a href='Variable_Type.html'>variable_type</a></code> object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified</p></dd>
-<dt><code>...</code></dt><dd><p>All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating</p></dd>
-
-</dl>
-
+    <p>Hastie TJ, Tibshirani RJ (1990).
+<em>Generalized additive models</em>, volume 43.
+CRC press.<br /><br /> Wood SN (2017).
+<em>Generalized additive models: an introduction with R</em>.
+CRC press.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Learners: 
@@ -210,7 +216,6 @@ by all learners.</p>
 <code><a href='Lrnr_base.html'>Lrnr_base</a></code>,
 <code><a href='Lrnr_bayesglm.html'>Lrnr_bayesglm</a></code>,
 <code><a href='Lrnr_bilstm.html'>Lrnr_bilstm</a></code>,
-<code><a href='Lrnr_bound.html'>Lrnr_bound</a></code>,
 <code><a href='Lrnr_caret.html'>Lrnr_caret</a></code>,
 <code><a href='Lrnr_cv_selector.html'>Lrnr_cv_selector</a></code>,
 <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
@@ -269,6 +274,19 @@ by all learners.</p>
 <code><a href='define_h2o_X.html'>define_h2o_X</a>()</code>,
 <code><a href='undocumented_learner.html'>undocumented_learner</a></code></p></div>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>cpp_imputed</span><span class='op'>)</span>
+<span class='co'># create task for prediction</span>
+<span class='va'>cpp_task</span> <span class='op'>&lt;-</span> <span class='va'><a href='sl3_Task.html'>sl3_Task</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>
+  data <span class='op'>=</span> <span class='va'>cpp_imputed</span>,
+  covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"bmi"</span>, <span class='st'>"parity"</span>, <span class='st'>"mage"</span>, <span class='st'>"sexn"</span><span class='op'>)</span>,
+  outcome <span class='op'>=</span> <span class='st'>"haz"</span>
+<span class='op'>)</span>
+<span class='co'># initialization, training, and prediction with the defaults</span>
+<span class='va'>gam_lrnr</span> <span class='op'>&lt;-</span> <span class='va'>Lrnr_gam</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>gam_fit</span> <span class='op'>&lt;-</span> <span class='va'>gam_lrnr</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>cpp_task</span><span class='op'>)</span>
+<span class='va'>gam_preds</span> <span class='op'>&lt;-</span> <span class='va'>gam_fit</span><span class='op'>$</span><span class='fu'>predict</span><span class='op'>(</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

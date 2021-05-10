@@ -31,11 +31,44 @@
 #'      \code{sl3_list_learners("importance")}.
 #'  - \code{num_screen = 5}: The top n number of "most impotant" variables to
 #'      retain.
-#'  - \code{...}: Other parameters passed to \code{learner}'s \code{importance}
-#'      function.
+#'  - \code{...}: Other parameters passed to the \code{learner}'s
+#'      \code{importance} function.
 #'
 #' @examples
+#' data(mtcars)
+#' mtcars_task <- sl3_Task$new(
+#'   data = mtcars,
+#'   covariates = c(
+#'     "cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "am",
+#'     "gear", "carb"
+#'   ),
+#'   outcome = "mpg"
+#' )
+#' glm_lrnr <- make_learner(Lrnr_glm)
 #'
+#' # screening based on \code{\link{Lrnr_ranger}} variable importance
+#' ranger_lrnr_importance <- Lrnr_ranger$new(importance = "impurity_corrected")
+#' ranger_importance_screener <- Lrnr_screener_importance$new(
+#'   learner = ranger_lrnr_importance, num_screen = 3
+#' )
+#' ranger_screen_glm_pipe <- Pipeline$new(ranger_importance_screener, glm_lrnr)
+#' ranger_screen_glm_pipe_fit <- ranger_screen_glm_pipe$train(mtcars_task)
+#'
+#' # screening based on \code{\link{Lrnr_randomForest}} variable importance
+#' rf_lrnr <- Lrnr_randomForest$new()
+#' rf_importance_screener <- Lrnr_screener_importance$new(
+#'   learner = rf_lrnr, num_screen = 3
+#' )
+#' rf_screen_glm_pipe <- Pipeline$new(rf_importance_screener, glm_lrnr)
+#' rf_screen_glm_pipe_fit <- rf_screen_glm_pipe$train(mtcars_task)
+#'
+#' # screening based on \code{\link{Lrnr_randomForest}} variable importance
+#' xgb_lrnr <- Lrnr_xgboost$new()
+#' xgb_importance_screener <- Lrnr_screener_importance$new(
+#'   learner = xgb_lrnr, num_screen = 3
+#' )
+#' xgb_screen_glm_pipe <- Pipeline$new(xgb_importance_screener, glm_lrnr)
+#' xgb_screen_glm_pipe_fit <- xgb_screen_glm_pipe$train(mtcars_task)
 Lrnr_screener_importance <- R6Class(
   classname = "Lrnr_screener_importance",
   inherit = Lrnr_base, portable = TRUE, class = TRUE,
@@ -54,7 +87,6 @@ Lrnr_screener_importance <- R6Class(
   ),
   private = list(
     .properties = c("screener"),
-
     .train = function(task) {
       params <- self$params
 

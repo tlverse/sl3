@@ -181,8 +181,8 @@ The set of learners with this support can be obtained via
 <code><a href='sl3_list_properties.html'>sl3_list_learners("importance")</a></code>.</p></li>
 <li><p><code>num_screen = 5</code>: The top n number of "most impotant" variables to
 retain.</p></li>
-<li><p><code>...</code>: Other parameters passed to <code>learner</code>'s <code>importance</code>
-function.</p></li>
+<li><p><code>...</code>: Other parameters passed to the <code>learner</code>'s
+<code>importance</code> function.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -195,7 +195,6 @@ function.</p></li>
 <code><a href='Lrnr_base.html'>Lrnr_base</a></code>,
 <code><a href='Lrnr_bayesglm.html'>Lrnr_bayesglm</a></code>,
 <code><a href='Lrnr_bilstm.html'>Lrnr_bilstm</a></code>,
-<code><a href='Lrnr_bound.html'>Lrnr_bound</a></code>,
 <code><a href='Lrnr_caret.html'>Lrnr_caret</a></code>,
 <code><a href='Lrnr_cv_selector.html'>Lrnr_cv_selector</a></code>,
 <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
@@ -255,7 +254,40 @@ function.</p></li>
 <code><a href='undocumented_learner.html'>undocumented_learner</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>)</span>
+<span class='va'>mtcars_task</span> <span class='op'>&lt;-</span> <span class='va'><a href='sl3_Task.html'>sl3_Task</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>
+  data <span class='op'>=</span> <span class='va'>mtcars</span>,
+  covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
+    <span class='st'>"cyl"</span>, <span class='st'>"disp"</span>, <span class='st'>"hp"</span>, <span class='st'>"drat"</span>, <span class='st'>"wt"</span>, <span class='st'>"qsec"</span>, <span class='st'>"vs"</span>, <span class='st'>"am"</span>,
+    <span class='st'>"gear"</span>, <span class='st'>"carb"</span>
+  <span class='op'>)</span>,
+  outcome <span class='op'>=</span> <span class='st'>"mpg"</span>
+<span class='op'>)</span>
+<span class='va'>glm_lrnr</span> <span class='op'>&lt;-</span> <span class='fu'><a href='Lrnr_base.html'>make_learner</a></span><span class='op'>(</span><span class='va'>Lrnr_glm</span><span class='op'>)</span>
+
+<span class='co'># screening based on \code{\link{Lrnr_ranger}} variable importance</span>
+<span class='va'>ranger_lrnr_importance</span> <span class='op'>&lt;-</span> <span class='va'><a href='Lrnr_ranger.html'>Lrnr_ranger</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>importance <span class='op'>=</span> <span class='st'>"impurity_corrected"</span><span class='op'>)</span>
+<span class='va'>ranger_importance_screener</span> <span class='op'>&lt;-</span> <span class='va'>Lrnr_screener_importance</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>
+  learner <span class='op'>=</span> <span class='va'>ranger_lrnr_importance</span>, num_screen <span class='op'>=</span> <span class='fl'>3</span>
+<span class='op'>)</span>
+<span class='va'>ranger_screen_glm_pipe</span> <span class='op'>&lt;-</span> <span class='va'><a href='Pipeline.html'>Pipeline</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>ranger_importance_screener</span>, <span class='va'>glm_lrnr</span><span class='op'>)</span>
+<span class='va'>ranger_screen_glm_pipe_fit</span> <span class='op'>&lt;-</span> <span class='va'>ranger_screen_glm_pipe</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>mtcars_task</span><span class='op'>)</span>
+
+<span class='co'># screening based on \code{\link{Lrnr_randomForest}} variable importance</span>
+<span class='va'>rf_lrnr</span> <span class='op'>&lt;-</span> <span class='va'><a href='Lrnr_randomForest.html'>Lrnr_randomForest</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>rf_importance_screener</span> <span class='op'>&lt;-</span> <span class='va'>Lrnr_screener_importance</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>
+  learner <span class='op'>=</span> <span class='va'>rf_lrnr</span>, num_screen <span class='op'>=</span> <span class='fl'>3</span>
+<span class='op'>)</span>
+<span class='va'>rf_screen_glm_pipe</span> <span class='op'>&lt;-</span> <span class='va'><a href='Pipeline.html'>Pipeline</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>rf_importance_screener</span>, <span class='va'>glm_lrnr</span><span class='op'>)</span>
+<span class='va'>rf_screen_glm_pipe_fit</span> <span class='op'>&lt;-</span> <span class='va'>rf_screen_glm_pipe</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>mtcars_task</span><span class='op'>)</span>
+
+<span class='co'># screening based on \code{\link{Lrnr_randomForest}} variable importance</span>
+<span class='va'>xgb_lrnr</span> <span class='op'>&lt;-</span> <span class='va'><a href='Lrnr_xgboost.html'>Lrnr_xgboost</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>xgb_importance_screener</span> <span class='op'>&lt;-</span> <span class='va'>Lrnr_screener_importance</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>
+  learner <span class='op'>=</span> <span class='va'>xgb_lrnr</span>, num_screen <span class='op'>=</span> <span class='fl'>3</span>
+<span class='op'>)</span>
+<span class='va'>xgb_screen_glm_pipe</span> <span class='op'>&lt;-</span> <span class='va'><a href='Pipeline.html'>Pipeline</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>xgb_importance_screener</span>, <span class='va'>glm_lrnr</span><span class='op'>)</span>
+<span class='va'>xgb_screen_glm_pipe_fit</span> <span class='op'>&lt;-</span> <span class='va'>xgb_screen_glm_pipe</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>mtcars_task</span><span class='op'>)</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

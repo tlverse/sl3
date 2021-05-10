@@ -5,43 +5,65 @@
 \alias{Lrnr_svm}
 \title{Support Vector Machines}
 \format{
-\code{\link{R6Class}} object.
+An \code{\link[R6]{R6Class}} object inheriting from
+\code{\link{Lrnr_base}}.
 }
 \value{
-Learner object with methods for training and prediction. See
-\code{\link{Lrnr_base}} for documentation on learners.
+A learner object inheriting from \code{\link{Lrnr_base}} with
+methods for training and prediction. For a full list of learner
+functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 }
 \description{
-This learner uses \code{\link[e1071]{svm}} from \code{e1071} to fit a support
-vector machine (SVM).
+This learner provides fitting procedures for support vector machines, using
+the routines from \pkg{e1071} (described in \insertCite{e1071;textual}{sl3}
+and \insertCite{libsvm;textual}{sl3}, the core library to which \pkg{e1071}
+is an interface) through a call to the function \code{\link[e1071]{svm}}.
 }
 \section{Parameters}{
 
-\describe{
-\item{\code{scale = TRUE}}{A logical vector indicating the variables to be
-scaled. For a detailed description, please consult the documentation for
-\code{\link[e1071]{svm}}.}
-\item{\code{type = NULL}}{SVMs can be used as a classification machine, as
-a regression machine, or for novelty detection. Depending of whether the
-outcome is a factor or not, the default setting for this argument is
-"C-classification" or "eps-regression", respectively. This may be
+\itemize{
+\item \code{scale = TRUE}: A logical vector indicating the variables to be
+scaled. For a detailed description, please consult the documentation
+for \code{\link[e1071]{svm}}.
+\item \code{type = NULL}: SVMs can be used as a classification machine, as a
+a regression machine, or for novelty detection. Depending of whether
+the outcome is a factor or not, the default setting for this argument
+is "C-classification" or "eps-regression", respectively. This may be
 overwritten by setting an explicit value. For a full set of options,
-please consult the documentation for \code{\link[e1071]{svm}}.}
-\item{\code{kernel = "radial"}}{The kernel used in training and predicting.
-You might consider changing some of the optional parameters, depending on
-the kernel type. Options for kernels include: "linear", "polynomial",
-"radial" (the default), "sigmoid". For a detailed description, please
-consult the documentation for \code{\link[e1071]{svm}}.}
-\item{\code{fitted = TRUE}}{Logical indicating whether the fitted values
-should be computed and included in the model fit object or not
-(default: \code{TRUE}).}
-\item{\code{probability = FALSE}}{Logical indicating whether the model
-should allow for probability predictions (default: \code{FALSE}).}
-\item{\code{...}}{Other parameters passed to \code{\link[e1071]{svm}}.
-See its documentation for details.}
+please consult the documentation for \code{\link[e1071]{svm}}.
+\item \code{kernel = "radial"}: The kernel used in training and predicting.
+You may consider changing some of the optional parameters, depending
+on the kernel type. Kernel options include: "linear", "polynomial",
+"radial" (the default), "sigmoid". For a detailed description, consult
+the documentation for \code{\link[e1071]{svm}}.
+\item \code{fitted = TRUE}: Logical indicating whether the fitted values
+should be computed and included in the model fit object or not.
+\item \code{probability = FALSE}: Logical indicating whether the model should
+allow for probability predictions.
+\item \code{...}: Other parameters passed to \code{\link[e1071]{svm}}. See its
+documentation for details.
 }
 }
 
+\examples{
+data(mtcars)
+# create task for prediction
+mtcars_task <- sl3_Task$new(
+  data = mtcars,
+  covariates = c(
+    "cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "am",
+    "gear", "carb"
+  ),
+  outcome = "mpg"
+)
+# initialization, training, and prediction with the defaults
+svm_lrnr <- Lrnr_svm$new()
+svm_fit <- svm_lrnr$train(mtcars_task)
+svm_preds <- svm_fit$predict()
+}
+\references{
+\insertAllCited{}
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},
@@ -51,7 +73,6 @@ Other Learners:
 \code{\link{Lrnr_base}},
 \code{\link{Lrnr_bayesglm}},
 \code{\link{Lrnr_bilstm}},
-\code{\link{Lrnr_bound}},
 \code{\link{Lrnr_caret}},
 \code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_cv}},
@@ -77,7 +98,6 @@ Other Learners:
 \code{\link{Lrnr_independent_binomial}},
 \code{\link{Lrnr_lightgbm}},
 \code{\link{Lrnr_lstm_keras}},
-\code{\link{Lrnr_lstm}},
 \code{\link{Lrnr_mean}},
 \code{\link{Lrnr_multiple_ts}},
 \code{\link{Lrnr_multivariate}},

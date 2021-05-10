@@ -34,7 +34,6 @@ Lrnr_revere_task <- R6Class(
       params <- list(revere_function = revere_function, ...)
       super$initialize(params = params, ...)
     },
-
     predict_fold = function(task, fold_number = "validation") {
       stop("this learner is meant for chaining only")
     },
@@ -48,24 +47,19 @@ Lrnr_revere_task <- R6Class(
       return(revere_task$revere_fold_task(fold_number))
     }
   ),
-
   active = list(
     name = function() {
       name <- paste("CV", self$params$learner$name, sep = "_")
     }
   ),
-
   private = list(
     .properties = c("wrapper", "cv"),
-
-
     .train = function(task, trained_sublearners) {
       fit_object <- list(
         revere_task = sl3_revere_Task$new(self$params$revere_function, task)
       )
       return(fit_object)
     },
-
     .predict = function(task) {
       stop("this learner is meant for chaining only")
       return(predictions)

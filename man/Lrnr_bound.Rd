@@ -4,105 +4,45 @@
 \name{Lrnr_bound}
 \alias{Lrnr_bound}
 \title{Bound Predictions}
-\format{
-\code{\link{R6Class}} object.
-}
 \value{
-Learner object with methods for training and prediction. See
-\code{\link{Lrnr_base}} for documentation on learners.
+A learner object inheriting from \code{\link{Lrnr_base}} with
+methods for training and prediction. For a full list of learner
+functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 }
 \description{
-This learner bounds predictions. Intended for use in a pipeline.
+This learner bounds predictions. Intended for use as part of
+\code{\link{Pipeline}}.
 }
 \section{Parameters}{
 
-\describe{
-\item{\code{bound = .005}}{Either a length two vector of c(lower,upper) or a
-lower bound, where the upper is then 1 - lower}
-\item{\code{...}}{Not currently used.}
+\itemize{
+\item \code{bound}: Either a vector of length two, with lower and upper
+bounds, or a vector of length 1 with a lower bound, and the upper will
+be set symmetrically as 1 - the lower bound. Both bounds must be
+provided when the variable type of the task's outcome is continuous.
 }
 }
 
-\section{Common Parameters}{
+\examples{
+data(cpp_imputed)
+covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
+task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
 
-
-Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by \code{Lrnr_base}, and shared
-by all learners.
-
-\describe{
-\item{\code{covariates}}{A character vector of covariates. The learner will use this to subset the covariates for any specified task}
-\item{\code{outcome_type}}{A \code{\link{variable_type}} object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified}
-\item{\code{...}}{All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating}
+hal_lrnr <- Lrnr_hal9001$new(
+  max_degree = 1, num_knots = c(20, 10), smoothness_orders = 0
+)
+lasso_lrnr <- Lrnr_glmnet$new()
+glm_lrnr <- Lrnr_glm$new()
+ranger_lrnr <- Lrnr_ranger$new()
+lrnr_stack <- make_learner(Stack, lasso_lrnr, glm_lrnr, ranger_lrnr)
+lrnr_bound <- Lrnr_bound$new(c(-2, 2))
+stack_bounded_preds <- Pipeline$new(lrnr_stack, lrnr_bound)
+metalrnr_discrete_MSE <- Lrnr_cv_selector$new(loss_squared_error)
+discrete_sl <- Lrnr_sl$new(
+  learners = stack_bounded_preds, metalearner = metalrnr_discrete_MSE
+)
+discrete_sl_fit <- discrete_sl$train(task)
+preds <- discrete_sl_fit$predict()
+range(preds)
 }
-}
-
-\seealso{
-Other Learners: 
-\code{\link{Custom_chain}},
-\code{\link{Lrnr_HarmonicReg}},
-\code{\link{Lrnr_arima}},
-\code{\link{Lrnr_bartMachine}},
-\code{\link{Lrnr_base}},
-\code{\link{Lrnr_bayesglm}},
-\code{\link{Lrnr_bilstm}},
-\code{\link{Lrnr_caret}},
-\code{\link{Lrnr_cv_selector}},
-\code{\link{Lrnr_cv}},
-\code{\link{Lrnr_dbarts}},
-\code{\link{Lrnr_define_interactions}},
-\code{\link{Lrnr_density_discretize}},
-\code{\link{Lrnr_density_hse}},
-\code{\link{Lrnr_density_semiparametric}},
-\code{\link{Lrnr_earth}},
-\code{\link{Lrnr_expSmooth}},
-\code{\link{Lrnr_gam}},
-\code{\link{Lrnr_gbm}},
-\code{\link{Lrnr_glm_fast}},
-\code{\link{Lrnr_glmnet}},
-\code{\link{Lrnr_glm}},
-\code{\link{Lrnr_grf}},
-\code{\link{Lrnr_gru_keras}},
-\code{\link{Lrnr_gts}},
-\code{\link{Lrnr_h2o_grid}},
-\code{\link{Lrnr_hal9001}},
-\code{\link{Lrnr_haldensify}},
-\code{\link{Lrnr_hts}},
-\code{\link{Lrnr_independent_binomial}},
-\code{\link{Lrnr_lightgbm}},
-\code{\link{Lrnr_lstm_keras}},
-\code{\link{Lrnr_lstm}},
-\code{\link{Lrnr_mean}},
-\code{\link{Lrnr_multiple_ts}},
-\code{\link{Lrnr_multivariate}},
-\code{\link{Lrnr_nnet}},
-\code{\link{Lrnr_nnls}},
-\code{\link{Lrnr_optim}},
-\code{\link{Lrnr_pca}},
-\code{\link{Lrnr_pkg_SuperLearner}},
-\code{\link{Lrnr_polspline}},
-\code{\link{Lrnr_pooled_hazards}},
-\code{\link{Lrnr_randomForest}},
-\code{\link{Lrnr_ranger}},
-\code{\link{Lrnr_revere_task}},
-\code{\link{Lrnr_rpart}},
-\code{\link{Lrnr_rugarch}},
-\code{\link{Lrnr_screener_augment}},
-\code{\link{Lrnr_screener_coefs}},
-\code{\link{Lrnr_screener_correlation}},
-\code{\link{Lrnr_screener_importance}},
-\code{\link{Lrnr_sl}},
-\code{\link{Lrnr_solnp_density}},
-\code{\link{Lrnr_solnp}},
-\code{\link{Lrnr_stratified}},
-\code{\link{Lrnr_subset_covariates}},
-\code{\link{Lrnr_svm}},
-\code{\link{Lrnr_tsDyn}},
-\code{\link{Lrnr_ts_weights}},
-\code{\link{Lrnr_xgboost}},
-\code{\link{Pipeline}},
-\code{\link{Stack}},
-\code{\link{define_h2o_X}()},
-\code{\link{undocumented_learner}}
-}
-\concept{Learners}
 \keyword{data}

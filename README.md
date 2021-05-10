@@ -3320,6 +3320,106 @@ x
 
 <td style="text-align:left;">
 
+Lrnr\_lightgbm
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
 Lrnr\_lstm
 
 </td>

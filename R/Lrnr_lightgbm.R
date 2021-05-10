@@ -1,11 +1,13 @@
 #' LightGBM: Light Gradient Boosting Machine
 #'
 #' This learner provides fitting procedures for \code{lightgbm} models, using
-#' \pkg{lightgbm}, via \code{\link[lightgbm]{lgb.train}}. These gradient
-#' boosted classification and regression tree models feature faster training
-#' speed and higher efficiency, Lower memory usage, better accuracy, and
-#' improved handling large-scale data. For details on the fitting procedure,
-#' consult the documentation of the \pkg{lightgbm} package.
+#' the \pkg{lightgbm} package, via \code{\link[lightgbm]{lgb.train}}. These
+#' gradient boosted decision tree models feature faster training speed and
+#' efficiency, lower memory usage than competing frameworks (e.g., from the
+#' \pkg{xgboost} package), better prediction accuracy, and improved handling of
+#' large-scale data. For details on the fitting procedure and its tuning
+#' parameters, consult the documentation of the \pkg{lightgbm} package. The
+#' LightGBM framework was introduced in \insertCite{lightgbm;textual}{sl3}).
 #'
 #' @docType class
 #'
@@ -16,18 +18,47 @@
 #'
 #' @keywords data
 #'
-#' @return Learner object with methods for training and prediction. See
-#'  \code{\link{Lrnr_base}} for documentation on learners.
+#' @return A learner object inheriting from \code{\link{Lrnr_base}} with
+#'  methods for training and prediction. For a full list of learner
+#'  functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 #'
-#' @format \code{\link{R6Class}} object.
+#' @format An \code{\link[R6]{R6Class}} object inheriting from
+#'  \code{\link{Lrnr_base}}.
 #'
 #' @family Learners
+#'
+#' @seealso [Lrnr_gbm] for standard gradient boosting models (via the \pkg{gbm}
+#'  package) and [Lrnr_xgboost] for the extreme gradient boosted tree models
+#'  from the Xgboost framework (via the \pkg{xgboost} package).
 #'
 #' @section Parameters:
 #'   - \code{num_threads = 1L}: Number of threads for hyperthreading.
 #'   - \code{...}: Other arguments passed to \code{\link[lightgbm]{lgb.train}}.
 #'       See its documentation for further details.
 #'
+#' @references
+#'  \insertAllCited{}
+#'
+#' @examples
+#' \dontrun{
+#' # currently disabled since LightGBM crashes R on Windows
+#' # more info at https://github.com/tlverse/sl3/issues/344
+#' data(cpp_imputed)
+#' # create task for prediction
+#' cpp_task <- sl3_Task$new(
+#'   data = cpp_imputed,
+#'   covariates = c("bmi", "parity", "mage", "sexn"),
+#'   outcome = "haz"
+#' )
+#'
+#' # initialization, training, and prediction with the defaults
+#' lgb_lrnr <- Lrnr_lightgbm$new()
+#' lgb_fit <- lgb_lrnr$train(cpp_task)
+#' lgb_preds <- lgb_fit$predict()
+#'
+#' # get feature importance from fitted model
+#' lgb_varimp <- lgb_fit$importance()
+#' }
 Lrnr_lightgbm <- R6Class(
   classname = "Lrnr_lightgbm", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
@@ -54,7 +85,6 @@ Lrnr_lightgbm <- R6Class(
       "continuous", "binomial", "categorical", "weights", "offset",
       "importance"
     ),
-
     .train = function(task) {
       args <- self$params
 
@@ -117,7 +147,6 @@ Lrnr_lightgbm <- R6Class(
       fit_object <- call_with_args(lightgbm::lgb.train, args, keep_all = TRUE)
       return(fit_object)
     },
-
     .predict = function(task = NULL) {
       fit_object <- private$.fit_object
 

@@ -1,4 +1,4 @@
-#' Base Class for all sl3 Learners.
+#' Base Class for all sl3 Learners
 #'
 #' Generally this base learner class should not be instantiated. Intended to be
 #' an abstract class, although abstract classes are not explicitly supported
@@ -8,6 +8,7 @@
 #' @docType class
 #'
 #' @importFrom R6 R6Class
+#' @importFrom Rdpack reprompt
 #'
 #' @export
 #'
@@ -42,7 +43,6 @@ Lrnr_base <- R6Class(
 
       invisible(self)
     },
-
     subset_covariates = function(task) {
       # learners subset task covariates based on their covariate set
       if ("covariates" %in% names(self$params) &&
@@ -95,7 +95,6 @@ Lrnr_base <- R6Class(
         return(task)
       }
     },
-
     get_outcome_type = function(task) {
       outcome_type <- task$outcome_type
       if (!is.null(self$params$outcome_type)) {
@@ -108,7 +107,6 @@ Lrnr_base <- R6Class(
       }
       return(outcome_type)
     },
-
     get_outcome_range = function(task = NULL, fold_number = "full") {
       # return the support of learner
       # if task is specified, return task observations based supports
@@ -136,7 +134,6 @@ Lrnr_base <- R6Class(
       }
       return(range)
     },
-
     base_train = function(task, trained_sublearners = NULL) {
 
       # trains learner to data
@@ -154,7 +151,6 @@ Lrnr_base <- R6Class(
       new_object$set_train(fit_object, subsetted_task)
       return(new_object)
     },
-
     set_train = function(fit_object, training_task) {
       private$.fit_object <- fit_object
       # for predict/chaining subset covariates to be same as training task
@@ -171,7 +167,6 @@ Lrnr_base <- R6Class(
       }
       private$.fit_uuid <- UUIDgenerate(use.time = TRUE)
     },
-
     assert_trained = function() {
       if (!self$is_trained) {
         stop(paste(
@@ -180,7 +175,6 @@ Lrnr_base <- R6Class(
         ))
       }
     },
-
     base_predict = function(task = NULL) {
       self$assert_trained()
       if (is.null(task)) {
@@ -197,7 +191,6 @@ Lrnr_base <- R6Class(
       }
       return(predictions)
     },
-
     base_chain = function(task = NULL) {
       self$assert_trained()
       if (is.null(task)) {
@@ -214,14 +207,12 @@ Lrnr_base <- R6Class(
       }
       return(next_task)
     },
-
     train_sublearners = function(task) {
       # TODO: add error handling
       subsetted_task <- delayed_learner_subset_covariates(self, task)
 
       return(private$.train_sublearners(subsetted_task))
     },
-
     train = function(task) {
       delayed_fit <- delayed_learner_train(self, task)
       verbose <- getOption("sl3.verbose")
@@ -230,32 +221,26 @@ Lrnr_base <- R6Class(
         progress = verbose
       ))
     },
-
     predict = function(task = NULL) {
       delayed_preds <- delayed_learner_fit_predict(self, task)
       return(delayed_preds$compute(job_type = sl3_delayed_job_type()))
     },
-
     sample = function(task, n_samples = 30, fold_number = "full") {
       stop("This learner does not have a sampling method.")
     },
-
     chain = function(task = NULL) {
       delayed_chained <- delayed_learner_fit_chain(self, task)
       return(delayed_chained$compute(job_type = sl3_delayed_job_type()))
     },
-
     print = function() {
       print(self$name)
       # print(self$params)
       fit_object <- private$.fit_object
       if (!is.null(fit_object)) print(fit_object)
     },
-
     custom_chain = function(new_chain_fun = NULL) {
       private$.custom_chain <- new_chain_fun
     },
-
     predict_fold = function(task, fold_number = "full") {
       # support legacy "magic number" definitions
       fold_number <- interpret_fold_number(fold_number)
@@ -269,7 +254,6 @@ Lrnr_base <- R6Class(
       }
       self$predict(task)
     },
-
     reparameterize = function(new_params) {
       # modify learner parameters
       new_self <- self$clone()
@@ -277,7 +261,6 @@ Lrnr_base <- R6Class(
         new_params[]
       return(new_self)
     },
-
     retrain = function(new_task, trained_sublearners = NULL) {
 
       # retrains fitted learner on a new task
@@ -308,7 +291,6 @@ Lrnr_base <- R6Class(
       return(new_object)
     }
   ),
-
   active = list(
     is_trained = function() {
       return(!is.null(private$.fit_object))
@@ -317,7 +299,6 @@ Lrnr_base <- R6Class(
       fit_object <- private$.fit_object
       return(fit_object)
     },
-
     name = function() {
       # TODO: allow custom names
       if (is.null(private$.name)) {
@@ -333,31 +314,24 @@ Lrnr_base <- R6Class(
       }
       return(private$.name)
     },
-
     learner_uuid = function() {
       return(private$.learner_uuid)
     },
-
     fit_uuid = function() {
       return(private$.fit_uuid)
     },
-
     params = function() {
       return(private$.params)
     },
-
     training_task = function() {
       return(private$.training_task)
     },
-
     training_outcome_type = function() {
       return(private$.training_outcome_type)
     },
-
     properties = function() {
       return(private$.properties)
     },
-
     coefficients = function() {
       self$assert_trained()
       coefs <- try(coef(self$fit_object))
@@ -368,7 +342,6 @@ Lrnr_base <- R6Class(
       }
     }
   ),
-
   private = list(
     .name = NULL,
     .fit_object = NULL,
@@ -380,24 +353,20 @@ Lrnr_base <- R6Class(
     .required_packages = NULL,
     .properties = list(),
     .custom_chain = NULL,
-
     .train_sublearners = function(task) {
       # train sublearners here
       return(NULL)
     },
-
     .train = function(task) {
       stop(paste(
         "Learner is meant to be abstract, you should instead use",
         "specific learners. See sl3_list_learners()"
       ))
     },
-
     .predict = function(task) {
       predictions <- predict(private$.fit_object, newdata = task$X)
       return(predictions)
     },
-
     .chain = function(task) {
       predictions <- self$predict(task)
       predictions <- as.data.table(predictions)
@@ -410,7 +379,6 @@ Lrnr_base <- R6Class(
         column_names = new_col_names
       ))
     },
-
     .load_packages = function() {
       if (!is.null(private$.required_packages)) {
         requirePackages(

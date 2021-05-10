@@ -42,10 +42,8 @@ Lrnr_density_discretize <- R6Class(
       super$initialize(params = params, ...)
     }
   ),
-
   private = list(
     .properties = c("density"),
-
     .train = function(task) {
       discretized <- discretize_variable(task$Y,
         type = self$params$type,
@@ -72,7 +70,6 @@ Lrnr_density_discretize <- R6Class(
       )
       return(fit_object)
     },
-
     .predict = function(task) {
       # make discretized task
       discretized <- discretize_variable(task$Y,

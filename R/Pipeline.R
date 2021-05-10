@@ -59,7 +59,6 @@ Pipeline <- R6Class(
       }
       super$initialize(params = params)
     },
-
     print = function() {
       if (is.null(private$.fit_object)) {
         lapply(self$params$learners, print)
@@ -67,7 +66,6 @@ Pipeline <- R6Class(
         lapply(private$.fit_object, print)
       }
     },
-
     predict_fold = function(task, fold_number) {
 
       # prediction is just chaining until you get to the last fit, and then
@@ -87,7 +85,6 @@ Pipeline <- R6Class(
       return(predictions)
     }
   ),
-
   active = list(
     name = function() {
       learners <- self$params$learners
@@ -100,7 +97,6 @@ Pipeline <- R6Class(
       return(result)
     }
   ),
-
   private = list(
     .train_sublearners = function(task) {
       learners <- self$params$learners
@@ -116,13 +112,11 @@ Pipeline <- R6Class(
       }
       return(bundle_delayed(learner_fits))
     },
-
     .train = function(task, trained_sublearners) {
       names(trained_sublearners) <- private$.learner_names
       fit_object <- list(learner_fits = trained_sublearners)
       return(fit_object)
     },
-
     .predict = function(task) {
       # prediction is just chaining until you get to the last fit, and then
       # calling predict
@@ -140,7 +134,6 @@ Pipeline <- R6Class(
       predictions <- current_fit$base_predict(current_task)
       return(predictions)
     },
-
     .learner_names = NULL
   )
 )

@@ -157,6 +157,7 @@
 <li>Added <code><a href="https://rdrr.io/r/base/options.html">options(java.parameters = "-Xmx2500m")</a></code> and warning message when <code>Lrnr_bartMachine</code> is initialized, if this option has not already been set. This option was incorporated since the default RAM of 500MB for a Java virtual machine often errors due to memory issues with <code>Lrnr_bartMachine</code>.</li>
 <li>Incorporated <code>stratify_cv</code> argument in <code>Lrnr_glmnet</code>, which stratifies internal cross-validation folds such that binary outcome prevalence in training and validation folds roughly matches the prevalence in the training task.</li>
 <li>Incorporated <code>min_screen</code> argument <code>Lrnr_screener_coefs</code>, which tries to ensure that at least <code>min_screen</code> number of covariates are selected. If this argument is specified and the <code>learner</code> argument in <code>Lrnr_screener_coefs</code> is a <code>Lrnr_glmnet</code>, then <code>lambda</code> is increased until <code>min_screen</code> number of covariates are selected and a warning is produced. If <code>min_screen</code> is specified and the <code>learner</code> argument in <code>Lrnr_screener_coefs</code> is not a <code>Lrnr_glmnet</code> then it will error.</li>
+<li>Updated <code>Lrnr_hal9001</code> to work with v0.4.0 of the <code>hal9001</code> package.</li>
 </ul>
 </div>
     <div id="sl3-142" class="section level1">

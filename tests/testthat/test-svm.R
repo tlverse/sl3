@@ -18,8 +18,8 @@ task2 <- sl3_Task$new(mtcars, covariates = c(
 
 
 test_learner <- function(learner, task, ...) {
-  # test learner definition this requires that a learner can be instantiated with
-  # only default arguments. Not sure if this is a reasonable requirement
+  # test learner definition this requires that a learner can be instantiated
+  # with only default arguments. Not sure if this is a reasonable requirement
   learner_obj <- learner$new(...)
   print(sprintf("Testing Learner: %s", learner_obj$name))
   # test learner training
@@ -41,11 +41,12 @@ test_learner <- function(learner, task, ...) {
 
   # test learner chaining
   chained_task <- fit_obj$chain()
-  test_that("Chaining returns a task", expect_true(is(chained_task, "sl3_Task")))
-  test_that("Chaining returns the correct number of rows", expect_equal(
-    nrow(chained_task$X),
-    nrow(task$X)
-  ))
+  test_that("Chaining returns a task", {
+    expect_true(is(chained_task, "sl3_Task"))
+  })
+  test_that("Chaining returns the correct number of rows", {
+    expect_equal(nrow(chained_task$X), nrow(task$X))
+  })
 }
 
 ## test svm learner:

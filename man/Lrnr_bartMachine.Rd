@@ -3,28 +3,43 @@
 \docType{class}
 \name{Lrnr_bartMachine}
 \alias{Lrnr_bartMachine}
-\title{BART Machine Learner}
+\title{bartMachine: Bayesian Additive Regression Trees (BART)}
 \format{
-\code{\link{R6Class}} object.
+An \code{\link[R6]{R6Class}} object inheriting from
+\code{\link{Lrnr_base}}.
 }
 \value{
-Learner object with methods for training and prediction. See
-\code{\link{Lrnr_base}} for documentation on learners.
+A learner object inheriting from \code{\link{Lrnr_base}} with
+methods for training and prediction. For a full list of learner
+functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 }
 \description{
-This learner implements Bayesian Additive Regression Trees, using the
-\code{bartMachine} package.
+This learner implements Bayesian Additive Regression Trees via
+\pkg{bartMachine} (described in \insertCite{bartMachine;textual}{sl3})
+and the function \code{\link[bartMachine]{bartMachine}}.
 }
 \section{Parameters}{
 
-\describe{
-\item{\code{...}}{Parameters passed to
-\code{\link[bartMachine]{bartMachine}} and
-\code{\link[bartMachine]{build_bart_machine}}. See it's documentation for
-details.}
+\itemize{
+\item \code{...}: Parameters passed to \code{\link[bartMachine]{bartMachine}}.
+See it's documentation for details.
 }
 }
 
+\examples{
+# set up ML task
+data(cpp_imputed)
+covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
+task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
+
+# fit a bartMachine model and predict from it
+bartMachine_learner <- make_learner(Lrnr_bartMachine)
+bartMachine_fit <- bartMachine_learner$train(task)
+preds <- bartMachine_fit$predict()
+}
+\references{
+\insertAllCited{}
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},
@@ -33,7 +48,6 @@ Other Learners:
 \code{\link{Lrnr_base}},
 \code{\link{Lrnr_bayesglm}},
 \code{\link{Lrnr_bilstm}},
-\code{\link{Lrnr_bound}},
 \code{\link{Lrnr_caret}},
 \code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_cv}},
@@ -59,7 +73,6 @@ Other Learners:
 \code{\link{Lrnr_independent_binomial}},
 \code{\link{Lrnr_lightgbm}},
 \code{\link{Lrnr_lstm_keras}},
-\code{\link{Lrnr_lstm}},
 \code{\link{Lrnr_mean}},
 \code{\link{Lrnr_multiple_ts}},
 \code{\link{Lrnr_multivariate}},

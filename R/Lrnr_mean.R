@@ -12,37 +12,38 @@
 #'
 #' @keywords data
 #'
-#' @return Learner object with methods for training and prediction. See
-#'  \code{\link{Lrnr_base}} for documentation on learners.
+#' @return A learner object inheriting from \code{\link{Lrnr_base}} with
+#'  methods for training and prediction. For a full list of learner
+#'  functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 #'
-#' @format \code{\link{R6Class}} object.
+#' @format An \code{\link[R6]{R6Class}} object inheriting from
+#'  \code{\link{Lrnr_base}}.
 #'
 #' @family Learners
 #'
 #' @section Parameters:
-#' \describe{
-#'   \item{\code{...}}{Not used.}
-#' }
+#'   - \code{...}: Not used.
 #'
-#' @template common_parameters
-#
+#' @examples
+#' data(cpp_imputed)
+#' covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
+#' task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
+#'
+#' # simple, main-terms GLM
+#' lrnr_mean <- make_learner(Lrnr_mean)
+#' mean_fit <- lrnr_mean$train(task)
+#' mean_preds <- mean_fit$predict()
 Lrnr_mean <- R6Class(
-  classname = "Lrnr_mean", inherit = Lrnr_base,
-  portable = TRUE, class = TRUE,
+  classname = "Lrnr_mean",
+  inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
     initialize = function(...) {
       params <- list(...)
       super$initialize(params = params, ...)
-    },
-
-    print = function() {
-      print(self$name)
     }
   ),
-
   private = list(
     .properties = c("continuous", "binomial", "categorical", "weights", "offset"),
-
     .train = function(task) {
       outcome_type <- self$get_outcome_type(task)
       y <- outcome_type$format(task$Y)
@@ -75,7 +76,6 @@ Lrnr_mean <- R6Class(
 
       return(fit_object)
     },
-
     .predict = function(task = NULL) {
       predictions <- rep(private$.fit_object$mean, task$nrow)
 

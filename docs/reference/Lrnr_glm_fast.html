@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Computationally Efficient GLMs — Lrnr_glm_fast • sl3</title>
+<title>Computationally Efficient Generalized Linear Model (GLM) Fitting — Lrnr_glm_fast • sl3</title>
 
 
 <!-- jquery -->
@@ -39,11 +39,15 @@
 
 
 
-<meta property="og:title" content="Computationally Efficient GLMs — Lrnr_glm_fast" />
-<meta property="og:description" content="This learner provides faster fitting procedures for generalized linear models
-using the speedglm package. Arguments are passed to
-speedglm.wfit. Uses glm.fit as a
-fallback if speedglm.wfit fails." />
+<meta property="og:title" content="Computationally Efficient Generalized Linear Model (GLM) Fitting — Lrnr_glm_fast" />
+<meta property="og:description" content="This learner provides faster procedures for fitting linear and generalized
+linear models than Lrnr_glm with a minimal memory footprint.
+This learner uses the internal fitting function provided by speedglm
+package, speedglm.wfit. See
+Enea (2009)
+ for more detail. The
+glm.fit function is used as a fallback, if
+speedglm.wfit fails." />
 
 
 
@@ -142,53 +146,49 @@ fallback if speedglm.wfit fails." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Computationally Efficient GLMs</h1>
+    <h1>Computationally Efficient Generalized Linear Model (GLM) Fitting</h1>
     <small class="dont-index">Source: <a href='https://github.com/tlverse/sl3/blob/master/R/Lrnr_glm_fast.R'><code>R/Lrnr_glm_fast.R</code></a></small>
     <div class="hidden name"><code>Lrnr_glm_fast.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This learner provides faster fitting procedures for generalized linear models
-using the <code>speedglm</code> package. Arguments are passed to
-<code><a href='https://rdrr.io/pkg/speedglm/man/speedglm.html'>speedglm.wfit</a></code>. Uses <code><a href='https://rdrr.io/r/stats/glm.html'>glm.fit</a></code> as a
-fallback if <code><a href='https://rdrr.io/pkg/speedglm/man/speedglm.html'>speedglm.wfit</a></code> fails.</p>
+    <p>This learner provides faster procedures for fitting linear and generalized
+linear models than <code><a href='Lrnr_glm.html'>Lrnr_glm</a></code> with a minimal memory footprint.
+This learner uses the internal fitting function provided by <span class="pkg">speedglm</span>
+package, <code><a href='https://rdrr.io/pkg/speedglm/man/speedglm.html'>speedglm.wfit</a></code>. See
+Enea (2009)
+ for more detail. The
+<code><a href='https://rdrr.io/r/stats/glm.html'>glm.fit</a></code> function is used as a fallback, if
+<code><a href='https://rdrr.io/pkg/speedglm/man/speedglm.html'>speedglm.wfit</a></code> fails.</p>
     </div>
 
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p><code>R6Class</code> object.</p>
+    <p>An <code><a href='https://r6.r-lib.org/reference/R6Class.html'>R6Class</a></code> object inheriting from
+<code><a href='Lrnr_base.html'>Lrnr_base</a></code>.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Learner object with methods for training and prediction. See
-<code><a href='Lrnr_base.html'>Lrnr_base</a></code> for documentation on learners.</p>
+    <p>A learner object inheriting from <code><a href='Lrnr_base.html'>Lrnr_base</a></code> with
+methods for training and prediction. For a full list of learner
+functionality, see the complete documentation of <code><a href='Lrnr_base.html'>Lrnr_base</a></code>.</p>
     <h2 class="hasAnchor" id="parameters"><a class="anchor" href="#parameters"></a>Parameters</h2>
 
     
 
-<dl>
-<dt><code>intercept=TRUE</code></dt><dd><p>If <code>TRUE</code>, an intercept term is included</p></dd>
-<dt><code>method="Cholesky"</code></dt><dd><p>The matrix decomposition method to use</p></dd>
-<dt><code>...</code></dt><dd><p>Other parameters to be passed to
-<code><a href='https://rdrr.io/pkg/speedglm/man/speedglm.html'>speedglm.wfit</a></code>.</p></dd>
+<ul>
+<li><p><code>intercept = TRUE</code>: Should an intercept be included in the model?</p></li>
+<li><p><code>method = "Cholesky"</code>: The method to check for singularity.</p></li>
+<li><p><code>...</code>: Other parameters to be passed to
+<code><a href='https://rdrr.io/pkg/speedglm/man/speedglm.html'>speedglm.wfit</a></code>.</p></li>
+</ul>
 
-</dl>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <h2 class="hasAnchor" id="common-parameters"><a class="anchor" href="#common-parameters"></a>Common Parameters</h2>
-
-    
-
-
-<p>Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by <code>Lrnr_base</code>, and shared
-by all learners.</p>
-<dl>
-<dt><code>covariates</code></dt><dd><p>A character vector of covariates. The learner will use this to subset the covariates for any specified task</p></dd>
-<dt><code>outcome_type</code></dt><dd><p>A <code><a href='Variable_Type.html'>variable_type</a></code> object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified</p></dd>
-<dt><code>...</code></dt><dd><p>All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating</p></dd>
-
-</dl>
-
+    <p>Enea M (2009).
+&#8220;Fitting linear models and generalized linear models with large data sets in R.&#8221;
+<em>Statistical Methods for the Analysis of Large Datasets: book of short papers</em>, 411--414.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Learners: 
@@ -199,7 +199,6 @@ by all learners.</p>
 <code><a href='Lrnr_base.html'>Lrnr_base</a></code>,
 <code><a href='Lrnr_bayesglm.html'>Lrnr_bayesglm</a></code>,
 <code><a href='Lrnr_bilstm.html'>Lrnr_bilstm</a></code>,
-<code><a href='Lrnr_bound.html'>Lrnr_bound</a></code>,
 <code><a href='Lrnr_caret.html'>Lrnr_caret</a></code>,
 <code><a href='Lrnr_cv_selector.html'>Lrnr_cv_selector</a></code>,
 <code><a href='Lrnr_cv.html'>Lrnr_cv</a></code>,
@@ -258,6 +257,16 @@ by all learners.</p>
 <code><a href='define_h2o_X.html'>define_h2o_X</a>()</code>,
 <code><a href='undocumented_learner.html'>undocumented_learner</a></code></p></div>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>cpp_imputed</span><span class='op'>)</span>
+<span class='va'>covs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"apgar1"</span>, <span class='st'>"apgar5"</span>, <span class='st'>"parity"</span>, <span class='st'>"gagebrth"</span>, <span class='st'>"mage"</span>, <span class='st'>"meducyrs"</span><span class='op'>)</span>
+<span class='va'>task</span> <span class='op'>&lt;-</span> <span class='va'><a href='sl3_Task.html'>sl3_Task</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>cpp_imputed</span>, covariates <span class='op'>=</span> <span class='va'>covs</span>, outcome <span class='op'>=</span> <span class='st'>"haz"</span><span class='op'>)</span>
+
+<span class='co'># simple, main-terms GLM</span>
+<span class='va'>lrnr_glm_fast</span> <span class='op'>&lt;-</span> <span class='va'>Lrnr_glm_fast</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"eigen"</span><span class='op'>)</span>
+<span class='va'>glm_fast_fit</span> <span class='op'>&lt;-</span> <span class='va'>lrnr_glm_fast</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>task</span><span class='op'>)</span>
+<span class='va'>glm_fast_preds</span> <span class='op'>&lt;-</span> <span class='va'>glm_fast_fit</span><span class='op'>$</span><span class='fu'>predict</span><span class='op'>(</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
