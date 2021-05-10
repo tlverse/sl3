@@ -160,7 +160,7 @@ ecosystem](https://CRAN.R-project.org/package=future).
 ``` r
 # let's load the future package and set 4 cores for parallelization
 library(future)
-plan(multisession, workers = 4L)
+plan(multicore)
 
 # now, let's re-train our Stack in parallel
 stack_fit <- learner_stack$train(task)
