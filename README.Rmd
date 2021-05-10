@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# R/`sl3`: modern Super Learning with pipelines
+# R/`sl3`: Super Machine Learning with Pipelines
 
 [![Travis-CI Build Status](https://travis-ci.com/tlverse/sl3.svg?branch=master)](https://travis-ci.com/tlverse/sl3)
 [![Appveyor Build Status](https://ci.appveyor.com/api/projects/status/hagh8vidrdeacr7f?svg=true)](https://ci.appveyor.com/project/tlverse/sl3)
@@ -24,11 +24,11 @@ knitr::opts_chunk$set(
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1342293.svg)](https://doi.org/10.5281/zenodo.1342293)
 
-> A modern implementation of the Super Learner ensemble learning algorithm
+> A flexible implementation of the Super Learner ensemble learning system
 
 __Authors:__ [Jeremy Coyle](https://github.com/jeremyrcoyle),
 [Nima Hejazi](https://nimahejazi.org),
-[Ivana Malenica](https://github.com/podTockom),
+[Ivana Malenica](https://github.com/imalenica),
 [Rachael Phillips](https://github.com/rachaelvp), and
 [Oleg Sofrygin](https://github.com/osofr)
 

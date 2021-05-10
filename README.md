@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# R/`sl3`: modern Super Learning with pipelines
+# R/`sl3`: Super Machine Learning with Pipelines
 
 [![Travis-CI Build
 Status](https://travis-ci.com/tlverse/sl3.svg?branch=master)](https://travis-ci.com/tlverse/sl3)
@@ -16,12 +16,12 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1342293.svg)](https://doi.org/10.5281/zenodo.1342293)
 
-> A modern implementation of the Super Learner ensemble learning
-> algorithm
+> A flexible implementation of the Super Learner ensemble learning
+> system
 
 **Authors:** [Jeremy Coyle](https://github.com/jeremyrcoyle), [Nima
 Hejazi](https://nimahejazi.org), [Ivana
-Malenica](https://github.com/podTockom), [Rachael
+Malenica](https://github.com/imalenica), [Rachael
 Phillips](https://github.com/rachaelvp), and [Oleg
 Sofrygin](https://github.com/osofr)
 
@@ -6638,7 +6638,7 @@ prior to submitting a pull request.
 After using the `sl3` R package, please cite the following:
 
 ``` 
-    @software{coyle2021sl3-rpkg,
+ @software{coyle2021sl3-rpkg,
       author = {Coyle, Jeremy R and Hejazi, Nima S and Malenica, Ivana and
         Sofrygin, Oleg},
       title = {{sl3}: Modern Pipelines for Machine Learning and {Super
@@ -6667,7 +6667,7 @@ See file `LICENSE` for details.
 
 ## References
 
-<div id="refs" class="references hanging-indent">
+<div id="refs" class="references">
 
 <div id="ref-breiman1996stacked">
 
