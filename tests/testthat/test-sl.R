@@ -38,7 +38,7 @@ test_that("Library fits can extracted from sl fits", {
 sl1_risk <- sl1_fit$cv_risk(loss_squared_error)
 
 expected_learners <- c(
-  "Lrnr_glm_TRUE", "Lrnr_pkg_SuperLearner_SL.glmnet",
+  "Lrnr_glm_TRUE_NULL", "Lrnr_pkg_SuperLearner_SL.glmnet",
   "Lrnr_subset_covariates_c(\"apgar1\", \"apgar5\")_apgar1",
   "Lrnr_subset_covariates_c(\"apgar1\", \"apgar5\")_apgar5"
 )
