@@ -21,6 +21,15 @@ the \pkg{stats} package \code{\link[stats]{glm.fit}} function.
 
 \itemize{
 \item \code{intercept = TRUE}: Should an intercept be included in the model?
+This argument is ignored when \code{formula} argument is not \code{NULL}.
+\item \code{formula = NULL}: An object of class \code{formula} containing a
+description for the \code{\link[stats]{glm}} model to fit. NOTE that the
+\code{formula}'s response variable (i.e., variable before "\code{~}")
+must be identical to the outcome name as it's provided in the
+\code{task} and the \code{formula}'s regressors (i.e., variables after
+"\code{~}") must correspond to the column names in \code{X}, where
+\code{X} is the \code{task}'s processed dataset that's used for training
+learners and it can be accessed via \code{task$X}.
 \item \code{...}: Other parameters passed to \code{\link[stats]{glm}} or
 \code{\link[stats]{glm.fit}}.
 }

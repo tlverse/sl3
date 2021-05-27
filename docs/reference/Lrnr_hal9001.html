@@ -40,12 +40,20 @@
 
 
 <meta property="og:title" content="Scalable Highly Adaptive Lasso (HAL) — Lrnr_hal9001" />
-<meta property="og:description" content="HAL is an estimation procedure that generates a design matrix consisting of
-basis functions corresponding to covariates and interactions of covariates
-and fits Lasso regression to this (usually) very wide matrix, recovering a
-nonparametric functional form that describes the target prediction function
-as a composition of subset functions with finite variation norm. This
-implementation uses hal9001." />
+<meta property="og:description" content="The Highly Adaptive Lasso (HAL) is a nonparametric regression function that
+has been demonstrated to optimally estimate functions with bounded (finite)
+variation norm. The algorithm proceeds by first building an adaptive basis
+(i.e., the HAL basis) based on indicator basis functions (or higher-order
+spline basis functions) representing covariates and interactions of the
+covariates up to a pre-specified degree. The fitting procedures included in
+this learner use fit_hal from the hal9001
+package. For details on HAL regression, consider consulting the following
+Benkeser and van der Laan (2016)
+),
+Coyle et al. (2020)
+),
+Hejazi et al. (2020)
+)." />
 
 
 
@@ -150,12 +158,20 @@ implementation uses hal9001." />
     </div>
 
     <div class="ref-description">
-    <p>HAL is an estimation procedure that generates a design matrix consisting of
-basis functions corresponding to covariates and interactions of covariates
-and fits Lasso regression to this (usually) very wide matrix, recovering a
-nonparametric functional form that describes the target prediction function
-as a composition of subset functions with finite variation norm. This
-implementation uses <span class="pkg">hal9001</span>.</p>
+    <p>The Highly Adaptive Lasso (HAL) is a nonparametric regression function that
+has been demonstrated to optimally estimate functions with bounded (finite)
+variation norm. The algorithm proceeds by first building an adaptive basis
+(i.e., the HAL basis) based on indicator basis functions (or higher-order
+spline basis functions) representing covariates and interactions of the
+covariates up to a pre-specified degree. The fitting procedures included in
+this learner use <code><a href='https://rdrr.io/pkg/hal9001/man/fit_hal.html'>fit_hal</a></code> from the <span class="pkg">hal9001</span>
+package. For details on HAL regression, consider consulting the following
+Benkeser and van der Laan (2016)
+),
+Coyle et al. (2020)
+),
+Hejazi et al. (2020)
+).</p>
     </div>
 
 
@@ -212,7 +228,6 @@ it's documentation for details.</p></li>
 <code><a href='Lrnr_independent_binomial.html'>Lrnr_independent_binomial</a></code>,
 <code><a href='Lrnr_lightgbm.html'>Lrnr_lightgbm</a></code>,
 <code><a href='Lrnr_lstm_keras.html'>Lrnr_lstm_keras</a></code>,
-<code><a href='Lrnr_lstm.html'>Lrnr_lstm</a></code>,
 <code><a href='Lrnr_mean.html'>Lrnr_mean</a></code>,
 <code><a href='Lrnr_multiple_ts.html'>Lrnr_multiple_ts</a></code>,
 <code><a href='Lrnr_multivariate.html'>Lrnr_multivariate</a></code>,

@@ -40,7 +40,8 @@
 
 
 <meta property="og:title" content="Bound Predictions — Lrnr_bound" />
-<meta property="og:description" content="This learner bounds predictions. Intended for use in a pipeline." />
+<meta property="og:description" content="This learner bounds predictions. Intended for use as part of
+Pipeline." />
 
 
 
@@ -145,7 +146,8 @@
     </div>
 
     <div class="ref-description">
-    <p>This learner bounds predictions. Intended for use in a pipeline.</p>
+    <p>This learner bounds predictions. Intended for use as part of
+<code><a href='Pipeline.html'>Pipeline</a></code>.</p>
     </div>
 
 
@@ -160,10 +162,10 @@ functionality, see the complete documentation of <code><a href='Lrnr_base.html'>
     
 
 <ul>
-<li><p><code>bound</code>: Either a vector of length two, with lower and upper bounds,
-or a vector of length 1 with a lower bound, and the upper will be set
-symmetrically as 1 - the lower bound. Both bounds must be provided when
-the variable type of the task's outcome is continuous.</p></li>
+<li><p><code>bound</code>: Either a vector of length two, with lower and upper
+bounds, or a vector of length 1 with a lower bound, and the upper will
+be set symmetrically as 1 - the lower bound. Both bounds must be
+provided when the variable type of the task's outcome is continuous.</p></li>
 </ul>
 
 
@@ -186,9 +188,9 @@ the variable type of the task's outcome is continuous.</p></li>
   learners <span class='op'>=</span> <span class='va'>stack_bounded_preds</span>, metalearner <span class='op'>=</span> <span class='va'>metalrnr_discrete_MSE</span>
 <span class='op'>)</span>
 <span class='va'>discrete_sl_fit</span> <span class='op'>&lt;-</span> <span class='va'>discrete_sl</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>task</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Failed on Lrnr_bound_c(-2, 2)</span></div><div class='output co'>#&gt; <span class='error'>Error in outcome_type == "continuous": comparison (1) is possible only for atomic and list types</span></div><div class='input'><span class='va'>preds</span> <span class='op'>&lt;-</span> <span class='va'>discrete_sl_fit</span><span class='op'>$</span><span class='fu'>predict</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'discrete_sl_fit' not found</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/range.html'>range</a></span><span class='op'>(</span><span class='va'>preds</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'preds' not found</span></div></pre>
+<span class='va'>preds</span> <span class='op'>&lt;-</span> <span class='va'>discrete_sl_fit</span><span class='op'>$</span><span class='fu'>predict</span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/range.html'>range</a></span><span class='op'>(</span><span class='va'>preds</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] -2  2</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

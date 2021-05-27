@@ -113,8 +113,10 @@ Lrnr_rugarch <- R6Class(
       )
 
       preds <- as.numeric(predictions@forecast$seriesFor)
-      requested_preds <- ts_get_requested_preds(self$training_task, task,
-                                                preds)
+      requested_preds <- ts_get_requested_preds(
+        self$training_task, task,
+        preds
+      )
       return(requested_preds)
     },
     .required_packages = c("rugarch")

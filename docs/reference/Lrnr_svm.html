@@ -40,8 +40,12 @@
 
 
 <meta property="og:title" content="Support Vector Machines — Lrnr_svm" />
-<meta property="og:description" content="This learner uses svm from e1071 to fit a support
-vector machine (SVM)." />
+<meta property="og:description" content="This learner provides fitting procedures for support vector machines, using
+the routines from e1071 (described in Meyer et al. (2021)
+
+and Chang and Lin (2011)
+, the core library to which e1071
+is an interface) through a call to the function svm." />
 
 
 
@@ -146,48 +150,60 @@ vector machine (SVM)." />
     </div>
 
     <div class="ref-description">
-    <p>This learner uses <code><a href='https://rdrr.io/pkg/e1071/man/svm.html'>svm</a></code> from <code>e1071</code> to fit a support
-vector machine (SVM).</p>
+    <p>This learner provides fitting procedures for support vector machines, using
+the routines from <span class="pkg">e1071</span> (described in Meyer et al. (2021)
+
+and Chang and Lin (2011)
+, the core library to which <span class="pkg">e1071</span>
+is an interface) through a call to the function <code><a href='https://rdrr.io/pkg/e1071/man/svm.html'>svm</a></code>.</p>
     </div>
 
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p><code>R6Class</code> object.</p>
+    <p>An <code><a href='https://r6.r-lib.org/reference/R6Class.html'>R6Class</a></code> object inheriting from
+<code><a href='Lrnr_base.html'>Lrnr_base</a></code>.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Learner object with methods for training and prediction. See
-<code><a href='Lrnr_base.html'>Lrnr_base</a></code> for documentation on learners.</p>
+    <p>A learner object inheriting from <code><a href='Lrnr_base.html'>Lrnr_base</a></code> with
+methods for training and prediction. For a full list of learner
+functionality, see the complete documentation of <code><a href='Lrnr_base.html'>Lrnr_base</a></code>.</p>
     <h2 class="hasAnchor" id="parameters"><a class="anchor" href="#parameters"></a>Parameters</h2>
 
     
 
-<dl>
-<dt><code>scale = TRUE</code></dt><dd><p>A logical vector indicating the variables to be
-scaled. For a detailed description, please consult the documentation for
-<code><a href='https://rdrr.io/pkg/e1071/man/svm.html'>svm</a></code>.</p></dd>
-<dt><code>type = NULL</code></dt><dd><p>SVMs can be used as a classification machine, as
-a regression machine, or for novelty detection. Depending of whether the
-outcome is a factor or not, the default setting for this argument is
-"C-classification" or "eps-regression", respectively. This may be
+<ul>
+<li><p><code>scale = TRUE</code>: A logical vector indicating the variables to be
+scaled. For a detailed description, please consult the documentation
+for <code><a href='https://rdrr.io/pkg/e1071/man/svm.html'>svm</a></code>.</p></li>
+<li><p><code>type = NULL</code>: SVMs can be used as a classification machine, as a
+a regression machine, or for novelty detection. Depending of whether
+the outcome is a factor or not, the default setting for this argument
+is "C-classification" or "eps-regression", respectively. This may be
 overwritten by setting an explicit value. For a full set of options,
-please consult the documentation for <code><a href='https://rdrr.io/pkg/e1071/man/svm.html'>svm</a></code>.</p></dd>
-<dt><code>kernel = "radial"</code></dt><dd><p>The kernel used in training and predicting.
-You might consider changing some of the optional parameters, depending on
-the kernel type. Options for kernels include: "linear", "polynomial",
-"radial" (the default), "sigmoid". For a detailed description, please
-consult the documentation for <code><a href='https://rdrr.io/pkg/e1071/man/svm.html'>svm</a></code>.</p></dd>
-<dt><code>fitted = TRUE</code></dt><dd><p>Logical indicating whether the fitted values
-should be computed and included in the model fit object or not
-(default: <code>TRUE</code>).</p></dd>
-<dt><code>probability = FALSE</code></dt><dd><p>Logical indicating whether the model
-should allow for probability predictions (default: <code>FALSE</code>).</p></dd>
-<dt><code>...</code></dt><dd><p>Other parameters passed to <code><a href='https://rdrr.io/pkg/e1071/man/svm.html'>svm</a></code>.
-See its documentation for details.</p></dd>
+please consult the documentation for <code><a href='https://rdrr.io/pkg/e1071/man/svm.html'>svm</a></code>.</p></li>
+<li><p><code>kernel = "radial"</code>: The kernel used in training and predicting.
+You may consider changing some of the optional parameters, depending
+on the kernel type. Kernel options include: "linear", "polynomial",
+"radial" (the default), "sigmoid". For a detailed description, consult
+the documentation for <code><a href='https://rdrr.io/pkg/e1071/man/svm.html'>svm</a></code>.</p></li>
+<li><p><code>fitted = TRUE</code>: Logical indicating whether the fitted values
+should be computed and included in the model fit object or not.</p></li>
+<li><p><code>probability = FALSE</code>: Logical indicating whether the model should
+allow for probability predictions.</p></li>
+<li><p><code>...</code>: Other parameters passed to <code><a href='https://rdrr.io/pkg/e1071/man/svm.html'>svm</a></code>. See its
+documentation for details.</p></li>
+</ul>
 
-</dl>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
+    <p>Chang C, Lin C (2011).
+&#8220;LIBSVM: A library for support vector machines.&#8221;
+<em>ACM Transactions on Intelligent Systems and Technology</em>, <b>2</b>(3), 27:1--27:27.
+Software available at <a href='http://www.csie.ntu.edu.tw/~cjlin/libsvm'>http://www.csie.ntu.edu.tw/~cjlin/libsvm</a>.<br /><br /> Meyer D, Dimitriadou E, Hornik K, Weingessel A, Leisch F (2021).
+<em>e1071: Misc Functions of the Department of Statistics, Probability Theory Group (Formerly: E1071), TU Wien</em>.
+R package version 1.7-6, <a href='https://CRAN.R-project.org/package=e1071'>https://CRAN.R-project.org/package=e1071</a>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Learners: 
@@ -223,7 +239,6 @@ See its documentation for details.</p></dd>
 <code><a href='Lrnr_independent_binomial.html'>Lrnr_independent_binomial</a></code>,
 <code><a href='Lrnr_lightgbm.html'>Lrnr_lightgbm</a></code>,
 <code><a href='Lrnr_lstm_keras.html'>Lrnr_lstm_keras</a></code>,
-<code><a href='Lrnr_lstm.html'>Lrnr_lstm</a></code>,
 <code><a href='Lrnr_mean.html'>Lrnr_mean</a></code>,
 <code><a href='Lrnr_multiple_ts.html'>Lrnr_multiple_ts</a></code>,
 <code><a href='Lrnr_multivariate.html'>Lrnr_multivariate</a></code>,
@@ -256,6 +271,22 @@ See its documentation for details.</p></dd>
 <code><a href='define_h2o_X.html'>define_h2o_X</a>()</code>,
 <code><a href='undocumented_learner.html'>undocumented_learner</a></code></p></div>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>)</span>
+<span class='co'># create task for prediction</span>
+<span class='va'>mtcars_task</span> <span class='op'>&lt;-</span> <span class='va'><a href='sl3_Task.html'>sl3_Task</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>
+  data <span class='op'>=</span> <span class='va'>mtcars</span>,
+  covariates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
+    <span class='st'>"cyl"</span>, <span class='st'>"disp"</span>, <span class='st'>"hp"</span>, <span class='st'>"drat"</span>, <span class='st'>"wt"</span>, <span class='st'>"qsec"</span>, <span class='st'>"vs"</span>, <span class='st'>"am"</span>,
+    <span class='st'>"gear"</span>, <span class='st'>"carb"</span>
+  <span class='op'>)</span>,
+  outcome <span class='op'>=</span> <span class='st'>"mpg"</span>
+<span class='op'>)</span>
+<span class='co'># initialization, training, and prediction with the defaults</span>
+<span class='va'>svm_lrnr</span> <span class='op'>&lt;-</span> <span class='va'>Lrnr_svm</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>svm_fit</span> <span class='op'>&lt;-</span> <span class='va'>svm_lrnr</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>mtcars_task</span><span class='op'>)</span>
+<span class='va'>svm_preds</span> <span class='op'>&lt;-</span> <span class='va'>svm_fit</span><span class='op'>$</span><span class='fu'>predict</span><span class='op'>(</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
