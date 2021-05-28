@@ -30,8 +30,8 @@ test_that("Lrnr_glm with intercept=FALSE works", {
 test_that("Lrnr_glm with formula works", {
   lrnr_glm <- Lrnr_glm$new(formula = as.formula("haz ~ apgar1:apgar5 + I(apgar1^2)"))
   fit <- lrnr_glm$train(task)
-  glm_fit <- glm("haz ~ apgar1:apgar5 + apgar1^2", data = task$data)
-  expect_equal(fit$predict(), predict(glm_fit, newdata = task$X, type = "response"))
+  glm_fit <- glm("haz ~ apgar1:apgar5 + I(apgar1^2)", data = task$data)
+  expect_equal(fit$predict(), predict(glm_fit, newdata = task$data, type = "response"))
 })
 
 test_that("Lrnr_glm with formula errors when regressors are not task covariates", {
