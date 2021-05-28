@@ -43,8 +43,3 @@ test_that("Lrnr_glm with formula errors when response is not task$nodes$outcome"
   lrnr_glm <- Lrnr_glm$new(formula = as.formula("Y ~ apgar1*apgar5"))
   expect_error(fit <- lrnr_glm$train(task))
 })
-
-test_that("Lrnr_glm with formula warns when it's not a formula class", {
-  lrnr_glm <- Lrnr_glm$new(formula = "haz ~ apgar1*apgar5")
-  expect_output(fit <- lrnr_glm$train(task))
-})
