@@ -140,14 +140,14 @@ Lrnr_base <- R6Class(
       assert_that(is(task, "sl3_Task"))
 
       task <- self$subset_covariates(task)
-      task <- self$process_formula(task)
+      processed_task <- self$process_formula(task)
       
       verbose <- getOption("sl3.verbose")
 
       if (!is.null(trained_sublearners)) {
-        fit_object <- private$.train(task, trained_sublearners)
+        fit_object <- private$.train(processed_task, trained_sublearners)
       } else {
-        fit_object <- private$.train(task)
+        fit_object <- private$.train(processed_task)
       }
       new_object <- self$clone() # copy parameters, and whatever else
       new_object$set_train(fit_object, task)
