@@ -141,7 +141,7 @@ Lrnr_base <- R6Class(
 
       task <- self$subset_covariates(task)
       processed_task <- self$process_formula(task)
-      
+
       verbose <- getOption("sl3.verbose")
 
       if (!is.null(trained_sublearners)) {
@@ -186,7 +186,7 @@ Lrnr_base <- R6Class(
       assert_that(is(task, "sl3_Task"))
       task <- self$subset_covariates(task)
       task <- self$process_formula(task)
-      
+
       predictions <- private$.predict(task)
 
       ncols <- ncol(predictions)
@@ -204,7 +204,7 @@ Lrnr_base <- R6Class(
       assert_that(is(task, "sl3_Task"))
       task <- self$subset_covariates(task)
       task <- self$process_formula(task)
-      
+
       # use custom chain function if provided
       if (!is.null(private$.custom_chain)) {
         next_task <- private$.custom_chain(self, task)
@@ -298,42 +298,41 @@ Lrnr_base <- R6Class(
       return(new_object)
     },
     process_formula = function(task) {
-      if ("formula" %in% names(self$params) && 
-          !is.null(self$params[["formula"]])) {
-        
+      if ("formula" %in% names(self$params) &&
+        !is.null(self$params[["formula"]])) {
         form <- self$params$formula
         if (class(form) != "formula") form <- as.formula(form)
-        
+
         # check response variable corresponds to outcome in task, if provided
-        if(attr(terms(form), "response")){
+        if (attr(terms(form), "response")) {
           if (!all.vars(form)[1] == task$nodes$outcome) {
             stop(paste0(
               "Outcome variable in formula ", all.vars(form)[1],
               " does not match the task's outcome ", task$nodes$outcome
             ))
           }
-          formula_covars <- all.vars(form)[-1] 
+          formula_covars <- all.vars(form)[-1]
         } else {
           formula_covars <- all.vars(form)
         }
         # check that regressors in the formula are contained in the task
-        if(!all(formula_covars %in% task$nodes$covariates)){
+        if (!all(formula_covars %in% task$nodes$covariates)) {
           stop("Regressors in the formula are not covariates in task")
         }
-        
+
         # get data corresponding to formula and add new columns to the task
         data <- as.data.table(stats::model.matrix(form, data = task$data))
         new_cols <- setdiff(names(data), names(task$data))
-        if(any(grepl("Intercept", new_cols))){
+        if (any(grepl("Intercept", new_cols))) {
           new_cols <- new_cols[!grepl("Intercept", new_cols)]
         }
-        data <- data[, new_cols, with = FALSE] 
+        data <- data[, new_cols, with = FALSE]
         new_cols <- task$add_columns(data)
         return(
           task$next_in_chain(covariates = names(data), column_names = new_cols)
         )
       } else {
-        return(task) 
+        return(task)
       }
     }
   ),
