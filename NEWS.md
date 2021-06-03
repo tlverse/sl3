@@ -43,7 +43,14 @@
   specified and the `learner` argument in `Lrnr_screener_coefs` is not a 
   `Lrnr_glmnet` then it will error. 
 * Updated `Lrnr_hal9001` to work with v0.4.0 of the `hal9001` package.
-* Added `formula` argument to `Lrnr_glm`.
+* Added `formula` parameter and `process_formula` function to the base 
+  learner, `Lrnr_base`, whose methods carry over to all other learners. When 
+  a `formula` is supplied as a learner parameter, the `process_formula` 
+  function constructs a design matrix by supplying the `formula` to 
+  `model.matrix`. This implementation allows `formula` to be supplied to all 
+  learners, even those without native `formula` support. The `formula` should 
+  be an object of class "`formula`", or a character string that can be coerced 
+  to that class.
 
 # sl3 1.4.2
 * Updates to variable importance functionality, including calculation of risk
