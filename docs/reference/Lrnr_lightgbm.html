@@ -227,7 +227,6 @@ from the Xgboost framework (via the <span class="pkg">xgboost</span> package).</
 <code><a href='Lrnr_hts.html'>Lrnr_hts</a></code>,
 <code><a href='Lrnr_independent_binomial.html'>Lrnr_independent_binomial</a></code>,
 <code><a href='Lrnr_lstm_keras.html'>Lrnr_lstm_keras</a></code>,
-<code><a href='Lrnr_lstm.html'>Lrnr_lstm</a></code>,
 <code><a href='Lrnr_mean.html'>Lrnr_mean</a></code>,
 <code><a href='Lrnr_multiple_ts.html'>Lrnr_multiple_ts</a></code>,
 <code><a href='Lrnr_multivariate.html'>Lrnr_multivariate</a></code>,
@@ -262,7 +261,10 @@ from the Xgboost framework (via the <span class="pkg">xgboost</span> package).</
 <code><a href='undocumented_learner.html'>undocumented_learner</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>cpp_imputed</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='co'># currently disabled since LightGBM crashes R on Windows</span>
+<span class='co'># more info at https://github.com/tlverse/sl3/issues/344</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>cpp_imputed</span><span class='op'>)</span>
 <span class='co'># create task for prediction</span>
 <span class='va'>cpp_task</span> <span class='op'>&lt;-</span> <span class='va'><a href='sl3_Task.html'>sl3_Task</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>cpp_imputed</span>,
@@ -273,12 +275,11 @@ from the Xgboost framework (via the <span class="pkg">xgboost</span> package).</
 <span class='co'># initialization, training, and prediction with the defaults</span>
 <span class='va'>lgb_lrnr</span> <span class='op'>&lt;-</span> <span class='va'>Lrnr_lightgbm</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>lgb_fit</span> <span class='op'>&lt;-</span> <span class='va'>lgb_lrnr</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>cpp_task</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [LightGBM] [Warning] Auto-choosing row-wise multi-threading, the overhead of testing was 0.000084 seconds.
-#&gt; You can set `force_row_wise=true` to remove the overhead.
-#&gt; And if memory is not enough, you can set `force_col_wise=true`.</div><div class='input'><span class='va'>lgb_preds</span> <span class='op'>&lt;-</span> <span class='va'>lgb_fit</span><span class='op'>$</span><span class='fu'>predict</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>lgb_preds</span> <span class='op'>&lt;-</span> <span class='va'>lgb_fit</span><span class='op'>$</span><span class='fu'>predict</span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='co'># get feature importance from fitted model</span>
 <span class='va'>lgb_varimp</span> <span class='op'>&lt;-</span> <span class='va'>lgb_fit</span><span class='op'>$</span><span class='fu'>importance</span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>}</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -139,16 +139,18 @@ Lrnr_base <- R6Class(
       # trains learner to data
       assert_that(is(task, "sl3_Task"))
 
-      subsetted_task <- self$subset_covariates(task)
+      task <- self$subset_covariates(task)
+      processed_task <- self$process_formula(task)
+
       verbose <- getOption("sl3.verbose")
 
       if (!is.null(trained_sublearners)) {
-        fit_object <- private$.train(subsetted_task, trained_sublearners)
+        fit_object <- private$.train(processed_task, trained_sublearners)
       } else {
-        fit_object <- private$.train(subsetted_task)
+        fit_object <- private$.train(processed_task)
       }
       new_object <- self$clone() # copy parameters, and whatever else
-      new_object$set_train(fit_object, subsetted_task)
+      new_object$set_train(fit_object, task)
       return(new_object)
     },
     set_train = function(fit_object, training_task) {
@@ -182,8 +184,10 @@ Lrnr_base <- R6Class(
       }
 
       assert_that(is(task, "sl3_Task"))
-      subsetted_task <- self$subset_covariates(task)
-      predictions <- private$.predict(subsetted_task)
+      task <- self$subset_covariates(task)
+      task <- self$process_formula(task)
+
+      predictions <- private$.predict(task)
 
       ncols <- ncol(predictions)
       if (!is.null(ncols) && (ncols == 1)) {
@@ -198,20 +202,23 @@ Lrnr_base <- R6Class(
       }
 
       assert_that(is(task, "sl3_Task"))
-      subsetted_task <- self$subset_covariates(task)
+      task <- self$subset_covariates(task)
+      task <- self$process_formula(task)
+
       # use custom chain function if provided
       if (!is.null(private$.custom_chain)) {
-        next_task <- private$.custom_chain(self, subsetted_task)
+        next_task <- private$.custom_chain(self, task)
       } else {
-        next_task <- private$.chain(subsetted_task)
+        next_task <- private$.chain(task)
       }
       return(next_task)
     },
     train_sublearners = function(task) {
       # TODO: add error handling
-      subsetted_task <- delayed_learner_subset_covariates(self, task)
+      task <- delayed_learner_subset_covariates(self, task)
+      task <- delayed_learner_process_formula(self, task)
 
-      return(private$.train_sublearners(subsetted_task))
+      return(private$.train_sublearners(task))
     },
     train = function(task) {
       delayed_fit <- delayed_learner_train(self, task)
@@ -289,6 +296,44 @@ Lrnr_base <- R6Class(
       new_object <- new_self$clone() # copy parameters, and whatever else
       new_object$set_train(new_fit_object, new_task)
       return(new_object)
+    },
+    process_formula = function(task) {
+      if ("formula" %in% names(self$params) &&
+        !is.null(self$params[["formula"]])) {
+        form <- self$params$formula
+        if (class(form) != "formula") form <- as.formula(form)
+
+        # check response variable corresponds to outcome in task, if provided
+        if (attr(terms(form), "response")) {
+          if (!all.vars(form)[1] == task$nodes$outcome) {
+            stop(paste0(
+              "Outcome variable in formula ", all.vars(form)[1],
+              " does not match the task's outcome ", task$nodes$outcome
+            ))
+          }
+          formula_covars <- all.vars(form)[-1]
+        } else {
+          formula_covars <- all.vars(form)
+        }
+        # check that regressors in the formula are contained in the task
+        if (!all(formula_covars %in% task$nodes$covariates)) {
+          stop("Regressors in the formula are not covariates in task")
+        }
+
+        # get data corresponding to formula and add new columns to the task
+        data <- as.data.table(stats::model.matrix(form, data = task$data))
+        new_cols <- setdiff(names(data), names(task$data))
+        if (any(grepl("Intercept", new_cols))) {
+          new_cols <- new_cols[!grepl("Intercept", new_cols)]
+        }
+        data <- data[, new_cols, with = FALSE]
+        new_cols <- task$add_columns(data)
+        return(
+          task$next_in_chain(covariates = names(data), column_names = new_cols)
+        )
+      } else {
+        return(task)
+      }
     }
   ),
   active = list(

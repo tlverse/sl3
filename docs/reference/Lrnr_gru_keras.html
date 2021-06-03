@@ -232,7 +232,6 @@ loss does not improve across <code>patience</code> number of epochs.</p></li>
 <code><a href='Lrnr_independent_binomial.html'>Lrnr_independent_binomial</a></code>,
 <code><a href='Lrnr_lightgbm.html'>Lrnr_lightgbm</a></code>,
 <code><a href='Lrnr_lstm_keras.html'>Lrnr_lstm_keras</a></code>,
-<code><a href='Lrnr_lstm.html'>Lrnr_lstm</a></code>,
 <code><a href='Lrnr_mean.html'>Lrnr_mean</a></code>,
 <code><a href='Lrnr_multiple_ts.html'>Lrnr_multiple_ts</a></code>,
 <code><a href='Lrnr_multivariate.html'>Lrnr_multivariate</a></code>,
@@ -271,11 +270,13 @@ loss does not improve across <code>patience</code> number of epochs.</p></li>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tlverse.org/origami'>origami</a></span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>bsds</span><span class='op'>)</span>
 
+<span class='co'># make folds appropriate for time-series cross-validation</span>
 <span class='va'>folds</span> <span class='op'>&lt;-</span> <span class='fu'><a href='http://tlverse.org/origami/reference/make_folds.html'>make_folds</a></span><span class='op'>(</span><span class='va'>bsds</span>,
   fold_fun <span class='op'>=</span> <span class='va'>folds_rolling_window</span>, window_size <span class='op'>=</span> <span class='fl'>500</span>,
   validation_size <span class='op'>=</span> <span class='fl'>100</span>, gap <span class='op'>=</span> <span class='fl'>0</span>, batch <span class='op'>=</span> <span class='fl'>50</span>
 <span class='op'>)</span>
 
+<span class='co'># build task by passing in external folds structure</span>
 <span class='va'>task</span> <span class='op'>&lt;-</span> <span class='va'><a href='sl3_Task.html'>sl3_Task</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>bsds</span>,
   folds <span class='op'>=</span> <span class='va'>folds</span>,
@@ -285,11 +286,12 @@ loss does not improve across <code>patience</code> number of epochs.</p></li>
   outcome <span class='op'>=</span> <span class='st'>"cnt"</span>
 <span class='op'>)</span>
 
-<span class='va'>gru_lrnr</span> <span class='op'>&lt;-</span> <span class='va'>Lrnr_gru_keras</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>batch_size <span class='op'>=</span> <span class='fl'>1</span>, epochs <span class='op'>=</span> <span class='fl'>200</span><span class='op'>)</span>
-
+<span class='co'># create tasks for taining and validation (simplifed example)</span>
 <span class='va'>train_task</span> <span class='op'>&lt;-</span> <span class='fu'><a href='http://tlverse.org/origami/reference/fold_helpers.html'>training</a></span><span class='op'>(</span><span class='va'>task</span>, fold <span class='op'>=</span> <span class='va'>task</span><span class='op'>$</span><span class='va'>folds</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
 <span class='va'>valid_task</span> <span class='op'>&lt;-</span> <span class='fu'><a href='http://tlverse.org/origami/reference/fold_helpers.html'>validation</a></span><span class='op'>(</span><span class='va'>task</span>, fold <span class='op'>=</span> <span class='va'>task</span><span class='op'>$</span><span class='va'>folds</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
 
+<span class='co'># instantiate learner, then fit and predict (simplifed example)</span>
+<span class='va'>gru_lrnr</span> <span class='op'>&lt;-</span> <span class='va'>Lrnr_gru_keras</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>batch_size <span class='op'>=</span> <span class='fl'>1</span>, epochs <span class='op'>=</span> <span class='fl'>200</span><span class='op'>)</span>
 <span class='va'>gru_fit</span> <span class='op'>&lt;-</span> <span class='va'>gru_lrnr</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>train_task</span><span class='op'>)</span>
 <span class='va'>gru_preds</span> <span class='op'>&lt;-</span> <span class='va'>gru_fit</span><span class='op'>$</span><span class='fu'>predict</span><span class='op'>(</span><span class='va'>valid_task</span><span class='op'>)</span>
 <span class='op'>}</span>

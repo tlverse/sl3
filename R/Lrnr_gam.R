@@ -71,6 +71,9 @@ Lrnr_gam <- R6Class(
                           ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
+    },
+    process_formula = function(task) {
+      return(task)
     }
   ),
   private = list(
@@ -89,7 +92,7 @@ Lrnr_gam <- R6Class(
         if (outcome_type$type == "continuous") {
           args$family <- stats::gaussian()
         } else if (outcome_type$type == "binomial") {
-          args$family <- stas::binomial()
+          args$family <- stats::binomial()
         } else if (outcome_type$type == "categorical") {
           # TODO: implement categorical?
           # NOTE: must specify (#{categories}-1)+linear_predictors) in formula
