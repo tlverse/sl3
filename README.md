@@ -6639,8 +6639,8 @@ After using the `sl3` R package, please cite the following:
 
 ``` 
     @software{coyle2021sl3-rpkg,
-      author = {Coyle, Jeremy R and Hejazi, Nima S and Malenica, Ivana and
-        Sofrygin, Oleg},
+      author = {Coyle, Jeremy R and Hejazi, Nima S and Malenica, Ivana and 
+        Phillips, Rachael V and Sofrygin, Oleg},
       title = {{sl3}: Modern Pipelines for Machine Learning and {Super
         Learning}},
       year = {2021},
@@ -6657,7 +6657,8 @@ After using the `sl3` R package, please cite the following:
 
 © 2017-2021 [Jeremy R. Coyle](https://github.com/jeremyrcoyle), [Nima S.
 Hejazi](https://nimahejazi.org), [Ivana
-Malenica](https://github.com/podTockom), [Oleg
+Malenica](https://github.com/podTockom), [Rachael V.
+Phillips](https://github.com/rachaelvp), [Oleg
 Sofrygin](https://github.com/osofr)
 
 The contents of this repository are distributed under the GPL-3 license.
