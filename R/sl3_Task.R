@@ -474,24 +474,32 @@ sl3_Task <- R6Class(
     folds = function(new_folds) {
       if (!missing(new_folds)) {
         private$.folds <- new_folds
-      } else if (is.numeric(private$.folds)) {
-        # if an integer, create new_folds object but pass integer to V argument
+      } else if (is.numeric(private$.folds) | is.null(private$.folds)) {
+        args <- list()
+        args$n <- self$nrow
+        if (is.numeric(private$.folds)) {
+          # pass integer to V argument when it's supplied
+          args$V <- private$.folds
+        }
         if (self$has_node("id")) {
-          new_folds <- origami::make_folds(
-            cluster_ids = self$id,
-            V = private$.folds
+          # clustered cross-validation for clustered data
+          args$cluster_ids <- self$id
+        }
+        if (self$outcome_type$type %in% c("binomial", "categorical")) {
+          # stratified cross-validation folds for discrete outcomes
+          args$strata_ids <- self$Y
+        }
+        if (self$outcome_type$type %in% c("binomial", "categorical") &
+          self$has_node("id")) {
+          # don't use stratified CV if clusters are not nested in strata
+          is_nested <- all(
+            rowSums(table(args$cluster_ids, args$strata_ids) > 0) == 1
           )
-        } else {
-          new_folds <- origami::make_folds(n = self$nrow, V = private$.folds)
+          if (!is_nested) {
+            args <- args[!(names(args) == "strata_ids")]
+          }
         }
-        private$.folds <- new_folds
-      } else if (is.null(private$.folds)) {
-        # generate folds now if never specified
-        if (self$has_node("id")) {
-          new_folds <- origami::make_folds(cluster_ids = self$id)
-        } else {
-          new_folds <- origami::make_folds(n = self$nrow)
-        }
+        new_folds <- do.call(origami::make_folds, args)
         private$.folds <- new_folds
       }
       return(private$.folds)
