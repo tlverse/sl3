@@ -27,14 +27,18 @@
 #'     takes a vector of covariates and a matrix of data and combines them into
 #'     a vector of predictions. See \link{metalearners} for options.}
 #'   \item{\code{loss_function=loss_squared_error}}{A function(pred, truth) that
-#'     takes prediction and truth vectors and returns a loss vector. See
-#'     \link{loss_functions} for options.}
+#'     takes prediction and truth vectors and returns a loss vector or value.
+#'     Note that a \code{loss_function} that outputs a value, not a vector,
+#'     does not accept weighted losses, which are typically calculated when
+#'     observational-level weights are supplied to the task. See
+#'     \link{loss_functions} for options and more detail.}
 #'   \item{\code{make_sparse=TRUE}}{If TRUE, zeros out small alpha values.}
 #'   \item{\code{convex_combination=TRUE}}{If \code{TRUE}, constrain alpha to
 #'     sum to 1.}
 #'   \item{\code{init_0=FALSE}}{If TRUE, alpha is initialized to all 0's, useful
 #'     for TMLE. Otherwise, it is initialized to equal weights summing to 1,
-#'     useful for SuperLearner.}
+#'     useful for Super Learner.}
+#'   \item{\code{tol=1e-5}}{Relative tolerance on feasibility and optimality.}
 #'   \item{\code{...}}{Not currently used.}
 #' }
 #'
@@ -47,16 +51,16 @@ Lrnr_solnp <- R6Class(
   public = list(
     initialize = function(learner_function = metalearner_linear,
                           loss_function = loss_squared_error,
-                          make_sparse = TRUE, convex_combination = TRUE,
-                          init_0 = FALSE, tol = 1e-5, ...) {
+                          make_sparse = TRUE,
+                          convex_combination = TRUE, init_0 = FALSE,
+                          tol = 1e-5, ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }
   ),
   private = list(
     .properties = c(
-      "continuous", "binomial", "categorical", "weights",
-      "offset"
+      "continuous", "binomial", "categorical", "weights", "offset"
     ),
     .train = function(task) {
       verbose <- getOption("sl3.verbose")
@@ -83,6 +87,9 @@ Lrnr_solnp <- R6Class(
           preds <- learner_function(alphas, X)
         }
         losses <- loss_function(preds, Y)
+        if (length(losses) == 1) {
+          weights <- 1 # cancel observational-level weights when loss is value
+        }
         risk <- weighted.mean(losses, weights)
         return(risk)
       }

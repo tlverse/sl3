@@ -84,7 +84,12 @@ importance <- function(fit, loss = NULL, fold_number = "validation",
 
   # get predictions and risk
   pred <- fit$predict_fold(task, fold_number = fold_number)
-  original_risk <- mean(loss(pred, Y))
+  losses <- loss(pred, Y)
+  if (!is.null(attr(losses, "transform"))) {
+    original_risk <- mean(transform_losses(losses, attr(losses, "transform")))
+  } else {
+    original_risk <- mean(losses)
+  }
 
   # X-length list of importance scores
   res_list <- lapply(X, function(x) {
@@ -97,14 +102,21 @@ importance <- function(fit, loss = NULL, fold_number = "validation",
       task_x_permuted <- task$next_in_chain(column_names = x_permuted_name)
       # obtain predictions & risk on the new task with permuted x
       x_permuted_pred <- fit$predict_fold(task_x_permuted, fold_number)
-      no_x_risk <- mean(loss(x_permuted_pred, Y))
+      no_x_loss <- loss(x_permuted_pred, Y)
     } else if (type == "remove") {
       # modify learner to not include covariate x
       x_removed_lrnr <- fit$reparameterize(list(covariates = setdiff(X, x)))
       x_removed_fit <- x_removed_lrnr$train(task)
       x_removed_pred <- x_removed_fit$predict_fold(task, fold_number)
-      no_x_risk <- mean(loss(x_removed_pred, Y))
+      no_x_loss <- loss(x_removed_pred, Y)
     }
+
+    # transform these losses too if necessary
+    if (!is.null(attr(no_x_loss, "transform"))) {
+      no_x_loss <- transform_losses(no_x_loss, attr(no_x_loss, "transform"))
+    }
+    no_x_risk <- mean(no_x_loss)
+
     # evaluate importance
     if (importance_metric == "ratio") {
       return(no_x_risk / original_risk)
@@ -115,13 +127,15 @@ importance <- function(fit, loss = NULL, fold_number = "validation",
   names(res_list) <- X
 
   # importance results ordered by decreasing importance
-  if (importance_metric == "ratio") {
-    res <- data.table(X = names(res_list), risk_ratio = unlist(res_list))
-    return(res[order(-res$risk_ratio)])
-  } else if (importance_metric == "difference") {
-    res <- data.table(X = names(res_list), risk_difference = unlist(res_list))
-    return(res[order(-res$risk_difference)])
+  result <- data.table(covariate = names(res_list), metric = unlist(res_list))
+  result <- result[order(-result$metric)]
+  metric_name <- paste0("risk_", importance_metric)
+
+  if (!is.null(attr(losses, "name"))) {
+    metric_name <- gsub("risk", attr(losses, "name"), metric_name)
   }
+  colnames(result)[2] <- metric_name
+  return(result)
 }
 
 #' Variable Importance Plot
@@ -143,11 +157,7 @@ importance <- function(fit, loss = NULL, fold_number = "validation",
 importance_plot <- function(x, nvar = min(30, nrow(x)), ...) {
 
   # get the importance metric
-  if (grepl("ratio", colnames(x)[2])) {
-    xlab <- "Risk Ratio"
-  } else if (grepl("difference", colnames(x)[2])) {
-    xlab <- "Risk Difference"
-  }
+  xlab <- colnames(x)[2]
 
   # sort by decreasing importance
   x_sorted <- x[order(-x[, 2])]
