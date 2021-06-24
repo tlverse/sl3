@@ -51,6 +51,13 @@
   learners, even those without native `formula` support. The `formula` should 
   be an object of class "`formula`", or a character string that can be coerced 
   to that class.
+* Added factory function for performance-based losses for binary outcomes with 
+  `ROCR` performance measures. Supports cutoff-dependent and scalar `ROCR` 
+  performance measures. The loss is defined as 1 - performance, and is 
+  transformed back to the performance measure in `cv_risk` and `importance` 
+  functions. 
+* Incorporated stratified cross-validation when `folds` are not supplied to the 
+  `sl3_Task` and the outcome is a discrete variable. 
 
 # sl3 1.4.2
 * Updates to variable importance functionality, including calculation of risk
