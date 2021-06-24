@@ -40,7 +40,9 @@
 
 
 <meta property="og:title" content="Loss Function Definitions — loss_functions" />
-<meta property="og:description" content="Loss functions for use in evaluating learner fits." />
+<meta property="og:description" content="Loss functions for use in evaluating learner fits.
+Factory function for estimating an ROCR-based loss for a given ROCR measure.
+The ROCR-based loss is simply one minus the performance measure." />
 
 
 
@@ -146,6 +148,8 @@
 
     <div class="ref-description">
     <p>Loss functions for use in evaluating learner fits.</p>
+<p>Factory function for estimating an ROCR-based loss for a given ROCR measure.
+The ROCR-based loss is simply one minus the performance measure.</p>
     </div>
 
     <pre class="usage"><span class='fu'>loss_squared_error</span><span class='op'>(</span><span class='va'>pred</span>, <span class='va'>observed</span><span class='op'>)</span>
@@ -156,18 +160,46 @@
 
 <span class='fu'>loss_loglik_multinomial</span><span class='op'>(</span><span class='va'>pred</span>, <span class='va'>observed</span><span class='op'>)</span>
 
-<span class='fu'>loss_squared_error_multivariate</span><span class='op'>(</span><span class='va'>pred</span>, <span class='va'>observed</span><span class='op'>)</span></pre>
+<span class='fu'>loss_squared_error_multivariate</span><span class='op'>(</span><span class='va'>pred</span>, <span class='va'>observed</span><span class='op'>)</span>
+
+<span class='fu'>custom_loss_performance</span><span class='op'>(</span><span class='va'>measure</span>, cutoff <span class='op'>=</span> <span class='fl'>0.5</span>, name <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>pred</th>
-      <td><p>A vector of predicted values</p></td>
+      <td><p>A vector of predicted values.</p></td>
     </tr>
     <tr>
       <th>observed</th>
-      <td><p>A vector of observed values</p></td>
+      <td><p>A vector of binary observed values.</p></td>
+    </tr>
+    <tr>
+      <th>measure</th>
+      <td><p>A character indicating which <span class="pkg">ROCR</span> performance measure
+to use for evaluation. The <code>measure</code> must be either cutoff-dependent
+so a single value can be selected (e.g., "tpr"), or it's value is a scalar
+(e.g., "aucpr"). For more information, see <code><a href='http://ipa-tys.github.io/ROCR/reference/performance.html'>performance</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>cutoff</th>
+      <td><p>A numeric value specifying the cutoff for choosing a single
+performance measure from the returned set. Only used for performance measures
+that are cutoff-dependent and default is 0.5. See
+<code><a href='http://ipa-tys.github.io/ROCR/reference/performance.html'>performance</a></code> for more detail.</p></td>
+    </tr>
+    <tr>
+      <th>name</th>
+      <td><p>An optional character string for user to supply their desired
+name for the performance measure, which will be used for naming subsequent
+risk-related tables and metrics (e.g., <code>cv_risk</code> column names). When
+<code>name</code> is not supplied, the <code>measure</code> will be used for naming.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Optional arguments to specific <code></code> performance
+measures. See <code><a href='http://ipa-tys.github.io/ROCR/reference/performance.html'>performance</a></code> for more detail.</p></td>
     </tr>
     </table>
 
@@ -177,6 +209,8 @@
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p>Assumes predicted probabilities are "packed" into a single vector.</p>
+<p>This loss does not take into account weights. In order to use this
+loss, it must first be defined with respect to the <code></code></p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

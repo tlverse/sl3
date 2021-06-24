@@ -4,7 +4,7 @@
 \alias{cv_risk}
 \title{Cross-validated Risk Estimation}
 \usage{
-cv_risk(learner, loss_fun, coefs = NULL)
+cv_risk(learner, loss_fun = NULL, coefs = NULL)
 }
 \arguments{
 \item{learner}{A trained learner object.}

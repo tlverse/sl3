@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Cross-validated Risk Estimation — cv_risk • sl3</title>
+<title>Transform losses for loss functions with transform attribute — transform_losses • sl3</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Cross-validated Risk Estimation — cv_risk" />
-<meta property="og:description" content="Estimates the cross-validated risk for a given learner and loss function." />
+<meta property="og:title" content="Transform losses for loss functions with transform attribute — transform_losses" />
+<meta property="og:description" content="Transform losses for loss functions with transform attribute" />
 
 
 
@@ -139,31 +139,27 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Cross-validated Risk Estimation</h1>
+    <h1>Transform losses for loss functions with transform attribute</h1>
     <small class="dont-index">Source: <a href='https://github.com/tlverse/sl3/blob/master/R/loss_functions.R'><code>R/loss_functions.R</code></a></small>
-    <div class="hidden name"><code>cv_risk.Rd</code></div>
+    <div class="hidden name"><code>transform_losses.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Estimates the cross-validated risk for a given learner and loss function.</p>
+    <p>Transform losses for loss functions with transform attribute</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cv_risk</span><span class='op'>(</span><span class='va'>learner</span>, loss_fun <span class='op'>=</span> <span class='cn'>NULL</span>, coefs <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>transform_losses</span><span class='op'>(</span><span class='va'>losses</span>, <span class='va'>type</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>learner</th>
-      <td><p>A trained learner object.</p></td>
+      <th>losses</th>
+      <td><p>Numeric vector of losses returned by a loss function</p></td>
     </tr>
     <tr>
-      <th>loss_fun</th>
-      <td><p>A valid loss function. See <code><a href='loss_functions.html'>loss_functions</a></code>.</p></td>
-    </tr>
-    <tr>
-      <th>coefs</th>
-      <td><p>A <code>numeric</code> vector of coefficients.</p></td>
+      <th>type</th>
+      <td><p>A valid transformation type.</p></td>
     </tr>
     </table>
 

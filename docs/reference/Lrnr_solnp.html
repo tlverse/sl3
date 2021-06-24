@@ -174,14 +174,18 @@ Lagrange multipliers. For further details, consult the documentation of the
 takes a vector of covariates and a matrix of data and combines them into
 a vector of predictions. See <a href='metalearners.html'>metalearners</a> for options.</p></dd>
 <dt><code>loss_function=loss_squared_error</code></dt><dd><p>A function(pred, truth) that
-takes prediction and truth vectors and returns a loss vector. See
-<a href='loss_functions.html'>loss_functions</a> for options.</p></dd>
+takes prediction and truth vectors and returns a loss vector or value.
+Note that a <code>loss_function</code> that outputs a value, not a vector,
+does not accept weighted losses, which are typically calculated when
+observational-level weights are supplied to the task. See
+<a href='loss_functions.html'>loss_functions</a> for options and more detail.</p></dd>
 <dt><code>make_sparse=TRUE</code></dt><dd><p>If TRUE, zeros out small alpha values.</p></dd>
 <dt><code>convex_combination=TRUE</code></dt><dd><p>If <code>TRUE</code>, constrain alpha to
 sum to 1.</p></dd>
 <dt><code>init_0=FALSE</code></dt><dd><p>If TRUE, alpha is initialized to all 0's, useful
 for TMLE. Otherwise, it is initialized to equal weights summing to 1,
-useful for SuperLearner.</p></dd>
+useful for Super Learner.</p></dd>
+<dt><code>tol=1e-5</code></dt><dd><p>Relative tolerance on feasibility and optimality.</p></dd>
 <dt><code>...</code></dt><dd><p>Not currently used.</p></dd>
 
 </dl>

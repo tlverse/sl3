@@ -7,6 +7,7 @@
 \alias{loss_loglik_binomial}
 \alias{loss_loglik_multinomial}
 \alias{loss_squared_error_multivariate}
+\alias{custom_loss_performance}
 \title{Loss Function Definitions}
 \usage{
 loss_squared_error(pred, observed)
@@ -18,18 +19,45 @@ loss_loglik_binomial(pred, observed)
 loss_loglik_multinomial(pred, observed)
 
 loss_squared_error_multivariate(pred, observed)
+
+custom_loss_performance(measure, cutoff = 0.5, name = NULL, ...)
 }
 \arguments{
-\item{pred}{A vector of predicted values}
+\item{pred}{A vector of predicted values.}
 
-\item{observed}{A vector of observed values}
+\item{observed}{A vector of binary observed values.}
+
+\item{measure}{A character indicating which \pkg{ROCR} performance measure
+to use for evaluation. The \code{measure} must be either cutoff-dependent
+so a single value can be selected (e.g., "tpr"), or it's value is a scalar
+(e.g., "aucpr"). For more information, see \code{\link[ROCR]{performance}}.}
+
+\item{cutoff}{A numeric value specifying the cutoff for choosing a single
+performance measure from the returned set. Only used for performance measures
+that are cutoff-dependent and default is 0.5. See
+\code{\link[ROCR]{performance}} for more detail.}
+
+\item{name}{An optional character string for user to supply their desired
+name for the performance measure, which will be used for naming subsequent
+risk-related tables and metrics (e.g., \code{cv_risk} column names). When
+\code{name} is not supplied, the \code{measure} will be used for naming.}
+
+\item{...}{Optional arguments to specific \code{\link[ROCR]} performance
+measures. See \code{\link[ROCR]{performance}} for more detail.}
 }
 \value{
 A vector of loss values
 }
 \description{
 Loss functions for use in evaluating learner fits.
+
+Factory function for estimating an ROCR-based loss for a given ROCR measure.
+The ROCR-based loss is simply one minus the performance measure.
 }
 \note{
 Assumes predicted probabilities are "packed" into a single vector.
+
+This loss does not take into account weights. In order to use this
+loss, it must first be defined with respect to the \code{\link[ROCR]}}
+performance measure of interest, and then the user-defined loss can be used.
 }
