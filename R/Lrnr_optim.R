@@ -80,8 +80,13 @@ Lrnr_optim <- R6Class(
         } else {
           preds <- learner_function(alphas, X)
         }
-        losses <- loss_function(preds, Y)
-        risk <- weighted.mean(losses, weights)
+        eval_result <- loss_function(preds, Y)
+        if (!is.null(attr(eval_result, "risk"))) {
+          risk <- eval_result
+        } else {
+          losses <- eval_result
+          risk <- weighted.mean(losses, weights)
+        }
         return(risk)
       }
       p <- ncol(X)

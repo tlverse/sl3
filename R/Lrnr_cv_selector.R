@@ -21,10 +21,10 @@
 #' @family Learners
 #'
 #' @section Parameters:
-#'   - \code{loss_function}: A function that takes a vector of predictions as
+#'   - \code{eval_function}: A function that takes a vector of predictions as
 #'     it's first argument, and a vector of truths/observations as it's second
-#'     argument, and then returns a vector of losses. See \link{loss_functions}
-#'     for options.
+#'     argument, and then returns a vector of losses or a numeric risk. See
+#'     \link{loss_functions} and \link{risk_functions} for options.
 #'
 #' @examples
 #' data(cpp_imputed)
@@ -50,7 +50,7 @@ Lrnr_cv_selector <- R6Class(
   classname = "Lrnr_cv_selector",
   inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(loss_function = loss_squared_error) {
+    initialize = function(eval_function = loss_squared_error) {
       params <- args_to_list()
       super$initialize(params = params)
     }
@@ -60,7 +60,7 @@ Lrnr_cv_selector <- R6Class(
       "continuous", "binomial", "categorical", "weights", "wrapper"
     ),
     .train = function(task) {
-      loss_function <- self$params$loss_function
+      eval_function <- self$params$eval_function
 
       # specify data
       outcome_type <- self$get_outcome_type(task)
@@ -70,8 +70,13 @@ Lrnr_cv_selector <- R6Class(
       weights <- task$weights
 
       risk <- function(preds) {
-        loss <- loss_function(preds, Y)
-        risk <- weighted.mean(loss, weights)
+        eval_result <- eval_function(preds, Y)
+        if (!is.null(attr(eval_result, "risk"))) {
+          risk <- eval_result
+        } else {
+          loss <- eval_result
+          risk <- weighted.mean(loss, weights)
+        }
         return(risk)
       }
       risks <- apply(X, 2, risk)

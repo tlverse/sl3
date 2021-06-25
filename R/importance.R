@@ -2,7 +2,7 @@
 #'
 #' Function that takes a cross-validated fit (i.e., cross-validated learner that
 #' has already been trained on a task), which could be a cross-validated single
-#' learner or super learner, to generate a loss-based variable importance
+#' learner or super learner, to generate a risk-based variable importance
 #' measure for each predictor, where the predictors are the covariates in the
 #' trained task. This function generates a \code{data.table} in which each row
 #' corresponds to the risk difference or risk ratio between the following
@@ -14,9 +14,11 @@
 #'
 #' @param fit A trained cross-validated learner (e.g., cv stack, super learner),
 #'  from which cross-validated predictions can be generated.
-#' @param loss The loss function for evaluating the risk. Defaults according to
-#'  outcome type: squared error loss for continuous outcomes, and negative
-#'  log-likelihood loss for discrete outcomes. See \code{\link{loss_functions}}.
+#' @param eval_fun The evaluation function (risk or loss function) for
+#'  evaluating the risk. Defaults vary based on the outcome type: squared error
+#'  loss for continuous outcomes, and negative log-likelihood loss for discrete
+#'  outcomes. See \code{\link{loss_functions}} and \code{\link{risk_functions}}
+#'  for options.
 #' @param fold_number The fold number to use for obtaining the predictions
 #'  from the fit. Either a positive integer for obtaining predictions from a
 #'  specific fold's fit; \code{"full"} for obtaining predictions from a fit on
@@ -45,7 +47,7 @@
 #' @keywords variable importance
 #'
 #' @export
-importance <- function(fit, loss = NULL, fold_number = "validation",
+importance <- function(fit, eval_fun = NULL, fold_number = "validation",
                        type = c("remove", "permute"),
                        importance_metric = c("ratio", "difference")) {
 
@@ -64,19 +66,19 @@ importance <- function(fit, loss = NULL, fold_number = "validation",
   X <- task$nodes$covariates
   Y <- task$Y
 
-  if (is.null(loss)) {
+  if (is.null(eval_fun)) {
     outcome_type <- task$outcome_type$type
     if (outcome_type %in% c("constant", "binomial")) {
-      loss <- loss_loglik_binomial
+      eval_fun <- loss_loglik_binomial
     } else if (outcome_type == "categorical") {
-      loss <- loss_loglik_multinomial
+      eval_fun <- loss_loglik_multinomial
     } else if (outcome_type == "continuous") {
-      loss <- loss_squared_error
+      eval_fun <- loss_squared_error
     } else if (outcome_type == "multivariate") {
-      loss <- loss_squared_error_multivariate
+      eval_fun <- loss_squared_error_multivariate
     } else {
       stop(paste0(
-        "No default loss for outcome type ", outcome_type,
+        "No default eval_fun for outcome type ", outcome_type,
         ". Please specify your own."
       ))
     }
@@ -84,11 +86,18 @@ importance <- function(fit, loss = NULL, fold_number = "validation",
 
   # get predictions and risk
   pred <- fit$predict_fold(task, fold_number = fold_number)
-  losses <- loss(pred, Y)
-  if (!is.null(attr(losses, "transform"))) {
-    original_risk <- mean(transform_losses(losses, attr(losses, "transform")))
+  eval_result <- eval_fun(pred, Y)
+  if (!is.null(attr(eval_result, "risk"))) {
+    original_risk <- eval_result
+    if (!is.null(attr(eval_result, "transform"))) {
+      type <- attr(eval_result, "transform")
+      original_risk <- transform_risk(eval_result, type)
+      # note that original_risk now is not a risk, since it's been transformed,
+      # but we keep the name as is to streamline the functionality
+    }
   } else {
-    original_risk <- mean(losses)
+    losses <- eval_result
+    original_risk <- mean(eval_result)
   }
 
   # X-length list of importance scores
@@ -102,20 +111,26 @@ importance <- function(fit, loss = NULL, fold_number = "validation",
       task_x_permuted <- task$next_in_chain(column_names = x_permuted_name)
       # obtain predictions & risk on the new task with permuted x
       x_permuted_pred <- fit$predict_fold(task_x_permuted, fold_number)
-      no_x_loss <- loss(x_permuted_pred, Y)
+      no_x_eval_result <- eval_fun(x_permuted_pred, Y)
     } else if (type == "remove") {
       # modify learner to not include covariate x
       x_removed_lrnr <- fit$reparameterize(list(covariates = setdiff(X, x)))
       x_removed_fit <- x_removed_lrnr$train(task)
       x_removed_pred <- x_removed_fit$predict_fold(task, fold_number)
-      no_x_loss <- loss(x_removed_pred, Y)
+      no_x_eval_result <- eval_fun(x_removed_pred, Y)
     }
 
-    # transform these losses too if necessary
-    if (!is.null(attr(no_x_loss, "transform"))) {
-      no_x_loss <- transform_losses(no_x_loss, attr(no_x_loss, "transform"))
+    if (!is.null(attr(no_x_eval_result, "risk"))) {
+      no_x_risk <- no_x_eval_result
+      if (!is.null(attr(no_x_eval_result, "transform"))) {
+        no_x_risk <- transform_risk(no_x_eval_result, type)
+        # note that no_x_eval_result now is not a risk, since it's been
+        # transformed, but we keep the name as is to streamline things
+      }
+    } else {
+      no_x_losses <- no_x_eval_result
+      no_x_risk <- mean(no_x_losses)
     }
-    no_x_risk <- mean(no_x_loss)
 
     # evaluate importance
     if (importance_metric == "ratio") {
@@ -129,12 +144,14 @@ importance <- function(fit, loss = NULL, fold_number = "validation",
   # importance results ordered by decreasing importance
   result <- data.table(covariate = names(res_list), metric = unlist(res_list))
   result <- result[order(-result$metric)]
-  metric_name <- paste0("risk_", importance_metric)
 
-  if (!is.null(attr(losses, "name"))) {
-    metric_name <- gsub("risk", attr(losses, "name"), metric_name)
+  # name the importance metric appropriately
+  metric_name <- paste0("risk_", importance_metric)
+  if (!is.null(attr(eval_result, "name"))) {
+    metric_name <- gsub("risk", attr(eval_result, "name"), metric_name)
   }
   colnames(result)[2] <- metric_name
+
   return(result)
 }
 

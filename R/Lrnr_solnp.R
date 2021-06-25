@@ -1,6 +1,6 @@
 #' Nonlinear Optimization via Augmented Lagrange
 #'
-#' This meta-learner provides fitting procedures for any pairing of loss
+#' This meta-learner provides fitting procedures for any pairing of loss or risk
 #' function and metalearner function, subject to constraints. The optimization
 #' problem is solved by making use of \code{\link[Rsolnp]{solnp}}, using
 #' Lagrange multipliers. For further details, consult the documentation of the
@@ -26,12 +26,10 @@
 #'   \item{\code{learner_function=metalearner_linear}}{A function(alpha, X) that
 #'     takes a vector of covariates and a matrix of data and combines them into
 #'     a vector of predictions. See \link{metalearners} for options.}
-#'   \item{\code{loss_function=loss_squared_error}}{A function(pred, truth) that
-#'     takes prediction and truth vectors and returns a loss vector or value.
-#'     Note that a \code{loss_function} that outputs a value, not a vector,
-#'     does not accept weighted losses, which are typically calculated when
-#'     observational-level weights are supplied to the task. See
-#'     \link{loss_functions} for options and more detail.}
+#'   \item{\code{eval_function=loss_squared_error}}{A function(pred, truth) that
+#'     takes prediction and truth vectors and returns a loss vector or a risk
+#'     scalar. See \link{loss_functions} and \link{risk_functions} for options
+#'     and more detail.}
 #'   \item{\code{make_sparse=TRUE}}{If TRUE, zeros out small alpha values.}
 #'   \item{\code{convex_combination=TRUE}}{If \code{TRUE}, constrain alpha to
 #'     sum to 1.}
@@ -50,7 +48,7 @@ Lrnr_solnp <- R6Class(
   class = TRUE,
   public = list(
     initialize = function(learner_function = metalearner_linear,
-                          loss_function = loss_squared_error,
+                          eval_function = loss_squared_error,
                           make_sparse = TRUE,
                           convex_combination = TRUE, init_0 = FALSE,
                           tol = 1e-5, ...) {
@@ -66,7 +64,7 @@ Lrnr_solnp <- R6Class(
       verbose <- getOption("sl3.verbose")
       params <- self$params
       learner_function <- params$learner_function
-      loss_function <- params$loss_function
+      eval_function <- params$eval_function
       outcome_type <- self$get_outcome_type(task)
 
       # specify data
@@ -86,11 +84,14 @@ Lrnr_solnp <- R6Class(
         } else {
           preds <- learner_function(alphas, X)
         }
-        losses <- loss_function(preds, Y)
-        if (length(losses) == 1) {
-          weights <- 1 # cancel observational-level weights when loss is value
+        eval_result <- eval_function(preds, Y)
+
+        if (!is.null(attr(eval_result, "risk"))) {
+          risk <- eval_result
+        } else {
+          loss <- eval_result
+          risk <- weighted.mean(loss, weights)
         }
-        risk <- weighted.mean(losses, weights)
         return(risk)
       }
       if (params$convex_combination) {
