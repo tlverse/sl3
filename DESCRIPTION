@@ -46,7 +46,8 @@ Imports:
     Rdpack,
     imputeMissings,
     dplyr,
-    caret
+    caret,
+    ROCR
 Suggests:
     testthat,
     rmarkdown,
@@ -88,8 +89,7 @@ Suggests:
     gam (>= 1.15.0),
     haldensify (>= 0.1.0),
     mgcv,
-    hts,
-    ROCR
+    hts
 License: GPL-3
 Language: en-US
 URL: https://tlverse.org/sl3
