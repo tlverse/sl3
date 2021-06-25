@@ -109,8 +109,8 @@
 <a href="#whats-sl3" class="anchor"></a>What’s <code>sl3</code>?</h2>
 <p><code>sl3</code> is a modern implementation of the Super Learner algorithm of van der Laan, Polley, and Hubbard (2007). The Super Learner algorithm performs ensemble learning in one of two fashions:</p>
 <ol>
-<li>The <em>discrete</em> Super Learner can be used to select the best prediction algorithm from among a supplied library of machine learning algorithms (“learners” in the <code>sl3</code> nomenclature) – that is, the discrete Super Learner is the single learning algorithm that minimizes the cross-validated risk with respect to an appropriate loss function.</li>
-<li>The <em>ensemble</em> Super Learner can be used to assign weights to a set of specified learning algorithms (from a user-supplied library of such algorithms) so as to create a combination of these learners that minimizes the cross-validated risk with respect to an appropriate loss function. This notion of weighted combinations has also been referred to as <em>stacked regression</em> (Breiman 1996) and <em>stacked generalization</em> (Wolpert 1992).</li>
+<li>The <em>discrete</em> Super Learner can be used to select the best prediction algorithm from among a supplied library of machine learning algorithms (“learners” in the <code>sl3</code> nomenclature) – that is, the discrete Super Learner is the single learning algorithm that minimizes the cross-validated risk.</li>
+<li>The <em>ensemble</em> Super Learner can be used to assign weights to a set of specified learning algorithms (from a user-supplied library of such algorithms) so as to create a combination of these learners that minimizes the cross-validated risk. This notion of weighted combinations has also been referred to as <em>stacked regression</em> (Breiman 1996) and <em>stacked generalization</em> (Wolpert 1992).</li>
 </ol>
 <p>Looking for long-form documentation or a walkthrough of the <code>sl3</code> package? Don’t worry! Just take a look at <a href="https://tlverse.org/tlverse-handbook/sl3.html">the chapter in our book</a>.</p>
 <hr>

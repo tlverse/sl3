@@ -43,15 +43,13 @@ two fashions:
 1. The _discrete_ Super Learner can be used to select the best prediction
    algorithm from among a supplied library of machine learning algorithms
    ("learners" in the `sl3` nomenclature) -- that is, the discrete Super Learner
-   is the single learning algorithm that minimizes the cross-validated risk with
-   respect to an appropriate loss function.
+   is the single learning algorithm that minimizes the cross-validated risk.
 2. The _ensemble_ Super Learner can be used to assign weights to a set of
    specified learning algorithms (from a user-supplied library of such
    algorithms) so as to create a combination of these learners that minimizes
-   the cross-validated risk with respect to an appropriate loss function. This
-   notion of weighted combinations has also been referred to as _stacked
-   regression_ [@breiman1996stacked] and _stacked generalization_
-   [@wolpert1992stacked].
+   the cross-validated risk. This notion of weighted combinations has also been 
+   referred to as _stacked regression_ [@breiman1996stacked] and 
+   _stacked generalization_ [@wolpert1992stacked].
 
 Looking for long-form documentation or a walkthrough of the `sl3` package?
 Don't worry! Just take a look at [the chapter in our

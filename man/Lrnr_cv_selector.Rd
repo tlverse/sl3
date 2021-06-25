@@ -20,10 +20,10 @@ super learner) for any loss function.
 \section{Parameters}{
 
 \itemize{
-\item \code{loss_function}: A function that takes a vector of predictions as
+\item \code{eval_function}: A function that takes a vector of predictions as
 it's first argument, and a vector of truths/observations as it's second
-argument, and then returns a vector of losses. See \link{loss_functions}
-for options.
+argument, and then returns a vector of losses or a numeric risk. See
+\link{loss_functions} and \link{risk_functions} for options.
 }
 }
 

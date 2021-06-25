@@ -4,14 +4,15 @@
 \alias{CV_lrnr_sl}
 \title{Estimates cross-validated risk of the Super Learner}
 \usage{
-CV_lrnr_sl(lrnr_sl, task, loss_fun)
+CV_lrnr_sl(lrnr_sl, task, eval_fun)
 }
 \arguments{
 \item{lrnr_sl}{a \code{Lrnr_sl} object specifying the Super Learner.}
 
 \item{task}{the task used for training and performance assessment.}
 
-\item{loss_fun}{the loss function for evaluating the Super Learner.}
+\item{eval_fun}{the evaluation function, either a loss or risk function, for
+evaluating the Super Learner's predictions.}
 }
 \description{
 Estimates cross-validated risk of the Super Learner

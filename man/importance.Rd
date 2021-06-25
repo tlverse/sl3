@@ -7,11 +7,11 @@ Extract variable importance measures produced by
 \code{\link[randomForest]{randomForest}} and order in decreasing order of
 importance.}
 \usage{
-importance(fit, loss = NULL, fold_number = "validation",
+importance(fit, eval_fun = NULL, fold_number = "validation",
   type = c("remove", "permute"), importance_metric = c("ratio",
   "difference"))
 
-importance(fit, loss = NULL, fold_number = "validation",
+importance(fit, eval_fun = NULL, fold_number = "validation",
   type = c("remove", "permute"), importance_metric = c("ratio",
   "difference"))
 }
@@ -19,9 +19,11 @@ importance(fit, loss = NULL, fold_number = "validation",
 \item{fit}{A trained cross-validated learner (e.g., cv stack, super learner),
 from which cross-validated predictions can be generated.}
 
-\item{loss}{The loss function for evaluating the risk. Defaults according to
-outcome type: squared error loss for continuous outcomes, and negative
-log-likelihood loss for discrete outcomes. See \code{\link{loss_functions}}.}
+\item{eval_fun}{The evaluation function (risk or loss function) for
+evaluating the risk. Defaults vary based on the outcome type: squared error
+loss for continuous outcomes, and negative log-likelihood loss for discrete
+outcomes. See \code{\link{loss_functions}} and \code{\link{risk_functions}}
+for options.}
 
 \item{fold_number}{The fold number to use for obtaining the predictions
 from the fit. Either a positive integer for obtaining predictions from a
@@ -51,7 +53,7 @@ A \code{data.table} of variable importance for each covariate.
 \description{
 Function that takes a cross-validated fit (i.e., cross-validated learner that
 has already been trained on a task), which could be a cross-validated single
-learner or super learner, to generate a loss-based variable importance
+learner or super learner, to generate a risk-based variable importance
 measure for each predictor, where the predictors are the covariates in the
 trained task. This function generates a \code{data.table} in which each row
 corresponds to the risk difference or risk ratio between the following

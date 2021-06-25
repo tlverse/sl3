@@ -112,7 +112,7 @@ sl1 <- make_learner(Lrnr_sl, learners, ranger_learner)
 sl1_fit <- sl1$train(task)
 print(sl1_fit)
 
-############################### test CV with ROCR loss #########################
+############################### test CV with ROCR risk #########################
 
 cpp_imputed$haz_binary <- ifelse(cpp_imputed$haz < mean(cpp_imputed$haz), 0, 1)
 task <- sl3_Task$new(
@@ -123,17 +123,17 @@ task <- sl3_Task$new(
 lrnr_glm <- make_learner(Lrnr_glm)
 lrnr_xgboost <- make_learner(Lrnr_xgboost)
 
-loss_aucpr <- custom_loss_performance("aucpr")
+risk_aucpr <- custom_ROCR_risk("aucpr")
 lrnr_solnp <- Lrnr_solnp$new(
-  learner_function = metalearner_logistic_binomial, loss_function = loss_aucpr
+  learner_function = metalearner_logistic_binomial, eval_function = risk_aucpr
 )
 
 sl <- Lrnr_sl$new(
   learners = list(lrnr_glm, lrnr_xgboost), metalearner = lrnr_solnp
 )
 fit <- sl$train(task)
-tbl <- fit$cv_risk(loss_aucpr)
-cvSL <- CV_lrnr_sl(fit, task, loss_aucpr)
+tbl <- fit$cv_risk(risk_aucpr)
+cvSL <- CV_lrnr_sl(fit, task, risk_aucpr)
 
 cpp_imputed$weights <- rep(1.5, nrow(cpp_imputed))
 cpp_imputed$id <- 1:nrow(cpp_imputed)
@@ -142,16 +142,12 @@ task2 <- sl3_Task$new(
   covariates = covars, outcome = "haz_binary",
   weights = "weights", id = "id"
 )
-loss_tpr <- custom_loss_performance("tpr", name = "TPR")
+risk_tpr <- custom_ROCR_risk("tpr", name = "TPR")
 lrnr_solnp_tpr <- Lrnr_solnp$new(
-  learner_function = metalearner_logistic_binomial, loss_function = loss_tpr
+  learner_function = metalearner_logistic_binomial, eval_function = risk_tpr
 )
 sl <- Lrnr_sl$new(
   learners = list(lrnr_glm, lrnr_xgboost), metalearner = lrnr_solnp_tpr
 )
 fit2 <- sl$train(task2)
-test_that("weights warnings triggered for ROCR performance-based loss", {
-  expect_warning(fit2$cv_risk(loss_tpr))
-})
-
-varimp <- importance(fit2, loss_tpr, "validation", "permute", "difference")
+varimp <- importance(fit2, risk_tpr, "validation", "permute", "difference")

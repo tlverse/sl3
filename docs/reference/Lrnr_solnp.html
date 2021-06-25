@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Nonlinear Optimization via Augmented Lagrange — Lrnr_solnp" />
-<meta property="og:description" content="This meta-learner provides fitting procedures for any pairing of loss
+<meta property="og:description" content="This meta-learner provides fitting procedures for any pairing of loss or risk
 function and metalearner function, subject to constraints. The optimization
 problem is solved by making use of solnp, using
 Lagrange multipliers. For further details, consult the documentation of the
@@ -149,7 +149,7 @@ Rsolnp package." />
     </div>
 
     <div class="ref-description">
-    <p>This meta-learner provides fitting procedures for any pairing of loss
+    <p>This meta-learner provides fitting procedures for any pairing of loss or risk
 function and metalearner function, subject to constraints. The optimization
 problem is solved by making use of <code><a href='https://rdrr.io/pkg/Rsolnp/man/solnp.html'>solnp</a></code>, using
 Lagrange multipliers. For further details, consult the documentation of the
@@ -173,12 +173,10 @@ Lagrange multipliers. For further details, consult the documentation of the
 <dt><code>learner_function=metalearner_linear</code></dt><dd><p>A function(alpha, X) that
 takes a vector of covariates and a matrix of data and combines them into
 a vector of predictions. See <a href='metalearners.html'>metalearners</a> for options.</p></dd>
-<dt><code>loss_function=loss_squared_error</code></dt><dd><p>A function(pred, truth) that
-takes prediction and truth vectors and returns a loss vector or value.
-Note that a <code>loss_function</code> that outputs a value, not a vector,
-does not accept weighted losses, which are typically calculated when
-observational-level weights are supplied to the task. See
-<a href='loss_functions.html'>loss_functions</a> for options and more detail.</p></dd>
+<dt><code>eval_function=loss_squared_error</code></dt><dd><p>A function(pred, truth) that
+takes prediction and truth vectors and returns a loss vector or a risk
+scalar. See <a href='loss_functions.html'>loss_functions</a> and risk_functions for options
+and more detail.</p></dd>
 <dt><code>make_sparse=TRUE</code></dt><dd><p>If TRUE, zeros out small alpha values.</p></dd>
 <dt><code>convex_combination=TRUE</code></dt><dd><p>If <code>TRUE</code>, constrain alpha to
 sum to 1.</p></dd>

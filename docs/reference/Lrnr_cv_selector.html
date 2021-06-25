@@ -166,10 +166,10 @@ functionality, see the complete documentation of <code><a href='Lrnr_base.html'>
     
 
 <ul>
-<li><p><code>loss_function</code>: A function that takes a vector of predictions as
+<li><p><code>eval_function</code>: A function that takes a vector of predictions as
 it's first argument, and a vector of truths/observations as it's second
-argument, and then returns a vector of losses. See <a href='loss_functions.html'>loss_functions</a>
-for options.</p></li>
+argument, and then returns a vector of losses or a numeric risk. See
+<a href='loss_functions.html'>loss_functions</a> and risk_functions for options.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -259,10 +259,10 @@ for options.</p></li>
 <span class='op'>)</span>
 <span class='va'>discrete_sl_fit</span> <span class='op'>&lt;-</span> <span class='va'>discrete_sl</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>task</span><span class='op'>)</span>
 <span class='va'>discrete_sl_fit</span><span class='op'>$</span><span class='va'>cv_risk</span>
-</div><div class='output co'>#&gt; function (loss_fun) 
+</div><div class='output co'>#&gt; function (eval_fun) 
 #&gt; {
 #&gt;     cv_stack_fit &lt;- self$fit_object$cv_fit
-#&gt;     stack_risks &lt;- cv_stack_fit$cv_risk(loss_fun)
+#&gt;     stack_risks &lt;- cv_stack_fit$cv_risk(eval_fun)
 #&gt;     coefs &lt;- self$coefficients
 #&gt;     if (!is.null(coefs)) {
 #&gt;         ordered_coefs &lt;- coefs[match(stack_risks$learner, names(coefs))]
@@ -273,12 +273,12 @@ for options.</p></li>
 #&gt;     set(stack_risks, , "coefficients", ordered_coefs)
 #&gt;     data.table::setcolorder(stack_risks, c(names(stack_risks)[1], 
 #&gt;         "coefficients"))
-#&gt;     sl_risk &lt;- cv_risk(self, loss_fun)
+#&gt;     sl_risk &lt;- cv_risk(self, eval_fun)
 #&gt;     set(sl_risk, , "learner", "SuperLearner")
 #&gt;     risks &lt;- rbind(stack_risks, sl_risk)
 #&gt;     return(risks)
 #&gt; }
-#&gt; &lt;environment: 0x7f8db17f5cd8&gt;</div></pre>
+#&gt; &lt;environment: 0x7fa76fdabdc8&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

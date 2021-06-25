@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Loss Function Definitions — loss_functions • sl3</title>
+<title>Transform risks for a risk function with transform attribute — transform_risk • sl3</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Loss Function Definitions — loss_functions" />
-<meta property="og:description" content="Loss functions for use in evaluating learner fits." />
+<meta property="og:title" content="Transform risks for a risk function with transform attribute — transform_risk" />
+<meta property="og:description" content="Transform risks for a risk function with transform attribute" />
 
 
 
@@ -139,44 +139,30 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Loss Function Definitions</h1>
+    <h1>Transform risks for a risk function with transform attribute</h1>
     <small class="dont-index">Source: <a href='https://github.com/tlverse/sl3/blob/master/R/loss_functions.R'><code>R/loss_functions.R</code></a></small>
-    <div class="hidden name"><code>loss_functions.Rd</code></div>
+    <div class="hidden name"><code>transform_risk.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Loss functions for use in evaluating learner fits.</p>
+    <p>Transform risks for a risk function with transform attribute</p>
     </div>
 
-    <pre class="usage"><span class='fu'>loss_squared_error</span><span class='op'>(</span><span class='va'>pred</span>, <span class='va'>observed</span><span class='op'>)</span>
-
-<span class='fu'>loss_loglik_true_cat</span><span class='op'>(</span><span class='va'>pred</span>, <span class='va'>observed</span><span class='op'>)</span>
-
-<span class='fu'>loss_loglik_binomial</span><span class='op'>(</span><span class='va'>pred</span>, <span class='va'>observed</span><span class='op'>)</span>
-
-<span class='fu'>loss_loglik_multinomial</span><span class='op'>(</span><span class='va'>pred</span>, <span class='va'>observed</span><span class='op'>)</span>
-
-<span class='fu'>loss_squared_error_multivariate</span><span class='op'>(</span><span class='va'>pred</span>, <span class='va'>observed</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>transform_risk</span><span class='op'>(</span><span class='va'>risk</span>, <span class='va'>type</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>pred</th>
-      <td><p>A vector of predicted values</p></td>
+      <th>risk</th>
+      <td><p>Numeric vector or scalar of risk(s) returned by a risk function</p></td>
     </tr>
     <tr>
-      <th>observed</th>
-      <td><p>A vector of observed values</p></td>
+      <th>type</th>
+      <td><p>A valid transformation type</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>A vector of loss values</p>
-    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
-
-    <p>Assumes predicted probabilities are "packed" into a single vector.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
