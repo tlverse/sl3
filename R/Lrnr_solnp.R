@@ -36,7 +36,6 @@
 #'   \item{\code{init_0=FALSE}}{If TRUE, alpha is initialized to all 0's, useful
 #'     for TMLE. Otherwise, it is initialized to equal weights summing to 1,
 #'     useful for Super Learner.}
-#'   \item{\code{tol=1e-5}}{Relative tolerance on feasibility and optimality.}
 #'   \item{\code{...}}{Not currently used.}
 #' }
 #'
@@ -49,9 +48,8 @@ Lrnr_solnp <- R6Class(
   public = list(
     initialize = function(learner_function = metalearner_linear,
                           eval_function = loss_squared_error,
-                          make_sparse = TRUE,
-                          convex_combination = TRUE, init_0 = FALSE,
-                          tol = 1e-5, ...) {
+                          make_sparse = TRUE, convex_combination = TRUE,
+                          init_0 = FALSE, ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }
@@ -116,7 +114,7 @@ Lrnr_solnp <- R6Class(
         init_alphas, risk,
         eqfun = eq_fun, eqB = eqB,
         LB = LB,
-        control = list(trace = 0, tol = params$tol)
+        control = list(trace = 0)
       )
       coefs <- fit_object$pars
       names(coefs) <- colnames(task$X)
@@ -125,7 +123,10 @@ Lrnr_solnp <- R6Class(
         max_coef <- max(coefs)
         threshold <- max_coef / 1000
         coefs[coefs < threshold] <- 0
-        coefs <- coefs / sum(coefs)
+        if (params$convex_combination) {
+          # renormalize so coefficients sum to 1
+          coefs <- coefs / sum(coefs)
+        }
       }
       fit_object$coefficients <- coefs
       fit_object$training_offset <- task$has_node("offset")
