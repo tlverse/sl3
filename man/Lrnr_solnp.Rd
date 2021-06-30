@@ -34,7 +34,6 @@ sum to 1.}
 \item{\code{init_0=FALSE}}{If TRUE, alpha is initialized to all 0's, useful
 for TMLE. Otherwise, it is initialized to equal weights summing to 1,
 useful for Super Learner.}
-\item{\code{tol=1e-5}}{Relative tolerance on feasibility and optimality.}
 \item{\code{...}}{Not currently used.}
 }
 }
