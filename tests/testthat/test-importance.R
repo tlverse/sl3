@@ -44,3 +44,28 @@ permute_full_risk_diff <- importance(fit,
   type = "permute", fold_number = "full",
   importance_metric = "difference"
 )
+
+########## test covariate groups
+covars <- c(
+  "apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn"
+)
+task <- sl3_Task$new(cpp_imputed,
+  covariates = covars, outcome = "haz",
+  folds = origami::make_folds(cpp_imputed, V = 3)
+)
+fit <- sl$train(task)
+groups <- list(
+  scores = c("apgar1", "apgar5"),
+  maternal = c("parity", "mage", "meducyrs")
+)
+varimp <- importance(fit, covariate_groups = groups)
+
+test_that("sl3 importance fails when groups with > 1 covariate unnamed", {
+  names(groups)[1] <- ""
+  expect_error(importance(fit, covariate_groups = groups))
+})
+
+test_that("sl3 importance fails when groups don't contain covariates", {
+  groups <- c(groups, list("not_a_covariate" = "not_a_covariate"))
+  expect_error(importance(fit, covariate_groups = groups))
+})
