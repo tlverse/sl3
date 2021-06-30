@@ -7,9 +7,9 @@
 importance_plot(x, nvar = min(30, nrow(x)), ...)
 }
 \arguments{
-\item{x}{The 2-column \code{data.table} returned by the call to
-\code{importance}, where the first column is the predictors and the second
-col}
+\item{x}{The 2-column \code{data.table} returned by \code{importance}, where
+the first column is the coviariate/groups and the second column is the
+importance metric.}
 
 \item{nvar}{The maximum number of predictors to be plotted. Defaults to 30.}
 

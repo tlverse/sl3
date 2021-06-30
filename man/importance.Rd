@@ -9,11 +9,13 @@ importance.}
 \usage{
 importance(fit, eval_fun = NULL, fold_number = "validation",
   type = c("remove", "permute"), importance_metric = c("ratio",
-  "difference"))
+  "difference"), covariate_groups = NULL, B = 100L,
+  cores = parallel::detectCores() - 1)
 
 importance(fit, eval_fun = NULL, fold_number = "validation",
   type = c("remove", "permute"), importance_metric = c("ratio",
-  "difference"))
+  "difference"), covariate_groups = NULL, B = 100L,
+  cores = parallel::detectCores() - 1)
 }
 \arguments{
 \item{fit}{A trained cross-validated learner (e.g., cv stack, super learner),
@@ -46,6 +48,17 @@ one permuted covariate.}
 the risk with the permuted/removed X divided by observed risk with all X; or
 \code{"difference"}, which returns the difference between the risk with the
 permuted/removed X and the observed risk.}
+
+\item{covariate_groups}{Optional named list covariate groups which will
+invoke variable importance evaluation at the group-level, by
+removing/permuting all covariates in the same group together. If covariates
+in the task are not specified in the list of groups, then those covariates
+will be added as additional single-covariate groups.}
+
+\item{B}{Optional integer specifying the number of permutations to average
+the permuted risk over when \code{type = "permute"}.}
+
+\item{cores}{Number of cores for parallelizing the \code{B} permutations.}
 }
 \value{
 A \code{data.table} of variable importance for each covariate.
@@ -54,12 +67,13 @@ A \code{data.table} of variable importance for each covariate.
 Function that takes a cross-validated fit (i.e., cross-validated learner that
 has already been trained on a task), which could be a cross-validated single
 learner or super learner, to generate a risk-based variable importance
-measure for each predictor, where the predictors are the covariates in the
-trained task. This function generates a \code{data.table} in which each row
-corresponds to the risk difference or risk ratio between the following
-two risks: the risk when a predictor is permuted or removed, and the original
-risk (i.e., when all predictors are included). A higher risk ratio/difference
-corresponds to a more important predictor. A plot can be generated from the
+measure for each covariate in the trained task, or for each group of
+covariates. This function outputs a \code{data.table}, where each row
+corresponds to the risk difference or the risk ratio between the following
+two risks: the risk when a covariate (or group of covariates) is permuted or
+removed, and the original risk (i.e., when all covariates are included as
+they were in the observed data). A higher risk ratio/difference corresponds
+to a more important covariate/group. A plot can be generated from the
 returned \code{data.table} by calling companion function
 \code{plot_importance}.
 }

@@ -47,7 +47,8 @@ Imports:
     imputeMissings,
     dplyr,
     caret,
-    ROCR
+    ROCR,
+    parallel
 Suggests:
     testthat,
     rmarkdown,

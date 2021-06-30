@@ -150,4 +150,4 @@ sl <- Lrnr_sl$new(
   learners = list(lrnr_glm, lrnr_xgboost), metalearner = lrnr_solnp_tpr
 )
 fit2 <- sl$train(task2)
-varimp <- importance(fit2, risk_tpr, "validation", "permute", "difference")
+varimp <- importance(fit2, risk_tpr)
