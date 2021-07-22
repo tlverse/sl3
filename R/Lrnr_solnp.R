@@ -3,7 +3,11 @@
 #' This meta-learner provides fitting procedures for any pairing of loss or risk
 #' function and metalearner function, subject to constraints. The optimization
 #' problem is solved by making use of \code{\link[Rsolnp]{solnp}}, using
-#' Lagrange multipliers. For further details, consult the documentation of the
+#' Lagrange multipliers. An important note from the \code{\link[Rsolnp]{solnp}}
+#' documentation states that the control parameters \code{tol} and \code{delta}
+#' are key in getting any possibility of successful convergence, therefore it
+#' is suggested that the user change these appropriately to reflect their
+#' problem specification. For further details, consult the documentation of the
 #' \code{Rsolnp} package.
 #'
 #' @docType class
@@ -36,7 +40,13 @@
 #'   \item{\code{init_0=FALSE}}{If TRUE, alpha is initialized to all 0's, useful
 #'     for TMLE. Otherwise, it is initialized to equal weights summing to 1,
 #'     useful for Super Learner.}
-#'   \item{\code{...}}{Not currently used.}
+#'   \item{\code{outer.iter=400}}{Maximum number of major (outer) iterations.}
+#'   \item{\code{inner.iter=800}}{Maximum number of minor (inner) iterations.}
+#'   \item{\code{delta=1e-7}}{Relative step size in forward difference
+#'     evaluation.}
+#'   \item{\code{tol=1e-8}}{Relative tolerance on feasibility and optimality.}
+#'   \item{\code{trace=FALSE}}{The value of the objective function and the
+#'     parameters are printed at every major iteration.}
 #' }
 #'
 #' @template common_parameters
@@ -49,9 +59,10 @@ Lrnr_solnp <- R6Class(
     initialize = function(learner_function = metalearner_linear,
                           eval_function = loss_squared_error,
                           make_sparse = TRUE, convex_combination = TRUE,
-                          init_0 = FALSE, ...) {
+                          init_0 = FALSE, outer.iter = 400, inner.iter = 800,
+                          delta = 1e-7, tol = 1e-8, trace = FALSE) {
       params <- args_to_list()
-      super$initialize(params = params, ...)
+      super$initialize(params = params)
     }
   ),
   private = list(
@@ -114,7 +125,10 @@ Lrnr_solnp <- R6Class(
         init_alphas, risk,
         eqfun = eq_fun, eqB = eqB,
         LB = LB,
-        control = list(trace = 0)
+        control = list(
+          outer.iter = params$outer.iter, inner.iter = params$inner.iter,
+          delta = params$delta, tol = params$tol, trace = params$trace
+        )
       )
       coefs <- fit_object$pars
       names(coefs) <- colnames(task$X)
