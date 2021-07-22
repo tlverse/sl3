@@ -43,7 +43,11 @@
 <meta property="og:description" content="This meta-learner provides fitting procedures for any pairing of loss or risk
 function and metalearner function, subject to constraints. The optimization
 problem is solved by making use of solnp, using
-Lagrange multipliers. For further details, consult the documentation of the
+Lagrange multipliers. An important note from the solnp
+documentation states that the control parameters tol and delta
+are key in getting any possibility of successful convergence, therefore it
+is suggested that the user change these appropriately to reflect their
+problem specification. For further details, consult the documentation of the
 Rsolnp package." />
 
 
@@ -152,7 +156,11 @@ Rsolnp package." />
     <p>This meta-learner provides fitting procedures for any pairing of loss or risk
 function and metalearner function, subject to constraints. The optimization
 problem is solved by making use of <code><a href='https://rdrr.io/pkg/Rsolnp/man/solnp.html'>solnp</a></code>, using
-Lagrange multipliers. For further details, consult the documentation of the
+Lagrange multipliers. An important note from the <code><a href='https://rdrr.io/pkg/Rsolnp/man/solnp.html'>solnp</a></code>
+documentation states that the control parameters <code>tol</code> and <code>delta</code>
+are key in getting any possibility of successful convergence, therefore it
+is suggested that the user change these appropriately to reflect their
+problem specification. For further details, consult the documentation of the
 <code>Rsolnp</code> package.</p>
     </div>
 
@@ -183,7 +191,13 @@ sum to 1.</p></dd>
 <dt><code>init_0=FALSE</code></dt><dd><p>If TRUE, alpha is initialized to all 0's, useful
 for TMLE. Otherwise, it is initialized to equal weights summing to 1,
 useful for Super Learner.</p></dd>
-<dt><code>...</code></dt><dd><p>Not currently used.</p></dd>
+<dt><code>outer.iter=400</code></dt><dd><p>Maximum number of major (outer) iterations.</p></dd>
+<dt><code>inner.iter=800</code></dt><dd><p>Maximum number of minor (inner) iterations.</p></dd>
+<dt><code>delta=1e-7</code></dt><dd><p>Relative step size in forward difference
+evaluation.</p></dd>
+<dt><code>tol=1e-8</code></dt><dd><p>Relative tolerance on feasibility and optimality.</p></dd>
+<dt><code>trace=FALSE</code></dt><dd><p>The value of the objective function and the
+parameters are printed at every major iteration.</p></dd>
 
 </dl>
 
