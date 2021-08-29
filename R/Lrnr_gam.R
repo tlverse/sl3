@@ -10,7 +10,7 @@
 #' @docType class
 #'
 #' @importFrom R6 R6Class
-#' @importFrom stats predict family
+#' @importFrom stats predict family gaussian binomial
 #'
 #' @export
 #'
@@ -89,7 +89,7 @@ Lrnr_gam <- R6Class(
         if (outcome_type$type == "continuous") {
           args$family <- stats::gaussian()
         } else if (outcome_type$type == "binomial") {
-          args$family <- stas::binomial()
+          args$family <- stats::binomial()
         } else if (outcome_type$type == "categorical") {
           # TODO: implement categorical?
           # NOTE: must specify (#{categories}-1)+linear_predictors) in formula
