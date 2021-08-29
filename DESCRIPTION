@@ -90,6 +90,7 @@ Suggests:
     mgcv,
     hts
 Remotes:
+    github::tlverse/origami,
     github::tlverse/hal9001@devel,
     github::nhejazi/haldensify
 License: GPL-3
