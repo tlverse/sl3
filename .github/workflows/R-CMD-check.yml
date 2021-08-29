@@ -46,6 +46,7 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           sudo apt install -y curl libcurl4-doc libcurl4-openssl-dev
+          sudo $(which R) CMD javareconf
 
       - name: Install package dependencies
         run: |
