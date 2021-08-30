@@ -17,14 +17,14 @@ knitr::opts_chunk$set(
 
 # R/`sl3`: Super Machine Learning with Pipelines
 
-[![Travis-CI Build Status](https://travis-ci.com/tlverse/sl3.svg?branch=master)](https://travis-ci.com/tlverse/sl3)
-[![Appveyor Build Status](https://ci.appveyor.com/api/projects/status/hagh8vidrdeacr7f?svg=true)](https://ci.appveyor.com/project/tlverse/sl3)
-[![Coverage Status](https://img.shields.io/codecov/c/github/tlverse/sl3/master.svg)](https://codecov.io/github/tlverse/sl3?branch=master)
+[![R-CMD-check](https://github.com/tlverse/sl3/workflows/R-CMD-check/badge.svg)](https://github.com/tlverse/sl3/actions)
+[![Coverage Status](https://codecov.io/gh/tlverse/sl3/branch/master/graph/badge.svg)](https://codecov.io/gh/tlverse/sl3)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1342293.svg)](https://doi.org/10.5281/zenodo.1342293)
 
-> A flexible implementation of the Super Learner ensemble learning system
+> A flexible implementation of the Super Learner ensemble machine learning
+> system
 
 __Authors:__ [Jeremy Coyle](https://github.com/jeremyrcoyle),
 [Nima Hejazi](https://nimahejazi.org),
@@ -36,9 +36,9 @@ __Authors:__ [Jeremy Coyle](https://github.com/jeremyrcoyle),
 
 ## What's `sl3`?
 
-`sl3` is a modern implementation of the Super Learner algorithm of
-@vdl2007super. The Super Learner algorithm performs ensemble learning in one of
-two fashions:
+`sl3` is an implementation of the Super Learner ensemble machine learning
+algorithm of @vdl2007super. The Super Learner algorithm performs ensemble
+learning in one of two fashions:
 
 1. The _discrete_ Super Learner can be used to select the best prediction
    algorithm from among a supplied library of machine learning algorithms
@@ -54,7 +54,7 @@ two fashions:
    [@wolpert1992stacked].
 
 Looking for long-form documentation or a walkthrough of the `sl3` package?
-Don't worry! Just take a look at [the chapter in our
+Don't worry! Just browse [the chapter in our
 book](https://tlverse.org/tlverse-handbook/sl3.html).
 
 ---
@@ -244,7 +244,7 @@ char_final_mat.df <- ifelse(final_mat.df == TRUE, "√", "x")
 kable(char_final_mat.df) %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed",
                                       "responsive")) %>%
-  scroll_box(width = "100%", height = "200px", fixed_thead = T)
+  scroll_box(width = "100%", height = "200px", fixed_thead = TRUE)
 ```
 
 ---
@@ -264,7 +264,7 @@ After using the `sl3` R package, please cite the following:
 
         @software{coyle2021sl3-rpkg,
           author = {Coyle, Jeremy R and Hejazi, Nima S and Malenica, Ivana and
-            Sofrygin, Oleg},
+            Phillips, Rachael V and Sofrygin, Oleg},
           title = {{sl3}: Modern Pipelines for Machine Learning and {Super
             Learning}},
           year = {2021},
@@ -280,7 +280,8 @@ After using the `sl3` R package, please cite the following:
 
 &copy; 2017-2021 [Jeremy R. Coyle](https://github.com/jeremyrcoyle), [Nima S.
 Hejazi](https://nimahejazi.org), [Ivana
-Malenica](https://github.com/podTockom), [Oleg
+Malenica](https://github.com/podTockom), [Rachael V.
+Phillips](https://github.com/rachaelvp), [Oleg
 Sofrygin](https://github.com/osofr)
 
 The contents of this repository are distributed under the GPL-3 license. See

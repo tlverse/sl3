@@ -74,6 +74,7 @@ test_that("Lrnr_hal9001 passes arguments correctly relative to hal9001", {
     Y = mtcars_task$Y,
     max_degree = 2,
     smoothness_orders = 0,
+    fit_control = list(foldid = origami::folds2foldvec(mtcars_task$folds)),
     yolo = FALSE
   )
   hal_fit_preds <- predict(hal_fit, new_data = as.matrix(mtcars_task$X))
