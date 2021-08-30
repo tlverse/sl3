@@ -86,9 +86,13 @@ Suggests:
     lightgbm,
     dbarts,
     gam (>= 1.15.0),
-    haldensify (>= 0.1.0),
+    haldensify (>= 0.1.5),
     mgcv,
     hts
+Remotes:
+    github::tlverse/origami,
+    github::tlverse/hal9001@devel,
+    github::nhejazi/haldensify
 License: GPL-3
 Language: en-US
 URL: https://tlverse.org/sl3
