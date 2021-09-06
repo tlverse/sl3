@@ -81,7 +81,7 @@
 #' lrnr_glm_sp_gaussian <- lrnr_glm_sp_gaussian$train(task_continuous)
 #' preds <- lrnr_glm_sp_gaussian$predict(task_continuous)
 #' beta <- lrnr_glm_sp_gaussian$fit_object$coefficients
-#' ## In this case, since `append_interaction_matrix = TRUE`, it is equivalent to:
+#' ## In this case, since `append_interaction_matrix = FALSE`, it is equivalent to:
 #' ## Subset to baseline treatment arm
 #' subset_to <- task_continuous$data[["A"]] == 0
 #'
