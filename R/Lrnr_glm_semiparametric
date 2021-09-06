@@ -1,7 +1,8 @@
 #' Semiparametric Generalized Linear Models
 #'
 #' This learner provides fitting procedures for semiparametric generalized linear models using a user-given baseline learner and
-#' \code{\link[stats]{glm.fit}}.
+#' \code{\link[stats]{glm.fit}}. It supports models of the form `linkfun(E[Y|A,W]) = linkfun(E[Y|A=0,W]) + A * f(W)` where `A` is a binary or continuous interaction variable,
+#' and `f(W)` is a user-specified parametric function (e.g. `f(W) = model.matrix(formula_sp, W)`).
 #'
 #' @docType class
 #'
