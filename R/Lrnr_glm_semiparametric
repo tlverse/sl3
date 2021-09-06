@@ -104,7 +104,7 @@
 #' preds <- lrnr_glm_sp_binomial$predict(task_binary)
 #' beta <- lrnr_glm_sp_binomial$fit_object$coefficients
 #'
-#' # fit partially-linear log-link (elative-risk) regression
+#' # fit partially-linear log-link (relative-risk) regression
 #' lrnr_baseline <- Lrnr_glmnet$new(family = "poisson") # This setting requires that lrnr_baseline predicts nonnegative values. It is recommended to use poisson regression based learners.
 #' family <- poisson()
 #' lrnr_glm_sp_binomial <- Lrnr_glm_semiparametric$new(formula_sp = formula_sp, family = family, lrnr_baseline = lrnr_baseline, interaction_variable = "A", append_interaction_matrix = TRUE)
