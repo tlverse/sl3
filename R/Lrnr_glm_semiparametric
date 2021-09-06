@@ -47,7 +47,7 @@ Lrnr_glm_semiparametric <- R6Class(
   ),
 
   private = list(
-    .properties = c("continuous", "binomial", "weights", "offset"),
+    .properties = c("continuous", "binomial", "semiparametric", "weights"),
 
     .train = function(task) {
 
