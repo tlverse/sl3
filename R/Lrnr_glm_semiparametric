@@ -159,8 +159,6 @@ Lrnr_glm_semiparametric <- R6Class(
         lrnr_baseline <- lrnr_baseline$train(task_baseline[A == 0])
         Q0 <- lrnr_baseline$predict(task_baseline)
         beta <- suppressWarnings(coef(glm.fit(A * V, Y, offset = family$linkfun(Q0), intercept = F, weights = task$weights, family = family)))
-        print("here")
-        print(beta)
         Q1 <- family$linkinv(family$linkfun(Q0) + V %*% beta)
         Q <- ifelse(A == 1, Q1, Q0)
       } else {
