@@ -316,7 +316,8 @@ Lrnr_base <- R6Class(
           formula_covars <- all.vars(form)
         }
         # check that regressors in the formula are contained in the task
-        if (!all(formula_covars %in% task$nodes$covariates)) {
+        # If "." in formula weird stuff happens. Setdiff is a tentative fix.
+        if (!all(setdiff(formula_covars, ".") %in% task$nodes$covariates)) {
           stop("Regressors in the formula are not covariates in task")
         }
 
