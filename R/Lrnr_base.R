@@ -322,14 +322,16 @@ Lrnr_base <- R6Class(
 
         # get data corresponding to formula and add new columns to the task
         data <- as.data.table(stats::model.matrix(form, data = task$data))
+        all_cols <- unique(names(data))
         new_cols <- setdiff(names(data), names(task$data))
         if (any(grepl("Intercept", new_cols))) {
           new_cols <- new_cols[!grepl("Intercept", new_cols)]
+          all_cols <- all_cols[!grepl("Intercept", all_cols)]
         }
         data <- data[, new_cols, with = FALSE]
         new_cols <- task$add_columns(data)
         return(
-          task$next_in_chain(covariates = names(data), column_names = new_cols)
+          task$next_in_chain(covariates = all_cols, column_names = new_cols)
         )
       } else {
         return(task)
