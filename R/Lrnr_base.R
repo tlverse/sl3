@@ -322,7 +322,8 @@ Lrnr_base <- R6Class(
         }
 
         # get data corresponding to formula and add new columns to the task
-        data <- as.data.table(stats::model.matrix(form, data = task$data))
+        # Passing in X ensures that the outcome is not included in model if "~." is used without specifying outcome
+        data <- as.data.table(stats::model.matrix(form, data = task$X))  
         all_cols <- unique(names(data))
         new_cols <- setdiff(names(data), names(task$data))
         if (any(grepl("Intercept", new_cols))) {
