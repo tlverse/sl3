@@ -304,7 +304,7 @@ Lrnr_base <- R6Class(
         if (class(form) != "formula") form <- as.formula(form)
 
         # check response variable corresponds to outcome in task, if provided
-        if (attr(terms(form), "response")) {
+        if (attr(terms(form, data = task$data), "response")) {
           if (!all.vars(form)[1] == task$nodes$outcome) {
             stop(paste0(
               "Outcome variable in formula ", all.vars(form)[1],
