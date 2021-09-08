@@ -10,7 +10,7 @@
 #' @docType class
 #'
 #' @importFrom R6 R6Class
-#' @importFrom stats predict family
+#' @importFrom stats predict family gaussian binomial
 #'
 #' @export
 #'

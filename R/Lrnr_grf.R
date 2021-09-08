@@ -85,7 +85,7 @@ Lrnr_grf <- R6Class(
                           honesty = TRUE,
                           alpha = 0.05,
                           imbalance.penalty = 0,
-                          num.threads = 1,
+                          num.threads = 1L,
                           quantiles_pred = 0.5,
                           ...) {
       super$initialize(params = args_to_list(), ...)
@@ -123,11 +123,12 @@ Lrnr_grf <- R6Class(
       quantiles_pred <- private$.params$quantiles_pred
 
       # generate predictions and output
-      predictions <- stats::predict(
+      predictions_list <- stats::predict(
         private$.fit_object,
         new_data = data.frame(task$X),
         quantiles = quantiles_pred
       )
+      predictions <- as.numeric(predictions_list$predictions)
       return(predictions)
     },
     .required_packages = c("grf")
