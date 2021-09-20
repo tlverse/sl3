@@ -4,16 +4,14 @@
 \alias{importance_plot}
 \title{Variable Importance Plot}
 \usage{
-importance_plot(x, nvar = min(30, nrow(x)), ...)
+importance_plot(x, nvar = min(30, nrow(x)))
 }
 \arguments{
 \item{x}{The 2-column \code{data.table} returned by \code{importance}, where
-the first column is the coviariate/groups and the second column is the
+the first column is the covariate/groups and the second column is the
 importance metric.}
 
 \item{nvar}{The maximum number of predictors to be plotted. Defaults to 30.}
-
-\item{...}{Other parameters passed to \code{\link[graphics]{dotchart}}.}
 }
 \value{
 A \code{\link[graphics]{dotchart}} of variable importance.

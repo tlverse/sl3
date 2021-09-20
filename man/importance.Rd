@@ -9,12 +9,12 @@ importance.}
 \usage{
 importance(fit, eval_fun = NULL, fold_number = "validation",
   type = c("remove", "permute"), importance_metric = c("ratio",
-  "difference"), covariate_groups = NULL, B = 100L,
+  "difference"), covariate_groups = NULL, B = 1L,
   cores = parallel::detectCores() - 1)
 
 importance(fit, eval_fun = NULL, fold_number = "validation",
   type = c("remove", "permute"), importance_metric = c("ratio",
-  "difference"), covariate_groups = NULL, B = 100L,
+  "difference"), covariate_groups = NULL, B = 1L,
   cores = parallel::detectCores() - 1)
 }
 \arguments{

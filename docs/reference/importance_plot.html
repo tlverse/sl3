@@ -148,7 +148,7 @@
     <p>Variable Importance Plot</p>
     </div>
 
-    <pre class="usage"><span class='fu'>importance_plot</span><span class='op'>(</span><span class='va'>x</span>, nvar <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span><span class='op'>(</span><span class='fl'>30</span>, <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>importance_plot</span><span class='op'>(</span><span class='va'>x</span>, nvar <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span><span class='op'>(</span><span class='fl'>30</span>, <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -156,16 +156,12 @@
     <tr>
       <th>x</th>
       <td><p>The 2-column <code>data.table</code> returned by <code>importance</code>, where
-the first column is the coviariate/groups and the second column is the
+the first column is the covariate/groups and the second column is the
 importance metric.</p></td>
     </tr>
     <tr>
       <th>nvar</th>
       <td><p>The maximum number of predictors to be plotted. Defaults to 30.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Other parameters passed to <code><a href='https://rdrr.io/r/graphics/dotchart.html'>dotchart</a></code>.</p></td>
     </tr>
     </table>
 

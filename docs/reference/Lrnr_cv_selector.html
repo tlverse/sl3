@@ -192,6 +192,7 @@ argument, and then returns a vector of losses or a numeric risk. See
 <code><a href='Lrnr_earth.html'>Lrnr_earth</a></code>,
 <code><a href='Lrnr_expSmooth.html'>Lrnr_expSmooth</a></code>,
 <code><a href='Lrnr_gam.html'>Lrnr_gam</a></code>,
+<code><a href='Lrnr_ga.html'>Lrnr_ga</a></code>,
 <code><a href='Lrnr_gbm.html'>Lrnr_gbm</a></code>,
 <code><a href='Lrnr_glm_fast.html'>Lrnr_glm_fast</a></code>,
 <code><a href='Lrnr_glmnet.html'>Lrnr_glmnet</a></code>,
@@ -258,7 +259,18 @@ argument, and then returns a vector of losses or a numeric risk. See
   learners <span class='op'>=</span> <span class='va'>lrnr_stack</span>, metalearner <span class='op'>=</span> <span class='va'>metalrnr_discrete_MSE</span>
 <span class='op'>)</span>
 <span class='va'>discrete_sl_fit</span> <span class='op'>&lt;-</span> <span class='va'>discrete_sl</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>task</span><span class='op'>)</span>
-<span class='va'>discrete_sl_fit</span><span class='op'>$</span><span class='va'>cv_risk</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Lrnr_hal9001_1_c(20, 10)_0 failed with message: Error in hal9000(): object 'hal_quotes' not found</span>
+#&gt; <span class='warning'>. It will be removed from the stack</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Lrnr_hal9001_1_c(20, 10)_0 failed with message: Error in hal9000(): object 'hal_quotes' not found</span>
+#&gt; <span class='warning'>. It will be removed from the stack</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Lrnr_hal9001_1_c(20, 10)_0 failed with message: Error in hal9000(): object 'hal_quotes' not found</span>
+#&gt; <span class='warning'>. It will be removed from the stack</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Lrnr_hal9001_1_c(20, 10)_0 failed with message: Error in hal9000(): object 'hal_quotes' not found</span>
+#&gt; <span class='warning'>. It will be removed from the stack</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Lrnr_hal9001_1_c(20, 10)_0 failed with message: Error in hal9000(): object 'hal_quotes' not found</span>
+#&gt; <span class='warning'>. It will be removed from the stack</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Lrnr_hal9001_1_c(20, 10)_0 failed with message: Error in hal9000(): object 'hal_quotes' not found</span>
+#&gt; <span class='warning'>. It will be removed from the stack</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Lrnr_hal9001_1_c(20, 10)_0 failed with message: Error in hal9000(): object 'hal_quotes' not found</span>
+#&gt; <span class='warning'>. It will be removed from the stack</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Lrnr_hal9001_1_c(20, 10)_0 failed with message: Error in hal9000(): object 'hal_quotes' not found</span>
+#&gt; <span class='warning'>. It will be removed from the stack</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Lrnr_hal9001_1_c(20, 10)_0 failed with message: Error in hal9000(): object 'hal_quotes' not found</span>
+#&gt; <span class='warning'>. It will be removed from the stack</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Lrnr_hal9001_1_c(20, 10)_0 failed with message: Error in hal9000(): object 'hal_quotes' not found</span>
+#&gt; <span class='warning'>. It will be removed from the stack</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Lrnr_hal9001_1_c(20, 10)_0 failed with message: Error in hal9000(): object 'hal_quotes' not found</span>
+#&gt; <span class='warning'>. It will be removed from the stack</span></div><div class='output co'>#&gt; <span class='warning'>Warning: The following learners failed for one or more folds and will be dropped from all folds:  Lrnr_hal9001_1_c(20, 10)_0</span></div><div class='input'><span class='va'>discrete_sl_fit</span><span class='op'>$</span><span class='va'>cv_risk</span>
 </div><div class='output co'>#&gt; function (eval_fun) 
 #&gt; {
 #&gt;     cv_stack_fit &lt;- self$fit_object$cv_fit
@@ -278,7 +290,7 @@ argument, and then returns a vector of losses or a numeric risk. See
 #&gt;     risks &lt;- rbind(stack_risks, sl_risk)
 #&gt;     return(risks)
 #&gt; }
-#&gt; &lt;environment: 0x7ff6c14f3500&gt;</div></pre>
+#&gt; &lt;environment: 0x7fdc7fb4f780&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

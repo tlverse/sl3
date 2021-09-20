@@ -181,12 +181,12 @@ returned <code>data.table</code> by calling companion function
 
     <pre class="usage"><span class='fu'>importance</span><span class='op'>(</span><span class='va'>fit</span>, eval_fun <span class='op'>=</span> <span class='cn'>NULL</span>, fold_number <span class='op'>=</span> <span class='st'>"validation"</span>,
   type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"remove"</span>, <span class='st'>"permute"</span><span class='op'>)</span>, importance_metric <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ratio"</span>,
-  <span class='st'>"difference"</span><span class='op'>)</span>, covariate_groups <span class='op'>=</span> <span class='cn'>NULL</span>, B <span class='op'>=</span> <span class='fl'>100L</span>,
+  <span class='st'>"difference"</span><span class='op'>)</span>, covariate_groups <span class='op'>=</span> <span class='cn'>NULL</span>, B <span class='op'>=</span> <span class='fl'>1L</span>,
   cores <span class='op'>=</span> <span class='fu'>parallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/parallel/detectCores.html'>detectCores</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>-</span> <span class='fl'>1</span><span class='op'>)</span>
 
 <span class='fu'>importance</span><span class='op'>(</span><span class='va'>fit</span>, eval_fun <span class='op'>=</span> <span class='cn'>NULL</span>, fold_number <span class='op'>=</span> <span class='st'>"validation"</span>,
   type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"remove"</span>, <span class='st'>"permute"</span><span class='op'>)</span>, importance_metric <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ratio"</span>,
-  <span class='st'>"difference"</span><span class='op'>)</span>, covariate_groups <span class='op'>=</span> <span class='cn'>NULL</span>, B <span class='op'>=</span> <span class='fl'>100L</span>,
+  <span class='st'>"difference"</span><span class='op'>)</span>, covariate_groups <span class='op'>=</span> <span class='cn'>NULL</span>, B <span class='op'>=</span> <span class='fl'>1L</span>,
   cores <span class='op'>=</span> <span class='fu'>parallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/parallel/detectCores.html'>detectCores</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>-</span> <span class='fl'>1</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>

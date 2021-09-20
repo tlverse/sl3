@@ -61,6 +61,9 @@
     <loc>https://tlverse.org/sl3/reference/Lrnr_expSmooth.html</loc>
   </url>
   <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_ga.html</loc>
+  </url>
+  <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_gam.html</loc>
   </url>
   <url>
@@ -308,9 +311,6 @@
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/subset_folds.html</loc>
-  </url>
-  <url>
-    <loc>https://tlverse.org/sl3/reference/transform_risk.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/true_obj_size.html</loc>
