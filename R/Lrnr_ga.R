@@ -1,14 +1,9 @@
-#' Nonlinear Optimization via Genetic Algorithm
+#' Nonlinear Optimization via Genetic Algorithm (GA)
 #'
 #' This meta-learner provides fitting procedures for any pairing of loss or risk
 #' function and metalearner function, subject to constraints. The optimization
-#' problem is solved by making use of \code{\link[Rsolnp]{solnp}}, using
-#' Lagrange multipliers. An important note from the \code{\link[Rsolnp]{solnp}}
-#' documentation states that the control parameters \code{tol} and \code{delta}
-#' are key in getting any possibility of successful convergence, therefore it
-#' is suggested that the user change these appropriately to reflect their
-#' problem specification. For further details, consult the documentation of the
-#' \code{Rsolnp} package.
+#' problem is solved by making use of the \code{\link[GA]{ga}} function in the
+#' \pkg{GA} R package. For further consult the documentation of this package.
 #'
 #' @docType class
 #'
@@ -37,6 +32,15 @@
 #'   \item{\code{make_sparse=TRUE}}{If TRUE, zeros out small alpha values.}
 #'   \item{\code{convex_combination=TRUE}}{If \code{TRUE}, constrain alpha to
 #'     sum to 1.}
+#'   \item{\code{maxiter=100}}{The maximum number of iterations to run before
+#'     the GA search is halted.}
+#'   \item{\code{run=10}}{The number of consecutive generations without any
+#'     improvement in the best fitness value before the GA is stopped.}
+#'  \item{\code{optim=TRUE}}{A logical determining whether or not a local
+#'  search using general-purpose optimization algorithms should be used.
+#'  Argument \code{optimArgs} of \code{\link[GA]{ga}} provides further details
+#'  and finer control.}
+#'  \item{\code{...}}{Additional arguments to \code{\link[GA]{ga}}.}
 #' }
 #'
 #' @template common_parameters
@@ -48,7 +52,8 @@ Lrnr_ga <- R6Class(
   public = list(
     initialize = function(learner_function = metalearner_linear,
                           eval_function = loss_squared_error,
-                          make_sparse = TRUE, convex_combination = TRUE) {
+                          make_sparse = TRUE, convex_combination = TRUE,
+                          maxiter = 100, run = 10, optim = TRUE, ...) {
       params <- args_to_list()
       super$initialize(params = params)
     }
@@ -75,72 +80,81 @@ Lrnr_ga <- R6Class(
       }
 
       weights <- task$weights
-      
+
       # Borrow the risk code from Lrnr_solnp
       # NB: We enforce convex combination by rescaling inside risk calculation
       # Probably better to use lagrange multipliers
       risk <- function(alphas) {
-        if(sum(alphas)==0){
+        if (sum(alphas) == 0) {
           return(NA)
         }
-        alphas <- alphas/sum(alphas)
+        alphas <- alphas / sum(alphas)
         if (!is.null(offset)) {
           preds <- learner_function(alphas, X, offset)
         } else {
           preds <- learner_function(alphas, X)
         }
         eval_result <- eval_function(preds, Y)
-        
-        if (!is.null(attr(eval_result, "risk"))) {
+
+        if (!is.null(attr(eval_result, "loss")) && !attr(eval_result, "loss")) {
           risk <- eval_result
         } else {
           loss <- eval_result
           risk <- weighted.mean(loss, weights)
         }
+        if (!is.null(attr(eval_result, "optimize")) &&
+          attr(eval_result, "optimize") == "maximize") {
+          risk <- risk * -1
+        }
         return(risk)
       }
-      
-      # build a matrix of suggestions
-      # first all the discrete SL solutions
-      discrete <- diag(p)
-      
-      # then equal weights
-      equal <- rep(1/p,p)
-      
-      # maybe a nnls for good measure
-      nnls_coef <- tryCatch({
-        nnls_fit <- nnls(X,Y)
-        coef(nnls_fit)
-      },error=function(error){
-        return(equal)
-      })
-      
-      suggestions <- rbind(discrete, equal,nnls_coef)
-      
-      # note we flip back to fitness because GA is a maximizer
-      GA1 <- ga(type = "real-valued", 
-                fitness =  function(x){-1*risk(x)},
-                lower = rep(0,p), upper = rep(1,p),
-                suggestions = suggestions,
-                popSize = 10*p, maxiter = 100, run=10,
-                keepBest = TRUE,
-                optim = TRUE)
-      
 
-      
-      
+      # build a matrix of suggestions
+      p <- ncol(X)
+      discrete <- diag(p) # first all the discrete SL solutions
+      equal <- rep(1 / p, p) # then equal weights
+
+      # maybe a nnls for good measure
+      nnls_coef <- tryCatch(
+        {
+          nnls_fit <- nnls(X, Y)
+          coef(nnls_fit)
+        },
+        error = function(error) {
+          return(equal)
+        }
+      )
+
+      suggestions <- rbind(discrete, equal, nnls_coef)
+
+      # note we flip back to fitness because GA is a maximizer
+      args <- c(list(
+        type = "real-valued", fitness = function(x) {
+          -1 * risk(x)
+        },
+        lower = rep(0, p), upper = rep(1, p), suggestions = suggestions,
+        popSize = 10 * p, keepBest = TRUE
+      ), params)
+      GA1 <- call_with_args(
+        GA::ga, args,
+        ignore = c(
+          "learner_function", "eval_function", "make_sparse",
+          "convex_combination"
+        )
+      )
+
       coefs <- as.vector(GA1@bestSol[[1]])
       names(coefs) <- colnames(task$X)
-      
+
       fit_object <- list(ga_fit <- GA1)
       if (params$make_sparse) {
         max_coef <- max(coefs)
         threshold <- max_coef / 1000
         coefs[coefs < threshold] <- 0
-        if (params$convex_combination) {
-          # renormalize so coefficients sum to 1
-          coefs <- coefs / sum(coefs)
-        }
+      }
+      if (params$convex_combination) {
+        # renormalize so coefficients sum to 1
+        coefs <- coefs / sum(coefs)
       }
       fit_object$coefficients <- coefs
       fit_object$training_offset <- task$has_node("offset")
