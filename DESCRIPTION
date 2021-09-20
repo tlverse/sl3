@@ -90,7 +90,8 @@ Suggests:
     gam (>= 1.15.0),
     haldensify (>= 0.1.5),
     mgcv,
-    hts
+    hts,
+    GA
 Remotes:
     github::tlverse/origami,
     github::tlverse/hal9001@devel,
