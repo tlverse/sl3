@@ -60,7 +60,7 @@
 importance <- function(fit, eval_fun = NULL, fold_number = "validation",
                        type = c("remove", "permute"),
                        importance_metric = c("ratio", "difference"),
-                       covariate_groups = NULL, B = 100L,
+                       covariate_groups = NULL, B = 1L,
                        cores = parallel::detectCores() - 1) {
 
   # check fit is trained
@@ -136,13 +136,7 @@ importance <- function(fit, eval_fun = NULL, fold_number = "validation",
   ########################## risk under observed data ##########################
   original_pred <- fit$predict_fold(task, fold_number = fold_number)
   original_eval <- eval_fun(original_pred, Y)
-  if (!is.null(attr(original_eval, "risk"))) {
-    if (!is.null(attr(original_eval, "transform"))) {
-      transform_type <- attr(original_eval, "transform")
-      original_eval <- transform_risk(original_eval, transform_type)
-      # note that eval now is not a risk, since it's been transformed,
-      # but we keep the name as is to streamline the functionality
-    }
+  if (!is.null(attr(original_eval, "loss")) && !attr(original_eval, "loss")) {
     original_risk <- original_eval
   } else {
     original_losses <- original_eval
@@ -173,10 +167,7 @@ importance <- function(fit, eval_fun = NULL, fold_number = "validation",
         # obtain predictions & risk on the new task with permuted x
         x_perm_pred <- fit$predict_fold(task_x_perm, fold_number)
         x_perm_eval <- eval_fun(x_perm_pred, Y)
-        if (!is.null(attr(x_perm_eval, "risk"))) {
-          if (!is.null(attr(x_perm_eval, "transform"))) {
-            x_perm_eval <- transform_risk(x_perm_eval, transform_type)
-          }
+        if (!is.null(attr(original_eval, "loss")) && !attr(original_eval, "loss")) {
           no_x_risk <- x_perm_eval
         } else {
           no_x_losses <- x_perm_eval
@@ -195,10 +186,7 @@ importance <- function(fit, eval_fun = NULL, fold_number = "validation",
       x_rm_fit <- x_rm_lrnr$train(task)
       x_rm_pred <- x_rm_fit$predict_fold(task, fold_number)
       x_rm_eval <- eval_fun(x_rm_pred, Y)
-      if (!is.null(attr(x_rm_eval, "risk"))) {
-        if (!is.null(attr(x_rm_eval, "transform"))) {
-          x_rm_eval <- transform_risk(x_rm_eval, transform_type)
-        }
+      if (!is.null(attr(original_eval, "loss")) && !attr(original_eval, "loss")) {
         no_x_risk <- x_rm_eval
       } else {
         no_x_losses <- x_rm_eval
@@ -253,39 +241,41 @@ importance <- function(fit, eval_fun = NULL, fold_number = "validation",
 #' Variable Importance Plot
 #'
 #' @param x The 2-column \code{data.table} returned by \code{importance}, where
-#'  the first column is the coviariate/groups and the second column is the
+#'  the first column is the covariate/groups and the second column is the
 #'  importance metric.
 #' @param nvar The maximum number of predictors to be plotted. Defaults to 30.
-#' @param ... Other parameters passed to \code{\link[graphics]{dotchart}}.
 #'
 #' @return A \code{\link[graphics]{dotchart}} of variable importance.
 #'
-#' @importFrom graphics dotchart
+#' @importFrom ggplot2 ggplot geom_point coord_flip scale_x_discrete labs
+#' @importFrom data.table data.table
 #'
 #' @name importance_plot
 #' @keywords variable importance
 #'
 #' @export
-importance_plot <- function(x, nvar = min(30, nrow(x)), ...) {
-  if (is.list(x)) {
+importance_plot <- function(x, nvar = min(30, nrow(x))) {
+  if (!is.data.table(x)) {
     x <- x$result
   }
 
   # get the importance metric
   xlab <- colnames(x)[2]
 
-  # sort by decreasing importance
-  x_sorted <- x[order(-x[, 2])]
-  # subset to include most at most nvar
-  x_sorted <- x_sorted[1:(min(nvar, nrow(x_sorted))), ]
   # sort by increasing importance
-  x_sorted <- x_sorted[order(x_sorted[, 2])]
+  x <- x[order(-x[, 2]), ]
+  # subset to include most at most nvar
+  x <- x[1:(min(nvar, nrow(x))), ]
 
-  # make dotchart with most important variables on top
-  # x_sorted[[2]] is importance scores & x_sorted[[1]] is covariate names
-  dotchart(
-    x = x_sorted[[2]], labels = x_sorted[[1]],
-    xlab = xlab, ylab = "",
-    xlim = c(min(x_sorted[[2]]), max(x_sorted[[2]])), ...
+  # format for ggplot
+  d <- data.table::data.table(
+    vars = factor(x_sorted[[1]], levels = x_sorted[[1]]), score = x_sorted[[2]]
   )
+
+  ggplot2::ggplot(d, aes(x = vars, y = score)) +
+    ggplot2::geom_point() +
+    ggplot2::ylim(c(min(d$score), max(d$score))) +
+    ggplot2::labs(x = "", y = xlab, title = "sl3 Variable Importance Plot") +
+    ggplot2::scale_x_discrete(limits = rev(levels(d$covs))) +
+    ggplot2::coord_flip()
 }

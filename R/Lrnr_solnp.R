@@ -95,11 +95,15 @@ Lrnr_solnp <- R6Class(
         }
         eval_result <- eval_function(preds, Y)
 
-        if (!is.null(attr(eval_result, "risk"))) {
+        if (!is.null(attr(eval_result, "loss")) && !attr(eval_result, "loss")) {
           risk <- eval_result
         } else {
           loss <- eval_result
           risk <- weighted.mean(loss, weights)
+        }
+        if (!is.null(attr(eval_result, "optimize")) &&
+          attr(eval_result, "optimize") == "maximize") {
+          risk <- risk * -1
         }
         return(risk)
       }

@@ -159,12 +159,10 @@ custom_ROCR_risk <- function(measure, cutoff = 0.5, name = NULL, ...) {
         ]
       }
     }
-
-    risk <- 1 - performance
-    attributes(risk)$risk <- TRUE
-    attributes(risk)$transform <- "performance"
-    attributes(risk)$name <- ifelse(is.null(name), measure, name)
-    return(risk)
+    attributes(performance)$loss <- FALSE
+    attributes(performance)$optimize <- "maximize"
+    attributes(performance)$name <- ifelse(is.null(name), measure, name)
+    return(performance)
   }
 }
 
@@ -217,7 +215,7 @@ cv_risk <- function(learner, eval_fun = NULL, coefs = NULL) {
 
   eval_result <- eval_fun(dt_long[["pred"]], dt_long[["obs"]])
 
-  if (!is.null(attr(eval_result, "risk"))) {
+  if (!is.null(attr(eval_result, "loss")) && !attr(eval_result, "loss")) {
     # try stratifying by id
     eval_by_id <- tryCatch(
       {
@@ -231,12 +229,6 @@ cv_risk <- function(learner, eval_fun = NULL, coefs = NULL) {
         ), by = list(learner, fold_index)]
       }
     )
-
-    # transform as required
-    if (!is.null(attr(eval_result, "transform"))) {
-      type <- attr(eval_result, "transform")
-      eval_by_id[, eval_result := transform_risk(eval_result, type)]
-    }
   } else {
     dt_long <- cbind(dt_long, eval_result = dt_long[["wts"]] * eval_result)
 
@@ -274,17 +266,4 @@ cv_risk <- function(learner, eval_fun = NULL, coefs = NULL) {
     )
   }
   return(risk_dt)
-}
-
-#' Transform risks for a risk function with transform attribute
-#'
-#' @param risk Numeric vector or scalar of risk(s) returned by a risk function
-#' @param type A valid transformation type
-transform_risk <- function(risk, type) {
-  if (type == "performance") {
-    transformed_risk <- 1 - risk
-  } else if (type != "performance") {
-    stop(paste0("Supplied transformation type, ", type, ", is not supported"))
-  }
-  return(transformed_risk)
 }
