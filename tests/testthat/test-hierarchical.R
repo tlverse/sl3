@@ -40,10 +40,10 @@ covar <- c("month", "aged", "sex", "momedu", "hfiacat")
 #   outcome_type = 'continuous',
 #   id = 'id'
 # )
-#
+# 
 # # task <- sl3_task
 # 
-# # test pre 
+# # test pre
 # lrnr_glm <- make_learner(Lrnr_glm)
 # lrnr_aggregate <- make_learner(Lrnr_aggregate)
 # lrnr_clust <- make_learner(Pipeline, lrnr_aggregate, lrnr_glm)
@@ -61,13 +61,13 @@ covar <- c("month", "aged", "sex", "momedu", "hfiacat")
 # lrnr_indiv <- make_learner(Pipeline, lrnr_glm, lrnr_aggregate)
 # indiv_fit <- lrnr_indiv$train(sl3_task)
 # 
-# # check whether the pipe learner has same preds as 
+# # check whether the pipe learner has same preds as
 # # manually aggregating glm results
 # 
 # # temp <- glm_fit$chain(sl3_task)$data
 # # temp_aggre <- temp[,lapply(.SD, mean),by=list(id)]
 # # temp_aggre <- temp_aggre$predictions
-# # 
+# #
 # # all(temp_aggre == indiv_fit$predict())
 # 
 # 
@@ -104,8 +104,8 @@ covar <- c("month", "aged", "sex", "momedu", "hfiacat")
 # 
 # # pre_aggre_fit_t <- lrnr_aggregate$train(sl3_task_t)
 # # pre_aggre_fit_t$predict(sl3_task_v)
-# # 
-# # 
+# #
+# #
 # # glm_fit_t <- lrnr_glm$train(sl3_task_t)
 # # glm_fit_t$predict()
 # # glm_fit_t$predict(sl3_task_v)
@@ -119,18 +119,18 @@ covar <- c("month", "aged", "sex", "momedu", "hfiacat")
 # #   outcome_type = 'continuous',
 # #   id = 'id'
 # # )
-# # 
-# # hierar_lib <- make_learner(Stack, 
+# #
+# # hierar_lib <- make_learner(Stack,
 # #                            lrnr_indiv,
 # #                            lrnr_clust)
-# # 
+# #
 # # discrete_sl_metalrn <- Lrnr_cv_selector$new()
-# # 
+# #
 # # hierar_sl <- make_learner(Lrnr_sl,
 # #                           learners = hierar_lib,
 # #                           outcome_type = 'continuous',
 # #                           metalearner = discrete_sl_metalrn)
-# # 
+# #
 # # hierar_sl_fit <- hierar_sl$train(sl3_task)
 
 

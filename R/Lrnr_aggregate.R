@@ -56,24 +56,6 @@ Lrnr_aggregate <- R6Class(
         # then output the data of aggregated covariates
         agg_task$X
       }
-      
-      # # do post aggregation 
-      # # extract the covariates (acutally preds) from last learner in chain
-      # covs <- task$nodes$covariates
-      # id <- task$nodes$id
-      # # df should contain id col which is the cluster_ids
-      # df <- as.data.table(task$data)
-      # all_cols <- c(covs, id)
-      # df <- df[, ..all_cols]
-      # 
-      # df_aggre <- aggregate(x = df,
-      #                       by = list(id=task$id),
-      #                       hp_aggregate)[,2:(ncol(df)+1)]
-      # df_aggre2 <- df[,lapply(.SD, mean),by=list(id)]
-      # 
-      # df_aggre <- as.data.table(df_aggre)
-      # pred_Y = df_aggre[,..covs][[1]]
-      # pred_Y
     },
     
     # update data
