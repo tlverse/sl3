@@ -45,7 +45,8 @@ test_that("Lrnr_grf predictions match those of grf::quantile_forest", {
     num.threads = 1L
   )
   grf_pkg_pred_out <- predict(
-    grf_pkg, quantiles = grf_fit$params$quantiles_pred
+    grf_pkg,
+    quantiles = grf_fit$params$quantiles_pred
   )
   grf_pkg_pred <- as.numeric(grf_pkg_pred_out$predictions)
 
