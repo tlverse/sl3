@@ -46,3 +46,20 @@ test_that("Lrnr_gam without specifying formula gives the predictions
   ## test equivalence of prediction from Lrnr_svm and svm::svm
   expect_equal(prd_lrnr_gam, prd_gam)
 })
+
+
+test_that("Lrnr_gam specifying complex formula gives the predictions that match those from gam", {
+  set.seed(256)
+  dat <- mgcv::gamSim(1, n = 400, dist = "normal", scale = 2)
+  task <- make_sl3_Task(
+    data = dat, outcome = "y",
+    covariates = c("x0", "x1", "x2", "x3", "f", "f0", "f1", "f2", "f3")
+  )
+  lrnr_gam <- Lrnr_gam$new(formula = y ~ te(x0, x1, k = 7) + s(x2) + s(x3), method = "REML")
+  fit <- lrnr_gam$train(task)
+  pred_sl3 <- fit$predict(task)
+
+  bt <- mgcv::gam(y ~ te(x0, x1, k = 7) + s(x2) + s(x3), data = dat, method = "REML")
+  pred_mgcv <- as.numeric(predict(bt))
+  expect_equal(pred_sl3, pred_mgcv)
+})
