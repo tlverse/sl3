@@ -3,12 +3,9 @@
 
 # R/`sl3`: Super Machine Learning with Pipelines
 
-[![Travis-CI Build
-Status](https://travis-ci.com/tlverse/sl3.svg?branch=master)](https://travis-ci.com/tlverse/sl3)
-[![Appveyor Build
-Status](https://ci.appveyor.com/api/projects/status/hagh8vidrdeacr7f?svg=true)](https://ci.appveyor.com/project/tlverse/sl3)
+[![R-CMD-check](https://github.com/tlverse/sl3/workflows/R-CMD-check/badge.svg)](https://github.com/tlverse/sl3/actions)
 [![Coverage
-Status](https://img.shields.io/codecov/c/github/tlverse/sl3/master.svg)](https://codecov.io/github/tlverse/sl3?branch=master)
+Status](https://codecov.io/gh/tlverse/sl3/branch/master/graph/badge.svg)](https://codecov.io/gh/tlverse/sl3)
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
@@ -16,8 +13,8 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1342293.svg)](https://doi.org/10.5281/zenodo.1342293)
 
-> A flexible implementation of the Super Learner ensemble learning
-> system
+> A flexible implementation of the Super Learner ensemble machine
+> learning system
 
 **Authors:** [Jeremy Coyle](https://github.com/jeremyrcoyle), [Nima
 Hejazi](https://nimahejazi.org), [Ivana
@@ -29,9 +26,10 @@ Sofrygin](https://github.com/osofr)
 
 ## What’s `sl3`?
 
-`sl3` is a modern implementation of the Super Learner algorithm of van
-der Laan, Polley, and Hubbard (2007). The Super Learner algorithm
-performs ensemble learning in one of two fashions:
+`sl3` is an implementation of the Super Learner ensemble machine
+learning algorithm of van der Laan, Polley, and Hubbard (2007). The
+Super Learner algorithm performs ensemble learning in one of two
+fashions:
 
 1.  The *discrete* Super Learner can be used to select the best
     prediction algorithm from among a supplied library of machine
@@ -48,7 +46,7 @@ performs ensemble learning in one of two fashions:
     *stacked generalization* (Wolpert 1992).
 
 Looking for long-form documentation or a walkthrough of the `sl3`
-package? Don’t worry\! Just take a look at [the chapter in our
+package? Don’t worry\! Just browse [the chapter in our
 book](https://tlverse.org/tlverse-handbook/sl3.html).
 
 -----
@@ -160,7 +158,7 @@ ecosystem](https://CRAN.R-project.org/package=future).
 ``` r
 # let's load the future package and set 4 cores for parallelization
 library(future)
-plan(multisession, workers = 4L)
+plan(multicore, workers = 4L)
 
 # now, let's re-train our Stack in parallel
 stack_fit <- learner_stack$train(task)
@@ -247,12 +245,6 @@ cv
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 
 density
-
-</th>
-
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-
-h2o
 
 </th>
 
@@ -392,12 +384,6 @@ x
 
 <td style="text-align:left;">
 
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
 
 </td>
@@ -432,7 +418,7 @@ Lrnr\_bartMachine
 
 <td style="text-align:left;">
 
-x
+√
 
 </td>
 
@@ -499,112 +485,6 @@ x
 <td style="text-align:left;">
 
 x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Lrnr\_bayesglm
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
 
 </td>
 
@@ -639,12 +519,6 @@ x
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -798,19 +672,13 @@ x
 
 <td style="text-align:left;">
 
+√
+
+</td>
+
+<td style="text-align:left;">
+
 x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-√
 
 </td>
 
@@ -908,12 +776,6 @@ x
 
 </td>
 
-<td style="text-align:left;">
-
-√
-
-</td>
-
 </tr>
 
 <tr>
@@ -945,12 +807,6 @@ x
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -1098,19 +954,13 @@ x
 
 <td style="text-align:left;">
 
+√
+
+</td>
+
+<td style="text-align:left;">
+
 x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-√
 
 </td>
 
@@ -1132,19 +982,13 @@ Lrnr\_dbarts
 
 <td style="text-align:left;">
 
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
 
 </td>
 
 <td style="text-align:left;">
 
-x
+√
 
 </td>
 
@@ -1221,12 +1065,6 @@ x
 <td style="text-align:left;">
 
 Lrnr\_define\_interactions
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -1408,12 +1246,6 @@ x
 
 </td>
 
-<td style="text-align:left;">
-
-x
-
-</td>
-
 </tr>
 
 <tr>
@@ -1508,12 +1340,6 @@ x
 
 </td>
 
-<td style="text-align:left;">
-
-x
-
-</td>
-
 </tr>
 
 <tr>
@@ -1551,12 +1377,6 @@ x
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -1708,12 +1528,6 @@ x
 
 </td>
 
-<td style="text-align:left;">
-
-x
-
-</td>
-
 </tr>
 
 <tr>
@@ -1739,12 +1553,6 @@ x
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -1832,19 +1640,13 @@ Lrnr\_gam
 
 <td style="text-align:left;">
 
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
 
 </td>
 
 <td style="text-align:left;">
 
-x
+√
 
 </td>
 
@@ -2008,12 +1810,6 @@ x
 
 </td>
 
-<td style="text-align:left;">
-
-x
-
-</td>
-
 </tr>
 
 <tr>
@@ -2039,12 +1835,6 @@ x
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -2168,12 +1958,6 @@ x
 
 <td style="text-align:left;">
 
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
 
 </td>
@@ -2239,12 +2023,6 @@ Lrnr\_glmnet
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -2398,12 +2176,6 @@ x
 
 <td style="text-align:left;">
 
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
 
 </td>
@@ -2426,25 +2198,19 @@ Lrnr\_gru\_keras
 
 <td style="text-align:left;">
 
-√
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-√
+x
 
 </td>
 
 <td style="text-align:left;">
 
 x
+
+</td>
+
+<td style="text-align:left;">
+
+√
 
 </td>
 
@@ -2592,12 +2358,6 @@ x
 
 <td style="text-align:left;">
 
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
 
 </td>
@@ -2651,12 +2411,6 @@ x
 <td style="text-align:left;">
 
 x
-
-</td>
-
-<td style="text-align:left;">
-
-√
 
 </td>
 
@@ -2756,12 +2510,6 @@ x
 
 <td style="text-align:left;">
 
-√
-
-</td>
-
-<td style="text-align:left;">
-
 x
 
 </td>
@@ -2839,12 +2587,6 @@ x
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -3008,12 +2750,6 @@ x
 
 </td>
 
-<td style="text-align:left;">
-
-x
-
-</td>
-
 </tr>
 
 <tr>
@@ -3039,12 +2775,6 @@ x
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -3139,12 +2869,6 @@ x
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -3308,112 +3032,6 @@ x
 
 </td>
 
-<td style="text-align:left;">
-
-x
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Lrnr\_lightgbm
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
 </tr>
 
 <tr>
@@ -3439,12 +3057,6 @@ x
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -3526,25 +3138,19 @@ Lrnr\_lstm\_keras
 
 <td style="text-align:left;">
 
-√
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-√
+x
 
 </td>
 
 <td style="text-align:left;">
 
 x
+
+</td>
+
+<td style="text-align:left;">
+
+√
 
 </td>
 
@@ -3668,12 +3274,6 @@ x
 
 <td style="text-align:left;">
 
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
 
 </td>
@@ -3739,12 +3339,6 @@ x
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -3908,12 +3502,6 @@ x
 
 </td>
 
-<td style="text-align:left;">
-
-x
-
-</td>
-
 </tr>
 
 <tr>
@@ -3939,12 +3527,6 @@ Lrnr\_nnet
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -4108,12 +3690,6 @@ x
 
 </td>
 
-<td style="text-align:left;">
-
-x
-
-</td>
-
 </tr>
 
 <tr>
@@ -4139,12 +3715,6 @@ Lrnr\_optim
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -4274,12 +3844,6 @@ x
 
 <td style="text-align:left;">
 
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
 
 </td>
@@ -4356,12 +3920,6 @@ x
 
 <td style="text-align:left;">
 
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
 
 </td>
@@ -4410,7 +3968,7 @@ x
 
 <td style="text-align:left;">
 
-√
+x
 
 </td>
 
@@ -4498,19 +4056,13 @@ x
 
 <td style="text-align:left;">
 
+√
+
+</td>
+
+<td style="text-align:left;">
+
 x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-√
 
 </td>
 
@@ -4556,12 +4108,6 @@ x
 
 <td style="text-align:left;">
 
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
 
 </td>
@@ -4610,7 +4156,7 @@ x
 
 <td style="text-align:left;">
 
-√
+x
 
 </td>
 
@@ -4639,12 +4185,6 @@ Lrnr\_polspline
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -4808,12 +4348,6 @@ x
 
 </td>
 
-<td style="text-align:left;">
-
-x
-
-</td>
-
 </tr>
 
 <tr>
@@ -4839,12 +4373,6 @@ Lrnr\_randomForest
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -4939,12 +4467,6 @@ Lrnr\_ranger
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -5104,12 +4626,6 @@ x
 
 <td style="text-align:left;">
 
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
 
 </td>
@@ -5139,12 +4655,6 @@ Lrnr\_rpart
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -5292,12 +4802,6 @@ x
 
 <td style="text-align:left;">
 
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
 
 </td>
@@ -5321,12 +4825,6 @@ x
 <td style="text-align:left;">
 
 Lrnr\_screener\_augment
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -5421,12 +4919,6 @@ x
 <td style="text-align:left;">
 
 Lrnr\_screener\_coefs
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -5592,12 +5084,6 @@ x
 
 <td style="text-align:left;">
 
-√
-
-</td>
-
-<td style="text-align:left;">
-
 x
 
 </td>
@@ -5621,12 +5107,6 @@ x
 <td style="text-align:left;">
 
 Lrnr\_screener\_importance
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -5804,12 +5284,6 @@ x
 
 <td style="text-align:left;">
 
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
 
 </td>
@@ -5839,12 +5313,6 @@ Lrnr\_solnp
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -6008,12 +5476,6 @@ x
 
 </td>
 
-<td style="text-align:left;">
-
-x
-
-</td>
-
 </tr>
 
 <tr>
@@ -6108,12 +5570,6 @@ x
 
 </td>
 
-<td style="text-align:left;">
-
-√
-
-</td>
-
 </tr>
 
 <tr>
@@ -6121,12 +5577,6 @@ x
 <td style="text-align:left;">
 
 Lrnr\_subset\_covariates
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -6308,12 +5758,6 @@ x
 
 </td>
 
-<td style="text-align:left;">
-
-x
-
-</td>
-
 </tr>
 
 <tr>
@@ -6345,12 +5789,6 @@ x
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -6492,12 +5930,6 @@ x
 
 <td style="text-align:left;">
 
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
 
 </td>
@@ -6539,12 +5971,6 @@ Lrnr\_xgboost
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -6639,7 +6065,7 @@ After using the `sl3` R package, please cite the following:
 
 ``` 
     @software{coyle2021sl3-rpkg,
-      author = {Coyle, Jeremy R and Hejazi, Nima S and Malenica, Ivana and 
+      author = {Coyle, Jeremy R and Hejazi, Nima S and Malenica, Ivana and
         Phillips, Rachael V and Sofrygin, Oleg},
       title = {{sl3}: Modern Pipelines for Machine Learning and {Super
         Learning}},

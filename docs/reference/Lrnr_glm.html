@@ -166,16 +166,7 @@ functionality, see the complete documentation of <code><a href='Lrnr_base.html'>
     
 
 <ul>
-<li><p><code>intercept = TRUE</code>: Should an intercept be included in the model?
-This argument is ignored when <code>formula</code> argument is not <code>NULL</code>.</p></li>
-<li><p><code>formula = NULL</code>: An object of class <code>formula</code> containing a
-description for the <code><a href='https://rdrr.io/r/stats/glm.html'>glm</a></code> model to fit. NOTE that the
-<code>formula</code>'s response variable (i.e., variable before "<code><a href='https://rdrr.io/r/base/tilde.html'>~</a></code>")
-must be identical to the outcome name as it's provided in the
-<code>task</code> and the <code>formula</code>'s regressors (i.e., variables after
-"<code><a href='https://rdrr.io/r/base/tilde.html'>~</a></code>") must correspond to the column names in <code>X</code>, where
-<code>X</code> is the <code>task</code>'s processed dataset that's used for training
-learners and it can be accessed via <code>task$X</code>.</p></li>
+<li><p><code>intercept = TRUE</code>: Should an intercept be included in the model?</p></li>
 <li><p><code>...</code>: Other parameters passed to <code><a href='https://rdrr.io/r/stats/glm.html'>glm</a></code> or
 <code><a href='https://rdrr.io/r/stats/glm.html'>glm.fit</a></code>.</p></li>
 </ul>
