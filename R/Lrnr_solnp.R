@@ -47,6 +47,8 @@
 #'   \item{\code{tol=1e-8}}{Relative tolerance on feasibility and optimality.}
 #'   \item{\code{trace=FALSE}}{The value of the objective function and the
 #'     parameters are printed at every major iteration.}
+#'   \item{\code{...}}{Additional arguments defined in \code{\link{Lrnr_base}}, 
+#'     such as \code{params} (like \code{formula}) and \code{name}.}
 #' }
 #'
 #' @template common_parameters
@@ -60,7 +62,7 @@ Lrnr_solnp <- R6Class(
                           eval_function = loss_squared_error,
                           make_sparse = TRUE, convex_combination = TRUE,
                           init_0 = FALSE, outer.iter = 400, inner.iter = 800,
-                          delta = 1e-7, tol = 1e-8, trace = FALSE) {
+                          delta = 1e-7, tol = 1e-8, trace = FALSE, ...) {
       params <- args_to_list()
       super$initialize(params = params)
     }
