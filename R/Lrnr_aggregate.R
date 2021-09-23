@@ -31,7 +31,7 @@ Lrnr_aggregate <- R6Class(
   portable = TRUE, 
   class = TRUE,
   public = list(
-    initialize = function(loc = "pre") {
+    initialize = function() {
       params <- args_to_list()
       super$initialize(params = params)
     }
