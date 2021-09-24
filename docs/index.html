@@ -197,11 +197,11 @@ install.packages("sl3")
 <div id="parallelization-with-futures" class="section level3">
 <h3 class="hasAnchor">
 <a href="#parallelization-with-futures" class="anchor"></a>Parallelization with <code>future</code>s</h3>
-<p>While it’s straightforward to fit a stack of learners (as above), it’s easy to take advantage of <code>sl3</code>’s built-in parallelization support too. To do this, you can simply choose a <code><a href="https://rdrr.io/pkg/future/man/plan.html">plan()</a></code> from the <a href="https://CRAN.R-project.org/package=future"><code>future</code> ecosystem</a>.</p>
+<p>While it’s straightforward to fit a stack of learners (as above), it’s easy to take advantage of <code>sl3</code>’s built-in parallelization support too. To do this, you can simply choose a <code><a href="https://future.futureverse.org/reference/plan.html">plan()</a></code> from the <a href="https://CRAN.R-project.org/package=future"><code>future</code> ecosystem</a>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># let's load the future package and set 4 cores for parallelization</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HenrikBengtsson/future">future</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/future/man/plan.html">plan</a></span><span class="op">(</span><span class="va">multicore</span>, workers <span class="op">=</span> <span class="fl">4L</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span>
+<span class="fu"><a href="https://future.futureverse.org/reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multicore</span>, workers <span class="op">=</span> <span class="fl">4L</span><span class="op">)</span>
 
 <span class="co"># now, let's re-train our Stack in parallel</span>
 <span class="va">stack_fit</span> <span class="op">&lt;-</span> <span class="va">learner_stack</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span>
@@ -257,6 +257,9 @@ install.packages("sl3")
 </th>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 <p>density</p>
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+<p>h2o</p>
 </th>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 <p>ids</p>
@@ -325,6 +328,9 @@ install.packages("sl3")
 <p>x</p>
 </td>
 <td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
 <p>√</p>
 </td>
 <td style="text-align:left;">
@@ -342,10 +348,13 @@ install.packages("sl3")
 <p>√</p>
 </td>
 <td style="text-align:left;">
-<p>√</p>
+<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>√</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -383,6 +392,56 @@ install.packages("sl3")
 </tr>
 <tr>
 <td style="text-align:left;">
+<p>Lrnr_bayesglm</p>
+</td>
+<td style="text-align:left;">
+<p>√</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
+<p>√</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
+<p>√</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
+<p>√</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
 <p>Lrnr_bilstm</p>
 </td>
 <td style="text-align:left;">
@@ -393,6 +452,9 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -469,10 +531,13 @@ install.packages("sl3")
 <p>x</p>
 </td>
 <td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
 <p>√</p>
 </td>
 <td style="text-align:left;">
-<p>x</p>
+<p>√</p>
 </td>
 </tr>
 <tr>
@@ -521,6 +586,9 @@ install.packages("sl3")
 <td style="text-align:left;">
 <p>x</p>
 </td>
+<td style="text-align:left;">
+<p>√</p>
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -537,6 +605,9 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -610,10 +681,13 @@ install.packages("sl3")
 <p>x</p>
 </td>
 <td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
 <p>√</p>
 </td>
 <td style="text-align:left;">
-<p>x</p>
+<p>√</p>
 </td>
 </tr>
 <tr>
@@ -624,10 +698,13 @@ install.packages("sl3")
 <p>√</p>
 </td>
 <td style="text-align:left;">
-<p>√</p>
+<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>√</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -666,6 +743,9 @@ install.packages("sl3")
 <tr>
 <td style="text-align:left;">
 <p>Lrnr_define_interactions</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -756,6 +836,9 @@ install.packages("sl3")
 <td style="text-align:left;">
 <p>x</p>
 </td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -803,6 +886,9 @@ install.packages("sl3")
 <td style="text-align:left;">
 <p>x</p>
 </td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -822,6 +908,9 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -897,6 +986,9 @@ install.packages("sl3")
 <td style="text-align:left;">
 <p>x</p>
 </td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -936,10 +1028,63 @@ install.packages("sl3")
 <p>x</p>
 </td>
 <td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
 <p>√</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<p>Lrnr_ga</p>
+</td>
+<td style="text-align:left;">
+<p>√</p>
+</td>
+<td style="text-align:left;">
+<p>√</p>
+</td>
+<td style="text-align:left;">
+<p>√</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
+<p>√</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
+<p>√</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -953,10 +1098,13 @@ install.packages("sl3")
 <p>√</p>
 </td>
 <td style="text-align:left;">
-<p>√</p>
+<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>√</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -1038,6 +1186,9 @@ install.packages("sl3")
 <td style="text-align:left;">
 <p>x</p>
 </td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1051,6 +1202,9 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -1112,6 +1266,9 @@ install.packages("sl3")
 <p>x</p>
 </td>
 <td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
 <p>√</p>
 </td>
 <td style="text-align:left;">
@@ -1145,6 +1302,9 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -1221,6 +1381,9 @@ install.packages("sl3")
 <p>x</p>
 </td>
 <td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
 <p>√</p>
 </td>
 <td style="text-align:left;">
@@ -1232,13 +1395,16 @@ install.packages("sl3")
 <p>Lrnr_gru_keras</p>
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
+<p>√</p>
 </td>
 <td style="text-align:left;">
 <p>√</p>
+</td>
+<td style="text-align:left;">
+<p>√</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -1312,6 +1478,9 @@ install.packages("sl3")
 <p>x</p>
 </td>
 <td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
 <p>√</p>
 </td>
 <td style="text-align:left;">
@@ -1339,6 +1508,9 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>x</p>
+</td>
+<td style="text-align:left;">
+<p>√</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -1388,6 +1560,9 @@ install.packages("sl3")
 <p>x</p>
 </td>
 <td style="text-align:left;">
+<p>√</p>
+</td>
+<td style="text-align:left;">
 <p>x</p>
 </td>
 <td style="text-align:left;">
@@ -1427,6 +1602,9 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -1508,6 +1686,9 @@ install.packages("sl3")
 <td style="text-align:left;">
 <p>x</p>
 </td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1521,6 +1702,9 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -1568,6 +1752,9 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -1649,16 +1836,19 @@ install.packages("sl3")
 <td style="text-align:left;">
 <p>x</p>
 </td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
-<p>Lrnr_lstm</p>
+<p>Lrnr_lightgbm</p>
 </td>
 <td style="text-align:left;">
-<p>x</p>
+<p>√</p>
 </td>
 <td style="text-align:left;">
-<p>x</p>
+<p>√</p>
 </td>
 <td style="text-align:left;">
 <p>√</p>
@@ -1676,6 +1866,12 @@ install.packages("sl3")
 <p>x</p>
 </td>
 <td style="text-align:left;">
+<p>√</p>
+</td>
+<td style="text-align:left;">
+<p>√</p>
+</td>
+<td style="text-align:left;">
 <p>x</p>
 </td>
 <td style="text-align:left;">
@@ -1689,9 +1885,6 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -1702,13 +1895,16 @@ install.packages("sl3")
 <p>Lrnr_lstm_keras</p>
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
+<p>√</p>
 </td>
 <td style="text-align:left;">
 <p>√</p>
+</td>
+<td style="text-align:left;">
+<p>√</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -1770,6 +1966,9 @@ install.packages("sl3")
 <p>x</p>
 </td>
 <td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
 <p>√</p>
 </td>
 <td style="text-align:left;">
@@ -1803,6 +2002,9 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -1884,6 +2086,9 @@ install.packages("sl3")
 <td style="text-align:left;">
 <p>x</p>
 </td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1897,6 +2102,9 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -1978,6 +2186,9 @@ install.packages("sl3")
 <td style="text-align:left;">
 <p>x</p>
 </td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1991,6 +2202,9 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -2055,6 +2269,9 @@ install.packages("sl3")
 <p>x</p>
 </td>
 <td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
 <p>√</p>
 </td>
 <td style="text-align:left;">
@@ -2093,24 +2310,6 @@ install.packages("sl3")
 <p>x</p>
 </td>
 <td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
 <p>x</p>
 </td>
 <td style="text-align:left;">
@@ -2118,6 +2317,27 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>x</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
+<p>√</p>
+</td>
+<td style="text-align:left;">
+<p>√</p>
 </td>
 </tr>
 <tr>
@@ -2161,10 +2381,13 @@ install.packages("sl3")
 <p>x</p>
 </td>
 <td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
 <p>√</p>
 </td>
 <td style="text-align:left;">
-<p>x</p>
+<p>√</p>
 </td>
 </tr>
 <tr>
@@ -2187,24 +2410,6 @@ install.packages("sl3")
 <p>x</p>
 </td>
 <td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
 <p>x</p>
 </td>
 <td style="text-align:left;">
@@ -2212,6 +2417,27 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>x</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
+<p>√</p>
+</td>
+<td style="text-align:left;">
+<p>√</p>
 </td>
 </tr>
 <tr>
@@ -2226,6 +2452,9 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -2307,6 +2536,9 @@ install.packages("sl3")
 <td style="text-align:left;">
 <p>x</p>
 </td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2320,6 +2552,9 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -2367,6 +2602,9 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -2446,6 +2684,9 @@ install.packages("sl3")
 <p>x</p>
 </td>
 <td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
 <p>√</p>
 </td>
 </tr>
@@ -2461,6 +2702,9 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -2534,6 +2778,9 @@ install.packages("sl3")
 <p>x</p>
 </td>
 <td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
 <p>√</p>
 </td>
 <td style="text-align:left;">
@@ -2546,6 +2793,9 @@ install.packages("sl3")
 <tr>
 <td style="text-align:left;">
 <p>Lrnr_screener_augment</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -2593,6 +2843,9 @@ install.packages("sl3")
 <tr>
 <td style="text-align:left;">
 <p>Lrnr_screener_coefs</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -2675,6 +2928,9 @@ install.packages("sl3")
 <p>x</p>
 </td>
 <td style="text-align:left;">
+<p>√</p>
+</td>
+<td style="text-align:left;">
 <p>x</p>
 </td>
 <td style="text-align:left;">
@@ -2687,6 +2943,9 @@ install.packages("sl3")
 <tr>
 <td style="text-align:left;">
 <p>Lrnr_screener_importance</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -2775,6 +3034,9 @@ install.packages("sl3")
 <p>x</p>
 </td>
 <td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
 <p>√</p>
 </td>
 </tr>
@@ -2790,6 +3052,9 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -2871,6 +3136,9 @@ install.packages("sl3")
 <td style="text-align:left;">
 <p>x</p>
 </td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2918,10 +3186,16 @@ install.packages("sl3")
 <td style="text-align:left;">
 <p>x</p>
 </td>
+<td style="text-align:left;">
+<p>√</p>
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
 <p>Lrnr_subset_covariates</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -3012,6 +3286,9 @@ install.packages("sl3")
 <td style="text-align:left;">
 <p>x</p>
 </td>
+<td style="text-align:left;">
+<p>x</p>
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3028,6 +3305,9 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>
@@ -3098,6 +3378,9 @@ install.packages("sl3")
 <p>x</p>
 </td>
 <td style="text-align:left;">
+<p>x</p>
+</td>
+<td style="text-align:left;">
 <p>√</p>
 </td>
 <td style="text-align:left;">
@@ -3119,6 +3402,9 @@ install.packages("sl3")
 </td>
 <td style="text-align:left;">
 <p>√</p>
+</td>
+<td style="text-align:left;">
+<p>x</p>
 </td>
 <td style="text-align:left;">
 <p>x</p>

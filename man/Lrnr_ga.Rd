@@ -5,56 +5,66 @@
 \alias{Lrnr_ga}
 \title{Nonlinear Optimization via Genetic Algorithm (GA)}
 \format{
-\code{\link{R6Class}} object.
+An \code{\link[R6]{R6Class}} object inheriting from
+\code{\link{Lrnr_base}}.
 }
 \value{
-Learner object with methods for training and prediction. See
-\code{\link{Lrnr_base}} for documentation on learners.
+A learner object inheriting from \code{\link{Lrnr_base}} with
+methods for training and prediction. For a full list of learner
+functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 }
 \description{
-This meta-learner provides fitting procedures for any pairing of loss or risk
+This metalearner provides fitting procedures for any pairing of loss or risk
 function and metalearner function, subject to constraints. The optimization
 problem is solved by making use of the \code{\link[GA]{ga}} function in the
 \pkg{GA} R package. For further consult the documentation of this package.
 }
 \section{Parameters}{
 
-\describe{
-\item{\code{learner_function=metalearner_linear}}{A function(alpha, X) that
-takes a vector of covariates and a matrix of data and combines them into
-a vector of predictions. See \link{metalearners} for options.}
-\item{\code{eval_function=loss_squared_error}}{A function(pred, truth) that
+\itemize{
+\item \code{learner_function = metalearner_linear}: A function(alpha, X) that
+takes a vector of covariates and a matrix of data and combines them
+into a vector of predictions. See \code{\link{metalearners}} for
+options.
+\item \code{eval_function = loss_squared_error}: A function(pred, truth) that
 takes prediction and truth vectors and returns a loss vector or a risk
-scalar. See \link{loss_functions} and \link{risk_functions} for options
-and more detail.}
-\item{\code{make_sparse=TRUE}}{If TRUE, zeros out small alpha values.}
-\item{\code{convex_combination=TRUE}}{If \code{TRUE}, constrain alpha to
-sum to 1.}
-\item{\code{maxiter=100}}{The maximum number of iterations to run before
-the GA search is halted.}
-\item{\code{run=10}}{The number of consecutive generations without any
-improvement in the best fitness value before the GA is stopped.}
-\item{\code{optim=TRUE}}{A logical determining whether or not a local
-search using general-purpose optimization algorithms should be used.
-Argument \code{optimArgs} of \code{\link[GA]{ga}} provides further details
-and finer control.}
-\item{\code{...}}{Additional arguments to \code{\link[GA]{ga}}.}
+scalar. See \code{\link{loss_functions}} and
+\code{\link{risk_functions}} for options and more detail.
+\item \code{make_sparse = TRUE}: If \code{TRUE}, zeros out small alpha values.
+\item \code{convex_combination = TRUE}: If \code{TRUE}, constrain alpha to sum
+to 1.
+\item \code{maxiter = 100}: The maximum number of iterations to run before the
+GA search is halted.
+\item \code{run = 10}: The number of consecutive generations without any
+improvement in the best fitness value before the GA is stopped.
+\item \code{optim = TRUE}: A logical determining whether or not a local search
+using general-purpose optimization algorithms should be used. Argument
+\code{optimArgs} of \code{\link[GA]{ga}} provides further details and
+finer control.
+\item \code{...}: Additional arguments to \code{\link[GA]{ga}} and/or
+\code{\link{Lrnr_base}}.
 }
 }
 
-\section{Common Parameters}{
+\examples{
+# define ML task
+data(cpp_imputed)
+covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
+task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
 
+# build relatively fast learner library (not recommended for real analysis)
+lasso_lrnr <- Lrnr_glmnet$new()
+glm_lrnr <- Lrnr_glm$new()
+ranger_lrnr <- Lrnr_ranger$new()
+lrnrs <- c(lasso_lrnr, glm_lrnr, ranger_lrnr)
+names(lrnrs) <- c("lasso", "glm", "ranger")
+lrnr_stack <- make_learner(Stack, lrnrs)
 
-Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by \code{Lrnr_base}, and shared
-by all learners.
-
-\describe{
-\item{\code{covariates}}{A character vector of covariates. The learner will use this to subset the covariates for any specified task}
-\item{\code{outcome_type}}{A \code{\link{variable_type}} object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified}
-\item{\code{...}}{All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating}
+# instantiate SL with GA metalearner
+ga <- Lrnr_ga$new()
+sl <- Lrnr_sl$new(lrnr_stack, ga)
+sl_fit <- sl$train(task)
 }
-}
-
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},
