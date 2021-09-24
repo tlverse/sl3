@@ -8,7 +8,7 @@
 #' are key in getting any possibility of successful convergence, therefore it
 #' is suggested that the user change these appropriately to reflect their
 #' problem specification. For further details, consult the documentation of the
-#' \code{Rsolnp} package.
+#' \pkg{Rsolnp} package.
 #'
 #' @docType class
 #'
@@ -18,41 +18,57 @@
 #'
 #' @keywords data
 #'
-#' @return Learner object with methods for training and prediction. See
-#'  \code{\link{Lrnr_base}} for documentation on learners.
+#' @return A learner object inheriting from \code{\link{Lrnr_base}} with
+#'  methods for training and prediction. For a full list of learner
+#'  functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 #'
-#' @format \code{\link{R6Class}} object.
+#' @format An \code{\link[R6]{R6Class}} object inheriting from
+#'  \code{\link{Lrnr_base}}.
 #'
 #' @family Learners
 #'
 #' @section Parameters:
-#' \describe{
-#'   \item{\code{learner_function=metalearner_linear}}{A function(alpha, X) that
-#'     takes a vector of covariates and a matrix of data and combines them into
-#'     a vector of predictions. See \link{metalearners} for options.}
-#'   \item{\code{eval_function=loss_squared_error}}{A function(pred, truth) that
-#'     takes prediction and truth vectors and returns a loss vector or a risk
-#'     scalar. See \link{loss_functions} and \link{risk_functions} for options
-#'     and more detail.}
-#'   \item{\code{make_sparse=TRUE}}{If TRUE, zeros out small alpha values.}
-#'   \item{\code{convex_combination=TRUE}}{If \code{TRUE}, constrain alpha to
-#'     sum to 1.}
-#'   \item{\code{init_0=FALSE}}{If TRUE, alpha is initialized to all 0's, useful
-#'     for TMLE. Otherwise, it is initialized to equal weights summing to 1,
-#'     useful for Super Learner.}
-#'   \item{\code{outer.iter=400}}{Maximum number of major (outer) iterations.}
-#'   \item{\code{inner.iter=800}}{Maximum number of minor (inner) iterations.}
-#'   \item{\code{delta=1e-7}}{Relative step size in forward difference
-#'     evaluation.}
-#'   \item{\code{tol=1e-8}}{Relative tolerance on feasibility and optimality.}
-#'   \item{\code{trace=FALSE}}{The value of the objective function and the
-#'     parameters are printed at every major iteration.}
-#'   \item{\code{...}}{Additional arguments defined in \code{\link{Lrnr_base}}, 
-#'     such as \code{params} (like \code{formula}) and \code{name}.}
-#' }
+#'   - \code{learner_function = metalearner_linear}: A function(alpha, X) that
+#'       takes a vector of covariates and a matrix of data and combines them
+#'       into a vector of predictions. See \code{\link{metalearners}} for
+#'       options.
+#'   - \code{eval_function = loss_squared_error}: A function(pred, truth) that
+#'       takes prediction and truth vectors and returns a loss vector or a risk
+#'       scalar. See \code{\link{loss_functions}} and
+#'       \code{\link{risk_functions}} for options and more detail.
+#'   - \code{make_sparse = TRUE}: If \code{TRUE}, zeros out small alpha values.
+#'   - \code{convex_combination = TRUE}: If \code{TRUE}, constrain alpha to sum
+#'       to 1.
+#'   - \code{init_0 = FALSE}: If \code{TRUE}, alpha is initialized to all 0's,
+#'       useful for TMLE. Otherwise, it is initialized to equal weights summing
+#'       to 1, useful for Super Learner.
+#'   - \code{outer.iter = 400}: Maximum number of major (outer) iterations.
+#'   - \code{inner.iter = 800}: Maximum number of minor (inner) iterations.
+#'   - \code{delta = 1e-7}:Relative step size in forward difference evaluation.
+#'   - \code{tol = 1e-8}: Relative tolerance on feasibility and optimality.
+#'   - \code{trace = FALSE}: The value of the objective function and the
+#'       parameters are printed at every major iteration.
+#'   - \code{...}: Additional arguments defined in \code{\link{Lrnr_base}},
+#'     such as \code{params} (like \code{formula}) and \code{name}.
 #'
-#' @template common_parameters
-#
+#' @examples
+#' # define ML task
+#' data(cpp_imputed)
+#' covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
+#' task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
+#'
+#' # build relatively fast learner library (not recommended for real analysis)
+#' lasso_lrnr <- Lrnr_glmnet$new()
+#' glm_lrnr <- Lrnr_glm$new()
+#' ranger_lrnr <- Lrnr_ranger$new()
+#' lrnrs <- c(lasso_lrnr, glm_lrnr, ranger_lrnr)
+#' names(lrnrs) <- c("lasso", "glm", "ranger")
+#' lrnr_stack <- make_learner(Stack, lrnrs)
+#'
+#' # instantiate SL with GA metalearner
+#' solnp_meta <- Lrnr_solnp$new()
+#' sl <- Lrnr_sl$new(lrnr_stack, solnp_meta)
+#' sl_fit <- sl$train(task)
 Lrnr_solnp <- R6Class(
   classname = "Lrnr_solnp",
   inherit = Lrnr_base, portable = TRUE,

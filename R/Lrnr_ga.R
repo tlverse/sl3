@@ -1,6 +1,6 @@
 #' Nonlinear Optimization via Genetic Algorithm (GA)
 #'
-#' This meta-learner provides fitting procedures for any pairing of loss or risk
+#' This metalearner provides fitting procedures for any pairing of loss or risk
 #' function and metalearner function, subject to constraints. The optimization
 #' problem is solved by making use of the \code{\link[GA]{ga}} function in the
 #' \pkg{GA} R package. For further consult the documentation of this package.
@@ -13,38 +13,56 @@
 #'
 #' @keywords data
 #'
-#' @return Learner object with methods for training and prediction. See
-#'  \code{\link{Lrnr_base}} for documentation on learners.
+#' @return A learner object inheriting from \code{\link{Lrnr_base}} with
+#'  methods for training and prediction. For a full list of learner
+#'  functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 #'
-#' @format \code{\link{R6Class}} object.
+#' @format An \code{\link[R6]{R6Class}} object inheriting from
+#'  \code{\link{Lrnr_base}}.
 #'
 #' @family Learners
 #'
 #' @section Parameters:
-#' \describe{
-#'   \item{\code{learner_function=metalearner_linear}}{A function(alpha, X) that
-#'     takes a vector of covariates and a matrix of data and combines them into
-#'     a vector of predictions. See \link{metalearners} for options.}
-#'   \item{\code{eval_function=loss_squared_error}}{A function(pred, truth) that
-#'     takes prediction and truth vectors and returns a loss vector or a risk
-#'     scalar. See \link{loss_functions} and \link{risk_functions} for options
-#'     and more detail.}
-#'   \item{\code{make_sparse=TRUE}}{If TRUE, zeros out small alpha values.}
-#'   \item{\code{convex_combination=TRUE}}{If \code{TRUE}, constrain alpha to
-#'     sum to 1.}
-#'   \item{\code{maxiter=100}}{The maximum number of iterations to run before
-#'     the GA search is halted.}
-#'   \item{\code{run=10}}{The number of consecutive generations without any
-#'     improvement in the best fitness value before the GA is stopped.}
-#'  \item{\code{optim=TRUE}}{A logical determining whether or not a local
-#'  search using general-purpose optimization algorithms should be used.
-#'  Argument \code{optimArgs} of \code{\link[GA]{ga}} provides further details
-#'  and finer control.}
-#'  \item{\code{...}}{Additional arguments to \code{\link[GA]{ga}}.}
-#' }
+#'   - \code{learner_function = metalearner_linear}: A function(alpha, X) that
+#'       takes a vector of covariates and a matrix of data and combines them
+#'       into a vector of predictions. See \code{\link{metalearners}} for
+#'       options.
+#'   - \code{eval_function = loss_squared_error}: A function(pred, truth) that
+#'       takes prediction and truth vectors and returns a loss vector or a risk
+#'       scalar. See \code{\link{loss_functions}} and
+#'       \code{\link{risk_functions}} for options and more detail.
+#'   - \code{make_sparse = TRUE}: If \code{TRUE}, zeros out small alpha values.
+#'   - \code{convex_combination = TRUE}: If \code{TRUE}, constrain alpha to sum
+#'       to 1.
+#'   - \code{maxiter = 100}: The maximum number of iterations to run before the
+#'       GA search is halted.
+#'   - \code{run = 10}: The number of consecutive generations without any
+#'       improvement in the best fitness value before the GA is stopped.
+#'   - \code{optim = TRUE}: A logical determining whether or not a local search
+#'       using general-purpose optimization algorithms should be used. Argument
+#'       \code{optimArgs} of \code{\link[GA]{ga}} provides further details and
+#'       finer control.
+#'   - \code{...}: Additional arguments to \code{\link[GA]{ga}} and/or
+#'       \code{\link{Lrnr_base}}.
 #'
-#' @template common_parameters
-#
+#' @examples
+#' # define ML task
+#' data(cpp_imputed)
+#' covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
+#' task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
+#'
+#' # build relatively fast learner library (not recommended for real analysis)
+#' lasso_lrnr <- Lrnr_glmnet$new()
+#' glm_lrnr <- Lrnr_glm$new()
+#' ranger_lrnr <- Lrnr_ranger$new()
+#' lrnrs <- c(lasso_lrnr, glm_lrnr, ranger_lrnr)
+#' names(lrnrs) <- c("lasso", "glm", "ranger")
+#' lrnr_stack <- make_learner(Stack, lrnrs)
+#'
+#' # instantiate SL with GA metalearner
+#' ga <- Lrnr_ga$new()
+#' sl <- Lrnr_sl$new(lrnr_stack, ga)
+#' sl_fit <- sl$train(task)
 Lrnr_ga <- R6Class(
   classname = "Lrnr_ga",
   inherit = Lrnr_base, portable = TRUE,
