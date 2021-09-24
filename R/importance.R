@@ -1,67 +1,93 @@
+utils::globalVariables(c("x_sorted", "score"))
 #' Variable Importance
 #'
 #' Function that takes a cross-validated fit (i.e., cross-validated learner that
 #' has already been trained on a task), which could be a cross-validated single
-#' learner or super learner, to generate a risk-based variable importance
-#' measure for each covariate in the trained task, or for each group of
-#' covariates. This function outputs a \code{data.table}, where each row
-#' corresponds to the risk difference or the risk ratio between the following
-#' two risks: the risk when a covariate (or group of covariates) is permuted or
-#' removed, and the original risk (i.e., when all covariates are included as
-#' they were in the observed data). A higher risk ratio/difference corresponds
-#' to a more important covariate/group. A plot can be generated from the
-#' returned \code{data.table} by calling companion function
-#' \code{plot_importance}.
+#' learner or super learner, and generates a risk-based variable importance
+#' score for either each covariate or each group of coavriates in the task.
+#' This function outputs a \code{data.table}, where each row corresponds to the
+#' risk difference or the risk ratio between the following two risks: the risk
+#' when a covariate (or group of covariates) is permuted or removed, and the
+#' original risk (i.e., when all covariates are included as they were in the
+#' observed data). A higher risk ratio/difference corresponds to a more
+#' important covariate/group. A plot can be generated from the returned
+#' \code{data.table} by calling companion function \code{\link{importance_plot}}.
 #'
-#' @param fit A trained cross-validated learner (e.g., cv stack, super learner),
-#'  from which cross-validated predictions can be generated.
-#' @param eval_fun The evaluation function (risk or loss function) for
-#'  evaluating the risk. Defaults vary based on the outcome type: squared error
-#'  loss for continuous outcomes, and negative log-likelihood loss for discrete
-#'  outcomes. See \code{\link{loss_functions}} and \code{\link{risk_functions}}
-#'  for options.
-#' @param fold_number The fold number to use for obtaining the predictions
-#'  from the fit. Either a positive integer for obtaining predictions from a
-#'  specific fold's fit; \code{"full"} for obtaining predictions from a fit on
-#'  all of the data, or \code{"validation"} (default) for obtaining
-#'  cross-validated predictions, where the data used for training and prediction
-#'  never overlaps across the folds. Note that if a positive integer or
-#'  \code{"full"} is supplied, then there will be overlap between the  data
-#'  used for training and prediction.
-#' @param type Which method should be used to obscure the relationship between
-#'  the covariate and the outcome. When type is \code{"remove"} (default), each
-#'  covariate is removed from the task and the cross-validated learner is refit
-#'  to this modified task and then predictions are obtained from this refit.
-#'  When type is \code{"permute"}, each covariate is permuted (sampled without
-#'  replacement), and then predictions are obtained from this modified data with
-#'  one permuted covariate.
-#' @param importance_metric Either \code{"ratio"} (default), which returns
-#'  the risk with the permuted/removed X divided by observed risk with all X; or
-#'  \code{"difference"}, which returns the difference between the risk with the
-#'  permuted/removed X and the observed risk.
-#' @param covariate_groups Optional named list covariate groups which will
-#'  invoke variable importance evaluation at the group-level, by
-#'  removing/permuting all covariates in the same group together. If covariates
-#'  in the task are not specified in the list of groups, then those covariates
-#'  will be added as additional single-covariate groups.
-#' @param B Optional integer specifying the number of permutations to average
-#'  the permuted risk over when \code{type = "permute"}.
-#' @param cores Number of cores for parallelizing the \code{B} permutations.
+#' @export
 #'
-#' @importFrom data.table data.table
-#' @importFrom parallel mclapply detectCores
+#' @name importance
+#' @rdname importance
+#' @keywords variable importance
+#'
+#' @importFrom data.table data.table setorder setnames
 #'
 #' @return A \code{data.table} of variable importance for each covariate.
 #'
-#' @name importance
-#' @keywords variable importance
+#' @section Parameters:
+#'   - \code{fit}: A trained cross-validated (CV) learner (such as a CV stack or
+#'       super learner), from which cross-validated predictions can be
+#'       generated.
+#'   - \code{eval_fun = NULL}: The evaluation function (risk or loss function)
+#'       for evaluating the risk. Defaults vary based on the outcome type:
+#'       squared error loss for continuous outcomes and negative log-likelihood
+#'       loss for discrete outcomes. See \code{\link{loss_functions}} and
+#'       \code{\link{risk_functions}} for options.
+#'   - \code{fold_number} The fold number to use for obtaining the predictions
+#'       from the fit. Either a positive integer for obtaining predictions from
+#'       a specific fold's fit; \code{"full"} for obtaining predictions from a
+#'       fit on all of the data, or \code{"validation"} (default) for obtaining
+#'       cross-validated predictions, where the data used for training and
+#'       prediction never overlaps across the folds. Note that if a positive
+#'       integer or \code{"full"} is supplied here then there will be overlap
+#'       between the data used for training and validation, so
+#'       \code{fold_number ="validation"} is recommended.
+#'   - \code{type}: Which method should be used to obscure the relationship
+#'       between each covariate / covariate group and the outcome? When
+#'       \code{type} is \code{"remove"} (default), each covariate / covariate
+#'       group is removed one at a time from the task; the cross-validated
+#'       learner is refit to this modified task; and finally, predictions are
+#'       obtained from this refit. When \code{type} is \code{"permute"}, each
+#'       covariate / covariate group is permuted (sampled without replacement)
+#'       one at a time, and then predictions are obtained from this modified
+#'       data.
+#'   - \code{importance_metric}: Either \code{"ratio"} (default) or
+#'       \code{"difference"}. For each covariate / covariate group,
+#'       \code{"ratio"} returns the risk of the permuted/removed
+#'       covariate / covariate group divided by observed/original risk (i.e.,
+#'       the risk with all covariates as they existed in the sample) and
+#'       \code{"difference"} returns the difference between the risk with the
+#'       permuted/removed covariate / covariate group and the observed risk.
+#'   - \code{covariate_groups}: Optional named list covariate groups which will
+#'       invoke variable importance evaluation at the group-level, by
+#'       removing/permuting all covariates in the same group together. If
+#'       covariates in the task are not specified in the list of groups, then
+#'       those covariates will be added as additional single-covariate groups.
 #'
-#' @export
-importance <- function(fit, eval_fun = NULL, fold_number = "validation",
+#' @examples
+#' # define ML task
+#' data(cpp_imputed)
+#' covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
+#' task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
+#'
+#' # build relatively fast learner library (not recommended for real analysis)
+#' lasso_lrnr <- Lrnr_glmnet$new()
+#' glm_lrnr <- Lrnr_glm$new()
+#' ranger_lrnr <- Lrnr_ranger$new()
+#' lrnrs <- c(lasso_lrnr, glm_lrnr, ranger_lrnr)
+#' names(lrnrs) <- c("lasso", "glm", "ranger")
+#' lrnr_stack <- make_learner(Stack, lrnrs)
+#'
+#' # instantiate SL with default metalearner
+#' sl <- Lrnr_sl$new(lrnr_stack)
+#' sl_fit <- sl$train(task)
+#'
+#' importance_result <- importance(sl_fit)
+#' importance_result
+importance <- function(fit, eval_fun = NULL,
+                       fold_number = c("validation", "full"),
                        type = c("remove", "permute"),
                        importance_metric = c("ratio", "difference"),
-                       covariate_groups = NULL, B = 1L,
-                       cores = parallel::detectCores() - 1) {
+                       covariate_groups = NULL) {
 
   # check fit is trained
   if (!fit$is_trained) {
@@ -71,6 +97,7 @@ importance <- function(fit, eval_fun = NULL, fold_number = "validation",
   ################################ set defaults ################################
   importance_metric <- match.arg(importance_metric)
   type <- match.arg(type)
+  fold_number <- match.arg(fold_number)
 
   if (is.null(eval_fun)) {
     outcome_type <- fit$training_task$outcome_type$type
@@ -95,6 +122,7 @@ importance <- function(fit, eval_fun = NULL, fold_number = "validation",
   d <- task$data
   X <- task$nodes$covariates
   Y <- task$Y
+  weights <- task$weights
 
   ############################ check covariate groups ##########################
   if (!is.null(covariate_groups)) {
@@ -140,7 +168,7 @@ importance <- function(fit, eval_fun = NULL, fold_number = "validation",
     original_risk <- original_eval
   } else {
     original_losses <- original_eval
-    original_risk <- mean(original_losses)
+    original_risk <- weighted.mean(original_losses, weights)
   }
 
   ######################## list of importance results ##########################
@@ -153,28 +181,23 @@ importance <- function(fit, eval_fun = NULL, fold_number = "validation",
     }
     # get the risk when the covariate/group is permuted/removed
     if (type == "permute") {
-      seeds <- sample(11:2^15, B)
-      no_x_risk <- mean(unlist(parallel::mclapply(seeds, function(b) {
-        set.seed(b)
-        # get the permutation rows
-        perm <- sample(1:nrow(d), nrow(d))
-        # permute x (the covariate/group), and name it as the original x
-        x_perm <- data.table(d[perm, x, with = FALSE])
-        names(x_perm) <- x
-        # replace original x with permuted x, and update task with permuted x
-        x_perm_name <- task$add_columns(x_perm)
-        task_x_perm <- task$next_in_chain(column_names = x_perm_name)
-        # obtain predictions & risk on the new task with permuted x
-        x_perm_pred <- fit$predict_fold(task_x_perm, fold_number)
-        x_perm_eval <- eval_fun(x_perm_pred, Y)
-        if (!is.null(attr(original_eval, "loss")) && !attr(original_eval, "loss")) {
-          no_x_risk <- x_perm_eval
-        } else {
-          no_x_losses <- x_perm_eval
-          no_x_risk <- mean(no_x_losses)
-        }
-        return(no_x_risk)
-      }, mc.cores = cores)))
+      # get the permutation rows
+      perm <- sample(1:nrow(d), nrow(d))
+      # permute x (the covariate/group), and name it as the original x
+      x_perm <- data.table::data.table(d[perm, x, with = FALSE])
+      data.table::setnames(x_perm, x)
+      # replace original x with permuted x, and update task with permuted x
+      x_perm_name <- task$add_columns(x_perm)
+      task_x_perm <- task$next_in_chain(column_names = x_perm_name)
+      # obtain predictions & risk on the new task with permuted x
+      x_perm_pred <- fit$predict_fold(task_x_perm, fold_number)
+      x_perm_eval <- eval_fun(x_perm_pred, Y)
+      if (!is.null(attr(original_eval, "loss")) && !attr(original_eval, "loss")) {
+        no_x_risk <- x_perm_eval
+      } else {
+        no_x_losses <- x_perm_eval
+        no_x_risk <- weighted.mean(no_x_losses, weights)
+      }
     } else if (type == "remove") {
       # modify learner to not include x (covariate/group)
       if (!is.null(covariate_groups)) {
@@ -190,7 +213,7 @@ importance <- function(fit, eval_fun = NULL, fold_number = "validation",
         no_x_risk <- x_rm_eval
       } else {
         no_x_losses <- x_rm_eval
-        no_x_risk <- mean(no_x_losses)
+        no_x_risk <- weighted.mean(no_x_losses, weights)
       }
     }
 
@@ -200,29 +223,18 @@ importance <- function(fit, eval_fun = NULL, fold_number = "validation",
     } else if (importance_metric == "difference") {
       result <- no_x_risk - original_risk
     }
-
-    if (type == "permute") {
-      result <- list("result" = result, "RNGseeds" = seeds) # reproducibility
-    } else if (type == "remove") {
-      result <- list("result" = result)
-    }
-
     return(result)
   })
 
-  if (type == "permute") {
-    RNGseeds <- data.table(do.call(cbind, lapply(res_list, "[[", "RNGseeds")))
-    colnames(RNGseeds) <- names(X)
-  }
   res_list <- lapply(res_list, "[[", "result")
 
   ############################## prep output ###################################
   # importance results ordered by decreasing importance
-  result <- data.table(covariate = names(X), metric = unlist(res_list))
+  result <- data.table::data.table(covariate = names(X), metric = unlist(res_list))
   if (!is.null(covariate_groups)) {
     colnames(result)[1] <- "covariate_group"
   }
-  result <- result[order(-result$metric), ]
+  data.table::setorder(result, -metric)
 
   # name the importance metric appropriately
   metric_name <- paste0("risk_", importance_metric)
@@ -230,34 +242,56 @@ importance <- function(fit, eval_fun = NULL, fold_number = "validation",
     metric_name <- gsub("risk", attr(original_eval, "name"), metric_name)
   }
   colnames(result)[2] <- metric_name
-
-  if (type == "permute") {
-    result <- list("result" = result, "RNGseeds" = RNGseeds)
-  }
-
   return(result)
 }
 
 #' Variable Importance Plot
 #'
-#' @param x The 2-column \code{data.table} returned by \code{importance}, where
-#'  the first column is the covariate/groups and the second column is the
-#'  importance metric.
-#' @param nvar The maximum number of predictors to be plotted. Defaults to 30.
+#' @section Parameters:
+#'   - \code{x}: The 2-column \code{data.table} returned by
+#'       \code{\link{importance}}, where the first column is the
+#'       covariate/groups and the second column is the importance score.
+#'   - \code{nvar}: The maximum number of predictors to be plotted. Defaults to
+#'       the minimum between 30 and the number of rows in \code{x}.
 #'
-#' @return A \code{\link[graphics]{dotchart}} of variable importance.
+#' @return A \code{\link[ggplot2]{ggplot}} of variable importance.
 #'
 #' @importFrom ggplot2 ggplot geom_point coord_flip scale_x_discrete labs
 #' @importFrom data.table data.table
 #'
+#' @rdname importance_plot
 #' @name importance_plot
 #' @keywords variable importance
 #'
 #' @export
+#'
+#' @examples
+#' # define ML task
+#' data(cpp_imputed)
+#' covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
+#' task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
+#'
+#' # build relatively fast learner library (not recommended for real analysis)
+#' lasso_lrnr <- Lrnr_glmnet$new()
+#' glm_lrnr <- Lrnr_glm$new()
+#' ranger_lrnr <- Lrnr_ranger$new()
+#' lrnrs <- c(lasso_lrnr, glm_lrnr, ranger_lrnr)
+#' names(lrnrs) <- c("lasso", "glm", "ranger")
+#' lrnr_stack <- make_learner(Stack, lrnrs)
+#'
+#' # instantiate SL with default metalearner
+#' sl <- Lrnr_sl$new(lrnr_stack)
+#' sl_fit <- sl$train(task)
+#' importance_result <- importance(sl_fit)
+#' importance_plot(importance_result)
+#'
+#' # importance with groups of covariates
+#' groups <- list(
+#'   scores = c("apgar1", "apgar5"),
+#'   maternal = c("parity", "mage", "meducyrs")
+#' )
+#' importance_result_groups <- importance(fit, covariate_groups = groups)
 importance_plot <- function(x, nvar = min(30, nrow(x))) {
-  if (!is.data.table(x)) {
-    x <- x$result
-  }
 
   # get the importance metric
   xlab <- colnames(x)[2]
