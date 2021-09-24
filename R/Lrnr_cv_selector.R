@@ -71,7 +71,7 @@ Lrnr_cv_selector <- R6Class(
 
       risk <- function(preds) {
         eval_result <- eval_function(preds, Y)
-        if (!is.null(attr(eval_result, "risk"))) {
+        if (!is.null(attr(eval_result, "loss")) && !attr(eval_result, "loss")) {
           risk <- eval_result
         } else {
           loss <- eval_result
