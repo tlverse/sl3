@@ -63,12 +63,9 @@
   `importance`, and `CV_Lrnr_sl`. 
 * Incorporated stratified cross-validation when `folds` are not supplied to the 
   `sl3_Task` and the outcome is a discrete variable. 
-* Added the following arguments and functionality to the `importance` method: 
-  (i) evaluation of importance over `covariate_groups`, by removing/permuting 
-  all covariates in the same group together; (ii) when `type = "permute"`, 
-  one can specify the number of permutations to average the permuted risk over, 
-  and these permutations can be parallelized; and (iii) when `type = "permute"`, 
-  the RNG seeds called before the permutation are returned for reproducibility.
+* Added to the `importance` method the option to evaluate importance over 
+  `covariate_groups`, by removing/permuting all covariates in the same group 
+  together.
 
 # sl3 1.4.2
 * Updates to variable importance functionality, including calculation of risk
