@@ -105,6 +105,8 @@ risk <- function(pred, observed, loss = loss_squared_error, weights = NULL) {
 #' performance measure of interest, and then the user-defined function can be
 #' used.
 #'
+#' @name risk_functions
+#'
 #' @param pred A vector of predicted values.
 #' @param observed A vector of binary observed values.
 #' @param measure A character indicating which \code{ROCR} performance measure
