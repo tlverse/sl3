@@ -49,7 +49,7 @@ importance. — importance" />
 <meta property="og:description" content="Function that takes a cross-validated fit (i.e., cross-validated learner that
 has already been trained on a task), which could be a cross-validated single
 learner or super learner, and generates a risk-based variable importance
-score for either each covariate or each group of coavriates in the task.
+score for either each covariate or each group of covariates in the task.
 This function outputs a data.table, where each row corresponds to the
 risk difference or the risk ratio between the following two risks: the risk
 when a covariate (or group of covariates) is permuted or removed, and the
@@ -167,7 +167,7 @@ importance.</h1>
     <p>Function that takes a cross-validated fit (i.e., cross-validated learner that
 has already been trained on a task), which could be a cross-validated single
 learner or super learner, and generates a risk-based variable importance
-score for either each covariate or each group of coavriates in the task.
+score for either each covariate or each group of covariates in the task.
 This function outputs a <code>data.table</code>, where each row corresponds to the
 risk difference or the risk ratio between the following two risks: the risk
 when a covariate (or group of covariates) is permuted or removed, and the
@@ -211,7 +211,7 @@ for evaluating the risk. Defaults vary based on the outcome type:
 squared error loss for continuous outcomes and negative log-likelihood
 loss for discrete outcomes. See <code><a href='loss_functions.html'>loss_functions</a></code> and
 <code><a href='risk_functions.html'>risk_functions</a></code> for options.</p></li>
-<li><p><code>fold_number</code> The fold number to use for obtaining the predictions
+<li><p><code>fold_number</code>: The fold number to use for obtaining the predictions
 from the fit. Either a positive integer for obtaining predictions from
 a specific fold's fit; <code>"full"</code> for obtaining predictions from a
 fit on all of the data, or <code>"validation"</code> (default) for obtaining
@@ -263,8 +263,14 @@ those covariates will be added as additional single-covariate groups.</p></li>
 <span class='va'>sl_fit</span> <span class='op'>&lt;-</span> <span class='va'>sl</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>task</span><span class='op'>)</span>
 
 <span class='va'>importance_result</span> <span class='op'>&lt;-</span> <span class='fu'>importance</span><span class='op'>(</span><span class='va'>sl_fit</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in FUN(X[[i]], ...): subscript out of bounds</span></div><div class='input'><span class='va'>importance_result</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'importance_result' not found</span></div></pre>
+<span class='va'>importance_result</span>
+</div><div class='output co'>#&gt;    covariate risk_ratio
+#&gt; 1:      mage  1.0231867
+#&gt; 2:  gagebrth  1.0183259
+#&gt; 3:  meducyrs  1.0182950
+#&gt; 4:    apgar1  1.0090676
+#&gt; 5:    parity  1.0016109
+#&gt; 6:    apgar5  0.9943826</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -26,7 +26,7 @@ A \code{data.table} of variable importance for each covariate.
 Function that takes a cross-validated fit (i.e., cross-validated learner that
 has already been trained on a task), which could be a cross-validated single
 learner or super learner, and generates a risk-based variable importance
-score for either each covariate or each group of coavriates in the task.
+score for either each covariate or each group of covariates in the task.
 This function outputs a \code{data.table}, where each row corresponds to the
 risk difference or the risk ratio between the following two risks: the risk
 when a covariate (or group of covariates) is permuted or removed, and the
@@ -46,7 +46,7 @@ for evaluating the risk. Defaults vary based on the outcome type:
 squared error loss for continuous outcomes and negative log-likelihood
 loss for discrete outcomes. See \code{\link{loss_functions}} and
 \code{\link{risk_functions}} for options.
-\item \code{fold_number} The fold number to use for obtaining the predictions
+\item \code{fold_number}: The fold number to use for obtaining the predictions
 from the fit. Either a positive integer for obtaining predictions from
 a specific fold's fit; \code{"full"} for obtaining predictions from a
 fit on all of the data, or \code{"validation"} (default) for obtaining
