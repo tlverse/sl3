@@ -4,7 +4,7 @@ utils::globalVariables(c("x_sorted", "score"))
 #' Function that takes a cross-validated fit (i.e., cross-validated learner that
 #' has already been trained on a task), which could be a cross-validated single
 #' learner or super learner, and generates a risk-based variable importance
-#' score for either each covariate or each group of coavriates in the task.
+#' score for either each covariate or each group of covariates in the task.
 #' This function outputs a \code{data.table}, where each row corresponds to the
 #' risk difference or the risk ratio between the following two risks: the risk
 #' when a covariate (or group of covariates) is permuted or removed, and the
@@ -32,7 +32,7 @@ utils::globalVariables(c("x_sorted", "score"))
 #'       squared error loss for continuous outcomes and negative log-likelihood
 #'       loss for discrete outcomes. See \code{\link{loss_functions}} and
 #'       \code{\link{risk_functions}} for options.
-#'   - \code{fold_number} The fold number to use for obtaining the predictions
+#'   - \code{fold_number}: The fold number to use for obtaining the predictions
 #'       from the fit. Either a positive integer for obtaining predictions from
 #'       a specific fold's fit; \code{"full"} for obtaining predictions from a
 #'       fit on all of the data, or \code{"validation"} (default) for obtaining
@@ -172,19 +172,13 @@ importance <- function(fit, eval_fun = NULL,
   }
 
   ######################## list of importance results ##########################
-  res_list <- lapply(seq_along(X), function(i) {
-    # get the relevant group/covariate
-    if (!is.null(covariate_groups)) {
-      x <- X[[i]]
-    } else {
-      x <- X[i]
-    }
+  res_list <- lapply(X, function(x) {
     # get the risk when the covariate/group is permuted/removed
     if (type == "permute") {
       # get the permutation rows
       perm <- sample(1:nrow(d), nrow(d))
       # permute x (the covariate/group), and name it as the original x
-      x_perm <- data.table::data.table(d[perm, x, with = FALSE])
+      x_perm <- d[perm, x, with = FALSE]
       data.table::setnames(x_perm, x)
       # replace original x with permuted x, and update task with permuted x
       x_perm_name <- task$add_columns(x_perm)
@@ -225,8 +219,6 @@ importance <- function(fit, eval_fun = NULL,
     }
     return(result)
   })
-
-  res_list <- lapply(res_list, "[[", "result")
 
   ############################## prep output ###################################
   # importance results ordered by decreasing importance
