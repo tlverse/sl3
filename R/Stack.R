@@ -150,6 +150,15 @@ Stack <- R6Class(
       learners <- self$params$learners[!is_error]
       learner_names <- private$.learner_names[!is_error]
       n_to_pred <- task$nrow
+      
+      # \begin ----- check if hierarchical
+      if (length(grep("Lrnr_aggregate", learner_names)) != 0) {
+        # if "Lrnr_aggregate" is contained in the library
+        # change the corresponding dim and data
+        n_to_pred <- length(unique(task$id))
+      }
+      # \end ----- check if hierarchical
+      
       n_learners <- length(learner_names)
 
 

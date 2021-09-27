@@ -113,17 +113,28 @@ cv_risk <- function(learner, loss_fun, coefs = NULL) {
     preds <- data.table::data.table(preds)
     data.table::setnames(preds, names(preds), learner$name)
   }
-
-  get_obsdata <- function(fold, task) {
-    list(loss_dt = data.table::data.table(
-      fold_index = origami::fold_index(),
-      index = origami::validation(),
-      obs = origami::validation(task$Y),
-      id = origami::validation(task$id),
-      wts = origami::validation(task$weights)
-    ))
+  
+  # \begin ----- check if hierarchical
+  # TBD find the names of sub learners in Lrnr_cv
+  learner_names <- sapply(learner$params$learner$params$learners, function(x) x$name)
+  # TBD find the names of sub learners in Lrnr_sl fit
+  if ('Lrnr_sl' %in% class(learner) & learner$is_trained){
+    learner_names <- names(learner$learner_fits)
   }
-
+  if (length(grep("Lrnr_aggregate", learner_names)) != 0) {
+    task <- aggregate_task(task)
+  }
+  # \end ----- check if hierarchical
+  
+  get_obsdata <- function(fold, task) {
+      list(loss_dt = data.table::data.table(
+        fold_index = origami::fold_index(),
+        index = origami::validation(),
+        obs = origami::validation(task$Y),
+        id = origami::validation(task$id),
+        wts = origami::validation(task$weights)
+      ))
+    }
   loss_dt <- origami::cross_validate(get_obsdata, task$folds, task)$loss_dt
   data.table::setorderv(loss_dt, c("index", "fold_index"))
   loss_dt <- cbind(loss_dt, preds)

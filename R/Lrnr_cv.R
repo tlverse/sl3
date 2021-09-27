@@ -158,6 +158,16 @@ Lrnr_cv <- R6Class(
 
 
       predictions <- self$predict_fold(revere_task, fold_number)
+      
+      # \begin ----- check if hierarchical
+      # if "Lrnr_aggregate" is contained in the library
+      # update revere_task
+      learner_names <- sapply(self$params$learner$params$learners, function(x) x$name)
+      if (length(grep("Lrnr_aggregate", learner_names)) != 0) {
+        revere_task <- aggregate_task(revere_task)
+      }
+      # \end ----- check if hierarchical
+      
       # TODO: make same fixes made to chain here
       if (nrow(revere_task$data) != nrow(predictions)) {
         # Gather validation indexes:
@@ -356,6 +366,35 @@ Lrnr_cv <- R6Class(
 
         validation_task <- validation_task(revere_task, fold)
         index <- validation()
+        
+        # \begin ----- check if hierarchical
+        # print(paste0('fold_number====', fold_number))
+        learner_names <- sapply(self$params$learner$params$learners, function(x) x$name)
+        # print(learner_names)
+        if (length(grep("Lrnr_aggregate", learner_names)) != 0) {
+          # if "Lrnr_aggregate" is contained in the library
+          # update the index to cluster 
+          task_data <- task$data
+          outcome <- task$nodes$outcome
+          id <- task$nodes$id
+
+          main_cols <- c(id, outcome)
+          df_main <- task_data[,main_cols, with = FALSE]
+          # TBD for now id must be named as 'id'
+          agg_main <- df_main[,lapply(.SD, mean),by=list(id)]
+
+          indiv_data_v <- task_data[index, ]
+          cluster_id_v <- unique(indiv_data_v[,..id][[1]])
+          cluster_index <- which(agg_main[,..id][[1]] %in% cluster_id_v)
+          
+          # print(agg_main[,..id][[1]])
+          # print(cluster_id_v)
+          # update index (individual) with cluster_index
+          index <- cluster_index
+          # print(index)
+        }
+        # \end ----- check if hierarchical
+        
         fit <- fold_index(fold_fits)[[1]]
         predictions <- fit$base_predict(validation_task)
         list(
@@ -392,8 +431,16 @@ Lrnr_cv <- R6Class(
       task <- task$revere_fold_task("validation")
       predictions <- self$predict(task)
       predictions <- as.data.table(predictions)
-
-
+      
+      # \begin ----- check if hierarchical
+      # if "Lrnr_aggregate" is contained in the library
+      # update task
+      learner_names <- sapply(self$params$learner$params$learners, function(x) x$name)
+      if (length(grep("Lrnr_aggregate", learner_names)) != 0) {
+        task <- aggregate_task(task)
+      }
+      # \end ----- check if hierarchical
+      
       # TODO: consider making this check a bit more careful
       if (nrow(task$data) != nrow(predictions)) {
         # TODO: this is copied from cv_risk, we should put in a function somewhere

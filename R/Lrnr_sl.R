@@ -284,6 +284,19 @@ drop_offsets_chain <- function(learner, task) {
   task <- task$revere_fold_task("validation")
   predictions <- learner$predict(task)
   predictions <- as.data.table(predictions)
+  
+  # \begin ----- check if hierarchical
+  # TBD find the names of sub learners in Lrnr_cv
+  learner_names <- sapply(learner$params$learner$params$learners, function(x) x$name)
+  # TBD find the names of sub learners in Lrnr_sl or Stack fit
+  if (('Lrnr_sl' %in% class(learner) | 'Stack' %in% class(learner)) & learner$is_trained){
+    learner_names <- names(learner$learner_fits)
+  }
+  if (length(grep("Lrnr_aggregate", learner_names)) != 0) {
+    task <- aggregate_task(task)
+  }
+  # \end ----- check if hierarchical
+  
   # Add predictions as new columns
   if (nrow(task$data) != nrow(predictions)) {
     # Gather validation indexes:

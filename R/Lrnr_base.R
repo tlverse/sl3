@@ -392,6 +392,17 @@ Lrnr_base <- R6Class(
       predictions <- as.data.table(predictions)
       # Add predictions as new columns
       task <- task$revere_fold_task("full")
+      
+      # \begin ----- check if hierarchical
+      # TBD find the names of sub learners in stack fit
+      if ('Stack' %in% class(self) & self$is_trained){
+        learner_names <- names(self$learner_fits)
+        if (length(grep("Lrnr_aggregate", learner_names)) != 0) {
+          task <- aggregate_task(task)
+        }
+      }
+      # \end ----- check if hierarchical
+      
       new_col_names <- task$add_columns(predictions, self$fit_uuid)
       # new_covariates = union(names(predictions),task$nodes$covariates)
       return(task$next_in_chain(

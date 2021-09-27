@@ -103,6 +103,29 @@ aggregate_task <- function(task){
                             outcome_type = agg_outcome_type,
                             id = task$nodes$id)
   
+  # aggregate folds
+  invisible(
+    sapply(task$folds, 
+           function (x) {
+             fold_number <- x$v
+             index_t = x$training_set
+             index_v = x$validation_set
+             # TBD for now id must be named as 'id'
+             id = 'id'
+             
+             indiv_data_t <- task$data[index_t, ]
+             cluster_id_t <- unique(indiv_data_t[,..id][[1]])
+             cluster_index_t <- which(agg_task$data[,..id][[1]] %in% cluster_id_t)
+             
+             indiv_data_v <- task$data[index_v, ]
+             cluster_id_v <- unique(indiv_data_v[,..id][[1]])
+             cluster_index_v <- which(agg_task$data[,..id][[1]] %in% cluster_id_v)
+             
+             agg_task$folds[[fold_number]]$training_set <- cluster_index_t
+             agg_task$folds[[fold_number]]$validation_set <- cluster_index_v
+           })
+  )
+  
   return(agg_task)
 }
 
