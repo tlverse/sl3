@@ -16,6 +16,7 @@
 #' @export
 loss_squared_error <- function(pred, observed) {
   out <- (pred - observed)^2
+  attributes(out)$name <- "MSE"
   return(out)
 }
 
@@ -28,6 +29,7 @@ loss_squared_error <- function(pred, observed) {
 #' @export
 loss_loglik_true_cat <- function(pred, observed) {
   out <- -log(bound(pred))
+  attributes(out)$name <- "NLL"
   return(out)
 }
 
@@ -38,6 +40,7 @@ loss_loglik_true_cat <- function(pred, observed) {
 #' @export
 loss_loglik_binomial <- function(pred, observed) {
   out <- -1 * ifelse(observed == 1, log(bound(pred)), log(1 - bound(pred)))
+  attributes(out)$name <- "NLL"
   return(out)
 }
 
@@ -53,7 +56,9 @@ loss_loglik_multinomial <- function(pred, observed) {
   index_mat <- cbind(seq_along(observed), observed)
   unpacked <- unpack_predictions(pred)
   class_liks <- log(bound(unpacked[index_mat]))
-  return(-1 * class_liks)
+  out <- -1 * class_liks
+  attributes(out)$name <- "NLL"
+  return(out)
 }
 
 #' SQUARED ERROR LOSS FOR MULTIVARIATE (LOSS AVERAGED ACROSS OUTCOMES)
@@ -66,6 +71,7 @@ loss_loglik_multinomial <- function(pred, observed) {
 loss_squared_error_multivariate <- function(pred, observed) {
   unpacked <- unpack_predictions(pred)
   losses <- rowMeans((unpacked - observed)^2)
+  attributes(losses)$name <- "MSE"
   return(losses)
 }
 
