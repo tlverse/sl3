@@ -84,7 +84,7 @@ utils::globalVariables(c("x_sorted", "score"))
 #' importance_result <- importance(sl_fit)
 #' importance_result
 importance <- function(fit, eval_fun = NULL,
-                       fold_number = c("validation", "full"),
+                       fold_number = "validation",
                        type = c("remove", "permute"),
                        importance_metric = c("ratio", "difference"),
                        covariate_groups = NULL) {
@@ -97,7 +97,6 @@ importance <- function(fit, eval_fun = NULL,
   ################################ set defaults ################################
   importance_metric <- match.arg(importance_metric)
   type <- match.arg(type)
-  fold_number <- match.arg(fold_number)
 
   if (is.null(eval_fun)) {
     outcome_type <- fit$training_task$outcome_type$type
