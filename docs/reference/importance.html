@@ -177,11 +177,11 @@ important covariate/group. A plot can be generated from the returned
 <code>data.table</code> by calling companion function <code><a href='importance_plot.html'>importance_plot</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>importance</span><span class='op'>(</span><span class='va'>fit</span>, eval_fun <span class='op'>=</span> <span class='cn'>NULL</span>, fold_number <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"validation"</span>, <span class='st'>"full"</span><span class='op'>)</span>,
+    <pre class="usage"><span class='fu'>importance</span><span class='op'>(</span><span class='va'>fit</span>, eval_fun <span class='op'>=</span> <span class='cn'>NULL</span>, fold_number <span class='op'>=</span> <span class='st'>"validation"</span>,
   type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"remove"</span>, <span class='st'>"permute"</span><span class='op'>)</span>, importance_metric <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ratio"</span>,
   <span class='st'>"difference"</span><span class='op'>)</span>, covariate_groups <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
-<span class='fu'>importance</span><span class='op'>(</span><span class='va'>fit</span>, eval_fun <span class='op'>=</span> <span class='cn'>NULL</span>, fold_number <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"validation"</span>, <span class='st'>"full"</span><span class='op'>)</span>,
+<span class='fu'>importance</span><span class='op'>(</span><span class='va'>fit</span>, eval_fun <span class='op'>=</span> <span class='cn'>NULL</span>, fold_number <span class='op'>=</span> <span class='st'>"validation"</span>,
   type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"remove"</span>, <span class='st'>"permute"</span><span class='op'>)</span>, importance_metric <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ratio"</span>,
   <span class='st'>"difference"</span><span class='op'>)</span>, covariate_groups <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
@@ -264,13 +264,13 @@ those covariates will be added as additional single-covariate groups.</p></li>
 
 <span class='va'>importance_result</span> <span class='op'>&lt;-</span> <span class='fu'>importance</span><span class='op'>(</span><span class='va'>sl_fit</span><span class='op'>)</span>
 <span class='va'>importance_result</span>
-</div><div class='output co'>#&gt;    covariate risk_ratio
-#&gt; 1:      mage  1.0231867
-#&gt; 2:  gagebrth  1.0183259
-#&gt; 3:  meducyrs  1.0182950
-#&gt; 4:    apgar1  1.0090676
-#&gt; 5:    parity  1.0016109
-#&gt; 6:    apgar5  0.9943826</div></pre>
+</div><div class='output co'>#&gt;    covariate MSE_ratio
+#&gt; 1:      mage 1.0236910
+#&gt; 2:  gagebrth 1.0194640
+#&gt; 3:  meducyrs 1.0170697
+#&gt; 4:    parity 1.0109871
+#&gt; 5:    apgar1 1.0060837
+#&gt; 6:    apgar5 0.9945063</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

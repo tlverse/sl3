@@ -7,11 +7,11 @@ Extract variable importance measures produced by
 \code{\link[randomForest]{randomForest}} and order in decreasing order of
 importance.}
 \usage{
-importance(fit, eval_fun = NULL, fold_number = c("validation", "full"),
+importance(fit, eval_fun = NULL, fold_number = "validation",
   type = c("remove", "permute"), importance_metric = c("ratio",
   "difference"), covariate_groups = NULL)
 
-importance(fit, eval_fun = NULL, fold_number = c("validation", "full"),
+importance(fit, eval_fun = NULL, fold_number = "validation",
   type = c("remove", "permute"), importance_metric = c("ratio",
   "difference"), covariate_groups = NULL)
 }
