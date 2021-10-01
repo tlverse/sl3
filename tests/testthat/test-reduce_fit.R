@@ -2,7 +2,7 @@
 set.seed(1234)
 
 # TODO: maybe check storage at different n to get rate
-n <- 1e3
+n <- 1e4
 p <- 100
 # these two define the DGP (randomly)
 p_X <- runif(p, 0.2, 0.8)
