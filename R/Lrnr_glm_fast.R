@@ -157,6 +157,7 @@ Lrnr_glm_fast <- R6Class(
       }
       return(predictions)
     },
+    .fit_can_remove = c("XTX"),
     .required_packages = c("speedglm")
   )
 )

@@ -38,8 +38,7 @@ sl3Options <- function(o, value) {
     }
     if (is.null(value)) {
       res[o] <- list(NULL)
-    }
-    else {
+    } else {
       res[[o]] <- value
     }
     options(res[o])
@@ -62,7 +61,8 @@ sl3Options <- function(o, value) {
     "sl3.pcontinuous" = 0.05,
     "sl3.max_p_missing" = 0.5,
     "sl3.transform.offset" = TRUE,
-    "sl3.enable.future" = TRUE
+    "sl3.enable.future" = TRUE,
+    "sl3.reduce_fit" = FALSE
   )
   # for (i in setdiff(names(opts),names(options()))) {
   #   browser()
