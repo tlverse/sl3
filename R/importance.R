@@ -1,4 +1,4 @@
-utils::globalVariables(c("x_sorted", "score"))
+utils::globalVariables(c("score"))
 #' Variable Importance
 #'
 #' Function that takes a cross-validated fit (i.e., cross-validated learner that
@@ -293,9 +293,7 @@ importance_plot <- function(x, nvar = min(30, nrow(x))) {
   x <- x[1:(min(nvar, nrow(x))), ]
 
   # format for ggplot
-  d <- data.table::data.table(
-    vars = factor(x_sorted[[1]], levels = x_sorted[[1]]), score = x_sorted[[2]]
-  )
+  d <- data.table::data.table(vars = factor(x[[1]], levels = x[[1]]), score = x[[2]])
 
   ggplot2::ggplot(d, aes(x = vars, y = score)) +
     ggplot2::geom_point() +
