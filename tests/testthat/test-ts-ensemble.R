@@ -33,7 +33,7 @@ test_that("Lrnr_cv works with time-series data", {
   cv_stack_ts <- Lrnr_cv$new(stack_ts, full_fit = TRUE)
   fit_cv_ts <- cv_stack_ts$train(task_ts)
 
-  cv_preds_ts <- fit_cv_ts$predict_fold(task_ts, "validation")
+  cv_preds_ts <- fit_cv_ts$predict_fold(task_ts, fold_number = "validation")
   # cv_preds_full_ts <- fit_cv_ts$predict_fold(task_ts, fold_number = "full")
 
   expect_true(nrow(cv_preds_ts) == 14)
@@ -45,7 +45,7 @@ test_that("Lrnr_sl works with time-series data", {
   sl_ts <- make_learner(Lrnr_sl, list(lrnr_arima, lrnr_tsdyn_linear, lrnr_expsmooth))
   fit_ts <- sl_ts$train(task_ts)
 
-  cv_preds_ts <- fit_ts$predict_fold(task_ts, "validation")
+  cv_preds_ts <- fit_ts$predict_fold(task_ts, fold_number = "validation")
   # cv_preds_full_ts <- fit_ts$predict_fold(task_ts, fold_number = "full")
 
   expect_true(length(cv_preds_ts) == 14)
