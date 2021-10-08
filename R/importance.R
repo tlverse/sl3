@@ -183,7 +183,7 @@ importance <- function(fit, eval_fun = NULL,
       x_perm_name <- task$add_columns(x_perm)
       task_x_perm <- task$next_in_chain(column_names = x_perm_name)
       # obtain predictions & risk on the new task with permuted x
-      x_perm_pred <- fit$predict_fold(task_x_perm, fold_number)
+      x_perm_pred <- fit$predict_fold(task_x_perm, fold_number = fold_number)
       x_perm_eval <- eval_fun(x_perm_pred, Y)
       if (!is.null(attr(original_eval, "loss")) && !attr(original_eval, "loss")) {
         no_x_risk <- x_perm_eval
@@ -200,7 +200,7 @@ importance <- function(fit, eval_fun = NULL,
       }
       x_rm_lrnr <- fit$reparameterize(list(covariates = x_rm_covars))
       x_rm_fit <- x_rm_lrnr$train(task)
-      x_rm_pred <- x_rm_fit$predict_fold(task, fold_number)
+      x_rm_pred <- x_rm_fit$predict_fold(task, fold_number = fold_number)
       x_rm_eval <- eval_fun(x_rm_pred, Y)
       if (!is.null(attr(original_eval, "loss")) && !attr(original_eval, "loss")) {
         no_x_risk <- x_rm_eval
