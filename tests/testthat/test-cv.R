@@ -57,7 +57,7 @@ test_that("Lrnr_cv$predict_fold can generate cross-validated predictions", {
 })
 
 test_that("Lrnr_cv$predict_fold throws an error on a bad fold_number", {
-  expect_error(cv_glm_fit$predict_fold(task, "junk"))
+  expect_error(suppressWarnings(cv_glm_fit$predict_fold(task, "junk")))
 })
 
 
@@ -80,7 +80,7 @@ cv_risk_table <- fit$cv_risk(loss_squared_error)
 
 # GLM should be perfect here because outcome = covariate
 expect_equal(cv_risk_table$coefficients[[1]], 1)
-expect_equal(cv_risk_table$risk[[1]], 0)
+expect_equal(cv_risk_table$MSE[[1]], 0)
 
 ################################# test LOOCV ###################################
 test_loocv_learner <- function(learner, loocv_task, ...) {
