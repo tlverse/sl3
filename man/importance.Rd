@@ -8,12 +8,12 @@ Extract variable importance measures produced by
 importance.}
 \usage{
 importance(fit, eval_fun = NULL, fold_number = "validation",
-  type = c("remove", "permute"), importance_metric = c("ratio",
-  "difference"), covariate_groups = NULL)
+  type = c("remove", "permute"), importance_metric = c("difference",
+  "ratio"), covariate_groups = NULL)
 
 importance(fit, eval_fun = NULL, fold_number = "validation",
-  type = c("remove", "permute"), importance_metric = c("ratio",
-  "difference"), covariate_groups = NULL)
+  type = c("remove", "permute"), importance_metric = c("difference",
+  "ratio"), covariate_groups = NULL)
 }
 \arguments{
 \item{type}{either 1 or 2, specifying the type of importance measure (1=mean
@@ -39,13 +39,12 @@ important covariate/group. A plot can be generated from the returned
 
 \itemize{
 \item \code{fit}: A trained cross-validated (CV) learner (such as a CV stack or
-super learner), from which cross-validated predictions can be
-generated.
+super learner), from which cross-validated predictions can be generated.
 \item \code{eval_fun = NULL}: The evaluation function (risk or loss function)
-for evaluating the risk. Defaults vary based on the outcome type:
-squared error loss for continuous outcomes and negative log-likelihood
-loss for discrete outcomes. See \code{\link{loss_functions}} and
-\code{\link{risk_functions}} for options.
+for evaluating the risk. Defaults vary based on the outcome type,
+matching defaults in \code{\link{default_metalearner}}. See
+\code{\link{loss_functions}} and \code{\link{risk_functions}} for
+options.
 \item \code{fold_number}: The fold number to use for obtaining the predictions
 from the fit. Either a positive integer for obtaining predictions from
 a specific fold's fit; \code{"full"} for obtaining predictions from a
@@ -62,15 +61,14 @@ group is removed one at a time from the task; the cross-validated
 learner is refit to this modified task; and finally, predictions are
 obtained from this refit. When \code{type} is \code{"permute"}, each
 covariate / covariate group is permuted (sampled without replacement)
-one at a time, and then predictions are obtained from this modified
-data.
-\item \code{importance_metric}: Either \code{"ratio"} (default) or
-\code{"difference"}. For each covariate / covariate group,
-\code{"ratio"} returns the risk of the permuted/removed
-covariate / covariate group divided by observed/original risk (i.e.,
-the risk with all covariates as they existed in the sample) and
-\code{"difference"} returns the difference between the risk with the
-permuted/removed covariate / covariate group and the observed risk.
+one at a time, and then predictions are obtained from this modified data.
+\item \code{importance_metric}: Either \code{"ratio"} or \code{"difference"}
+(default). For each covariate / covariate group, \code{"ratio"} returns
+the risk of the permuted/removed covariate / covariate group divided by
+observed/original risk (i.e., the risk with all covariates as they
+existed in the sample) and \code{"difference"} returns the difference
+between the risk with the permuted/removed covariate / covariate group
+and the observed risk.
 \item \code{covariate_groups}: Optional named list covariate groups which will
 invoke variable importance evaluation at the group-level, by
 removing/permuting all covariates in the same group together. If
@@ -99,6 +97,14 @@ sl_fit <- sl$train(task)
 
 importance_result <- importance(sl_fit)
 importance_result
+
+# importance with groups of covariates
+groups <- list(
+  scores = c("apgar1", "apgar5"),
+  maternal = c("parity", "mage", "meducyrs")
+)
+importance_result_groups <- importance(sl_fit, covariate_groups = groups)
+importance_result_groups
 }
 \keyword{importance}
 \keyword{variable}

@@ -178,12 +178,12 @@ important covariate/group. A plot can be generated from the returned
     </div>
 
     <pre class="usage"><span class='fu'>importance</span><span class='op'>(</span><span class='va'>fit</span>, eval_fun <span class='op'>=</span> <span class='cn'>NULL</span>, fold_number <span class='op'>=</span> <span class='st'>"validation"</span>,
-  type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"remove"</span>, <span class='st'>"permute"</span><span class='op'>)</span>, importance_metric <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ratio"</span>,
-  <span class='st'>"difference"</span><span class='op'>)</span>, covariate_groups <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+  type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"remove"</span>, <span class='st'>"permute"</span><span class='op'>)</span>, importance_metric <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"difference"</span>,
+  <span class='st'>"ratio"</span><span class='op'>)</span>, covariate_groups <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
 <span class='fu'>importance</span><span class='op'>(</span><span class='va'>fit</span>, eval_fun <span class='op'>=</span> <span class='cn'>NULL</span>, fold_number <span class='op'>=</span> <span class='st'>"validation"</span>,
-  type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"remove"</span>, <span class='st'>"permute"</span><span class='op'>)</span>, importance_metric <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ratio"</span>,
-  <span class='st'>"difference"</span><span class='op'>)</span>, covariate_groups <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+  type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"remove"</span>, <span class='st'>"permute"</span><span class='op'>)</span>, importance_metric <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"difference"</span>,
+  <span class='st'>"ratio"</span><span class='op'>)</span>, covariate_groups <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -204,13 +204,12 @@ decrease in accuracy, 2=mean decrease in node impurity).</p></td>
 
 <ul>
 <li><p><code>fit</code>: A trained cross-validated (CV) learner (such as a CV stack or
-super learner), from which cross-validated predictions can be
-generated.</p></li>
+super learner), from which cross-validated predictions can be generated.</p></li>
 <li><p><code>eval_fun = NULL</code>: The evaluation function (risk or loss function)
-for evaluating the risk. Defaults vary based on the outcome type:
-squared error loss for continuous outcomes and negative log-likelihood
-loss for discrete outcomes. See <code><a href='loss_functions.html'>loss_functions</a></code> and
-<code><a href='risk_functions.html'>risk_functions</a></code> for options.</p></li>
+for evaluating the risk. Defaults vary based on the outcome type,
+matching defaults in <code><a href='default_metalearner.html'>default_metalearner</a></code>. See
+<code><a href='loss_functions.html'>loss_functions</a></code> and <code><a href='risk_functions.html'>risk_functions</a></code> for
+options.</p></li>
 <li><p><code>fold_number</code>: The fold number to use for obtaining the predictions
 from the fit. Either a positive integer for obtaining predictions from
 a specific fold's fit; <code>"full"</code> for obtaining predictions from a
@@ -227,15 +226,14 @@ group is removed one at a time from the task; the cross-validated
 learner is refit to this modified task; and finally, predictions are
 obtained from this refit. When <code>type</code> is <code>"permute"</code>, each
 covariate / covariate group is permuted (sampled without replacement)
-one at a time, and then predictions are obtained from this modified
-data.</p></li>
-<li><p><code>importance_metric</code>: Either <code>"ratio"</code> (default) or
-<code>"difference"</code>. For each covariate / covariate group,
-<code>"ratio"</code> returns the risk of the permuted/removed
-covariate / covariate group divided by observed/original risk (i.e.,
-the risk with all covariates as they existed in the sample) and
-<code>"difference"</code> returns the difference between the risk with the
-permuted/removed covariate / covariate group and the observed risk.</p></li>
+one at a time, and then predictions are obtained from this modified data.</p></li>
+<li><p><code>importance_metric</code>: Either <code>"ratio"</code> or <code>"difference"</code>
+(default). For each covariate / covariate group, <code>"ratio"</code> returns
+the risk of the permuted/removed covariate / covariate group divided by
+observed/original risk (i.e., the risk with all covariates as they
+existed in the sample) and <code>"difference"</code> returns the difference
+between the risk with the permuted/removed covariate / covariate group
+and the observed risk.</p></li>
 <li><p><code>covariate_groups</code>: Optional named list covariate groups which will
 invoke variable importance evaluation at the group-level, by
 removing/permuting all covariates in the same group together. If
@@ -264,13 +262,24 @@ those covariates will be added as additional single-covariate groups.</p></li>
 
 <span class='va'>importance_result</span> <span class='op'>&lt;-</span> <span class='fu'>importance</span><span class='op'>(</span><span class='va'>sl_fit</span><span class='op'>)</span>
 <span class='va'>importance_result</span>
-</div><div class='output co'>#&gt;    covariate MSE_ratio
-#&gt; 1:      mage 1.0293014
-#&gt; 2:  meducyrs 1.0223176
-#&gt; 3:  gagebrth 1.0196039
-#&gt; 4:    parity 1.0089212
-#&gt; 5:    apgar1 1.0053520
-#&gt; 6:    apgar5 0.9967683</div></pre>
+</div><div class='output co'>#&gt;    covariate MSE_difference
+#&gt; 1:      mage    0.042173721
+#&gt; 2:  meducyrs    0.032121805
+#&gt; 3:  gagebrth    0.028216034
+#&gt; 4:    parity    0.012840277
+#&gt; 5:    apgar1    0.007703151
+#&gt; 6:    apgar5   -0.004651392</div><div class='input'>
+<span class='co'># importance with groups of covariates</span>
+<span class='va'>groups</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
+  scores <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"apgar1"</span>, <span class='st'>"apgar5"</span><span class='op'>)</span>,
+  maternal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"parity"</span>, <span class='st'>"mage"</span>, <span class='st'>"meducyrs"</span><span class='op'>)</span>
+<span class='op'>)</span>
+<span class='va'>importance_result_groups</span> <span class='op'>&lt;-</span> <span class='fu'>importance</span><span class='op'>(</span><span class='va'>sl_fit</span>, covariate_groups <span class='op'>=</span> <span class='va'>groups</span><span class='op'>)</span>
+<span class='va'>importance_result_groups</span>
+</div><div class='output co'>#&gt;    covariate_group MSE_difference
+#&gt; 1:          scores     9.71566391
+#&gt; 2:        maternal     0.14881988
+#&gt; 3:        gagebrth     0.02832313</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

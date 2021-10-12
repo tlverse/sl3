@@ -42,13 +42,6 @@ sl <- Lrnr_sl$new(lrnr_stack)
 sl_fit <- sl$train(task)
 importance_result <- importance(sl_fit)
 importance_plot(importance_result)
-
-# importance with groups of covariates
-groups <- list(
-  scores = c("apgar1", "apgar5"),
-  maternal = c("parity", "mage", "meducyrs")
-)
-importance_result_groups <- importance(fit, covariate_groups = groups)
 }
 \keyword{importance}
 \keyword{variable}
