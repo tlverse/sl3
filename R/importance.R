@@ -245,11 +245,11 @@ importance <- function(fit, eval_fun = NULL,
 #' Variable Importance Plot
 #'
 #' @section Parameters:
-#'   - \code{x}: The 2-column \code{data.table} returned by
-#'       \code{\link{importance}}, where the first column is the
-#'       covariate/groups and the second column is the importance score.
-#'   - \code{nvar}: The maximum number of predictors to be plotted. Defaults to
-#'       the minimum between 30 and the number of rows in \code{x}.
+#'  - \code{x}: The 2-column \code{data.table} returned by
+#'     \code{\link{importance}}, where the first column is the covariate/groups
+#'     and the second column is the importance score.
+#'  - \code{nvar}: The maximum number of predictors to be plotted. Defaults to
+#'     the minimum between 30 and the number of rows in \code{x}.
 #'
 #' @return A \code{\link[ggplot2]{ggplot}} of variable importance.
 #'
