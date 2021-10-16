@@ -263,12 +263,12 @@ those covariates will be added as additional single-covariate groups.</p></li>
 <span class='va'>importance_result</span> <span class='op'>&lt;-</span> <span class='fu'>importance</span><span class='op'>(</span><span class='va'>sl_fit</span><span class='op'>)</span>
 <span class='va'>importance_result</span>
 </div><div class='output co'>#&gt;    covariate MSE_difference
-#&gt; 1:      mage    0.042173721
-#&gt; 2:  meducyrs    0.032121805
-#&gt; 3:  gagebrth    0.028216034
-#&gt; 4:    parity    0.012840277
-#&gt; 5:    apgar1    0.007703151
-#&gt; 6:    apgar5   -0.004651392</div><div class='input'>
+#&gt; 1:      mage    0.042068515
+#&gt; 2:  meducyrs    0.030364012
+#&gt; 3:  gagebrth    0.027932527
+#&gt; 4:    parity    0.011838647
+#&gt; 5:    apgar1    0.007700316
+#&gt; 6:    apgar5   -0.005016752</div><div class='input'>
 <span class='co'># importance with groups of covariates</span>
 <span class='va'>groups</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
   scores <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"apgar1"</span>, <span class='st'>"apgar5"</span><span class='op'>)</span>,
@@ -277,9 +277,9 @@ those covariates will be added as additional single-covariate groups.</p></li>
 <span class='va'>importance_result_groups</span> <span class='op'>&lt;-</span> <span class='fu'>importance</span><span class='op'>(</span><span class='va'>sl_fit</span>, covariate_groups <span class='op'>=</span> <span class='va'>groups</span><span class='op'>)</span>
 <span class='va'>importance_result_groups</span>
 </div><div class='output co'>#&gt;    covariate_group MSE_difference
-#&gt; 1:          scores     9.71566391
-#&gt; 2:        maternal     0.14881988
-#&gt; 3:        gagebrth     0.02832313</div></pre>
+#&gt; 1:          scores     7.21635410
+#&gt; 2:        maternal     0.14856504
+#&gt; 3:        gagebrth     0.02746983</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
