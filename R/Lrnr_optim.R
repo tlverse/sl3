@@ -81,7 +81,7 @@ Lrnr_optim <- R6Class(
           preds <- learner_function(alphas, X)
         }
         eval_result <- loss_function(preds, Y)
-        if (!is.null(attr(eval_result, "risk"))) {
+        if (!is.null(attr(eval_result, "loss")) && !attr(eval_result, "loss")) {
           risk <- eval_result
         } else {
           losses <- eval_result
