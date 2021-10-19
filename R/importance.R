@@ -24,42 +24,44 @@ utils::globalVariables(c("score"))
 #' @return A \code{data.table} of variable importance for each covariate.
 #'
 #' @section Parameters:
-#'  - \code{fit}: A trained cross-validated (CV) learner (such as a CV stack or
-#'     super learner), from which cross-validated predictions can be generated.
-#'  - \code{eval_fun = NULL}: The evaluation function (risk or loss function)
-#'     for evaluating the risk. Defaults vary based on the outcome type,
-#'     matching defaults in \code{\link{default_metalearner}}. See
-#'     \code{\link{loss_functions}} and \code{\link{risk_functions}} for
-#'     options.
-#'  - \code{fold_number}: The fold number to use for obtaining the predictions
-#'     from the fit. Either a positive integer for obtaining predictions from
-#'     a specific fold's fit; \code{"full"} for obtaining predictions from a
-#'     fit on all of the data, or \code{"validation"} (default) for obtaining
-#'     cross-validated predictions, where the data used for training and
-#'     prediction never overlaps across the folds. Note that if a positive
-#'     integer or \code{"full"} is supplied here then there will be overlap
-#'     between the data used for training and validation, so
-#'     \code{fold_number ="validation"} is recommended.
-#'  - \code{type}: Which method should be used to obscure the relationship
-#'     between each covariate / covariate group and the outcome? When
-#'     \code{type} is \code{"remove"} (default), each covariate / covariate
-#'     group is removed one at a time from the task; the cross-validated
-#'     learner is refit to this modified task; and finally, predictions are
-#'     obtained from this refit. When \code{type} is \code{"permute"}, each
-#'     covariate / covariate group is permuted (sampled without replacement)
-#'     one at a time, and then predictions are obtained from this modified data.
-#'  - \code{importance_metric}: Either \code{"ratio"} or \code{"difference"}
-#'     (default). For each covariate / covariate group, \code{"ratio"} returns
-#'     the risk of the permuted/removed covariate / covariate group divided by
-#'     observed/original risk (i.e., the risk with all covariates as they
-#'     existed in the sample) and \code{"difference"} returns the difference
-#'     between the risk with the permuted/removed covariate / covariate group
-#'     and the observed risk.
-#'  - \code{covariate_groups}: Optional named list covariate groups which will
-#'     invoke variable importance evaluation at the group-level, by
-#'     removing/permuting all covariates in the same group together. If
-#'     covariates in the task are not specified in the list of groups, then
-#'     those covariates will be added as additional single-covariate groups.
+#'   - \code{fit}: A trained cross-validated (CV) learner (such as a CV stack
+#'       or super learner), from which cross-validated predictions can be
+#'       generated.
+#'   - \code{eval_fun = NULL}: The evaluation function (risk or loss function)
+#'       for evaluating the risk. Defaults vary based on the outcome type,
+#'       matching defaults in \code{\link{default_metalearner}}. See
+#'       \code{\link{loss_functions}} and \code{\link{risk_functions}} for
+#'       options.
+#'   - \code{fold_number}: The fold number to use for obtaining the predictions
+#'       from the fit. Either a positive integer for obtaining predictions from
+#'       a specific fold's fit; \code{"full"} for obtaining predictions from a
+#'       fit on all of the data, or \code{"validation"} (default) for obtaining
+#'       cross-validated predictions, where the data used for training and
+#'       prediction never overlaps across the folds. Note that if a positive
+#'       integer or \code{"full"} is supplied here then there will be overlap
+#'       between the data used for training and validation, so
+#'       \code{fold_number ="validation"} is recommended.
+#'   - \code{type}: Which method should be used to obscure the relationship
+#'       between each covariate / covariate group and the outcome? When
+#'       \code{type} is \code{"remove"} (default), each covariate / covariate
+#'       group is removed one at a time from the task; the cross-validated
+#'       learner is refit to this modified task; and finally, predictions are
+#'       obtained from this refit. When \code{type} is \code{"permute"}, each
+#'       covariate / covariate group is permuted (sampled without replacement)
+#'       one at a time, and then predictions are obtained from this modified
+#'       data.
+#'   - \code{importance_metric}: Either \code{"ratio"} or \code{"difference"}
+#'       (default). For each covariate / covariate group, \code{"ratio"}
+#'       returns the risk of the permuted/removed covariate / covariate group
+#'       divided by observed/original risk (i.e., the risk with all covariates
+#'       as they existed in the sample) and \code{"difference"} returns the
+#'       difference between the risk with the permuted/removed covariate /
+#'       covariate group and the observed risk.
+#'   - \code{covariate_groups}: Optional named list covariate groups which will
+#'       invoke variable importance evaluation at the group-level, by
+#'       removing/permuting all covariates in the same group together. If
+#'       covariates in the task are not specified in the list of groups, then
+#'       those covariates will be added as additional single-covariate groups.
 #'
 #' @examples
 #' # define ML task
@@ -245,11 +247,11 @@ importance <- function(fit, eval_fun = NULL,
 #' Variable Importance Plot
 #'
 #' @section Parameters:
-#'  - \code{x}: The 2-column \code{data.table} returned by
-#'     \code{\link{importance}}, where the first column is the covariate/groups
-#'     and the second column is the importance score.
-#'  - \code{nvar}: The maximum number of predictors to be plotted. Defaults to
-#'     the minimum between 30 and the number of rows in \code{x}.
+#'   - \code{x}: The 2-column \code{data.table} returned by
+#'       \code{\link{importance}}, where the first column is the
+#'       covariate/groups and the second column is the importance score.
+#'   - \code{nvar}: The maximum number of predictors to be plotted. Defaults to
+#'       the minimum between 30 and the number of rows in \code{x}.
 #'
 #' @return A \code{\link[ggplot2]{ggplot}} of variable importance.
 #'

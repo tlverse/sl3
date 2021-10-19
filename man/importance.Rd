@@ -38,8 +38,9 @@ important covariate/group. A plot can be generated from the returned
 \section{Parameters}{
 
 \itemize{
-\item \code{fit}: A trained cross-validated (CV) learner (such as a CV stack or
-super learner), from which cross-validated predictions can be generated.
+\item \code{fit}: A trained cross-validated (CV) learner (such as a CV stack
+or super learner), from which cross-validated predictions can be
+generated.
 \item \code{eval_fun = NULL}: The evaluation function (risk or loss function)
 for evaluating the risk. Defaults vary based on the outcome type,
 matching defaults in \code{\link{default_metalearner}}. See
@@ -61,14 +62,15 @@ group is removed one at a time from the task; the cross-validated
 learner is refit to this modified task; and finally, predictions are
 obtained from this refit. When \code{type} is \code{"permute"}, each
 covariate / covariate group is permuted (sampled without replacement)
-one at a time, and then predictions are obtained from this modified data.
+one at a time, and then predictions are obtained from this modified
+data.
 \item \code{importance_metric}: Either \code{"ratio"} or \code{"difference"}
-(default). For each covariate / covariate group, \code{"ratio"} returns
-the risk of the permuted/removed covariate / covariate group divided by
-observed/original risk (i.e., the risk with all covariates as they
-existed in the sample) and \code{"difference"} returns the difference
-between the risk with the permuted/removed covariate / covariate group
-and the observed risk.
+(default). For each covariate / covariate group, \code{"ratio"}
+returns the risk of the permuted/removed covariate / covariate group
+divided by observed/original risk (i.e., the risk with all covariates
+as they existed in the sample) and \code{"difference"} returns the
+difference between the risk with the permuted/removed covariate /
+covariate group and the observed risk.
 \item \code{covariate_groups}: Optional named list covariate groups which will
 invoke variable importance evaluation at the group-level, by
 removing/permuting all covariates in the same group together. If

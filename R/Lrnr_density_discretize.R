@@ -53,14 +53,14 @@ Lrnr_density_discretize <- R6Class(
         ))
       discrete_task <- task$next_in_chain(
         outcome = "discrete_Y",
-        column_names = new_columns, 
+        column_names = new_columns,
         folds = task$folds
       )
       # fit categorical learner to discretized task
       categorical_learner <- self$params$categorical_learner
       if (is.null(categorical_learner)) {
         categorical_learner <- make_learner(Lrnr_glmnet)
-      } 
+      }
       categorical_fit <- categorical_learner$train(discrete_task)
 
       fit_object <- list(
@@ -81,7 +81,7 @@ Lrnr_density_discretize <- R6Class(
         ))
       discrete_task <- task$next_in_chain(
         outcome = "discrete_Y",
-        column_names = new_columns, 
+        column_names = new_columns,
         folds = task$folds
       )
 
