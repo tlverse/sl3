@@ -488,15 +488,14 @@ sl3_Task <- R6Class(
         if (self$outcome_type$type %in% c("binomial", "categorical")) {
           # stratified cross-validation folds for discrete outcomes
           args$strata_ids <- self$Y
-        }
-        if (self$outcome_type$type %in% c("binomial", "categorical") &
-          self$has_node("id")) {
-          # don't use stratified CV if clusters are not nested in strata
-          is_nested <- all(
-            rowSums(table(args$cluster_ids, args$strata_ids) > 0) == 1
-          )
-          if (!is_nested) {
-            args <- args[!(names(args) == "strata_ids")]
+          if (self$has_node("id")) {
+            # don't use stratified CV if clusters are not nested in strata
+            is_nested <- all(
+              rowSums(table(args$cluster_ids, args$strata_ids) > 0) == 1
+            )
+            if (!is_nested) {
+              args <- args[!(names(args) == "strata_ids")]
+            }
           }
         }
         new_folds <- do.call(origami::make_folds, args)
