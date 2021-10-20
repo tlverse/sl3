@@ -61,11 +61,17 @@
   can be either a risk or a loss function. This argument name change impacted 
   the following: `Lrnr_solnp`, `Lrnr_optim`, `Lrnr_cv_selector`, `cv_risk`, 
   `importance`, and `CV_Lrnr_sl`. 
+* Added name attribute to all loss functions, where naming was defined in terms
+  of the risk implied by each loss function (i.e., the common name for the 
+  expected loss). The names in `cv_risk` and `importance` tables now swap "risk" 
+  with this name attribute.
 * Incorporated stratified cross-validation when `folds` are not supplied to the 
-  `sl3_Task` and the outcome is a discrete variable. 
+  `sl3_Task` and the outcome is a discrete (i.e., binary or categorical) 
+  variable. 
 * Added to the `importance` method the option to evaluate importance over 
   `covariate_groups`, by removing/permuting all covariates in the same group 
   together.
+* Added `Lrnr_ga` as another metalearner.
 
 # sl3 1.4.2
 * Updates to variable importance functionality, including calculation of risk
