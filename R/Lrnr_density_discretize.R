@@ -4,10 +4,9 @@
 #'
 #' @docType class
 #'
-#' @importFrom R6 R6Class
-#' @importFrom assertthat assert_that is.count is.flag
-#'
 #' @export
+#'
+#' @importFrom origami make_folds
 #'
 #' @keywords data
 #'
@@ -46,19 +45,27 @@ Lrnr_density_discretize <- R6Class(
       )
 
       # make discretized task
-      new_columns <-
-        task$add_columns(data.table(
-          discrete_Y =
-            factor(discretized$x_discrete)
-        ))
+      folds <- tryCatch(
+        {
+          origami::make_folds(strata_ids = factor(discretized$x_discrete))
+        },
+        warning = function(c) {
+          message("Cannot construct stratified CV due to insufficient sample size for at least one level of discretized outcome, using folds from original task")
+          task$folds
+        }
+      )
+      new_columns <- task$add_columns(
+        data.table(discrete_Y = factor(discretized$x_discrete))
+      )
       discrete_task <- task$next_in_chain(
         outcome = "discrete_Y",
         column_names = new_columns,
-        folds = task$folds
+        folds = folds
       )
       # fit categorical learner to discretized task
       categorical_learner <- self$params$categorical_learner
       if (is.null(categorical_learner)) {
+        message("Categorical learner NULL, fitting with LASSO regression")
         categorical_learner <- make_learner(Lrnr_glmnet)
       }
       categorical_fit <- categorical_learner$train(discrete_task)
@@ -74,15 +81,22 @@ Lrnr_density_discretize <- R6Class(
       discretized <- discretize_variable(task$Y,
         breaks = self$fit_object$breaks
       )
-      new_columns <-
-        task$add_columns(data.table(
-          discrete_Y =
-            factor(discretized$x_discrete)
-        ))
+      folds <- tryCatch(
+        {
+          origami::make_folds(strata_ids = factor(discretized$x_discrete))
+        },
+        warning = function(c) {
+          message("Cannot construct stratified CV due to insufficient sample size for at least one level of discretized outcome, using folds from original task")
+          task$folds
+        }
+      )
+      new_columns <- task$add_columns(
+        data.table(discrete_Y = factor(discretized$x_discrete))
+      )
       discrete_task <- task$next_in_chain(
         outcome = "discrete_Y",
         column_names = new_columns,
-        folds = task$folds
+        folds = folds
       )
 
       # predict categorical learner on discretized task
