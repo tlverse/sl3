@@ -296,8 +296,8 @@ details.</p></li>
 
 <span class='co'># fit and predict densities</span>
 <span class='va'>hal_dens_fit</span> <span class='op'>&lt;-</span> <span class='va'>hal_dens</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>task</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Failed on Lrnr_haldensify_equal_range_c(3, 5)_NULL</span></div><div class='output co'>#&gt; <span class='error'>Error in apply(density_pred_unscaled, 2, function(x) {    pred &lt;- x/bin_sizes[long_data[in_bin == 1, bin_id]]    return(pred)}): dim(X) must have a positive length</span></div><div class='input'><span class='va'>hal_dens_preds</span> <span class='op'>&lt;-</span> <span class='va'>hal_dens_fit</span><span class='op'>$</span><span class='fu'>predict</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'hal_dens_fit' not found</span></div></pre>
+<span class='va'>hal_dens_preds</span> <span class='op'>&lt;-</span> <span class='va'>hal_dens_fit</span><span class='op'>$</span><span class='fu'>predict</span><span class='op'>(</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
