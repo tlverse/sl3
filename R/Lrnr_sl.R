@@ -73,15 +73,15 @@ Lrnr_sl <- R6Class(
           if (is.null(private$.cv_risk)) {
             tryCatch(
               {
-                # try using loss function based on outcome type
-                loss_fun <- private$.params$metalearner$params$loss_function
-                private$.cv_risk <- self$cv_risk(loss_fun)
+                # try using eval function based on outcome type
+                eval_fun <- private$.params$metalearner$params$eval_function
+                private$.cv_risk <- self$cv_risk(eval_fun)
               },
               error = function(c) {
                 # check training outcome type explicitly
                 metalearner <- default_metalearner(self$training_outcome_type)
-                loss_fun <- metalearner$params$loss_function
-                private$.cv_risk <- self$cv_risk(loss_fun)
+                eval_fun <- metalearner$params$eval_function
+                private$.cv_risk <- self$cv_risk(eval_fun)
               }
             )
           }
@@ -97,10 +97,10 @@ Lrnr_sl <- R6Class(
       self$assert_trained()
       return(private$.fit_object$cv_meta_fit$fit_object)
     },
-    cv_risk = function(loss_fun) {
+    cv_risk = function(eval_fun) {
       # get risks for cv learners (nested cv)
       cv_stack_fit <- self$fit_object$cv_fit
-      stack_risks <- cv_stack_fit$cv_risk(loss_fun)
+      stack_risks <- cv_stack_fit$cv_risk(eval_fun)
 
       coefs <- self$coefficients
       if (!is.null(coefs)) {
@@ -119,7 +119,7 @@ Lrnr_sl <- R6Class(
       )
 
       # get risks for super learner ("revere" CV)
-      sl_risk <- cv_risk(self, loss_fun)
+      sl_risk <- cv_risk(self, eval_fun)
       set(sl_risk, , "learner", "SuperLearner")
 
       # combine and return

@@ -34,7 +34,7 @@ prediction_plot <- function(learner_fit) {
       ylab("Predicted") +
       theme_bw() +
       geom_smooth(se = FALSE)
-  } else {
+  } else if (outcome_type$type == "categorical") {
     unpacked <- unpack_predictions(predictions)
     unpacked <- as.data.table(unpacked)
     setnames(unpacked, outcome_type$levels)
@@ -57,6 +57,17 @@ prediction_plot <- function(learner_fit) {
       ylab("True Positive Rate") +
       scale_color_discrete("Observed") +
       coord_equal()
+  } else if (outcome_type$type == "binomial") {
+    pred_data <- data.table(pred = predictions, obs = observed)
+    pred_plot <- ggplot(pred_data, aes_(x = ~obs, y = ~pred, fill = ~obs)) +
+      geom_violin(trim = FALSE) +
+      geom_boxplot(width = 0.1, fill = "white") +
+      xlab("Observed") +
+      ylab("Predicted") +
+      theme_bw() +
+      theme(legend.position = "none")
+  } else {
+    stop(sprintf("Outcome type of %s is not supported", outcome_type$type))
   }
 
   return(pred_plot)

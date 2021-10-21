@@ -218,6 +218,7 @@ details.</p></li>
 <code><a href='Lrnr_earth.html'>Lrnr_earth</a></code>,
 <code><a href='Lrnr_expSmooth.html'>Lrnr_expSmooth</a></code>,
 <code><a href='Lrnr_gam.html'>Lrnr_gam</a></code>,
+<code><a href='Lrnr_ga.html'>Lrnr_ga</a></code>,
 <code><a href='Lrnr_gbm.html'>Lrnr_gbm</a></code>,
 <code><a href='Lrnr_glm_fast.html'>Lrnr_glm_fast</a></code>,
 <code><a href='Lrnr_glmnet.html'>Lrnr_glmnet</a></code>,
@@ -292,11 +293,11 @@ details.</p></li>
   n_bins <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>, <span class='fl'>5</span><span class='op'>)</span>,
   lambda_seq <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>1</span>, <span class='op'>-</span><span class='fl'>13</span>, length <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in requirePackages(private$.required_packages, why = class(self)[1],     default.method = "load"): For Lrnr_haldensify please install the following packages: haldensify</span></div><div class='input'>
+
 <span class='co'># fit and predict densities</span>
 <span class='va'>hal_dens_fit</span> <span class='op'>&lt;-</span> <span class='va'>hal_dens</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>task</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'hal_dens' not found</span></div><div class='input'><span class='va'>hal_dens_preds</span> <span class='op'>&lt;-</span> <span class='va'>hal_dens_fit</span><span class='op'>$</span><span class='fu'>predict</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'hal_dens_fit' not found</span></div></pre>
+<span class='va'>hal_dens_preds</span> <span class='op'>&lt;-</span> <span class='va'>hal_dens_fit</span><span class='op'>$</span><span class='fu'>predict</span><span class='op'>(</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

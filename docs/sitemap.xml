@@ -61,6 +61,9 @@
     <loc>https://tlverse.org/sl3/reference/Lrnr_expSmooth.html</loc>
   </url>
   <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_ga.html</loc>
+  </url>
+  <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_gam.html</loc>
   </url>
   <url>
@@ -287,6 +290,9 @@
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/risk.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/reference/risk_functions.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/safe_dim.html</loc>

@@ -48,15 +48,15 @@ randomForest and order in decreasing order of
 importance. — importance" />
 <meta property="og:description" content="Function that takes a cross-validated fit (i.e., cross-validated learner that
 has already been trained on a task), which could be a cross-validated single
-learner or super learner, to generate a loss-based variable importance
-measure for each predictor, where the predictors are the covariates in the
-trained task. This function generates a data.table in which each row
-corresponds to the risk difference or risk ratio between the following
-two risks: the risk when a predictor is permuted or removed, and the original
-risk (i.e., when all predictors are included). A higher risk ratio/difference
-corresponds to a more important predictor. A plot can be generated from the
-returned data.table by calling companion function
-plot_importance." />
+learner or super learner, and generates a risk-based variable importance
+score for either each covariate or each group of covariates in the task.
+This function outputs a data.table, where each row corresponds to the
+risk difference or the risk ratio between the following two risks: the risk
+when a covariate (or group of covariates) is permuted or removed, and the
+original risk (i.e., when all covariates are included as they were in the
+observed data). A higher risk ratio/difference corresponds to a more
+important covariate/group. A plot can be generated from the returned
+data.table by calling companion function importance_plot." />
 
 
 
@@ -166,73 +166,122 @@ importance.</h1>
     <div class="ref-description">
     <p>Function that takes a cross-validated fit (i.e., cross-validated learner that
 has already been trained on a task), which could be a cross-validated single
-learner or super learner, to generate a loss-based variable importance
-measure for each predictor, where the predictors are the covariates in the
-trained task. This function generates a <code>data.table</code> in which each row
-corresponds to the risk difference or risk ratio between the following
-two risks: the risk when a predictor is permuted or removed, and the original
-risk (i.e., when all predictors are included). A higher risk ratio/difference
-corresponds to a more important predictor. A plot can be generated from the
-returned <code>data.table</code> by calling companion function
-<code>plot_importance</code>.</p>
+learner or super learner, and generates a risk-based variable importance
+score for either each covariate or each group of covariates in the task.
+This function outputs a <code>data.table</code>, where each row corresponds to the
+risk difference or the risk ratio between the following two risks: the risk
+when a covariate (or group of covariates) is permuted or removed, and the
+original risk (i.e., when all covariates are included as they were in the
+observed data). A higher risk ratio/difference corresponds to a more
+important covariate/group. A plot can be generated from the returned
+<code>data.table</code> by calling companion function <code><a href='importance_plot.html'>importance_plot</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>importance</span><span class='op'>(</span><span class='va'>fit</span>, loss <span class='op'>=</span> <span class='cn'>NULL</span>, fold_number <span class='op'>=</span> <span class='st'>"validation"</span>,
-  type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"remove"</span>, <span class='st'>"permute"</span><span class='op'>)</span>, importance_metric <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ratio"</span>,
-  <span class='st'>"difference"</span><span class='op'>)</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>importance</span><span class='op'>(</span><span class='va'>fit</span>, eval_fun <span class='op'>=</span> <span class='cn'>NULL</span>, fold_number <span class='op'>=</span> <span class='st'>"validation"</span>,
+  type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"remove"</span>, <span class='st'>"permute"</span><span class='op'>)</span>, importance_metric <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"difference"</span>,
+  <span class='st'>"ratio"</span><span class='op'>)</span>, covariate_groups <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
-<span class='fu'>importance</span><span class='op'>(</span><span class='va'>fit</span>, loss <span class='op'>=</span> <span class='cn'>NULL</span>, fold_number <span class='op'>=</span> <span class='st'>"validation"</span>,
-  type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"remove"</span>, <span class='st'>"permute"</span><span class='op'>)</span>, importance_metric <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ratio"</span>,
-  <span class='st'>"difference"</span><span class='op'>)</span><span class='op'>)</span></pre>
+<span class='fu'>importance</span><span class='op'>(</span><span class='va'>fit</span>, eval_fun <span class='op'>=</span> <span class='cn'>NULL</span>, fold_number <span class='op'>=</span> <span class='st'>"validation"</span>,
+  type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"remove"</span>, <span class='st'>"permute"</span><span class='op'>)</span>, importance_metric <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"difference"</span>,
+  <span class='st'>"ratio"</span><span class='op'>)</span>, covariate_groups <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>fit</th>
-      <td><p>A trained cross-validated learner (e.g., cv stack, super learner),
-from which cross-validated predictions can be generated.</p></td>
-    </tr>
-    <tr>
-      <th>loss</th>
-      <td><p>The loss function for evaluating the risk. Defaults according to
-outcome type: squared error loss for continuous outcomes, and negative
-log-likelihood loss for discrete outcomes. See <code><a href='loss_functions.html'>loss_functions</a></code>.</p></td>
-    </tr>
-    <tr>
-      <th>fold_number</th>
-      <td><p>The fold number to use for obtaining the predictions
-from the fit. Either a positive integer for obtaining predictions from a
-specific fold's fit; <code>"full"</code> for obtaining predictions from a fit on
-all of the data, or <code>"validation"</code> (default) for obtaining
-cross-validated predictions, where the data used for training and prediction
-never overlaps across the folds. Note that if a positive integer or
-<code>"full"</code> is supplied, then there will be overlap between the  data
-used for training and prediction.</p></td>
-    </tr>
-    <tr>
       <th>type</th>
-      <td><p>Which method should be used to obscure the relationship between
-the covariate and the outcome. When type is <code>"remove"</code> (default), each
-covariate is removed from the task and the cross-validated learner is refit
-to this modified task and then predictions are obtained from this refit.
-When type is <code>"permute"</code>, each covariate is permuted (sampled without
-replacement), and then predictions are obtained from this modified data with
-one permuted covariate.</p></td>
-    </tr>
-    <tr>
-      <th>importance_metric</th>
-      <td><p>Either <code>"ratio"</code> (default), which returns
-the risk with the permuted/removed X divided by observed risk with all X; or
-<code>"difference"</code>, which returns the difference between the risk with the
-permuted/removed X and the observed risk.</p></td>
+      <td><p>either 1 or 2, specifying the type of importance measure (1=mean
+decrease in accuracy, 2=mean decrease in node impurity).</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A <code>data.table</code> of variable importance for each covariate.</p>
+    <h2 class="hasAnchor" id="parameters"><a class="anchor" href="#parameters"></a>Parameters</h2>
 
+    
+
+<ul>
+<li><p><code>fit</code>: A trained cross-validated (CV) learner (such as a CV stack
+or super learner), from which cross-validated predictions can be
+generated.</p></li>
+<li><p><code>eval_fun = NULL</code>: The evaluation function (risk or loss function)
+for evaluating the risk. Defaults vary based on the outcome type,
+matching defaults in <code><a href='default_metalearner.html'>default_metalearner</a></code>. See
+<code><a href='loss_functions.html'>loss_functions</a></code> and <code><a href='risk_functions.html'>risk_functions</a></code> for
+options.</p></li>
+<li><p><code>fold_number</code>: The fold number to use for obtaining the predictions
+from the fit. Either a positive integer for obtaining predictions from
+a specific fold's fit; <code>"full"</code> for obtaining predictions from a
+fit on all of the data, or <code>"validation"</code> (default) for obtaining
+cross-validated predictions, where the data used for training and
+prediction never overlaps across the folds. Note that if a positive
+integer or <code>"full"</code> is supplied here then there will be overlap
+between the data used for training and validation, so
+<code>fold_number ="validation"</code> is recommended.</p></li>
+<li><p><code>type</code>: Which method should be used to obscure the relationship
+between each covariate / covariate group and the outcome? When
+<code>type</code> is <code>"remove"</code> (default), each covariate / covariate
+group is removed one at a time from the task; the cross-validated
+learner is refit to this modified task; and finally, predictions are
+obtained from this refit. When <code>type</code> is <code>"permute"</code>, each
+covariate / covariate group is permuted (sampled without replacement)
+one at a time, and then predictions are obtained from this modified
+data.</p></li>
+<li><p><code>importance_metric</code>: Either <code>"ratio"</code> or <code>"difference"</code>
+(default). For each covariate / covariate group, <code>"ratio"</code>
+returns the risk of the permuted/removed covariate / covariate group
+divided by observed/original risk (i.e., the risk with all covariates
+as they existed in the sample) and <code>"difference"</code> returns the
+difference between the risk with the permuted/removed covariate /
+covariate group and the observed risk.</p></li>
+<li><p><code>covariate_groups</code>: Optional named list covariate groups which will
+invoke variable importance evaluation at the group-level, by
+removing/permuting all covariates in the same group together. If
+covariates in the task are not specified in the list of groups, then
+those covariates will be added as additional single-covariate groups.</p></li>
+</ul>
+
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># define ML task</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>cpp_imputed</span><span class='op'>)</span>
+<span class='va'>covs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"apgar1"</span>, <span class='st'>"apgar5"</span>, <span class='st'>"parity"</span>, <span class='st'>"gagebrth"</span>, <span class='st'>"mage"</span>, <span class='st'>"meducyrs"</span><span class='op'>)</span>
+<span class='va'>task</span> <span class='op'>&lt;-</span> <span class='va'><a href='sl3_Task.html'>sl3_Task</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>cpp_imputed</span>, covariates <span class='op'>=</span> <span class='va'>covs</span>, outcome <span class='op'>=</span> <span class='st'>"haz"</span><span class='op'>)</span>
+
+<span class='co'># build relatively fast learner library (not recommended for real analysis)</span>
+<span class='va'>lasso_lrnr</span> <span class='op'>&lt;-</span> <span class='va'><a href='Lrnr_glmnet.html'>Lrnr_glmnet</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>glm_lrnr</span> <span class='op'>&lt;-</span> <span class='va'><a href='Lrnr_glm.html'>Lrnr_glm</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>ranger_lrnr</span> <span class='op'>&lt;-</span> <span class='va'><a href='Lrnr_ranger.html'>Lrnr_ranger</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>lrnrs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>lasso_lrnr</span>, <span class='va'>glm_lrnr</span>, <span class='va'>ranger_lrnr</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>lrnrs</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"lasso"</span>, <span class='st'>"glm"</span>, <span class='st'>"ranger"</span><span class='op'>)</span>
+<span class='va'>lrnr_stack</span> <span class='op'>&lt;-</span> <span class='fu'><a href='Lrnr_base.html'>make_learner</a></span><span class='op'>(</span><span class='va'>Stack</span>, <span class='va'>lrnrs</span><span class='op'>)</span>
+
+<span class='co'># instantiate SL with default metalearner</span>
+<span class='va'>sl</span> <span class='op'>&lt;-</span> <span class='va'><a href='Lrnr_sl.html'>Lrnr_sl</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>lrnr_stack</span><span class='op'>)</span>
+<span class='va'>sl_fit</span> <span class='op'>&lt;-</span> <span class='va'>sl</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>task</span><span class='op'>)</span>
+
+<span class='va'>importance_result</span> <span class='op'>&lt;-</span> <span class='fu'>importance</span><span class='op'>(</span><span class='va'>sl_fit</span><span class='op'>)</span>
+<span class='va'>importance_result</span>
+</div><div class='output co'>#&gt;    covariate MSE_difference
+#&gt; 1:      mage    0.042068515
+#&gt; 2:  meducyrs    0.030364012
+#&gt; 3:  gagebrth    0.027932527
+#&gt; 4:    parity    0.011838647
+#&gt; 5:    apgar1    0.007700316
+#&gt; 6:    apgar5   -0.005016752</div><div class='input'>
+<span class='co'># importance with groups of covariates</span>
+<span class='va'>groups</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
+  scores <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"apgar1"</span>, <span class='st'>"apgar5"</span><span class='op'>)</span>,
+  maternal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"parity"</span>, <span class='st'>"mage"</span>, <span class='st'>"meducyrs"</span><span class='op'>)</span>
+<span class='op'>)</span>
+<span class='va'>importance_result_groups</span> <span class='op'>&lt;-</span> <span class='fu'>importance</span><span class='op'>(</span><span class='va'>sl_fit</span>, covariate_groups <span class='op'>=</span> <span class='va'>groups</span><span class='op'>)</span>
+<span class='va'>importance_result_groups</span>
+</div><div class='output co'>#&gt;    covariate_group MSE_difference
+#&gt; 1:          scores     7.21635410
+#&gt; 2:        maternal     0.14856504
+#&gt; 3:        gagebrth     0.02746983</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

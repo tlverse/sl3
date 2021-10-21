@@ -7,43 +7,17 @@ Extract variable importance measures produced by
 \code{\link[randomForest]{randomForest}} and order in decreasing order of
 importance.}
 \usage{
-importance(fit, loss = NULL, fold_number = "validation",
-  type = c("remove", "permute"), importance_metric = c("ratio",
-  "difference"))
+importance(fit, eval_fun = NULL, fold_number = "validation",
+  type = c("remove", "permute"), importance_metric = c("difference",
+  "ratio"), covariate_groups = NULL)
 
-importance(fit, loss = NULL, fold_number = "validation",
-  type = c("remove", "permute"), importance_metric = c("ratio",
-  "difference"))
+importance(fit, eval_fun = NULL, fold_number = "validation",
+  type = c("remove", "permute"), importance_metric = c("difference",
+  "ratio"), covariate_groups = NULL)
 }
 \arguments{
-\item{fit}{A trained cross-validated learner (e.g., cv stack, super learner),
-from which cross-validated predictions can be generated.}
-
-\item{loss}{The loss function for evaluating the risk. Defaults according to
-outcome type: squared error loss for continuous outcomes, and negative
-log-likelihood loss for discrete outcomes. See \code{\link{loss_functions}}.}
-
-\item{fold_number}{The fold number to use for obtaining the predictions
-from the fit. Either a positive integer for obtaining predictions from a
-specific fold's fit; \code{"full"} for obtaining predictions from a fit on
-all of the data, or \code{"validation"} (default) for obtaining
-cross-validated predictions, where the data used for training and prediction
-never overlaps across the folds. Note that if a positive integer or
-\code{"full"} is supplied, then there will be overlap between the  data
-used for training and prediction.}
-
-\item{type}{Which method should be used to obscure the relationship between
-the covariate and the outcome. When type is \code{"remove"} (default), each
-covariate is removed from the task and the cross-validated learner is refit
-to this modified task and then predictions are obtained from this refit.
-When type is \code{"permute"}, each covariate is permuted (sampled without
-replacement), and then predictions are obtained from this modified data with
-one permuted covariate.}
-
-\item{importance_metric}{Either \code{"ratio"} (default), which returns
-the risk with the permuted/removed X divided by observed risk with all X; or
-\code{"difference"}, which returns the difference between the risk with the
-permuted/removed X and the observed risk.}
+\item{type}{either 1 or 2, specifying the type of importance measure (1=mean
+decrease in accuracy, 2=mean decrease in node impurity).}
 }
 \value{
 A \code{data.table} of variable importance for each covariate.
@@ -51,15 +25,88 @@ A \code{data.table} of variable importance for each covariate.
 \description{
 Function that takes a cross-validated fit (i.e., cross-validated learner that
 has already been trained on a task), which could be a cross-validated single
-learner or super learner, to generate a loss-based variable importance
-measure for each predictor, where the predictors are the covariates in the
-trained task. This function generates a \code{data.table} in which each row
-corresponds to the risk difference or risk ratio between the following
-two risks: the risk when a predictor is permuted or removed, and the original
-risk (i.e., when all predictors are included). A higher risk ratio/difference
-corresponds to a more important predictor. A plot can be generated from the
-returned \code{data.table} by calling companion function
-\code{plot_importance}.
+learner or super learner, and generates a risk-based variable importance
+score for either each covariate or each group of covariates in the task.
+This function outputs a \code{data.table}, where each row corresponds to the
+risk difference or the risk ratio between the following two risks: the risk
+when a covariate (or group of covariates) is permuted or removed, and the
+original risk (i.e., when all covariates are included as they were in the
+observed data). A higher risk ratio/difference corresponds to a more
+important covariate/group. A plot can be generated from the returned
+\code{data.table} by calling companion function \code{\link{importance_plot}}.
+}
+\section{Parameters}{
+
+\itemize{
+\item \code{fit}: A trained cross-validated (CV) learner (such as a CV stack
+or super learner), from which cross-validated predictions can be
+generated.
+\item \code{eval_fun = NULL}: The evaluation function (risk or loss function)
+for evaluating the risk. Defaults vary based on the outcome type,
+matching defaults in \code{\link{default_metalearner}}. See
+\code{\link{loss_functions}} and \code{\link{risk_functions}} for
+options.
+\item \code{fold_number}: The fold number to use for obtaining the predictions
+from the fit. Either a positive integer for obtaining predictions from
+a specific fold's fit; \code{"full"} for obtaining predictions from a
+fit on all of the data, or \code{"validation"} (default) for obtaining
+cross-validated predictions, where the data used for training and
+prediction never overlaps across the folds. Note that if a positive
+integer or \code{"full"} is supplied here then there will be overlap
+between the data used for training and validation, so
+\code{fold_number ="validation"} is recommended.
+\item \code{type}: Which method should be used to obscure the relationship
+between each covariate / covariate group and the outcome? When
+\code{type} is \code{"remove"} (default), each covariate / covariate
+group is removed one at a time from the task; the cross-validated
+learner is refit to this modified task; and finally, predictions are
+obtained from this refit. When \code{type} is \code{"permute"}, each
+covariate / covariate group is permuted (sampled without replacement)
+one at a time, and then predictions are obtained from this modified
+data.
+\item \code{importance_metric}: Either \code{"ratio"} or \code{"difference"}
+(default). For each covariate / covariate group, \code{"ratio"}
+returns the risk of the permuted/removed covariate / covariate group
+divided by observed/original risk (i.e., the risk with all covariates
+as they existed in the sample) and \code{"difference"} returns the
+difference between the risk with the permuted/removed covariate /
+covariate group and the observed risk.
+\item \code{covariate_groups}: Optional named list covariate groups which will
+invoke variable importance evaluation at the group-level, by
+removing/permuting all covariates in the same group together. If
+covariates in the task are not specified in the list of groups, then
+those covariates will be added as additional single-covariate groups.
+}
+}
+
+\examples{
+# define ML task
+data(cpp_imputed)
+covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
+task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
+
+# build relatively fast learner library (not recommended for real analysis)
+lasso_lrnr <- Lrnr_glmnet$new()
+glm_lrnr <- Lrnr_glm$new()
+ranger_lrnr <- Lrnr_ranger$new()
+lrnrs <- c(lasso_lrnr, glm_lrnr, ranger_lrnr)
+names(lrnrs) <- c("lasso", "glm", "ranger")
+lrnr_stack <- make_learner(Stack, lrnrs)
+
+# instantiate SL with default metalearner
+sl <- Lrnr_sl$new(lrnr_stack)
+sl_fit <- sl$train(task)
+
+importance_result <- importance(sl_fit)
+importance_result
+
+# importance with groups of covariates
+groups <- list(
+  scores = c("apgar1", "apgar5"),
+  maternal = c("parity", "mage", "meducyrs")
+)
+importance_result_groups <- importance(sl_fit, covariate_groups = groups)
+importance_result_groups
 }
 \keyword{importance}
 \keyword{variable}

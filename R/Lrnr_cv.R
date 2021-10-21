@@ -91,8 +91,8 @@ Lrnr_cv <- R6Class(
       params <- list(learner = learner, folds = folds, full_fit = full_fit, ...)
       super$initialize(params = params, ...)
     },
-    cv_risk = function(loss_fun) {
-      return(cv_risk(self, loss_fun))
+    cv_risk = function(eval_fun) {
+      return(cv_risk(self, eval_fun))
     },
     print = function() {
       print("Lrnr_cv")

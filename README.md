@@ -35,15 +35,13 @@ fashions:
     prediction algorithm from among a supplied library of machine
     learning algorithms (“learners” in the `sl3` nomenclature) – that
     is, the discrete Super Learner is the single learning algorithm that
-    minimizes the cross-validated risk with respect to an appropriate
-    loss function.
+    minimizes the cross-validated risk.
 2.  The *ensemble* Super Learner can be used to assign weights to a set
     of specified learning algorithms (from a user-supplied library of
     such algorithms) so as to create a combination of these learners
-    that minimizes the cross-validated risk with respect to an
-    appropriate loss function. This notion of weighted combinations has
-    also been referred to as *stacked regression* (Breiman 1996) and
-    *stacked generalization* (Wolpert 1992).
+    that minimizes the cross-validated risk. This notion of weighted
+    combinations has also been referred to as *stacked regression*
+    (Breiman 1996) and *stacked generalization* (Wolpert 1992).
 
 Looking for long-form documentation or a walkthrough of the `sl3`
 package? Don’t worry\! Just browse [the chapter in our
@@ -133,12 +131,12 @@ stack_fit <- learner_stack$train(task)
 preds <- stack_fit$predict()
 head(preds)
 #>    Lrnr_pkg_SuperLearner_SL.glmnet Lrnr_glm_TRUE
-#> 1:                      0.35259458    0.36298498
-#> 2:                      0.35259458    0.36298498
-#> 3:                      0.24425929    0.25993072
-#> 4:                      0.24425929    0.25993072
-#> 5:                      0.24425929    0.25993072
-#> 6:                      0.02695039    0.05680264
+#> 1:                      0.35767321    0.36298498
+#> 2:                      0.35767321    0.36298498
+#> 3:                      0.25185377    0.25993072
+#> 4:                      0.25185377    0.25993072
+#> 5:                      0.25185377    0.25993072
+#> 6:                      0.04220823    0.05680264
 #>    Pipeline(Lrnr_pkg_SuperLearner_screener_screen.glmnet->Lrnr_glm_TRUE)
 #> 1:                                                            0.36228209
 #> 2:                                                            0.36228209
@@ -245,6 +243,12 @@ cv
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 
 density
+
+</th>
+
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+
+h2o
 
 </th>
 
@@ -384,6 +388,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -418,13 +428,19 @@ Lrnr\_bartMachine
 
 <td style="text-align:left;">
 
-√
+x
 
 </td>
 
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -500,6 +516,106 @@ x
 
 <td style="text-align:left;">
 
+Lrnr\_bayesglm
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
 Lrnr\_bilstm
 
 </td>
@@ -519,6 +635,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -672,13 +794,19 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
 
 <td style="text-align:left;">
 
-x
+√
 
 </td>
 
@@ -776,6 +904,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+√
+
+</td>
+
 </tr>
 
 <tr>
@@ -807,6 +941,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -954,13 +1094,19 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
 
 <td style="text-align:left;">
 
-x
+√
 
 </td>
 
@@ -982,13 +1128,19 @@ Lrnr\_dbarts
 
 <td style="text-align:left;">
 
-√
+x
 
 </td>
 
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -1065,6 +1217,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_define\_interactions
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -1246,6 +1404,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
@@ -1340,6 +1504,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
@@ -1377,6 +1547,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -1528,6 +1704,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
@@ -1553,6 +1735,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -1640,13 +1828,19 @@ Lrnr\_gam
 
 <td style="text-align:left;">
 
-√
+x
 
 </td>
 
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -1810,6 +2004,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
@@ -1835,6 +2035,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -1958,6 +2164,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -2023,6 +2235,12 @@ Lrnr\_glmnet
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -2176,6 +2394,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -2198,19 +2422,25 @@ Lrnr\_gru\_keras
 
 <td style="text-align:left;">
 
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
+√
 
 </td>
 
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -2358,6 +2588,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -2411,6 +2647,12 @@ x
 <td style="text-align:left;">
 
 x
+
+</td>
+
+<td style="text-align:left;">
+
+√
 
 </td>
 
@@ -2510,6 +2752,12 @@ x
 
 <td style="text-align:left;">
 
+√
+
+</td>
+
+<td style="text-align:left;">
+
 x
 
 </td>
@@ -2587,6 +2835,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -2750,6 +3004,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
@@ -2775,6 +3035,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -2869,6 +3135,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -3032,25 +3304,31 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
 
 <td style="text-align:left;">
 
-Lrnr\_lstm
+Lrnr\_lightgbm
 
 </td>
 
 <td style="text-align:left;">
 
-x
+√
 
 </td>
 
 <td style="text-align:left;">
 
-x
+√
 
 </td>
 
@@ -3086,6 +3364,18 @@ x
 
 <td style="text-align:left;">
 
+√
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
 x
 
 </td>
@@ -3111,12 +3401,6 @@ x
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -3138,19 +3422,25 @@ Lrnr\_lstm\_keras
 
 <td style="text-align:left;">
 
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
+√
 
 </td>
 
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -3274,6 +3564,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -3339,6 +3635,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -3502,6 +3804,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
@@ -3527,6 +3835,12 @@ Lrnr\_nnet
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -3690,6 +4004,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
@@ -3715,6 +4035,12 @@ Lrnr\_optim
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -3844,6 +4170,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -3920,42 +4252,6 @@ x
 
 <td style="text-align:left;">
 
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
 x
 
 </td>
@@ -3969,6 +4265,48 @@ x
 <td style="text-align:left;">
 
 x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+√
 
 </td>
 
@@ -4056,13 +4394,19 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
 
 <td style="text-align:left;">
 
-x
+√
 
 </td>
 
@@ -4108,42 +4452,6 @@ x
 
 <td style="text-align:left;">
 
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
 x
 
 </td>
@@ -4157,6 +4465,48 @@ x
 <td style="text-align:left;">
 
 x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+√
 
 </td>
 
@@ -4185,6 +4535,12 @@ Lrnr\_polspline
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -4348,6 +4704,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
@@ -4373,6 +4735,12 @@ Lrnr\_randomForest
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -4467,6 +4835,12 @@ Lrnr\_ranger
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -4626,6 +5000,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -4655,6 +5035,12 @@ Lrnr\_rpart
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -4802,6 +5188,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -4825,6 +5217,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_screener\_augment
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -4919,6 +5317,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_screener\_coefs
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -5084,6 +5488,12 @@ x
 
 <td style="text-align:left;">
 
+√
+
+</td>
+
+<td style="text-align:left;">
+
 x
 
 </td>
@@ -5107,6 +5517,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_screener\_importance
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -5284,6 +5700,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -5313,6 +5735,12 @@ Lrnr\_solnp
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -5476,6 +5904,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
@@ -5570,6 +6004,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+√
+
+</td>
+
 </tr>
 
 <tr>
@@ -5577,6 +6017,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_subset\_covariates
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -5758,6 +6204,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
@@ -5789,6 +6241,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -5930,6 +6388,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -5971,6 +6435,12 @@ Lrnr\_xgboost
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 

@@ -51,6 +51,27 @@
   learners, even those without native `formula` support. The `formula` should 
   be an object of class "`formula`", or a character string that can be coerced 
   to that class.
+* Added factory function for performance-based risks for binary outcomes with 
+  `ROCR` performance measures `custom_ROCR_risk`. Supports cutoff-dependent and 
+  scalar `ROCR` performance measures. The risk is defined as 1 - performance, 
+  and is transformed back to the performance measure in `cv_risk` and 
+  `importance` functions. This change prompted the revision of argument name 
+  `loss_fun` and `loss_function` to `eval_fun` and `eval_function`, 
+  respectively, since the evaluation of predictions relative to the observations 
+  can be either a risk or a loss function. This argument name change impacted 
+  the following: `Lrnr_solnp`, `Lrnr_optim`, `Lrnr_cv_selector`, `cv_risk`, 
+  `importance`, and `CV_Lrnr_sl`. 
+* Added name attribute to all loss functions, where naming was defined in terms
+  of the risk implied by each loss function (i.e., the common name for the 
+  expected loss). The names in `cv_risk` and `importance` tables now swap "risk" 
+  with this name attribute.
+* Incorporated stratified cross-validation when `folds` are not supplied to the 
+  `sl3_Task` and the outcome is a discrete (i.e., binary or categorical) 
+  variable. 
+* Added to the `importance` method the option to evaluate importance over 
+  `covariate_groups`, by removing/permuting all covariates in the same group 
+  together.
+* Added `Lrnr_ga` as another metalearner.
 
 # sl3 1.4.2
 * Updates to variable importance functionality, including calculation of risk

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Estimate Cross-Validated Risk of Super Learner — CV_lrnr_sl • sl3</title>
+<title>Estimates cross-validated risk of the Super Learner — CV_lrnr_sl • sl3</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Estimate Cross-Validated Risk of Super Learner — CV_lrnr_sl" />
-<meta property="og:description" content="Estimate Cross-Validated Risk of Super Learner" />
+<meta property="og:title" content="Estimates cross-validated risk of the Super Learner — CV_lrnr_sl" />
+<meta property="og:description" content="Estimates cross-validated risk of the Super Learner" />
 
 
 
@@ -139,31 +139,32 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Estimate Cross-Validated Risk of Super Learner</h1>
+    <h1>Estimates cross-validated risk of the Super Learner</h1>
     <small class="dont-index">Source: <a href='https://github.com/tlverse/sl3/blob/master/R/CV_Lrnr_sl.R'><code>R/CV_Lrnr_sl.R</code></a></small>
     <div class="hidden name"><code>CV_lrnr_sl.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Estimate Cross-Validated Risk of Super Learner</p>
+    <p>Estimates cross-validated risk of the Super Learner</p>
     </div>
 
-    <pre class="usage"><span class='fu'>CV_lrnr_sl</span><span class='op'>(</span><span class='va'>lrnr_sl</span>, <span class='va'>task</span>, <span class='va'>loss_fun</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>CV_lrnr_sl</span><span class='op'>(</span><span class='va'>lrnr_sl</span>, <span class='va'>task</span>, <span class='va'>eval_fun</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>lrnr_sl</th>
-      <td><p>a Lrnr_sl object specifying the Super Learner</p></td>
+      <td><p>a <code>Lrnr_sl</code> object specifying the Super Learner.</p></td>
     </tr>
     <tr>
       <th>task</th>
-      <td><p>the task used for training and performance assessment</p></td>
+      <td><p>the task used for training and performance assessment.</p></td>
     </tr>
     <tr>
-      <th>loss_fun</th>
-      <td><p>the loss function used to evaluate Super Learner</p></td>
+      <th>eval_fun</th>
+      <td><p>the evaluation function, either a loss or risk function, for
+evaluating the Super Learner's predictions.</p></td>
     </tr>
     </table>
 

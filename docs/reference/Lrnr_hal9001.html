@@ -215,6 +215,7 @@ it's documentation for details.</p></li>
 <code><a href='Lrnr_earth.html'>Lrnr_earth</a></code>,
 <code><a href='Lrnr_expSmooth.html'>Lrnr_expSmooth</a></code>,
 <code><a href='Lrnr_gam.html'>Lrnr_gam</a></code>,
+<code><a href='Lrnr_ga.html'>Lrnr_ga</a></code>,
 <code><a href='Lrnr_gbm.html'>Lrnr_gbm</a></code>,
 <code><a href='Lrnr_glm_fast.html'>Lrnr_glm_fast</a></code>,
 <code><a href='Lrnr_glmnet.html'>Lrnr_glmnet</a></code>,
@@ -272,8 +273,8 @@ it's documentation for details.</p></li>
   max_degree <span class='op'>=</span> <span class='fl'>2</span>, num_knots <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>20</span>, <span class='fl'>10</span><span class='op'>)</span>, smoothness_orders <span class='op'>=</span> <span class='fl'>0</span>
 <span class='op'>)</span>
 <span class='va'>hal_fit</span> <span class='op'>&lt;-</span> <span class='va'>hal_lrnr</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>task</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Failed on Lrnr_hal9001_2_c(20, 10)_0</span></div><div class='output co'>#&gt; <span class='error'>Error in hal9000(): object 'hal_quotes' not found</span></div><div class='input'><span class='va'>hal_preds</span> <span class='op'>&lt;-</span> <span class='va'>hal_fit</span><span class='op'>$</span><span class='fu'>predict</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'hal_fit' not found</span></div></pre>
+<span class='va'>hal_preds</span> <span class='op'>&lt;-</span> <span class='va'>hal_fit</span><span class='op'>$</span><span class='fu'>predict</span><span class='op'>(</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

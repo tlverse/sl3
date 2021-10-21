@@ -20,7 +20,7 @@ revere_subset_vim_fit <- function(task, fold_number) {
     return(task)
   }
   vim <- importance(fit, loss_squared_error, fold_number)
-  keep_vars <- unlist(vim[1:3, "X"], use.names = FALSE)
+  keep_vars <- unlist(vim[1:3, "covariate"], use.names = FALSE)
   subset_task <- task$next_in_chain(covariates = keep_vars)
 
   return(subset_task)
