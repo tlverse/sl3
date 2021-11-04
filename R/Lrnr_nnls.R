@@ -70,28 +70,33 @@ Lrnr_nnls <- R6Class(
     }
   ),
   private = list(
-    .properties = c("continuous"),
+    .properties = c("continuous", "binomial"),
     .train = function(task) {
       args <- self$params
       x <- task$X
       y <- task$Y
       fit_object <- nnls::nnls(as.matrix(x), y)
       fit_object$lrnrs <- names(task$X)
-      if (args$convex == TRUE) {
-        init_coef <- coefficients(fit_object)
-        init_coef[is.na(init_coef)] <- 0
-        if (sum(init_coef) > 0) {
-          coef <- init_coef / sum(init_coef)
-        } else {
-          warning("All algorithms have zero weight", call. = FALSE)
-          coef <- init_coef
-        }
-        fit_object$coefficients <- coef
-        fit_object$x <- coef
+      init_coef <- coefficients(fit_object)
+      init_coef[is.na(init_coef)] <- 0
+      if (sum(init_coef) == 0) {
+        warning("All algorithms have zero weight")
       }
+
+      if (args$convex == TRUE & sum(init_coef) > 0) {
+        coef <- init_coef / sum(init_coef)
+      } else {
+        coef <- init_coef
+      }
+
+      fit_object$coefficients <- coef
+      fit_object$x <- coef
       return(fit_object)
     },
     .predict = function(task = NULL) {
+      if (sum(coef(private$.fit_object)) == 0) {
+        warning("All predictions will be equal to 0, since all nnls coefficients are 0")
+      }
       predictions <- as.matrix(task$X) %*% coef(private$.fit_object)
       return(predictions)
     },
