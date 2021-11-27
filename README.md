@@ -1816,6 +1816,106 @@ x
 
 <td style="text-align:left;">
 
+Lrnr\_ga
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
 Lrnr\_gam
 
 </td>
@@ -3922,7 +4022,7 @@ Lrnr\_nnls
 
 <td style="text-align:left;">
 
-x
+√
 
 </td>
 
