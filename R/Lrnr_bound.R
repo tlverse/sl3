@@ -61,11 +61,12 @@ Lrnr_bound <- R6Class(
       outcome_type <- self$get_outcome_type(task)
 
       # check compatibility of bounding limits with outcome type
-      if (outcome_type$type == "continuous") {
-        assertthat::assert_that(
-          length(args$bound) > 1,
-          msg = "Both upper and lower bounds required for continous outcomes."
-        )
+      if (outcome_type$type == "continuous" && length(args$bound) == 1L) {
+        message(paste(
+          "Outcome is", outcome_type$type, "but only lower bound specified.",
+          "Setting upper bound to infinity."
+        ))
+        private$.params$bound[2] <- Inf
       }
       fit_object <- list()
       return(fit_object)
