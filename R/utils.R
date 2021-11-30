@@ -155,6 +155,16 @@ true_obj_size <- function(obj) {
   length(serialize(obj, NULL))
 }
 
+#' @keywords internal
+check_fit_sizes <- function(fit) {
+  fo <- fit$fit_object
+  # see what's taking up the space
+  element_sizes <- sapply(fo, true_obj_size)
+  ranked <- sort(element_sizes / sum(element_sizes), decreasing = TRUE)
+
+  return(ranked)
+}
+
 ################################################################################
 
 #' Drop components from learner fits

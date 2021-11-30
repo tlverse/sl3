@@ -151,6 +151,9 @@ Lrnr_base <- R6Class(
       }
       new_object <- self$clone() # copy parameters, and whatever else
       new_object$set_train(fit_object, task)
+      if (getOption("sl3.reduce_fit")) {
+        new_object$reduce_fit(check_preds = FALSE)
+      }
       return(new_object)
     },
     set_train = function(fit_object, training_task) {
@@ -335,6 +338,53 @@ Lrnr_base <- R6Class(
       } else {
         return(task)
       }
+    },
+    reduce_fit = function(fit_object = NULL, check_preds = TRUE, set_train = TRUE) {
+      if (is.null(fit_object)) {
+        fit_object <- self$fit_object
+      }
+      if (check_preds) {
+        preds_full <- self$predict(task)
+      }
+
+
+      # try reducing the size
+      size_full <- true_obj_size(fit_object)
+
+      # see what's taking up the space
+      # element_sizes <- sapply(fo, true_obj_size)
+      # ranked <- sort(element_sizes/size_full, decreasing = TRUE)
+
+      # by default, drop out call
+      # within(fit_object, rm(private$.fit_can_remove))
+      keep <- setdiff(names(fit_object), private$.fit_can_remove)
+
+      # gotta preserve the attributes (not sure why they're getting dropped)
+      attrs <- attributes(fit_object)
+      attrs$names <- keep
+      reduced <- fit_object[keep]
+      attributes(reduced) <- attrs
+      fit_object <- reduced
+      size_reduced <- true_obj_size(fit_object)
+      reduction_percent <- 1 - size_reduced / size_full
+
+      if (getOption("sl3.verbose")) {
+        message(sprintf("Fit object size reduced %0.0f%%", 100 * reduction_percent))
+      }
+
+
+      if (set_train) {
+        self$set_train(fit_object, self$training_task)
+      }
+
+
+      # verify prediction still works
+      if (check_preds) {
+        preds_reduced <- self$predict(task)
+        assert_that(all.equal(preds_full, preds_reduced))
+      }
+
+      return(fit_object)
     }
   ),
   active = list(
@@ -399,6 +449,7 @@ Lrnr_base <- R6Class(
     .required_packages = NULL,
     .properties = list(),
     .custom_chain = NULL,
+    .fit_can_remove = c("call"),
     .train_sublearners = function(task) {
       # train sublearners here
       return(NULL)

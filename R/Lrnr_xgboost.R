@@ -194,6 +194,7 @@ Lrnr_xgboost <- R6Class(
 
       return(predictions)
     },
+    .fit_can_remove = c("raw", "call"),
     .required_packages = c("xgboost")
   )
 )
