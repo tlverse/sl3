@@ -106,5 +106,5 @@ VignetteBuilder:
     knitr,
     R.rsp
 Roxygen: list(markdown = TRUE, old_usage = TRUE, r6 = FALSE)
-RoxygenNote: 7.1.1.9001
+RoxygenNote: 7.1.2
 RdMacros: Rdpack
