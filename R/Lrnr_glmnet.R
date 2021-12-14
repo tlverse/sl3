@@ -148,24 +148,32 @@ Lrnr_glmnet <- R6Class(
       return(fit_object)
     },
     .predict = function(task) {
-      outcome_type <- private$.training_outcome_type
+      args <- list(
+        object = private$.fit_object, newx = as.matrix(task$X), type = "response"
+      )
 
       # set choice regularization penalty
       if (self$params$use_min) {
-        lambda <- "lambda.min"
+        args$s <- "lambda.min"
       } else {
-        lambda <- "lambda.1se"
+        args$s <- "lambda.1se"
+      }
+
+      if (task$has_node("offset")) {
+        if (private$.fit_object$offset) {
+          args$newoffset <- task$offset
+        } else {
+          warning(
+            "Prediction task has offset, but an offset was not included in the task for training the glmnet learner. The prediction task's offset will not be considered for prediction."
+          )
+        }
       }
 
       # get predictions via S3 method
-      predictions <- stats::predict(
-        private$.fit_object,
-        newx = as.matrix(task$X), type = "response",
-        s = lambda
-      )
+      predictions <- do.call(stats::predict, args)
 
       # reformat predictions based on outcome type
-      if (outcome_type$type == "categorical") {
+      if (private$.training_outcome_type$type == "categorical") {
         cat_names <- dimnames(predictions)[[2]]
         # predictions is a 3-dim matrix, convert to 2-dim matrix
         dim(predictions) <- dim(predictions)[1:2]
