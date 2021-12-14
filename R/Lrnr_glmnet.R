@@ -164,7 +164,9 @@ Lrnr_glmnet <- R6Class(
           args$newoffset <- task$offset
         } else {
           warning(
-            "Prediction task has offset, but an offset was not included in the task for training the glmnet learner. The prediction task's offset will not be considered for prediction."
+            "Prediction task has offset, but an offset was not included in ",
+            "the task for training the glmnet learner. The prediction task's ",
+            "offset will not be considered for prediction."
           )
         }
       }
