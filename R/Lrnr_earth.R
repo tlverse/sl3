@@ -102,7 +102,15 @@ Lrnr_earth <- R6Class(
       earth_fun <- utils::getS3method("earth", "default",
         envir = getNamespace("earth")
       )
-      fit_object <- call_with_args(earth_fun, args)
+
+      # incorporate arguments defined by non-default earth function class
+      default_args <- names(formals(earth_fun))
+      extra_args <- names(formals(
+        utils::getS3method("earth", "fit", envir = getNamespace("earth"))
+      ))
+      extra_args <- extra_args[!(extra_args %in% default_args)]
+
+      fit_object <- call_with_args(earth_fun, args, other_valid = extra_args)
       return(fit_object)
     },
     .predict = function(task) {
