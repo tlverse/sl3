@@ -58,7 +58,7 @@ test_that("Lrnr_caret:RF predictions match those from RF", {
   set.seed(1530)
   fit_caret_rf <- caret::train(
     x = task$X, y = task$Y, method = "rf", metric = "RMSE",
-    trControl = caret::trainControl(method = "CV")
+    trControl = caret::trainControl(method = "cv")
   )
   prd_caret_rf <- as.numeric(predict(fit_caret_rf, newdata = task$X))
 
