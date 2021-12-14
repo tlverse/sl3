@@ -160,7 +160,7 @@ Lrnr_glmnet <- R6Class(
       }
 
       if (task$has_node("offset")) {
-        if (private$.fit_object$offset) {
+        if (private$.fit_object$glmnet.fit$offset) {
           args$newoffset <- task$offset
         } else {
           warning(
