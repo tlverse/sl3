@@ -1,3 +1,5 @@
+utils::globalVariables(c("id", "loss", "obs", "pred", "wts"))
+
 #' Loss Function Definitions
 #'
 #' Loss functions for use in evaluating learner fits.
@@ -97,7 +99,7 @@ risk <- function(pred, observed, loss = loss_squared_error, weights = NULL) {
   }
 
   # calculate risk
-  risk <- weighted.mean(losses, weights)
+  risk <- stats::weighted.mean(losses, weights)
   return(risk)
 }
 
@@ -113,30 +115,28 @@ risk <- function(pred, observed, loss = loss_squared_error, weights = NULL) {
 #'
 #' @name risk_functions
 #'
-#' @param pred A vector of predicted values.
-#' @param observed A vector of binary observed values.
 #' @param measure A character indicating which \code{ROCR} performance measure
-#' to use for evaluation. The \code{measure} must be either cutoff-dependent
-#' so a single value can be selected (e.g., "tpr"), or it's value is a scalar
-#' (e.g., "aucpr"). For more information, see \code{\link[ROCR]{performance}}.
+#'  to use for evaluation. The \code{measure} must be either cutoff-dependent
+#'  so a single value can be selected (e.g., "tpr"), or it's value is a scalar
+#'  (e.g., "aucpr"). For more information, see \code{\link[ROCR]{performance}}.
 #' @param cutoff A numeric value specifying the cutoff for choosing a single
-#' performance measure from the returned set. Only used for performance measures
-#' that are cutoff-dependent and default is 0.5. See
-#' \code{\link[ROCR]{performance}} for more detail.
+#'  performance measure from the returned set. Only used for performance
+#'  measures that are cutoff-dependent and default is 0.5. See
+#'  \code{\link[ROCR]{performance}} for more detail.
 #' @param name An optional character string for user to supply their desired
-#' name for the performance measure, which will be used for naming subsequent
-#' risk-related tables and metrics (e.g., \code{cv_risk} column names). When
-#' \code{name} is not supplied, the \code{measure} will be used for naming.
+#'  name for the performance measure, which will be used for naming subsequent
+#'  risk-related tables and metrics (e.g., \code{cv_risk} column names). When
+#'  \code{name} is not supplied, the \code{measure} will be used for naming.
 #' @param ... Optional arguments to specific \code{ROCR} performance
-#' measures. See \code{\link[ROCR]{performance}} for more detail.
+#'  measures. See \code{\link[ROCR]{performance}} for more detail.
 #'
 #' @rdname risk_functions
 #'
 #' @importFrom ROCR prediction performance
 #'
 #' @export
-#'
 custom_ROCR_risk <- function(measure, cutoff = 0.5, name = NULL, ...) {
+  # NOTE: arguments to factory-produced function goes undocumented
   function(pred, observed) {
 
     # remove NA, NaN, Inf values
@@ -174,7 +174,6 @@ custom_ROCR_risk <- function(measure, cutoff = 0.5, name = NULL, ...) {
   }
 }
 
-utils::globalVariables(c("id", "loss", "obs", "pred", "wts"))
 #' Cross-validated Risk Estimation
 #'
 #' Estimates the cross-validated risk for a given learner and evaluation
@@ -182,7 +181,7 @@ utils::globalVariables(c("id", "loss", "obs", "pred", "wts"))
 #'
 #' @param learner A trained learner object.
 #' @param eval_fun A valid loss or risk function. See
-#' \code{\link{loss_functions}} and \code{\link{risk_functions}}.
+#'  \code{\link{loss_functions}} and \code{\link{risk_functions}}.
 #' @param coefs A \code{numeric} vector of coefficients.
 #'
 #' @importFrom assertthat assert_that

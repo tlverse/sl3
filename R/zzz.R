@@ -38,8 +38,7 @@ sl3Options <- function(o, value) {
     }
     if (is.null(value)) {
       res[o] <- list(NULL)
-    }
-    else {
+    } else {
       res[[o]] <- value
     }
     options(res[o])

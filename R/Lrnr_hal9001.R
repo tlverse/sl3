@@ -99,7 +99,6 @@ Lrnr_hal9001 <- R6Class(
 
       return(fit_object)
     },
-
     .predict = function(task = NULL) {
       predictions <- stats::predict(
         self$fit_object,
@@ -111,7 +110,6 @@ Lrnr_hal9001 <- R6Class(
       }
       return(predictions)
     },
-
     .required_packages = c("hal9001", "glmnet")
   )
 )
