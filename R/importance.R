@@ -21,7 +21,7 @@ utils::globalVariables(c("score"))
 #' @rdname importance
 #' @keywords variable importance
 #'
-#' @importFrom data.table data.table setorder setnames
+#' @importFrom data.table data.table setorderv setnames
 #'
 #' @return A \code{data.table} of variable importance for each covariate.
 #'
@@ -228,11 +228,13 @@ importance <- function(fit, eval_fun = NULL,
 
   ############################## prep output ###################################
   # importance results ordered by decreasing importance
-  result <- data.table::data.table(covariate = names(X), metric = unlist(res_list))
+  result <- data.table::data.table(
+    covariate = names(X), metric = unlist(res_list)
+  )
   if (!is.null(covariate_groups)) {
     colnames(result)[1] <- "covariate_group"
   }
-  data.table::setorder(result, -metric)
+  data.table::setorderv(result, cols = "metric", order = -1L)
 
   # name the importance metric appropriately
   metric_name <- paste0("risk_", importance_metric)

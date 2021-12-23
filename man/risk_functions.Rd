@@ -14,8 +14,8 @@ so a single value can be selected (e.g., "tpr"), or it's value is a scalar
 (e.g., "aucpr"). For more information, see \code{\link[ROCR]{performance}}.}
 
 \item{cutoff}{A numeric value specifying the cutoff for choosing a single
-performance measure from the returned set. Only used for performance measures
-that are cutoff-dependent and default is 0.5. See
+performance measure from the returned set. Only used for performance
+measures that are cutoff-dependent and default is 0.5. See
 \code{\link[ROCR]{performance}} for more detail.}
 
 \item{name}{An optional character string for user to supply their desired
@@ -25,10 +25,6 @@ risk-related tables and metrics (e.g., \code{cv_risk} column names). When
 
 \item{...}{Optional arguments to specific \code{ROCR} performance
 measures. See \code{\link[ROCR]{performance}} for more detail.}
-
-\item{pred}{A vector of predicted values.}
-
-\item{observed}{A vector of binary observed values.}
 }
 \description{
 Factory function for estimating an ROCR-based risk for a given ROCR measure,
