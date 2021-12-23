@@ -63,11 +63,11 @@ Lrnr_fixed_pred_length <- R6Class(
   )
 )
 
-test_that("Stack works with prediction lengths that don't match task length", {
-  stack_fixed_len <- Stack$new(Lrnr_fixed_pred_length$new(), Lrnr_fixed_pred_length$new())
-  fit <- stack_fixed_len$train(task)
-  preds <- fit$predict()
-})
+# Stack works with prediction lengths that don't match task length
+stack_fixed_len <- Stack$new(Lrnr_fixed_pred_length$new(), Lrnr_fixed_pred_length$new())
+fit <- stack_fixed_len$train(task)
+preds <- fit$predict()
+
 
 # check that you can create a stack of one learner
 stack_one <- Stack$new(glm_learner)
@@ -94,7 +94,9 @@ test_that("A stack mixed from learners and fits does not retrain existing fits",
 # Example due to Lars van der Laan
 # check that stack can handle learners that return multiple predictions
 test_that("Stack will accept multiple predictions from a single learner", {
-  lrnr_hal <- make_learner(Lrnr_hal9001, max_degree = 1, lambda = c(5, 7, 8), yolo = F, cv_select = F)
+  lrnr_hal <- Lrnr_hal9001$new(
+    max_degree = 1, lambda = c(5, 7, 8), fit_control = list(cv_select = F)
+  )
   hal_stack <- make_learner(Stack, mean_lrnr, lrnr_hal)
   hs_fit <- hal_stack$train(task)
   preds <- hs_fit$predict()

@@ -1,8 +1,9 @@
 #' Univariate GARCH Models
 #'
-#' This learner supports autoregressive fractionally integrated moving average
-#' and various flavors of generalized autoregressive conditional
-#' heteroskedasticity models for univariate time-series.
+#' @description This learner supports autoregressive fractionally integrated
+#'  moving average  and various flavors of generalized autoregressive
+#'  conditional heteroskedasticity models for univariate time-series. All the
+#'  models are fit using \code{\link[rugarch]{ugarchfit}}.
 #'
 #' @docType class
 #'
@@ -12,31 +13,60 @@
 #'
 #' @keywords data
 #'
-#' @return Learner object with methods for training and prediction. See
-#'  \code{\link{Lrnr_base}} for documentation on learners.
+#' @return A learner object inheriting from \code{\link{Lrnr_base}} with
+#'  methods for training and prediction. For a full list of learner
+#'  functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 #'
-#' @format \code{\link{R6Class}} object.
+#' @format An \code{\link[R6]{R6Class}} object inheriting from
+#'  \code{\link{Lrnr_base}}.
 #'
 #' @family Learners
 #'
 #' @section Parameters:
-#' \describe{
-#'   \item{\code{variance.model}}{List containing variance model specification.
-#'     This includes model, GARCH order, submodel, external regressors and
-#'     variance tageting. Refer to \code{ugarchspec} for more information.}
-#'   \item{\code{mean.model}}{List containing the mean model specification. This
-#'     includes ARMA model, whether the mean should be included, and external
-#'     regressors among others. Refer to \code{ugarchspec} for more
-#'     information.}
-#'   \item{\code{distribution.model="norm"}}{Conditional density to use for the
-#'     innovations.}
-#'   \item{\code{start.pars=list()}}{List of staring parameters for the
-#'     optimization routine.}
-#'   \item{\code{fixed.pars=list()}}{List of parameters which are to be kept
-#'     fixed during the optimization.}
-#'   \item{\code{n.ahead=NULL}}{The forecast horizon.}
-#' }
-#
+#'  - \code{variance.model}: List containing variance model specification.
+#'      This includes model, GARCH order, submodel, external regressors and
+#'      variance tageting. Refer to \code{\link[rugarch]{ugarchspec}} for more
+#'      information.
+#'  - \code{mean.model}: List containing the mean model specification. This
+#'      includes ARMA model, whether the mean should be included, and external
+#'      regressors among others.
+#'  - \code{distribution.model}: Conditional density to be used for the
+#'      innovations.
+#'  - \code{start.pars}:List of staring parameters for the optimization
+#'      routine.
+#'  - \code{fixed.pars}:List of parameters which are to be kept fixed during
+#'      the optimization routine.
+#'  - \code{...}: Other parameters passed to \code{\link[rugarch]{ugarchfit}}.
+#'
+#' @examples
+#' library(origami)
+#' library(data.table)
+#' data(bsds)
+#'
+#' # make folds appropriate for time-series cross-validation
+#' folds <- make_folds(bsds,
+#'   fold_fun = folds_rolling_window, window_size = 500,
+#'   validation_size = 100, gap = 0, batch = 50
+#' )
+#'
+#' # build task by passing in external folds structure
+#' task <- sl3_Task$new(
+#'   data = bsds,
+#'   folds = folds,
+#'   covariates = c(
+#'     "weekday", "temp"
+#'   ),
+#'   outcome = "cnt"
+#' )
+#'
+#' # create tasks for taining and validation
+#' train_task <- training(task, fold = task$folds[[1]])
+#' valid_task <- validation(task, fold = task$folds[[1]])
+#'
+#' # instantiate learner, then fit and predict
+#' HarReg_learner <- Lrnr_HarmonicReg$new(K = 7, freq = 105)
+#' HarReg_fit <- HarReg_learner$train(train_task)
+#' HarReg_preds <- HarReg_fit$predict(valid_task)
 Lrnr_rugarch <- R6Class(
   classname = "Lrnr_rugarch", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
@@ -54,19 +84,13 @@ Lrnr_rugarch <- R6Class(
                               external.regressors = NULL, archex = FALSE
                             ),
                           distribution.model = "norm", start.pars = list(),
-                          fixed.pars = list(), n.ahead = NULL, ...) {
+                          fixed.pars = list(), ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
-      if (!is.null(n.ahead)) {
-        warning("n.ahead paramater is specified- obtaining an ensemble will fail. 
-                Please only use for obtaining individual learner forcasts.")
-      }
     }
   ),
-
   private = list(
     .properties = c("timeseries", "continuous"),
-
     .train = function(task) {
       args <- self$params
       # Support for a single time-series
@@ -78,60 +102,22 @@ Lrnr_rugarch <- R6Class(
 
     # Only simple forecast, do not implement CV based forecast here
     .predict = function(task = NULL) {
-      params <- self$params
-      n.ahead <- params[["n.ahead"]]
+      fit_object <- private$.fit_object
+      h <- ts_get_pred_horizon(self$training_task, task)
 
-      # See if there is gap between training and validation:
-      gap <- min(task$folds[[1]]$validation_set) - max(task$folds[[1]]$training_set)
+      # Give the same output as GLM
+      predictions <- rugarch::ugarchforecast(
+        private$.fit_object,
+        data = task$X,
+        n.ahead = h
+      )
 
-      if (gap > 1) {
-        if (is.null(n.ahead)) {
-          n.ahead <- task$nrow + gap
-        } else {
-          n.ahead <- n.ahead + gap
-        }
-
-        # Give the same output as GLM
-        predictions <- rugarch::ugarchforecast(
-          private$.fit_object,
-          data = task$X,
-          n.ahead = n.ahead
-        )
-        predictions <- as.numeric(predictions@forecast$seriesFor)
-        predictions <- structure(predictions, names = seq_len(length(predictions)))
-        return(predictions)
-      } else if (gap == 1) {
-        if (is.null(n.ahead)) {
-          n.ahead <- task$nrow
-        }
-
-        # Give the same output as GLM
-        predictions <- rugarch::ugarchforecast(
-          private$.fit_object,
-          data = task$X,
-          n.ahead = n.ahead
-        )
-        predictions <- as.numeric(predictions@forecast$seriesFor)
-        predictions <- structure(predictions, names = seq_len(length(predictions)))
-        return(predictions)
-      } else if (gap < 1) {
-        warning("Validation samples come before Training samples; 
-                please specify one of the time-series fold structures.")
-
-        if (is.null(n.ahead)) {
-          n.ahead <- task$nrow
-        }
-
-        # Give the same output as GLM
-        predictions <- rugarch::ugarchforecast(
-          private$.fit_object,
-          data = task$X,
-          n.ahead = n.ahead
-        )
-        predictions <- as.numeric(predictions@forecast$seriesFor)
-        predictions <- structure(predictions, names = seq_len(length(predictions)))
-        return(predictions)
-      }
+      preds <- as.numeric(predictions@forecast$seriesFor)
+      requested_preds <- ts_get_requested_preds(
+        self$training_task, task,
+        preds
+      )
+      return(requested_preds)
     },
     .required_packages = c("rugarch")
   )

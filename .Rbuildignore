@@ -6,6 +6,7 @@
 ^README\.md
 
 # Automated testing files.
+^\.github$
 ^\.travis\.yml$
 ^appveyor\.yml$
 ^codecov\.yml$

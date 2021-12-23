@@ -1,4 +1,3 @@
-library(testthat)
 context("test_screeners.R -- Screening Procedures")
 
 options(sl3.verbose = TRUE)
@@ -6,7 +5,10 @@ library(data.table)
 data(cpp_imputed)
 setDT(cpp_imputed)
 cpp_imputed[, parity_cat := factor(ifelse(parity < 4, parity, 4))]
-covars <- c("apgar1", "apgar5", "parity_cat", "gagebrth", "mage", "meducyrs", "sexn")
+covars <- c(
+  "apgar1", "apgar5", "parity_cat", "gagebrth", "mage", "meducyrs",
+  "sexn"
+)
 outcome <- "haz"
 
 task <- sl3_Task$new(data.table::copy(cpp_imputed),
@@ -20,19 +22,24 @@ lrnr_mean <- make_learner(Lrnr_mean)
 lrnrs <- make_learner(Stack, lrnr_glm, lrnr_mean)
 
 ########################### coef screener ######################################
-glmnet_screener <- make_learner(Lrnr_screener_coefs, lrnr_glmnet)
-glmnet_screener_fit <- glmnet_screener$train(task)
-glmnet_screener_fit$fit_object$selected
-
-glm_screener <- make_learner(Lrnr_screener_coefs, lrnr_glm, max_retain = 2)
+glm_screener <- make_learner(Lrnr_screener_coefs, lrnr_glm, max_screen = 2)
 glm_screener_pipeline <- make_learner(Pipeline, glm_screener, lrnrs)
 fit_glm_screener_pipeline <- glm_screener_pipeline$train(task)
 preds_glm_screener_pipeline <- fit_glm_screener_pipeline$predict()
-test_that("Lrnr_screener_coefs works selected max_retain no. covs", {
+test_that("Lrnr_screener_coefs works selected max_screen no. covs", {
   glm_screener_fit <- glm_screener$train(task)
   selected <- glm_screener_fit$fit_object$selected
   expect_equal(length(selected), 2)
 })
+
+test_that("Lrnr_screener_coefs works selected min_screen no. covs", {
+  glmnet_screener <- make_learner(Lrnr_screener_coefs, lrnr_glmnet,
+    min_screen = 2
+  )
+  glmnet_screener_fit <- glmnet_screener$train(task)
+  expect_equal(length(glmnet_screener_fit$fit_object$selected), 2)
+})
+
 
 ###########################  correlation screener ##############################
 # Correlation P-value Threshold Screener
@@ -76,75 +83,50 @@ test_that("Lrnr_screener_augment adds covars to selected set", {
 
 ###################### variable importance screener ############################
 
-test_that("Lrnr_screener_importance test with randomForest", {
+test_importance_screener <- function(learner) {
+  if (learner == "Lrnr_ranger") {
+    learner_obj <- make_learner(Lrnr_ranger, importance = "impurity")
+  } else {
+    learner_obj <- make_learner(learner)
+  }
+  print(sprintf(
+    "Testing importance screener with Learner: %s",
+    learner_obj$name
+  ))
 
-  # intialize
-  lrnr_rf <- make_learner(Lrnr_randomForest)
-  screen_randomForest <- make_learner(Lrnr_screener_importance, lrnr_rf,
+  importance_screener <- Lrnr_screener_importance$new(learner_obj,
     num_screen = 3
   )
 
   # screening fit & preds
-  fit_randomForest <- screen_randomForest$train(task)
-  selected <- fit_randomForest$fit_object$selected
+  fit <- importance_screener$train(task)
+  selected <- fit$fit_object$selected
   expect_equal(length(selected), 3)
-  preds <- fit_randomForest$predict(task)
+  preds <- fit$predict(task)
   expect_equal(nrow(preds), nrow(task$data))
 
   # pipeline fit & preds
-  randomForest_pipeline <- make_learner(Pipeline, screen_randomForest, lrnrs)
-  fit_randomForest_pipe <- randomForest_pipeline$train(task)
-  preds_pipe <- fit_randomForest_pipe$predict(task)
-  expect_equal(nrow(preds_pipe), nrow(task$data))
-})
-
-test_that("Lrnr_screener_importance test with ranger", {
-
-  # induce error
-  lrnr_ranger <- make_learner(Lrnr_ranger)
-  fit <- lrnr_ranger$train(task)
-  expect_error(fit$importance(task))
-
-  # intialize correctly
-  lrnr_ranger <- make_learner(Lrnr_ranger, importance = "impurity")
-  screen_ranger <- make_learner(Lrnr_screener_importance, lrnr_ranger,
-    num_screen = 3
+  importance_screener_pipeline <- make_learner(
+    Pipeline, importance_screener,
+    lrnrs
   )
-
-  # screening fit & preds
-  fit_ranger <- screen_ranger$train(task)
-  selected <- fit_ranger$fit_object$selected
-  expect_equal(length(selected), 3)
-  preds <- fit_ranger$predict(task)
-  expect_equal(nrow(preds), nrow(task$data))
-
-  # pipeline fit & preds
-  ranger_pipeline <- make_learner(Pipeline, screen_ranger, lrnrs)
-  fit_ranger_pipe <- ranger_pipeline$train(task)
-  preds_pipe <- fit_ranger_pipe$predict(task)
+  fit_pipe <- importance_screener_pipeline$train(task)
+  preds_pipe <- fit_pipe$predict(task)
   expect_equal(nrow(preds_pipe), nrow(task$data))
-})
+}
 
-test_that("Lrnr_screener_importance test with xgboost", {
+test_that("Lrnr_screener_importance tests", {
+  # get all learners supporting variable importance
+  importance_learners <- sl3::sl3_list_learners("importance")
 
-  # intialize
-  lrnr_xgboost <- make_learner(Lrnr_xgboost, verbose = 0)
-  screen_xgboost <- make_learner(Lrnr_screener_importance, lrnr_xgboost,
-    num_screen = 3
-  )
+  # remove LightGBM on Windows
+  if (Sys.info()["sysname"] == "Windows") {
+    importance_learners <-
+      importance_learners[!(importance_learners == "Lrnr_lightgbm")]
+  }
 
-  # screening fit & preds
-  fit_xgboost <- screen_xgboost$train(task)
-  selected <- fit_xgboost$fit_object$selected
-  expect_equal(length(selected), 3)
-  preds <- fit_xgboost$predict(task)
-  expect_equal(nrow(preds), nrow(task$data))
-
-  # pipeline fit & preds
-  xgboost_pipeline <- make_learner(Pipeline, screen_xgboost, lrnrs)
-  fit_xgboost_pipe <- xgboost_pipeline$train(task)
-  preds_pipe <- fit_xgboost_pipe$predict(task)
-  expect_equal(nrow(preds_pipe), nrow(task$data))
+  # test all learners supporting variable importance
+  lapply(importance_learners, test_importance_screener)
 })
 
 test_that("Lrnr_screener_importance throws error if learner not supported", {

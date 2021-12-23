@@ -2,17 +2,18 @@
 % Please edit documentation in R/CV_Lrnr_sl.R
 \name{CV_lrnr_sl}
 \alias{CV_lrnr_sl}
-\title{Estimate Cross-Validated Risk of Super Learner}
+\title{Estimates cross-validated risk of the Super Learner}
 \usage{
-CV_lrnr_sl(lrnr_sl, task, loss_fun)
+CV_lrnr_sl(lrnr_sl, task, eval_fun)
 }
 \arguments{
-\item{lrnr_sl}{a Lrnr_sl object specifying the Super Learner}
+\item{lrnr_sl}{a \code{Lrnr_sl} object specifying the Super Learner.}
 
-\item{task}{the task used for training and performance assessment}
+\item{task}{the task used for training and performance assessment.}
 
-\item{loss_fun}{the loss function used to evaluate Super Learner}
+\item{eval_fun}{the evaluation function, either a loss or risk function, for
+evaluating the Super Learner's predictions.}
 }
 \description{
-Estimate Cross-Validated Risk of Super Learner
+Estimates cross-validated risk of the Super Learner
 }

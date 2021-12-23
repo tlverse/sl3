@@ -39,10 +39,8 @@ Lrnr_pooled_hazards <- R6Class(
       super$initialize(params = params, ...)
     }
   ),
-
   private = list(
     .properties = c("categorical"),
-
     .train = function(task) {
       outcome_type <- self$get_outcome_type(task)
 
@@ -62,7 +60,6 @@ Lrnr_pooled_hazards <- R6Class(
       )
       return(fit_object)
     },
-
     .predict = function(task) {
       pred_hazards_task <- pooled_hazard_task(task, trim = FALSE)
       raw_preds <- self$fit_object$hazards_fit$predict(pred_hazards_task)

@@ -5,36 +5,46 @@
 \alias{Lrnr_glm}
 \title{Generalized Linear Models}
 \format{
-\code{\link{R6Class}} object.
+An \code{\link[R6]{R6Class}} object inheriting from
+\code{\link{Lrnr_base}}.
 }
 \value{
-Learner object with methods for training and prediction. See
-\code{\link{Lrnr_base}} for documentation on learners.
+A learner object inheriting from \code{\link{Lrnr_base}} with
+methods for training and prediction. For a full list of learner
+functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 }
 \description{
 This learner provides fitting procedures for generalized linear models using
-\code{\link[stats]{glm.fit}}.
+the \pkg{stats} package \code{\link[stats]{glm.fit}} function.
 }
 \section{Parameters}{
 
-\describe{
-\item{\code{...}}{Parameters passed to \code{\link[stats]{glm}}.}
+\itemize{
+\item \code{intercept = TRUE}: Should an intercept be included in the model?
+\item \code{...}: Other parameters passed to \code{\link[stats]{glm}} or
+\code{\link[stats]{glm.fit}}.
 }
 }
 
-\section{Common Parameters}{
+\examples{
+data(cpp_imputed)
+covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
+task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
 
+# simple, main-terms GLM
+lrnr_glm <- make_learner(Lrnr_glm)
+glm_fit <- lrnr_glm$train(task)
+glm_preds <- glm_fit$predict()
 
-Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by \code{Lrnr_base}, and shared
-by all learners.
-
-\describe{
-\item{\code{covariates}}{A character vector of covariates. The learner will use this to subset the covariates for any specified task}
-\item{\code{outcome_type}}{A \code{\link{variable_type}} object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified}
-\item{\code{...}}{All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating}
+# We can include interaction terms by 'piping' them into this learner.
+# Note that both main terms and the specified interactions will be included
+# in the regression model.
+interaction <- list(c("apgar1", "parity"))
+lrnr_interaction <- Lrnr_define_interactions$new(interactions = interaction)
+lrnr_glm_w_interaction <- make_learner(Pipeline, lrnr_interaction, lrnr_glm)
+fit <- lrnr_glm_w_interaction$train(task)
+coefs <- coef(fit$learner_fits$Lrnr_glm_TRUE)
 }
-}
-
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},
@@ -42,8 +52,8 @@ Other Learners:
 \code{\link{Lrnr_arima}},
 \code{\link{Lrnr_bartMachine}},
 \code{\link{Lrnr_base}},
+\code{\link{Lrnr_bayesglm}},
 \code{\link{Lrnr_bilstm}},
-\code{\link{Lrnr_bound}},
 \code{\link{Lrnr_caret}},
 \code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_cv}},
@@ -55,6 +65,7 @@ Other Learners:
 \code{\link{Lrnr_earth}},
 \code{\link{Lrnr_expSmooth}},
 \code{\link{Lrnr_gam}},
+\code{\link{Lrnr_ga}},
 \code{\link{Lrnr_gbm}},
 \code{\link{Lrnr_glm_fast}},
 \code{\link{Lrnr_glmnet}},
@@ -66,8 +77,8 @@ Other Learners:
 \code{\link{Lrnr_haldensify}},
 \code{\link{Lrnr_hts}},
 \code{\link{Lrnr_independent_binomial}},
+\code{\link{Lrnr_lightgbm}},
 \code{\link{Lrnr_lstm_keras}},
-\code{\link{Lrnr_lstm}},
 \code{\link{Lrnr_mean}},
 \code{\link{Lrnr_multiple_ts}},
 \code{\link{Lrnr_multivariate}},

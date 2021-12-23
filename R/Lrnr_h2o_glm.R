@@ -79,11 +79,10 @@ Lrnr_h2o_glm <- R6Class(
       super$initialize(params = args_to_list(), ...)
     }
   ),
-
   private = list(
     .properties = c(
       "continuous", "binomial", "categorical", "weights",
-      "offset"
+      "offset", "h2o"
     ),
     .train = function(task) {
       verbose <- getOption("sl3.verbose")
@@ -139,7 +138,6 @@ Lrnr_h2o_glm <- R6Class(
       # fit_object@model$coefficients
       return(fit_object)
     },
-
     .predict = function(task = NULL) {
       verbose <- getOption("sl3.verbose")
       if (verbose) {

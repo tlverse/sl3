@@ -1,6 +1,6 @@
 Package: sl3
 Title: Pipelines for Machine Learning and Super Learning
-Version: 1.4.2
+Version: 1.4.4
 Authors@R: c(
     person("Jeremy", "Coyle", email = "jeremyrcoyle@gmail.com",
            role = c("aut", "cre", "cph"),
@@ -43,9 +43,11 @@ Imports:
     methods,
     ggplot2,
     digest,
+    Rdpack,
     imputeMissings,
     dplyr,
-    caret
+    caret,
+    ROCR
 Suggests:
     testthat,
     rmarkdown,
@@ -57,6 +59,7 @@ Suggests:
     reticulate,
     rgl,
     rJava,
+    arm,
     bartMachine,
     cvAUC,
     e1071,
@@ -66,7 +69,7 @@ Suggests:
     glmnet,
     grf,
     gbm,
-    hal9001 (>= 0.2.5),
+    hal9001 (>= 0.4.0),
     h2o,
     keras,
     kerasR,
@@ -81,12 +84,19 @@ Suggests:
     SuperLearner,
     tsDyn,
     xgboost,
+    lightgbm,
     dbarts,
     gam (>= 1.15.0),
-    haldensify,
+    haldensify (>= 0.1.5),
     mgcv,
-    hts
+    hts,
+    GA
+Remotes:
+    github::tlverse/origami,
+    github::tlverse/hal9001@devel,
+    github::nhejazi/haldensify
 License: GPL-3
+Language: en-US
 URL: https://tlverse.org/sl3
 BugReports: https://github.com/tlverse/sl3/issues
 Encoding: UTF-8
@@ -95,5 +105,6 @@ LazyLoad: yes
 VignetteBuilder:
     knitr,
     R.rsp
-RoxygenNote: 7.1.1.9000
 Roxygen: list(markdown = TRUE, old_usage = TRUE, r6 = FALSE)
+RoxygenNote: 7.1.2
+RdMacros: Rdpack

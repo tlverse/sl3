@@ -91,11 +91,9 @@ Lrnr_cv <- R6Class(
       params <- list(learner = learner, folds = folds, full_fit = full_fit, ...)
       super$initialize(params = params, ...)
     },
-
-    cv_risk = function(loss_fun) {
-      return(cv_risk(self, loss_fun))
+    cv_risk = function(eval_fun) {
+      return(cv_risk(self, eval_fun))
     },
-
     print = function() {
       print("Lrnr_cv")
       print(self$params$learner)
@@ -175,7 +173,6 @@ Lrnr_cv <- R6Class(
         column_names = new_col_names
       ))
     },
-
     update = function(task, drop_old = FALSE) {
       if (!self$is_trained) {
         return(self$base_train(task))
@@ -228,16 +225,13 @@ Lrnr_cv <- R6Class(
       return(new_object)
     }
   ),
-
   active = list(
     name = function() {
       name <- paste("CV", self$params$learner$name, sep = "_")
     }
   ),
-
   private = list(
     .properties = c("wrapper", "cv"),
-
     .train_sublearners = function(task) {
       verbose <- getOption("sl3.verbose")
 
@@ -281,7 +275,6 @@ Lrnr_cv <- R6Class(
       results <- list(full_fit = full_fit, fold_fits = bundle_delayed(cv_results))
       return(bundle_delayed(results))
     },
-
     .train = function(task, trained_sublearners) {
       # prefer folds from params, but default to folds from task
       folds <- self$params$folds
@@ -340,7 +333,6 @@ Lrnr_cv <- R6Class(
       )
       return(fit_object)
     },
-
     .predict = function(task) {
       folds <- task$folds
       fold_fits <- private$.fit_object$fold_fits

@@ -12,8 +12,8 @@ Learner object with methods for training and prediction. See
 \code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
-This learner wraps \code{\link[caret]{train}}, providing a procedure to fit the
-algorithms available in package \code{caret}.
+This learner wraps \code{\link[caret]{train}}, providing a procedure to fit
+the algorithms available in package \code{caret}.
 }
 \section{Parameters}{
 
@@ -23,13 +23,6 @@ algorithms available in package \code{caret}.
 methods available in the package, please consult the documentation for
 \code{\link[caret]{train}}.}
 
-\item{\code{method}}{An optional argument specifying the method for
-parameter selection criterion. Default is set to "CV" instead of the
-\code{\link[caret]{train}} default "boot". This argument is passed to
-\code{trControl} and will not be effective if \code{trControl} is specified. For a
-detailed description, please consult the documentation for
-\code{\link[caret]{train}}.}
-
 \item{\code{metric}}{An optional argument specifying the summary metric to
 be used to select the optimal model. If not specified, it will be inferred
 depending on the outcome type. For a detailed description, please consult
@@ -37,8 +30,9 @@ the documentation for \code{\link[caret]{train}}.}
 
 \item{\code{trControl}}{An optional \code{\link[caret]{trainControl}}
 object controlling the computational nuances. If not specified, it will be
-initialized with \code{method}. For a detailed description, please consult the
-documentation for \code{\link[caret]{train}}.}
+initialized with \code{method = "cv"} instead of the default "boot". For a
+detailed description, please consult the documentation for
+\code{\link[caret]{train}}.}
 
 \item{\code{...}}{Other parameters passed to \code{\link[caret]{train}}.}
 }
@@ -51,8 +45,8 @@ Other Learners:
 \code{\link{Lrnr_arima}},
 \code{\link{Lrnr_bartMachine}},
 \code{\link{Lrnr_base}},
+\code{\link{Lrnr_bayesglm}},
 \code{\link{Lrnr_bilstm}},
-\code{\link{Lrnr_bound}},
 \code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_cv}},
 \code{\link{Lrnr_dbarts}},
@@ -63,6 +57,7 @@ Other Learners:
 \code{\link{Lrnr_earth}},
 \code{\link{Lrnr_expSmooth}},
 \code{\link{Lrnr_gam}},
+\code{\link{Lrnr_ga}},
 \code{\link{Lrnr_gbm}},
 \code{\link{Lrnr_glm_fast}},
 \code{\link{Lrnr_glmnet}},
@@ -75,8 +70,8 @@ Other Learners:
 \code{\link{Lrnr_haldensify}},
 \code{\link{Lrnr_hts}},
 \code{\link{Lrnr_independent_binomial}},
+\code{\link{Lrnr_lightgbm}},
 \code{\link{Lrnr_lstm_keras}},
-\code{\link{Lrnr_lstm}},
 \code{\link{Lrnr_mean}},
 \code{\link{Lrnr_multiple_ts}},
 \code{\link{Lrnr_multivariate}},

@@ -117,6 +117,14 @@ learner_subset_covariates <- function(learner, task) {
 #'
 #' @export
 #
+learner_process_formula <- function(learner, task) {
+  learner$process_formula(task)
+}
+
+#' @rdname learner_helpers
+#'
+#' @export
+#
 delayed_learner_subset_covariates <- function(learner, task) {
   if (is(task, "Delayed")) {
     # only delay if task is delayed
@@ -128,6 +136,20 @@ delayed_learner_subset_covariates <- function(learner, task) {
   return(subset_delayed)
 }
 
+#' @rdname learner_helpers
+#'
+#' @export
+#
+delayed_learner_process_formula <- function(learner, task) {
+  if (is(task, "Delayed")) {
+    # only delay if task is delayed
+    process_delayed <- delayed_fun(learner_process_formula)(learner, task)
+    process_delayed$name <- "formula"
+  } else {
+    process_delayed <- learner_process_formula(learner, task)
+  }
+  return(process_delayed)
+}
 
 sl3_delayed_job_type <- function() {
   if (getOption("sl3.enable.future")) {

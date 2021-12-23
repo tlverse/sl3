@@ -1,7 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://tlverse.org/sl3/404.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/CONTRIBUTING.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/articles/custom_lrnrs.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/articles/intro_sl3.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/authors.html</loc>
+  </url>
+  <url>
     <loc>https://tlverse.org/sl3/index.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/news/index.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/CV_lrnr_sl.html</loc>
@@ -20,6 +44,9 @@
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_base.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_bayesglm.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_bilstm.html</loc>
@@ -56,6 +83,9 @@
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_expSmooth.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_ga.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_gam.html</loc>
@@ -98,6 +128,9 @@
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_independent_binomial.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_lightgbm.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_lstm.html</loc>
@@ -244,6 +277,9 @@
     <loc>https://tlverse.org/sl3/reference/importance_plot.html</loc>
   </url>
   <url>
+    <loc>https://tlverse.org/sl3/reference/index.html</loc>
+  </url>
+  <url>
     <loc>https://tlverse.org/sl3/reference/inverse_sample.html</loc>
   </url>
   <url>
@@ -286,6 +322,9 @@
     <loc>https://tlverse.org/sl3/reference/risk.html</loc>
   </url>
   <url>
+    <loc>https://tlverse.org/sl3/reference/risk_functions.html</loc>
+  </url>
+  <url>
     <loc>https://tlverse.org/sl3/reference/safe_dim.html</loc>
   </url>
   <url>
@@ -304,6 +343,12 @@
     <loc>https://tlverse.org/sl3/reference/subset_folds.html</loc>
   </url>
   <url>
+    <loc>https://tlverse.org/sl3/reference/transform_losses.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/reference/transform_risk.html</loc>
+  </url>
+  <url>
     <loc>https://tlverse.org/sl3/reference/true_obj_size.html</loc>
   </url>
   <url>
@@ -314,11 +359,5 @@
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/write_learner_template.html</loc>
-  </url>
-  <url>
-    <loc>https://tlverse.org/sl3/articles/custom_lrnrs.html</loc>
-  </url>
-  <url>
-    <loc>https://tlverse.org/sl3/articles/intro_sl3.html</loc>
   </url>
 </urlset>

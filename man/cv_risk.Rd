@@ -4,15 +4,17 @@
 \alias{cv_risk}
 \title{Cross-validated Risk Estimation}
 \usage{
-cv_risk(learner, loss_fun, coefs = NULL)
+cv_risk(learner, eval_fun = NULL, coefs = NULL)
 }
 \arguments{
 \item{learner}{A trained learner object.}
 
-\item{loss_fun}{A valid loss function. See \code{\link{loss_functions}}.}
+\item{eval_fun}{A valid loss or risk function. See
+\code{\link{loss_functions}} and \code{\link{risk_functions}}.}
 
 \item{coefs}{A \code{numeric} vector of coefficients.}
 }
 \description{
-Estimates the cross-validated risk for a given learner and loss function.
+Estimates the cross-validated risk for a given learner and evaluation
+function, which can be either a loss or a risk function.
 }

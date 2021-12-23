@@ -3,41 +3,84 @@
 \docType{class}
 \name{Lrnr_ranger}
 \alias{Lrnr_ranger}
-\title{Ranger - A Fast Implementation of Random Forests}
+\title{Ranger: Fast(er) Random Forests}
 \format{
-\code{\link{R6Class}} object.
+An \code{\link[R6]{R6Class}} object inheriting from
+\code{\link{Lrnr_base}}.
 }
 \value{
-Learner object with methods for training and prediction. See
-\code{\link{Lrnr_base}} for documentation on learners.
+A learner object inheriting from \code{\link{Lrnr_base}} with
+methods for training and prediction. For a full list of learner
+functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 }
 \description{
-This learner provides fitting procedures for a fast implementation of Random
-Forests, particularly suited for high dimensional data, using the
-\code{ranger} package, using the function \code{\link[ranger]{ranger}}.
+This learner provides fitting procedures for a faster implementation of
+Random Forests, using the routines from \pkg{ranger} (described
+in \insertCite{ranger;textual}{sl3}) through a call to the function
+\code{\link[ranger]{ranger}}. Variable importance functionality is also
+provided through invocation of the \code{\link[ranger]{importance}} method.
 }
 \section{Parameters}{
 
-\describe{
-\item{\code{num.trees = 500}}{Number of trees to be used in growing the
-forest.}
-\item{\code{write.forest = TRUE}}{If \code{TRUE}, forest is stored, which
-is required for prediction. Set to \code{FALSE} to reduce memory usage if
-no prediction is intended.}
-\item{\code{...}}{Other parameters passed to \code{\link[ranger]{ranger}}.
-See its documentation for details.}
+\itemize{
+\item \code{num.trees = 500}: Number of trees to be used in growing the forest.
+\item \code{write.forest = TRUE}: If \code{TRUE}, forest is stored, which is
+required for prediction. Set to \code{FALSE} to reduce memory usage if
+downstream prediction is not intended.
+\item \code{importance = "none"}: Variable importance mode, one of "none",
+"impurity", "impurity_corrected", "permutation". The "impurity" measure
+is the Gini index for classification, the variance of the responses for
+regression, and the sum of test statistics (for survival analysis, see
+the \code{splitrule} argument of \code{\link[ranger]{ranger}}).
+\item \code{num.threads = 1}: Number of threads.
+\item \code{...}: Other parameters passed to \code{\link[ranger]{ranger}}. See
+its documentation for details.
 }
 }
 
+\examples{
+data(mtcars)
+# create task for prediction
+mtcars_task <- sl3_Task$new(
+  data = mtcars,
+  covariates = c(
+    "cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "am",
+    "gear", "carb"
+  ),
+  outcome = "mpg"
+)
+# initialization, training, and prediction with the defaults
+ranger_lrnr <- Lrnr_ranger$new()
+ranger_fit <- ranger_lrnr$train(mtcars_task)
+ranger_preds <- ranger_fit$predict()
+
+# variable importance
+ranger_lrnr_importance <- Lrnr_ranger$new(importance = "impurity_corrected")
+ranger_fit_importance <- ranger_lrnr_importance$train(mtcars_task)
+ranger_importance <- ranger_fit_importance$importance()
+
+# screening based on variable importance, example in glm pipeline
+ranger_importance_screener <- Lrnr_screener_importance$new(
+  learner = ranger_lrnr_importance, num_screen = 3
+)
+glm_lrnr <- make_learner(Lrnr_glm)
+ranger_screen_glm_pipe <- Pipeline$new(ranger_importance_screener, glm_lrnr)
+ranger_screen_glm_pipe_fit <- ranger_screen_glm_pipe$train(mtcars_task)
+}
+\references{
+\insertAllCited{}
+}
 \seealso{
+\link{Lrnr_randomForest} for a similar learner using \pkg{randomForest}
+
 Other Learners: 
 \code{\link{Custom_chain}},
 \code{\link{Lrnr_HarmonicReg}},
 \code{\link{Lrnr_arima}},
 \code{\link{Lrnr_bartMachine}},
 \code{\link{Lrnr_base}},
+\code{\link{Lrnr_bayesglm}},
 \code{\link{Lrnr_bilstm}},
-\code{\link{Lrnr_bound}},
 \code{\link{Lrnr_caret}},
 \code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_cv}},
@@ -49,6 +92,7 @@ Other Learners:
 \code{\link{Lrnr_earth}},
 \code{\link{Lrnr_expSmooth}},
 \code{\link{Lrnr_gam}},
+\code{\link{Lrnr_ga}},
 \code{\link{Lrnr_gbm}},
 \code{\link{Lrnr_glm_fast}},
 \code{\link{Lrnr_glmnet}},
@@ -61,8 +105,8 @@ Other Learners:
 \code{\link{Lrnr_haldensify}},
 \code{\link{Lrnr_hts}},
 \code{\link{Lrnr_independent_binomial}},
+\code{\link{Lrnr_lightgbm}},
 \code{\link{Lrnr_lstm_keras}},
-\code{\link{Lrnr_lstm}},
 \code{\link{Lrnr_mean}},
 \code{\link{Lrnr_multiple_ts}},
 \code{\link{Lrnr_multivariate}},

@@ -89,7 +89,6 @@ Lrnr_ts_weights <- R6Class(
       super$initialize(params = params, ...)
     }
   ),
-
   active = list(
     name = function() {
       name <- paste(self$params$learner$name,
@@ -110,11 +109,8 @@ Lrnr_ts_weights <- R6Class(
       }
     }
   ),
-
   private = list(
     .properties = c("wrapper", "cv"),
-
-
     .train = function(task) {
 
       # ensure task contains node for time
@@ -153,7 +149,6 @@ Lrnr_ts_weights <- R6Class(
 
       return(fit_object)
     },
-
     .predict = function(task) {
       self$fit_object$predict(task)
     }

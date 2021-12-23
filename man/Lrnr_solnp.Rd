@@ -5,51 +5,72 @@
 \alias{Lrnr_solnp}
 \title{Nonlinear Optimization via Augmented Lagrange}
 \format{
-\code{\link{R6Class}} object.
+An \code{\link[R6]{R6Class}} object inheriting from
+\code{\link{Lrnr_base}}.
 }
 \value{
-Learner object with methods for training and prediction. See
-\code{\link{Lrnr_base}} for documentation on learners.
+A learner object inheriting from \code{\link{Lrnr_base}} with
+methods for training and prediction. For a full list of learner
+functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 }
 \description{
-This meta-learner provides fitting procedures for any pairing of loss
+This meta-learner provides fitting procedures for any pairing of loss or risk
 function and metalearner function, subject to constraints. The optimization
 problem is solved by making use of \code{\link[Rsolnp]{solnp}}, using
-Lagrange multipliers. For further details, consult the documentation of the
-\code{Rsolnp} package.
+Lagrange multipliers. An important note from the \code{\link[Rsolnp]{solnp}}
+documentation states that the control parameters \code{tol} and \code{delta}
+are key in getting any possibility of successful convergence, therefore it
+is suggested that the user change these appropriately to reflect their
+problem specification. For further details, consult the documentation of the
+\pkg{Rsolnp} package.
 }
 \section{Parameters}{
 
-\describe{
-\item{\code{learner_function=metalearner_linear}}{A function(alpha, X) that
-takes a vector of covariates and a matrix of data and combines them into
-a vector of predictions. See \link{metalearners} for options.}
-\item{\code{loss_function=loss_squared_error}}{A function(pred, truth) that
-takes prediction and truth vectors and returns a loss vector. See
-\link{loss_functions} for options.}
-\item{\code{make_sparse=TRUE}}{If TRUE, zeros out small alpha values.}
-\item{\code{convex_combination=TRUE}}{If \code{TRUE}, constrain alpha to
-sum to 1.}
-\item{\code{init_0=FALSE}}{If TRUE, alpha is initialized to all 0's, useful
-for TMLE. Otherwise, it is initialized to equal weights summing to 1,
-useful for SuperLearner.}
-\item{\code{...}}{Not currently used.}
+\itemize{
+\item \code{learner_function = metalearner_linear}: A function(alpha, X) that
+takes a vector of covariates and a matrix of data and combines them
+into a vector of predictions. See \code{\link{metalearners}} for
+options.
+\item \code{eval_function = loss_squared_error}: A function(pred, truth) that
+takes prediction and truth vectors and returns a loss vector or a risk
+scalar. See \code{\link{loss_functions}} and
+\code{\link{risk_functions}} for options and more detail.
+\item \code{make_sparse = TRUE}: If \code{TRUE}, zeros out small alpha values.
+\item \code{convex_combination = TRUE}: If \code{TRUE}, constrain alpha to sum
+to 1.
+\item \code{init_0 = FALSE}: If \code{TRUE}, alpha is initialized to all 0's,
+useful for TMLE. Otherwise, it is initialized to equal weights summing
+to 1, useful for Super Learner.
+\item \code{outer.iter = 400}: Maximum number of major (outer) iterations.
+\item \code{inner.iter = 800}: Maximum number of minor (inner) iterations.
+\item \code{delta = 1e-7}:Relative step size in forward difference evaluation.
+\item \code{tol = 1e-8}: Relative tolerance on feasibility and optimality.
+\item \code{trace = FALSE}: The value of the objective function and the
+parameters are printed at every major iteration.
+\item \code{...}: Additional arguments defined in \code{\link{Lrnr_base}},
+such as \code{params} (like \code{formula}) and \code{name}.
 }
 }
 
-\section{Common Parameters}{
+\examples{
+# define ML task
+data(cpp_imputed)
+covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
+task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
 
+# build relatively fast learner library (not recommended for real analysis)
+lasso_lrnr <- Lrnr_glmnet$new()
+glm_lrnr <- Lrnr_glm$new()
+ranger_lrnr <- Lrnr_ranger$new()
+lrnrs <- c(lasso_lrnr, glm_lrnr, ranger_lrnr)
+names(lrnrs) <- c("lasso", "glm", "ranger")
+lrnr_stack <- make_learner(Stack, lrnrs)
 
-Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by \code{Lrnr_base}, and shared
-by all learners.
-
-\describe{
-\item{\code{covariates}}{A character vector of covariates. The learner will use this to subset the covariates for any specified task}
-\item{\code{outcome_type}}{A \code{\link{variable_type}} object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified}
-\item{\code{...}}{All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating}
+# instantiate SL with GA metalearner
+solnp_meta <- Lrnr_solnp$new()
+sl <- Lrnr_sl$new(lrnr_stack, solnp_meta)
+sl_fit <- sl$train(task)
 }
-}
-
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},
@@ -57,8 +78,8 @@ Other Learners:
 \code{\link{Lrnr_arima}},
 \code{\link{Lrnr_bartMachine}},
 \code{\link{Lrnr_base}},
+\code{\link{Lrnr_bayesglm}},
 \code{\link{Lrnr_bilstm}},
-\code{\link{Lrnr_bound}},
 \code{\link{Lrnr_caret}},
 \code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_cv}},
@@ -70,6 +91,7 @@ Other Learners:
 \code{\link{Lrnr_earth}},
 \code{\link{Lrnr_expSmooth}},
 \code{\link{Lrnr_gam}},
+\code{\link{Lrnr_ga}},
 \code{\link{Lrnr_gbm}},
 \code{\link{Lrnr_glm_fast}},
 \code{\link{Lrnr_glmnet}},
@@ -82,8 +104,8 @@ Other Learners:
 \code{\link{Lrnr_haldensify}},
 \code{\link{Lrnr_hts}},
 \code{\link{Lrnr_independent_binomial}},
+\code{\link{Lrnr_lightgbm}},
 \code{\link{Lrnr_lstm_keras}},
-\code{\link{Lrnr_lstm}},
 \code{\link{Lrnr_mean}},
 \code{\link{Lrnr_multiple_ts}},
 \code{\link{Lrnr_multivariate}},

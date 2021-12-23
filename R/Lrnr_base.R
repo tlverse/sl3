@@ -1,4 +1,4 @@
-#' Base Class for all sl3 Learners.
+#' Base Class for all sl3 Learners
 #'
 #' Generally this base learner class should not be instantiated. Intended to be
 #' an abstract class, although abstract classes are not explicitly supported
@@ -8,6 +8,7 @@
 #' @docType class
 #'
 #' @importFrom R6 R6Class
+#' @importFrom Rdpack reprompt
 #'
 #' @export
 #'
@@ -42,7 +43,6 @@ Lrnr_base <- R6Class(
 
       invisible(self)
     },
-
     subset_covariates = function(task) {
       # learners subset task covariates based on their covariate set
       if ("covariates" %in% names(self$params) &&
@@ -86,13 +86,15 @@ Lrnr_base <- R6Class(
           colnames(delta_missing_data) <- delta_missing
           cols <- task$add_columns(data.table(delta_missing_data))
 
-          return(task$next_in_chain(covariates = ord_covs, column_names = cols))
+          return(task$next_in_chain(
+            covariates = ord_covs,
+            column_names = cols
+          ))
         }
       } else {
         return(task)
       }
     },
-
     get_outcome_type = function(task) {
       outcome_type <- task$outcome_type
       if (!is.null(self$params$outcome_type)) {
@@ -105,7 +107,6 @@ Lrnr_base <- R6Class(
       }
       return(outcome_type)
     },
-
     get_outcome_range = function(task = NULL, fold_number = "full") {
       # return the support of learner
       # if task is specified, return task observations based supports
@@ -133,25 +134,25 @@ Lrnr_base <- R6Class(
       }
       return(range)
     },
-
     base_train = function(task, trained_sublearners = NULL) {
 
       # trains learner to data
       assert_that(is(task, "sl3_Task"))
 
-      subsetted_task <- self$subset_covariates(task)
+      task <- self$subset_covariates(task)
+      processed_task <- self$process_formula(task)
+
       verbose <- getOption("sl3.verbose")
 
       if (!is.null(trained_sublearners)) {
-        fit_object <- private$.train(subsetted_task, trained_sublearners)
+        fit_object <- private$.train(processed_task, trained_sublearners)
       } else {
-        fit_object <- private$.train(subsetted_task)
+        fit_object <- private$.train(processed_task)
       }
       new_object <- self$clone() # copy parameters, and whatever else
-      new_object$set_train(fit_object, subsetted_task)
+      new_object$set_train(fit_object, task)
       return(new_object)
     },
-
     set_train = function(fit_object, training_task) {
       private$.fit_object <- fit_object
       # for predict/chaining subset covariates to be same as training task
@@ -168,16 +169,14 @@ Lrnr_base <- R6Class(
       }
       private$.fit_uuid <- UUIDgenerate(use.time = TRUE)
     },
-
     assert_trained = function() {
       if (!self$is_trained) {
         stop(paste(
-          "Learner has not yet been train to data.",
+          "Learner has not yet been trained to data.",
           "Call learner$train(task) first."
         ))
       }
     },
-
     base_predict = function(task = NULL) {
       self$assert_trained()
       if (is.null(task)) {
@@ -185,8 +184,10 @@ Lrnr_base <- R6Class(
       }
 
       assert_that(is(task, "sl3_Task"))
-      subsetted_task <- self$subset_covariates(task)
-      predictions <- private$.predict(subsetted_task)
+      task <- self$subset_covariates(task)
+      task <- self$process_formula(task)
+
+      predictions <- private$.predict(task)
 
       ncols <- ncol(predictions)
       if (!is.null(ncols) && (ncols == 1)) {
@@ -194,7 +195,6 @@ Lrnr_base <- R6Class(
       }
       return(predictions)
     },
-
     base_chain = function(task = NULL) {
       self$assert_trained()
       if (is.null(task)) {
@@ -202,23 +202,24 @@ Lrnr_base <- R6Class(
       }
 
       assert_that(is(task, "sl3_Task"))
-      subsetted_task <- self$subset_covariates(task)
+      task <- self$subset_covariates(task)
+      task <- self$process_formula(task)
+
       # use custom chain function if provided
       if (!is.null(private$.custom_chain)) {
-        next_task <- private$.custom_chain(self, subsetted_task)
+        next_task <- private$.custom_chain(self, task)
       } else {
-        next_task <- private$.chain(subsetted_task)
+        next_task <- private$.chain(task)
       }
       return(next_task)
     },
-
     train_sublearners = function(task) {
       # TODO: add error handling
-      subsetted_task <- delayed_learner_subset_covariates(self, task)
+      task <- delayed_learner_subset_covariates(self, task)
+      task <- delayed_learner_process_formula(self, task)
 
-      return(private$.train_sublearners(subsetted_task))
+      return(private$.train_sublearners(task))
     },
-
     train = function(task) {
       delayed_fit <- delayed_learner_train(self, task)
       verbose <- getOption("sl3.verbose")
@@ -227,50 +228,46 @@ Lrnr_base <- R6Class(
         progress = verbose
       ))
     },
-
     predict = function(task = NULL) {
       delayed_preds <- delayed_learner_fit_predict(self, task)
       return(delayed_preds$compute(job_type = sl3_delayed_job_type()))
     },
-
     sample = function(task, n_samples = 30, fold_number = "full") {
       stop("This learner does not have a sampling method.")
     },
-
     chain = function(task = NULL) {
       delayed_chained <- delayed_learner_fit_chain(self, task)
       return(delayed_chained$compute(job_type = sl3_delayed_job_type()))
     },
-
     print = function() {
       print(self$name)
       # print(self$params)
       fit_object <- private$.fit_object
       if (!is.null(fit_object)) print(fit_object)
     },
-
     custom_chain = function(new_chain_fun = NULL) {
       private$.custom_chain <- new_chain_fun
     },
-
     predict_fold = function(task, fold_number = "full") {
       # support legacy "magic number" definitions
       fold_number <- interpret_fold_number(fold_number)
       # for non-CV learners, do full predict no matter what, but warn about it
       # if fold_number is something else
       if (fold_number != "full") {
-        warning(self$name, " is not a cv-aware learner, so self$predict_fold reverts to self$predict")
+        warning(
+          self$name,
+          " is not cv-aware: self$predict_fold reverts to self$predict"
+        )
       }
       self$predict(task)
     },
-
     reparameterize = function(new_params) {
       # modify learner parameters
       new_self <- self$clone()
-      new_self$.__enclos_env__$private$.params[names(new_params)] <- new_params[]
+      new_self$.__enclos_env__$private$.params[names(new_params)] <-
+        new_params[]
       return(new_self)
     },
-
     retrain = function(new_task, trained_sublearners = NULL) {
 
       # retrains fitted learner on a new task
@@ -288,16 +285,58 @@ Lrnr_base <- R6Class(
         new_self$.__enclos_env__$private$.params <- params_no_covars
       }
       if (!is.null(trained_sublearners)) {
-        new_fit_object <- new_self$.__enclos_env__$private$.train(new_task, trained_sublearners)
+        new_fit_object <-
+          new_self$.__enclos_env__$private$.train(
+            new_task,
+            trained_sublearners
+          )
       } else {
         new_fit_object <- new_self$.__enclos_env__$private$.train(new_task)
       }
       new_object <- new_self$clone() # copy parameters, and whatever else
       new_object$set_train(new_fit_object, new_task)
       return(new_object)
+    },
+    process_formula = function(task) {
+      if ("formula" %in% names(self$params) &&
+        !is.null(self$params[["formula"]])) {
+        form <- self$params$formula
+        if (class(form) != "formula") form <- as.formula(form)
+
+        # check response variable corresponds to outcome in task, if provided
+        if (attr(terms(form), "response")) {
+          if (!all.vars(form)[1] == task$nodes$outcome) {
+            stop(paste0(
+              "Outcome variable in formula ", all.vars(form)[1],
+              " does not match the task's outcome ", task$nodes$outcome
+            ))
+          }
+          formula_covars <- all.vars(form)[-1]
+        } else {
+          formula_covars <- all.vars(form)
+        }
+        # check that regressors in the formula are contained in the task
+        if (!all(formula_covars %in% task$nodes$covariates)) {
+          stop("Regressors in the formula are not covariates in task")
+        }
+
+        # get data corresponding to formula and add new columns to the task
+        data <- as.data.table(stats::model.matrix(form, data = task$data))
+        formula_cols <- names(data)
+        if (any(grepl("Intercept", formula_cols))) {
+          formula_cols <- formula_cols[!grepl("Intercept", formula_cols)]
+        }
+        new_cols <- setdiff(formula_cols, names(task$data))
+        data <- data[, new_cols, with = FALSE]
+        new_cols <- task$add_columns(data)
+        return(
+          task$next_in_chain(covariates = formula_cols, column_names = new_cols)
+        )
+      } else {
+        return(task)
+      }
     }
   ),
-
   active = list(
     is_trained = function() {
       return(!is.null(private$.fit_object))
@@ -306,7 +345,6 @@ Lrnr_base <- R6Class(
       fit_object <- private$.fit_object
       return(fit_object)
     },
-
     name = function() {
       # TODO: allow custom names
       if (is.null(private$.name)) {
@@ -322,31 +360,24 @@ Lrnr_base <- R6Class(
       }
       return(private$.name)
     },
-
     learner_uuid = function() {
       return(private$.learner_uuid)
     },
-
     fit_uuid = function() {
       return(private$.fit_uuid)
     },
-
     params = function() {
       return(private$.params)
     },
-
     training_task = function() {
       return(private$.training_task)
     },
-
     training_outcome_type = function() {
       return(private$.training_outcome_type)
     },
-
     properties = function() {
       return(private$.properties)
     },
-
     coefficients = function() {
       self$assert_trained()
       coefs <- try(coef(self$fit_object))
@@ -357,7 +388,6 @@ Lrnr_base <- R6Class(
       }
     }
   ),
-
   private = list(
     .name = NULL,
     .fit_object = NULL,
@@ -369,24 +399,20 @@ Lrnr_base <- R6Class(
     .required_packages = NULL,
     .properties = list(),
     .custom_chain = NULL,
-
     .train_sublearners = function(task) {
       # train sublearners here
       return(NULL)
     },
-
     .train = function(task) {
       stop(paste(
         "Learner is meant to be abstract, you should instead use",
-        "specific learners. See listLearners()"
+        "specific learners. See sl3_list_learners()"
       ))
     },
-
     .predict = function(task) {
       predictions <- predict(private$.fit_object, newdata = task$X)
       return(predictions)
     },
-
     .chain = function(task) {
       predictions <- self$predict(task)
       predictions <- as.data.table(predictions)
@@ -399,7 +425,6 @@ Lrnr_base <- R6Class(
         column_names = new_col_names
       ))
     },
-
     .load_packages = function() {
       if (!is.null(private$.required_packages)) {
         requirePackages(

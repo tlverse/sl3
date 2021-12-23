@@ -58,7 +58,6 @@ Lrnr_sl <- R6Class(
       )
       super$initialize(params = params, ...)
     },
-
     print = function() {
       lrn_names <- lapply(self$params$learners, function(obj) obj$name)
       print("SuperLearner:")
@@ -68,43 +67,59 @@ Lrnr_sl <- R6Class(
         if (self$params$keep_extra) {
           # standard printing when all sub-parts of SL computation are stored
           print(fit_object$cv_meta_fit)
-          print("Cross-validated risk (MSE, squared error loss):")
-          print(self$cv_risk(loss_squared_error))
+
+          # compute MSE once and store, only compute if not available
+          # (risk estimates are stored to avoid unnecessary re-calculation)
+          if (is.null(private$.cv_risk)) {
+            tryCatch(
+              {
+                # try using eval function based on outcome type
+                eval_fun <- private$.params$metalearner$params$eval_function
+                private$.cv_risk <- self$cv_risk(eval_fun)
+              },
+              error = function(c) {
+                # check training outcome type explicitly
+                metalearner <- default_metalearner(self$training_outcome_type)
+                eval_fun <- metalearner$params$eval_function
+                private$.cv_risk <- self$cv_risk(eval_fun)
+              }
+            )
+          }
+          print("Cross-validated risk:")
+          print(private$.cv_risk)
         } else {
           # just print the remaining full fit object when keep_extra = FALSE
           print(fit_object$full_fit$params$learners[[2]])
         }
       }
     },
-
     metalearner_fit = function() {
       self$assert_trained()
       return(private$.fit_object$cv_meta_fit$fit_object)
     },
-    cv_risk = function(loss_fun) {
-
+    cv_risk = function(eval_fun) {
       # get risks for cv learners (nested cv)
       cv_stack_fit <- self$fit_object$cv_fit
-      stack_risks <- cv_stack_fit$cv_risk(loss_fun)
+      stack_risks <- cv_stack_fit$cv_risk(eval_fun)
 
       coefs <- self$coefficients
       if (!is.null(coefs)) {
         ordered_coefs <- coefs[match(stack_risks$learner, names(coefs))]
       } else {
-        # Metalearner did not provide coefficients.
+        # metalearner did not provide coefficients.
         ordered_coefs <- rep(NA, length(stack_risks$learner))
       }
       set(stack_risks, , "coefficients", ordered_coefs)
 
-      # Make sure that coefficients is the second column, even if the
+      # make sure that coefficients is the second column, even if the
       # metalearner did not provide coefficients.
       data.table::setcolorder(
         stack_risks,
         c(names(stack_risks)[1], "coefficients")
       )
 
-      # get risks for super learner (revere cv)
-      sl_risk <- cv_risk(self, loss_fun)
+      # get risks for super learner ("revere" CV)
+      sl_risk <- cv_risk(self, eval_fun)
       set(sl_risk, , "learner", "SuperLearner")
 
       # combine and return
@@ -154,7 +169,8 @@ Lrnr_sl <- R6Class(
 
       # fit meta-learner
       fit_object$cv_meta_task <- fit_object$cv_fit$chain(task)
-      fit_object$cv_meta_fit <- self$params$metalearner$train(fit_object$cv_meta_task)
+      fit_object$cv_meta_fit <-
+        self$params$metalearner$train(fit_object$cv_meta_task)
 
       # construct full fit pipeline
       full_stack_fit <- fit_object$cv_fit$fit_object$full_fit
@@ -164,7 +180,6 @@ Lrnr_sl <- R6Class(
         Pipeline, full_stack_fit,
         fit_object$cv_meta_fit
       )
-
       fit_object$full_fit <- full_fit
 
       new_object <- self$clone() # copy parameters, and whatever else
@@ -172,25 +187,23 @@ Lrnr_sl <- R6Class(
       return(new_object)
     }
   ),
-
   active = list(
     name = function() {
       name <- paste("CV", self$params$learner$name, sep = "_")
     },
-
     coefficients = function() {
       self$assert_trained()
       return(coef(self$fit_object$cv_meta_fit))
     },
-
     learner_fits = function() {
       result <- self$fit_object$full_fit$learner_fits[[1]]$learner_fits
       return(result)
     }
   ),
-
   private = list(
     .properties = c("wrapper", "cv"),
+    .cv_risk = NULL, # store risk estimates (avoid re-calculation on print)
+
     .train_sublearners = function(task) {
       # if we get a delayed task, evaluate it
       # TODO: this is a kludge:
@@ -218,7 +231,7 @@ Lrnr_sl <- R6Class(
       learner_stack <- do.call(Stack$new, list(learners))
       cv_stack <- Lrnr_cv$new(learner_stack, folds = folds, full_fit = TRUE)
 
-      # TODO: readd custom chain w/ better cv chain code
+      # TODO: read custom chain w/ better cv chain code
       # cv_stack$custom_chain(drop_offsets_chain)
 
       # fit stack on CV data
@@ -229,14 +242,13 @@ Lrnr_sl <- R6Class(
       cv_meta_fit <- delayed_learner_train(metalearner, cv_meta_task)
 
       # form full SL fit -- a pipeline with the stack fit to the full data,
-      # and the metalearner fit to the cv predictions
+      # and the metalearner fit to the CV predictions
       fit_object <- list(
         cv_fit = cv_fit, cv_meta_task = cv_meta_task,
         cv_meta_fit = cv_meta_fit
       )
       return(bundle_delayed(fit_object))
     },
-
     .train = function(task, trained_sublearners) {
       fit_object <- trained_sublearners
 
@@ -260,7 +272,6 @@ Lrnr_sl <- R6Class(
       }
       return(fit_object[keep])
     },
-
     .predict = function(task) {
       full_task <- task$revere_fold_task("full")
       predictions <- private$.fit_object$full_fit$base_predict(full_task)

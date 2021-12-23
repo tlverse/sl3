@@ -23,10 +23,8 @@ Lrnr_pkg_SuperLearner_screener <- R6Class(
       super$initialize(params = params, ...)
     }
   ),
-
   private = list(
-    .properties = c("binomial", "continuous", "weights", "ids"),
-
+    .properties = c("binomial", "continuous", "weights", "ids", "wrapper"),
     .train = function(task) {
       args <- self$params
       outcome_type <- self$get_outcome_type(task)
@@ -54,11 +52,9 @@ Lrnr_pkg_SuperLearner_screener <- R6Class(
       fit_object <- list(selected = covariates[covariate_selected])
       return(fit_object)
     },
-
     .predict = function(task) {
       task$X[, private$.fit_object$selected, with = FALSE, drop = FALSE]
     },
-
     .chain = function(task) {
       return(task$next_in_chain(covariates = private$.fit_object$selected))
     },

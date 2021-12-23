@@ -44,9 +44,8 @@ Lrnr_pkg_SuperLearner <- R6Class(
       super$initialize(params = params, ...)
     }
   ),
-
   private = list(
-    .properties = c("binomial", "continuous", "weights", "ids"),
+    .properties = c("binomial", "continuous", "weights", "ids", "wrapper"),
     .train = function(task) {
       args <- self$params
       wrapper <- args$wrapper_fun
@@ -65,7 +64,6 @@ Lrnr_pkg_SuperLearner <- R6Class(
       )$fit
       return(fit_object)
     },
-
     .predict = function(task) {
       args <- self$params
       outcome_type <- private$.training_outcome_type

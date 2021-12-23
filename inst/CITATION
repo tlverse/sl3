@@ -5,9 +5,10 @@ note <- sprintf("R package version %s", meta$Version)
 
 bibentry(bibtype = "Manual",
          title = "{sl3}: Pipelines for Machine Learning and {Super Learning}",
-         author = c(person("Jeremy", "Coyle", "R"),
-                    person("Nima", "Hejazi", "S"),
+         author = c(person("Jeremy", "Coyle"),
+                    person("Nima", "Hejazi"),
                     person("Ivana", "Malenica"),
+                    person("Rachael", "Phillips"),
                     person("Oleg", "Sofrygin")),
          year = year,
          note = note,

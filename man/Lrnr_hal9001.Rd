@@ -3,78 +3,50 @@
 \docType{class}
 \name{Lrnr_hal9001}
 \alias{Lrnr_hal9001}
-\title{The Scalable Highly Adaptive Lasso}
+\title{Scalable Highly Adaptive Lasso (HAL)}
 \format{
-\code{\link{R6Class}} object.
+An \code{\link[R6]{R6Class}} object inheriting from
+\code{\link{Lrnr_base}}.
 }
 \value{
-Learner object with methods for training and prediction. See
-\code{\link{Lrnr_base}} for documentation on learners.
+A learner object inheriting from \code{\link{Lrnr_base}} with
+methods for training and prediction. For a full list of learner
+functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 }
 \description{
-The Highly Adaptive Lasso is an estimation procedure that generates a design
-matrix consisting of basis functions corresponding to covariates and
-interactions of covariates and fits Lasso regression to this (usually) very
-wide matrix, recovering a nonparametric functional form that describes the
-target prediction function as a composition of subset functions with finite
-variation norm. This implementation uses \pkg{hal9001}, which provides both
-a custom implementation (based on \pkg{origami}) of the cross-validated
-lasso as well the standard call to \code{\link[glmnet]{cv.glmnet}} from the
-\pkg{glmnet}.
+The Highly Adaptive Lasso (HAL) is a nonparametric regression function that
+has been demonstrated to optimally estimate functions with bounded (finite)
+variation norm. The algorithm proceeds by first building an adaptive basis
+(i.e., the HAL basis) based on indicator basis functions (or higher-order
+spline basis functions) representing covariates and interactions of the
+covariates up to a pre-specified degree. The fitting procedures included in
+this learner use \code{\link[hal9001]{fit_hal}} from the \pkg{hal9001}
+package. For details on HAL regression, consider consulting the following
+\insertCite{benkeser2016hal;textual}{sl3}),
+\insertCite{coyle2020hal9001-rpkg;textual}{sl3}),
+\insertCite{hejazi2020hal9001-joss;textual}{sl3}).
 }
 \section{Parameters}{
 
-\describe{
-\item{\code{max_degree=3}}{ The highest order of interaction
-terms for which the basis functions ought to be generated. The default
-corresponds to generating basis functions up to all 3-way interactions of
-covariates in the input matrix, matching the default in \pkg{hal9001}.
-}
-\item{\code{fit_type="glmnet"}}{The specific routine to be called when
-fitting the Lasso regression in a cross-validated manner. Choosing the
-\code{"glmnet"} option calls either \code{\link[glmnet]{cv.glmnet}} or
-\code{\link[glmnet]{glmnet}}.
-}
-\item{\code{n_folds=10}}{Integer for the number of folds to be used
-when splitting the data for cross-validation. This defaults to 10 as this
-is the convention for V-fold cross-validation.
-}
-\item{\code{use_min=TRUE}}{Determines which lambda is selected from
-\code{\link[glmnet]{cv.glmnet}}. \code{TRUE} corresponds to
-\code{"lambda.min"} and \code{FALSE} corresponds to \code{"lambda.1se"}.
-}
-\item{\code{reduce_basis=NULL}}{A \code{numeric} value bounded in the open
-interval (0,1) indicating the minimum proportion of ones in a basis
-function column needed for the basis function to be included in the
-procedure to fit the Lasso. Any basis functions with a lower proportion
-of 1's than the specified cutoff will be removed. This argument defaults
-to \code{NULL}, in which case all basis functions are used in the Lasso
-stage of HAL.
-}
-\item{\code{return_lasso=TRUE}}{A \code{logical} indicating whether or not
-to return the \code{\link[glmnet]{glmnet}} fit of the Lasso model.
-}
-\item{\code{return_x_basis=FALSE}}{A \code{logical} indicating whether or
-not to return the matrix of (possibly reduced) basis functions used in
-the HAL Lasso fit.
-}
-\item{\code{basis_list=NULL}}{The full set of basis functions generated
-from the input data (from \code{\link[hal9001]{enumerate_basis}}). The
-dimensionality of this structure is roughly (n * 2^(d - 1)), where n is
-the number of observations and d is the number of columns in the input.
-}
-\item{\code{cv_select=TRUE}}{A \code{logical} specifying whether the array
-of values specified should be passed to \code{\link[glmnet]{cv.glmnet}}
-in order to pick the optimal value (based on cross-validation) (when set
-to \code{TRUE}) or to fit along the sequence of values (or a single value
-using \code{\link[glmnet]{glmnet}} (when set to \code{FALSE}).
-}
-\item{\code{...}}{Other parameters passed directly to
-\code{\link[hal9001]{fit_hal}}. See its documentation for details.
-}
+\itemize{
+\item \code{...}: Arguments passed to \code{\link[hal9001]{fit_hal}}. See
+it's documentation for details.
 }
 }
 
+\examples{
+data(cpp_imputed)
+covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
+task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
+
+# instantiate with max 2-way interactions, 0-order splines, and binning
+# (i.e., num_knots) that decreases with increasing interaction degree
+hal_lrnr <- Lrnr_hal9001$new(
+  max_degree = 2, num_knots = c(20, 10), smoothness_orders = 0
+)
+hal_fit <- hal_lrnr$train(task)
+hal_preds <- hal_fit$predict()
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},
@@ -82,8 +54,8 @@ Other Learners:
 \code{\link{Lrnr_arima}},
 \code{\link{Lrnr_bartMachine}},
 \code{\link{Lrnr_base}},
+\code{\link{Lrnr_bayesglm}},
 \code{\link{Lrnr_bilstm}},
-\code{\link{Lrnr_bound}},
 \code{\link{Lrnr_caret}},
 \code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_cv}},
@@ -95,6 +67,7 @@ Other Learners:
 \code{\link{Lrnr_earth}},
 \code{\link{Lrnr_expSmooth}},
 \code{\link{Lrnr_gam}},
+\code{\link{Lrnr_ga}},
 \code{\link{Lrnr_gbm}},
 \code{\link{Lrnr_glm_fast}},
 \code{\link{Lrnr_glmnet}},
@@ -106,8 +79,8 @@ Other Learners:
 \code{\link{Lrnr_haldensify}},
 \code{\link{Lrnr_hts}},
 \code{\link{Lrnr_independent_binomial}},
+\code{\link{Lrnr_lightgbm}},
 \code{\link{Lrnr_lstm_keras}},
-\code{\link{Lrnr_lstm}},
 \code{\link{Lrnr_mean}},
 \code{\link{Lrnr_multiple_ts}},
 \code{\link{Lrnr_multivariate}},

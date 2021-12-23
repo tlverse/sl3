@@ -54,15 +54,16 @@ Lrnr_randomForest <- R6Class(
       importance_fun <- utils::getS3method("importance", "randomForest",
         envir = getNamespace("randomForest")
       )
+
       importance_result <- call_with_args(importance_fun, args)
 
-      # sort by decreasing importance; if multiple metrics, choose first column
+      # sort by decreasing importance
       if (ncol(importance_result) > 1) {
+        # if multiple metrics, choose first column
         message(paste0(
-          "Multiple importance metrics considered. Sorting ",
-          "according to ", colnames(importance_result)[1]
+          "Sorting covariates by ", colnames(importance_result)[1],
+          " importance metric"
         ))
-        importance_result <- importance_result[, 1]
       }
       importance_result <- importance_result[order(importance_result[, 1],
         decreasing = TRUE
@@ -70,7 +71,6 @@ Lrnr_randomForest <- R6Class(
       return(importance_result)
     }
   ),
-
   private = list(
     .properties = c("continuous", "binomial", "categorical", "importance"),
     .train = function(task) {

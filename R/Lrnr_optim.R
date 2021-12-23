@@ -50,13 +50,11 @@ Lrnr_optim <- R6Class(
       super$initialize(params = params, ...)
     }
   ),
-
   private = list(
     .properties = c(
       "continuous", "binomial", "categorical", "weights",
       "offset"
     ),
-
     .train = function(task) {
       verbose <- getOption("sl3.verbose")
       params <- self$params
@@ -82,8 +80,13 @@ Lrnr_optim <- R6Class(
         } else {
           preds <- learner_function(alphas, X)
         }
-        losses <- loss_function(preds, Y)
-        risk <- weighted.mean(losses, weights)
+        eval_result <- loss_function(preds, Y)
+        if (!is.null(attr(eval_result, "loss")) && !attr(eval_result, "loss")) {
+          risk <- eval_result
+        } else {
+          losses <- eval_result
+          risk <- weighted.mean(losses, weights)
+        }
         return(risk)
       }
       p <- ncol(X)
@@ -102,7 +105,6 @@ Lrnr_optim <- R6Class(
       fit_object$name <- "optim"
       return(fit_object)
     },
-
     .predict = function(task = NULL) {
       verbose <- getOption("sl3.verbose")
 

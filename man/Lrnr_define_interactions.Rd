@@ -5,25 +5,41 @@
 \alias{Lrnr_define_interactions}
 \title{Define interactions terms}
 \format{
-\code{\link{R6Class}} object.
+An \code{\link[R6]{R6Class}} object inheriting from
+\code{\link{Lrnr_base}}.
 }
 \value{
-Learner object with methods for training and prediction. See
-\code{\link{Lrnr_base}} for documentation on learners.
+A learner object inheriting from \code{\link{Lrnr_base}} with
+methods for training and prediction. For a full list of learner
+functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 }
 \description{
-This learner adds interactions to its chained task
+This learner adds interactions to its chained task. Intended for use in a
+Pipeline, defining a coupling of the interactions with the learner.
 }
 \section{Parameters}{
 
-\describe{
-\item{\code{interactions}}{A list of lists, with each inner list containing
-the covariates from which to create interaction terms.}
-\item{\code{warn_on_existing}}{If \code{TRUE}, produce a warning if there
-is already a column with a name matching this given interaction term.}
+\itemize{
+\item \code{interactions}: A list whose elements are a character
+vector of covariates from which to create interaction terms.
+\item \code{warn_on_existing}: If \code{TRUE}, produce a warning if there
+is already a column with a name matching this given interaction term.
 }
 }
 
+\examples{
+data(cpp_imputed)
+covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")
+outcome <- "haz"
+task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
+interactions <- list(c("apgar1", "parity"), c("apgar5", "parity"))
+lrnr_interact <- Lrnr_define_interactions$new(
+  list(c("apgar1", "parity"), c("apgar5", "parity"))
+)
+lrnr_glm <- Lrnr_glm$new()
+interaction_pipeline_glm <- make_learner(Pipeline, lrnr_interact, lrnr_glm)
+fit <- interaction_pipeline_glm$train(task)
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},
@@ -31,8 +47,8 @@ Other Learners:
 \code{\link{Lrnr_arima}},
 \code{\link{Lrnr_bartMachine}},
 \code{\link{Lrnr_base}},
+\code{\link{Lrnr_bayesglm}},
 \code{\link{Lrnr_bilstm}},
-\code{\link{Lrnr_bound}},
 \code{\link{Lrnr_caret}},
 \code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_cv}},
@@ -43,6 +59,7 @@ Other Learners:
 \code{\link{Lrnr_earth}},
 \code{\link{Lrnr_expSmooth}},
 \code{\link{Lrnr_gam}},
+\code{\link{Lrnr_ga}},
 \code{\link{Lrnr_gbm}},
 \code{\link{Lrnr_glm_fast}},
 \code{\link{Lrnr_glmnet}},
@@ -55,8 +72,8 @@ Other Learners:
 \code{\link{Lrnr_haldensify}},
 \code{\link{Lrnr_hts}},
 \code{\link{Lrnr_independent_binomial}},
+\code{\link{Lrnr_lightgbm}},
 \code{\link{Lrnr_lstm_keras}},
-\code{\link{Lrnr_lstm}},
 \code{\link{Lrnr_mean}},
 \code{\link{Lrnr_multiple_ts}},
 \code{\link{Lrnr_multivariate}},

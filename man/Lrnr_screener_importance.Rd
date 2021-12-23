@@ -5,29 +5,72 @@
 \alias{Lrnr_screener_importance}
 \title{Variable Importance Screener}
 \format{
-\code{\link{R6Class}} object.
+An \code{\link[R6]{R6Class}} object inheriting from
+\code{\link{Lrnr_base}}.
 }
 \value{
-Learner object with methods for training and prediction. See
-\code{\link{Lrnr_base}} for documentation on learners.
+A learner object inheriting from \code{\link{Lrnr_base}} with
+methods for training and prediction. For a full list of learner
+functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 }
 \description{
-This learner provides screening of covariates based on the variables sorted
-in decreasing order of importance, where the importance metric is based on
-a learner that supports importance.
+This learner screens covariates based on their variable importance, where the
+importance values are obtained from the \code{learner}. Any learner with an
+\code{importance} method can be used. The set of learners with support for
+\code{importance} can be found with \code{sl3_list_learners("importance")}.
+Like all other screeners, this learner is intended for use in a
+\code{\link{Pipeline}}, so the output from this learner (i.e., the selected
+covariates) can be used as input for the next learner in the pipeline.
 }
 \section{Parameters}{
 
-\describe{
-\item{\code{learner}}{An instantiated learner that supports variable
-importance.}
-\item{\code{num_screen = 5}}{The top number of most important variables
-to retain.}
-\item{\code{...}}{Other parameters passed to \code{learner}'s
-\code{importance} function.}
+\itemize{
+\item \code{learner}: An instantiated learner that supports variable importance.
+The set of learners with this support can be obtained via
+\code{sl3_list_learners("importance")}.
+\item \code{num_screen = 5}: The top n number of "most impotant" variables to
+retain.
+\item \code{...}: Other parameters passed to the \code{learner}'s
+\code{importance} function.
 }
 }
 
+\examples{
+data(mtcars)
+mtcars_task <- sl3_Task$new(
+  data = mtcars,
+  covariates = c(
+    "cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "am",
+    "gear", "carb"
+  ),
+  outcome = "mpg"
+)
+glm_lrnr <- make_learner(Lrnr_glm)
+
+# screening based on \code{\link{Lrnr_ranger}} variable importance
+ranger_lrnr_importance <- Lrnr_ranger$new(importance = "impurity_corrected")
+ranger_importance_screener <- Lrnr_screener_importance$new(
+  learner = ranger_lrnr_importance, num_screen = 3
+)
+ranger_screen_glm_pipe <- Pipeline$new(ranger_importance_screener, glm_lrnr)
+ranger_screen_glm_pipe_fit <- ranger_screen_glm_pipe$train(mtcars_task)
+
+# screening based on \code{\link{Lrnr_randomForest}} variable importance
+rf_lrnr <- Lrnr_randomForest$new()
+rf_importance_screener <- Lrnr_screener_importance$new(
+  learner = rf_lrnr, num_screen = 3
+)
+rf_screen_glm_pipe <- Pipeline$new(rf_importance_screener, glm_lrnr)
+rf_screen_glm_pipe_fit <- rf_screen_glm_pipe$train(mtcars_task)
+
+# screening based on \code{\link{Lrnr_randomForest}} variable importance
+xgb_lrnr <- Lrnr_xgboost$new()
+xgb_importance_screener <- Lrnr_screener_importance$new(
+  learner = xgb_lrnr, num_screen = 3
+)
+xgb_screen_glm_pipe <- Pipeline$new(xgb_importance_screener, glm_lrnr)
+xgb_screen_glm_pipe_fit <- xgb_screen_glm_pipe$train(mtcars_task)
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},
@@ -35,8 +78,8 @@ Other Learners:
 \code{\link{Lrnr_arima}},
 \code{\link{Lrnr_bartMachine}},
 \code{\link{Lrnr_base}},
+\code{\link{Lrnr_bayesglm}},
 \code{\link{Lrnr_bilstm}},
-\code{\link{Lrnr_bound}},
 \code{\link{Lrnr_caret}},
 \code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_cv}},
@@ -48,6 +91,7 @@ Other Learners:
 \code{\link{Lrnr_earth}},
 \code{\link{Lrnr_expSmooth}},
 \code{\link{Lrnr_gam}},
+\code{\link{Lrnr_ga}},
 \code{\link{Lrnr_gbm}},
 \code{\link{Lrnr_glm_fast}},
 \code{\link{Lrnr_glmnet}},
@@ -60,8 +104,8 @@ Other Learners:
 \code{\link{Lrnr_haldensify}},
 \code{\link{Lrnr_hts}},
 \code{\link{Lrnr_independent_binomial}},
+\code{\link{Lrnr_lightgbm}},
 \code{\link{Lrnr_lstm_keras}},
-\code{\link{Lrnr_lstm}},
 \code{\link{Lrnr_mean}},
 \code{\link{Lrnr_multiple_ts}},
 \code{\link{Lrnr_multivariate}},

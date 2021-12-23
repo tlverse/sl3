@@ -5,40 +5,48 @@
 \alias{Lrnr_nnls}
 \title{Non-negative Linear Least Squares}
 \format{
-\code{\link{R6Class}} object.
+An \code{\link[R6]{R6Class}} object inheriting from
+\code{\link{Lrnr_base}}.
 }
 \value{
-Learner object with methods for both training and prediction. See
-\code{\link{Lrnr_base}} for documentation on learners.
+A learner object inheriting from \code{\link{Lrnr_base}} with
+methods for training and prediction. For a full list of learner
+functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 }
 \description{
-This learner provides fitting procedures for models with non-negative linear
-least squares, internally using the \code{nnls} package and
+This learner provides fitting procedures for models via non-negative linear
+least squares regression, using \pkg{nnls} package's
 \code{\link[nnls]{nnls}} function.
 }
 \section{Parameters}{
 
-\describe{
-\item{\code{convex = FALSE}}{Normalize the coefficients to be a convex
-combination}
-\item{\code{...}}{Other parameters passed to
-\code{\link[nnls]{nnls}}.}
+\itemize{
+\item \code{convex = FALSE}: Normalize the coefficients to be a convex
+combination.
+\item \code{...}: Other parameters passed to \code{\link[nnls]{nnls}}.
 }
 }
 
-\section{Common Parameters}{
+\examples{
+data(cpp_imputed)
+covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
+task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
 
+lrnr_nnls <- make_learner(Lrnr_nnls)
+nnls_fit <- lrnr_nnls$train(task)
+nnls_preds <- nnls_fit$predict()
 
-Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by \code{Lrnr_base}, and shared
-by all learners.
-
-\describe{
-\item{\code{covariates}}{A character vector of covariates. The learner will use this to subset the covariates for any specified task}
-\item{\code{outcome_type}}{A \code{\link{variable_type}} object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified}
-\item{\code{...}}{All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating}
+# NNLS is commonly used as a metalearner in a super learner (i.e., Lrnr_sl)
+lrnr_glm <- make_learner(Lrnr_glm)
+lrnr_glmnet <- Lrnr_glmnet$new()
+lrnr_mean <- Lrnr_mean$new()
+learners <- c(lrnr_glm, lrnr_glmnet, lrnr_mean)
+names(learners) <- c("glm", "lasso", "mean") # optional, renaming learners
+simple_learner_stack <- make_learner(Stack, learners)
+sl <- Lrnr_sl$new(learners = simple_learner_stack, metalearner = lrnr_nnls)
+sl_fit <- sl$train(task)
+sl_preds <- sl_fit$predict()
 }
-}
-
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},
@@ -46,8 +54,8 @@ Other Learners:
 \code{\link{Lrnr_arima}},
 \code{\link{Lrnr_bartMachine}},
 \code{\link{Lrnr_base}},
+\code{\link{Lrnr_bayesglm}},
 \code{\link{Lrnr_bilstm}},
-\code{\link{Lrnr_bound}},
 \code{\link{Lrnr_caret}},
 \code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_cv}},
@@ -59,6 +67,7 @@ Other Learners:
 \code{\link{Lrnr_earth}},
 \code{\link{Lrnr_expSmooth}},
 \code{\link{Lrnr_gam}},
+\code{\link{Lrnr_ga}},
 \code{\link{Lrnr_gbm}},
 \code{\link{Lrnr_glm_fast}},
 \code{\link{Lrnr_glmnet}},
@@ -71,8 +80,8 @@ Other Learners:
 \code{\link{Lrnr_haldensify}},
 \code{\link{Lrnr_hts}},
 \code{\link{Lrnr_independent_binomial}},
+\code{\link{Lrnr_lightgbm}},
 \code{\link{Lrnr_lstm_keras}},
-\code{\link{Lrnr_lstm}},
 \code{\link{Lrnr_mean}},
 \code{\link{Lrnr_multiple_ts}},
 \code{\link{Lrnr_multivariate}},

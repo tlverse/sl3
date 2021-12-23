@@ -1,7 +1,7 @@
 #' Generalized Linear Models
 #'
 #' This learner provides fitting procedures for generalized linear models using
-#' \code{\link[stats]{glm.fit}}.
+#' the \pkg{stats} package \code{\link[stats]{glm.fit}} function.
 #'
 #' @docType class
 #'
@@ -12,33 +12,48 @@
 #'
 #' @keywords data
 #'
-#' @return Learner object with methods for training and prediction. See
-#'  \code{\link{Lrnr_base}} for documentation on learners.
+#' @return A learner object inheriting from \code{\link{Lrnr_base}} with
+#'  methods for training and prediction. For a full list of learner
+#'  functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 #'
-#' @format \code{\link{R6Class}} object.
+#' @format An \code{\link[R6]{R6Class}} object inheriting from
+#'  \code{\link{Lrnr_base}}.
 #'
 #' @family Learners
 #'
 #' @section Parameters:
-#' \describe{
-#'   \item{\code{...}}{Parameters passed to \code{\link[stats]{glm}}.}
-#' }
+#'   - \code{intercept = TRUE}: Should an intercept be included in the model?
+#'   - \code{...}: Other parameters passed to \code{\link[stats]{glm}} or
+#'       \code{\link[stats]{glm.fit}}.
 #'
-#' @template common_parameters
-#
+#' @examples
+#' data(cpp_imputed)
+#' covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
+#' task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
+#'
+#' # simple, main-terms GLM
+#' lrnr_glm <- make_learner(Lrnr_glm)
+#' glm_fit <- lrnr_glm$train(task)
+#' glm_preds <- glm_fit$predict()
+#'
+#' # We can include interaction terms by 'piping' them into this learner.
+#' # Note that both main terms and the specified interactions will be included
+#' # in the regression model.
+#' interaction <- list(c("apgar1", "parity"))
+#' lrnr_interaction <- Lrnr_define_interactions$new(interactions = interaction)
+#' lrnr_glm_w_interaction <- make_learner(Pipeline, lrnr_interaction, lrnr_glm)
+#' fit <- lrnr_glm_w_interaction$train(task)
+#' coefs <- coef(fit$learner_fits$Lrnr_glm_TRUE)
 Lrnr_glm <- R6Class(
-  classname = "Lrnr_glm", inherit = Lrnr_base,
-  portable = TRUE, class = TRUE,
+  classname = "Lrnr_glm",
+  inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
     initialize = function(intercept = TRUE, ...) {
-      params <- args_to_list()
-      super$initialize(params = params, ...)
+      super$initialize(params = args_to_list(), ...)
     }
   ),
-
   private = list(
     .properties = c("continuous", "binomial", "weights", "offset"),
-
     .train = function(task) {
       args <- self$params
       outcome_type <- self$get_outcome_type(task)
@@ -58,6 +73,7 @@ Lrnr_glm <- R6Class(
       }
       args$y <- outcome_type$format(task$Y)
 
+
       if (task$has_node("weights")) {
         args$weights <- task$weights
       }
@@ -67,6 +83,7 @@ Lrnr_glm <- R6Class(
       }
 
       args$control <- glm.control(trace = FALSE)
+
       SuppressGivenWarnings(
         {
           fit_object <- call_with_args(stats::glm.fit, args)
@@ -89,29 +106,28 @@ Lrnr_glm <- R6Class(
     },
     .predict = function(task) {
       verbose <- getOption("sl3.verbose")
+
       if (self$params$intercept) {
         X <- task$X_intercept
       } else {
         X <- task$X
       }
 
-      predictions <- rep.int(NA, nrow(X))
-      if (nrow(X) > 0) {
-        coef <- self$fit_object$coef
-        if (!all(is.na(coef))) {
-          eta <- as.matrix(X
-          [, which(!is.na(coef)),
-            drop = FALSE,
-            with = FALSE
-          ]) %*% coef[!is.na(coef)]
+      coef <- self$fit_object$coef
 
-          if (self$fit_object$training_offset) {
-            offset <- task$offset_transformed(self$fit_object$link_fun, for_prediction = TRUE)
-            eta <- eta + offset
-          }
-
-          predictions <- as.vector(self$fit_object$linkinv_fun(eta))
+      if (nrow(X) > 0 & !all(is.na(coef))) {
+        X <- as.matrix(X[, which(!is.na(coef)), drop = FALSE, with = FALSE])
+        eta <- X %*% coef[!is.na(coef)]
+        if (self$fit_object$training_offset) {
+          offset <- task$offset_transformed(
+            self$fit_object$link_fun,
+            for_prediction = TRUE
+          )
+          eta <- eta + offset
         }
+        predictions <- as.vector(self$fit_object$linkinv_fun(eta))
+      } else {
+        predictions <- rep.int(NA, nrow(X))
       }
       return(predictions)
     }

@@ -1,21 +1,12 @@
-## ------------------------------------------------------------------------
-## Faster GLM with speedglm, fall back on glm.fit in case of error
-## - Always use the internal fitting function (speedglm.wfit, glm.fit)
-## - GLM objects are stripped of all the junk (minimal memory footprint)
-## - No formula interface (design mat is the input data.table in task$X)
-## - Separate interface for interactions (params[["interactions"]])
-## - Can override the covariates with a subset of those in task$nodes$covariates
-##   (params[["covariates"]])
-## - All predictions are based on external matrix multiplication with a
-##   family-based link functions
-## ------------------------------------------------------------------------
-
-#' Computationally Efficient GLMs
+#' Computationally Efficient Generalized Linear Model (GLM) Fitting
 #'
-#' This learner provides faster fitting procedures for generalized linear models
-#' using the \code{speedglm} package. Arguments are passed to
-#' \code{\link[speedglm]{speedglm.wfit}}. Uses \code{\link[stats]{glm.fit}} as a
-#' fallback if \code{\link[speedglm]{speedglm.wfit}} fails.
+#' This learner provides faster procedures for fitting linear and generalized
+#' linear models than \code{\link{Lrnr_glm}} with a minimal memory footprint.
+#' This learner uses the internal fitting function provided by \pkg{speedglm}
+#' package, \code{\link[speedglm]{speedglm.wfit}}. See
+#' \insertCite{speedglm;textual}{sl3} for more detail. The
+#' \code{\link[stats]{glm.fit}} function is used as a fallback, if
+#' \code{\link[speedglm]{speedglm.wfit}} fails.
 #'
 #' @docType class
 #'
@@ -26,46 +17,55 @@
 #'
 #' @keywords data
 #'
-#' @return Learner object with methods for training and prediction. See
-#'  \code{\link{Lrnr_base}} for documentation on learners.
+#' @return A learner object inheriting from \code{\link{Lrnr_base}} with
+#'  methods for training and prediction. For a full list of learner
+#'  functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 #'
-#' @format \code{\link{R6Class}} object.
+#' @format An \code{\link[R6]{R6Class}} object inheriting from
+#'  \code{\link{Lrnr_base}}.
 #'
 #' @family Learners
 #'
 #' @section Parameters:
-#' \describe{
-#'   \item{\code{intercept=TRUE}}{If \code{TRUE}, an intercept term is included}
-#'   \item{\code{method="Cholesky"}}{The matrix decomposition method to use}
-#'   \item{\code{...}}{Other parameters to be passed to
-#'     \code{\link[speedglm]{speedglm.wfit}}.}
-#' }
+#'   - \code{intercept = TRUE}: Should an intercept be included in the model?
+#'   - \code{method = "Cholesky"}: The method to check for singularity.
+#'   - \code{...}: Other parameters to be passed to
+#'       \code{\link[speedglm]{speedglm.wfit}}.
 #'
-#' @template common_parameters
-#
+#' @references
+#'  \insertAllCited{}
+#'
+#' @examples
+#' data(cpp_imputed)
+#' covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
+#' task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
+#'
+#' # simple, main-terms GLM
+#' lrnr_glm_fast <- Lrnr_glm_fast$new(method = "eigen")
+#' glm_fast_fit <- lrnr_glm_fast$train(task)
+#' glm_fast_preds <- glm_fast_fit$predict()
 Lrnr_glm_fast <- R6Class(
-  classname = "Lrnr_glm_fast", inherit = Lrnr_base,
-  portable = TRUE, class = TRUE,
+  classname = "Lrnr_glm_fast",
+  inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
     initialize = function(intercept = TRUE, method = "Cholesky", ...) {
       super$initialize(params = args_to_list(), ...)
     }
   ),
-
   private = list(
     .default_params = list(method = "Cholesky"),
-
     .properties = c("continuous", "binomial", "weights", "offset"),
-
     .train = function(task) {
-      verbose <- getOption("sl3.transform.offset")
+      verbose <- getOption("sl3.verbose")
+
       args <- self$params
+
       outcome_type <- self$get_outcome_type(task)
+      args$y <- outcome_type$format(task$Y)
 
       if (is.null(args$family)) {
         args$family <- outcome_type$glm_family(return_object = TRUE)
       }
-
       family_name <- args$family$family
       linkinv_fun <- args$family$linkinv
       link_fun <- args$family$linkfun
@@ -76,8 +76,6 @@ Lrnr_glm_fast <- R6Class(
       } else {
         args$X <- as.matrix(task$X)
       }
-      args$y <- outcome_type$format(task$Y)
-      args$trace <- FALSE
 
       if (task$has_node("weights")) {
         args$weights <- task$weights
@@ -102,7 +100,7 @@ Lrnr_glm_fast <- R6Class(
         if (verbose) {
           message(paste(
             "speedglm::speedglm.wfit failed, falling back on",
-            "stats:glm.fit;", fit_object
+            "stats::glm.fit;", fit_object
           ))
         }
         args$ctrl <- glm.control(trace = FALSE)
@@ -130,9 +128,9 @@ Lrnr_glm_fast <- R6Class(
       fit_object$training_offset <- task$has_node("offset")
       return(fit_object)
     },
-
     .predict = function(task = NULL) {
       verbose <- getOption("sl3.verbose")
+
       if (self$params$intercept) {
         X <- task$X_intercept
       } else {

@@ -1,14 +1,11 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# R/`sl3`: modern Super Learning with pipelines
+# R/`sl3`: Super Machine Learning with Pipelines
 
-[![Travis-CI Build
-Status](https://travis-ci.com/tlverse/sl3.svg?branch=master)](https://travis-ci.com/tlverse/sl3)
-[![Appveyor Build
-Status](https://ci.appveyor.com/api/projects/status/hagh8vidrdeacr7f?svg=true)](https://ci.appveyor.com/project/tlverse/sl3)
+[![R-CMD-check](https://github.com/tlverse/sl3/workflows/R-CMD-check/badge.svg)](https://github.com/tlverse/sl3/actions)
 [![Coverage
-Status](https://img.shields.io/codecov/c/github/tlverse/sl3/master.svg)](https://codecov.io/github/tlverse/sl3?branch=master)
+Status](https://codecov.io/gh/tlverse/sl3/branch/master/graph/badge.svg)](https://codecov.io/gh/tlverse/sl3)
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
@@ -16,36 +13,39 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1342293.svg)](https://doi.org/10.5281/zenodo.1342293)
 
-> A modern implementation of the Super Learner ensemble learning
-> algorithm
+> A flexible implementation of the Super Learner ensemble machine
+> learning system
 
 **Authors:** [Jeremy Coyle](https://github.com/jeremyrcoyle), [Nima
 Hejazi](https://nimahejazi.org), [Ivana
-Malenica](https://github.com/podTockom), [Rachael
-Phillips](https://github.com/rachaelvphillips), and [Oleg
+Malenica](https://github.com/imalenica), [Rachael
+Phillips](https://github.com/rachaelvp), and [Oleg
 Sofrygin](https://github.com/osofr)
 
 -----
 
 ## What’s `sl3`?
 
-`sl3` is a modern implementation of the Super Learner algorithm of van
-der Laan, Polley, and Hubbard (2007). The Super Learner algorithm
-performs ensemble learning in one of two fashions:
+`sl3` is an implementation of the Super Learner ensemble machine
+learning algorithm of van der Laan, Polley, and Hubbard (2007). The
+Super Learner algorithm performs ensemble learning in one of two
+fashions:
 
 1.  The *discrete* Super Learner can be used to select the best
     prediction algorithm from among a supplied library of machine
     learning algorithms (“learners” in the `sl3` nomenclature) – that
     is, the discrete Super Learner is the single learning algorithm that
-    minimizes the cross-validated risk with respect to an appropriate
-    loss function.
+    minimizes the cross-validated risk.
 2.  The *ensemble* Super Learner can be used to assign weights to a set
     of specified learning algorithms (from a user-supplied library of
     such algorithms) so as to create a combination of these learners
-    that minimizes the cross-validated risk with respect to an
-    appropriate loss function. This notion of weighted combinations has
-    also been referred to as *stacked regression* (Breiman 1996) and
-    *stacked generalization* (Wolpert 1992).
+    that minimizes the cross-validated risk. This notion of weighted
+    combinations has also been referred to as *stacked regression*
+    (Breiman 1996) and *stacked generalization* (Wolpert 1992).
+
+Looking for long-form documentation or a walkthrough of the `sl3`
+package? Don’t worry\! Just browse [the chapter in our
+book](https://tlverse.org/tlverse-handbook/sl3.html).
 
 -----
 
@@ -113,7 +113,11 @@ cpp <- cpp %>%
 # use covariates of intest and the outcome to build a task object
 covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
             "sexn")
-task <- sl3_Task$new(cpp, covariates = covars, outcome = "haz")
+task <- sl3_Task$new(
+  data = cpp,
+  covariates = covars,
+  outcome = "haz"
+)
 
 # set up screeners and learners via built-in functions and pipelines
 slscreener <- Lrnr_pkg_SuperLearner_screener$new("screen.glmnet")
@@ -127,12 +131,12 @@ stack_fit <- learner_stack$train(task)
 preds <- stack_fit$predict()
 head(preds)
 #>    Lrnr_pkg_SuperLearner_SL.glmnet Lrnr_glm_TRUE
-#> 1:                      0.35767321    0.36298498
-#> 2:                      0.35767321    0.36298498
-#> 3:                      0.25185377    0.25993072
-#> 4:                      0.25185377    0.25993072
-#> 5:                      0.25185377    0.25993072
-#> 6:                      0.04220823    0.05680264
+#> 1:                       0.3525946    0.36298498
+#> 2:                       0.3525946    0.36298498
+#> 3:                       0.2442593    0.25993072
+#> 4:                       0.2442593    0.25993072
+#> 5:                       0.2442593    0.25993072
+#> 6:                       0.0269504    0.05680264
 #>    Pipeline(Lrnr_pkg_SuperLearner_screener_screen.glmnet->Lrnr_glm_TRUE)
 #> 1:                                                            0.36228209
 #> 2:                                                            0.36228209
@@ -141,6 +145,57 @@ head(preds)
 #> 5:                                                            0.25870995
 #> 6:                                                            0.05600958
 ```
+
+### Parallelization with `future`s
+
+While it’s straightforward to fit a stack of learners (as above), it’s
+easy to take advantage of `sl3`’s built-in parallelization support too.
+To do this, you can simply choose a `plan()` from the [`future`
+ecosystem](https://CRAN.R-project.org/package=future).
+
+``` r
+# let's load the future package and set 4 cores for parallelization
+library(future)
+plan(multicore, workers = 4L)
+
+# now, let's re-train our Stack in parallel
+stack_fit <- learner_stack$train(task)
+preds <- stack_fit$predict()
+```
+
+### Controlling the number of CV folds
+
+In the above examples, we fit stacks of learners, but didn’t create a
+Super Learner ensemble, which uses cross-validation (CV) to build the
+ensemble model. For the sake of computational expedience, we may be
+interested in lowering the number of CV folds (from 10). Let’s take a
+look at how to do both below.
+
+``` r
+# first, let's instantiate some more learners and create a Super Learner
+mean_learner <- Lrnr_mean$new()
+rf_learner <- Lrnr_ranger$new()
+sl <- Lrnr_sl$new(mean_learner, glm_learner, rf_learner)
+
+# CV folds are controlled in the sl3_Task object; we can lower the number of
+# folds simply by specifying this in creating the Task
+task <- sl3_Task$new(
+  data = cpp,
+  covariates = covars,
+  outcome = "haz",
+  folds = 5L
+)
+
+# now, let's fit the Super Learner with just 5-fold CV, then get predictions
+sl_fit <- sl$train(task)
+sl_preds <- sl_fit$predict()
+```
+
+The `folds` argument to `sl3_Task` supports both integers (for V-fold
+CV) and all of the CV schemes supported in the [`origami`
+package](https://CRAN.R-project.org/package=origami). To see the full
+list, query `?fold_funs` from within `R` or take a look at [`origami`’s
+online documentation](https://tlverse.org/origami/reference/).
 
 -----
 
@@ -188,6 +243,12 @@ cv
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 
 density
+
+</th>
+
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+
+h2o
 
 </th>
 
@@ -327,6 +388,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -361,13 +428,19 @@ Lrnr\_bartMachine
 
 <td style="text-align:left;">
 
-√
+x
 
 </td>
 
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -443,6 +516,106 @@ x
 
 <td style="text-align:left;">
 
+Lrnr\_bayesglm
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
 Lrnr\_bilstm
 
 </td>
@@ -462,6 +635,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -615,13 +794,19 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
 
 <td style="text-align:left;">
 
-x
+√
 
 </td>
 
@@ -719,6 +904,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+√
+
+</td>
+
 </tr>
 
 <tr>
@@ -750,6 +941,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -897,13 +1094,19 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
 
 <td style="text-align:left;">
 
-x
+√
 
 </td>
 
@@ -925,13 +1128,19 @@ Lrnr\_dbarts
 
 <td style="text-align:left;">
 
-√
+x
 
 </td>
 
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -1008,6 +1217,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_define\_interactions
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -1189,6 +1404,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
@@ -1283,6 +1504,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
@@ -1320,6 +1547,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -1471,6 +1704,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
@@ -1496,6 +1735,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -1583,13 +1828,19 @@ Lrnr\_gam
 
 <td style="text-align:left;">
 
-√
+x
 
 </td>
 
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -1753,6 +2004,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
@@ -1778,6 +2035,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -1901,6 +2164,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -1966,6 +2235,12 @@ Lrnr\_glmnet
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -2119,6 +2394,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -2141,19 +2422,25 @@ Lrnr\_gru\_keras
 
 <td style="text-align:left;">
 
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
+√
 
 </td>
 
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -2301,6 +2588,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -2354,6 +2647,12 @@ x
 <td style="text-align:left;">
 
 x
+
+</td>
+
+<td style="text-align:left;">
+
+√
 
 </td>
 
@@ -2453,6 +2752,12 @@ x
 
 <td style="text-align:left;">
 
+√
+
+</td>
+
+<td style="text-align:left;">
+
 x
 
 </td>
@@ -2530,6 +2835,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -2693,6 +3004,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
@@ -2718,6 +3035,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -2812,6 +3135,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -2975,25 +3304,31 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
 
 <td style="text-align:left;">
 
-Lrnr\_lstm
+Lrnr\_lightgbm
 
 </td>
 
 <td style="text-align:left;">
 
-x
+√
 
 </td>
 
 <td style="text-align:left;">
 
-x
+√
 
 </td>
 
@@ -3029,6 +3364,18 @@ x
 
 <td style="text-align:left;">
 
+√
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
 x
 
 </td>
@@ -3054,12 +3401,6 @@ x
 <td style="text-align:left;">
 
 √
-
-</td>
-
-<td style="text-align:left;">
-
-x
 
 </td>
 
@@ -3081,19 +3422,25 @@ Lrnr\_lstm\_keras
 
 <td style="text-align:left;">
 
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
+√
 
 </td>
 
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -3217,6 +3564,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -3282,6 +3635,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -3445,6 +3804,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
@@ -3470,6 +3835,12 @@ Lrnr\_nnet
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -3633,6 +4004,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
@@ -3658,6 +4035,12 @@ Lrnr\_optim
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -3787,6 +4170,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -3863,42 +4252,6 @@ x
 
 <td style="text-align:left;">
 
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
 x
 
 </td>
@@ -3912,6 +4265,48 @@ x
 <td style="text-align:left;">
 
 x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+√
 
 </td>
 
@@ -3999,13 +4394,19 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
 
 <td style="text-align:left;">
 
-x
+√
 
 </td>
 
@@ -4051,42 +4452,6 @@ x
 
 <td style="text-align:left;">
 
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
 x
 
 </td>
@@ -4100,6 +4465,48 @@ x
 <td style="text-align:left;">
 
 x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+x
+
+</td>
+
+<td style="text-align:left;">
+
+√
+
+</td>
+
+<td style="text-align:left;">
+
+√
 
 </td>
 
@@ -4128,6 +4535,12 @@ Lrnr\_polspline
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -4291,6 +4704,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
@@ -4316,6 +4735,12 @@ Lrnr\_randomForest
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -4410,6 +4835,12 @@ Lrnr\_ranger
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -4569,6 +5000,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -4598,6 +5035,12 @@ Lrnr\_rpart
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -4745,6 +5188,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -4768,6 +5217,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_screener\_augment
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -4862,6 +5317,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_screener\_coefs
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -5027,6 +5488,12 @@ x
 
 <td style="text-align:left;">
 
+√
+
+</td>
+
+<td style="text-align:left;">
+
 x
 
 </td>
@@ -5050,6 +5517,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_screener\_importance
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -5227,6 +5700,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -5256,6 +5735,12 @@ Lrnr\_solnp
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -5419,6 +5904,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
@@ -5513,6 +6004,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+√
+
+</td>
+
 </tr>
 
 <tr>
@@ -5520,6 +6017,12 @@ x
 <td style="text-align:left;">
 
 Lrnr\_subset\_covariates
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -5701,6 +6204,12 @@ x
 
 </td>
 
+<td style="text-align:left;">
+
+x
+
+</td>
+
 </tr>
 
 <tr>
@@ -5732,6 +6241,12 @@ x
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -5873,6 +6388,12 @@ x
 
 <td style="text-align:left;">
 
+x
+
+</td>
+
+<td style="text-align:left;">
+
 √
 
 </td>
@@ -5914,6 +6435,12 @@ Lrnr\_xgboost
 <td style="text-align:left;">
 
 √
+
+</td>
+
+<td style="text-align:left;">
+
+x
 
 </td>
 
@@ -6007,9 +6534,9 @@ prior to submitting a pull request.
 After using the `sl3` R package, please cite the following:
 
 ``` 
- @manual{coyle2021sl3,
+ @software{coyle2021sl3-rpkg,
       author = {Coyle, Jeremy R and Hejazi, Nima S and Malenica, Ivana and
-        Sofrygin, Oleg},
+        Phillips, Rachael V and Sofrygin, Oleg},
       title = {{sl3}: Modern Pipelines for Machine Learning and {Super
         Learning}},
       year = {2021},
@@ -6026,7 +6553,8 @@ After using the `sl3` R package, please cite the following:
 
 © 2017-2021 [Jeremy R. Coyle](https://github.com/jeremyrcoyle), [Nima S.
 Hejazi](https://nimahejazi.org), [Ivana
-Malenica](https://github.com/podTockom), [Oleg
+Malenica](https://github.com/podTockom), [Rachael V.
+Phillips](https://github.com/rachaelvp), [Oleg
 Sofrygin](https://github.com/osofr)
 
 The contents of this repository are distributed under the GPL-3 license.

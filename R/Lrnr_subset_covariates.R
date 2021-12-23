@@ -35,18 +35,15 @@ Lrnr_subset_covariates <- R6Class(
       super$initialize(...)
     }
   ),
-
   private = list(
     .train = function(task) {
       fit_object <- list()
       return(fit_object)
     },
-
     .predict = function(task = NULL) {
       # nothing to do here: we're relying on Lrnr_base to subset covariates
       return(task$X)
     },
-
     .chain = function(task = NULL) {
       # nothing to do here: we're relying on Lrnr_base to subset covariates
       return(task)

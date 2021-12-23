@@ -24,7 +24,6 @@ gen_data <- function(n = 1000, p = 4) {
 set.seed(1234)
 data <- gen_data(1000)
 
-
 Wnodes <- grep("^W", names(data), value = TRUE)
 Anode <- "A"
 task <- sl3_Task$new(data, covariates = Wnodes, outcome = Anode)
@@ -34,17 +33,18 @@ learners <- list(
   mean = make_learner(Lrnr_mean)
 )
 
-# define Super Learner
+# define Super Learner and predict without bounding
 binom_sl <- make_learner(Lrnr_sl, learners)
 sl_fit <- binom_sl$train(task)
 preds <- sl_fit$predict()
 
-lrnr_bound <- Lrnr_bound$new(bound = .1)
+# set up bounding learner and apply to SL in pipeline
+lrnr_bound <- Lrnr_bound$new(bound = 0.1)
 sl_pipeline_bounded <- make_learner(Pipeline, sl_fit, lrnr_bound)
 sl_fit_bounded <- sl_pipeline_bounded$train(task)
 bounded_preds <- sl_fit_bounded$predict()
 
-test_that("Lrnr_bound is bounding predictions", {
+test_that("Lrnr_bound is bounding predictions within given limits", {
   expect_gte(min(bounded_preds), 0.1)
   expect_lte(max(bounded_preds), 0.9)
 })
