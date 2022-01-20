@@ -92,15 +92,10 @@ Lrnr_glmtree <- R6Class(
         args$offset <- task$offset
       }
 
-      fit_object <- partykit::glmtree(formula = args$formula,
-                                      family = args$family,
-                                      data = args$data, 
-                                      weights = args$weights,
-                                      offset = offset,
-                                      alpha = args$alpha, 
-                                      maxdepth = args$maxdepth,
-                                      prune = args$prune)
-                                      
+      fit_object <- call_with_args(
+        partykit::glmtree, args, 
+        other_valid = names(formals(partykit::mob_control))
+      )
       return(fit_object)
     },
 
