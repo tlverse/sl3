@@ -3,7 +3,7 @@
 \docType{class}
 \name{Lrnr_glmtree}
 \alias{Lrnr_glmtree}
-\title{Learner for GLM tree.}
+\title{Generalized Linear Model Trees}
 \format{
 \code{\link{R6Class}} object.
 }
@@ -12,26 +12,42 @@ Learner object with methods for training and prediction. See
 \code{\link{Lrnr_base}} for documentation on learners.
 }
 \description{
-This learner uses \code{\link[glmtree]{glmtree}} from \code{partykit} to fit
-recursive partitioning and regression trees in a general linear model.
+This learner uses \code{\link[partykit]{glmtree}} from \pkg{partykit} to fit
+recursive partitioning and regression trees in a generalized linear model.
 }
 \section{Parameters}{
 
-\describe{
-\item{\code{model}}{If logical: keep a copy of the model frame in the
-result?
-}
-\item{\code{x}}{Whether to keep a copy of the x matrix in the result.
-}
-\item{\code{y}}{Whether to keep a copy of the dependent variable in the
-result.
-}
-\item{\code{...}}{ Other parameters to be passed directly to
-\code{\link[glmtree]{partykit}}. See its documentation for details.
-}
+\itemize{
+\item \code{formula}: An optional object of class \code{formula} (or one that
+can be coerced to that class), which a symbolic description of the
+generalized linear model to be fit. If not specified a main terms
+regression model will be supplied, with each covariate included as
+a term. Please consult \code{\link[partykit]{glmtree}} documentation
+for more information on its use of \code{formula}, and for a
+description on \code{formula} syntax consult the details of the
+\code{\link[stats]{glm}} documentation.
+\item \code{alpha = 0.05}: Numeric significance level with default of 0.05.
+Please consult \code{\link[partykit]{mob_control}} documentation
+for more information.
+\item \code{...}: Other parameters passed to
+\code{\link[partykit]{mob_control}} or \code{\link[partykit]{glmtree}}.
+See its documentation for details.
 }
 }
 
+\examples{
+data(cpp_imputed)
+# create task for prediction
+cpp_task <- sl3_Task$new(
+  data = cpp_imputed,
+  covariates = c("bmi", "parity", "mage", "sexn"),
+  outcome = "haz"
+)
+# initialization, training, and prediction with the defaults
+glmtree_lrnr <- Lrnr_glmtree$new()
+glmtree_fit <- glmtree_lrnr$train(cpp_task)
+glmtree_preds <- glmtree_fit$predict()
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},
