@@ -87,15 +87,9 @@ Lrnr_glmtree <- R6Class(
       # only add weights and offset arguments if specified in task
       if (task$has_node("weights")) {
         args$weights <- task$weights
-      }else{
-        args$weights <-NULL
-        
       }
-
       if (task$has_node("offset")) {
-        offset <- task$offset
-      }else{
-        offset <- NULL
+        args$offset <- task$offset
       }
 
       fit_object <- partykit::glmtree(formula = args$formula,
