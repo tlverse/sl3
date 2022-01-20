@@ -125,16 +125,13 @@ Lrnr_glmtree <- R6Class(
     },
 
     .predict = function(task = NULL) {
-      self$training_task
-      self$training_outcome_type
-      self$fit_object
-      
-      if (task$has_node("offset")) {
-        predictions <- predict(self$fit_object, task$data) + task$offset
-      }else{
-        predictions <- predict(self$fit_object, task$data) 
-      }
-     
+      # get predictions
+      predictions <- stats::predict(
+        private$.fit_object,
+        newdata = task$data[,-task$nodes$outcome, with = FALSE],
+        type = "response"
+      )
+      predictions <- as.numeric(predictions)
       return(predictions)
     }
   )
