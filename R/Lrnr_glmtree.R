@@ -125,8 +125,7 @@ Lrnr_glmtree <- R6Class(
       # get predictions
       predictions <- stats::predict(
         private$.fit_object,
-        newdata = task$data[,-task$nodes$outcome, with = FALSE],
-        type = "response"
+        newdata = task$data
       )
       predictions <- as.numeric(predictions)
       return(predictions)
