@@ -90,7 +90,8 @@ Suggests:
     haldensify (>= 0.1.5),
     mgcv,
     hts,
-    GA
+    GA,
+    partykit
 Remotes:
     github::tlverse/origami,
     github::tlverse/hal9001@devel,
