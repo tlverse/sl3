@@ -124,7 +124,7 @@ Lrnr_glmtree <- R6Class(
       return(fit_object)
     },
 
-    .predict = function(task = NULL) {
+    .predict = function(task) {
       # get predictions
       predictions <- stats::predict(
         private$.fit_object,
