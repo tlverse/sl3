@@ -70,43 +70,21 @@ Lrnr_glmtree <- R6Class(
     }
   ),
   private = list(
-    # list properties your learner supports here.
-    # Use sl3_list_properties() for a list of options
     .properties = c("continuous", "binomial", "weights", "offset"),
-
-    # list any packages required for your learner here.
+    
     .required_packages = c("partykit"),
 
-    # .train takes task data and returns a fit object that can be used to generate predictions
     .train = function(task) {
-      # generate an argument list from the parameters that were
-      # captured when your learner was initialized.
-      # this allows users to pass arguments directly to your ml function
+    
       args <- self$params
 
-      # get outcome variable type
-      # preferring learner$params$outcome_type first, then task$outcome_type
       outcome_type <- self$get_outcome_type(task)
-      if (is.null(args$family)) {
-        args$family <- outcome_type$glm_family(return_object = TRUE)
-      }
-      # family_name <- args$family$family
-      # linkinv_fun <- args$family$linkinv
-      # link_fun <- args$family$linkfun
-      # should pass something on to your learner indicating outcome_type
-      # e.g. family or objective
-
-      # add task data to the argument list
-      # what these arguments are called depends on the learner you are wrapping
-      # args$x <- as.matrix(task$X_intercept)
-      # args$y <- outcome_type$format(task$Y)
+      args$family <- outcome_type$glm_family(return_object = TRUE)
 
       args$formula <- as.formula(paste(task$nodes$outcome, paste(task$nodes$covariates, collapse = "+"), sep = "~"))
       args$data <- task$data
-      # args$formula <- paste(task$Y, task$X, sep = "~" )
-
-      # only add arguments on weights and offset
-      # if those were specified when the task was generated
+      
+      # only add weights and offset arguments if specified in task
       if (task$has_node("weights")) {
         args$weights <- task$weights
       }else{
@@ -120,9 +98,6 @@ Lrnr_glmtree <- R6Class(
         offset <- NULL
       }
 
-      # call a function that fits your algorithm
-      # with the argument list you constructed
-
       fit_object <- partykit::glmtree(formula = args$formula,
                                       family = args$family,
                                       data = args$data, 
@@ -132,15 +107,9 @@ Lrnr_glmtree <- R6Class(
                                       maxdepth = args$maxdepth,
                                       prune = args$prune)
                                       
-                                      
-
-      # return the fit object, which will be stored
-      # in a learner object and returned from the call
-      # to learner$predict
       return(fit_object)
     },
 
-    # .predict takes a task and returns predictions from that task
     .predict = function(task = NULL) {
       self$training_task
       self$training_outcome_type
