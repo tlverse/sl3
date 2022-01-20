@@ -81,8 +81,33 @@ Lrnr_glmtree <- R6Class(
       outcome_type <- self$get_outcome_type(task)
       args$family <- outcome_type$glm_family(return_object = TRUE)
 
-      args$formula <- as.formula(paste(task$nodes$outcome, paste(task$nodes$covariates, collapse = "+"), sep = "~"))
       args$data <- task$data
+      
+      # check formula corresponds to task, if it's specified 
+      if (!is.null(args$formula)) {
+        form <- args$formula
+        if (class(form) != "formula") form <- as.formula(form)
+        
+        # check response variable corresponds to outcome in task, if provided
+        if (attr(terms(form), "response")) {
+          if (!all.vars(form)[1] == task$nodes$outcome) {
+            stop(paste0(
+              "Outcome variable in formula ", all.vars(form)[1],
+              " does not match the task's outcome ", task$nodes$outcome
+            ))
+          }
+          formula_covars <- all.vars(form)[-1]
+        } else {
+          formula_covars <- all.vars(form)
+        }
+        # check that regressors in the formula are contained in the task
+        if (!all(formula_covars %in% task$nodes$covariates)) {
+          stop("Regressors in the formula are not covariates in task")
+        }
+      } else {
+        # create formula if it's not specified
+        args$formula <- as.formula(paste(task$nodes$outcome, paste(task$nodes$covariates, collapse = "+"), sep = "~"))
+      }
       
       # only add weights and offset arguments if specified in task
       if (task$has_node("weights")) {
