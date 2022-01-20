@@ -5,7 +5,9 @@
 #'
 #' @docType class
 #' @import sl3
+#'
 #' @importFrom R6 R6Class
+#' @importFrom stats predict
 #'
 #' @export
 #'
@@ -50,15 +52,10 @@
 Lrnr_glmtree <- R6Class(
   classname = "Lrnr_glmtree", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
-  # Above, you should change Lrnr_template (in both the object name and the classname argument)
-  # to a name that indicates what your learner does
   public = list(
-    # you can define default parameter values here
-    # if possible, your learner should define defaults for all required parameters
     initialize = function(formula = NULL,
                           maxdepth = 10,
                           ...) {
-      # this captures all parameters to initialize and saves them as self$params
       params <- args_to_list()
       super$initialize(params = params)
     },
