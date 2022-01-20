@@ -31,8 +31,9 @@
 #'       Please consult \code{\link[partykit]{mob_control}} documentation 
 #'       for more information.
 #'   - \code{...}: Other parameters passed to 
-#'       \code{\link[partykit]{mob_control}} or \code{\link[partykit]{glmtree}}.
-#'       See its documentation for details.
+#'       \code{\link[partykit]{mob_control}} or \code{\link[partykit]{glmtree}}
+#'       that are not already specified in the \code{\link{sl3_Task}}. See its 
+#'       documentation for details.
 #'       
 #' @examples
 #' data(cpp_imputed)
@@ -61,6 +62,9 @@ Lrnr_glmtree <- R6Class(
       params <- args_to_list()
       super$initialize(params = params)
     },
+    # for learners that take formula as an argument, the function 
+    # process_formula that's defined in Lrnr_base needs to be redefined in
+    # the learner like below
     process_formula = function(task) {
       return(task)
     }
