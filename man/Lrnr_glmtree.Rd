@@ -30,8 +30,9 @@ description on \code{formula} syntax consult the details of the
 Please consult \code{\link[partykit]{mob_control}} documentation
 for more information.
 \item \code{...}: Other parameters passed to
-\code{\link[partykit]{mob_control}} or \code{\link[partykit]{glmtree}}.
-See its documentation for details.
+\code{\link[partykit]{mob_control}} or \code{\link[partykit]{glmtree}}
+that are not already specified in the \code{\link{sl3_Task}}. See its
+documentation for details.
 }
 }
 

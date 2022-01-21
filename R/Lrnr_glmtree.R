@@ -21,22 +21,22 @@
 #' @family Learners
 #'
 #' @section Parameters:
-#'   - \code{formula}: An optional object of class \code{formula} (or one that 
-#'       can be coerced to that class), which a symbolic description of the 
-#'       generalized linear model to be fit. If not specified a main terms 
-#'       regression model will be supplied, with each covariate included as 
-#'       a term. Please consult \code{\link[partykit]{glmtree}} documentation 
-#'       for more information on its use of \code{formula}, and for a 
-#'       description on \code{formula} syntax consult the details of the 
+#'   - \code{formula}: An optional object of class \code{formula} (or one that
+#'       can be coerced to that class), which a symbolic description of the
+#'       generalized linear model to be fit. If not specified a main terms
+#'       regression model will be supplied, with each covariate included as
+#'       a term. Please consult \code{\link[partykit]{glmtree}} documentation
+#'       for more information on its use of \code{formula}, and for a
+#'       description on \code{formula} syntax consult the details of the
 #'       \code{\link[stats]{glm}} documentation.
-#'   - \code{alpha = 0.05}: Numeric significance level with default of 0.05. 
-#'       Please consult \code{\link[partykit]{mob_control}} documentation 
+#'   - \code{alpha = 0.05}: Numeric significance level with default of 0.05.
+#'       Please consult \code{\link[partykit]{mob_control}} documentation
 #'       for more information.
-#'   - \code{...}: Other parameters passed to 
+#'   - \code{...}: Other parameters passed to
 #'       \code{\link[partykit]{mob_control}} or \code{\link[partykit]{glmtree}}
-#'       that are not already specified in the \code{\link{sl3_Task}}. See its 
+#'       that are not already specified in the \code{\link{sl3_Task}}. See its
 #'       documentation for details.
-#'       
+#'
 #' @examples
 #' data(cpp_imputed)
 #' # create task for prediction
@@ -59,7 +59,7 @@ Lrnr_glmtree <- R6Class(
       params <- args_to_list()
       super$initialize(params = params)
     },
-    # for learners that take formula as an argument, the function 
+    # for learners that take formula as an argument, the function
     # process_formula that's defined in Lrnr_base needs to be redefined in
     # the learner like below
     process_formula = function(task) {
@@ -68,23 +68,22 @@ Lrnr_glmtree <- R6Class(
   ),
   private = list(
     .properties = c("continuous", "binomial", "weights", "offset"),
-    
+
     .required_packages = c("partykit"),
 
     .train = function(task) {
-    
       args <- self$params
 
       outcome_type <- self$get_outcome_type(task)
       args$family <- outcome_type$glm_family(return_object = TRUE)
 
       args$data <- task$data
-      
-      # check formula corresponds to task, if it's specified 
+
+      # check formula corresponds to task, if it's specified
       if (!is.null(args$formula)) {
         form <- args$formula
         if (class(form) != "formula") form <- as.formula(form)
-        
+
         # check response variable corresponds to outcome in task, if provided
         if (attr(terms(form), "response")) {
           if (!all.vars(form)[1] == task$nodes$outcome) {
@@ -105,7 +104,7 @@ Lrnr_glmtree <- R6Class(
         # create formula if it's not specified
         args$formula <- as.formula(paste(task$nodes$outcome, paste(task$nodes$covariates, collapse = "+"), sep = "~"))
       }
-      
+
       # only add weights and offset arguments if specified in task
       if (task$has_node("weights")) {
         args$weights <- task$weights
@@ -115,7 +114,7 @@ Lrnr_glmtree <- R6Class(
       }
 
       fit_object <- call_with_args(
-        partykit::glmtree, args, 
+        partykit::glmtree, args,
         other_valid = names(formals(partykit::mob_control))
       )
       return(fit_object)
