@@ -1,14 +1,16 @@
 library(partykit)
-context("test-Lrnr_glmtree.R -- General testing for GlMtree")
+context("test-Lrnr_glmtree.R -- General testing for GLMtree")
 
 # define test dataset
 data(mtcars)
-task <- sl3_Task$new(mtcars, covariates = c(
-  "cyl", "disp", "hp", "drat", "wt", "qsec",
-  "vs", "am", "gear", "carb"
-), outcome = "mpg")
 
 test_that("Lrnr_glmtree continuous outcome preds match those from glmtree", {
+  
+  task <- sl3_Task$new(mtcars, covariates = c(
+    "cyl", "disp", "hp", "drat", "wt", "qsec",
+    "vs", "am", "gear", "carb"
+  ), outcome = "mpg")
+  
   ## instantiate Lrnr_glmtree, train on task, and predict on task
   lrnr_glmtree <- Lrnr_glmtree$new()
   fit_lrnr_glmtree <- lrnr_glmtree$train(task)
@@ -19,7 +21,27 @@ test_that("Lrnr_glmtree continuous outcome preds match those from glmtree", {
   prd_glmtree <- predict(fit_glmtree, newdata = task$data)
 
   ## test equivalence of prediction from Lrnr_glmtree and glmtree::glmtree
-  expect_equal(prd_lrnr_glmtree, prd_glmtree)
+  expect_equal(prd_lrnr_glmtree, as.numeric(prd_glmtree))
+})
+
+test_that("Lrnr_glmtree binary outcome preds match those from glmtree", {
+  
+  task <- sl3_Task$new(mtcars, covariates = c(
+    "cyl", "disp", "hp", "drat", "wt", "qsec",
+    "mpg", "am", "gear", "carb"
+  ), outcome = "vs")
+  
+  ## instantiate Lrnr_glmtree, train on task, and predict on task
+  lrnr_glmtree <- Lrnr_glmtree$new()
+  fit_lrnr_glmtree <- lrnr_glmtree$train(task)
+  prd_lrnr_glmtree <- fit_lrnr_glmtree$predict()
+  
+  ## fit glmtree using the data from the task
+  fit_glmtree <- glmtree(vs ~ ., data = task$data)
+  prd_glmtree <- predict(fit_glmtree, newdata = task$data)
+  
+  ## test equivalence of prediction from Lrnr_glmtree and glmtree::glmtree
+  expect_equal(prd_lrnr_glmtree, as.numeric(prd_glmtree))
 })
 
 test_that("Lrnr_glmtree includes offset correctly", {
@@ -29,31 +51,47 @@ test_that("Lrnr_glmtree includes offset correctly", {
                        outcome = "mpg",
                        offset = "drat")
   
+  ## instantiate Lrnr_glmtree, train on task, and predict on task
+  lrnr_glmtree <- Lrnr_glmtree$new(alpha = 0.9, prune = "AIC")
+  fit_lrnr_glmtree <- lrnr_glmtree$train(task)
+  prd_lrnr_glmtree <- suppressWarnings(fit_lrnr_glmtree$predict())
+  
+  # fit glmtree with same specification as sl3
+  # we need to set max_depth=10, since that was set as the default in 
+  # Lrnr_glmtree and it is different from the partykit::glmtree default of Inf
+  offset <- task$data$drat
+  d <- task$data
+  fit_glmtree <- do.call(partykit::glmtree, list(
+    formula = as.formula(mpg ~ disp + hp + wt), 
+    offset = offset, data = d, 
+    alpha = 0.9, prune = "AIC", maxdepth = 10
+  ))
+  prd_glmtree <- suppressWarnings(predict(fit_glmtree, newdata = d))
+  
+  ## test equivalence of prediction from Lrnr_glmtree and partykit::glmtree
+  expect_equal(prd_lrnr_glmtree, as.numeric(prd_glmtree))
+})
+
+test_that("Lrnr_glmtree errors when covariates in formula are misspecified", {
+  
+  task <- sl3_Task$new(mtcars, 
+                       covariates = c("disp", "hp",  "wt"), 
+                       outcome = "mpg",
+                       offset = "drat")
   
   ## instantiate Lrnr_glmtree, train on task, and predict on task
-  lrnr_glmtree_1 <- Lrnr_glmtree$new(alpha = 0.9)
-  lrnr_glmtree_2 <- Lrnr_glmtree$new(alpha = 0.9, prune = "AIC")
-  lrnr_glmtree_3 <- Lrnr_glmtree$new(alpha = 0.9, prune = "AIC", maxdepth = 4)
+  lrnr_glmtree <- Lrnr_glmtree$new(formula = "mpg ~ drat + disp")
+  expect_error(lrnr_glmtree$train(task))
+})
+
+test_that("Lrnr_glmtree errors when outcome in formula is misspecified", {
   
-  learners <- c( lrnr_glmtree_1, lrnr_glmtree_2, lrnr_glmtree_3)
-  discrete_sl_metalrn <- Lrnr_cv_selector$new()
+  task <- sl3_Task$new(mtcars, 
+                       covariates = c("disp", "hp",  "wt"), 
+                       outcome = "mpg",
+                       offset = "drat")
   
-  tree_stack <- make_learner(Stack, learners)
-  
-  discrete_tree_sl <- Lrnr_sl$new(
-    learners = tree_stack,
-    metalearner = discrete_sl_metalrn
-  )
-  
-  fit_lrnr_glmtree <- discrete_tree_sl$train(task)
-  prd_lrnr_glmtree <- fit_lrnr_glmtree$predict()
-  
-  formula <- as.formula(mpg ~ disp + hp + wt)
-  drat <- task$data$drat
-  ## fit glmtree using the data from the task
-  fit_glmtree <- glmtree(formula, offset = drat, data = task$data)
-  prd_glmtree <- predict(fit_glmtree, newdata = task$data)
-  
-  ## test equivalence of prediction from Lrnr_glmtree and glmtree::glmtree
-  expect_equal(prd_lrnr_glmtree, as.vector(prd_glmtree), tolerance = 0.01)
+  ## instantiate Lrnr_glmtree, train on task, and predict on task
+  lrnr_glmtree <- Lrnr_glmtree$new(formula = "hp ~ wt + disp")
+  expect_error(lrnr_glmtree$train(task))
 })
