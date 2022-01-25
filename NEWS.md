@@ -1,3 +1,7 @@
+# sl3 1.4.5
+* Added `Lrnr_glmtree`, which uses the `partykit` R package to fit recursive
+  partitioning and regression trees in a generalized linear model.
+  
 # sl3 1.4.4
 * Updates to `Lrnr_nnls` to support binary outcomes, including support for
   convexity of the resultant model fit and warnings on prediction quality.
