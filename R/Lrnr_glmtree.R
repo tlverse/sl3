@@ -29,9 +29,6 @@
 #'       for more information on its use of \code{formula}, and for a
 #'       description on \code{formula} syntax consult the details of the
 #'       \code{\link[stats]{glm}} documentation.
-#'   - \code{alpha = 0.05}: Numeric significance level with default of 0.05.
-#'       Please consult \code{\link[partykit]{mob_control}} documentation
-#'       for more information.
 #'   - \code{...}: Other parameters passed to
 #'       \code{\link[partykit]{mob_control}} or \code{\link[partykit]{glmtree}}
 #'       that are not already specified in the \code{\link{sl3_Task}}. See its
@@ -82,6 +79,10 @@ Lrnr_glmtree <- R6Class(
       if (!is.null(args$formula)) {
         form <- args$formula
         if (class(form) != "formula") form <- as.formula(form)
+        
+        if (task$has_node("offset") && is.null(attr(terms(form), "offset"))) {
+          stop("Task has an offset; this needs to be specified as another term in the user-supplied formula")
+        }
 
         # check response variable corresponds to outcome in task, if provided
         if (attr(terms(form), "response")) {
