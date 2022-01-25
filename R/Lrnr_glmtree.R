@@ -101,16 +101,20 @@ Lrnr_glmtree <- R6Class(
           stop("Regressors in the formula are not covariates in task")
         }
       } else {
+        
+        if (task$has_node("offset")) {
+          args$formula <- as.formula(paste(paste(task$nodes$outcome, paste("offset", "(",task$nodes$offset,")", sep = ""), sep = "~"), paste(task$nodes$covariates, collapse = "+"), sep = "|"))
+          }else{
         # create formula if it's not specified
-        args$formula <- as.formula(paste(task$nodes$outcome, paste(task$nodes$covariates, collapse = "+"), sep = "~"))
+            args$formula <- as.formula(paste(task$nodes$outcome, paste(task$nodes$covariates, collapse = "+"), sep = "~"))
+            
+            }
+        
       }
 
       # only add weights and offset arguments if specified in task
       if (task$has_node("weights")) {
         args$weights <- task$weights
-      }
-      if (task$has_node("offset")) {
-        args$offset <- task$offset
       }
 
       fit_object <- call_with_args(
