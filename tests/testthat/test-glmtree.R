@@ -57,12 +57,10 @@ test_that("Lrnr_glmtree includes offset correctly", {
   # fit glmtree with same specification as sl3
   # we need to set max_depth=10, since that was set as the default in
   # Lrnr_glmtree and it is different from the partykit::glmtree default of Inf
-  offset <- task$data$drat
   d <- task$data
   fit_glmtree <- do.call(partykit::glmtree, list(
-    formula = as.formula(mpg ~ disp + hp + wt),
-    offset = offset, data = d,
-    alpha = 0.9, prune = "AIC", maxdepth = 10
+    formula = as.formula(mpg ~ offset(drat) | disp + hp + wt),  data = d,
+    alpha = 0.9, prune = "AIC"
   ))
   prd_glmtree <- suppressWarnings(predict(fit_glmtree, newdata = d))
 
