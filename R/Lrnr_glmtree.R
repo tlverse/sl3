@@ -54,7 +54,6 @@ Lrnr_glmtree <- R6Class(
   portable = TRUE, class = TRUE,
   public = list(
     initialize = function(formula = NULL,
-                          maxdepth = 10,
                           ...) {
       params <- args_to_list()
       super$initialize(params = params)
