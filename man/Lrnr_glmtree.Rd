@@ -26,9 +26,6 @@ a term. Please consult \code{\link[partykit]{glmtree}} documentation
 for more information on its use of \code{formula}, and for a
 description on \code{formula} syntax consult the details of the
 \code{\link[stats]{glm}} documentation.
-\item \code{alpha = 0.05}: Numeric significance level with default of 0.05.
-Please consult \code{\link[partykit]{mob_control}} documentation
-for more information.
 \item \code{...}: Other parameters passed to
 \code{\link[partykit]{mob_control}} or \code{\link[partykit]{glmtree}}
 that are not already specified in the \code{\link{sl3_Task}}. See its
@@ -59,7 +56,6 @@ Other Learners:
 \code{\link{Lrnr_bayesglm}},
 \code{\link{Lrnr_bilstm}},
 \code{\link{Lrnr_caret}},
-\code{\link{Lrnr_ctree}},
 \code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_cv}},
 \code{\link{Lrnr_dbarts}},
