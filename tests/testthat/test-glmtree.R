@@ -57,7 +57,7 @@ test_that("Lrnr_glmtree includes offset correctly", {
   # fit glmtree with same specification as sl3
   d <- task$data
   fit_glmtree <- partykit::glmtree(
-    formula = as.formula(mpg ~ offset(drat) | disp + hp + wt),  data = d,
+    formula = as.formula(mpg ~ offset(drat) | disp + hp + wt), data = d,
     alpha = 0.9, prune = "AIC"
   )
   prd_glmtree <- predict(fit_glmtree, newdata = d)
@@ -92,11 +92,11 @@ test_that("Lrnr_glmtree errors when outcome in formula is misspecified", {
 
 test_that("Lrnr_glmtree errors when offset not in user-specified formula", {
   task <- sl3_Task$new(mtcars,
-                       covariates = c("disp", "hp", "wt"),
-                       outcome = "mpg",
-                       offset = "drat"
+    covariates = c("disp", "hp", "wt"),
+    outcome = "mpg",
+    offset = "drat"
   )
-  
+
   ## instantiate Lrnr_glmtree, train on task, and predict on task
   lrnr_glmtree <- Lrnr_glmtree$new(formula = "mpg ~ wt + disp + hp")
   expect_error(lrnr_glmtree$train(task))

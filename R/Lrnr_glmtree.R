@@ -4,7 +4,6 @@
 #' recursive partitioning and regression trees in a generalized linear model.
 #'
 #' @docType class
-#' @import sl3
 #'
 #' @importFrom R6 R6Class
 #' @importFrom stats predict
@@ -64,9 +63,7 @@ Lrnr_glmtree <- R6Class(
   ),
   private = list(
     .properties = c("continuous", "binomial", "weights", "offset"),
-
     .required_packages = c("partykit"),
-
     .train = function(task) {
       args <- self$params
 
@@ -79,7 +76,7 @@ Lrnr_glmtree <- R6Class(
       if (!is.null(args$formula)) {
         form <- args$formula
         if (class(form) != "formula") form <- as.formula(form)
-        
+
         if (task$has_node("offset") && is.null(attr(terms(form), "offset"))) {
           stop("Task has an offset; this needs to be specified as another term in the user-supplied formula")
         }
@@ -101,15 +98,12 @@ Lrnr_glmtree <- R6Class(
           stop("Regressors in the formula are not covariates in task")
         }
       } else {
-        
         if (task$has_node("offset")) {
-          args$formula <- as.formula(paste(paste(task$nodes$outcome, paste("offset", "(",task$nodes$offset,")", sep = ""), sep = "~"), paste(task$nodes$covariates, collapse = "+"), sep = "|"))
-          }else{
-        # create formula if it's not specified
-            args$formula <- as.formula(paste(task$nodes$outcome, paste(task$nodes$covariates, collapse = "+"), sep = "~"))
-            
-            }
-        
+          args$formula <- as.formula(paste(paste(task$nodes$outcome, paste("offset", "(", task$nodes$offset, ")", sep = ""), sep = "~"), paste(task$nodes$covariates, collapse = "+"), sep = "|"))
+        } else {
+          # create formula if it's not specified
+          args$formula <- as.formula(paste(task$nodes$outcome, paste(task$nodes$covariates, collapse = "+"), sep = "~"))
+        }
       }
 
       # only add weights and offset arguments if specified in task
@@ -123,7 +117,6 @@ Lrnr_glmtree <- R6Class(
       )
       return(fit_object)
     },
-
     .predict = function(task) {
       # get predictions
       predictions <- stats::predict(
