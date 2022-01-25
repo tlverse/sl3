@@ -6,7 +6,7 @@ resource_files:
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Defining New sl3 Learners}
+  %\VignetteIndexEntry{Defining New `sl3` Learners}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
