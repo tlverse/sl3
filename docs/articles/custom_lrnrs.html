@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sl3</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.5</span>
       </span>
     </div>
 
@@ -99,7 +99,7 @@
       <h1 data-toc-skip>Defining New <code>sl3</code> Learners</h1>
                         <h4 data-toc-skip class="author">Jeremy Coyle, Nima Hejazi, Ivana Malenica, Oleg Sofrygin</h4>
             
-            <h4 data-toc-skip class="date">2021-12-23</h4>
+            <h4 data-toc-skip class="date">2022-01-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tlverse/sl3/blob/HEAD/vignettes/custom_lrnrs.Rmd" class="external-link"><code>vignettes/custom_lrnrs.Rmd</code></a></small>
       <div class="hidden name"><code>custom_lrnrs.Rmd</code></div>
@@ -323,7 +323,7 @@
 <p>If, like these learners, your learner depends on sub-learners, you have two options:</p>
 <ol style="list-style-type: decimal">
 <li>Don’t worry about parallelizing sub-learners. Simply implement <code>private$.train</code> as discussed above, being sure to call <code>sublearner$base_train</code> and not <code>sublearner$train</code>, to avoid nesting calls to <code>delayed</code>, which may result in sub-optimal performance.</li>
-<li>Implement <code>private$.train_sublearners(task)</code> and <code>private$.train(task, trained_sublearners)</code>, to parallelize sub-learners using <code>delayed</code>. We suggest reviewing the implementations of the <code>Stack</code>, <code>Pipeline</code>, <code>Lrnr_cv</code> and <code>Lrnr_sl</code> to get a better understanding of how to implement parallelized sub-learners.</li>
+<li>Implement <code>private$.train_sublearners(task)</code> and <code>private$.train(task,    trained_sublearners)</code>, to parallelize sub-learners using <code>delayed</code>. We suggest reviewing the implementations of the <code>Stack</code>, <code>Pipeline</code>, <code>Lrnr_cv</code> and <code>Lrnr_sl</code> to get a better understanding of how to implement parallelized sub-learners.</li>
 </ol>
 <p>In either case, you should be careful to call <code>sublearner$base_predict</code> and <code>sublearner$base_chain</code>, instead of <code>sublearner$predict</code> and <code>sublearner$chain</code>, except in the context of the <code>private$.train_sublearners</code> function, where you should use <code>delayed_learner_fit_predict</code> and <code>delayed_learner_fit_chain</code>.</p>
 </div>
@@ -359,7 +359,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>

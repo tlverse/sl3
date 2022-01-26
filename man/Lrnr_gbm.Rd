@@ -85,6 +85,7 @@ Other Learners:
 \code{\link{Lrnr_ga}},
 \code{\link{Lrnr_glm_fast}},
 \code{\link{Lrnr_glmnet}},
+\code{\link{Lrnr_glmtree}},
 \code{\link{Lrnr_glm}},
 \code{\link{Lrnr_grf}},
 \code{\link{Lrnr_gru_keras}},

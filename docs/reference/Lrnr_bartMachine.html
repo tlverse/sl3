@@ -26,7 +26,7 @@ and the function bartMachine."><!-- mathjax --><script src="https://cdnjs.cloudf
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sl3</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.5</span>
       </span>
     </div>
 
@@ -83,7 +83,7 @@ and the function bartMachine."><!-- mathjax --><script src="https://cdnjs.cloudf
     <p>This learner implements Bayesian Additive Regression Trees via
 <span class="pkg">bartMachine</span> (described in Kapelner and Bleich (2016)
 )
-and the function <code><a href="https://rdrr.io/pkg/bartMachine/man/bartMachine.html" class="external-link">bartMachine</a></code>.</p>
+and the function <code>bartMachine</code>.</p>
     </div>
 
 
@@ -102,7 +102,7 @@ functionality, see the complete documentation of <code><a href="Lrnr_base.html">
     <h2>Parameters</h2>
     
 
-<ul><li><p><code>...</code>: Parameters passed to <code><a href="https://rdrr.io/pkg/bartMachine/man/bartMachine.html" class="external-link">bartMachine</a></code>.
+<ul><li><p><code>...</code>: Parameters passed to <code>bartMachine</code>.
 See it's documentation for details.</p></li>
 </ul></div>
     <div id="references">
@@ -137,6 +137,7 @@ doi: <a href="https://doi.org/10.18637/jss.v070.i04" class="external-link">10.18
 <code><a href="Lrnr_gbm.html">Lrnr_gbm</a></code>,
 <code><a href="Lrnr_glm_fast.html">Lrnr_glm_fast</a></code>,
 <code><a href="Lrnr_glmnet.html">Lrnr_glmnet</a></code>,
+<code><a href="Lrnr_glmtree.html">Lrnr_glmtree</a></code>,
 <code><a href="Lrnr_glm.html">Lrnr_glm</a></code>,
 <code><a href="Lrnr_grf.html">Lrnr_grf</a></code>,
 <code><a href="Lrnr_gru_keras.html">Lrnr_gru_keras</a></code>,
@@ -197,8 +198,11 @@ doi: <a href="https://doi.org/10.18637/jss.v070.i04" class="external-link">10.18
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Note that Xmx parameter's upper limit is system dependent </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> (e.g., 32bit Windows will fail to work with anything much largerthan 1500m), </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> so ideally this option should be specified by the user.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in requirePackages(private$.required_packages, why = class(self)[1],     default.method = "load"):</span> For Lrnr_bartMachine please install the following packages: rJava,bartMachine</span>
 <span class="r-in"><span class="va">bartMachine_fit</span> <span class="op">&lt;-</span> <span class="va">bartMachine_learner</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'bartMachine_learner' not found</span>
 <span class="r-in"><span class="va">preds</span> <span class="op">&lt;-</span> <span class="va">bartMachine_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'bartMachine_fit' not found</span>
 </code></pre></div>
     </div>
   </div>
@@ -213,7 +217,7 @@ doi: <a href="https://doi.org/10.18637/jss.v070.i04" class="external-link">10.18
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer></div>

@@ -26,7 +26,7 @@ models are fit using ugarchfit."><!-- mathjax --><script src="https://cdnjs.clou
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sl3</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.5</span>
       </span>
     </div>
 
@@ -83,7 +83,7 @@ models are fit using ugarchfit."><!-- mathjax --><script src="https://cdnjs.clou
     <p>This learner supports autoregressive fractionally integrated
 moving average  and various flavors of generalized autoregressive
 conditional heteroskedasticity models for univariate time-series. All the
-models are fit using <code><a href="https://rdrr.io/pkg/rugarch/man/ugarchfit-methods.html" class="external-link">ugarchfit</a></code>.</p>
+models are fit using <code>ugarchfit</code>.</p>
     </div>
 
 
@@ -104,7 +104,7 @@ functionality, see the complete documentation of <code><a href="Lrnr_base.html">
 
 <ul><li><p><code>variance.model</code>: List containing variance model specification.
 This includes model, GARCH order, submodel, external regressors and
-variance tageting. Refer to <code><a href="https://rdrr.io/pkg/rugarch/man/ugarchspec-methods.html" class="external-link">ugarchspec</a></code> for more
+variance tageting. Refer to <code>ugarchspec</code> for more
 information.</p></li>
 <li><p><code>mean.model</code>: List containing the mean model specification. This
 includes ARMA model, whether the mean should be included, and external
@@ -115,7 +115,7 @@ innovations.</p></li>
 routine.</p></li>
 <li><p><code>fixed.pars</code>:List of parameters which are to be kept fixed during
 the optimization routine.</p></li>
-<li><p><code>...</code>: Other parameters passed to <code><a href="https://rdrr.io/pkg/rugarch/man/ugarchfit-methods.html" class="external-link">ugarchfit</a></code>.</p></li>
+<li><p><code>...</code>: Other parameters passed to <code>ugarchfit</code>.</p></li>
 </ul></div>
     <div id="see-also">
     <h2>See also</h2>
@@ -142,6 +142,7 @@ the optimization routine.</p></li>
 <code><a href="Lrnr_gbm.html">Lrnr_gbm</a></code>,
 <code><a href="Lrnr_glm_fast.html">Lrnr_glm_fast</a></code>,
 <code><a href="Lrnr_glmnet.html">Lrnr_glmnet</a></code>,
+<code><a href="Lrnr_glmtree.html">Lrnr_glmtree</a></code>,
 <code><a href="Lrnr_glm.html">Lrnr_glm</a></code>,
 <code><a href="Lrnr_grf.html">Lrnr_grf</a></code>,
 <code><a href="Lrnr_gru_keras.html">Lrnr_gru_keras</a></code>,
@@ -188,7 +189,7 @@ the optimization routine.</p></li>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tlverse.org/origami" class="external-link">origami</a></span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tlverse.org/origami/" class="external-link">origami</a></span><span class="op">)</span></span>
 <span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">bsds</span><span class="op">)</span></span>
 <span class="r-in"></span>
@@ -230,7 +231,7 @@ the optimization routine.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer></div>
