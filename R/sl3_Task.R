@@ -1,8 +1,9 @@
 #' Define a Machine Learning Task
 #'
-#' An increasingly less thin wrapper around a \code{data.table} containing the
-#' data. Contains metadata about the particular machine learning problem,
-#' including which variables are to be used as covariates and outcomes.
+#' An increasingly thick wrapper around a \code{\link[data.table]{data.table}}
+#' containing the data for a prediction task. This contains metadata about the
+#' particular machine learning problem, including which variables are to be
+#' used as covariates and outcomes.
 #'
 #' @docType class
 #'
@@ -11,7 +12,7 @@
 #' @importFrom origami make_folds
 #' @importFrom uuid UUIDgenerate
 #' @importFrom digest digest
-#' @importFrom data.table data.table setcolorder setDT setnames ":="
+#' @importFrom data.table as.data.table data.table setcolorder setDT setnames ":="
 #'
 #' @export
 #'
@@ -173,8 +174,7 @@ sl3_Task <- R6Class(
           Xmatch <- lapply(int, function(i) {
             grep(i, colnames(self$X), value = TRUE)
           })
-          #browser()
-          Xint <- as.list(as.data.frame(t(expand.grid(Xmatch))))
+          Xint <- as.list(data.table::as.data.table(t(expand.grid(Xmatch))))
 
           d_Xint <- lapply(Xint, function(Xint) {
             self$X[, prod.DT(.SD), .SD = Xint]
