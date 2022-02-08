@@ -114,6 +114,7 @@ Other Learners:
 \code{\link{Lrnr_pkg_SuperLearner}},
 \code{\link{Lrnr_polspline}},
 \code{\link{Lrnr_pooled_hazards}},
+\code{\link{Lrnr_quantile_dist_glmnet}},
 \code{\link{Lrnr_randomForest}},
 \code{\link{Lrnr_ranger}},
 \code{\link{Lrnr_revere_task}},

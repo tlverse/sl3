@@ -68,7 +68,7 @@ Lrnr_earth <- R6Class(
   classname = "Lrnr_earth", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(degree = 2, penalty = 3, pmethod = "backward",
+    initialize = function(formula = NULL, degree = 2, penalty = 3, pmethod = "backward",
                           nfold = 0, ncross = 1, minspan = 0, endspan = 0,
                           ...) {
       params <- args_to_list()
@@ -80,15 +80,46 @@ Lrnr_earth <- R6Class(
     .train = function(task) {
       args <- self$params
       outcome_type <- self$get_outcome_type(task)
-      args$x <- task$X
-      args$y <- outcome_type$format(task$Y)
+      # args$x <- task$X
+      # args$y <- outcome_type$format(task$Y)
+      args$data <- task$data
+     
+      if (!is.null(args$formula)) {
+        form <- args$formula
+        if (class(form) != "formula") form <- as.formula(form)
+        
+        if (task$has_node("offset") && is.null(attr(terms(form), "offset"))) {
+          stop("Task has an offset; this needs to be specified as another term in the user-supplied formula")
+        }
+        
+        # check response variable corresponds to outcome in task, if provided
+        if (attr(terms(form), "response")) {
+          if (!all.vars(form)[1] == task$nodes$outcome) {
+            stop(paste0(
+              "Outcome variable in formula ", all.vars(form)[1],
+              " does not match the task's outcome ", task$nodes$outcome
+            ))
+          }
+          formula_covars <- all.vars(form)[-1]
+        } else {
+          formula_covars <- all.vars(form)
+        }
+        # check that regressors in the formula are contained in the task
+        if (!all(formula_covars %in% task$nodes$covariates)) {
+          stop("Regressors in the formula are not covariates in task")
+        }
+      } else {
+        if (task$has_node("offset")) {
+          args$formula <- as.formula(paste(paste(task$nodes$outcome, paste("offset", "(", task$nodes$offset, ")", sep = ""), sep = "~"), paste(task$nodes$covariates, collapse = "+"), sep = "+"))
+        } else {
+          # create formula if it's not specified
+          args$formula <- as.formula(paste(task$nodes$outcome, paste(task$nodes$covariates, collapse = "+"), sep = "~"))
+
+        }
+      }
 
       if (task$has_node("weights")) {
         args$weights <- task$weights
-      }
-
-      if (task$has_node("offset")) {
-        args$offset <- task$offset
       }
 
       if (outcome_type$type == "continuous") {
@@ -99,7 +130,7 @@ Lrnr_earth <- R6Class(
         stop("Unsupported outcome type for Lrnr_earth.")
       }
       args$glm <- glm
-      earth_fun <- utils::getS3method("earth", "default",
+      earth_fun <- utils::getS3method("earth", "formula",
         envir = getNamespace("earth")
       )
 
@@ -109,13 +140,14 @@ Lrnr_earth <- R6Class(
         utils::getS3method("earth", "fit", envir = getNamespace("earth"))
       ))
       extra_args <- extra_args[!(extra_args %in% default_args)]
+      # extra_args <- extra_args[extra_args != "offset"]
 
       fit_object <- call_with_args(earth_fun, args, other_valid = extra_args)
       return(fit_object)
     },
     .predict = function(task) {
       preds <- stats::predict(
-        object = private$.fit_object, newdata = task$X,
+        object = private$.fit_object, newdata = task$data,
         type = "response"
       )
       return(preds)
