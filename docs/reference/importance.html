@@ -193,12 +193,12 @@ will be added as additional single-covariate groups.</p></dd>
 <span class="r-in"><span class="va">importance_result</span> <span class="op">&lt;-</span> <span class="fu">importance</span><span class="op">(</span><span class="va">sl_fit</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">importance_result</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    covariate MSE_difference</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:      mage    0.041605149</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:  gagebrth    0.033319023</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:  meducyrs    0.028760333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:    apgar1    0.018513919</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:    parity    0.011646247</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6:    apgar5   -0.007892869</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:  gagebrth    0.033485355</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:      mage    0.030747971</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:  meducyrs    0.023557251</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:    parity    0.010783172</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:    apgar1    0.009529114</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6:    apgar5   -0.008806287</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># importance with groups of covariates</span></span>
 <span class="r-in"><span class="va">groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
@@ -208,9 +208,9 @@ will be added as additional single-covariate groups.</p></dd>
 <span class="r-in"><span class="va">importance_result_groups</span> <span class="op">&lt;-</span> <span class="fu">importance</span><span class="op">(</span><span class="va">sl_fit</span>, covariate_groups <span class="op">=</span> <span class="va">groups</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">importance_result_groups</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    covariate_group MSE_difference</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:          scores     7.24638331</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:        maternal     0.15464180</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:        gagebrth     0.03361065</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:          scores     8.90587513</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:        maternal     0.13947211</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:        gagebrth     0.03561275</span>
 </code></pre></div>
     </div>
   </div>
@@ -221,11 +221,13 @@ will be added as additional single-covariate groups.</p></dd>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Jeremy Coyle, Nima Hejazi, Oleg Sofrygin, Ivana Malenica, Rachael Phillips.</p>
+  <p></p><p>Developed by Jeremy Coyle, Nima Hejazi, Oleg Sofrygin, Ivana
+Malenica, Rachael Phillips.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
+2.0.2.</p>
 </div>
 
       </footer></div>

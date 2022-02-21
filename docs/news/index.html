@@ -77,43 +77,140 @@
 
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.4.5" id="sl3-145">sl3 1.4.5<a class="anchor" aria-label="anchor" href="#sl3-145"></a></h2>
-<ul><li>Added <code>Lrnr_glmtree</code>, which uses the <code>partykit</code> R package to fit recursive partitioning and regression trees in a generalized linear model.</li>
+<ul><li>Added <code>Lrnr_glmtree</code>, which uses the
+<code>partykit</code> R package to fit recursive partitioning and
+regression trees in a generalized linear model.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.4.4" id="sl3-144">sl3 1.4.4<a class="anchor" aria-label="anchor" href="#sl3-144"></a></h2>
-<ul><li>Updates to <code>Lrnr_nnls</code> to support binary outcomes, including support for convexity of the resultant model fit and warnings on prediction quality.</li>
-<li>Refined, clearer documentation for <code>Lrnr_define_interactions</code>
+<ul><li>Updates to <code>Lrnr_nnls</code> to support binary outcomes,
+including support for convexity of the resultant model fit and warnings
+on prediction quality.</li>
+<li>Refined, clearer documentation for
+<code>Lrnr_define_interactions</code>
 </li>
-<li>Tweaks to <code>Lrnr_bound</code> to better support more flexible bounding for continuous outcomes (automatically setting a maximum of infinity).</li>
-<li>Changes to <code>Lrnr_cv_selector</code> to support improved computation of the CV-risk, averaging the risk strictly across validation/holdout sets.</li>
-<li>Bug fixes for <code>Lrnr_earth</code> (improving formals recognition), <code>Lrnr_glmnet</code> (allowing offsets), and <code>Lrnr_caret</code> (reformatting of arguments).</li>
+<li>Tweaks to <code>Lrnr_bound</code> to better support more flexible
+bounding for continuous outcomes (automatically setting a maximum of
+infinity).</li>
+<li>Changes to <code>Lrnr_cv_selector</code> to support improved
+computation of the CV-risk, averaging the risk strictly across
+validation/holdout sets.</li>
+<li>Bug fixes for <code>Lrnr_earth</code> (improving formals
+recognition), <code>Lrnr_glmnet</code> (allowing offsets), and
+<code>Lrnr_caret</code> (reformatting of arguments).</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.4.3" id="sl3-143">sl3 1.4.3<a class="anchor" aria-label="anchor" href="#sl3-143"></a></h2>
-<ul><li>Additional arguments for ‘Keras’ learners <code>Lrnr_lstm_keras</code> and <code>Lrnr_gru_keras</code> provide support for callback functions list and 2-layer networks. Default <code>callbacks</code> list provides early stopping criteria with respect to ‘Keras’ defaults and <code>patience</code> of 10 epochs. Also, these two ‘Keras’ learners now call <code>args_to_list</code> upon initialization, and set verbose argument according to <code>options("keras.fit_verbose")</code> or <code>options("sl3.verbose")</code>.</li>
-<li>Update <code>Lrnr_xgboost</code> to support prediction tasks consisting of one observation (e.g., leave-one-out cross-validation).</li>
-<li>Update <code>Lrnr_sl</code> by adding a new private slot <code>.cv_risk</code> to store the risk estimates, using this to avoid unnecessary re-computation in the <code>print</code> method (the <code>.cv_risk</code> slot is populated on the first <code>print</code> call, and only ever re-printed thereafter).</li>
-<li>Update documentation of <code>default_metalearner</code> to use native markdown tables.</li>
-<li>Fix <code>Lrnr_screener_importance</code>’s pairing of (a) covariates returned by the importance function with (b) covariates as they are defined in the task. This issue only arose when discrete covariates were automatically one-hot encoded upon task initiation (i.e., when <code>colnames(task$X) != task$nodes$covariates</code>).</li>
-<li>Reformat <code>importance_plot</code> to plot variables in decreasing order of importance, so most important variables are placed at the top of the dotchart.</li>
-<li>Enhanced functionality in <code>sl3</code> task’s <code>add_interactions</code> method to support interactions that involve factors. This method is most commonly used by <code>Lrnr_define_interactions</code>, which is intended for use with another learner (e.g., <code>Lrnr_glmnet</code> or <code>Lrnr_glm</code>) in a <code>Pipeline</code>.</li>
-<li>Modified <code>Lrnr_gam</code> formula (if not specified by user) to not use <code>mgcv</code>’s default <code>k=10</code> degrees of freedom for each smooth <code>s</code> term when there are less than <code>k=10</code> degrees of freedom. This bypasses an <code><a href="https://rdrr.io/pkg/mgcv/man/gam.html" class="external-link">mgcv::gam</a></code> error, and tends to be relevant only for small n.</li>
-<li>Added <code>options(java.parameters = "-Xmx2500m")</code> and warning message when <code>Lrnr_bartMachine</code> is initialized, if this option has not already been set. This option was incorporated since the default RAM of 500MB for a Java virtual machine often errors due to memory issues with <code>Lrnr_bartMachine</code>.</li>
-<li>Incorporated <code>stratify_cv</code> argument in <code>Lrnr_glmnet</code>, which stratifies internal cross-validation folds such that binary outcome prevalence in training and validation folds roughly matches the prevalence in the training task.</li>
-<li>Incorporated <code>min_screen</code> argument <code>Lrnr_screener_coefs</code>, which tries to ensure that at least <code>min_screen</code> number of covariates are selected. If this argument is specified and the <code>learner</code> argument in <code>Lrnr_screener_coefs</code> is a <code>Lrnr_glmnet</code>, then <code>lambda</code> is increased until <code>min_screen</code> number of covariates are selected and a warning is produced. If <code>min_screen</code> is specified and the <code>learner</code> argument in <code>Lrnr_screener_coefs</code> is not a <code>Lrnr_glmnet</code> then it will error.</li>
-<li>Updated <code>Lrnr_hal9001</code> to work with v0.4.0 of the <code>hal9001</code> package.</li>
-<li>Added <code>formula</code> parameter and <code>process_formula</code> function to the base learner, <code>Lrnr_base</code>, whose methods carry over to all other learners. When a <code>formula</code> is supplied as a learner parameter, the <code>process_formula   function constructs a design matrix by supplying the</code>formula<code>to</code>model.matrix<code>. This implementation allows</code>formula<code>to be supplied to all   learners, even those without native</code>formula<code>support. The</code>formula<code>should   be an object of class "</code>formula`", or a character string that can be coerced to that class.</li>
-<li>Added factory function for performance-based risks for binary outcomes with <code>ROCR</code> performance measures <code>custom_ROCR_risk</code>. Supports cutoff-dependent and scalar <code>ROCR</code> performance measures. The risk is defined as 1 - performance, and is transformed back to the performance measure in <code>cv_risk</code> and <code>importance</code> functions. This change prompted the revision of argument name <code>loss_fun</code> and <code>loss_function</code> to <code>eval_fun</code> and <code>eval_function</code>, respectively, since the evaluation of predictions relative to the observations can be either a risk or a loss function. This argument name change impacted the following: <code>Lrnr_solnp</code>, <code>Lrnr_optim</code>, <code>Lrnr_cv_selector</code>, <code>cv_risk</code>, <code>importance</code>, and <code>CV_Lrnr_sl</code>.</li>
-<li>Added name attribute to all loss functions, where naming was defined in terms of the risk implied by each loss function (i.e., the common name for the expected loss). The names in <code>cv_risk</code> and <code>importance</code> tables now swap “risk” with this name attribute.</li>
-<li>Incorporated stratified cross-validation when <code>folds</code> are not supplied to the <code>sl3_Task</code> and the outcome is a discrete (i.e., binary or categorical) variable.</li>
-<li>Added to the <code>importance</code> method the option to evaluate importance over <code>covariate_groups</code>, by removing/permuting all covariates in the same group together.</li>
+<ul><li>Additional arguments for ‘Keras’ learners
+<code>Lrnr_lstm_keras</code> and <code>Lrnr_gru_keras</code> provide
+support for callback functions list and 2-layer networks. Default
+<code>callbacks</code> list provides early stopping criteria with
+respect to ‘Keras’ defaults and <code>patience</code> of 10 epochs.
+Also, these two ‘Keras’ learners now call <code>args_to_list</code> upon
+initialization, and set verbose argument according to
+<code>options("keras.fit_verbose")</code> or
+<code>options("sl3.verbose")</code>.</li>
+<li>Update <code>Lrnr_xgboost</code> to support prediction tasks
+consisting of one observation (e.g., leave-one-out
+cross-validation).</li>
+<li>Update <code>Lrnr_sl</code> by adding a new private slot
+<code>.cv_risk</code> to store the risk estimates, using this to avoid
+unnecessary re-computation in the <code>print</code> method (the
+<code>.cv_risk</code> slot is populated on the first <code>print</code>
+call, and only ever re-printed thereafter).</li>
+<li>Update documentation of <code>default_metalearner</code> to use
+native markdown tables.</li>
+<li>Fix <code>Lrnr_screener_importance</code>’s pairing of (a)
+covariates returned by the importance function with (b) covariates as
+they are defined in the task. This issue only arose when discrete
+covariates were automatically one-hot encoded upon task initiation
+(i.e., when <code>colnames(task$X) !=
+task$nodes$covariates</code>).</li>
+<li>Reformat <code>importance_plot</code> to plot variables in
+decreasing order of importance, so most important variables are placed
+at the top of the dotchart.</li>
+<li>Enhanced functionality in <code>sl3</code> task’s
+<code>add_interactions</code> method to support interactions that
+involve factors. This method is most commonly used by
+<code>Lrnr_define_interactions</code>, which is intended for use with
+another learner (e.g., <code>Lrnr_glmnet</code> or
+<code>Lrnr_glm</code>) in a <code>Pipeline</code>.</li>
+<li>Modified <code>Lrnr_gam</code> formula (if not specified by user) to
+not use <code>mgcv</code>’s default <code>k=10</code> degrees of freedom
+for each smooth <code>s</code> term when there are less than
+<code>k=10</code> degrees of freedom. This bypasses an
+<code><a href="https://rdrr.io/pkg/mgcv/man/gam.html" class="external-link">mgcv::gam</a></code> error, and tends to be relevant only for small
+n.</li>
+<li>Added <code>options(java.parameters = "-Xmx2500m")</code> and
+warning message when <code>Lrnr_bartMachine</code> is initialized, if
+this option has not already been set. This option was incorporated since
+the default RAM of 500MB for a Java virtual machine often errors due to
+memory issues with <code>Lrnr_bartMachine</code>.</li>
+<li>Incorporated <code>stratify_cv</code> argument in
+<code>Lrnr_glmnet</code>, which stratifies internal cross-validation
+folds such that binary outcome prevalence in training and validation
+folds roughly matches the prevalence in the training task.</li>
+<li>Incorporated <code>min_screen</code> argument
+<code>Lrnr_screener_coefs</code>, which tries to ensure that at least
+<code>min_screen</code> number of covariates are selected. If this
+argument is specified and the <code>learner</code> argument in
+<code>Lrnr_screener_coefs</code> is a <code>Lrnr_glmnet</code>, then
+<code>lambda</code> is increased until <code>min_screen</code> number of
+covariates are selected and a warning is produced. If
+<code>min_screen</code> is specified and the <code>learner</code>
+argument in <code>Lrnr_screener_coefs</code> is not a
+<code>Lrnr_glmnet</code> then it will error.</li>
+<li>Updated <code>Lrnr_hal9001</code> to work with v0.4.0 of the
+<code>hal9001</code> package.</li>
+<li>Added <code>formula</code> parameter and
+<code>process_formula</code> function to the base learner,
+<code>Lrnr_base</code>, whose methods carry over to all other learners.
+When a <code>formula</code> is supplied as a learner parameter, the
+<code>process_formula   function constructs a design matrix by supplying
+the</code>formula<code>to</code>model.matrix<code>. This implementation
+allows</code>formula<code>to be supplied to all   learners, even those
+without native</code>formula<code>support.
+The</code>formula<code>should   be an object of class "</code>formula`“,
+or a character string that can be coerced to that class.</li>
+<li>Added factory function for performance-based risks for binary
+outcomes with <code>ROCR</code> performance measures
+<code>custom_ROCR_risk</code>. Supports cutoff-dependent and scalar
+<code>ROCR</code> performance measures. The risk is defined as 1 -
+performance, and is transformed back to the performance measure in
+<code>cv_risk</code> and <code>importance</code> functions. This change
+prompted the revision of argument name <code>loss_fun</code> and
+<code>loss_function</code> to <code>eval_fun</code> and
+<code>eval_function</code>, respectively, since the evaluation of
+predictions relative to the observations can be either a risk or a loss
+function. This argument name change impacted the following:
+<code>Lrnr_solnp</code>, <code>Lrnr_optim</code>,
+<code>Lrnr_cv_selector</code>, <code>cv_risk</code>,
+<code>importance</code>, and <code>CV_Lrnr_sl</code>.</li>
+<li>Added name attribute to all loss functions, where naming was defined
+in terms of the risk implied by each loss function (i.e., the common
+name for the expected loss). The names in <code>cv_risk</code> and
+<code>importance</code> tables now swap “risk” with this name
+attribute.</li>
+<li>Incorporated stratified cross-validation when <code>folds</code> are
+not supplied to the <code>sl3_Task</code> and the outcome is a discrete
+(i.e., binary or categorical) variable.</li>
+<li>Added to the <code>importance</code> method the option to evaluate
+importance over <code>covariate_groups</code>, by removing/permuting all
+covariates in the same group together.</li>
 <li>Added <code>Lrnr_ga</code> as another metalearner.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.4.2" id="sl3-142">sl3 1.4.2<a class="anchor" aria-label="anchor" href="#sl3-142"></a></h2>
-<ul><li>Updates to variable importance functionality, including calculation of risk ratio and risk differences under covariate deletion or permutation.</li>
-<li>Addition of a <code>importance_plot</code> to summarize variable importance findings.</li>
-<li>Additions of new methods <code>reparameterize</code> and <code>retrain</code> to <code>Lrnr_base</code>, which allows modification of the covariate set while training on a conserved task and prediction on a new task using previously trained learners, respectively.</li>
+<ul><li>Updates to variable importance functionality, including calculation
+of risk ratio and risk differences under covariate deletion or
+permutation.</li>
+<li>Addition of a <code>importance_plot</code> to summarize variable
+importance findings.</li>
+<li>Additions of new methods <code>reparameterize</code> and
+<code>retrain</code> to <code>Lrnr_base</code>, which allows
+modification of the covariate set while training on a conserved task and
+prediction on a new task using previously trained learners,
+respectively.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.4.1" id="sl3-141">sl3 1.4.1<a class="anchor" aria-label="anchor" href="#sl3-141"></a></h2>
@@ -129,54 +226,89 @@
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.3.8" id="sl3-138">sl3 1.3.8<a class="anchor" aria-label="anchor" href="#sl3-138"></a></h2>
-<ul><li>Updates to variable importance functionality, including use of risk ratios.</li>
-<li>Change <code>Lrnr_hal9001</code> and <code>Lrnr_glmnet</code> to respect observation-level IDs.</li>
-<li>Removal of <code>Remotes</code> and deprecation of <code>Lrnr_rfcde</code> and <code>Lrnr_condensier</code>:
-<ul><li>Both of these learner classes provided support for conditional density estimation (CDE) and were useful when support for CDE was more limited. Unfortunately, both packages are un-maintained or updated only very sporadically, resulting in both frequent bugs and presenting an obstacle for an eventual CRAN release (both packages are GitHub-only).</li>
+<ul><li>Updates to variable importance functionality, including use of risk
+ratios.</li>
+<li>Change <code>Lrnr_hal9001</code> and <code>Lrnr_glmnet</code> to
+respect observation-level IDs.</li>
+<li>Removal of <code>Remotes</code> and deprecation of
+<code>Lrnr_rfcde</code> and <code>Lrnr_condensier</code>:
+<ul><li>Both of these learner classes provided support for conditional
+density estimation (CDE) and were useful when support for CDE was more
+limited. Unfortunately, both packages are un-maintained or updated only
+very sporadically, resulting in both frequent bugs and presenting an
+obstacle for an eventual CRAN release (both packages are
+GitHub-only).</li>
 <li>
-<code>Lrnr_rfcde</code> wrapped <a href="https://github.com/tpospisi/RFCDE" class="external-link uri">https://github.com/tpospisi/RFCDE</a>, a sporadically maintained tool for conditional density estimation (CDE). Support for this has been removed in favor of built-in CDE tools, including, among others, <code>Lrnr_density_semiparametric</code>.</li>
+<code>Lrnr_rfcde</code> wrapped <a href="https://github.com/tpospisi/RFCDE" class="external-link uri">https://github.com/tpospisi/RFCDE</a>, a sporadically
+maintained tool for conditional density estimation (CDE). Support for
+this has been removed in favor of built-in CDE tools, including, among
+others, <code>Lrnr_density_semiparametric</code>.</li>
 <li>
-<code>Lrnr_condensier</code> wrapped <a href="https://github.com/osofr/condensier" class="external-link uri">https://github.com/osofr/condensier</a>, which provided a pooled hazards approach to CDE. This package contained an implementation error (<a href="https://github.com/osofr/condensier/issues/15" class="external-link uri">https://github.com/osofr/condensier/issues/15</a>) and was removed from CRAN. Support for this has been removed in favor of <code>Lrnr_density_semiparametric</code> and <code>Lrnr_haldensify</code>, both of which more reliably provide CDE support.</li>
+<code>Lrnr_condensier</code> wrapped <a href="https://github.com/osofr/condensier" class="external-link uri">https://github.com/osofr/condensier</a>, which provided a
+pooled hazards approach to CDE. This package contained an implementation
+error (<a href="https://github.com/osofr/condensier/issues/15" class="external-link uri">https://github.com/osofr/condensier/issues/15</a>) and was
+removed from CRAN. Support for this has been removed in favor of
+<code>Lrnr_density_semiparametric</code> and
+<code>Lrnr_haldensify</code>, both of which more reliably provide CDE
+support.</li>
 </ul></li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.3.7" id="sl3-137">sl3 1.3.7<a class="anchor" aria-label="anchor" href="#sl3-137"></a></h2>
-<ul><li>Sampling methods for Monte Carlo integration and related procedures.</li>
-<li>A metalearner for the cross-validation selector (discrete super learner).</li>
+<ul><li>Sampling methods for Monte Carlo integration and related
+procedures.</li>
+<li>A metalearner for the cross-validation selector (discrete super
+learner).</li>
 <li>A learner for bounding, including support for bounded losses.</li>
 <li>Resolution of a number of older issues (see <a href="https://github.com/tlverse/sl3/issues/264" class="external-link">#264</a>).</li>
-<li>Relaxation of checks inside <code>Stack</code> objects for time series learners.</li>
-<li>Addition of a learner property table to <code>README.Rmd</code>.</li>
+<li>Relaxation of checks inside <code>Stack</code> objects for time
+series learners.</li>
+<li>Addition of a learner property table to
+<code>README.Rmd</code>.</li>
 <li>Maintenance and documentation updates.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.3.5" id="sl3-135">sl3 1.3.5<a class="anchor" aria-label="anchor" href="#sl3-135"></a></h2>
 <ul><li>Overhaul of data preprocessing.</li>
-<li>New screening methods and convex combination in <code>Lrnr_nnls</code>.</li>
-<li>Bug fixes, including covariate subsetting and better handling of <code>NA</code>s.</li>
-<li>Package and documentation cleanup; continuous integration and testing fixes.</li>
-<li>Reproducibility updates (including new versioning and DOI minting).</li>
+<li>New screening methods and convex combination in
+<code>Lrnr_nnls</code>.</li>
+<li>Bug fixes, including covariate subsetting and better handling of
+<code>NA</code>s.</li>
+<li>Package and documentation cleanup; continuous integration and
+testing fixes.</li>
+<li>Reproducibility updates (including new versioning and DOI
+minting).</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.3.0" id="sl3-130">sl3 1.3.0<a class="anchor" aria-label="anchor" href="#sl3-130"></a></h2>
-<ul><li>Fixes incorrect handling of missingness in the automatic imputation procedure.</li>
-<li>Adds new standard learners, including from the <code>gam</code> and <code>caret</code> packages.</li>
-<li>Adds custom learners for conditional density estimation, including semiparametric methods based on conditional mean and conditional mean/variance estimation as well as generalized functionality for density estimation via a pooled hazards approach.</li>
+<ul><li>Fixes incorrect handling of missingness in the automatic imputation
+procedure.</li>
+<li>Adds new standard learners, including from the <code>gam</code> and
+<code>caret</code> packages.</li>
+<li>Adds custom learners for conditional density estimation, including
+semiparametric methods based on conditional mean and conditional
+mean/variance estimation as well as generalized functionality for
+density estimation via a pooled hazards approach.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.2.0" id="sl3-120">sl3 1.2.0<a class="anchor" aria-label="anchor" href="#sl3-120"></a></h2>
 <ul><li>Default metalearners based on task outcome types.</li>
 <li>Handling of imputation internally in task objects.</li>
-<li>Addition of several new learners, including from the <code>gbm</code>, <code>earth</code>, <code>polspline</code> packages.</li>
-<li>Fixing errors in existing learners (e.g., subtle parallelization in <code>xgboost</code> and <code>ranger</code>).</li>
+<li>Addition of several new learners, including from the
+<code>gbm</code>, <code>earth</code>, <code>polspline</code>
+packages.</li>
+<li>Fixing errors in existing learners (e.g., subtle parallelization in
+<code>xgboost</code> and <code>ranger</code>).</li>
 <li>Support for multivariate outcomes</li>
 <li>Sets default cross-validation to be revere-style.</li>
-<li>Support for cross-validated super learner and variable importance.</li>
+<li>Support for cross-validated super learner and variable
+importance.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.1.0" id="sl3-110">sl3 1.1.0<a class="anchor" aria-label="anchor" href="#sl3-110"></a></h2>
 <ul><li>A full-featured and stable release of the project.</li>
-<li>Numerous learners are included and many bugs have been fixed relative to earlier versions (esp v1.0.0) of the software.</li>
+<li>Numerous learners are included and many bugs have been fixed
+relative to earlier versions (esp v1.0.0) of the software.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.0.0" id="sl3-100">sl3 1.0.0<a class="anchor" aria-label="anchor" href="#sl3-100"></a></h2>
@@ -192,11 +324,13 @@
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Jeremy Coyle, Nima Hejazi, Oleg Sofrygin, Ivana Malenica, Rachael Phillips.</p>
+  <p></p><p>Developed by Jeremy Coyle, Nima Hejazi, Oleg Sofrygin, Ivana
+Malenica, Rachael Phillips.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
+2.0.2.</p>
 </div>
 
       </footer></div>

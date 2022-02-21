@@ -82,7 +82,7 @@ GA R package. For further consult the documentation of this package."><!-- mathj
     <div class="ref-description">
     <p>This metalearner provides fitting procedures for any pairing of loss or risk
 function and metalearner function, subject to constraints. The optimization
-problem is solved by making use of the <code>ga</code> function in the
+problem is solved by making use of the <code><a href="https://github.com/luca-scr/GA/reference/ga.html" class="external-link">ga</a></code> function in the
 <span class="pkg">GA</span> R package. For further consult the documentation of this package.</p>
     </div>
 
@@ -119,9 +119,9 @@ GA search is halted.</p></li>
 improvement in the best fitness value before the GA is stopped.</p></li>
 <li><p><code>optim = TRUE</code>: A logical determining whether or not a local search
 using general-purpose optimization algorithms should be used. Argument
-<code>optimArgs</code> of <code>ga</code> provides further details and
+<code>optimArgs</code> of <code><a href="https://github.com/luca-scr/GA/reference/ga.html" class="external-link">ga</a></code> provides further details and
 finer control.</p></li>
-<li><p><code>...</code>: Additional arguments to <code>ga</code> and/or
+<li><p><code>...</code>: Additional arguments to <code><a href="https://github.com/luca-scr/GA/reference/ga.html" class="external-link">ga</a></code> and/or
 <code><a href="Lrnr_base.html">Lrnr_base</a></code>.</p></li>
 </ul></div>
     <div id="see-also">
@@ -211,11 +211,8 @@ finer control.</p></li>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># instantiate SL with GA metalearner</span></span>
 <span class="r-in"><span class="va">ga</span> <span class="op">&lt;-</span> <span class="va">Lrnr_ga</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in requirePackages(private$.required_packages, why = class(self)[1],     default.method = "load"):</span> For Lrnr_ga please install the following packages: GA</span>
 <span class="r-in"><span class="va">sl</span> <span class="op">&lt;-</span> <span class="va"><a href="Lrnr_sl.html">Lrnr_sl</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">lrnr_stack</span>, <span class="va">ga</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in initialize(...):</span> object 'ga' not found</span>
 <span class="r-in"><span class="va">sl_fit</span> <span class="op">&lt;-</span> <span class="va">sl</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'sl' not found</span>
 </code></pre></div>
     </div>
   </div>
@@ -226,11 +223,13 @@ finer control.</p></li>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Jeremy Coyle, Nima Hejazi, Oleg Sofrygin, Ivana Malenica, Rachael Phillips.</p>
+  <p></p><p>Developed by Jeremy Coyle, Nima Hejazi, Oleg Sofrygin, Ivana
+Malenica, Rachael Phillips.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
+2.0.2.</p>
 </div>
 
       </footer></div>
