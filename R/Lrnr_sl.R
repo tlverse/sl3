@@ -59,17 +59,20 @@ Lrnr_sl <- R6Class(
       super$initialize(params = params, ...)
     },
     print = function() {
-      lrn_names <- lapply(self$params$learners, function(obj) obj$name)
-      print("SuperLearner:")
-      str(lrn_names)
-      if (self$is_trained) {
+      if (!self$is_trained) {
+        lrn_names <- lapply(self$params$learners, function(obj) obj$name)
+        print("SuperLearner:")
+        str(lrn_names)
+      } else {
         fit_object <- private$.fit_object
         if (self$params$keep_extra) {
-          # standard printing when all sub-parts of SL computation are stored
-          print(fit_object$cv_meta_fit)
 
-          # compute MSE once and store, only compute if not available
-          # (risk estimates are stored to avoid unnecessary re-calculation)
+          # print cv_meta_fit only when coefficients are not shown in cv_risk
+          if (is.null(names(self$coefficients))) {
+            print(fit_object$cv_meta_fit)
+          }
+
+          # (cv risk estimates are stored to avoid unnecessary re-calculation)
           if (is.null(private$.cv_risk)) {
             tryCatch(
               {
@@ -97,7 +100,7 @@ Lrnr_sl <- R6Class(
       self$assert_trained()
       return(private$.fit_object$cv_meta_fit$fit_object)
     },
-    cv_risk = function(eval_fun) {
+    cv_risk = function(eval_fun, get_sl_revere_risk = FALSE) {
       # get risks for cv learners (nested cv)
       cv_stack_fit <- self$fit_object$cv_fit
       stack_risks <- cv_stack_fit$cv_risk(eval_fun)
@@ -118,13 +121,17 @@ Lrnr_sl <- R6Class(
         c(names(stack_risks)[1], "coefficients")
       )
 
-      # get risks for super learner ("revere" CV)
-      sl_risk <- cv_risk(self, eval_fun)
-      set(sl_risk, , "learner", "SuperLearner")
+      if (get_sl_revere_risk) {
+        # get risks for super learner ("revere" CV)
+        sl_risk <- cv_risk(self, eval_fun)
+        set(sl_risk, , "learner", "SuperLearner")
 
-      # combine and return
-      risks <- rbind(stack_risks, sl_risk)
-      return(risks)
+        # combine and return
+        risks <- rbind(stack_risks, sl_risk)
+        return(risks)
+      } else {
+        return(stack_risks)
+      }
     },
     predict_fold = function(task, fold_number = "validation",
                             pred_unique_ts = FALSE) {
