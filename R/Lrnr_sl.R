@@ -74,22 +74,27 @@ Lrnr_sl <- R6Class(
 
           # (cv risk estimates are stored to avoid unnecessary re-calculation)
           if (is.null(private$.cv_risk)) {
-            # try using eval function based on outcome type
-            outcome_type <- self$training_outcome_type$type
-            if (outcome_type %in% c("constant", "binomial")) {
-              eval_fun <- loss_loglik_binomial
-            } else if (outcome_type == "categorical") {
-              eval_fun <- loss_loglik_multinomial
-            } else if (outcome_type == "continuous") {
-              eval_fun <- loss_squared_error
-            } else if (outcome_type == "multivariate") {
-              eval_fun <- loss_squared_error_multivariate
+            if (is.null(private$.params$metalearner$params$eval_function)) {
+              # try using eval function based on outcome type
+              outcome_type <- self$training_outcome_type$type
+              if (outcome_type %in% c("constant", "binomial")) {
+                eval_fun <- loss_squared_error
+              } else if (outcome_type == "categorical") {
+                eval_fun <- loss_loglik_multinomial
+              } else if (outcome_type == "continuous") {
+                eval_fun <- loss_squared_error
+              } else if (outcome_type == "multivariate") {
+                eval_fun <- loss_squared_error_multivariate
+              } else {
+                stop(paste0(
+                  "No default eval_fun for outcome type ", outcome_type,
+                  ". Please specify your own."
+                ))
+              }
             } else {
-              stop(paste0(
-                "No default eval_fun for outcome type ", outcome_type,
-                ". Please specify your own."
-              ))
+              eval_fun <- private$.params$metalearner$params$eval_function
             }
+
             private$.cv_risk <- self$cv_risk(eval_fun)
           }
           print("Cross-validated risk:")
