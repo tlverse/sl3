@@ -194,7 +194,7 @@ argument, and then returns a vector of losses or a numeric risk. See
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-in"><span class="va">discrete_sl_fit</span> <span class="op">&lt;-</span> <span class="va">discrete_sl</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">discrete_sl_fit</span><span class="op">$</span><span class="va">cv_risk</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> function (eval_fun) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (eval_fun, get_sl_revere_risk = FALSE) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     cv_stack_fit &lt;- self$fit_object$cv_fit</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     stack_risks &lt;- cv_stack_fit$cv_risk(eval_fun)</span>
@@ -208,12 +208,17 @@ argument, and then returns a vector of losses or a numeric risk. See
 <span class="r-out co"><span class="r-pr">#&gt;</span>     set(stack_risks, , "coefficients", ordered_coefs)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     data.table::setcolorder(stack_risks, c(names(stack_risks)[1], </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         "coefficients"))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     sl_risk &lt;- cv_risk(self, eval_fun)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     set(sl_risk, , "learner", "SuperLearner")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     risks &lt;- rbind(stack_risks, sl_risk)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     return(risks)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     if (get_sl_revere_risk) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         sl_risk &lt;- cv_risk(self, eval_fun)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         set(sl_risk, , "learner", "SuperLearner")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         risks &lt;- rbind(stack_risks, sl_risk)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         return(risks)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     else {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         return(stack_risks)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x7f8e05d6bc70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x7fe6ce677bd0&gt;</span>
 </code></pre></div>
     </div>
   </div>
@@ -224,11 +229,13 @@ argument, and then returns a vector of losses or a numeric risk. See
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Jeremy Coyle, Nima Hejazi, Oleg Sofrygin, Ivana Malenica, Rachael Phillips.</p>
+  <p></p><p>Developed by Jeremy Coyle, Nima Hejazi, Oleg Sofrygin, Ivana
+Malenica, Rachael Phillips.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
+2.0.2.</p>
 </div>
 
       </footer></div>

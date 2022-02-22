@@ -262,7 +262,7 @@ wrapper
 <tbody>
 <tr>
 <td style="text-align:left;">
-Lrnr\_arima
+Lrnr_arima
 </td>
 <td style="text-align:left;">
 x
@@ -312,7 +312,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_bartMachine
+Lrnr_bartMachine
 </td>
 <td style="text-align:left;">
 √
@@ -362,7 +362,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_bayesglm
+Lrnr_bayesglm
 </td>
 <td style="text-align:left;">
 √
@@ -412,7 +412,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_bilstm
+Lrnr_bilstm
 </td>
 <td style="text-align:left;">
 x
@@ -462,7 +462,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_bound
+Lrnr_bound
 </td>
 <td style="text-align:left;">
 √
@@ -512,7 +512,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_caret
+Lrnr_caret
 </td>
 <td style="text-align:left;">
 √
@@ -562,7 +562,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_cv
+Lrnr_cv
 </td>
 <td style="text-align:left;">
 x
@@ -612,7 +612,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_cv\_selector
+Lrnr_cv_selector
 </td>
 <td style="text-align:left;">
 √
@@ -662,7 +662,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_dbarts
+Lrnr_dbarts
 </td>
 <td style="text-align:left;">
 √
@@ -712,7 +712,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_define\_interactions
+Lrnr_define_interactions
 </td>
 <td style="text-align:left;">
 x
@@ -762,7 +762,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_density\_discretize
+Lrnr_density_discretize
 </td>
 <td style="text-align:left;">
 x
@@ -812,7 +812,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_density\_hse
+Lrnr_density_hse
 </td>
 <td style="text-align:left;">
 x
@@ -862,7 +862,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_density\_semiparametric
+Lrnr_density_semiparametric
 </td>
 <td style="text-align:left;">
 x
@@ -912,7 +912,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_earth
+Lrnr_earth
 </td>
 <td style="text-align:left;">
 √
@@ -962,7 +962,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_expSmooth
+Lrnr_expSmooth
 </td>
 <td style="text-align:left;">
 x
@@ -1012,7 +1012,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_ga
+Lrnr_ga
 </td>
 <td style="text-align:left;">
 √
@@ -1062,7 +1062,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_gam
+Lrnr_gam
 </td>
 <td style="text-align:left;">
 √
@@ -1112,7 +1112,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_gbm
+Lrnr_gbm
 </td>
 <td style="text-align:left;">
 √
@@ -1162,7 +1162,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_glm
+Lrnr_glm
 </td>
 <td style="text-align:left;">
 √
@@ -1212,7 +1212,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_glm\_fast
+Lrnr_glm_fast
 </td>
 <td style="text-align:left;">
 √
@@ -1262,7 +1262,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_glmnet
+Lrnr_glmnet
 </td>
 <td style="text-align:left;">
 √
@@ -1312,7 +1312,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_grf
+Lrnr_grf
 </td>
 <td style="text-align:left;">
 √
@@ -1362,7 +1362,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_gru\_keras
+Lrnr_gru_keras
 </td>
 <td style="text-align:left;">
 √
@@ -1412,7 +1412,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_gts
+Lrnr_gts
 </td>
 <td style="text-align:left;">
 x
@@ -1462,7 +1462,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_h2o\_glm
+Lrnr_h2o_glm
 </td>
 <td style="text-align:left;">
 √
@@ -1512,7 +1512,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_h2o\_grid
+Lrnr_h2o_grid
 </td>
 <td style="text-align:left;">
 √
@@ -1562,7 +1562,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_hal9001
+Lrnr_hal9001
 </td>
 <td style="text-align:left;">
 √
@@ -1612,7 +1612,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_haldensify
+Lrnr_haldensify
 </td>
 <td style="text-align:left;">
 x
@@ -1662,7 +1662,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_HarmonicReg
+Lrnr_HarmonicReg
 </td>
 <td style="text-align:left;">
 x
@@ -1712,7 +1712,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_hts
+Lrnr_hts
 </td>
 <td style="text-align:left;">
 x
@@ -1762,7 +1762,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_independent\_binomial
+Lrnr_independent_binomial
 </td>
 <td style="text-align:left;">
 x
@@ -1812,7 +1812,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_lightgbm
+Lrnr_lightgbm
 </td>
 <td style="text-align:left;">
 √
@@ -1862,7 +1862,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_lstm\_keras
+Lrnr_lstm_keras
 </td>
 <td style="text-align:left;">
 √
@@ -1912,7 +1912,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_mean
+Lrnr_mean
 </td>
 <td style="text-align:left;">
 √
@@ -1962,7 +1962,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_multiple\_ts
+Lrnr_multiple_ts
 </td>
 <td style="text-align:left;">
 x
@@ -2012,7 +2012,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_multivariate
+Lrnr_multivariate
 </td>
 <td style="text-align:left;">
 x
@@ -2062,7 +2062,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_nnet
+Lrnr_nnet
 </td>
 <td style="text-align:left;">
 √
@@ -2112,7 +2112,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_nnls
+Lrnr_nnls
 </td>
 <td style="text-align:left;">
 √
@@ -2162,7 +2162,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_optim
+Lrnr_optim
 </td>
 <td style="text-align:left;">
 √
@@ -2212,7 +2212,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_pca
+Lrnr_pca
 </td>
 <td style="text-align:left;">
 x
@@ -2262,7 +2262,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_pkg\_SuperLearner
+Lrnr_pkg_SuperLearner
 </td>
 <td style="text-align:left;">
 √
@@ -2312,7 +2312,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_pkg\_SuperLearner\_method
+Lrnr_pkg_SuperLearner_method
 </td>
 <td style="text-align:left;">
 √
@@ -2362,7 +2362,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_pkg\_SuperLearner\_screener
+Lrnr_pkg_SuperLearner_screener
 </td>
 <td style="text-align:left;">
 √
@@ -2412,7 +2412,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_polspline
+Lrnr_polspline
 </td>
 <td style="text-align:left;">
 √
@@ -2462,7 +2462,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_pooled\_hazards
+Lrnr_pooled_hazards
 </td>
 <td style="text-align:left;">
 x
@@ -2512,7 +2512,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_randomForest
+Lrnr_randomForest
 </td>
 <td style="text-align:left;">
 √
@@ -2562,7 +2562,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_ranger
+Lrnr_ranger
 </td>
 <td style="text-align:left;">
 √
@@ -2612,7 +2612,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_revere\_task
+Lrnr_revere_task
 </td>
 <td style="text-align:left;">
 x
@@ -2662,7 +2662,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_rpart
+Lrnr_rpart
 </td>
 <td style="text-align:left;">
 √
@@ -2712,7 +2712,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_rugarch
+Lrnr_rugarch
 </td>
 <td style="text-align:left;">
 x
@@ -2762,7 +2762,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_screener\_augment
+Lrnr_screener_augment
 </td>
 <td style="text-align:left;">
 x
@@ -2812,7 +2812,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_screener\_coefs
+Lrnr_screener_coefs
 </td>
 <td style="text-align:left;">
 x
@@ -2862,7 +2862,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_screener\_correlation
+Lrnr_screener_correlation
 </td>
 <td style="text-align:left;">
 √
@@ -2912,7 +2912,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_screener\_importance
+Lrnr_screener_importance
 </td>
 <td style="text-align:left;">
 x
@@ -2962,7 +2962,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_sl
+Lrnr_sl
 </td>
 <td style="text-align:left;">
 x
@@ -3012,7 +3012,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_solnp
+Lrnr_solnp
 </td>
 <td style="text-align:left;">
 √
@@ -3062,7 +3062,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_solnp\_density
+Lrnr_solnp_density
 </td>
 <td style="text-align:left;">
 x
@@ -3112,7 +3112,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_stratified
+Lrnr_stratified
 </td>
 <td style="text-align:left;">
 √
@@ -3162,7 +3162,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_subset\_covariates
+Lrnr_subset_covariates
 </td>
 <td style="text-align:left;">
 x
@@ -3212,7 +3212,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_svm
+Lrnr_svm
 </td>
 <td style="text-align:left;">
 √
@@ -3262,7 +3262,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_ts\_weights
+Lrnr_ts_weights
 </td>
 <td style="text-align:left;">
 x
@@ -3312,7 +3312,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_tsDyn
+Lrnr_tsDyn
 </td>
 <td style="text-align:left;">
 x
@@ -3362,7 +3362,7 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
-Lrnr\_xgboost
+Lrnr_xgboost
 </td>
 <td style="text-align:left;">
 √
