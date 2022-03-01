@@ -80,6 +80,16 @@
 <ul><li>Added <code>Lrnr_glmtree</code>, which uses the
 <code>partykit</code> R package to fit recursive partitioning and
 regression trees in a generalized linear model.</li>
+<li>Added fold-specific SL coefficients to the output of
+<code>CV_lrnr_sl</code>, and removed the coefficients column from the
+returned <code>cv_risk</code> table.</li>
+<li>Added <code>get_sl_revere_risk</code> argument to
+<code>Lrnr_sl</code>’s <code>cv_risk</code> method to provide the option
+(with default of <code>FALSE</code>) to add a super learner’s
+revere-based risk (not a true cross-validated risk) to
+<code>cv_risk</code> output.</li>
+<li>Changed default metalearner to <code>Lrnr_nnls</code> for binary and
+continuous outcomes.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.4.4" id="sl3-144">sl3 1.4.4<a class="anchor" aria-label="anchor" href="#sl3-144"></a></h2>

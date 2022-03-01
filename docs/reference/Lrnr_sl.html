@@ -98,50 +98,80 @@ learners.</p>
     <h2>Parameters</h2>
     
 
-<dl><dt><code>learners</code></dt>
-<dd><p>The "library" of learners to include</p></dd>
+<ul><li><p><code>learners</code>: The "library" of user-specified algorithms for the
+super learner to consider as candidates.</p></li>
+<li><p><code>metalearner = NULL</code>: The metalearner to be fit on cross-validated
+predictions from the candidates. If <code>NULL</code>, the
+<code><a href="default_metalearner.html">default_metalearner</a> is used to construct a metalearner
+based on the <code>outcome_type</code> of the training <code>task</code>.
+ <code>cv_control = NULL</code>: Optional list of arguments that will be used to
+define a specific cross-validation fold structure for fitting the
+super learner. Intended for use in a nested cross-validation scheme,
+such as cross-validated super learner (<code>CV_Lrnr_sl</code>) or
+when <code>Lrnr_sl</code> is considered in the list of candidate
+<code>learners</code> in another <code>Lrnr_sl</code>. Includes the arguments
+listed below, and any others to be passed to
+<code>fold_fun</code>:
+<ul><li><p><code>strata = NULL</code>: Optional column name to define stratified
+cross-validation folds. If <code>NULL</code> and if
+<code>task$outcome_type$type</code> is binary or categorical, then the
+default behavior is to consider stratified cross-validation, where
+the strata are defined with respect to the outcome. To override the
+default behavior, i.e., to not consider stratified cross-validation
+when <code>strata = NULL</code> and <code>task$outcome_type$type</code> is
+binary or categorical is not <code>NULL</code>, set <code>strata = "none"</code>.</p></li>
+<li><p><code>id</code>: Optional column name to define clustered
+cross-validation, so dependent units are placed together
+in the same training sets and in the same validation set. If
+<code>NULL</code> and <code>task$nodes$id</code> is not <code>NULL</code>, then the
+default behavior is to consider <code>task$nodes$id</code> for
+defining clustered cross-validation scheme. To override the default
+behavior, i.e., to not consider clustered cross-validation when
+<code>task$nodes$id</code> is not <code>NULL</code>, set <code>id = "none"</code>.</p></li>
+<li><p><code>fold_fun</code>: A function indicating the <span class="pkg">origami</span>
+cross-validation scheme to use, such as
+<code><a href="http://tlverse.org/origami/reference/fold_funs.html" class="external-link">folds_vfold</a></code> for V-fold cross-validation.
+See <code><a href="http://tlverse.org/origami/reference/fold_funs.html" class="external-link">fold_funs</a></code> for a list of possibilities.
+If <code>NULL</code> and if other <code>cv_control</code> arguments are
+specified, e.g., <code>V</code>, <code>strata</code> or <code>id</code>, then the
+default behavior is to set <code>fold_fun = folds_vfold</code>.</p></li>
+<li><p><code>...</code>: Other arguments to be passed to <code>fold_fun</code>, such as
+<code>V</code> for <code>fold_fun = folds_vfold</code>. See
+<code><a href="http://tlverse.org/origami/reference/fold_funs.html" class="external-link">fold_funs</a></code> for a list fold-function-specific
+possible arguments.</p></li>
+</ul><code>keep_extra = TRUE</code>: Stores all sub-parts of the super learner
+computation. When <code>FALSE</code>, the resulting object has a memory
+footprint that is significantly reduced through the discarding of
+intermediary data structures.
+ <code>...</code>: Additional parameters passed to <code><a href="Lrnr_base.html">Lrnr_base</a></code>.
+</code></p></li>
+</ul><p>data(cpp_imputed)
+covs &lt;- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
+task &lt;- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
+# this is just for illustrative purposes, not intended for real applications
+# of the super learner!
+glm_lrn &lt;- Lrnr_glm$new()
+ranger_lrn &lt;- Lrnr_ranger$new()
+lasso &lt;- Lrnr_glmnet$new()
+ensemble_sl &lt;- Lrnr_sl$new(learners = list(glm_lrn, ranger_lrn, lasso))
+ensemble_sl_fit &lt;- ensemble_sl$train(task)
+# example with cv_control, where Lrnr_sl included as a candidate
+ensemble_sl2 &lt;- Lrnr_sl$new(
+  learners = list(glm_learner, ranger_learner, lasso),
+  cv_control = list(fold_fun = folds_vfold, V = 5)
+)
+discrete_sl &lt;- Lrnr_sl$new(
+  learners = list(glm_lrn, ranger_lrn, lasso, ensemble_sl2),
+  metalearner = Lrnr_cv_selector$new(loss_squared_error)
+)
+discrete_sl_fit &lt;- discrete_sl$train(task)
+# example with cv_control, where we use cross-validated super learner
+cv_sl &lt;- CV_lrnr_sl(
+  lrnr_sl = ensemble_sl2, task = task, eval_fun = loss_squared_error
+)
 
-<dt><code>metalearner</code></dt>
-<dd><p>The metalearner to be fit on predictions from
-the library.</p></dd>
- If null, <a href="default_metalearner.html">default_metalearner</a> is used to
-    construct a metalearner based on the outcome_type of the training task.
-<dt><code>folds=NULL</code></dt>
-<dd><p>An <code>origami</code> folds object. If <code>NULL</code>,
-folds from the task are used.</p></dd>
 
-<dt><code>keep_extra=TRUE</code></dt>
-<dd><p>Stores all sub-parts of the SL computation.
-When set to <code>FALSE</code> the resultant object has a memory footprint
-that is significantly reduced through the discarding of intermediary
-data structures.</p></dd>
-
-<dt><code>...</code></dt>
-<dd><p>Not used.</p></dd>
-
-
-</dl></div>
-    <div id="common-parameters">
-    <h2>Common Parameters</h2>
-    
-
-
-<p>Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by <code>Lrnr_base</code>, and shared
-by all learners.</p>
-<dl><dt><code>covariates</code></dt>
-<dd><p>A character vector of covariates. The learner will use this to subset the covariates for any specified task</p></dd>
-
-<dt><code>outcome_type</code></dt>
-<dd><p>A <code><a href="variable_type.html">variable_type</a></code> object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified</p></dd>
-
-<dt><code>...</code></dt>
-<dd><p>All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating</p></dd>
-
-
-</dl></div>
-    <div id="see-also">
-    <h2>See also</h2>
-    <div class="dont-index"><p>Other Learners: 
+Other Learners: 
 <code><a href="Custom_chain.html">Custom_chain</a></code>,
 <code><a href="Lrnr_HarmonicReg.html">Lrnr_HarmonicReg</a></code>,
 <code><a href="Lrnr_arima.html">Lrnr_arima</a></code>,
@@ -206,7 +236,10 @@ by all learners.</p>
 <code><a href="Pipeline.html">Pipeline</a></code>,
 <code><a href="Stack.html">Stack</a></code>,
 <code><a href="Lrnr_h2o_glm.html">define_h2o_X</a>()</code>,
-<code><a href="undocumented_learner.html">undocumented_learner</a></code></p></div>
+<code><a href="undocumented_learner.html">undocumented_learner</a></code>
+
+Learners
+data</p>
     </div>
 
   </div>
