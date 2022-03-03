@@ -87,12 +87,14 @@ learners.</p>
 
     <div id="format">
     <h2>Format</h2>
-    <p><code>R6Class</code> object.</p>
+    <p>An <code><a href="https://r6.r-lib.org/reference/R6Class.html" class="external-link">R6Class</a></code> object inheriting from
+<code><a href="Lrnr_base.html">Lrnr_base</a></code>.</p>
     </div>
     <div id="value">
     <h2>Value</h2>
-    <p>Learner object with methods for training and prediction. See
-<code><a href="Lrnr_base.html">Lrnr_base</a></code> for documentation on learners.</p>
+    <p>A learner object inheriting from <code><a href="Lrnr_base.html">Lrnr_base</a></code> with
+methods for training and prediction. For a full list of learner
+functionality, see the complete documentation of <code><a href="Lrnr_base.html">Lrnr_base</a></code>.</p>
     </div>
     <div id="parameters">
     <h2>Parameters</h2>
@@ -116,17 +118,18 @@ listed below, and any others to be passed to
 cross-validation folds. If <code>NULL</code> and if
 <code>task$outcome_type$type</code> is binary or categorical, then the
 default behavior is to consider stratified cross-validation, where
-the strata are defined with respect to the outcome. To override the
-default behavior, i.e., to not consider stratified cross-validation
-when <code>strata = NULL</code> and <code>task$outcome_type$type</code> is
-binary or categorical is not <code>NULL</code>, set <code>strata = "none"</code>.</p></li>
-<li><p><code>id</code>: Optional column name to define clustered
-cross-validation, so dependent units are placed together
-in the same training sets and in the same validation set. If
-<code>NULL</code> and <code>task$nodes$id</code> is not <code>NULL</code>, then the
-default behavior is to consider <code>task$nodes$id</code> for
-defining clustered cross-validation scheme. To override the default
-behavior, i.e., to not consider clustered cross-validation when
+the strata are defined with respect to the outcome. To override
+the default behavior, i.e., to not consider stratified
+cross-validation when <code>strata = NULL</code> and
+<code>task$outcome_type$type</code> is binary or categorical is not
+<code>NULL</code>, set <code>strata = "none"</code>.</p></li>
+<li><p><code>id</code>: Optional column name to define clustered cross-validation,
+so dependent units are placed together in the same training sets
+and in the same validation set. If <code>NULL</code> and
+<code>task$nodes$id</code> is not <code>NULL</code>, then the default behavior
+is to consider <code>task$nodes$id</code> for defining clustered
+cross-validation scheme. To override the default behavior, i.e.,
+to not consider clustered cross-validation when
 <code>task$nodes$id</code> is not <code>NULL</code>, set <code>id = "none"</code>.</p></li>
 <li><p><code>fold_fun</code>: A function indicating the <span class="pkg">origami</span>
 cross-validation scheme to use, such as
@@ -143,7 +146,8 @@ possible arguments.</p></li>
 computation. When <code>FALSE</code>, the resulting object has a memory
 footprint that is significantly reduced through the discarding of
 intermediary data structures.
- <code>...</code>: Additional parameters passed to <code><a href="Lrnr_base.html">Lrnr_base</a></code>.
+ <code>...</code>: Any additional parameters that can be considered by
+<code><a href="Lrnr_base.html">Lrnr_base</a></code>.
 </code></p></li>
 </ul><p>data(cpp_imputed)
 covs &lt;- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
