@@ -16,10 +16,12 @@ utils::globalVariables(c("self"))
 #'
 #' @keywords data
 #'
-#' @return Learner object with methods for training and prediction. See
-#'  \code{\link{Lrnr_base}} for documentation on learners.
+#' @return A learner object inheriting from \code{\link{Lrnr_base}} with
+#'  methods for training and prediction. For a full list of learner
+#'  functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 #'
-#' @format \code{\link{R6Class}} object.
+#' @format An \code{\link[R6]{R6Class}} object inheriting from
+#'  \code{\link{Lrnr_base}}.
 #'
 #' @family Learners
 #'
@@ -39,37 +41,39 @@ utils::globalVariables(c("self"))
 #'       listed below, and any others to be passed to
 #'       \code{\link[origami]{fold_fun}}:
 #'       - \code{strata = NULL}: Optional column name to define stratified
-#'         cross-validation folds. If \code{NULL} and if
-#'         \code{task$outcome_type$type} is binary or categorical, then the
-#'         default behavior is to consider stratified cross-validation, where
-#'         the strata are defined with respect to the outcome. To override the
-#'         default behavior, i.e., to not consider stratified cross-validation
-#'         when \code{strata = NULL} and \code{task$outcome_type$type} is
-#'         binary or categorical is not \code{NULL}, set \code{strata = "none"}.
-#'       - \code{id}: Optional column name to define clustered
-#'         cross-validation, so dependent units are placed together
-#'         in the same training sets and in the same validation set. If
-#'         \code{NULL} and \code{task$nodes$id} is not \code{NULL}, then the
-#'         default behavior is to consider \code{task$nodes$id} for
-#'         defining clustered cross-validation scheme. To override the default
-#'         behavior, i.e., to not consider clustered cross-validation when
-#'         \code{task$nodes$id} is not \code{NULL}, set \code{id = "none"}.
+#'           cross-validation folds. If \code{NULL} and if
+#'           \code{task$outcome_type$type} is binary or categorical, then the
+#'           default behavior is to consider stratified cross-validation, where
+#'           the strata are defined with respect to the outcome. To override 
+#'           the default behavior, i.e., to not consider stratified 
+#'           cross-validation when \code{strata = NULL} and 
+#'           \code{task$outcome_type$type} is binary or categorical is not 
+#'           \code{NULL}, set \code{strata = "none"}.
+#'       - \code{id}: Optional column name to define clustered cross-validation, 
+#'           so dependent units are placed together in the same training sets 
+#'           and in the same validation set. If \code{NULL} and 
+#'           \code{task$nodes$id} is not \code{NULL}, then the default behavior 
+#'           is to consider \code{task$nodes$id} for defining clustered 
+#'           cross-validation scheme. To override the default behavior, i.e., 
+#'           to not consider clustered cross-validation when 
+#'           \code{task$nodes$id} is not \code{NULL}, set \code{id = "none"}.
 #'       - \code{fold_fun}: A function indicating the \pkg{origami}
-#'         cross-validation scheme to use, such as
-#'         \code{\link[origami]{folds_vfold}} for V-fold cross-validation.
-#'         See \code{\link[origami]{fold_funs}} for a list of possibilities.
-#'         If \code{NULL} and if other \code{cv_control} arguments are
-#'         specified, e.g., \code{V}, \code{strata} or \code{id}, then the
-#'         default behavior is to set \code{fold_fun = folds_vfold}.
+#'           cross-validation scheme to use, such as 
+#'           \code{\link[origami]{folds_vfold}} for V-fold cross-validation.
+#'           See \code{\link[origami]{fold_funs}} for a list of possibilities.
+#'           If \code{NULL} and if other \code{cv_control} arguments are
+#'           specified, e.g., \code{V}, \code{strata} or \code{id}, then the
+#'           default behavior is to set \code{fold_fun = folds_vfold}.
 #'       - \code{...}: Other arguments to be passed to \code{fold_fun}, such as
-#'         \code{V} for \code{fold_fun = folds_vfold}. See
-#'         \code{\link[origami]{fold_funs}} for a list fold-function-specific
-#'         possible arguments.
+#'           \code{V} for \code{fold_fun = folds_vfold}. See 
+#'           \code{\link[origami]{fold_funs}} for a list fold-function-specific
+#'           possible arguments.
 #'   - \code{keep_extra = TRUE}: Stores all sub-parts of the super learner
 #'       computation. When \code{FALSE}, the resulting object has a memory
 #'       footprint that is significantly reduced through the discarding of
 #'       intermediary data structures.
-#'   - \code{...}: Additional parameters passed to \code{\link{Lrnr_base}}.
+#'   - \code{...}: Any additional parameters that can be considered by
+#'       \code{\link{Lrnr_base}}.
 #'
 #' @examples
 #' data(cpp_imputed)
@@ -100,7 +104,7 @@ Lrnr_sl <- R6Class(
   classname = "Lrnr_sl", inherit = Lrnr_base, portable = TRUE,
   class = TRUE,
   public = list(
-    initialize = function(learners, metalearner = NULL, cv_control = NULL,
+    initialize = function(learners, metalearner = "default", cv_control = NULL,
                           keep_extra = TRUE, ...) {
 
       # kludge to deal with stack as learners
@@ -119,7 +123,7 @@ Lrnr_sl <- R6Class(
         keep_extra = keep_extra,
         ...
       )
-      super$initialize(params = params)
+      super$initialize(params = params, ...)
     },
     print = function() {
       if (!self$is_trained) {
