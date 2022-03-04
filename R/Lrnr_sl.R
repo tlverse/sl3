@@ -30,8 +30,8 @@
 #'       predictions from the candidates. If \code{NULL}, the
 #'       \code{\link{default_metalearner}} is used to construct a metalearner
 #'       based on the \code{outcome_type} of the training \code{task}.
-#'   - \code{cv_control = NULL}: Optional list of arguments that will be used to
-#'       define a specific cross-validation fold structure for fitting the
+#'   - \code{cv_control = NULL}: Optional list of arguments that will be used
+#'       to define a specific cross-validation fold structure for fitting the
 #'       super learner. Intended for use in a nested cross-validation scheme,
 #'       such as cross-validated super learner (\code{\link{CV_lrnr_sl}}) or
 #'       when \code{Lrnr_sl} is considered in the list of candidate
@@ -47,9 +47,9 @@
 #'           cross-validation when \code{strata = NULL} and
 #'           \code{task$outcome_type$type} is binary or categorical is not
 #'           \code{NULL}, set \code{strata = "none"}.
-#'       - \code{id}: Optional column name to define clustered cross-validation,
-#'           so dependent units are placed together in the same training sets
-#'           and in the same validation set. If \code{NULL} and
+#'       - \code{id}: Optional column name to define clustered cross-validation
+#'           schemes, so dependent units are placed together in the same
+#'           training sets and in the same validation set. If \code{NULL} and
 #'           \code{task$nodes$id} is not \code{NULL}, then the default behavior
 #'           is to consider \code{task$nodes$id} for defining clustered
 #'           cross-validation scheme. To override the default behavior, i.e.,
@@ -293,13 +293,16 @@ Lrnr_sl <- R6Class(
         task <- task$compute()
       }
 
+      # extract CV control object
       cv_control <- self$params$cv_control
+
       if (is.null(cv_control) | is.null(unlist(cv_control))) {
         # TODO: this breaks if task is delayed
         folds <- task$folds
       } else {
         # initialize args for make_folds (cv_args) with cv_control ... args
-        cv_args <- cv_control[!names(cv_control) %in% c("fold_fun", "strata", "id")]
+        cv_args <- cv_control[!names(cv_control) %in%
+                              c("fold_fun", "strata", "id")]
 
         # set fold function
         if (is.null(cv_control$fold_fun)) {
@@ -310,7 +313,7 @@ Lrnr_sl <- R6Class(
           )
         } else {
           cv_args$fold_fun <- cv_control$fold_fun
-          if (class(cv_control$fold_fun) != "function") {
+          if (!is.function(cv_control$fold_fun)) {
             stop(
               "The specified fold_fun is not a function. Make sure the fold ",
               "function is provided in the origami package. See the Lrnr_sl ",
@@ -358,7 +361,7 @@ Lrnr_sl <- R6Class(
             )
           }
         } else {
-          if (cv_control$strata != "none" &
+          if ((is.null(cv_control$strata) || cv_control$strata != "none") &
             task$outcome_type$type %in% c("binomial", "categorical")) {
             # stratified cross-validation folds for discrete outcomes
             cv_args$strata_ids <- task$Y
@@ -376,7 +379,9 @@ Lrnr_sl <- R6Class(
 
         # don't use stratified CV if clusters are not nested in strata
         if (!is.null(cv_args$cluster_ids) & !is.null(cv_args$strata_ids)) {
-          is_nested <- all(rowSums(table(cv_args$cluster_ids, cv_args$strata_ids) > 0) == 1)
+          is_nested <- all(
+            rowSums(table(cv_args$cluster_ids, cv_args$strata_ids) > 0) == 1
+          )
           if (!is_nested) {
             cv_args <- cv_args[!(names(cv_args) == "strata_ids")]
             warning(
@@ -388,7 +393,7 @@ Lrnr_sl <- R6Class(
             if (length(unique(cv_args$cluster_ids)) < cv_args$V) {
               cv_args <- cv_args[!(names(cv_args) == "cluster_ids")]
               warning(
-                "There are less clusters, i.e., less unique ids, than V so ",
+                "There are fewer clusters, i.e., fewer unique IDs, than V so ",
                 "clustered cross-validation will not be considered."
               )
             }
@@ -401,6 +406,14 @@ Lrnr_sl <- R6Class(
             }
           }
         }
+
+        browser()
+        # per origami, set sample size if cluster IDs and strata IDs absent
+        if (!all(c("cluster_ids", "strata_ids") %in% names(cv_args))) {
+          cv_args$n <- task$nrow
+        }
+
+        # set folds
         folds <- do.call(origami::make_folds, cv_args)
       }
 
@@ -417,7 +430,7 @@ Lrnr_sl <- R6Class(
       cv_stack <- Lrnr_cv$new(learner_stack, folds = folds, full_fit = TRUE)
 
       # TODO: read custom chain w/ better cv chain code
-      # cv_stack$custom_chain(drop_offsets_chain)
+      #cv_stack$custom_chain(drop_offsets_chain)
 
       # fit stack on CV data
       cv_fit <- delayed_learner_train(cv_stack, task)
@@ -452,8 +465,8 @@ Lrnr_sl <- R6Class(
       } else {
         keep <- c("full_fit")
         # TODO: replace learners with zero weight with smaller fit objects
-        # coefs <- self$coefficients
-        # nz_learners <- which(coefs > 0)
+        #coefs <- self$coefficients
+        #nz_learners <- which(coefs > 0)
       }
       return(fit_object[keep])
     },
@@ -468,18 +481,17 @@ Lrnr_sl <- R6Class(
 #' Chain while dropping offsets
 #'
 #' Allows the dropping of offsets when calling the chain method. This is simply
-#' a modified version of the chain method found in \code{Lrnr_base}. INTERNAL
-#' USE ONLY.
+#' a modified version of the chain method found in \code{\link{Lrnr_base}}.
+#' INTERNAL USE ONLY.
 #'
 #' @param task An object of class \code{sl3_Task}.
 #'
 #' @keywords internal
-#
 drop_offsets_chain <- function(learner, task) {
   # pull out the validation task if we're in a revere context
   task <- task$revere_fold_task("validation")
   predictions <- learner$predict(task)
-  predictions <- as.data.table(predictions)
+  predictions <- data.table::as.data.table(predictions)
   # Add predictions as new columns
   if (nrow(task$data) != nrow(predictions)) {
     # Gather validation indexes:
@@ -491,7 +503,7 @@ drop_offsets_chain <- function(learner, task) {
   } else {
     new_col_names <- task$add_columns(predictions, learner$fit_uuid)
   }
-  # new_covariates = union(names(predictions),task$nodes$covariates)
+  #new_covariates = union(names(predictions), task$nodes$covariates)
   return(task$next_in_chain(
     covariates = names(predictions),
     column_names = new_col_names,

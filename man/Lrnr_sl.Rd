@@ -27,8 +27,8 @@ super learner to consider as candidates.
 predictions from the candidates. If \code{NULL}, the
 \code{\link{default_metalearner}} is used to construct a metalearner
 based on the \code{outcome_type} of the training \code{task}.
-\item \code{cv_control = NULL}: Optional list of arguments that will be used to
-define a specific cross-validation fold structure for fitting the
+\item \code{cv_control = NULL}: Optional list of arguments that will be used
+to define a specific cross-validation fold structure for fitting the
 super learner. Intended for use in a nested cross-validation scheme,
 such as cross-validated super learner (\code{\link{CV_lrnr_sl}}) or
 when \code{Lrnr_sl} is considered in the list of candidate
@@ -45,9 +45,9 @@ the default behavior, i.e., to not consider stratified
 cross-validation when \code{strata = NULL} and
 \code{task$outcome_type$type} is binary or categorical is not
 \code{NULL}, set \code{strata = "none"}.
-\item \code{id}: Optional column name to define clustered cross-validation,
-so dependent units are placed together in the same training sets
-and in the same validation set. If \code{NULL} and
+\item \code{id}: Optional column name to define clustered cross-validation
+schemes, so dependent units are placed together in the same
+training sets and in the same validation set. If \code{NULL} and
 \code{task$nodes$id} is not \code{NULL}, then the default behavior
 is to consider \code{task$nodes$id} for defining clustered
 cross-validation scheme. To override the default behavior, i.e.,
