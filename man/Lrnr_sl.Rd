@@ -82,16 +82,16 @@ task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
 # of the super learner!
 glm_lrn <- Lrnr_glm$new()
 ranger_lrn <- Lrnr_ranger$new()
-lasso <- Lrnr_glmnet$new()
-ensemble_sl <- Lrnr_sl$new(learners = list(glm_lrn, ranger_lrn, lasso))
+lasso_lrn <- Lrnr_glmnet$new()
+ensemble_sl <- Lrnr_sl$new(learners = list(glm_lrn, ranger_lrn, lasso_lrn))
 ensemble_sl_fit <- ensemble_sl$train(task)
 # example with cv_control, where Lrnr_sl included as a candidate
 ensemble_sl2 <- Lrnr_sl$new(
-  learners = list(glm_learner, ranger_learner, lasso),
-  cv_control = list(fold_fun = folds_vfold, V = 5)
+  learners = list(glm_lrn, ranger_lrn, lasso_lrn),
+  cv_control = list(fold_fun = origami::folds_vfold, V = 5L)
 )
 discrete_sl <- Lrnr_sl$new(
-  learners = list(glm_lrn, ranger_lrn, lasso, ensemble_sl2),
+  learners = list(glm_lrn, ranger_lrn, lasso_lrn, ensemble_sl2),
   metalearner = Lrnr_cv_selector$new(loss_squared_error)
 )
 discrete_sl_fit <- discrete_sl$train(task)

@@ -5,6 +5,8 @@
 #' @param eval_fun the evaluation function, either a loss or risk function, for
 #'  evaluating the Super Learner's predictions.
 #'
+#' @importFrom stats coef
+#'
 #' @export
 CV_lrnr_sl <- function(lrnr_sl, task, eval_fun) {
   # check arguments
@@ -31,7 +33,7 @@ CV_lrnr_sl <- function(lrnr_sl, task, eval_fun) {
     coefs <- do.call(
       rbind,
       lapply(seq_along(cv_sl_fit$fit_object$fold_fits), function(i) {
-        coefs <- coef(cv_sl_fit$fit_object$fold_fits[[i]]$fit_object$cv_meta_fit)
+        coefs <- stats::coef(cv_sl_fit$fit_object$fold_fits[[i]]$fit_object$cv_meta_fit)
         c("fold" = i, coefs)
       })
     )

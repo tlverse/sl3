@@ -95,7 +95,6 @@ importance <- function(fit, eval_fun = NULL,
                        type = c("remove", "permute"),
                        importance_metric = c("difference", "ratio"),
                        covariate_groups = NULL) {
-
   # check fit is trained
   if (!fit$is_trained) {
     stop("Fit is not trained.")
@@ -108,7 +107,7 @@ importance <- function(fit, eval_fun = NULL,
   if (is.null(eval_fun)) {
     outcome_type <- fit$training_task$outcome_type$type
     if (outcome_type %in% c("constant", "binomial")) {
-      eval_fun <- squared_error
+      eval_fun <- loss_squared_error
     } else if (outcome_type == "categorical") {
       eval_fun <- loss_loglik_multinomial
     } else if (outcome_type == "continuous") {

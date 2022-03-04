@@ -1,19 +1,10 @@
-<<<<<<< HEAD
-pandoc: 2.9.2.1
-pkgdown: 1.6.1
-=======
-pandoc: 2.17.0.1
+pandoc: '2.5'
 pkgdown: 2.0.2
->>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 pkgdown_sha: ~
 articles:
   custom_lrnrs: custom_lrnrs.html
   intro_sl3: intro_sl3.html
-<<<<<<< HEAD
-last_built: 2022-01-26T20:03Z
-=======
-last_built: 2022-03-02T23:44Z
->>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
+last_built: 2022-03-04T20:48Z
 urls:
   reference: https://tlverse.org/sl3/reference
   article: https://tlverse.org/sl3/articles
