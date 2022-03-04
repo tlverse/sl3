@@ -95,8 +95,7 @@ Suggests:
 Remotes:
     github::tlverse/origami,
     github::tlverse/hal9001@devel,
-    github::nhejazi/haldensify,
-    github::andyliaw/rf-pkg/randomForest
+    github::nhejazi/haldensify
 License: GPL-3
 Language: en-US
 URL: https://tlverse.org/sl3

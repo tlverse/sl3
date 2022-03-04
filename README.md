@@ -315,9 +315,13 @@ wrapper
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_arima
 
+=======
+Lrnr_arima
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -415,9 +419,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_bartMachine
 
+=======
+Lrnr_bartMachine
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -515,9 +523,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_bayesglm
 
+=======
+Lrnr_bayesglm
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -615,9 +627,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_bilstm
 
+=======
+Lrnr_bilstm
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -715,9 +731,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_bound
 
+=======
+Lrnr_bound
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -815,9 +835,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_caret
 
+=======
+Lrnr_caret
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -915,9 +939,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_cv
 
+=======
+Lrnr_cv
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -1015,9 +1043,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_cv\_selector
 
+=======
+Lrnr_cv_selector
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -1115,9 +1147,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_dbarts
 
+=======
+Lrnr_dbarts
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -1215,9 +1251,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_define\_interactions
 
+=======
+Lrnr_define_interactions
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -1315,9 +1355,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_density\_discretize
 
+=======
+Lrnr_density_discretize
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -1415,9 +1459,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_density\_hse
 
+=======
+Lrnr_density_hse
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -1515,9 +1563,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_density\_semiparametric
 
+=======
+Lrnr_density_semiparametric
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -1615,9 +1667,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_earth
 
+=======
+Lrnr_earth
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -1715,9 +1771,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_expSmooth
 
+=======
+Lrnr_expSmooth
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -1815,9 +1875,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_ga
 
+=======
+Lrnr_ga
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -1915,9 +1979,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_gam
 
+=======
+Lrnr_gam
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -2015,9 +2083,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_gbm
 
+=======
+Lrnr_gbm
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -2115,9 +2187,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_glm
 
+=======
+Lrnr_glm
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -2215,9 +2291,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_glm\_fast
 
+=======
+Lrnr_glm_fast
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -2315,9 +2395,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_glmnet
 
+=======
+Lrnr_glmnet
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -2415,9 +2499,63 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_grf
 
+=======
+Lrnr_glmtree
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_grf
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -2515,9 +2653,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_gru\_keras
 
+=======
+Lrnr_gru_keras
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -2615,9 +2757,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_gts
 
+=======
+Lrnr_gts
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -2715,9 +2861,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_h2o\_glm
 
+=======
+Lrnr_h2o_glm
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -2815,9 +2965,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_h2o\_grid
 
+=======
+Lrnr_h2o_grid
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -2915,9 +3069,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_hal9001
 
+=======
+Lrnr_hal9001
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -3015,9 +3173,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_haldensify
 
+=======
+Lrnr_haldensify
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -3115,9 +3277,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_HarmonicReg
 
+=======
+Lrnr_HarmonicReg
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -3215,9 +3381,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_hts
 
+=======
+Lrnr_hts
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -3315,9 +3485,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_independent\_binomial
 
+=======
+Lrnr_independent_binomial
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -3415,9 +3589,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_lightgbm
 
+=======
+Lrnr_lightgbm
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -3515,9 +3693,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_lstm\_keras
 
+=======
+Lrnr_lstm_keras
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -3615,9 +3797,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_mean
 
+=======
+Lrnr_mean
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -3715,9 +3901,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_multiple\_ts
 
+=======
+Lrnr_multiple_ts
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -3815,9 +4005,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_multivariate
 
+=======
+Lrnr_multivariate
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -3915,9 +4109,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_nnet
 
+=======
+Lrnr_nnet
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -4015,9 +4213,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_nnls
 
+=======
+Lrnr_nnls
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -4115,9 +4317,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_optim
 
+=======
+Lrnr_optim
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -4215,9 +4421,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_pca
 
+=======
+Lrnr_pca
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -4315,9 +4525,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_pkg\_SuperLearner
 
+=======
+Lrnr_pkg_SuperLearner
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -4415,9 +4629,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_pkg\_SuperLearner\_method
 
+=======
+Lrnr_pkg_SuperLearner_method
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -4515,9 +4733,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_pkg\_SuperLearner\_screener
 
+=======
+Lrnr_pkg_SuperLearner_screener
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -4615,9 +4837,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_polspline
 
+=======
+Lrnr_polspline
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -4715,9 +4941,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_pooled\_hazards
 
+=======
+Lrnr_pooled_hazards
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -4815,9 +5045,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_randomForest
 
+=======
+Lrnr_randomForest
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -4915,9 +5149,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_ranger
 
+=======
+Lrnr_ranger
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -5015,9 +5253,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_revere\_task
 
+=======
+Lrnr_revere_task
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -5115,9 +5357,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_rpart
 
+=======
+Lrnr_rpart
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -5215,9 +5461,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_rugarch
 
+=======
+Lrnr_rugarch
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -5315,9 +5565,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_screener\_augment
 
+=======
+Lrnr_screener_augment
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -5415,9 +5669,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_screener\_coefs
 
+=======
+Lrnr_screener_coefs
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -5515,9 +5773,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_screener\_correlation
 
+=======
+Lrnr_screener_correlation
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -5615,9 +5877,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_screener\_importance
 
+=======
+Lrnr_screener_importance
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -5715,9 +5981,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_sl
 
+=======
+Lrnr_sl
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -5815,9 +6085,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_solnp
 
+=======
+Lrnr_solnp
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -5915,9 +6189,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_solnp\_density
 
+=======
+Lrnr_solnp_density
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -6015,9 +6293,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_stratified
 
+=======
+Lrnr_stratified
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -6115,9 +6397,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_subset\_covariates
 
+=======
+Lrnr_subset_covariates
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -6215,9 +6501,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_svm
 
+=======
+Lrnr_svm
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -6315,9 +6605,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_ts\_weights
 
+=======
+Lrnr_ts_weights
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -6415,9 +6709,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_tsDyn
 
+=======
+Lrnr_tsDyn
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">
@@ -6515,9 +6813,13 @@ x
 <tr>
 
 <td style="text-align:left;">
+<<<<<<< HEAD
 
 Lrnr\_xgboost
 
+=======
+Lrnr_xgboost
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </td>
 
 <td style="text-align:left;">

@@ -250,6 +250,7 @@ will be added as additional single-covariate groups.</p></td>
 
     <p>A <code>data.table</code> of variable importance for each covariate.</p>
 
+<<<<<<< HEAD
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># define ML task</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>cpp_imputed</span><span class='op'>)</span>
@@ -288,6 +289,50 @@ will be added as additional single-covariate groups.</p></td>
 #&gt; 1:          scores     7.21635410
 #&gt; 2:        maternal     0.14856504
 #&gt; 3:        gagebrth     0.02746983</div></pre>
+=======
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># define ML task</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cpp_imputed</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">covs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"apgar1"</span>, <span class="st">"apgar5"</span>, <span class="st">"parity"</span>, <span class="st">"gagebrth"</span>, <span class="st">"mage"</span>, <span class="st">"meducyrs"</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">task</span> <span class="op">&lt;-</span> <span class="va"><a href="sl3_Task.html">sl3_Task</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">cpp_imputed</span>, covariates <span class="op">=</span> <span class="va">covs</span>, outcome <span class="op">=</span> <span class="st">"haz"</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># build relatively fast learner library (not recommended for real analysis)</span></span>
+<span class="r-in"><span class="va">lasso_lrnr</span> <span class="op">&lt;-</span> <span class="va"><a href="Lrnr_glmnet.html">Lrnr_glmnet</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">glm_lrnr</span> <span class="op">&lt;-</span> <span class="va"><a href="Lrnr_glm.html">Lrnr_glm</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">ranger_lrnr</span> <span class="op">&lt;-</span> <span class="va"><a href="Lrnr_ranger.html">Lrnr_ranger</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">lrnrs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">lasso_lrnr</span>, <span class="va">glm_lrnr</span>, <span class="va">ranger_lrnr</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">lrnrs</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lasso"</span>, <span class="st">"glm"</span>, <span class="st">"ranger"</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">lrnr_stack</span> <span class="op">&lt;-</span> <span class="fu"><a href="Lrnr_base.html">make_learner</a></span><span class="op">(</span><span class="va">Stack</span>, <span class="va">lrnrs</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># instantiate SL with default metalearner</span></span>
+<span class="r-in"><span class="va">sl</span> <span class="op">&lt;-</span> <span class="va"><a href="Lrnr_sl.html">Lrnr_sl</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">lrnr_stack</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">sl_fit</span> <span class="op">&lt;-</span> <span class="va">sl</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="va">importance_result</span> <span class="op">&lt;-</span> <span class="fu">importance</span><span class="op">(</span><span class="va">sl_fit</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">importance_result</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    covariate MSE_difference</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:      mage    0.040608894</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:  gagebrth    0.036859927</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:  meducyrs    0.031922546</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:    parity    0.013104603</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:    apgar1    0.009137435</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6:    apgar5   -0.001324504</span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># importance with groups of covariates</span></span>
+<span class="r-in"><span class="va">groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span class="r-in">  scores <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"apgar1"</span>, <span class="st">"apgar5"</span><span class="op">)</span>,</span>
+<span class="r-in">  maternal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"parity"</span>, <span class="st">"mage"</span>, <span class="st">"meducyrs"</span><span class="op">)</span></span>
+<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span class="va">importance_result_groups</span> <span class="op">&lt;-</span> <span class="fu">importance</span><span class="op">(</span><span class="va">sl_fit</span>, covariate_groups <span class="op">=</span> <span class="va">groups</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">importance_result_groups</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    covariate_group MSE_difference</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:          scores     7.92634444</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:        maternal     0.15156113</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:        gagebrth     0.03300549</span>
+</code></pre></div>
+    </div>
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -297,6 +342,7 @@ will be added as additional single-covariate groups.</p></td>
 </div>
 
 
+<<<<<<< HEAD
       <footer>
       <div class="copyright">
   <p>Developed by Jeremy Coyle, Nima Hejazi, Oleg Sofrygin, Ivana Malenica, Rachael Phillips.</p>
@@ -304,6 +350,16 @@ will be added as additional single-covariate groups.</p></td>
 
 <div class="pkgdown">
   <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+=======
+      <footer><div class="copyright">
+  <p></p><p>Developed by Jeremy Coyle, Nima Hejazi, Oleg Sofrygin, Ivana
+Malenica, Rachael Phillips.</p>
+</div>
+
+<div class="pkgdown">
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
+2.0.2.</p>
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </div>
 
       </footer>

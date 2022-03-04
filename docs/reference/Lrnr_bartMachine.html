@@ -151,7 +151,11 @@ and the function bartMachine." />
     <p>This learner implements Bayesian Additive Regression Trees via
 <span class="pkg">bartMachine</span> (described in Kapelner and Bleich (2016)
 )
+<<<<<<< HEAD
 and the function <code><a href='https://rdrr.io/pkg/bartMachine/man/bartMachine.html'>bartMachine</a></code>.</p>
+=======
+and the function <code><a href="https://rdrr.io/pkg/bartMachine/man/bartMachine.html" class="external-link">bartMachine</a></code>.</p>
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
     </div>
 
 
@@ -169,8 +173,12 @@ functionality, see the complete documentation of <code><a href='Lrnr_base.html'>
 
     
 
+<<<<<<< HEAD
 <ul>
 <li><p><code>...</code>: Parameters passed to <code><a href='https://rdrr.io/pkg/bartMachine/man/bartMachine.html'>bartMachine</a></code>.
+=======
+<ul><li><p><code>...</code>: Parameters passed to <code><a href="https://rdrr.io/pkg/bartMachine/man/bartMachine.html" class="external-link">bartMachine</a></code>.
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 See it's documentation for details.</p></li>
 </ul>
 
@@ -183,6 +191,7 @@ doi: <a href='https://doi.org/10.18637/jss.v070.i04'>10.18637/jss.v070.i04</a>
 .</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
+<<<<<<< HEAD
     <div class='dont-index'><p>Other Learners: 
 <code><a href='Custom_chain.html'>Custom_chain</a></code>,
 <code><a href='Lrnr_HarmonicReg.html'>Lrnr_HarmonicReg</a></code>,
@@ -266,6 +275,27 @@ doi: <a href='https://doi.org/10.18637/jss.v070.i04'>10.18637/jss.v070.i04</a>
 #&gt; <span class='warning'>so ideally this option should be specified by the user.</span></div><div class='input'><span class='va'>bartMachine_fit</span> <span class='op'>&lt;-</span> <span class='va'>bartMachine_learner</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>task</span><span class='op'>)</span>
 <span class='va'>preds</span> <span class='op'>&lt;-</span> <span class='va'>bartMachine_fit</span><span class='op'>$</span><span class='fu'>predict</span><span class='op'>(</span><span class='op'>)</span>
 </div></pre>
+=======
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># set up ML task</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cpp_imputed</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">covs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"apgar1"</span>, <span class="st">"apgar5"</span>, <span class="st">"parity"</span>, <span class="st">"gagebrth"</span>, <span class="st">"mage"</span>, <span class="st">"meducyrs"</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">task</span> <span class="op">&lt;-</span> <span class="va"><a href="sl3_Task.html">sl3_Task</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">cpp_imputed</span>, covariates <span class="op">=</span> <span class="va">covs</span>, outcome <span class="op">=</span> <span class="st">"haz"</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># fit a bartMachine model and predict from it</span></span>
+<span class="r-in"><span class="va">bartMachine_learner</span> <span class="op">&lt;-</span> <span class="fu"><a href="Lrnr_base.html">make_learner</a></span><span class="op">(</span><span class="va">Lrnr_bartMachine</span><span class="op">)</span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>User did not specify Java RAM option, and this learner often fails with the default RAM of 500MB,</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> so setting that now as `options(java.parameters = '-Xmx2500m')`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Note that Xmx parameter's upper limit is system dependent </span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> (e.g., 32bit Windows will fail to work with anything much largerthan 1500m), </span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> so ideally this option should be specified by the user.</span>
+<span class="r-in"><span class="va">bartMachine_fit</span> <span class="op">&lt;-</span> <span class="va">bartMachine_learner</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">preds</span> <span class="op">&lt;-</span> <span class="va">bartMachine_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span></span>
+</code></pre></div>
+    </div>
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -275,6 +305,7 @@ doi: <a href='https://doi.org/10.18637/jss.v070.i04'>10.18637/jss.v070.i04</a>
 </div>
 
 
+<<<<<<< HEAD
       <footer>
       <div class="copyright">
   <p>Developed by Jeremy Coyle, Nima Hejazi, Oleg Sofrygin, Ivana Malenica, Rachael Phillips.</p>
@@ -282,6 +313,16 @@ doi: <a href='https://doi.org/10.18637/jss.v070.i04'>10.18637/jss.v070.i04</a>
 
 <div class="pkgdown">
   <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+=======
+      <footer><div class="copyright">
+  <p></p><p>Developed by Jeremy Coyle, Nima Hejazi, Oleg Sofrygin, Ivana
+Malenica, Rachael Phillips.</p>
+</div>
+
+<div class="pkgdown">
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
+2.0.2.</p>
+>>>>>>> 14c44995d1c6ade1ee64c4257db80d8a563aa4af
 </div>
 
       </footer>

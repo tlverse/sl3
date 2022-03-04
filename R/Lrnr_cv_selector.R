@@ -100,9 +100,14 @@ Lrnr_cv_selector <- R6Class(
       }
 
       fit_object$cv_risk <- apply(X, 2, cross_validated_risk)
-      fit_object$coef <- rep(0L, length(cv_risk))
-      fit_object$coef[which.min(fit_object$cv_risk)] <- 1
+
+      coefs <- rep(0L, length(fit_object$cv_risk))
+      coefs[which.min(fit_object$cv_risk)] <- 1
+      names(coefs) <- names(fit_object$cv_risk)
+      fit_object$coefficients <- coefs
+
       fit_object$name <- names(fit_object$cv_risk)[which.min(fit_object$cv_risk)]
+
       return(fit_object)
     },
     .predict = function(task = NULL) {
