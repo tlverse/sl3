@@ -39,8 +39,8 @@
 #'       \code{learners} in another \code{Lrnr_sl}. Includes the arguments
 #'       listed below, and any others to be passed to
 #'       \code{\link[origami]{fold_funs}}:
-#'       - \code{strata = NULL}: Optional column name to define stratified
-#'           cross-validation folds. If \code{NULL} and if
+#'       - \code{strata = NULL}: Discrete covariate or outcome name to
+#'           define stratified cross-validation folds. If \code{NULL} and if
 #'           \code{task$outcome_type$type} is binary or categorical, then the
 #'           default behavior is to consider stratified cross-validation, where
 #'           the strata are defined with respect to the outcome. To override
@@ -48,21 +48,23 @@
 #'           cross-validation when \code{strata = NULL} and
 #'           \code{task$outcome_type$type} is binary or categorical is not
 #'           \code{NULL}, set \code{strata = "none"}.
-#'       - \code{id}: Optional column name to define clustered cross-validation
-#'           schemes, so dependent units are placed together in the same
-#'           training sets and in the same validation set. If \code{NULL} and
-#'           \code{task$nodes$id} is not \code{NULL}, then the default behavior
-#'           is to consider \code{task$nodes$id} for defining clustered
-#'           cross-validation scheme. To override the default behavior, i.e.,
-#'           to not consider clustered cross-validation when
-#'           \code{task$nodes$id} is not \code{NULL}, set \code{id = "none"}.
-#'       - \code{fold_fun}: A function indicating the \pkg{origami}
+#'       - \code{cluster_by_id = TRUE}: Logical to specify clustered
+#'           cross-validation scheme according to \code{id} in \code{task}.
+#'           Specifically, if \code{task$nodes$id} is not \code{NULL} and if
+#'           \code{cluster_by_id = TRUE} (default) then \code{task$nodes$id}
+#'           is used to define a clustered cross-validation scheme, so
+#'           dependent units are placed together in the same training sets
+#'           and validation set. To override the default behavior, i.e., to not
+#'           consider clustered cross-validation when \code{task$nodes$id} is
+#'           not \code{NULL}, set \code{cluster_by_id = FALSE}.
+#'       - \code{fold_fun = NULL}: A function indicating the \pkg{origami}
 #'           cross-validation scheme to use, such as
 #'           \code{\link[origami]{folds_vfold}} for V-fold cross-validation.
 #'           See \code{\link[origami]{fold_funs}} for a list of possibilities.
-#'           If \code{NULL} and if other \code{cv_control} arguments are
-#'           specified, e.g., \code{V}, \code{strata} or \code{id}, then the
-#'           default behavior is to set \code{fold_fun = folds_vfold}.
+#'           If \code{NULL} (default) and if other \code{cv_control} arguments
+#'           are specified, e.g., \code{V}, \code{strata} or
+#'           \code{cluster_by_id}, then the default behavior is to set
+#'           \code{fold_fun = origami::folds_vfold}.
 #'       - \code{...}: Other arguments to be passed to \code{fold_fun}, such as
 #'           \code{V} for \code{fold_fun = folds_vfold}. See
 #'           \code{\link[origami]{fold_funs}} for a list fold-function-specific
@@ -303,7 +305,8 @@ Lrnr_sl <- R6Class(
       } else {
         # initialize args for make_folds (cv_args) with cv_control ... args
         cv_args <- cv_control[!names(cv_control) %in%
-          c("fold_fun", "strata", "id")]
+          c("fold_fun", "strata", "cluster_by_id")]
+        cv_args$n <- task$nrow
 
         # set fold function
         if (is.null(cv_control$fold_fun)) {
@@ -325,28 +328,17 @@ Lrnr_sl <- R6Class(
         }
 
         # clustered cross-validation
-        if (is.null(cv_control$id)) {
+        if (is.null(cv_control$cluster_by_id) || cv_control$cluster_by_id) {
           if (task$has_node("id")) {
             message(
               "Defining clustered cross-validation for Lrnr_sl according to ",
-              "the id specified in the task,", paste0(task$nodes$id), ". To ",
+              "the id specified in the task, ", paste0(task$nodes$id), ". To ",
               "override this default behavior, i.e., to not consider ",
               "clustered cross-validation in Lrnr_sl even though id is ",
-              "specified in the task, set id = 'none' in the cv_control list."
+              "specified in the task, set cluster_by_id = FALSE in the ",
+              "cv_control list."
             )
             cv_args$cluster_ids <- task$data[[task$nodes$id]]
-          }
-        } else {
-          if (cv_control$id != "none") {
-            if (cv_control$id %in% names(task$data)) {
-              cv_args$cluster_ids <- task$data[[cv_control$id]]
-            } else {
-              warning(
-                "The specified id in cv_control, ", paste0(cv_control$id),
-                ", was not found as a column name in the task's data so ",
-                "clustered cross-validation will not be considered."
-              )
-            }
           }
         }
 
@@ -404,10 +396,6 @@ Lrnr_sl <- R6Class(
           }
         }
 
-        # per origami, set sample size if cluster IDs and strata IDs absent
-        if (!all(c("cluster_ids", "strata_ids") %in% names(cv_args))) {
-          cv_args$n <- task$nrow
-        }
 
         # set folds
         folds <- do.call(origami::make_folds, cv_args)

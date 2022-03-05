@@ -37,8 +37,8 @@ when \code{Lrnr_sl} is considered in the list of candidate
 listed below, and any others to be passed to
 \code{\link[origami]{fold_funs}}:
 \itemize{
-\item \code{strata = NULL}: Optional column name to define stratified
-cross-validation folds. If \code{NULL} and if
+\item \code{strata = NULL}: Discrete covariate or outcome name to
+define stratified cross-validation folds. If \code{NULL} and if
 \code{task$outcome_type$type} is binary or categorical, then the
 default behavior is to consider stratified cross-validation, where
 the strata are defined with respect to the outcome. To override
@@ -46,21 +46,23 @@ the default behavior, i.e., to not consider stratified
 cross-validation when \code{strata = NULL} and
 \code{task$outcome_type$type} is binary or categorical is not
 \code{NULL}, set \code{strata = "none"}.
-\item \code{id}: Optional column name to define clustered cross-validation
-schemes, so dependent units are placed together in the same
-training sets and in the same validation set. If \code{NULL} and
-\code{task$nodes$id} is not \code{NULL}, then the default behavior
-is to consider \code{task$nodes$id} for defining clustered
-cross-validation scheme. To override the default behavior, i.e.,
-to not consider clustered cross-validation when
-\code{task$nodes$id} is not \code{NULL}, set \code{id = "none"}.
-\item \code{fold_fun}: A function indicating the \pkg{origami}
+\item \code{cluster_by_id = TRUE}: Logical to specify clustered
+cross-validation scheme according to \code{id} in \code{task}.
+Specifically, if \code{task$nodes$id} is not \code{NULL} and if
+\code{cluster_by_id = TRUE} (default) then \code{task$nodes$id}
+is used to define a clustered cross-validation scheme, so
+dependent units are placed together in the same training sets
+and validation set. To override the default behavior, i.e., to not
+consider clustered cross-validation when \code{task$nodes$id} is
+not \code{NULL}, set \code{cluster_by_id = FALSE}.
+\item \code{fold_fun = NULL}: A function indicating the \pkg{origami}
 cross-validation scheme to use, such as
 \code{\link[origami]{folds_vfold}} for V-fold cross-validation.
 See \code{\link[origami]{fold_funs}} for a list of possibilities.
-If \code{NULL} and if other \code{cv_control} arguments are
-specified, e.g., \code{V}, \code{strata} or \code{id}, then the
-default behavior is to set \code{fold_fun = folds_vfold}.
+If \code{NULL} (default) and if other \code{cv_control} arguments
+are specified, e.g., \code{V}, \code{strata} or
+\code{cluster_by_id}, then the default behavior is to set
+\code{fold_fun = origami::folds_vfold}.
 \item \code{...}: Other arguments to be passed to \code{fold_fun}, such as
 \code{V} for \code{fold_fun = folds_vfold}. See
 \code{\link[origami]{fold_funs}} for a list fold-function-specific
