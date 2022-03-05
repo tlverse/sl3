@@ -110,4 +110,23 @@ learners <- Stack$new(glm_learner, glmnet_learner)
 ranger_learner <- Lrnr_ranger$new(num.trees = 5L)
 sl1 <- make_learner(Lrnr_sl, learners, ranger_learner)
 sl1_fit <- sl1$train(task)
-print(sl1_fit)
+
+# test SL with inner cv
+glm_lrn <- Lrnr_glm$new()
+ranger_lrn <- Lrnr_ranger$new()
+lasso_lrn <- Lrnr_glmnet$new()
+ensemble_sl <- Lrnr_sl$new(learners = list(glm_lrn, ranger_lrn, lasso_lrn))
+ensemble_sl_fit <- ensemble_sl$train(task)
+# example with cv_control, where we use cross-validated super learner
+ensemble_sl2 <- Lrnr_sl$new(
+  learners = list(glm_lrn, ranger_lrn, lasso_lrn),
+  cv_control = list(V = 5)
+)
+cv_sl <- CV_lrnr_sl(ensemble_sl2, task, loss_squared_error)
+# example with cv_control, where Lrnr_sl included as a candidate
+ensemble_sl2_fit <- ensemble_sl2$train(task)
+discrete_sl <- Lrnr_sl$new(
+  learners = list(glm_lrn, ranger_lrn, lasso_lrn, ensemble_sl2),
+  metalearner = Lrnr_cv_selector$new(loss_squared_error)
+)
+discrete_sl_fit <- discrete_sl$train(task)

@@ -26,10 +26,11 @@
 #' @section Parameters:
 #'   - \code{learners}: The "library" of user-specified algorithms for the
 #'       super learner to consider as candidates.
-#'   - \code{metalearner = NULL}: The metalearner to be fit on cross-validated
-#'       predictions from the candidates. If \code{NULL}, the
-#'       \code{\link{default_metalearner}} is used to construct a metalearner
-#'       based on the \code{outcome_type} of the training \code{task}.
+#'   - \code{metalearner = "default"}: The metalearner to be fit on c
+#'       cross-validated predictions from the candidates. If \code{"default"},
+#'       the \code{\link{default_metalearner}} is used to construct a
+#'       metalearner based on the \code{outcome_type} of the training
+#'       \code{task}.
 #'   - \code{cv_control = NULL}: Optional list of arguments that will be used
 #'       to define a specific cross-validation fold structure for fitting the
 #'       super learner. Intended for use in a nested cross-validation scheme,
@@ -302,12 +303,12 @@ Lrnr_sl <- R6Class(
       } else {
         # initialize args for make_folds (cv_args) with cv_control ... args
         cv_args <- cv_control[!names(cv_control) %in%
-                              c("fold_fun", "strata", "id")]
+          c("fold_fun", "strata", "id")]
 
         # set fold function
         if (is.null(cv_control$fold_fun)) {
           cv_args$fold_fun <- origami::folds_vfold
-          sprintf(
+          message(
             "Setting cv_control's fold_fun to folds_vfold. To override, ",
             "specify another cross-validation scheme from the origami package."
           )
@@ -326,12 +327,12 @@ Lrnr_sl <- R6Class(
         # clustered cross-validation
         if (is.null(cv_control$id)) {
           if (task$has_node("id")) {
-            sprintf(
+            message(
               "Defining clustered cross-validation for Lrnr_sl according to ",
-              "the id specified in the task, %s. To override this default ",
-              "behavior, i.e., to not consider clustered cross-validation in ",
-              "Lrnr_sl even though id is specified in the task, set ",
-              "id = 'none' in the cv_control list.", task$nodes$id
+              "the id specified in the task,", paste0(task$nodes$id), ". To ",
+              "override this default behavior, i.e., to not consider ",
+              "clustered cross-validation in Lrnr_sl even though id is ",
+              "specified in the task, set id = 'none' in the cv_control list."
             )
             cv_args$cluster_ids <- task$data[[task$nodes$id]]
           }
@@ -350,7 +351,7 @@ Lrnr_sl <- R6Class(
         }
 
         # stratified cross-validation
-        if (!is.null(cv_control$strata)) {
+        if (!is.null(cv_control$strata) && cv_control$strata != "none") {
           if (cv_control$strata %in% names(task$data)) {
             cv_args$strata_ids <- task$data[[cv_control$strata]]
           } else {
@@ -360,23 +361,19 @@ Lrnr_sl <- R6Class(
               "stratified cross-validation will not be considered."
             )
           }
-        } else {
-          if ((is.null(cv_control$strata) || cv_control$strata != "none") &
-            task$outcome_type$type %in% c("binomial", "categorical")) {
-            # stratified cross-validation folds for discrete outcomes
-            cv_args$strata_ids <- task$Y
-            sprintf(
-              "Defining stratified cross-validation for Lrnr_sl according ",
-              " to %s, as the outcome type is either binary or categorical. ",
-              "To override this default behavior, i.e., to not consider ",
-              "stratified cross-validation in Lrnr_sl even though the ",
-              "outcome is discrete, set strata = 'none' in the cv_control ",
-              "list.", task$nodes$outcome
-            )
-          }
         }
-
-
+        if (is.null(cv_control$strata) &&
+          task$outcome_type$type %in% c("binomial", "categorical")) {
+          # stratified cross-validation folds for discrete outcomes
+          cv_args$strata_ids <- task$Y
+          message(
+            "Defining stratified cross-validation for Lrnr_sl according to ",
+            paste0(task$nodes$outcome), "as the outcome type is either binary ",
+            "or categorical. To override this default behavior, i.e., to not ",
+            "consider stratified cross-validation in Lrnr_sl even though the ",
+            "outcome is discrete, set strata = 'none' in the cv_control list."
+          )
+        }
         # don't use stratified CV if clusters are not nested in strata
         if (!is.null(cv_args$cluster_ids) & !is.null(cv_args$strata_ids)) {
           is_nested <- all(
@@ -407,7 +404,6 @@ Lrnr_sl <- R6Class(
           }
         }
 
-        browser()
         # per origami, set sample size if cluster IDs and strata IDs absent
         if (!all(c("cluster_ids", "strata_ids") %in% names(cv_args))) {
           cv_args$n <- task$nrow
@@ -430,7 +426,7 @@ Lrnr_sl <- R6Class(
       cv_stack <- Lrnr_cv$new(learner_stack, folds = folds, full_fit = TRUE)
 
       # TODO: read custom chain w/ better cv chain code
-      #cv_stack$custom_chain(drop_offsets_chain)
+      # cv_stack$custom_chain(drop_offsets_chain)
 
       # fit stack on CV data
       cv_fit <- delayed_learner_train(cv_stack, task)
@@ -465,8 +461,8 @@ Lrnr_sl <- R6Class(
       } else {
         keep <- c("full_fit")
         # TODO: replace learners with zero weight with smaller fit objects
-        #coefs <- self$coefficients
-        #nz_learners <- which(coefs > 0)
+        # coefs <- self$coefficients
+        # nz_learners <- which(coefs > 0)
       }
       return(fit_object[keep])
     },
@@ -503,7 +499,7 @@ drop_offsets_chain <- function(learner, task) {
   } else {
     new_col_names <- task$add_columns(predictions, learner$fit_uuid)
   }
-  #new_covariates = union(names(predictions), task$nodes$covariates)
+  # new_covariates = union(names(predictions), task$nodes$covariates)
   return(task$next_in_chain(
     covariates = names(predictions),
     column_names = new_col_names,

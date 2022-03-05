@@ -23,10 +23,11 @@ learners.
 \itemize{
 \item \code{learners}: The "library" of user-specified algorithms for the
 super learner to consider as candidates.
-\item \code{metalearner = NULL}: The metalearner to be fit on cross-validated
-predictions from the candidates. If \code{NULL}, the
-\code{\link{default_metalearner}} is used to construct a metalearner
-based on the \code{outcome_type} of the training \code{task}.
+\item \code{metalearner = "default"}: The metalearner to be fit on c
+cross-validated predictions from the candidates. If \code{"default"},
+the \code{\link{default_metalearner}} is used to construct a
+metalearner based on the \code{outcome_type} of the training
+\code{task}.
 \item \code{cv_control = NULL}: Optional list of arguments that will be used
 to define a specific cross-validation fold structure for fitting the
 super learner. Intended for use in a nested cross-validation scheme,
