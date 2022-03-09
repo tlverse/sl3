@@ -55,7 +55,7 @@ importance_plot."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -193,12 +193,12 @@ will be added as additional single-covariate groups.</p></dd>
 <span class="r-in"><span class="va">importance_result</span> <span class="op">&lt;-</span> <span class="fu">importance</span><span class="op">(</span><span class="va">sl_fit</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">importance_result</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    covariate MSE_difference</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:  gagebrth    0.034505207</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:      mage    0.033218137</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:  meducyrs    0.024301969</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:    apgar1    0.014772274</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:    parity    0.005161161</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6:    apgar5   -0.008767691</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:      mage   0.0357475268</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:  gagebrth   0.0317043101</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:  meducyrs   0.0228809247</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:    apgar1   0.0175853784</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:    parity   0.0088449615</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6:    apgar5  -0.0009709977</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># importance with groups of covariates</span></span>
 <span class="r-in"><span class="va">groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
@@ -208,9 +208,9 @@ will be added as additional single-covariate groups.</p></dd>
 <span class="r-in"><span class="va">importance_result_groups</span> <span class="op">&lt;-</span> <span class="fu">importance</span><span class="op">(</span><span class="va">sl_fit</span>, covariate_groups <span class="op">=</span> <span class="va">groups</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">importance_result_groups</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    covariate_group MSE_difference</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:          scores     8.98310664</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:        maternal     0.12588552</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:        gagebrth     0.03276999</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:          scores     6.84024021</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:        maternal     0.14542197</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:        gagebrth     0.03342904</span>
 </code></pre></div>
     </div>
   </div>
@@ -221,11 +221,13 @@ will be added as additional single-covariate groups.</p></dd>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Jeremy Coyle, Nima Hejazi, Oleg Sofrygin, Ivana Malenica, Rachael Phillips.</p>
+  <p></p><p>Developed by Jeremy Coyle, Nima Hejazi, Oleg Sofrygin, Ivana
+Malenica, Rachael Phillips.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
+2.0.2.</p>
 </div>
 
       </footer></div>

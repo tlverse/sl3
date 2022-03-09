@@ -40,7 +40,7 @@ learners."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/m
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -102,19 +102,20 @@ functionality, see the complete documentation of <code><a href="Lrnr_base.html">
 
 <ul><li><p><code>learners</code>: The "library" of user-specified algorithms for the
 super learner to consider as candidates.</p></li>
-<li><p><code>metalearner = NULL</code>: The metalearner to be fit on cross-validated
-predictions from the candidates. If <code>NULL</code>, the
-<code><a href="default_metalearner.html">default_metalearner</a></code> is used to construct a metalearner
-based on the <code>outcome_type</code> of the training <code>task</code>.</p></li>
-<li><p><code>cv_control = NULL</code>: Optional list of arguments that will be used to
-define a specific cross-validation fold structure for fitting the
+<li><p><code>metalearner = "default"</code>: The metalearner to be fit on c
+cross-validated predictions from the candidates. If <code>"default"</code>,
+the <code><a href="default_metalearner.html">default_metalearner</a></code> is used to construct a
+metalearner based on the <code>outcome_type</code> of the training
+<code>task</code>.</p></li>
+<li><p><code>cv_control = NULL</code>: Optional list of arguments that will be used
+to define a specific cross-validation fold structure for fitting the
 super learner. Intended for use in a nested cross-validation scheme,
 such as cross-validated super learner (<code><a href="CV_lrnr_sl.html">CV_lrnr_sl</a></code>) or
 when <code>Lrnr_sl</code> is considered in the list of candidate
 <code>learners</code> in another <code>Lrnr_sl</code>. Includes the arguments
 listed below, and any others to be passed to
-<code><a href="http://tlverse.org/origami/reference/fold_funs.html" class="external-link">fold_funs</a></code>:</p><ul><li><p><code>strata = NULL</code>: Optional column name to define stratified
-cross-validation folds. If <code>NULL</code> and if
+<code><a href="http://tlverse.org/origami/reference/fold_funs.html" class="external-link">fold_funs</a></code>:</p><ul><li><p><code>strata = NULL</code>: Discrete covariate or outcome name to
+define stratified cross-validation folds. If <code>NULL</code> and if
 <code>task$outcome_type$type</code> is binary or categorical, then the
 default behavior is to consider stratified cross-validation, where
 the strata are defined with respect to the outcome. To override
@@ -122,21 +123,23 @@ the default behavior, i.e., to not consider stratified
 cross-validation when <code>strata = NULL</code> and
 <code>task$outcome_type$type</code> is binary or categorical is not
 <code>NULL</code>, set <code>strata = "none"</code>.</p></li>
-<li><p><code>id</code>: Optional column name to define clustered cross-validation,
-so dependent units are placed together in the same training sets
-and in the same validation set. If <code>NULL</code> and
-<code>task$nodes$id</code> is not <code>NULL</code>, then the default behavior
-is to consider <code>task$nodes$id</code> for defining clustered
-cross-validation scheme. To override the default behavior, i.e.,
-to not consider clustered cross-validation when
-<code>task$nodes$id</code> is not <code>NULL</code>, set <code>id = "none"</code>.</p></li>
-<li><p><code>fold_fun</code>: A function indicating the <span class="pkg">origami</span>
+<li><p><code>cluster_by_id = TRUE</code>: Logical to specify clustered
+cross-validation scheme according to <code>id</code> in <code>task</code>.
+Specifically, if <code>task$nodes$id</code> is not <code>NULL</code> and if
+<code>cluster_by_id = TRUE</code> (default) then <code>task$nodes$id</code>
+is used to define a clustered cross-validation scheme, so
+dependent units are placed together in the same training sets
+and validation set. To override the default behavior, i.e., to not
+consider clustered cross-validation when <code>task$nodes$id</code> is
+not <code>NULL</code>, set <code>cluster_by_id = FALSE</code>.</p></li>
+<li><p><code>fold_fun = NULL</code>: A function indicating the <span class="pkg">origami</span>
 cross-validation scheme to use, such as
 <code><a href="http://tlverse.org/origami/reference/fold_funs.html" class="external-link">folds_vfold</a></code> for V-fold cross-validation.
 See <code><a href="http://tlverse.org/origami/reference/fold_funs.html" class="external-link">fold_funs</a></code> for a list of possibilities.
-If <code>NULL</code> and if other <code>cv_control</code> arguments are
-specified, e.g., <code>V</code>, <code>strata</code> or <code>id</code>, then the
-default behavior is to set <code>fold_fun = folds_vfold</code>.</p></li>
+If <code>NULL</code> (default) and if other <code>cv_control</code> arguments
+are specified, e.g., <code>V</code>, <code>strata</code> or
+<code>cluster_by_id</code>, then the default behavior is to set
+<code>fold_fun = origami::folds_vfold</code>.</p></li>
 <li><p><code>...</code>: Other arguments to be passed to <code>fold_fun</code>, such as
 <code>V</code> for <code>fold_fun = folds_vfold</code>. See
 <code><a href="http://tlverse.org/origami/reference/fold_funs.html" class="external-link">fold_funs</a></code> for a list fold-function-specific
@@ -241,12 +244,21 @@ intermediary data structures.</p></li>
 <span class="r-in">  metalearner <span class="op">=</span> <span class="va"><a href="Lrnr_cv_selector.html">Lrnr_cv_selector</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">loss_squared_error</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-in"><span class="va">discrete_sl_fit</span> <span class="op">&lt;-</span> <span class="va">discrete_sl</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in if (cv_control$strata != "none" &amp; task$outcome_type$type %in%     c("binomial", "categorical")) {    cv_args$strata_ids &lt;- task$Y    sprintf("Defining stratified cross-validation for Lrnr_sl according ",         " to %s, as the outcome type is either binary or categorical. ",         "To override this default behavior, i.e., to not consider ",         "stratified cross-validation in Lrnr_sl even though the ",         "outcome is discrete, set strata = 'none' in the cv_control ",         "list.", task$nodes$outcome)}:</span> argument is of length zero</span>
 <span class="r-in"><span class="co"># example with cv_control, where we use cross-validated super learner</span></span>
 <span class="r-in"><span class="va">cv_sl</span> <span class="op">&lt;-</span> <span class="fu"><a href="CV_lrnr_sl.html">CV_lrnr_sl</a></span><span class="op">(</span></span>
 <span class="r-in">  lrnr_sl <span class="op">=</span> <span class="va">ensemble_sl2</span>, task <span class="op">=</span> <span class="va">task</span>, eval_fun <span class="op">=</span> <span class="va">loss_squared_error</span></span>
 <span class="r-in"><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in if (cv_control$strata != "none" &amp; task$outcome_type$type %in%     c("binomial", "categorical")) {    cv_args$strata_ids &lt;- task$Y    sprintf("Defining stratified cross-validation for Lrnr_sl according ",         " to %s, as the outcome type is either binary or categorical. ",         "To override this default behavior, i.e., to not consider ",         "stratified cross-validation in Lrnr_sl even though the ",         "outcome is discrete, set strata = 'none' in the cv_control ",         "list.", task$nodes$outcome)}:</span> argument is of length zero</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Cross-validated risk:"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                          learner      MSE        se   fold_sd</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:                                 Lrnr_glm_TRUE 1.608279 0.1054098 0.2105599</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:                   Lrnr_ranger_500_TRUE_none_1 1.567408 0.1103809 0.2994644</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: Lrnr_glmnet_NULL_deviance_10_1_100_TRUE_FALSE 1.605916 0.1040682 0.2071956</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:                                  SuperLearner 1.454204 0.1015646 0.2488906</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    fold_min_MSE fold_max_MSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:     1.445199     1.938616</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:     1.322920     2.072629</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:     1.451824     1.938573</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:     1.169131     2.000260</span>
 </code></pre></div>
     </div>
   </div>
@@ -257,11 +269,13 @@ intermediary data structures.</p></li>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Jeremy Coyle, Nima Hejazi, Oleg Sofrygin, Ivana Malenica, Rachael Phillips.</p>
+  <p></p><p>Developed by Jeremy Coyle, Nima Hejazi, Oleg Sofrygin, Ivana
+Malenica, Rachael Phillips.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
+2.0.2.</p>
 </div>
 
       </footer></div>
