@@ -112,7 +112,7 @@ sl1 <- make_learner(Lrnr_sl, learners, ranger_learner)
 sl1_fit <- sl1$train(task)
 
 
-# example with cv_control, where we use cross-validated super learner
+# tests with cv_control
 setDT(cpp_imputed)
 covars <- c(
   "apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
@@ -132,11 +132,45 @@ eSL <- Lrnr_sl$new(
   cv_control = list(V = 5)
 )
 eSL_fit <- eSL$train(task)
-# cv_sl <- CV_lrnr_sl(ensemble_sl2, task, loss_squared_error)
-# # example with cv_control, where Lrnr_sl included as a candidate
-# ensemble_sl2_fit <- ensemble_sl2$train(task)
-# discrete_sl <- Lrnr_sl$new(
-#   learners = list(glm_lrn, ranger_lrn, lasso_lrn, ensemble_sl2),
-#   metalearner = Lrnr_cv_selector$new(loss_squared_error)
-# )
-# discrete_sl_fit <- discrete_sl$train(task)
+test_that("Lrnr_sl cv_control respected when folds not defined in task", {
+  expect_equal(length(eSL_fit$fit_object$cv_fit$training_task$folds), 5)
+})
+test_that("Lrnr_sl cv_control folds respected when SL used w Lrnr_cv", {
+  cv_sl_lrnr <- make_learner(Lrnr_cv, eSL, full_fit = TRUE)
+  cv_sl_fit <- cv_sl_lrnr$train(task)
+  inner_folds <- unlist(lapply(seq_along(cv_sl_fit$fit_object$fold_fits), function(i) {
+    length(cv_sl_fit$fit_object$fold_fits[[i]]$fit_object$cv_fit$training_task$folds)
+  }))
+  expect_equal(unique(inner_folds), 5)
+})
+# Lrnr_sl cv_control works when SL is used with Lrnr_cv
+cv_sl_using_fit <- CV_lrnr_sl(eSL_fit, task, loss_squared_error)
+# Lrnr_sl cv_control works when SL is inside another SL
+discrete_sl <- Lrnr_sl$new(
+  learners = list(glm_lrn, ranger_lrn, lasso_lrn, eSL),
+  metalearner = Lrnr_cv_selector$new(loss_squared_error)
+)
+discrete_sl_fit <- discrete_sl$train(task)
+
+task_w_folds <- sl3_Task$new(
+  data.table::copy(cpp_imputed),
+  covariates = covars,
+  outcome = outcome, id = "id",
+  folds = origami::make_folds(n = nrow(cpp_imputed), V = 3)
+)
+test_that("Lrnr_sl cv_control respected when folds defined in task", {
+  eSL_fit2 <- eSL$train(task_w_folds)
+  expect_equal(length(eSL_fit2$fit_object$cv_fit$training_task$folds), 5)
+})
+
+cv_sl_lrnr <- make_learner(Lrnr_cv, eSL, full_fit = TRUE)
+cv_sl_fit <- cv_sl_lrnr$train(task_w_folds)
+test_that("Lrnr_cv with custom outer and inner SL folds are respected", {
+  expect_equal(length(cv_sl_fit$fit_object$fold_fits), 3)
+})
+test_that("Lrnr_sl cv_control folds respected when SL used w Lrnr_cv and task has folds", {
+  inner_folds <- unlist(lapply(seq_along(cv_sl_fit$fit_object$fold_fits), function(i) {
+    length(cv_sl_fit$fit_object$fold_fits[[i]]$fit_object$cv_fit$training_task$folds)
+  }))
+  expect_equal(unique(inner_folds), 5)
+})

@@ -302,6 +302,7 @@ Lrnr_sl <- R6Class(
       if (is.null(cv_control) | is.null(unlist(cv_control))) {
         # TODO: this breaks if task is delayed
         folds <- task$folds
+        custom_cv <- FALSE
       } else {
         # initialize args for make_folds (cv_args) with cv_control ... args
         cv_args <- cv_control[!names(cv_control) %in%
@@ -399,6 +400,8 @@ Lrnr_sl <- R6Class(
 
         # set folds
         folds <- do.call(origami::make_folds, cv_args)
+        custom_cv_task <- task$next_in_chain(folds = folds)
+        custom_cv <- TRUE
       }
 
       # construct default metalearner if necessary
@@ -417,10 +420,19 @@ Lrnr_sl <- R6Class(
       # cv_stack$custom_chain(drop_offsets_chain)
 
       # fit stack on CV data
-      cv_fit <- delayed_learner_train(cv_stack, task)
+      if (custom_cv) {
+        cv_fit <- delayed_learner_train(cv_stack, custom_cv_task)
+      } else {
+        cv_fit <- delayed_learner_train(cv_stack, task)
+      }
+
 
       # fit meta-learner
-      cv_meta_task <- delayed_learner_fit_chain(cv_fit, task)
+      if (custom_cv) {
+        cv_meta_task <- delayed_learner_fit_chain(cv_fit, custom_cv_task)
+      } else {
+        cv_meta_task <- delayed_learner_fit_chain(cv_fit, task)
+      }
       cv_meta_fit <- delayed_learner_train(metalearner, cv_meta_task)
 
       # form full SL fit -- a pipeline with the stack fit to the full data,
