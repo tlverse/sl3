@@ -149,6 +149,12 @@ possible arguments.</p></li>
 computation. When <code>FALSE</code>, the resulting object has a memory
 footprint that is significantly reduced through the discarding of
 intermediary data structures.</p></li>
+<li><p><code>verbose = NULL</code>: Whether to print <code>cv_control</code>-related
+messages. Warnings and errors are always printed. When
+<code>verbose = NULL</code>, verbosity specified by option
+<code>sl3.verbose</code> will be used, and the default <code>sl3.verbose</code>
+option is <code>FALSE</code>. (Note: to turn on <code>sl3.verbose</code> option,
+set <code>options("sl3.verbose" = TRUE)</code>.)</p></li>
 <li><p><code>...</code>: Any additional parameters that can be considered by
 <code><a href="Lrnr_base.html">Lrnr_base</a></code>.</p></li>
 </ul></div>
@@ -232,33 +238,34 @@ intermediary data structures.</p></li>
 <span class="r-in"><span class="va">glm_lrn</span> <span class="op">&lt;-</span> <span class="va"><a href="Lrnr_glm.html">Lrnr_glm</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">ranger_lrn</span> <span class="op">&lt;-</span> <span class="va"><a href="Lrnr_ranger.html">Lrnr_ranger</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">lasso_lrn</span> <span class="op">&lt;-</span> <span class="va"><a href="Lrnr_glmnet.html">Lrnr_glmnet</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">ensemble_sl</span> <span class="op">&lt;-</span> <span class="va">Lrnr_sl</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>learners <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">glm_lrn</span>, <span class="va">ranger_lrn</span>, <span class="va">lasso_lrn</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">ensemble_sl_fit</span> <span class="op">&lt;-</span> <span class="va">ensemble_sl</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">eSL</span> <span class="op">&lt;-</span> <span class="va">Lrnr_sl</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>learners <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">glm_lrn</span>, <span class="va">ranger_lrn</span>, <span class="va">lasso_lrn</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">eSL_fit</span> <span class="op">&lt;-</span> <span class="va">eSL</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>
 <span class="r-in"><span class="co"># example with cv_control, where Lrnr_sl included as a candidate</span></span>
-<span class="r-in"><span class="va">ensemble_sl2</span> <span class="op">&lt;-</span> <span class="va">Lrnr_sl</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span class="r-in"><span class="va">eSL_nested5folds</span> <span class="op">&lt;-</span> <span class="va">Lrnr_sl</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
 <span class="r-in">  learners <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">glm_lrn</span>, <span class="va">ranger_lrn</span>, <span class="va">lasso_lrn</span><span class="op">)</span>,</span>
-<span class="r-in">  cv_control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fold_fun <span class="op">=</span> <span class="fu">origami</span><span class="fu">::</span><span class="va"><a href="http://tlverse.org/origami/reference/fold_funs.html" class="external-link">folds_vfold</a></span>, V <span class="op">=</span> <span class="fl">5L</span><span class="op">)</span></span>
+<span class="r-in">  cv_control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>V <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>,</span>
+<span class="r-in">  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">discrete_sl</span> <span class="op">&lt;-</span> <span class="va">Lrnr_sl</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
-<span class="r-in">  learners <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">glm_lrn</span>, <span class="va">ranger_lrn</span>, <span class="va">lasso_lrn</span>, <span class="va">ensemble_sl2</span><span class="op">)</span>,</span>
+<span class="r-in"><span class="va">dSL</span> <span class="op">&lt;-</span> <span class="va">Lrnr_sl</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span class="r-in">  learners <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">glm_lrn</span>, <span class="va">ranger_lrn</span>, <span class="va">lasso_lrn</span>, <span class="va">eSL_nested5folds</span><span class="op">)</span>,</span>
 <span class="r-in">  metalearner <span class="op">=</span> <span class="va"><a href="Lrnr_cv_selector.html">Lrnr_cv_selector</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">loss_squared_error</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">discrete_sl_fit</span> <span class="op">&lt;-</span> <span class="va">discrete_sl</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">dSL_fit</span> <span class="op">&lt;-</span> <span class="va">dSL</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>
 <span class="r-in"><span class="co"># example with cv_control, where we use cross-validated super learner</span></span>
-<span class="r-in"><span class="va">cv_sl</span> <span class="op">&lt;-</span> <span class="fu"><a href="CV_lrnr_sl.html">CV_lrnr_sl</a></span><span class="op">(</span></span>
-<span class="r-in">  lrnr_sl <span class="op">=</span> <span class="va">ensemble_sl2</span>, task <span class="op">=</span> <span class="va">task</span>, eval_fun <span class="op">=</span> <span class="va">loss_squared_error</span></span>
+<span class="r-in"><span class="va">cvSL_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="CV_lrnr_sl.html">CV_lrnr_sl</a></span><span class="op">(</span></span>
+<span class="r-in">  lrnr_sl <span class="op">=</span> <span class="va">eSL_nested5folds</span>, task <span class="op">=</span> <span class="va">task</span>, eval_fun <span class="op">=</span> <span class="va">loss_squared_error</span></span>
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Cross-validated risk:"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                          learner      MSE        se   fold_sd</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:                                 Lrnr_glm_TRUE 1.608279 0.1054098 0.2105599</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:                   Lrnr_ranger_500_TRUE_none_1 1.567408 0.1103809 0.2994644</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: Lrnr_glmnet_NULL_deviance_10_1_100_TRUE_FALSE 1.605916 0.1040682 0.2071956</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:                                  SuperLearner 1.454204 0.1015646 0.2488906</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:                                 Lrnr_glm_TRUE 1.597915 0.1051102 0.2619778</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:                   Lrnr_ranger_500_TRUE_none_1 1.523408 0.1050220 0.2088191</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: Lrnr_glmnet_NULL_deviance_10_1_100_TRUE_FALSE 1.596164 0.1047551 0.2604552</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:                                  SuperLearner 1.449938 0.1015453 0.3038952</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    fold_min_MSE fold_max_MSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:     1.445199     1.938616</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:     1.322920     2.072629</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:     1.451824     1.938573</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:     1.169131     2.000260</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:     1.412729     2.053372</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:     1.302620     1.839319</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:     1.416747     2.051659</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:     1.160121     2.205882</span>
 </code></pre></div>
     </div>
   </div>

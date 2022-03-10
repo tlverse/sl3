@@ -72,12 +72,19 @@ possible arguments.
 computation. When \code{FALSE}, the resulting object has a memory
 footprint that is significantly reduced through the discarding of
 intermediary data structures.
+\item \code{verbose = NULL}: Whether to print \code{cv_control}-related
+messages. Warnings and errors are always printed. When
+\code{verbose = NULL}, verbosity specified by option
+\code{sl3.verbose} will be used, and the default \code{sl3.verbose}
+option is \code{FALSE}. (Note: to turn on \code{sl3.verbose} option,
+set \code{options("sl3.verbose" = TRUE)}.)
 \item \code{...}: Any additional parameters that can be considered by
 \code{\link{Lrnr_base}}.
 }
 }
 
 \examples{
+\dontrun{
 data(cpp_imputed)
 covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
 task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
@@ -86,22 +93,24 @@ task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
 glm_lrn <- Lrnr_glm$new()
 ranger_lrn <- Lrnr_ranger$new()
 lasso_lrn <- Lrnr_glmnet$new()
-ensemble_sl <- Lrnr_sl$new(learners = list(glm_lrn, ranger_lrn, lasso_lrn))
-ensemble_sl_fit <- ensemble_sl$train(task)
+eSL <- Lrnr_sl$new(learners = list(glm_lrn, ranger_lrn, lasso_lrn))
+eSL_fit <- eSL$train(task)
 # example with cv_control, where Lrnr_sl included as a candidate
-ensemble_sl2 <- Lrnr_sl$new(
+eSL_nested5folds <- Lrnr_sl$new(
   learners = list(glm_lrn, ranger_lrn, lasso_lrn),
-  cv_control = list(fold_fun = origami::folds_vfold, V = 5L)
+  cv_control = list(V = 5),
+  verbose = FALSE
 )
-discrete_sl <- Lrnr_sl$new(
-  learners = list(glm_lrn, ranger_lrn, lasso_lrn, ensemble_sl2),
+dSL <- Lrnr_sl$new(
+  learners = list(glm_lrn, ranger_lrn, lasso_lrn, eSL_nested5folds),
   metalearner = Lrnr_cv_selector$new(loss_squared_error)
 )
-discrete_sl_fit <- discrete_sl$train(task)
+dSL_fit <- dSL$train(task)
 # example with cv_control, where we use cross-validated super learner
-cv_sl <- CV_lrnr_sl(
-  lrnr_sl = ensemble_sl2, task = task, eval_fun = loss_squared_error
+cvSL_fit <- CV_lrnr_sl(
+  lrnr_sl = eSL_nested5folds, task = task, eval_fun = loss_squared_error
 )
+}
 }
 \seealso{
 Other Learners: 
