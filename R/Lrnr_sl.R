@@ -1,5 +1,3 @@
-utils::globalVariables(c("self"))
-
 #' The Super Learner Algorithm
 #'
 #' Learner that encapsulates the Super Learner algorithm. Fits metalearner on
@@ -28,54 +26,64 @@ utils::globalVariables(c("self"))
 #' @section Parameters:
 #'   - \code{learners}: The "library" of user-specified algorithms for the
 #'       super learner to consider as candidates.
-#'   - \code{metalearner = NULL}: The metalearner to be fit on cross-validated
-#'       predictions from the candidates. If \code{NULL}, the
-#'       \code{\link{default_metalearner} is used to construct a metalearner
-#'       based on the \code{outcome_type} of the training \code{task}.
-#'   - \code{cv_control = NULL}: Optional list of arguments that will be used to
-#'       define a specific cross-validation fold structure for fitting the
+#'   - \code{metalearner = "default"}: The metalearner to be fit on c
+#'       cross-validated predictions from the candidates. If \code{"default"},
+#'       the \code{\link{default_metalearner}} is used to construct a
+#'       metalearner based on the \code{outcome_type} of the training
+#'       \code{task}.
+#'   - \code{cv_control = NULL}: Optional list of arguments that will be used
+#'       to define a specific cross-validation fold structure for fitting the
 #'       super learner. Intended for use in a nested cross-validation scheme,
-#'       such as cross-validated super learner (\code{\link{CV_Lrnr_sl}}) or
+#'       such as cross-validated super learner (\code{\link{CV_lrnr_sl}}) or
 #'       when \code{Lrnr_sl} is considered in the list of candidate
 #'       \code{learners} in another \code{Lrnr_sl}. Includes the arguments
 #'       listed below, and any others to be passed to
-#'       \code{\link[origami]{fold_fun}}:
-#'       - \code{strata = NULL}: Optional column name to define stratified
-#'           cross-validation folds. If \code{NULL} and if
+#'       \code{\link[origami]{fold_funs}}:
+#'       - \code{strata = NULL}: Discrete covariate or outcome name to
+#'           define stratified cross-validation folds. If \code{NULL} and if
 #'           \code{task$outcome_type$type} is binary or categorical, then the
 #'           default behavior is to consider stratified cross-validation, where
-#'           the strata are defined with respect to the outcome. To override 
-#'           the default behavior, i.e., to not consider stratified 
-#'           cross-validation when \code{strata = NULL} and 
-#'           \code{task$outcome_type$type} is binary or categorical is not 
+#'           the strata are defined with respect to the outcome. To override
+#'           the default behavior, i.e., to not consider stratified
+#'           cross-validation when \code{strata = NULL} and
+#'           \code{task$outcome_type$type} is binary or categorical is not
 #'           \code{NULL}, set \code{strata = "none"}.
-#'       - \code{id}: Optional column name to define clustered cross-validation, 
-#'           so dependent units are placed together in the same training sets 
-#'           and in the same validation set. If \code{NULL} and 
-#'           \code{task$nodes$id} is not \code{NULL}, then the default behavior 
-#'           is to consider \code{task$nodes$id} for defining clustered 
-#'           cross-validation scheme. To override the default behavior, i.e., 
-#'           to not consider clustered cross-validation when 
-#'           \code{task$nodes$id} is not \code{NULL}, set \code{id = "none"}.
-#'       - \code{fold_fun}: A function indicating the \pkg{origami}
-#'           cross-validation scheme to use, such as 
+#'       - \code{cluster_by_id = TRUE}: Logical to specify clustered
+#'           cross-validation scheme according to \code{id} in \code{task}.
+#'           Specifically, if \code{task$nodes$id} is not \code{NULL} and if
+#'           \code{cluster_by_id = TRUE} (default) then \code{task$nodes$id}
+#'           is used to define a clustered cross-validation scheme, so
+#'           dependent units are placed together in the same training sets
+#'           and validation set. To override the default behavior, i.e., to not
+#'           consider clustered cross-validation when \code{task$nodes$id} is
+#'           not \code{NULL}, set \code{cluster_by_id = FALSE}.
+#'       - \code{fold_fun = NULL}: A function indicating the \pkg{origami}
+#'           cross-validation scheme to use, such as
 #'           \code{\link[origami]{folds_vfold}} for V-fold cross-validation.
 #'           See \code{\link[origami]{fold_funs}} for a list of possibilities.
-#'           If \code{NULL} and if other \code{cv_control} arguments are
-#'           specified, e.g., \code{V}, \code{strata} or \code{id}, then the
-#'           default behavior is to set \code{fold_fun = folds_vfold}.
+#'           If \code{NULL} (default) and if other \code{cv_control} arguments
+#'           are specified, e.g., \code{V}, \code{strata} or
+#'           \code{cluster_by_id}, then the default behavior is to set
+#'           \code{fold_fun = origami::folds_vfold}.
 #'       - \code{...}: Other arguments to be passed to \code{fold_fun}, such as
-#'           \code{V} for \code{fold_fun = folds_vfold}. See 
+#'           \code{V} for \code{fold_fun = folds_vfold}. See
 #'           \code{\link[origami]{fold_funs}} for a list fold-function-specific
 #'           possible arguments.
 #'   - \code{keep_extra = TRUE}: Stores all sub-parts of the super learner
 #'       computation. When \code{FALSE}, the resulting object has a memory
 #'       footprint that is significantly reduced through the discarding of
 #'       intermediary data structures.
+#'   - \code{verbose = NULL}: Whether to print \code{cv_control}-related
+#'      messages. Warnings and errors are always printed. When
+#'      \code{verbose = NULL}, verbosity specified by option
+#'      \code{sl3.verbose} will be used, and the default \code{sl3.verbose}
+#'      option is \code{FALSE}. (Note: to turn on \code{sl3.verbose} option,
+#'      set \code{options("sl3.verbose" = TRUE)}.)
 #'   - \code{...}: Any additional parameters that can be considered by
 #'       \code{\link{Lrnr_base}}.
 #'
 #' @examples
+#' \dontrun{
 #' data(cpp_imputed)
 #' covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
 #' task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
@@ -83,29 +91,31 @@ utils::globalVariables(c("self"))
 #' # of the super learner!
 #' glm_lrn <- Lrnr_glm$new()
 #' ranger_lrn <- Lrnr_ranger$new()
-#' lasso <- Lrnr_glmnet$new()
-#' ensemble_sl <- Lrnr_sl$new(learners = list(glm_lrn, ranger_lrn, lasso))
-#' ensemble_sl_fit <- ensemble_sl$train(task)
+#' lasso_lrn <- Lrnr_glmnet$new()
+#' eSL <- Lrnr_sl$new(learners = list(glm_lrn, ranger_lrn, lasso_lrn))
+#' eSL_fit <- eSL$train(task)
 #' # example with cv_control, where Lrnr_sl included as a candidate
-#' ensemble_sl2 <- Lrnr_sl$new(
-#'   learners = list(glm_learner, ranger_learner, lasso),
-#'   cv_control = list(fold_fun = folds_vfold, V = 5)
+#' eSL_nested5folds <- Lrnr_sl$new(
+#'   learners = list(glm_lrn, ranger_lrn, lasso_lrn),
+#'   cv_control = list(V = 5),
+#'   verbose = FALSE
 #' )
-#' discrete_sl <- Lrnr_sl$new(
-#'   learners = list(glm_lrn, ranger_lrn, lasso, ensemble_sl2),
+#' dSL <- Lrnr_sl$new(
+#'   learners = list(glm_lrn, ranger_lrn, lasso_lrn, eSL_nested5folds),
 #'   metalearner = Lrnr_cv_selector$new(loss_squared_error)
 #' )
-#' discrete_sl_fit <- discrete_sl$train(task)
+#' dSL_fit <- dSL$train(task)
 #' # example with cv_control, where we use cross-validated super learner
-#' cv_sl <- CV_lrnr_sl(
-#'   lrnr_sl = ensemble_sl2, task = task, eval_fun = loss_squared_error
+#' cvSL_fit <- CV_lrnr_sl(
+#'   lrnr_sl = eSL_nested5folds, task = task, eval_fun = loss_squared_error
 #' )
+#' }
 Lrnr_sl <- R6Class(
   classname = "Lrnr_sl", inherit = Lrnr_base, portable = TRUE,
   class = TRUE,
   public = list(
     initialize = function(learners, metalearner = "default", cv_control = NULL,
-                          keep_extra = TRUE, ...) {
+                          keep_extra = TRUE, verbose = NULL, ...) {
 
       # kludge to deal with stack as learners
       if (inherits(learners, "Stack")) {
@@ -121,6 +131,7 @@ Lrnr_sl <- R6Class(
         metalearner = metalearner,
         cv_control = cv_control,
         keep_extra = keep_extra,
+        verbose = verbose,
         ...
       )
       super$initialize(params = params, ...)
@@ -295,24 +306,35 @@ Lrnr_sl <- R6Class(
         task <- task$compute()
       }
 
+      # extract CV control object
       cv_control <- self$params$cv_control
+
       if (is.null(cv_control) | is.null(unlist(cv_control))) {
         # TODO: this breaks if task is delayed
         folds <- task$folds
+        custom_cv <- FALSE
       } else {
+        verbose <- self$params$verbose
+        if (is.null(verbose)) {
+          verbose <- getOption("sl3.verbose")
+        }
         # initialize args for make_folds (cv_args) with cv_control ... args
-        cv_args <- cv_control[!names(cv_control) %in% c("fold_fun", "strata", "id")]
+        cv_args <- cv_control[!names(cv_control) %in%
+          c("fold_fun", "strata", "cluster_by_id")]
+        cv_args$n <- task$nrow
 
         # set fold function
         if (is.null(cv_control$fold_fun)) {
           cv_args$fold_fun <- origami::folds_vfold
-          sprintf(
-            "Setting cv_control's fold_fun to folds_vfold. To override, ",
-            "specify another cross-validation scheme from the origami package."
-          )
+          if (verbose) {
+            message(
+              "Setting cv_control fold_fun to folds_vfold. To override, ",
+              "specify another cross-validation scheme from origami package."
+            )
+          }
         } else {
           cv_args$fold_fun <- cv_control$fold_fun
-          if (class(cv_control$fold_fun) != "function") {
+          if (!is.function(cv_control$fold_fun)) {
             stop(
               "The specified fold_fun is not a function. Make sure the fold ",
               "function is provided in the origami package. See the Lrnr_sl ",
@@ -323,62 +345,53 @@ Lrnr_sl <- R6Class(
         }
 
         # clustered cross-validation
-        if (is.null(cv_control$id)) {
+        if (is.null(cv_control$cluster_by_id) || cv_control$cluster_by_id) {
           if (task$has_node("id")) {
-            sprintf(
-              "Defining clustered cross-validation for Lrnr_sl according to ",
-              "the id specified in the task, %s. To override this default ",
-              "behavior, i.e., to not consider clustered cross-validation in ",
-              "Lrnr_sl even though id is specified in the task, set ",
-              "id = 'none' in the cv_control list.", task$nodes$id
-            )
-            cv_args$cluster_ids <- task$data[[task$nodes$id]]
-          }
-        } else {
-          if (cv_control$id != "none") {
-            if (cv_control$id %in% names(task$data)) {
-              cv_args$cluster_ids <- task$data[[cv_control$id]]
-            } else {
-              warning(
-                "The specified id in cv_control, ", paste0(cv_control$id),
-                ", was not found as a column name in the task's data so ",
-                "clustered cross-validation will not be considered."
-              )
+            if (verbose) {
+              message(paste0(
+                "Defining clustered cross-validation for Lrnr_sl according to ",
+                "the id specified in the task, ", task$nodes$id, ". To ",
+                "override this default behavior, i.e., to not consider ",
+                "clustered cross-validation in Lrnr_sl even though id is ",
+                "specified in the task, set cluster_by_id = FALSE in the ",
+                "cv_control list."
+              ))
             }
+            cv_args$cluster_ids <- task$data[[task$nodes$id]]
           }
         }
 
         # stratified cross-validation
-        if (!is.null(cv_control$strata)) {
+        if (!is.null(cv_control$strata) && cv_control$strata != "none") {
           if (cv_control$strata %in% names(task$data)) {
             cv_args$strata_ids <- task$data[[cv_control$strata]]
           } else {
-            warning(
-              "The specified strata in cv_control, ", paste0(cv_control$strata),
+            warning(paste0(
+              "The specified strata in cv_control, ", cv_control$strata,
               ", was not found as a column name in the task's data so ",
               "stratified cross-validation will not be considered."
-            )
-          }
-        } else {
-          if (cv_control$strata != "none" &
-            task$outcome_type$type %in% c("binomial", "categorical")) {
-            # stratified cross-validation folds for discrete outcomes
-            cv_args$strata_ids <- task$Y
-            sprintf(
-              "Defining stratified cross-validation for Lrnr_sl according ",
-              " to %s, as the outcome type is either binary or categorical. ",
-              "To override this default behavior, i.e., to not consider ",
-              "stratified cross-validation in Lrnr_sl even though the ",
-              "outcome is discrete, set strata = 'none' in the cv_control ",
-              "list.", task$nodes$outcome
-            )
+            ))
           }
         }
-
-
+        if (is.null(cv_control$strata) &&
+          task$outcome_type$type %in% c("binomial", "categorical")) {
+          # stratified cross-validation folds for discrete outcomes
+          cv_args$strata_ids <- task$Y
+          if (verbose) {
+            message(paste0(
+              "Defining stratified cross-validation for Lrnr_sl according to ",
+              task$nodes$outcome, " as the outcome type is either binary ",
+              "or categorical. To override this default behavior, i.e., to not ",
+              "consider stratified cross-validation in Lrnr_sl even though the ",
+              "outcome is discrete, set strata = 'none' in the cv_control list."
+            ))
+          }
+        }
         # don't use stratified CV if clusters are not nested in strata
         if (!is.null(cv_args$cluster_ids) & !is.null(cv_args$strata_ids)) {
-          is_nested <- all(rowSums(table(cv_args$cluster_ids, cv_args$strata_ids) > 0) == 1)
+          is_nested <- all(
+            rowSums(table(cv_args$cluster_ids, cv_args$strata_ids) > 0) == 1
+          )
           if (!is_nested) {
             cv_args <- cv_args[!(names(cv_args) == "strata_ids")]
             warning(
@@ -390,7 +403,7 @@ Lrnr_sl <- R6Class(
             if (length(unique(cv_args$cluster_ids)) < cv_args$V) {
               cv_args <- cv_args[!(names(cv_args) == "cluster_ids")]
               warning(
-                "There are less clusters, i.e., less unique ids, than V so ",
+                "There are fewer clusters, i.e., fewer unique IDs, than V so ",
                 "clustered cross-validation will not be considered."
               )
             }
@@ -403,7 +416,12 @@ Lrnr_sl <- R6Class(
             }
           }
         }
+
+
+        # set folds
         folds <- do.call(origami::make_folds, cv_args)
+        custom_cv_task <- task$next_in_chain(folds = folds)
+        custom_cv <- TRUE
       }
 
       # construct default metalearner if necessary
@@ -422,10 +440,19 @@ Lrnr_sl <- R6Class(
       # cv_stack$custom_chain(drop_offsets_chain)
 
       # fit stack on CV data
-      cv_fit <- delayed_learner_train(cv_stack, task)
+      if (custom_cv) {
+        cv_fit <- delayed_learner_train(cv_stack, custom_cv_task)
+      } else {
+        cv_fit <- delayed_learner_train(cv_stack, task)
+      }
+
 
       # fit meta-learner
-      cv_meta_task <- delayed_learner_fit_chain(cv_fit, task)
+      if (custom_cv) {
+        cv_meta_task <- delayed_learner_fit_chain(cv_fit, custom_cv_task)
+      } else {
+        cv_meta_task <- delayed_learner_fit_chain(cv_fit, task)
+      }
       cv_meta_fit <- delayed_learner_train(metalearner, cv_meta_task)
 
       # form full SL fit -- a pipeline with the stack fit to the full data,
@@ -470,18 +497,17 @@ Lrnr_sl <- R6Class(
 #' Chain while dropping offsets
 #'
 #' Allows the dropping of offsets when calling the chain method. This is simply
-#' a modified version of the chain method found in \code{Lrnr_base}. INTERNAL
-#' USE ONLY.
+#' a modified version of the chain method found in \code{\link{Lrnr_base}}.
+#' INTERNAL USE ONLY.
 #'
 #' @param task An object of class \code{sl3_Task}.
 #'
 #' @keywords internal
-#
 drop_offsets_chain <- function(learner, task) {
   # pull out the validation task if we're in a revere context
   task <- task$revere_fold_task("validation")
   predictions <- learner$predict(task)
-  predictions <- as.data.table(predictions)
+  predictions <- data.table::as.data.table(predictions)
   # Add predictions as new columns
   if (nrow(task$data) != nrow(predictions)) {
     # Gather validation indexes:
@@ -493,7 +519,7 @@ drop_offsets_chain <- function(learner, task) {
   } else {
     new_col_names <- task$add_columns(predictions, learner$fit_uuid)
   }
-  # new_covariates = union(names(predictions),task$nodes$covariates)
+  # new_covariates = union(names(predictions), task$nodes$covariates)
   return(task$next_in_chain(
     covariates = names(predictions),
     column_names = new_col_names,

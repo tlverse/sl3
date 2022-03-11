@@ -23,21 +23,22 @@ learners.
 \itemize{
 \item \code{learners}: The "library" of user-specified algorithms for the
 super learner to consider as candidates.
-\item \code{metalearner = NULL}: The metalearner to be fit on cross-validated
-predictions from the candidates. If \code{NULL}, the
-\code{\link{default_metalearner} is used to construct a metalearner
-based on the \code{outcome_type} of the training \code{task}.
-\item \code{cv_control = NULL}: Optional list of arguments that will be used to
-define a specific cross-validation fold structure for fitting the
+\item \code{metalearner = "default"}: The metalearner to be fit on c
+cross-validated predictions from the candidates. If \code{"default"},
+the \code{\link{default_metalearner}} is used to construct a
+metalearner based on the \code{outcome_type} of the training
+\code{task}.
+\item \code{cv_control = NULL}: Optional list of arguments that will be used
+to define a specific cross-validation fold structure for fitting the
 super learner. Intended for use in a nested cross-validation scheme,
-such as cross-validated super learner (\code{\link{CV_Lrnr_sl}}) or
+such as cross-validated super learner (\code{\link{CV_lrnr_sl}}) or
 when \code{Lrnr_sl} is considered in the list of candidate
 \code{learners} in another \code{Lrnr_sl}. Includes the arguments
 listed below, and any others to be passed to
-\code{\link[origami]{fold_fun}}:
+\code{\link[origami]{fold_funs}}:
 \itemize{
-\item \code{strata = NULL}: Optional column name to define stratified
-cross-validation folds. If \code{NULL} and if
+\item \code{strata = NULL}: Discrete covariate or outcome name to
+define stratified cross-validation folds. If \code{NULL} and if
 \code{task$outcome_type$type} is binary or categorical, then the
 default behavior is to consider stratified cross-validation, where
 the strata are defined with respect to the outcome. To override
@@ -45,21 +46,23 @@ the default behavior, i.e., to not consider stratified
 cross-validation when \code{strata = NULL} and
 \code{task$outcome_type$type} is binary or categorical is not
 \code{NULL}, set \code{strata = "none"}.
-\item \code{id}: Optional column name to define clustered cross-validation,
-so dependent units are placed together in the same training sets
-and in the same validation set. If \code{NULL} and
-\code{task$nodes$id} is not \code{NULL}, then the default behavior
-is to consider \code{task$nodes$id} for defining clustered
-cross-validation scheme. To override the default behavior, i.e.,
-to not consider clustered cross-validation when
-\code{task$nodes$id} is not \code{NULL}, set \code{id = "none"}.
-\item \code{fold_fun}: A function indicating the \pkg{origami}
+\item \code{cluster_by_id = TRUE}: Logical to specify clustered
+cross-validation scheme according to \code{id} in \code{task}.
+Specifically, if \code{task$nodes$id} is not \code{NULL} and if
+\code{cluster_by_id = TRUE} (default) then \code{task$nodes$id}
+is used to define a clustered cross-validation scheme, so
+dependent units are placed together in the same training sets
+and validation set. To override the default behavior, i.e., to not
+consider clustered cross-validation when \code{task$nodes$id} is
+not \code{NULL}, set \code{cluster_by_id = FALSE}.
+\item \code{fold_fun = NULL}: A function indicating the \pkg{origami}
 cross-validation scheme to use, such as
 \code{\link[origami]{folds_vfold}} for V-fold cross-validation.
 See \code{\link[origami]{fold_funs}} for a list of possibilities.
-If \code{NULL} and if other \code{cv_control} arguments are
-specified, e.g., \code{V}, \code{strata} or \code{id}, then the
-default behavior is to set \code{fold_fun = folds_vfold}.
+If \code{NULL} (default) and if other \code{cv_control} arguments
+are specified, e.g., \code{V}, \code{strata} or
+\code{cluster_by_id}, then the default behavior is to set
+\code{fold_fun = origami::folds_vfold}.
 \item \code{...}: Other arguments to be passed to \code{fold_fun}, such as
 \code{V} for \code{fold_fun = folds_vfold}. See
 \code{\link[origami]{fold_funs}} for a list fold-function-specific
@@ -69,12 +72,19 @@ possible arguments.
 computation. When \code{FALSE}, the resulting object has a memory
 footprint that is significantly reduced through the discarding of
 intermediary data structures.
+\item \code{verbose = NULL}: Whether to print \code{cv_control}-related
+messages. Warnings and errors are always printed. When
+\code{verbose = NULL}, verbosity specified by option
+\code{sl3.verbose} will be used, and the default \code{sl3.verbose}
+option is \code{FALSE}. (Note: to turn on \code{sl3.verbose} option,
+set \code{options("sl3.verbose" = TRUE)}.)
 \item \code{...}: Any additional parameters that can be considered by
 \code{\link{Lrnr_base}}.
 }
 }
 
 \examples{
+\dontrun{
 data(cpp_imputed)
 covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
 task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
@@ -82,23 +92,25 @@ task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
 # of the super learner!
 glm_lrn <- Lrnr_glm$new()
 ranger_lrn <- Lrnr_ranger$new()
-lasso <- Lrnr_glmnet$new()
-ensemble_sl <- Lrnr_sl$new(learners = list(glm_lrn, ranger_lrn, lasso))
-ensemble_sl_fit <- ensemble_sl$train(task)
+lasso_lrn <- Lrnr_glmnet$new()
+eSL <- Lrnr_sl$new(learners = list(glm_lrn, ranger_lrn, lasso_lrn))
+eSL_fit <- eSL$train(task)
 # example with cv_control, where Lrnr_sl included as a candidate
-ensemble_sl2 <- Lrnr_sl$new(
-  learners = list(glm_learner, ranger_learner, lasso),
-  cv_control = list(fold_fun = folds_vfold, V = 5)
+eSL_nested5folds <- Lrnr_sl$new(
+  learners = list(glm_lrn, ranger_lrn, lasso_lrn),
+  cv_control = list(V = 5),
+  verbose = FALSE
 )
-discrete_sl <- Lrnr_sl$new(
-  learners = list(glm_lrn, ranger_lrn, lasso, ensemble_sl2),
+dSL <- Lrnr_sl$new(
+  learners = list(glm_lrn, ranger_lrn, lasso_lrn, eSL_nested5folds),
   metalearner = Lrnr_cv_selector$new(loss_squared_error)
 )
-discrete_sl_fit <- discrete_sl$train(task)
+dSL_fit <- dSL$train(task)
 # example with cv_control, where we use cross-validated super learner
-cv_sl <- CV_lrnr_sl(
-  lrnr_sl = ensemble_sl2, task = task, eval_fun = loss_squared_error
+cvSL_fit <- CV_lrnr_sl(
+  lrnr_sl = eSL_nested5folds, task = task, eval_fun = loss_squared_error
 )
+}
 }
 \seealso{
 Other Learners: 

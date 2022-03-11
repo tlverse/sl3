@@ -90,6 +90,16 @@ revere-based risk (not a true cross-validated risk) to
 <code>cv_risk</code> output.</li>
 <li>Changed default metalearner to <code>Lrnr_nnls</code> for binary and
 continuous outcomes.</li>
+<li>Added <code>cv_control</code> argument to <code>Lrnr_sl</code>,
+which allows users to define specific cross-validation structures for
+fitting the super learner. This is intended for use in a nested
+cross-validation scheme (such as cross-validated super learner,
+<code>CV_lrnr_sl</code>, or when <code>Lrnr_sl</code> is considered in
+the list of candidate <code>learners</code> in another
+<code>Lrnr_sl</code>). In addition to constructing clustered
+cross-validation with respect to <code>id</code>,
+<code>cv_control</code> also can be used to construct stratified
+cross-validation folds for <code>Lrnr_sl</code>.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.4.4" id="sl3-144">sl3 1.4.4<a class="anchor" aria-label="anchor" href="#sl3-144"></a></h2>

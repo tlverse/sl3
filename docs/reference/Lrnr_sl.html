@@ -102,20 +102,20 @@ functionality, see the complete documentation of <code><a href="Lrnr_base.html">
 
 <ul><li><p><code>learners</code>: The "library" of user-specified algorithms for the
 super learner to consider as candidates.</p></li>
-<li><p><code>metalearner = NULL</code>: The metalearner to be fit on cross-validated
-predictions from the candidates. If <code>NULL</code>, the
-<code><a href="default_metalearner.html">default_metalearner</a> is used to construct a metalearner
-based on the <code>outcome_type</code> of the training <code>task</code>.
- <code>cv_control = NULL</code>: Optional list of arguments that will be used to
-define a specific cross-validation fold structure for fitting the
+<li><p><code>metalearner = "default"</code>: The metalearner to be fit on c
+cross-validated predictions from the candidates. If <code>"default"</code>,
+the <code><a href="default_metalearner.html">default_metalearner</a></code> is used to construct a
+metalearner based on the <code>outcome_type</code> of the training
+<code>task</code>.</p></li>
+<li><p><code>cv_control = NULL</code>: Optional list of arguments that will be used
+to define a specific cross-validation fold structure for fitting the
 super learner. Intended for use in a nested cross-validation scheme,
-such as cross-validated super learner (<code>CV_Lrnr_sl</code>) or
+such as cross-validated super learner (<code><a href="CV_lrnr_sl.html">CV_lrnr_sl</a></code>) or
 when <code>Lrnr_sl</code> is considered in the list of candidate
 <code>learners</code> in another <code>Lrnr_sl</code>. Includes the arguments
 listed below, and any others to be passed to
-<code>fold_fun</code>:
-<ul><li><p><code>strata = NULL</code>: Optional column name to define stratified
-cross-validation folds. If <code>NULL</code> and if
+<code><a href="http://tlverse.org/origami/reference/fold_funs.html" class="external-link">fold_funs</a></code>:</p><ul><li><p><code>strata = NULL</code>: Discrete covariate or outcome name to
+define stratified cross-validation folds. If <code>NULL</code> and if
 <code>task$outcome_type$type</code> is binary or categorical, then the
 default behavior is to consider stratified cross-validation, where
 the strata are defined with respect to the outcome. To override
@@ -123,59 +123,44 @@ the default behavior, i.e., to not consider stratified
 cross-validation when <code>strata = NULL</code> and
 <code>task$outcome_type$type</code> is binary or categorical is not
 <code>NULL</code>, set <code>strata = "none"</code>.</p></li>
-<li><p><code>id</code>: Optional column name to define clustered cross-validation,
-so dependent units are placed together in the same training sets
-and in the same validation set. If <code>NULL</code> and
-<code>task$nodes$id</code> is not <code>NULL</code>, then the default behavior
-is to consider <code>task$nodes$id</code> for defining clustered
-cross-validation scheme. To override the default behavior, i.e.,
-to not consider clustered cross-validation when
-<code>task$nodes$id</code> is not <code>NULL</code>, set <code>id = "none"</code>.</p></li>
-<li><p><code>fold_fun</code>: A function indicating the <span class="pkg">origami</span>
+<li><p><code>cluster_by_id = TRUE</code>: Logical to specify clustered
+cross-validation scheme according to <code>id</code> in <code>task</code>.
+Specifically, if <code>task$nodes$id</code> is not <code>NULL</code> and if
+<code>cluster_by_id = TRUE</code> (default) then <code>task$nodes$id</code>
+is used to define a clustered cross-validation scheme, so
+dependent units are placed together in the same training sets
+and validation set. To override the default behavior, i.e., to not
+consider clustered cross-validation when <code>task$nodes$id</code> is
+not <code>NULL</code>, set <code>cluster_by_id = FALSE</code>.</p></li>
+<li><p><code>fold_fun = NULL</code>: A function indicating the <span class="pkg">origami</span>
 cross-validation scheme to use, such as
 <code><a href="http://tlverse.org/origami/reference/fold_funs.html" class="external-link">folds_vfold</a></code> for V-fold cross-validation.
 See <code><a href="http://tlverse.org/origami/reference/fold_funs.html" class="external-link">fold_funs</a></code> for a list of possibilities.
-If <code>NULL</code> and if other <code>cv_control</code> arguments are
-specified, e.g., <code>V</code>, <code>strata</code> or <code>id</code>, then the
-default behavior is to set <code>fold_fun = folds_vfold</code>.</p></li>
+If <code>NULL</code> (default) and if other <code>cv_control</code> arguments
+are specified, e.g., <code>V</code>, <code>strata</code> or
+<code>cluster_by_id</code>, then the default behavior is to set
+<code>fold_fun = origami::folds_vfold</code>.</p></li>
 <li><p><code>...</code>: Other arguments to be passed to <code>fold_fun</code>, such as
 <code>V</code> for <code>fold_fun = folds_vfold</code>. See
 <code><a href="http://tlverse.org/origami/reference/fold_funs.html" class="external-link">fold_funs</a></code> for a list fold-function-specific
 possible arguments.</p></li>
-</ul><code>keep_extra = TRUE</code>: Stores all sub-parts of the super learner
+</ul></li>
+<li><p><code>keep_extra = TRUE</code>: Stores all sub-parts of the super learner
 computation. When <code>FALSE</code>, the resulting object has a memory
 footprint that is significantly reduced through the discarding of
-intermediary data structures.
- <code>...</code>: Any additional parameters that can be considered by
-<code><a href="Lrnr_base.html">Lrnr_base</a></code>.
-</code></p></li>
-</ul><p>data(cpp_imputed)
-covs &lt;- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
-task &lt;- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
-# this is just for illustrative purposes, not intended for real applications
-# of the super learner!
-glm_lrn &lt;- Lrnr_glm$new()
-ranger_lrn &lt;- Lrnr_ranger$new()
-lasso &lt;- Lrnr_glmnet$new()
-ensemble_sl &lt;- Lrnr_sl$new(learners = list(glm_lrn, ranger_lrn, lasso))
-ensemble_sl_fit &lt;- ensemble_sl$train(task)
-# example with cv_control, where Lrnr_sl included as a candidate
-ensemble_sl2 &lt;- Lrnr_sl$new(
-  learners = list(glm_learner, ranger_learner, lasso),
-  cv_control = list(fold_fun = folds_vfold, V = 5)
-)
-discrete_sl &lt;- Lrnr_sl$new(
-  learners = list(glm_lrn, ranger_lrn, lasso, ensemble_sl2),
-  metalearner = Lrnr_cv_selector$new(loss_squared_error)
-)
-discrete_sl_fit &lt;- discrete_sl$train(task)
-# example with cv_control, where we use cross-validated super learner
-cv_sl &lt;- CV_lrnr_sl(
-  lrnr_sl = ensemble_sl2, task = task, eval_fun = loss_squared_error
-)
-
-
-Other Learners: 
+intermediary data structures.</p></li>
+<li><p><code>verbose = NULL</code>: Whether to print <code>cv_control</code>-related
+messages. Warnings and errors are always printed. When
+<code>verbose = NULL</code>, verbosity specified by option
+<code>sl3.verbose</code> will be used, and the default <code>sl3.verbose</code>
+option is <code>FALSE</code>. (Note: to turn on <code>sl3.verbose</code> option,
+set <code>options("sl3.verbose" = TRUE)</code>.)</p></li>
+<li><p><code>...</code>: Any additional parameters that can be considered by
+<code><a href="Lrnr_base.html">Lrnr_base</a></code>.</p></li>
+</ul></div>
+    <div id="see-also">
+    <h2>See also</h2>
+    <div class="dont-index"><p>Other Learners: 
 <code><a href="Custom_chain.html">Custom_chain</a></code>,
 <code><a href="Lrnr_HarmonicReg.html">Lrnr_HarmonicReg</a></code>,
 <code><a href="Lrnr_arima.html">Lrnr_arima</a></code>,
@@ -240,12 +225,49 @@ Other Learners:
 <code><a href="Pipeline.html">Pipeline</a></code>,
 <code><a href="Stack.html">Stack</a></code>,
 <code><a href="Lrnr_h2o_glm.html">define_h2o_X</a>()</code>,
-<code><a href="undocumented_learner.html">undocumented_learner</a></code>
-
-Learners
-data</p>
+<code><a href="undocumented_learner.html">undocumented_learner</a></code></p></div>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cpp_imputed</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">covs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"apgar1"</span>, <span class="st">"apgar5"</span>, <span class="st">"parity"</span>, <span class="st">"gagebrth"</span>, <span class="st">"mage"</span>, <span class="st">"meducyrs"</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">task</span> <span class="op">&lt;-</span> <span class="va"><a href="sl3_Task.html">sl3_Task</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">cpp_imputed</span>, covariates <span class="op">=</span> <span class="va">covs</span>, outcome <span class="op">=</span> <span class="st">"haz"</span><span class="op">)</span></span>
+<span class="r-in"><span class="co"># this is just for illustrative purposes, not intended for real applications</span></span>
+<span class="r-in"><span class="co"># of the super learner!</span></span>
+<span class="r-in"><span class="va">glm_lrn</span> <span class="op">&lt;-</span> <span class="va"><a href="Lrnr_glm.html">Lrnr_glm</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">ranger_lrn</span> <span class="op">&lt;-</span> <span class="va"><a href="Lrnr_ranger.html">Lrnr_ranger</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">lasso_lrn</span> <span class="op">&lt;-</span> <span class="va"><a href="Lrnr_glmnet.html">Lrnr_glmnet</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">eSL</span> <span class="op">&lt;-</span> <span class="va">Lrnr_sl</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>learners <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">glm_lrn</span>, <span class="va">ranger_lrn</span>, <span class="va">lasso_lrn</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">eSL_fit</span> <span class="op">&lt;-</span> <span class="va">eSL</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>
+<span class="r-in"><span class="co"># example with cv_control, where Lrnr_sl included as a candidate</span></span>
+<span class="r-in"><span class="va">eSL_nested5folds</span> <span class="op">&lt;-</span> <span class="va">Lrnr_sl</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span class="r-in">  learners <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">glm_lrn</span>, <span class="va">ranger_lrn</span>, <span class="va">lasso_lrn</span><span class="op">)</span>,</span>
+<span class="r-in">  cv_control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>V <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>,</span>
+<span class="r-in">  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span class="va">dSL</span> <span class="op">&lt;-</span> <span class="va">Lrnr_sl</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span class="r-in">  learners <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">glm_lrn</span>, <span class="va">ranger_lrn</span>, <span class="va">lasso_lrn</span>, <span class="va">eSL_nested5folds</span><span class="op">)</span>,</span>
+<span class="r-in">  metalearner <span class="op">=</span> <span class="va"><a href="Lrnr_cv_selector.html">Lrnr_cv_selector</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">loss_squared_error</span><span class="op">)</span></span>
+<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span class="va">dSL_fit</span> <span class="op">&lt;-</span> <span class="va">dSL</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>
+<span class="r-in"><span class="co"># example with cv_control, where we use cross-validated super learner</span></span>
+<span class="r-in"><span class="va">cvSL_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="CV_lrnr_sl.html">CV_lrnr_sl</a></span><span class="op">(</span></span>
+<span class="r-in">  lrnr_sl <span class="op">=</span> <span class="va">eSL_nested5folds</span>, task <span class="op">=</span> <span class="va">task</span>, eval_fun <span class="op">=</span> <span class="va">loss_squared_error</span></span>
+<span class="r-in"><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Cross-validated risk:"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                          learner      MSE        se   fold_sd</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:                                 Lrnr_glm_TRUE 1.597915 0.1051102 0.2619778</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:                   Lrnr_ranger_500_TRUE_none_1 1.523408 0.1050220 0.2088191</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: Lrnr_glmnet_NULL_deviance_10_1_100_TRUE_FALSE 1.596164 0.1047551 0.2604552</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:                                  SuperLearner 1.449938 0.1015453 0.3038952</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    fold_min_MSE fold_max_MSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:     1.412729     2.053372</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:     1.302620     1.839319</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:     1.416747     2.051659</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:     1.160121     2.205882</span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>
