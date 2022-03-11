@@ -1,3 +1,20 @@
+# sl3 1.4.5
+* Added `Lrnr_glmtree`, which uses the `partykit` R package to fit recursive
+  partitioning and regression trees in a generalized linear model.
+* Added fold-specific SL coefficients to the output of `CV_lrnr_sl`, and removed
+  the coefficients column from the returned `cv_risk` table.
+* Added `get_sl_revere_risk` argument  to `Lrnr_sl`'s `cv_risk` method to 
+  provide the option (with default of `FALSE`) to add a super learner's
+  revere-based risk (not a true cross-validated risk) to `cv_risk` output.
+* Changed default metalearner to `Lrnr_nnls` for binary and continuous outcomes.
+* Added `cv_control` argument to `Lrnr_sl`, which allows users to define 
+  specific cross-validation structures for fitting the super learner. This is
+  intended for use in a nested cross-validation scheme (such as cross-validated 
+  super learner, `CV_lrnr_sl`, or when `Lrnr_sl` is considered in the list of 
+  candidate `learners` in another `Lrnr_sl`). In addition to constructing 
+  clustered cross-validation with respect to `id`, `cv_control` also 
+  can be used to construct stratified cross-validation folds for `Lrnr_sl`.
+
 # sl3 1.4.4
 * Updates to `Lrnr_nnls` to support binary outcomes, including support for
   convexity of the resultant model fit and warnings on prediction quality.

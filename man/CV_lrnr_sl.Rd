@@ -7,7 +7,7 @@
 CV_lrnr_sl(lrnr_sl, task, eval_fun)
 }
 \arguments{
-\item{lrnr_sl}{a \code{Lrnr_sl} object specifying the Super Learner.}
+\item{lrnr_sl}{a \code{\link{Lrnr_sl}} object specifying the Super Learner.}
 
 \item{task}{the task used for training and performance assessment.}
 

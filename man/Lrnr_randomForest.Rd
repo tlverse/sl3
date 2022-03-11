@@ -18,19 +18,30 @@ function.
 }
 \section{Parameters}{
 
-\describe{
-\item{\code{ntree = 500}}{Number of trees to grow. This should not be set
-to too small a number, to ensure that every input row gets predicted at
-least a few times.}
-\item{\code{keep.forest = TRUE}}{If \code{TRUE}, forest is stored, which is
-required for prediction.}
-\item{\code{nodesize = 5}}{Minimum number of observations in terminal
-nodes.}
-\item{\code{...}}{Other parameters passed to
-\code{\link[randomForest]{randomForest}}.}
+\itemize{
+\item \code{ntree = 500}: Number of trees to grow. This should not be set
+to too small a number, to ensure that every input row gets predicted
+at least a few times.
+\item \code{keep.forest = TRUE}: If \code{TRUE}, forest is stored, which is
+required for prediction.
+\item \code{nodesize = 5}: Minimum number of observations in a terminal node.
+\item \code{...}: Other parameters passed to \code{\link[randomForest]{randomForest}}.
 }
 }
 
+\examples{
+data(cpp_imputed)
+# create task for prediction
+cpp_task <- sl3_Task$new(
+  data = cpp_imputed,
+  covariates = c("bmi", "parity", "mage", "sexn"),
+  outcome = "haz"
+)
+# initialization, training, and prediction with the defaults
+rf_lrnr <- Lrnr_randomForest$new()
+rf_fit <- rf_lrnr$train(cpp_task)
+rf_preds <- rf_fit$predict()
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},
@@ -55,6 +66,7 @@ Other Learners:
 \code{\link{Lrnr_gbm}},
 \code{\link{Lrnr_glm_fast}},
 \code{\link{Lrnr_glmnet}},
+\code{\link{Lrnr_glmtree}},
 \code{\link{Lrnr_glm}},
 \code{\link{Lrnr_grf}},
 \code{\link{Lrnr_gru_keras}},

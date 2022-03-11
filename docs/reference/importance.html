@@ -40,7 +40,7 @@ importance_plot."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sl3</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.5</span>
       </span>
     </div>
 
@@ -193,12 +193,12 @@ will be added as additional single-covariate groups.</p></dd>
 <span class="r-in"><span class="va">importance_result</span> <span class="op">&lt;-</span> <span class="fu">importance</span><span class="op">(</span><span class="va">sl_fit</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">importance_result</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    covariate MSE_difference</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:      mage    0.037359716</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:  meducyrs    0.025972615</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:  gagebrth    0.025055637</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:    parity    0.014997018</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:    apgar1    0.011974978</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6:    apgar5    0.002613177</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:      mage    0.035270196</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:  gagebrth    0.026447826</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:  meducyrs    0.023824212</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:    apgar1    0.009846314</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:    parity    0.007925805</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6:    apgar5   -0.008432657</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># importance with groups of covariates</span></span>
 <span class="r-in"><span class="va">groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
@@ -208,9 +208,9 @@ will be added as additional single-covariate groups.</p></dd>
 <span class="r-in"><span class="va">importance_result_groups</span> <span class="op">&lt;-</span> <span class="fu">importance</span><span class="op">(</span><span class="va">sl_fit</span>, covariate_groups <span class="op">=</span> <span class="va">groups</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">importance_result_groups</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    covariate_group MSE_difference</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:          scores    10.62103170</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:        maternal     0.13109238</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:        gagebrth     0.02414671</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:          scores     9.43857419</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:        maternal     0.12477639</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:        gagebrth     0.02486018</span>
 </code></pre></div>
     </div>
   </div>
@@ -221,11 +221,13 @@ will be added as additional single-covariate groups.</p></dd>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Jeremy Coyle, Nima Hejazi, Oleg Sofrygin, Ivana Malenica, Rachael Phillips.</p>
+  <p></p><p>Developed by Jeremy Coyle, Nima Hejazi, Oleg Sofrygin, Ivana
+Malenica, Rachael Phillips.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
+2.0.2.</p>
 </div>
 
       </footer></div>

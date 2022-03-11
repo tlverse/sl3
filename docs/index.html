@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">sl3</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.5</span>
       </span>
     </div>
 
@@ -102,19 +102,34 @@
 </h1></div>
 
 <blockquote>
-<p>A flexible implementation of the Super Learner ensemble machine learning system</p>
+<p>A flexible implementation of the Super Learner ensemble machine
+learning system</p>
 </blockquote>
 <p><strong>Authors:</strong> <a href="https://github.com/jeremyrcoyle" class="external-link">Jeremy Coyle</a>, <a href="https://nimahejazi.org" class="external-link">Nima Hejazi</a>, <a href="https://github.com/imalenica" class="external-link">Ivana Malenica</a>, <a href="https://github.com/rachaelvp" class="external-link">Rachael Phillips</a>, and <a href="https://github.com/osofr" class="external-link">Oleg Sofrygin</a></p>
 <hr>
 <div class="section level2">
 <h2 id="whats-sl3">What’s <code>sl3</code>?<a class="anchor" aria-label="anchor" href="#whats-sl3"></a>
 </h2>
-<p><code>sl3</code> is an implementation of the Super Learner ensemble machine learning algorithm of van der Laan, Polley, and Hubbard (2007). The Super Learner algorithm performs ensemble learning in one of two fashions:</p>
+<p><code>sl3</code> is an implementation of the Super Learner ensemble
+machine learning algorithm of van der Laan, Polley, and Hubbard (2007).
+The Super Learner algorithm performs ensemble learning in one of two
+fashions:</p>
 <ol style="list-style-type: decimal">
-<li>The <em>discrete</em> Super Learner can be used to select the best prediction algorithm from among a supplied library of machine learning algorithms (“learners” in the <code>sl3</code> nomenclature) – that is, the discrete Super Learner is the single learning algorithm that minimizes the cross-validated risk.</li>
-<li>The <em>ensemble</em> Super Learner can be used to assign weights to a set of specified learning algorithms (from a user-supplied library of such algorithms) so as to create a combination of these learners that minimizes the cross-validated risk. This notion of weighted combinations has also been referred to as <em>stacked regression</em> (Breiman 1996) and <em>stacked generalization</em> (Wolpert 1992).</li>
+<li>The <em>discrete</em> Super Learner can be used to select the best
+prediction algorithm from among a supplied library of machine learning
+algorithms (“learners” in the <code>sl3</code> nomenclature) – that is,
+the discrete Super Learner is the single learning algorithm that
+minimizes the cross-validated risk.</li>
+<li>The <em>ensemble</em> Super Learner can be used to assign weights to
+a set of specified learning algorithms (from a user-supplied library of
+such algorithms) so as to create a combination of these learners that
+minimizes the cross-validated risk. This notion of weighted combinations
+has also been referred to as <em>stacked regression</em> (Breiman 1996)
+and <em>stacked generalization</em> (Wolpert 1992).</li>
 </ol>
-<p>Looking for long-form documentation or a walkthrough of the <code>sl3</code> package? Don’t worry! Just browse <a href="https://tlverse.org/tlverse-handbook/sl3.html" class="external-link">the chapter in our book</a>.</p>
+<p>Looking for long-form documentation or a walkthrough of the
+<code>sl3</code> package? Don’t worry! Just browse <a href="https://tlverse.org/tlverse-handbook/sl3.html" class="external-link">the chapter in our
+book</a>.</p>
 <hr>
 </div>
 <div class="section level2">
@@ -129,31 +144,41 @@ For standard use, we recommend installing the package from
 install.packages("sl3")
 ```
 -->
-<p>Install the <em>most recent version</em> from the <code>master</code> branch on GitHub via <a href="https://CRAN.R-project.org/package=remotes" class="external-link"><code>remotes</code></a>:</p>
+<p>Install the <em>most recent version</em> from the <code>master</code>
+branch on GitHub via <a href="https://CRAN.R-project.org/package=remotes" class="external-link"><code>remotes</code></a>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"tlverse/sl3"</span><span class="op">)</span></code></pre></div>
-<p>Past stable releases may be located via the <a href="https://github.com/tlverse/sl3/releases" class="external-link">releases</a> page on GitHub and may be installed by including the appropriate major version tag. For example,</p>
+<p>Past stable releases may be located via the <a href="https://github.com/tlverse/sl3/releases" class="external-link">releases</a> page on
+GitHub and may be installed by including the appropriate major version
+tag. For example,</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"tlverse/sl3@v1.3.7"</span><span class="op">)</span></code></pre></div>
-<p>To contribute, check out the <code>devel</code> branch and consider submitting a pull request.</p>
+<p>To contribute, check out the <code>devel</code> branch and consider
+submitting a pull request.</p>
 <hr>
 </div>
 <div class="section level2">
 <h2 id="issues">Issues<a class="anchor" aria-label="anchor" href="#issues"></a>
 </h2>
-<p>If you encounter any bugs or have any specific feature requests, please <a href="https://github.com/tlverse/sl3/issues" class="external-link">file an issue</a>.</p>
+<p>If you encounter any bugs or have any specific feature requests,
+please <a href="https://github.com/tlverse/sl3/issues" class="external-link">file an
+issue</a>.</p>
 <hr>
 </div>
 <div class="section level2">
 <h2 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
 </h2>
-<p><code>sl3</code> makes the process of applying screening algorithms, learning algorithms, combining both types of algorithms into a stacked regression model, and cross-validating this whole process essentially trivial. The best way to understand this is to see the <code>sl3</code> package in action:</p>
+<p><code>sl3</code> makes the process of applying screening algorithms,
+learning algorithms, combining both types of algorithms into a stacked
+regression model, and cross-validating this whole process essentially
+trivial. The best way to understand this is to see the <code>sl3</code>
+package in action:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">49753</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ecpolley/SuperLearner" class="external-link">SuperLearner</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tlverse.org/origami" class="external-link">origami</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tlverse.org/origami/" class="external-link">origami</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tlverse.org/sl3">sl3</a></span><span class="op">)</span>
 
 <span class="co"># load example data set</span>
@@ -183,12 +208,12 @@ install.packages("sl3")
 <span class="va">preds</span> <span class="op">&lt;-</span> <span class="va">stack_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">preds</span><span class="op">)</span>
 <span class="co">#&gt;    Lrnr_pkg_SuperLearner_SL.glmnet Lrnr_glm_TRUE</span>
-<span class="co">#&gt; 1:                       0.3525946    0.36298498</span>
-<span class="co">#&gt; 2:                       0.3525946    0.36298498</span>
-<span class="co">#&gt; 3:                       0.2442593    0.25993072</span>
-<span class="co">#&gt; 4:                       0.2442593    0.25993072</span>
-<span class="co">#&gt; 5:                       0.2442593    0.25993072</span>
-<span class="co">#&gt; 6:                       0.0269504    0.05680264</span>
+<span class="co">#&gt; 1:                      0.35767321    0.36298498</span>
+<span class="co">#&gt; 2:                      0.35767321    0.36298498</span>
+<span class="co">#&gt; 3:                      0.25185377    0.25993072</span>
+<span class="co">#&gt; 4:                      0.25185377    0.25993072</span>
+<span class="co">#&gt; 5:                      0.25185377    0.25993072</span>
+<span class="co">#&gt; 6:                      0.04220823    0.05680264</span>
 <span class="co">#&gt;    Pipeline(Lrnr_pkg_SuperLearner_screener_screen.glmnet-&gt;Lrnr_glm_TRUE)</span>
 <span class="co">#&gt; 1:                                                            0.36228209</span>
 <span class="co">#&gt; 2:                                                            0.36228209</span>
@@ -199,7 +224,11 @@ install.packages("sl3")
 <div class="section level3">
 <h3 id="parallelization-with-futures">Parallelization with <code>future</code>s<a class="anchor" aria-label="anchor" href="#parallelization-with-futures"></a>
 </h3>
-<p>While it’s straightforward to fit a stack of learners (as above), it’s easy to take advantage of <code>sl3</code>’s built-in parallelization support too. To do this, you can simply choose a <code><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan()</a></code> from the <a href="https://CRAN.R-project.org/package=future" class="external-link"><code>future</code> ecosystem</a>.</p>
+<p>While it’s straightforward to fit a stack of learners (as above),
+it’s easy to take advantage of <code>sl3</code>’s built-in
+parallelization support too. To do this, you can simply choose a
+<code><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan()</a></code> from the <a href="https://CRAN.R-project.org/package=future" class="external-link"><code>future</code>
+ecosystem</a>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># let's load the future package and set 4 cores for parallelization</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org" class="external-link">future</a></span><span class="op">)</span>
@@ -212,7 +241,11 @@ install.packages("sl3")
 <div class="section level3">
 <h3 id="controlling-the-number-of-cv-folds">Controlling the number of CV folds<a class="anchor" aria-label="anchor" href="#controlling-the-number-of-cv-folds"></a>
 </h3>
-<p>In the above examples, we fit stacks of learners, but didn’t create a Super Learner ensemble, which uses cross-validation (CV) to build the ensemble model. For the sake of computational expedience, we may be interested in lowering the number of CV folds (from 10). Let’s take a look at how to do both below.</p>
+<p>In the above examples, we fit stacks of learners, but didn’t create a
+Super Learner ensemble, which uses cross-validation (CV) to build the
+ensemble model. For the sake of computational expedience, we may be
+interested in lowering the number of CV folds (from 10). Let’s take a
+look at how to do both below.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># first, let's instantiate some more learners and create a Super Learner</span>
 <span class="va">mean_learner</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/Lrnr_mean.html">Lrnr_mean</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>
@@ -231,3164 +264,3270 @@ install.packages("sl3")
 <span class="co"># now, let's fit the Super Learner with just 5-fold CV, then get predictions</span>
 <span class="va">sl_fit</span> <span class="op">&lt;-</span> <span class="va">sl</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span>
 <span class="va">sl_preds</span> <span class="op">&lt;-</span> <span class="va">sl_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p>The <code>folds</code> argument to <code>sl3_Task</code> supports both integers (for V-fold CV) and all of the CV schemes supported in the <a href="https://CRAN.R-project.org/package=origami" class="external-link"><code>origami</code> package</a>. To see the full list, query <code><a href="http://tlverse.org/origami/reference/fold_funs.html" class="external-link">?fold_funs</a></code> from within <code>R</code> or take a look at <a href="https://tlverse.org/origami/reference/" class="external-link"><code>origami</code>’s online documentation</a>.</p>
+<p>The <code>folds</code> argument to <code>sl3_Task</code> supports
+both integers (for V-fold CV) and all of the CV schemes supported in the
+<a href="https://CRAN.R-project.org/package=origami" class="external-link"><code>origami</code>
+package</a>. To see the full list, query <code><a href="http://tlverse.org/origami/reference/fold_funs.html" class="external-link">?fold_funs</a></code> from
+within <code>R</code> or take a look at <a href="https://tlverse.org/origami/reference/" class="external-link"><code>origami</code>’s
+online documentation</a>.</p>
 <hr>
 </div>
 </div>
 <div class="section level2">
 <h2 id="learner-properties">Learner Properties<a class="anchor" aria-label="anchor" href="#learner-properties"></a>
 </h2>
-<p>Properties supported by <code>sl3</code> learners are presented in the following table:</p>
+<p>Properties supported by <code>sl3</code> learners are presented in
+the following table:</p>
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:200px; overflow-x: scroll; width:100%; ">
 <table class="table table table-striped table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
 <thead><tr>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 </th>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-<p>binomial</p>
+binomial
 </th>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-<p>categorical</p>
+categorical
 </th>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-<p>continuous</p>
+continuous
 </th>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-<p>cv</p>
+cv
 </th>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-<p>density</p>
+density
 </th>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-<p>h2o</p>
+h2o
 </th>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-<p>ids</p>
+ids
 </th>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-<p>importance</p>
+importance
 </th>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-<p>offset</p>
+offset
 </th>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-<p>preprocessing</p>
+preprocessing
 </th>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-<p>sampling</p>
+sampling
 </th>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-<p>screener</p>
+screener
 </th>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-<p>timeseries</p>
+timeseries
 </th>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-<p>weights</p>
+weights
 </th>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-<p>wrapper</p>
+wrapper
 </th>
 </tr></thead>
 <tbody>
 <tr>
 <td style="text-align:left;">
-<p>Lrnr_arima</p>
+Lrnr_arima
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<p>Lrnr_bartMachine</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
+x
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-<p>Lrnr_bayesglm</p>
+Lrnr_bartMachine
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<p>Lrnr_bilstm</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
+x
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-<p>Lrnr_bound</p>
+Lrnr_bayesglm
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>√</p>
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<p>Lrnr_caret</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
+x
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-<p>Lrnr_cv</p>
+Lrnr_bilstm
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<p>Lrnr_cv_selector</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
+x
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-<p>Lrnr_dbarts</p>
+Lrnr_bound
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<p>Lrnr_define_interactions</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
+√
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-<p>Lrnr_density_discretize</p>
+Lrnr_caret
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<p>Lrnr_density_hse</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
+√
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-<p>Lrnr_density_semiparametric</p>
+Lrnr_cv
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<p>Lrnr_earth</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
+√
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-<p>Lrnr_expSmooth</p>
+Lrnr_cv_selector
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<p>Lrnr_gam</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
+√
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-<p>Lrnr_gbm</p>
+Lrnr_dbarts
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<p>Lrnr_glm</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
+x
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-<p>Lrnr_glm_fast</p>
+Lrnr_define_interactions
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<p>Lrnr_glmnet</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
+x
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-<p>Lrnr_grf</p>
+Lrnr_density_discretize
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<p>Lrnr_gru_keras</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
+x
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-<p>Lrnr_gts</p>
+Lrnr_density_hse
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<p>Lrnr_h2o_glm</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
+x
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-<p>Lrnr_h2o_grid</p>
+Lrnr_density_semiparametric
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<p>Lrnr_hal9001</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
+x
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-<p>Lrnr_haldensify</p>
+Lrnr_earth
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<p>Lrnr_HarmonicReg</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
+x
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-<p>Lrnr_hts</p>
+Lrnr_expSmooth
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<p>Lrnr_independent_binomial</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
+x
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-<p>Lrnr_lightgbm</p>
+Lrnr_ga
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<p>Lrnr_lstm_keras</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
+x
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-<p>Lrnr_mean</p>
+Lrnr_gam
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<p>Lrnr_multiple_ts</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
+x
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-<p>Lrnr_multivariate</p>
+Lrnr_gbm
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<p>Lrnr_nnet</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
+x
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-<p>Lrnr_nnls</p>
+Lrnr_glm
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<p>Lrnr_optim</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
+x
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-<p>Lrnr_pca</p>
+Lrnr_glm_fast
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<p>Lrnr_pkg_SuperLearner</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
+x
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-<p>Lrnr_pkg_SuperLearner_method</p>
+Lrnr_glmnet
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>√</p>
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<p>Lrnr_pkg_SuperLearner_screener</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
+x
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-<p>Lrnr_polspline</p>
+Lrnr_glmtree
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<p>Lrnr_pooled_hazards</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
+x
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-<p>Lrnr_randomForest</p>
+Lrnr_grf
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<p>Lrnr_ranger</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
+x
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-<p>Lrnr_revere_task</p>
+Lrnr_gru_keras
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<p>Lrnr_rpart</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
+x
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-<p>Lrnr_rugarch</p>
+Lrnr_gts
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<p>Lrnr_screener_augment</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
+x
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-<p>Lrnr_screener_coefs</p>
+Lrnr_h2o_glm
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<p>Lrnr_screener_correlation</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
+x
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-<p>Lrnr_screener_importance</p>
+Lrnr_h2o_grid
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<p>Lrnr_sl</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
+x
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-<p>Lrnr_solnp</p>
+Lrnr_hal9001
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<p>Lrnr_solnp_density</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
+x
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-<p>Lrnr_stratified</p>
+Lrnr_haldensify
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<p>Lrnr_subset_covariates</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
+x
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-<p>Lrnr_svm</p>
+Lrnr_HarmonicReg
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<p>Lrnr_ts_weights</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>x</p>
-</td>
-<td style="text-align:left;">
-<p>√</p>
+x
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-<p>Lrnr_tsDyn</p>
+Lrnr_hts
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-<p>Lrnr_xgboost</p>
+Lrnr_independent_binomial
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+√
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
 </td>
 <td style="text-align:left;">
-<p>√</p>
+x
 </td>
 <td style="text-align:left;">
-<p>x</p>
+x
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_lightgbm
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_lstm_keras
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_mean
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_multiple_ts
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_multivariate
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_nnet
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_nnls
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_optim
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_pca
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_pkg_SuperLearner
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_pkg_SuperLearner_method
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_pkg_SuperLearner_screener
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_polspline
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_pooled_hazards
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_randomForest
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_ranger
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_revere_task
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_rpart
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_rugarch
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_screener_augment
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_screener_coefs
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_screener_correlation
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_screener_importance
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_sl
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_solnp
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_solnp_density
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_stratified
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_subset_covariates
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_svm
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_ts_weights
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_tsDyn
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_xgboost
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
 </td>
 </tr>
 </tbody>
@@ -3399,45 +3538,54 @@ install.packages("sl3")
 <div class="section level2">
 <h2 id="contributions">Contributions<a class="anchor" aria-label="anchor" href="#contributions"></a>
 </h2>
-<p>Contributions are very welcome. Interested contributors should consult our <a href="https://github.com/tlverse/sl3/blob/master/CONTRIBUTING.md" class="external-link">contribution guidelines</a> prior to submitting a pull request.</p>
+<p>Contributions are very welcome. Interested contributors should
+consult our <a href="https://github.com/tlverse/sl3/blob/master/CONTRIBUTING.md" class="external-link">contribution
+guidelines</a> prior to submitting a pull request.</p>
 <hr>
 </div>
 <div class="section level2">
 <h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h2>
-<p>After using the <code>sl3</code> R package, please cite the following:</p>
-<pre><code> @software{coyle2021sl3-rpkg,
-      author = {Coyle, Jeremy R and Hejazi, Nima S and Malenica, Ivana and
-        Phillips, Rachael V and Sofrygin, Oleg},
-      title = {{sl3}: Modern Pipelines for Machine Learning and {Super
-        Learning}},
-      year = {2021},
-      howpublished = {\url{https://github.com/tlverse/sl3}},
-      note = {{R} package version 1.4.2},
-      url = {https://doi.org/10.5281/zenodo.1342293},
-      doi = {10.5281/zenodo.1342293}
-    }</code></pre>
+<p>After using the <code>sl3</code> R package, please cite the
+following:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>    <span class="sc">@</span>software{coyle2021sl3<span class="sc">-</span>rpkg,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>      author <span class="ot">=</span> {Coyle, Jeremy R and Hejazi, Nima S and Malenica, Ivana and</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        Phillips, Rachael V and Sofrygin, Oleg},</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>      title <span class="ot">=</span> {{sl3}<span class="sc">:</span> Modern Pipelines <span class="cf">for</span> Machine Learning and {Super</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        Learning}},</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>      year <span class="ot">=</span> {<span class="dv">2021</span>},</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>      howpublished <span class="ot">=</span> {\url{https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>tlverse<span class="sc">/</span>sl3}},</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>      note <span class="ot">=</span> {{R} package version <span class="dv">1</span>.<span class="fl">4.2</span>},</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>      url <span class="ot">=</span> {https<span class="sc">:</span><span class="er">//</span>doi.org<span class="sc">/</span><span class="fl">10.5281</span><span class="sc">/</span>zenodo<span class="fl">.1342293</span>},</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>      doi <span class="ot">=</span> {<span class="fl">10.5281</span><span class="sc">/</span>zenodo<span class="fl">.1342293</span>}</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    }</span></code></pre></div>
 <hr>
 </div>
 <div class="section level2">
 <h2 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
 </h2>
-<p>© 2017-2021 <a href="https://github.com/jeremyrcoyle" class="external-link">Jeremy R. Coyle</a>, <a href="https://nimahejazi.org" class="external-link">Nima S. Hejazi</a>, <a href="https://github.com/podTockom" class="external-link">Ivana Malenica</a>, <a href="https://github.com/rachaelvp" class="external-link">Rachael V. Phillips</a>, <a href="https://github.com/osofr" class="external-link">Oleg Sofrygin</a></p>
-<p>The contents of this repository are distributed under the GPL-3 license. See file <code>LICENSE</code> for details.</p>
+<p>© 2017-2021 <a href="https://github.com/jeremyrcoyle" class="external-link">Jeremy R.
+Coyle</a>, <a href="https://nimahejazi.org" class="external-link">Nima S. Hejazi</a>, <a href="https://github.com/podTockom" class="external-link">Ivana Malenica</a>, <a href="https://github.com/rachaelvp" class="external-link">Rachael V. Phillips</a>, <a href="https://github.com/osofr" class="external-link">Oleg Sofrygin</a></p>
+<p>The contents of this repository are distributed under the GPL-3
+license. See file <code>LICENSE</code> for details.</p>
 <hr>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references">
-<div id="ref-breiman1996stacked">
-<p>Breiman, Leo. 1996. “Stacked Regressions.” <em>Machine Learning</em> 24 (1): 49–64.</p>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-breiman1996stacked" class="csl-entry">
+Breiman, Leo. 1996. “Stacked Regressions.” <em>Machine Learning</em> 24
+(1): 49–64.
 </div>
-<div id="ref-vdl2007super">
-<p>van der Laan, Mark J, Eric C Polley, and Alan E Hubbard. 2007. “Super Learner.” <em>Statistical Applications in Genetics and Molecular Biology</em> 6 (1).</p>
+<div id="ref-vdl2007super" class="csl-entry">
+van der Laan, Mark J, Eric C Polley, and Alan E Hubbard. 2007. “Super
+Learner.” <em>Statistical Applications in Genetics and Molecular
+Biology</em> 6 (1).
 </div>
-<div id="ref-wolpert1992stacked">
-<p>Wolpert, David H. 1992. “Stacked Generalization.” <em>Neural Networks</em> 5 (2): 241–59.</p>
+<div id="ref-wolpert1992stacked" class="csl-entry">
+Wolpert, David H. 1992. “Stacked Generalization.” <em>Neural
+Networks</em> 5 (2): 241–59.
 </div>
 </div>
 </div>
@@ -3503,12 +3651,14 @@ install.packages("sl3")
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Jeremy Coyle, Nima Hejazi, Oleg Sofrygin, Ivana Malenica, Rachael Phillips.</p>
+<p>Developed by Jeremy Coyle, Nima Hejazi, Oleg Sofrygin, Ivana
+Malenica, Rachael Phillips.</p>
 </div>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
+2.0.2.</p>
 </div>
 
       </footer>
