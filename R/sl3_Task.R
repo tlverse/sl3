@@ -207,7 +207,8 @@ sl3_Task <- R6Class(
       data.table::setnames(interaction_data, interaction_names)
 
       interaction_cols <- self$add_columns(interaction_data,
-                                           column_uuid = NULL)
+        column_uuid = NULL
+      )
       new_covariates <- c(self$nodes$covariates, interaction_names)
       return(self$next_in_chain(
         covariates = new_covariates,

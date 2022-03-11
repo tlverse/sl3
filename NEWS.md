@@ -1,7 +1,8 @@
 # sl3 1.4.5
+* Changed `CV_lrnr_sl` to `cv_sl`
 * Added `Lrnr_glmtree`, which uses the `partykit` R package to fit recursive
   partitioning and regression trees in a generalized linear model.
-* Added fold-specific SL coefficients to the output of `CV_lrnr_sl`, and removed
+* Added fold-specific SL coefficients to the output of `cv_sl`, and removed
   the coefficients column from the returned `cv_risk` table.
 * Added `get_sl_revere_risk` argument  to `Lrnr_sl`'s `cv_risk` method to 
   provide the option (with default of `FALSE`) to add a super learner's
@@ -10,7 +11,7 @@
 * Added `cv_control` argument to `Lrnr_sl`, which allows users to define 
   specific cross-validation structures for fitting the super learner. This is
   intended for use in a nested cross-validation scheme (such as cross-validated 
-  super learner, `CV_lrnr_sl`, or when `Lrnr_sl` is considered in the list of 
+  super learner, `cv_sl`, or when `Lrnr_sl` is considered in the list of 
   candidate `learners` in another `Lrnr_sl`). In addition to constructing 
   clustered cross-validation with respect to `id`, `cv_control` also 
   can be used to construct stratified cross-validation folds for `Lrnr_sl`.
