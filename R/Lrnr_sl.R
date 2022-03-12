@@ -106,7 +106,7 @@
 #' )
 #' dSL_fit <- dSL$train(task)
 #' # example with cv_control, where we use cross-validated super learner
-#' cvSL_fit <- CV_lrnr_sl(
+#' cvSL_fit <- cv_sl(
 #'   lrnr_sl = eSL_nested5folds, task = task, eval_fun = loss_squared_error
 #' )
 #' }
