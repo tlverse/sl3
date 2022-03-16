@@ -155,7 +155,7 @@ Lrnr_solnp <- R6Class(
         LB = LB,
         control = list(
           outer.iter = params$outer.iter, inner.iter = params$inner.iter,
-          delta = params$delta, tol = params$tol, trace = params$trace, 
+          delta = params$delta, tol = params$tol, trace = params$trace,
           rho = params$rho
         )
       )
