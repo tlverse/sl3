@@ -42,6 +42,11 @@
 #'   - \code{init_0 = FALSE}: If \code{TRUE}, alpha is initialized to all 0's,
 #'       useful for TMLE. Otherwise, it is initialized to equal weights summing
 #'       to 1, useful for Super Learner.
+#'   - \code{rho = 1}: This is used as a penalty weighting scaler for
+#'       infeasibility in the augmented objective function. The higher its
+#'       value the more the weighting to bring the solution into the feasible
+#'       region (default 1). However, very high values might lead to numerical
+#'       ill conditioning or significantly slow down convergence.
 #'   - \code{outer.iter = 400}: Maximum number of major (outer) iterations.
 #'   - \code{inner.iter = 800}: Maximum number of minor (inner) iterations.
 #'   - \code{delta = 1e-7}:Relative step size in forward difference evaluation.
@@ -65,7 +70,7 @@
 #' names(lrnrs) <- c("lasso", "glm", "ranger")
 #' lrnr_stack <- make_learner(Stack, lrnrs)
 #'
-#' # instantiate SL with GA metalearner
+#' # instantiate SL with solnp metalearner
 #' solnp_meta <- Lrnr_solnp$new()
 #' sl <- Lrnr_sl$new(lrnr_stack, solnp_meta)
 #' sl_fit <- sl$train(task)
@@ -77,10 +82,11 @@ Lrnr_solnp <- R6Class(
     initialize = function(learner_function = metalearner_linear,
                           eval_function = loss_squared_error,
                           make_sparse = TRUE, convex_combination = TRUE,
-                          init_0 = FALSE, outer.iter = 400, inner.iter = 800,
-                          delta = 1e-7, tol = 1e-8, trace = FALSE, ...) {
+                          init_0 = FALSE, rho = 1, outer.iter = 400,
+                          inner.iter = 800, delta = 1e-7, tol = 1e-8,
+                          trace = FALSE, ...) {
       params <- args_to_list()
-      super$initialize(params = params)
+      super$initialize(params = params, ...)
     }
   ),
   private = list(
