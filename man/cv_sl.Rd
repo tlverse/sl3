@@ -30,8 +30,8 @@ Cross-validated Super Learner
 \dontrun{
 data(cpp_imputed)
 cpp_task <- sl3_Task$new(
-  data = cpp_imputed, 
-  covariates = c("apgar1", "apgar5", "parity", "gagebrth", "mage"), 
+  data = cpp_imputed,
+  covariates = c("apgar1", "apgar5", "parity", "gagebrth", "mage"),
   outcome = "haz"
 )
 glm_lrn <- Lrnr_glm$new()
