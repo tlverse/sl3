@@ -73,7 +73,28 @@ Lrnr_hal9001 <- R6Class(
       if (!any(grepl("fit_control", names(args)))) {
         args$fit_control <- list()
       }
-      args$fit_control$foldid <- origami::folds2foldvec(task$folds)
+
+      if (!any(grepl("fold", names(args$fit_control)))) {
+        args$fit_control$foldid <- origami::folds2foldvec(task$folds)
+      } else {
+        if (outcome_type$type == "binomial" && is.null(args$fit_control$foldid)) {
+          strata_ids <- args$Y
+        } else {
+          strata_ids <- NULL
+        }
+        if (any(grepl("n_folds", names(args$fit_control)))) {
+          V <- as.integer(args$fit_control$n_folds)
+        } else if (any(grepl("nfolds", names(args$fit_control)))) {
+          V <- as.integer(args$fit_control$nfolds)
+        } else {
+          V <- 10
+        }
+        folds <- origami::make_folds(
+          n = length(args$Y), strata_ids = strata_ids,
+          fold_fun = origami::folds_vfold, V = V
+        )
+        args$fit_control$foldid <- origami::folds2foldvec(folds)
+      }
 
       if (task$has_node("id")) {
         args$id <- task$id

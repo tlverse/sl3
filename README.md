@@ -2604,7 +2604,7 @@ x
 x
 </td>
 <td style="text-align:left;">
-x
+√
 </td>
 <td style="text-align:left;">
 x
