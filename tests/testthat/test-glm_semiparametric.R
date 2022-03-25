@@ -12,23 +12,26 @@ data <- data.table::data.table(W, A, Y_continuous, Y_binary, Y_count)
 
 # Make tasks
 task_continuous <- sl3_Task$new(
-  data, covariates = c("A", "W"), outcome = "Y_continuous"
+  data,
+  covariates = c("A", "W"), outcome = "Y_continuous"
 )
 task_binary <- sl3_Task$new(
-  data, covariates = c("A", "W"), outcome = "Y_binary"
+  data,
+  covariates = c("A", "W"), outcome = "Y_binary"
 )
 task_count <- sl3_Task$new(
-  data, covariates = c("A", "W"), outcome = "Y_count", 
+  data,
+  covariates = c("A", "W"), outcome = "Y_count",
   outcome_type = "continuous"
 )
- 
+
 formula_sp <- ~ 1 + W
 
 # fit partially-linear regression with append_interaction_matrix = TRUE
 set.seed(100)
 lrnr_glm_sp_gaussian <- Lrnr_glm_semiparametric$new(
-  formula_sp = formula_sp, family =  gaussian(), 
-  lrnr_baseline =  Lrnr_glmnet$new(), 
+  formula_sp = formula_sp, family = gaussian(),
+  lrnr_baseline = Lrnr_glmnet$new(),
   interaction_variable = "A", append_interaction_matrix = TRUE
 )
 lrnr_glm_sp_gaussian <- lrnr_glm_sp_gaussian$train(task_continuous)
@@ -41,8 +44,8 @@ X0 <- cbind(task_continuous$data[["W"]], 0 * V)
 colnames(X) <- c("W", "A", "A*W")
 Y <- task_continuous$Y
 set.seed(100)
-beta_equiv <- coef(cv.glmnet(X,Y,family="gaussian"),s="lambda.min")[c(3,4)]
-# actually, the glmnet fit is projected onto the semiparametric model 
+beta_equiv <- coef(cv.glmnet(X, Y, family = "gaussian"), s = "lambda.min")[c(3, 4)]
+# actually, the glmnet fit is projected onto the semiparametric model
 # with glm.fit, no effect in this case
 test_that("Equivalence of beta when append_interaction_matrix = TRUE", {
   expect_equal(as.numeric(beta), beta_equiv)
@@ -51,9 +54,9 @@ test_that("Equivalence of beta when append_interaction_matrix = TRUE", {
 # fit partially-linear regression w append_interaction_matrix = FALSE`
 set.seed(100)
 lrnr_glm_sp_gaussian <- Lrnr_glm_semiparametric$new(
-  formula_sp = formula_sp, family = gaussian(), 
-  lrnr_baseline = Lrnr_glm$new(family = gaussian()), 
-  interaction_variable = "A", 
+  formula_sp = formula_sp, family = gaussian(),
+  lrnr_baseline = Lrnr_glm$new(family = gaussian()),
+  interaction_variable = "A",
   append_interaction_matrix = FALSE
 )
 lrnr_glm_sp_gaussian <- lrnr_glm_sp_gaussian$train(task_continuous)
@@ -69,7 +72,7 @@ set.seed(100)
 beta_Y0W <- lrnr_glm_sp_gaussian$fit_object$lrnr_baseline$fit_object$coefficients
 # subset to treatment arm
 beta_Y0W_equiv <- coef(
-   glm.fit(X[cntrls, , drop = F], Y[cntrls], family = gaussian())
+  glm.fit(X[cntrls, , drop = F], Y[cntrls], family = gaussian())
 )
 EY0 <- X %*% beta_Y0W
 beta_equiv <- coef(glm.fit(A * V, Y, offset = EY0, family = gaussian()))
@@ -82,8 +85,8 @@ test_that("Equivalence of beta when append_interaction_matrix = FALSE", {
 
 # fit partially-linear logistic regression
 lrnr_glm_sp_binomial <- Lrnr_glm_semiparametric$new(
-  formula_sp = formula_sp, family = binomial(), 
-  lrnr_baseline = Lrnr_glmnet$new(), interaction_variable = "A", 
+  formula_sp = formula_sp, family = binomial(),
+  lrnr_baseline = Lrnr_glmnet$new(), interaction_variable = "A",
   append_interaction_matrix = TRUE
 )
 lrnr_glm_sp_binomial <- lrnr_glm_sp_binomial$train(task_binary)
@@ -91,15 +94,81 @@ preds <- lrnr_glm_sp_binomial$predict(task_binary)
 beta <- lrnr_glm_sp_binomial$fit_object$coefficients
 
 # fit partially-linear log-link (relative-risk) regression
-# Lrnr_glmnet$new(family = "poisson") setting requires that lrnr_baseline 
-# predicts nonnegative values. It is recommended to use poisson 
+# Lrnr_glmnet$new(family = "poisson") setting requires that lrnr_baseline
+# predicts nonnegative values. It is recommended to use poisson
 # regression-based learners.
-lrnr_glm_sp_binomial <- Lrnr_glm_semiparametric$new(
-  formula_sp = formula_sp, family = poisson(), 
-  lrnr_baseline = Lrnr_glmnet$new(family = "poisson"), 
-  interaction_variable = "A", 
+lrnr_glm_sp_count <- Lrnr_glm_semiparametric$new(
+  formula_sp = formula_sp, family = poisson(),
+  lrnr_baseline = Lrnr_glmnet$new(family = "poisson"),
+  interaction_variable = "A",
   append_interaction_matrix = TRUE
 )
-lrnr_glm_sp_binomial <- lrnr_glm_sp_binomial$train(task_count)
-preds <- lrnr_glm_sp_binomial$predict(task_count)
-beta <- lrnr_glm_sp_binomial$fit_object$coefficients
+lrnr_glm_sp_count <- lrnr_glm_sp_count$train(task_count)
+preds <- lrnr_glm_sp_count$predict(task_count)
+beta <- lrnr_glm_sp_count$fit_object$coefficients
+
+##################################### test CV ##################################
+
+# V=10
+lrnr_glm_sp_gaussian_cv <- Lrnr_cv$new(lrnr_glm_sp_gaussian)
+test_that("VFCV length of continuous Y predictions equals nrow data", {
+  lrnr_glm_sp_gaussian_cv_fit <- lrnr_glm_sp_gaussian_cv$train(task_continuous)
+  preds <- lrnr_glm_sp_gaussian_cv_fit$predict()
+  expect_equal(length(preds), 200)
+})
+
+lrnr_glm_sp_binomial_cv <- Lrnr_cv$new(lrnr_glm_sp_binomial)
+test_that("VFCV length of binary Y predictions equals nrow data", {
+  lrnr_glm_sp_binomial_cv_fit <- lrnr_glm_sp_binomial_cv$train(task_binary)
+  preds <- lrnr_glm_sp_binomial_cv_fit$predict()
+  expect_equal(length(preds), 200)
+})
+
+lrnr_glm_sp_count_cv <- Lrnr_cv$new(lrnr_glm_sp_count)
+test_that("VFCV length of count Y predictions equals nrow data", {
+  lrnr_glm_sp_count_cv_fit <- lrnr_glm_sp_count_cv$train(task_count)
+  preds <- lrnr_glm_sp_count_cv_fit$predict()
+  expect_equal(length(preds), 200)
+})
+
+# LOOCV
+set.seed(100)
+loocv_folds <- suppressWarnings(make_folds(
+  n = data[1:50, ], fold_fun = folds_vfold, V = 50
+))
+
+test_that("LOOCV length of continuous Y predictions equals nrow data", {
+  task_continuous_LOOCV <- sl3_Task$new(
+    data[1:50, ],
+    covariates = c("A", "W"), outcome = "Y_continuous", folds = loocv_folds
+  )
+  lrnr_glm_sp_gaussian_cv_fit <- lrnr_glm_sp_gaussian_cv$train(task_continuous_LOOCV)
+  preds <- lrnr_glm_sp_gaussian_cv_fit$predict()
+  expect_equal(length(preds), 50)
+  preds <- lrnr_glm_sp_gaussian_cv_fit$predict_fold(task_continuous_LOOCV, 1)
+  expect_equal(length(preds), 50)
+})
+
+test_that("LOOCV length of binary Y predictions equals nrow data", {
+  task_binary_LOOCV <- sl3_Task$new(
+    data[1:50, ],
+    covariates = c("A", "W"), outcome = "Y_binary", folds = loocv_folds
+  )
+  lrnr_glm_sp_binomial_cv_fit <- lrnr_glm_sp_binomial_cv$train(task_binary_LOOCV)
+  preds <- lrnr_glm_sp_binomial_cv_fit$predict()
+  expect_equal(length(preds), 50)
+  preds <- lrnr_glm_sp_binomial_cv_fit$predict_fold(task_binary_LOOCV, 1)
+  expect_equal(length(preds), 50)
+})
+
+test_that("LOOCV length of count Y predictions equals nrow data", {
+  task_count_LOOCV <- sl3_Task$new(
+    data[1:50, ],
+    covariates = c("A", "W"), outcome = "Y_count", folds = loocv_folds
+  )
+  lrnr_glm_sp_count_cv_fit <- lrnr_glm_sp_count_cv$train(task_count_LOOCV)
+  preds <- lrnr_glm_sp_count_cv_fit$predict()
+  expect_equal(length(preds), 50)
+  preds <- lrnr_glm_sp_count_cv_fit$predict_fold(task_count_LOOCV, 1)
+  expect_equal(length(preds), 50)
+})
