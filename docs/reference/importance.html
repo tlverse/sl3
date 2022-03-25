@@ -193,12 +193,12 @@ will be added as additional single-covariate groups.</p></dd>
 <span class="r-in"><span class="va">importance_result</span> <span class="op">&lt;-</span> <span class="fu">importance</span><span class="op">(</span><span class="va">sl_fit</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">importance_result</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    covariate MSE_difference</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:  gagebrth    0.032557343</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:  meducyrs    0.030266311</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:      mage    0.026502255</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:    parity    0.012977854</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:    apgar1    0.003184679</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6:    apgar5   -0.009025414</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:      mage    0.032376703</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:  meducyrs    0.026973859</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:  gagebrth    0.026130101</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:    parity    0.017112016</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:    apgar1    0.012807351</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6:    apgar5   -0.008442214</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># importance with groups of covariates</span></span>
 <span class="r-in"><span class="va">groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
@@ -208,9 +208,9 @@ will be added as additional single-covariate groups.</p></dd>
 <span class="r-in"><span class="va">importance_result_groups</span> <span class="op">&lt;-</span> <span class="fu">importance</span><span class="op">(</span><span class="va">sl_fit</span>, covariate_groups <span class="op">=</span> <span class="va">groups</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">importance_result_groups</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    covariate_group MSE_difference</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:          scores      5.3482280</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:        maternal      0.1431293</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:        gagebrth      0.0374389</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:          scores     8.69216085</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:        maternal     0.14227703</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:        gagebrth     0.02764069</span>
 </code></pre></div>
     </div>
   </div>
