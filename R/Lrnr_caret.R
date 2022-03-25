@@ -139,16 +139,19 @@ Lrnr_caret <- R6Class(
         stop("Outcome types in tasks for training and prediction do not match")
       }
 
-      if (fit$modelType == "Classification" & outcome_type == "binomial") {
-        predictions <- stats::predict(fit, newdata = task$X, type = "prob")[, 2]
+      if (fit$modelType == "Classification") {
+        if (outcome_type == "binomial") {
+          predictions <- as.numeric(
+            stats::predict(fit, newdata = task$X, type = "prob")[, 2]
+          )
+        } else if (outcome_type == "categorical") {
+          predictions <- pack_predictions(
+            as.matrix(stats::predict(fit, newdata = task$X, type = "prob"))
+          )
+        }
       } else {
-        predictions <- stats::predict(fit, newdata = task$X)
+        predictions <- as.numeric(stats::predict(fit, newdata = task$X))
       }
-
-      if (outcome_type != "categorical") {
-        predictions <- as.numeric(predictions)
-      }
-
       return(predictions)
     },
     .required_packages = c("caret")
