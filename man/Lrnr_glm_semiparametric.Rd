@@ -80,6 +80,7 @@ if the \code{interaction_variable} is binary.
 }
 
 \examples{
+\dontrun{
 # simulate some data
 set.seed(459)
 n <- 200
@@ -108,7 +109,7 @@ formula_sp <- ~ 1 + W
 set.seed(100)
 lrnr_glm_sp_gaussian <- Lrnr_glm_semiparametric$new(
     formula_sp = formula_sp, family =  gaussian(), 
-    lrnr_baseline =  Lrnr_glmnet$new(), 
+    lrnr_baseline =  Lrnr_glm$new(), 
     interaction_variable = "A", append_interaction_matrix = TRUE
 )
 lrnr_glm_sp_gaussian <- lrnr_glm_sp_gaussian$train(task_continuous)
@@ -121,11 +122,10 @@ X0 <- cbind(task_continuous$data[["W"]], 0 * V)
 colnames(X) <- c("W", "A", "A*W")
 Y <- task_continuous$Y
 set.seed(100)
-beta_equiv <- coef(cv.glmnet(X,Y,family="gaussian"),s="lambda.min")[c(3,4)]
-# actually, the glmnet fit is projected onto the semiparametric model 
+beta_equiv <- coef(glm(X,Y,family="gaussian"))[c(3,4)]
+# actually, the glm fit is projected onto the semiparametric model 
 # with glm.fit, no effect in this case
 print(beta - beta_equiv)
-\dontrun{
 # fit partially-linear regression w append_interaction_matrix = FALSE`
 set.seed(100)
 lrnr_glm_sp_gaussian <- Lrnr_glm_semiparametric$new(
@@ -157,7 +157,7 @@ print(beta - beta_equiv)
 # fit partially-linear logistic regression
 lrnr_glm_sp_binomial <- Lrnr_glm_semiparametric$new(
   formula_sp = formula_sp, family = binomial(), 
-  lrnr_baseline = Lrnr_glmnet$new(), interaction_variable = "A", 
+  lrnr_baseline = Lrnr_glm$new(), interaction_variable = "A", 
   append_interaction_matrix = TRUE
 )
 lrnr_glm_sp_binomial <- lrnr_glm_sp_binomial$train(task_binary)
@@ -165,12 +165,12 @@ preds <- lrnr_glm_sp_binomial$predict(task_binary)
 beta <- lrnr_glm_sp_binomial$fit_object$coefficients
 
 # fit partially-linear log-link (relative-risk) regression
-# Lrnr_glmnet$new(family = "poisson") setting requires that lrnr_baseline 
+# Lrnr_glm$new(family = "poisson") setting requires that lrnr_baseline 
 # predicts nonnegative values. It is recommended to use poisson 
 # regression-based learners.
 lrnr_glm_sp_poisson <- Lrnr_glm_semiparametric$new(
   formula_sp = formula_sp, family = poisson(), 
-  lrnr_baseline = Lrnr_glmnet$new(family = "poisson"), 
+  lrnr_baseline = Lrnr_glm$new(family = "poisson"), 
   interaction_variable = "A", 
   append_interaction_matrix = TRUE
 )
