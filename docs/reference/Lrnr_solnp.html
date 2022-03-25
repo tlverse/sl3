@@ -126,6 +126,11 @@ to 1.</p></li>
 <li><p><code>init_0 = FALSE</code>: If <code>TRUE</code>, alpha is initialized to all 0's,
 useful for TMLE. Otherwise, it is initialized to equal weights summing
 to 1, useful for Super Learner.</p></li>
+<li><p><code>rho = 1</code>: This is used as a penalty weighting scaler for
+infeasibility in the augmented objective function. The higher its
+value the more the weighting to bring the solution into the feasible
+region (default 1). However, very high values might lead to numerical
+ill conditioning or significantly slow down convergence.</p></li>
 <li><p><code>outer.iter = 400</code>: Maximum number of major (outer) iterations.</p></li>
 <li><p><code>inner.iter = 800</code>: Maximum number of minor (inner) iterations.</p></li>
 <li><p><code>delta = 1e-7</code>:Relative step size in forward difference evaluation.</p></li>
@@ -220,7 +225,7 @@ such as <code>params</code> (like <code>formula</code>) and <code>name</code>.</
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">lrnrs</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lasso"</span>, <span class="st">"glm"</span>, <span class="st">"ranger"</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">lrnr_stack</span> <span class="op">&lt;-</span> <span class="fu"><a href="Lrnr_base.html">make_learner</a></span><span class="op">(</span><span class="va">Stack</span>, <span class="va">lrnrs</span><span class="op">)</span></span>
 <span class="r-in"></span>
-<span class="r-in"><span class="co"># instantiate SL with GA metalearner</span></span>
+<span class="r-in"><span class="co"># instantiate SL with solnp metalearner</span></span>
 <span class="r-in"><span class="va">solnp_meta</span> <span class="op">&lt;-</span> <span class="va">Lrnr_solnp</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">sl</span> <span class="op">&lt;-</span> <span class="va"><a href="Lrnr_sl.html">Lrnr_sl</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">lrnr_stack</span>, <span class="va">solnp_meta</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">sl_fit</span> <span class="op">&lt;-</span> <span class="va">sl</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>

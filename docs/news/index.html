@@ -77,11 +77,13 @@
 
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.4.5" id="sl3-145">sl3 1.4.5<a class="anchor" aria-label="anchor" href="#sl3-145"></a></h2>
-<ul><li>Added <code>Lrnr_glmtree</code>, which uses the
+<ul><li>Changed <code>CV_lrnr_sl</code> to <code>cv_sl</code>
+</li>
+<li>Added <code>Lrnr_glmtree</code>, which uses the
 <code>partykit</code> R package to fit recursive partitioning and
 regression trees in a generalized linear model.</li>
 <li>Added fold-specific SL coefficients to the output of
-<code>CV_lrnr_sl</code>, and removed the coefficients column from the
+<code>cv_sl</code>, and removed the coefficients column from the
 returned <code>cv_risk</code> table.</li>
 <li>Added <code>get_sl_revere_risk</code> argument to
 <code>Lrnr_sl</code>’s <code>cv_risk</code> method to provide the option
@@ -94,8 +96,8 @@ continuous outcomes.</li>
 which allows users to define specific cross-validation structures for
 fitting the super learner. This is intended for use in a nested
 cross-validation scheme (such as cross-validated super learner,
-<code>CV_lrnr_sl</code>, or when <code>Lrnr_sl</code> is considered in
-the list of candidate <code>learners</code> in another
+<code>cv_sl</code>, or when <code>Lrnr_sl</code> is considered in the
+list of candidate <code>learners</code> in another
 <code>Lrnr_sl</code>). In addition to constructing clustered
 cross-validation with respect to <code>id</code>,
 <code>cv_control</code> also can be used to construct stratified

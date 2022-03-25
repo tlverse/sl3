@@ -110,7 +110,7 @@ metalearner based on the <code>outcome_type</code> of the training
 <li><p><code>cv_control = NULL</code>: Optional list of arguments that will be used
 to define a specific cross-validation fold structure for fitting the
 super learner. Intended for use in a nested cross-validation scheme,
-such as cross-validated super learner (<code><a href="CV_lrnr_sl.html">CV_lrnr_sl</a></code>) or
+such as cross-validated super learner (<code>CV_lrnr_sl</code>) or
 when <code>Lrnr_sl</code> is considered in the list of candidate
 <code>learners</code> in another <code>Lrnr_sl</code>. Includes the arguments
 listed below, and any others to be passed to
@@ -230,7 +230,8 @@ set <code>options("sl3.verbose" = TRUE)</code>.)</p></li>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cpp_imputed</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cpp_imputed</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">covs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"apgar1"</span>, <span class="st">"apgar5"</span>, <span class="st">"parity"</span>, <span class="st">"gagebrth"</span>, <span class="st">"mage"</span>, <span class="st">"meducyrs"</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">task</span> <span class="op">&lt;-</span> <span class="va"><a href="sl3_Task.html">sl3_Task</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">cpp_imputed</span>, covariates <span class="op">=</span> <span class="va">covs</span>, outcome <span class="op">=</span> <span class="st">"haz"</span><span class="op">)</span></span>
 <span class="r-in"><span class="co"># this is just for illustrative purposes, not intended for real applications</span></span>
@@ -252,20 +253,10 @@ set <code>options("sl3.verbose" = TRUE)</code>.)</p></li>
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-in"><span class="va">dSL_fit</span> <span class="op">&lt;-</span> <span class="va">dSL</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>
 <span class="r-in"><span class="co"># example with cv_control, where we use cross-validated super learner</span></span>
-<span class="r-in"><span class="va">cvSL_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="CV_lrnr_sl.html">CV_lrnr_sl</a></span><span class="op">(</span></span>
+<span class="r-in"><span class="va">cvSL_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="cv_sl.html">cv_sl</a></span><span class="op">(</span></span>
 <span class="r-in">  lrnr_sl <span class="op">=</span> <span class="va">eSL_nested5folds</span>, task <span class="op">=</span> <span class="va">task</span>, eval_fun <span class="op">=</span> <span class="va">loss_squared_error</span></span>
 <span class="r-in"><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Cross-validated risk:"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                          learner      MSE        se   fold_sd</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:                                 Lrnr_glm_TRUE 1.597915 0.1051102 0.2619778</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:                   Lrnr_ranger_500_TRUE_none_1 1.523408 0.1050220 0.2088191</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: Lrnr_glmnet_NULL_deviance_10_1_100_TRUE_FALSE 1.596164 0.1047551 0.2604552</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:                                  SuperLearner 1.449938 0.1015453 0.3038952</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    fold_min_MSE fold_max_MSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:     1.412729     2.053372</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:     1.302620     1.839319</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:     1.416747     2.051659</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:     1.160121     2.205882</span>
+<span class="r-in"><span class="op">}</span></span>
 </code></pre></div>
     </div>
   </div>
