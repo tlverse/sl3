@@ -28,7 +28,7 @@ process_data <- function(data, nodes, column_names, flag = TRUE, drop_missing_ou
   char_vars <- all_nodes[is_character]
   if (length(char_cols) > 0) {
     warning(sprintf(
-      "Character covariates found: %s;\nConverting these to factors",
+      "Character variables found: %s;\nConverting these to factors",
       paste0(char_vars, collapse = ", ")
     ))
 
