@@ -67,6 +67,7 @@ Other Learners:
 \code{\link{Lrnr_gam}},
 \code{\link{Lrnr_ga}},
 \code{\link{Lrnr_gbm}},
+\code{\link{Lrnr_glm_semiparametric}},
 \code{\link{Lrnr_glmnet}},
 \code{\link{Lrnr_glmtree}},
 \code{\link{Lrnr_glm}},
