@@ -93,13 +93,16 @@ data <- data.table::data.table(W, A, Y_continuous, Y_binary, Y_count)
 
 # Make tasks
 task_continuous <- sl3_Task$new(
-  data, covariates = c("A", "W"), outcome = "Y_continuous"
+  data,
+  covariates = c("A", "W"), outcome = "Y_continuous"
 )
 task_binary <- sl3_Task$new(
-  data, covariates = c("A", "W"), outcome = "Y_binary"
+  data,
+  covariates = c("A", "W"), outcome = "Y_binary"
 )
 task_count <- sl3_Task$new(
-  data, covariates = c("A", "W"), outcome = "Y_count", 
+  data,
+  covariates = c("A", "W"), outcome = "Y_count",
   outcome_type = "continuous"
 )
 
@@ -108,9 +111,9 @@ formula_sp <- ~ 1 + W
 # fit partially-linear regression with append_interaction_matrix = TRUE
 set.seed(100)
 lrnr_glm_sp_gaussian <- Lrnr_glm_semiparametric$new(
-    formula_sp = formula_sp, family =  gaussian(), 
-    lrnr_baseline =  Lrnr_glm$new(), 
-    interaction_variable = "A", append_interaction_matrix = TRUE
+  formula_sp = formula_sp, family = gaussian(),
+  lrnr_baseline = Lrnr_glm$new(),
+  interaction_variable = "A", append_interaction_matrix = TRUE
 )
 lrnr_glm_sp_gaussian <- lrnr_glm_sp_gaussian$train(task_continuous)
 preds <- lrnr_glm_sp_gaussian$predict(task_continuous)
@@ -122,16 +125,16 @@ X0 <- cbind(task_continuous$data[["W"]], 0 * V)
 colnames(X) <- c("W", "A", "A*W")
 Y <- task_continuous$Y
 set.seed(100)
-beta_equiv <- coef(glm(X,Y,family="gaussian"))[c(3,4)]
-# actually, the glm fit is projected onto the semiparametric model 
+beta_equiv <- coef(glm(X, Y, family = "gaussian"))[c(3, 4)]
+# actually, the glm fit is projected onto the semiparametric model
 # with glm.fit, no effect in this case
 print(beta - beta_equiv)
 # fit partially-linear regression w append_interaction_matrix = FALSE`
 set.seed(100)
 lrnr_glm_sp_gaussian <- Lrnr_glm_semiparametric$new(
-  formula_sp = formula_sp, family = gaussian(), 
-  lrnr_baseline = Lrnr_glm$new(family = gaussian()), 
-  interaction_variable = "A", 
+  formula_sp = formula_sp, family = gaussian(),
+  lrnr_baseline = Lrnr_glm$new(family = gaussian()),
+  interaction_variable = "A",
   append_interaction_matrix = FALSE
 )
 lrnr_glm_sp_gaussian <- lrnr_glm_sp_gaussian$train(task_continuous)
@@ -156,8 +159,8 @@ print(beta - beta_equiv)
 
 # fit partially-linear logistic regression
 lrnr_glm_sp_binomial <- Lrnr_glm_semiparametric$new(
-  formula_sp = formula_sp, family = binomial(), 
-  lrnr_baseline = Lrnr_glm$new(), interaction_variable = "A", 
+  formula_sp = formula_sp, family = binomial(),
+  lrnr_baseline = Lrnr_glm$new(), interaction_variable = "A",
   append_interaction_matrix = TRUE
 )
 lrnr_glm_sp_binomial <- lrnr_glm_sp_binomial$train(task_binary)
@@ -165,13 +168,13 @@ preds <- lrnr_glm_sp_binomial$predict(task_binary)
 beta <- lrnr_glm_sp_binomial$fit_object$coefficients
 
 # fit partially-linear log-link (relative-risk) regression
-# Lrnr_glm$new(family = "poisson") setting requires that lrnr_baseline 
-# predicts nonnegative values. It is recommended to use poisson 
+# Lrnr_glm$new(family = "poisson") setting requires that lrnr_baseline
+# predicts nonnegative values. It is recommended to use poisson
 # regression-based learners.
 lrnr_glm_sp_poisson <- Lrnr_glm_semiparametric$new(
-  formula_sp = formula_sp, family = poisson(), 
-  lrnr_baseline = Lrnr_glm$new(family = "poisson"), 
-  interaction_variable = "A", 
+  formula_sp = formula_sp, family = poisson(),
+  lrnr_baseline = Lrnr_glm$new(family = "poisson"),
+  interaction_variable = "A",
   append_interaction_matrix = TRUE
 )
 lrnr_glm_sp_poisson <- lrnr_glm_sp_poisson$train(task_count)
