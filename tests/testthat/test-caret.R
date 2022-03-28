@@ -119,7 +119,9 @@ test_that("Lrnr_caret RF preds match caret RF preds for categorical outcome", {
     x = task_catY$X, y = task_catY$Y, method = "rf", metric = "Accuracy",
     trControl = caret::trainControl(method = "cv")
   )
-  prd_caret_rf <- predict(fit_caret_rf, newdata = task$X)
+  prd_caret_rf <- pack_predictions(
+    predict(fit_caret_rf, newdata = task$X, type = "prob")
+  )
 
   expect_equal(prd_lrnr_caret_rf, prd_caret_rf)
 })
