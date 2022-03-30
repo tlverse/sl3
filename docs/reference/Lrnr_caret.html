@@ -106,7 +106,7 @@ functionality, see the complete documentation of <code><a href="Lrnr_base.html">
     <h2>Parameters</h2>
     
 
-<ul><li><p><code>algorithm</code>: A string specifying which <span class="pkg">caret</span> classification or
+<ul><li><p><code>method</code>: A string specifying which <span class="pkg">caret</span> classification or
 regression model to use. Possible models can be found using
 <code>names(caret::getModelInfo())</code>. Information about a model,
 including the parameters that are tuned, can be found using
@@ -216,12 +216,10 @@ additional arguments defined in <code><a href="Lrnr_base.html">Lrnr_base</a></co
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cpp_imputed</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">covs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"apgar1"</span>, <span class="st">"apgar5"</span>, <span class="st">"parity"</span>, <span class="st">"gagebrth"</span>, <span class="st">"mage"</span>, <span class="st">"meducyrs"</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">task</span> <span class="op">&lt;-</span> <span class="va"><a href="sl3_Task.html">sl3_Task</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">cpp_imputed</span>, covariates <span class="op">=</span> <span class="va">covs</span>, outcome <span class="op">=</span> <span class="st">"haz"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">autotune_bart_lrnr</span> <span class="op">&lt;-</span> <span class="va">Lrnr_caret</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"bartMachine"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">autotune_bart_fit</span> <span class="op">&lt;-</span> <span class="va">autotune_bart_lrnr</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Failed on Lrnr_caret_bartMachine_NULL_TRUE</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in if (grepl("adaptive", trControl$method) &amp; nrow(tuneGrid) == 1) {    stop(paste("For adaptive resampling, there needs to be more than one",         "tuning parameter for evaluation"), call. = FALSE)}:</span> argument is of length zero</span>
-<span class="r-in"><span class="va">autotune_bart_predictions</span> <span class="op">&lt;-</span> <span class="va">autotune_bart_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'autotune_bart_fit' not found</span>
+<span class="r-in"><span class="va">autotuned_RF_lrnr</span> <span class="op">&lt;-</span> <span class="va">Lrnr_caret</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"rf"</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">693</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">autotuned_RF_fit</span> <span class="op">&lt;-</span> <span class="va">autotuned_RF_lrnr</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">autotuned_RF_predictions</span> <span class="op">&lt;-</span> <span class="va">autotuned_RF_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span></span>
 </code></pre></div>
     </div>
   </div>

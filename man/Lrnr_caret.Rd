@@ -24,7 +24,7 @@ then selecting the model with the best performance.
 \section{Parameters}{
 
 \itemize{
-\item \code{algorithm}: A string specifying which \pkg{caret} classification or
+\item \code{method}: A string specifying which \pkg{caret} classification or
 regression model to use. Possible models can be found using
 \code{names(caret::getModelInfo())}. Information about a model,
 including the parameters that are tuned, can be found using
@@ -64,9 +64,10 @@ additional arguments defined in \code{\link{Lrnr_base}}, such as
 data(cpp_imputed)
 covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
 task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
-autotune_bart_lrnr <- Lrnr_caret$new("bartMachine")
-autotune_bart_fit <- autotune_bart_lrnr$train(task)
-autotune_bart_predictions <- autotune_bart_fit$predict()
+autotuned_RF_lrnr <- Lrnr_caret$new(method = "rf")
+set.seed(693)
+autotuned_RF_fit <- autotuned_RF_lrnr$train(task)
+autotuned_RF_predictions <- autotuned_RF_fit$predict()
 }
 \seealso{
 Other Learners: 
