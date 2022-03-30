@@ -102,6 +102,29 @@ list of candidate <code>learners</code> in another
 cross-validation with respect to <code>id</code>,
 <code>cv_control</code> also can be used to construct stratified
 cross-validation folds for <code>Lrnr_sl</code>.</li>
+<li>
+<code>Lrnr_caret</code> now works for binary and categorical
+outcomes. Previous versions state that these discrete outcome types are
+supported by <code>Lrnr_caret</code>, but the functionality would
+brake.</li>
+<li>Added public function for <code>sl3_Task</code>,
+<code>get_folds</code>, which takes in <code><a href="http://tlverse.org/origami/reference/make_folds.html" class="external-link">origami::make_folds</a></code>
+arguments and returns the folds. This function is now called by
+<code>task$folds</code> and it can be called in train as well, to obtain
+folds from a task that have a non-default fold structure.</li>
+<li>Learners that use CV internally (i.e., as part of their procedure to
+select tuning parameters), including <code>Lrnr_caret</code>,
+<code>Lrnr_glmnet</code>, <code>Lrnr_hal9001</code>, and
+<code>Lrnr_sl</code>, use <code>task$get_folds</code> to create folds.
+The learners’ folds respect the default CV fold structure in
+<code>sl3</code> tasks (clustered CV when <code>id</code> is supplied in
+the task; and stratified CV when outcomes are categorical or binary, and
+when <code>id</code> are nested in strata if <code>id</code> supplied to
+task). However, <code>V</code> can be modified according to the
+learner-specific parameters. (<code>Lrnr_sl</code> has a few extra CV
+tuning arguments, which are thoroughly documented in
+<code>cv_control</code> and modifications are only recommended for
+advanced use of <code>Lrnr_sl</code>.)</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.4.4" id="sl3-144">sl3 1.4.4<a class="anchor" aria-label="anchor" href="#sl3-144"></a></h2>

@@ -111,8 +111,8 @@ regression model to use. Possible models can be found using
 <code>names(caret::getModelInfo())</code>. Information about a model,
 including the parameters that are tuned, can be found using
 <code><a href="https://rdrr.io/pkg/caret/man/modelLookup.html" class="external-link">caret::modelLookup()</a></code>, e.g.,
-<code>caret::modelLookup("xgbLinear")</code>. Consult the caret package's
-documentation on <code><a href="https://rdrr.io/pkg/caret/man/train.html" class="external-link">train</a></code> for more details.</p></li>
+<code>caret::modelLookup("xgbLinear")</code>. Consult the <code>caret</code>
+package's documentation on <code><a href="https://rdrr.io/pkg/caret/man/train.html" class="external-link">train</a></code> for more details.</p></li>
 <li><p><code>metric = NULL</code>: An optional string specifying the summary metric to
 be used to select the optimal model. If not specified, it will be set
 to "RMSE" for continuous outcomes and "Accuracy" for categorical and
@@ -120,14 +120,14 @@ binary outcomes. Other options include "MAE", "Kappa", "Rsquared" and
 "logLoss". Regression models are defined when <code>metric</code> is set as
 "RMSE", "logLoss", "Rsquared", or "MAE". Classification models are
 defined when <code>metric</code> is set as "Accuracy" or "Kappa". Custom
-performance metrics can also be used. Consult the caret package's
+performance metrics can also be used. Consult the <code>caret</code> package's
 <code><a href="https://rdrr.io/pkg/caret/man/train.html" class="external-link">train</a></code> documentation for more details.</p></li>
 <li><p><code>trControl = list(method = "cv", number = 10)</code>: A list for specifying
 the arguments for <code><a href="https://rdrr.io/pkg/caret/man/trainControl.html" class="external-link">trainControl</a></code> object. If not
 specified, it will consider "cv" with 10 folds as the resampling method,
-instead of caret's default resampling method, "boot". For a detailed
-description, consult the caret package's documentation for
-<code><a href="https://rdrr.io/pkg/caret/man/train.html" class="external-link">train</a></code> and <code><a href="https://rdrr.io/pkg/caret/man/trainControl.html" class="external-link">trainControl</a></code>.</p></li>
+instead of <code>caret</code>'s default resampling method, "boot". For a
+detailed description, consult the <code>caret</code> package's documentation
+for <code><a href="https://rdrr.io/pkg/caret/man/train.html" class="external-link">train</a></code> and <code><a href="https://rdrr.io/pkg/caret/man/trainControl.html" class="external-link">trainControl</a></code>.</p></li>
 <li><p><code>factor_binary_outcome = TRUE</code>: Logical indicating whether a binary
 outcome should be defined as a factor instead of a numeric. This
 only needs to be modified to <code>FALSE</code> in the following uncommon
@@ -217,8 +217,9 @@ additional arguments defined in <code><a href="Lrnr_base.html">Lrnr_base</a></co
 <span class="r-in"><span class="va">covs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"apgar1"</span>, <span class="st">"apgar5"</span>, <span class="st">"parity"</span>, <span class="st">"gagebrth"</span>, <span class="st">"mage"</span>, <span class="st">"meducyrs"</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">task</span> <span class="op">&lt;-</span> <span class="va"><a href="sl3_Task.html">sl3_Task</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">cpp_imputed</span>, covariates <span class="op">=</span> <span class="va">covs</span>, outcome <span class="op">=</span> <span class="st">"haz"</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">autotune_bart_lrnr</span> <span class="op">&lt;-</span> <span class="va">Lrnr_caret</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"bartMachine"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">autotune_bart_fit</span> <span class="op">&lt;-</span> <span class="va">autotune_bart</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'autotune_bart' not found</span>
+<span class="r-in"><span class="va">autotune_bart_fit</span> <span class="op">&lt;-</span> <span class="va">autotune_bart_lrnr</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Failed on Lrnr_caret_bartMachine_NULL_TRUE</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in if (grepl("adaptive", trControl$method) &amp; nrow(tuneGrid) == 1) {    stop(paste("For adaptive resampling, there needs to be more than one",         "tuning parameter for evaluation"), call. = FALSE)}:</span> argument is of length zero</span>
 <span class="r-in"><span class="va">autotune_bart_predictions</span> <span class="op">&lt;-</span> <span class="va">autotune_bart_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'autotune_bart_fit' not found</span>
 </code></pre></div>

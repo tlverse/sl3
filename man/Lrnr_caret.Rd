@@ -29,8 +29,8 @@ regression model to use. Possible models can be found using
 \code{names(caret::getModelInfo())}. Information about a model,
 including the parameters that are tuned, can be found using
 \code{caret::modelLookup()}, e.g.,
-\code{caret::modelLookup("xgbLinear")}. Consult the caret package's
-documentation on \code{\link[caret]{train}} for more details.
+\code{caret::modelLookup("xgbLinear")}. Consult the \code{caret}
+package's documentation on \code{\link[caret]{train}} for more details.
 \item \code{metric = NULL}: An optional string specifying the summary metric to
 be used to select the optimal model. If not specified, it will be set
 to "RMSE" for continuous outcomes and "Accuracy" for categorical and
@@ -38,14 +38,14 @@ binary outcomes. Other options include "MAE", "Kappa", "Rsquared" and
 "logLoss". Regression models are defined when \code{metric} is set as
 "RMSE", "logLoss", "Rsquared", or "MAE". Classification models are
 defined when \code{metric} is set as "Accuracy" or "Kappa". Custom
-performance metrics can also be used. Consult the caret package's
+performance metrics can also be used. Consult the \code{caret} package's
 \code{\link[caret]{train}} documentation for more details.
 \item \code{trControl = list(method = "cv", number = 10)}: A list for specifying
 the arguments for \code{\link[caret]{trainControl}} object. If not
 specified, it will consider "cv" with 10 folds as the resampling method,
-instead of caret's default resampling method, "boot". For a detailed
-description, consult the caret package's documentation for
-\code{\link[caret]{train}} and \code{\link[caret]{trainControl}}.
+instead of \code{caret}'s default resampling method, "boot". For a
+detailed description, consult the \code{caret} package's documentation
+for \code{\link[caret]{train}} and \code{\link[caret]{trainControl}}.
 \item \code{factor_binary_outcome = TRUE}: Logical indicating whether a binary
 outcome should be defined as a factor instead of a numeric. This
 only needs to be modified to \code{FALSE} in the following uncommon
@@ -65,7 +65,7 @@ data(cpp_imputed)
 covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
 task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
 autotune_bart_lrnr <- Lrnr_caret$new("bartMachine")
-autotune_bart_fit <- autotune_bart$train(task)
+autotune_bart_fit <- autotune_bart_lrnr$train(task)
 autotune_bart_predictions <- autotune_bart_fit$predict()
 }
 \seealso{
