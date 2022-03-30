@@ -11,14 +11,14 @@ task <- sl3_Task$new(mtcars, covariates = c(
   "vs", "am", "gear", "carb"
 ), outcome = "mpg")
 
-mtcars$mpg_binary <- as.numeric(mtcars$mpg < 15)
+mtcars$mpg_binary <- as.numeric(mtcars$mpg < 19)
 task_binaryY <- sl3_Task$new(mtcars, covariates = c(
   "cyl", "disp", "hp", "drat", "wt", "qsec",
   "vs", "am", "gear", "carb"
 ), outcome = "mpg_binary")
 
 mtcars$mpg_categorical <- as.factor(ifelse(
-  mtcars$mpg < 15, "low", ifelse(mtcars$mpg < 20, "medium", "high")
+  mtcars$mpg < 17, "low", ifelse(mtcars$mpg < 21.5, "medium", "high")
 ))
 task_catY <- sl3_Task$new(mtcars, covariates = c(
   "cyl", "disp", "hp", "drat", "wt", "qsec",
@@ -76,7 +76,10 @@ test_that("Lrnr_caret RF match caret RF preds for continuous outcome", {
   set.seed(1530)
   fit_caret_rf <- caret::train(
     x = task$X, y = task$Y, method = "rf", metric = "RMSE",
-    trControl = caret::trainControl(method = "cv")
+    trControl = caret::trainControl(
+      method = "cv",
+      indexOut = fit_lrnr_caret_rf$fit_object$control$indexOut
+    )
   )
   prd_caret_rf <- as.numeric(predict(fit_caret_rf, newdata = task$X))
 
@@ -85,20 +88,20 @@ test_that("Lrnr_caret RF match caret RF preds for continuous outcome", {
 
 test_that("Lrnr_caret RF match caret RF preds for binary classification", {
   ## instantiate Lrnr_caret, train on task, and predict on task
-  lrnr_caret_rf <- Lrnr_caret$new(
-    algorithm = "rf", trControl = list(method = "cv", number = 2)
-  )
+  lrnr_caret_rf <- Lrnr_caret$new(algorithm = "rf")
   set.seed(1530)
   fit_lrnr_caret_rf <- lrnr_caret_rf$train(task_binaryY)
   prd_lrnr_caret_rf <- fit_lrnr_caret_rf$predict()
 
   ## fit caret RF using the data from the task
   set.seed(1530)
-  fit_caret_rf <- caret::train(
+  fit_caret_rf <- suppressWarnings(caret::train(
     x = task_binaryY$X, y = as.factor(task_binaryY$Y), method = "rf",
     metric = "Accuracy",
-    trControl = caret::trainControl(method = "cv", number = 2)
-  )
+    trControl = caret::trainControl(
+      method = "cv", indexOut = fit_lrnr_caret_rf$fit_object$control$indexOut
+    )
+  ))
   prd_caret_rf <- as.numeric(
     predict(fit_caret_rf, newdata = task$X, type = "prob")[, 2]
   )
@@ -115,10 +118,13 @@ test_that("Lrnr_caret RF preds match caret RF preds for categorical outcome", {
 
   ## fit caret RF using the data from the task
   set.seed(1530)
-  fit_caret_rf <- caret::train(
+  fit_caret_rf <- suppressWarnings(caret::train(
     x = task_catY$X, y = task_catY$Y, method = "rf", metric = "Accuracy",
-    trControl = caret::trainControl(method = "cv")
-  )
+    trControl = caret::trainControl(
+      method = "cv",
+      indexOut = fit_lrnr_caret_rf$fit_object$control$indexOut
+    )
+  ))
   prd_caret_rf <- pack_predictions(
     predict(fit_caret_rf, newdata = task$X, type = "prob")
   )
@@ -140,7 +146,10 @@ test_that("Lrnr_caret RF preds match caret RF preds for binary regression", {
   set.seed(1530)
   fit_caret_rf <- suppressWarnings(caret::train(
     x = task_binaryY$X, y = task_binaryY$Y, method = "rf",
-    metric = "RMSE", trControl = caret::trainControl(method = "cv")
+    metric = "RMSE", trControl = caret::trainControl(
+      method = "cv",
+      indexOut = fit_lrnr_caret_rf$fit_object$control$indexOut
+    )
   ))
   prd_caret_rf <- as.numeric(predict(fit_caret_rf, newdata = task$X))
 

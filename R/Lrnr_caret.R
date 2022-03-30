@@ -31,8 +31,8 @@
 #'      \code{names(caret::getModelInfo())}. Information about a model,
 #'      including the parameters that are tuned, can be found using
 #'      \code{caret::modelLookup()}, e.g.,
-#'      \code{caret::modelLookup("xgbLinear")}. Consult the caret package's
-#'      documentation on \code{\link[caret]{train}} for more details.
+#'      \code{caret::modelLookup("xgbLinear")}. Consult the \code{caret}
+#'      package's documentation on \code{\link[caret]{train}} for more details.
 #'  - \code{metric = NULL}: An optional string specifying the summary metric to
 #'      be used to select the optimal model. If not specified, it will be set
 #'      to "RMSE" for continuous outcomes and "Accuracy" for categorical and
@@ -40,14 +40,14 @@
 #'      "logLoss". Regression models are defined when \code{metric} is set as
 #'      "RMSE", "logLoss", "Rsquared", or "MAE". Classification models are
 #'      defined when \code{metric} is set as "Accuracy" or "Kappa". Custom
-#'      performance metrics can also be used. Consult the caret package's
+#'      performance metrics can also be used. Consult the \code{caret} package's
 #'      \code{\link[caret]{train}} documentation for more details.
 #'  - \code{trControl = list(method = "cv", number = 10)}: A list for specifying
 #'      the arguments for \code{\link[caret]{trainControl}} object. If not
 #'      specified, it will consider "cv" with 10 folds as the resampling method,
-#'      instead of caret's default resampling method, "boot". For a detailed
-#'      description, consult the caret package's documentation for
-#'      \code{\link[caret]{train}} and \code{\link[caret]{trainControl}}.
+#'      instead of \code{caret}'s default resampling method, "boot". For a
+#'      detailed description, consult the \code{caret} package's documentation
+#'      for \code{\link[caret]{train}} and \code{\link[caret]{trainControl}}.
 #'  - \code{factor_binary_outcome = TRUE}: Logical indicating whether a binary
 #'      outcome should be defined as a factor instead of a numeric. This
 #'      only needs to be modified to \code{FALSE} in the following uncommon
@@ -65,7 +65,7 @@
 #' covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
 #' task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
 #' autotune_bart_lrnr <- Lrnr_caret$new("bartMachine")
-#' autotune_bart_fit <- autotune_bart$train(task)
+#' autotune_bart_fit <- autotune_bart_lrnr$train(task)
 #' autotune_bart_predictions <- autotune_bart_fit$predict()
 Lrnr_caret <- R6Class(
   classname = "Lrnr_caret",
@@ -86,7 +86,7 @@ Lrnr_caret <- R6Class(
       )
 
       if (typeof(trControl) == "list") {
-        params$trControl <- call_with_args(caret::trainControl, trControl)
+        params$trControl <- trControl
       } else {
         stop("Specified trControl is unsupported in Lrnr_caret.")
       }
@@ -100,6 +100,12 @@ Lrnr_caret <- R6Class(
 
       # load args
       args <- self$params
+
+      # verbosity
+      verbose <- args$verbose
+      if (is.null(verbose)) {
+        verbose <- getOption("sl3.verbose")
+      }
 
       # outcome type
       outcome_type <- self$get_outcome_type(task)
@@ -123,6 +129,29 @@ Lrnr_caret <- R6Class(
       if (args$factor_binary_outcome & outcome_type$type == "binomial") {
         args$y <- as.factor(args$y)
       }
+
+
+      # specify internal CV via trControl's indexOut argument when
+      # k-fold CV is specified and it is not a repeated k-fold CV scheme
+      # and when the user is not trying to control the folds with index args
+      if (!is.null(args$trControl) &
+        (!is.null(args$trControl$method) && args$trControl$method == "cv") &
+        (is.null(args$trControl$repeats) || args$trControl$repeats == 1) &
+        (is.null(args$trControl$indexOut) & is.null(args$trControl$index))) {
+        caret_nfolds <- args$trControl$number # number of k-fold CV folds
+        folds <- task$folds # training task's CV folds
+
+        # we need to create the folds when caret_nfolds is provided and it is
+        # not equal to the number of folds in the task, otherwise we
+        # can just use "folds" (above) as the CV folds for fitting
+        if (!is.null(caret_nfolds) && length(folds) != caret_nfolds) {
+          folds <- task$get_folds(V = caret_nfolds)
+        }
+        args$trControl$indexOut <- lapply(
+          seq_along(folds), function(i) folds[[i]]$validation
+        )
+      }
+      args$trControl <- call_with_args(caret::trainControl, args$trControl)
 
       # fit
       fit_object <- call_with_args(

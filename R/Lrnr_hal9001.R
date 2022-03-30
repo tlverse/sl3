@@ -32,8 +32,26 @@
 #' @family Learners
 #'
 #' @section Parameters:
-#'   - \code{...}: Arguments passed to \code{\link[hal9001]{fit_hal}}. See
-#'    it's documentation for details.
+#'   - \code{max_degree = 2}: An integer specifying the highest order of
+#'       interaction terms for which basis functions ought to be generated.
+#'   - \code{smoothness_orders = 1}: An integer specifying the smoothness of
+#'       the basis functions. See details of \code{hal9001} package's
+#'       \code{\link[hal9001]{fit_hal}} function for more information.
+#'   - \code{num_knots = 5}: An integer vector of length 1 or of length
+#'       \code{max_degree}, specifying the maximum number of knot points
+#'       (i.e., bins) for each covariate. If \code{num_knots} is a unit-length
+#'       vector, then the same \code{num_knots} are used for each degree. See
+#'       details of \code{hal9001} package's \code{\link[hal9001]{fit_hal}}
+#'       function for more information.
+#'   - \code{fit_control}: List of arguments, including those specified in
+#'      \code{\link[hal9001]{fit_hal}}'s  \code{fit_control} documentation, and
+#'      any additional arguments to be passed to \code{\link[glmnet]{cv.glmnet}}
+#'      or \code{\link[glmnet]{glmnet}}. See the \code{hal9001} package
+#'      \code{\link[hal9001]{fit_hal}} function fdocumentation or more
+#'      information.
+#'   - \code{...}: Other parameters passed to \code{\link[hal9001]{fit_hal}}
+#'       and additional arguments defined in \code{\link{Lrnr_base}}, such as
+#'       \code{params} like \code{formula}.
 #'
 #' @examples
 #' data(cpp_imputed)
@@ -42,16 +60,21 @@
 #'
 #' # instantiate with max 2-way interactions, 0-order splines, and binning
 #' # (i.e., num_knots) that decreases with increasing interaction degree
-#' hal_lrnr <- Lrnr_hal9001$new(
-#'   max_degree = 2, num_knots = c(20, 10), smoothness_orders = 0
-#' )
+#' hal_lrnr <- Lrnr_hal9001$new(max_degree = 2, num_knots = c(5, 3))
 #' hal_fit <- hal_lrnr$train(task)
 #' hal_preds <- hal_fit$predict()
 Lrnr_hal9001 <- R6Class(
   classname = "Lrnr_hal9001",
   inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(...) {
+    initialize = function(max_degree = 2,
+                          smoothness_orders = 1,
+                          num_knots = 5,
+                          fit_control = list(nfolds = 10),
+                          ...) {
+      if (!is.null(fit_control) & !is.list(fit_control)) {
+        stop("fit_control must be specified as a list of arguments")
+      }
       params <- args_to_list()
       super$initialize(params = params, ...)
     }
@@ -60,6 +83,12 @@ Lrnr_hal9001 <- R6Class(
     .properties = c("continuous", "binomial", "weights", "ids"),
     .train = function(task) {
       args <- self$params
+
+      verbose <- args$verbose
+      if (is.null(verbose)) {
+        verbose <- getOption("sl3.verbose")
+      }
+
 
       args$X <- as.matrix(task$X)
 
@@ -70,54 +99,37 @@ Lrnr_hal9001 <- R6Class(
         args$family <- outcome_type$glm_family()
       }
 
+      # instantiate fit_control if it's not specified
       if (!any(grepl("fit_control", names(args)))) {
         args$fit_control <- list()
       }
 
-      if (!any(grepl("fold", names(args$fit_control)))) {
-        args$fit_control$foldid <- origami::folds2foldvec(task$folds)
-      } else {
-        if (outcome_type$type == "binomial" && is.null(args$fit_control$foldid)) {
-          strata_ids <- args$Y
-        } else {
-          strata_ids <- NULL
+      # if fit_control$cv_select is NULL or TRUE, then HAL will use
+      # glmnet::cv.glmnet(), and a specific CV scheme will be passed via
+      # fit_control$foldid to fit_hal
+      if ((is.null(args$fit_control$cv_select) || args$fit_control$cv_select) &
+        is.null(args$fit_control$foldid)) {
+        hal_nfolds <- args$fit_control$nfolds # number of CV folds for HAL
+        folds <- task$folds # training task's CV folds
+
+        # we need to create the folds when hal_nfolds is provided and it is not
+        # equal to the number of folds in the task, otherwise we
+        # can just use "folds" (above) as the CV folds for fitting HAL
+        if (!is.null(hal_nfolds) && length(folds) != hal_nfolds) {
+          folds <- task$get_folds(V = hal_nfolds)
         }
-        if (any(grepl("n_folds", names(args$fit_control)))) {
-          V <- as.integer(args$fit_control$n_folds)
-        } else if (any(grepl("nfolds", names(args$fit_control)))) {
-          V <- as.integer(args$fit_control$nfolds)
-        } else {
-          V <- 10
-        }
-        folds <- origami::make_folds(
-          n = length(args$Y), strata_ids = strata_ids,
-          fold_fun = origami::folds_vfold, V = V
-        )
         args$fit_control$foldid <- origami::folds2foldvec(folds)
       }
 
-      if (task$has_node("id")) {
-        args$id <- task$id
-      }
-
       if (task$has_node("weights")) {
-        args$fit_control$weights <- task$weights
+        args$weights <- task$weights
       }
 
       if (task$has_node("offset")) {
         args$offset <- task$offset
       }
 
-      # fit HAL, allowing glmnet-fitting arguments
-      other_valid <- c(
-        names(formals(glmnet::cv.glmnet)), names(formals(glmnet::glmnet))
-      )
-
-      fit_object <- call_with_args(
-        hal9001::fit_hal, args,
-        other_valid = other_valid
-      )
-
+      fit_object <- call_with_args(hal9001::fit_hal, args)
       return(fit_object)
     },
     .predict = function(task = NULL) {

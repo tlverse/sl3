@@ -15,6 +15,23 @@
   candidate `learners` in another `Lrnr_sl`). In addition to constructing 
   clustered cross-validation with respect to `id`, `cv_control` also 
   can be used to construct stratified cross-validation folds for `Lrnr_sl`.
+* `Lrnr_caret` now works for binary and categorical outcomes. Previous versions 
+  state that these discrete outcome types are supported by `Lrnr_caret`, but 
+  the functionality would brake.
+* Added public function for `sl3_Task`, `get_folds`, which takes in 
+  `origami::make_folds` arguments and returns the folds. This function is 
+  now called by `task$folds` and it can be called in train as well, to obtain 
+  folds from a task that have a non-default fold structure. 
+* Learners that use CV internally (i.e., as part of their procedure to select
+  tuning parameters), including `Lrnr_caret`, `Lrnr_glmnet`, `Lrnr_hal9001`, 
+  and `Lrnr_sl`, use `task$get_folds` to create folds. The learners' folds 
+  respect the default CV fold structure in `sl3` tasks (clustered CV when `id` 
+  is supplied in the task; and stratified CV when outcomes are categorical or 
+  binary, and when `id` are nested in strata if `id` supplied to task). However, 
+  `V` can be modified according to the learner-specific parameters. (`Lrnr_sl`
+  has a few extra CV tuning arguments, which are thoroughly documented in 
+  `cv_control` and modifications are only recommended for advanced use of 
+  `Lrnr_sl`.)
 
 # sl3 1.4.4
 * Updates to `Lrnr_nnls` to support binary outcomes, including support for
