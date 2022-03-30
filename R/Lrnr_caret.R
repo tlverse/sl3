@@ -26,7 +26,7 @@
 #' @family Learners
 #'
 #' @section Parameters:
-#'  - \code{algorithm}: A string specifying which \pkg{caret} classification or
+#'  - \code{method}: A string specifying which \pkg{caret} classification or
 #'      regression model to use. Possible models can be found using
 #'      \code{names(caret::getModelInfo())}. Information about a model,
 #'      including the parameters that are tuned, can be found using
@@ -64,22 +64,23 @@
 #' data(cpp_imputed)
 #' covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
 #' task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
-#' autotune_bart_lrnr <- Lrnr_caret$new("bartMachine")
-#' autotune_bart_fit <- autotune_bart_lrnr$train(task)
-#' autotune_bart_predictions <- autotune_bart_fit$predict()
+#' autotuned_RF_lrnr <- Lrnr_caret$new(method = "rf")
+#' set.seed(693)
+#' autotuned_RF_fit <- autotuned_RF_lrnr$train(task)
+#' autotuned_RF_predictions <- autotuned_RF_fit$predict()
 Lrnr_caret <- R6Class(
   classname = "Lrnr_caret",
   inherit = Lrnr_base,
   portable = TRUE,
   class = TRUE,
   public = list(
-    initialize = function(algorithm,
+    initialize = function(method,
                           metric = NULL,
                           trControl = list(method = "cv", number = 10),
                           factor_binary_outcome = TRUE,
                           ...) {
       params <- list(
-        method = algorithm,
+        method = method,
         metric = metric,
         factor_binary_outcome = factor_binary_outcome,
         ...
@@ -129,7 +130,6 @@ Lrnr_caret <- R6Class(
       if (args$factor_binary_outcome & outcome_type$type == "binomial") {
         args$y <- as.factor(args$y)
       }
-
 
       # specify internal CV via trControl's indexOut argument when
       # k-fold CV is specified and it is not a repeated k-fold CV scheme
