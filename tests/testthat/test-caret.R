@@ -58,16 +58,16 @@ test_learner <- function(learner, task, ...) {
 ## test caret learner with the example of Random Forest:
 op <- options(sl3.verbose = TRUE)
 options(op)
-test_learner(Lrnr_caret, task, algorithm = "rf")
-test_learner(Lrnr_caret, task_binaryY, algorithm = "rf")
-test_learner(Lrnr_caret, task_catY, algorithm = "rf")
-test_learner(Lrnr_caret, task, algorithm = "xgbLinear")
-test_learner(Lrnr_caret, task_binaryY, algorithm = "xgbLinear")
-test_learner(Lrnr_caret, task_catY, algorithm = "xgbLinear")
+test_learner(Lrnr_caret, task, method = "rf")
+test_learner(Lrnr_caret, task_binaryY, method = "rf")
+test_learner(Lrnr_caret, task_catY, method = "rf")
+test_learner(Lrnr_caret, task, method = "xgbLinear")
+test_learner(Lrnr_caret, task_binaryY, method = "xgbLinear")
+test_learner(Lrnr_caret, task_catY, method = "xgbLinear")
 
 test_that("Lrnr_caret RF match caret RF preds for continuous outcome", {
   ## instantiate Lrnr_caret, train on task, and predict on task
-  lrnr_caret_rf <- Lrnr_caret$new(algorithm = "rf")
+  lrnr_caret_rf <- Lrnr_caret$new(method = "rf")
   set.seed(1530)
   fit_lrnr_caret_rf <- lrnr_caret_rf$train(task)
   prd_lrnr_caret_rf <- fit_lrnr_caret_rf$predict()
@@ -88,7 +88,7 @@ test_that("Lrnr_caret RF match caret RF preds for continuous outcome", {
 
 test_that("Lrnr_caret RF match caret RF preds for binary classification", {
   ## instantiate Lrnr_caret, train on task, and predict on task
-  lrnr_caret_rf <- Lrnr_caret$new(algorithm = "rf")
+  lrnr_caret_rf <- Lrnr_caret$new(method = "rf")
   set.seed(1530)
   fit_lrnr_caret_rf <- lrnr_caret_rf$train(task_binaryY)
   prd_lrnr_caret_rf <- fit_lrnr_caret_rf$predict()
@@ -111,7 +111,7 @@ test_that("Lrnr_caret RF match caret RF preds for binary classification", {
 
 test_that("Lrnr_caret RF preds match caret RF preds for categorical outcome", {
   ## instantiate Lrnr_caret, train on task, and predict on task
-  lrnr_caret_rf <- Lrnr_caret$new(algorithm = "rf")
+  lrnr_caret_rf <- Lrnr_caret$new(method = "rf")
   set.seed(1530)
   fit_lrnr_caret_rf <- lrnr_caret_rf$train(task_catY)
   prd_lrnr_caret_rf <- fit_lrnr_caret_rf$predict()
@@ -135,7 +135,7 @@ test_that("Lrnr_caret RF preds match caret RF preds for categorical outcome", {
 test_that("Lrnr_caret RF preds match caret RF preds for binary regression", {
   ## instantiate Lrnr_caret, train on task, and predict on task
   lrnr_caret_rf <- Lrnr_caret$new(
-    algorithm = "rf", metric = "RMSE",
+    method = "rf", metric = "RMSE",
     factor_binary_outcome = FALSE
   )
   set.seed(1530)
