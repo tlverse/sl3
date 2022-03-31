@@ -322,7 +322,12 @@ Lrnr_base <- R6Class(
         
         # get data corresponding to formula and add new columns to the task
         #Passing in data = task$X instead of data=task$data ensures that the outcome is not included in model if the outcome is not specified in the formula, e.g. "formula = ~.".
-        data <- as.data.table(stats::model.matrix(form, data = task$X))
+        if(attr(terms(form, data = task$data), "response")) {
+          data <- as.data.table(stats::model.matrix(form, data = task$data))
+        } else {
+          data <- as.data.table(stats::model.matrix(form, data = task$X))
+        }
+         
         formula_cols <- names(data)
         if (any(grepl("Intercept", formula_cols))) {
           formula_cols <- formula_cols[!grepl("Intercept", formula_cols)]
