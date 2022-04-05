@@ -32,6 +32,8 @@
   has a few extra CV tuning arguments, which are thoroughly documented in 
   `cv_control` and modifications are only recommended for advanced use of 
   `Lrnr_sl`.)
+* Fixed learner parameter `formula` bug, which was causing formulas with "." to 
+  return an empty task, and therefore learners with these formulas to fail. 
 
 # sl3 1.4.4
 * Updates to `Lrnr_nnls` to support binary outcomes, including support for
