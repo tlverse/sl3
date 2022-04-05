@@ -299,12 +299,12 @@ Lrnr_base <- R6Class(
     },
     process_formula = function(task) {
       if ("formula" %in% names(self$params) &&
-        !is.null(self$params[["formula"]])) {
+          !is.null(self$params[["formula"]])) {
         form <- self$params$formula
         if (class(form) != "formula") form <- as.formula(form)
-
+        
         # check response variable corresponds to outcome in task, if provided
-        if (attr(terms(form), "response")) {
+        if (attr(terms(form, data = task$data), "response")) {
           if (!all.vars(form)[1] == task$nodes$outcome) {
             stop(paste0(
               "Outcome variable in formula ", all.vars(form)[1],
@@ -316,12 +316,18 @@ Lrnr_base <- R6Class(
           formula_covars <- all.vars(form)
         }
         # check that regressors in the formula are contained in the task
-        if (!all(formula_covars %in% task$nodes$covariates)) {
+        if (!all(setdiff(formula_covars, ".") %in% task$nodes$covariates)) {
           stop("Regressors in the formula are not covariates in task")
         }
-
+        
         # get data corresponding to formula and add new columns to the task
-        data <- as.data.table(stats::model.matrix(form, data = task$data))
+        #Passing in data = task$X instead of data=task$data ensures that the outcome is not included in model if the outcome is not specified in the formula, e.g. "formula = ~.".
+        if(attr(terms(form, data = task$data), "response")) {
+          data <- as.data.table(stats::model.matrix(form, data = task$data))
+        } else {
+          data <- as.data.table(stats::model.matrix(form, data = task$X))
+        }
+         
         formula_cols <- names(data)
         if (any(grepl("Intercept", formula_cols))) {
           formula_cols <- formula_cols[!grepl("Intercept", formula_cols)]
