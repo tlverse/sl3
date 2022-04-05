@@ -125,6 +125,9 @@ learner-specific parameters. (<code>Lrnr_sl</code> has a few extra CV
 tuning arguments, which are thoroughly documented in
 <code>cv_control</code> and modifications are only recommended for
 advanced use of <code>Lrnr_sl</code>.)</li>
+<li>Fixed learner parameter <code>formula</code> bug, which was causing
+formulas with “.” to return an empty task, and therefore learners with
+these formulas to fail.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.4.4" id="sl3-144">sl3 1.4.4<a class="anchor" aria-label="anchor" href="#sl3-144"></a></h2>
