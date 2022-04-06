@@ -89,10 +89,7 @@ Lrnr_glmnet <- R6Class(
     }
   ),
   private = list(
-    .properties = c(
-      "continuous", "binomial", "categorical",
-      "weights", "ids"
-    ),
+    .properties = c("continuous", "binomial", "categorical", "weights", "ids"),
     .train = function(task) {
       args <- self$params
 
