@@ -34,7 +34,7 @@
 #'   - \code{cv_control = NULL}: Optional list of arguments that will be used
 #'       to define a specific cross-validation fold structure for fitting the
 #'       super learner. Intended for use in a nested cross-validation scheme,
-#'       such as cross-validated super learner (\code{\link{CV_lrnr_sl}}) or
+#'       such as cross-validated super learner (\code{\link{cv_sl}}) or
 #'       when \code{Lrnr_sl} is considered in the list of candidate
 #'       \code{learners} in another \code{Lrnr_sl}. Includes the arguments
 #'       listed below, and any others to be passed to
@@ -314,57 +314,51 @@ Lrnr_sl <- R6Class(
         folds <- task$folds
         custom_cv <- FALSE
       } else {
-        verbose <- self$params$verbose
-        if (is.null(verbose)) {
-          verbose <- getOption("sl3.verbose")
+        if (!is.list(cv_control)) {
+          stop("cv_control must be a list or NULL")
         }
-        # initialize args for make_folds (cv_args) with cv_control ... args
-        cv_args <- cv_control[!names(cv_control) %in%
+        args <- cv_control[!names(cv_control) %in%
           c("fold_fun", "strata", "cluster_by_id")]
-        cv_args$n <- task$nrow
 
-        # set fold function
+        ##### fold function
         if (is.null(cv_control$fold_fun)) {
-          cv_args$fold_fun <- origami::folds_vfold
-          if (verbose) {
-            message(
-              "Setting cv_control fold_fun to folds_vfold. To override, ",
-              "specify another cross-validation scheme from origami package."
-            )
-          }
+          args$fold_fun <- origami::folds_vfold
         } else {
-          cv_args$fold_fun <- cv_control$fold_fun
-          if (!is.function(cv_control$fold_fun)) {
-            stop(
-              "The specified fold_fun is not a function. Make sure the fold ",
-              "function is provided in the origami package. See the Lrnr_sl ",
-              "example with cv_control specified, where it is shown how to ",
-              "correctly specify fold_fun in cv_control."
-            )
-          }
+          args$fold_fun <- cv_control$fold_fun
         }
 
-        # clustered cross-validation
-        if (is.null(cv_control$cluster_by_id) || cv_control$cluster_by_id) {
-          if (task$has_node("id")) {
-            if (verbose) {
-              message(paste0(
-                "Defining clustered cross-validation for Lrnr_sl according to ",
-                "the id specified in the task, ", task$nodes$id, ". To ",
-                "override this default behavior, i.e., to not consider ",
-                "clustered cross-validation in Lrnr_sl even though id is ",
-                "specified in the task, set cluster_by_id = FALSE in the ",
-                "cv_control list."
-              ))
-            }
-            cv_args$cluster_ids <- task$data[[task$nodes$id]]
-          }
+        ###### clustered cross-validation if cluster_by_id = TRUE or NULL
+        if (!is.null(cv_control$cluster_by_id) &&
+          !is.logical(cv_control$cluster_by_id)) {
+          stop(paste0(
+            "cv_control's cluster_by_id argument must be NULL or logical"
+          ))
+        }
+        if ((is.null(cv_control$cluster_by_id) || cv_control$cluster_by_id) &
+          task$has_node("id")) {
+          args$cluster_ids <- task$id
         }
 
-        # stratified cross-validation
+        ###### check user-specified strata
         if (!is.null(cv_control$strata) && cv_control$strata != "none") {
           if (cv_control$strata %in% names(task$data)) {
-            cv_args$strata_ids <- task$data[[cv_control$strata]]
+            args$strata_ids <- task$data[[cv_control$strata]]
+            # make sure clusters nested in strata
+            if (!is.null(args$cluster_ids)) {
+              is_nested <- all(
+                rowSums(table(args$cluster_ids, args$strata_ids) > 0) == 1
+              )
+              if (!is_nested) {
+                args <- args[!(names(args) == "strata_ids")]
+                message(
+                  "The clusters (specified via id) are not nested in strata; ",
+                  "stratified and clustered cross-validation (CV) cannot ",
+                  "be considered together, so clustered CV will be used and ",
+                  "strata removed. To consider stratified CV instead, set ",
+                  "cv_control's cluster_by_id argument to FALSE."
+                )
+              }
+            }
           } else {
             warning(paste0(
               "The specified strata in cv_control, ", cv_control$strata,
@@ -373,53 +367,7 @@ Lrnr_sl <- R6Class(
             ))
           }
         }
-        if (is.null(cv_control$strata) &&
-          task$outcome_type$type %in% c("binomial", "categorical")) {
-          # stratified cross-validation folds for discrete outcomes
-          cv_args$strata_ids <- task$Y
-          if (verbose) {
-            message(paste0(
-              "Defining stratified cross-validation for Lrnr_sl according to ",
-              task$nodes$outcome, " as the outcome type is either binary ",
-              "or categorical. To override this default behavior, i.e., to not ",
-              "consider stratified cross-validation in Lrnr_sl even though the ",
-              "outcome is discrete, set strata = 'none' in the cv_control list."
-            ))
-          }
-        }
-        # don't use stratified CV if clusters are not nested in strata
-        if (!is.null(cv_args$cluster_ids) & !is.null(cv_args$strata_ids)) {
-          is_nested <- all(
-            rowSums(table(cv_args$cluster_ids, cv_args$strata_ids) > 0) == 1
-          )
-          if (!is_nested) {
-            cv_args <- cv_args[!(names(cv_args) == "strata_ids")]
-            warning(
-              "Clusters, i.e., the ids, are not nested in the strata so ",
-              "stratified cross-validation will not be considered."
-            )
-          }
-          if (!is.null(cv_args$V)) {
-            if (length(unique(cv_args$cluster_ids)) < cv_args$V) {
-              cv_args <- cv_args[!(names(cv_args) == "cluster_ids")]
-              warning(
-                "There are fewer clusters, i.e., fewer unique IDs, than V so ",
-                "clustered cross-validation will not be considered."
-              )
-            }
-            if (is_nested & length(unique(cv_args$strata_ids)) > cv_args$V) {
-              cv_args <- cv_args[!(names(cv_args) == "strata_ids")]
-              warning(
-                "There are more strata than V so stratified cross-validation ",
-                "will not be considered."
-              )
-            }
-          }
-        }
-
-
-        # set folds
-        folds <- do.call(origami::make_folds, cv_args)
+        folds <- do.call(task$get_folds, args)
         custom_cv_task <- task$next_in_chain(folds = folds)
         custom_cv <- TRUE
       }

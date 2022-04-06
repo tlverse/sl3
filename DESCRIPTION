@@ -69,7 +69,7 @@ Suggests:
     glmnet,
     grf,
     gbm,
-    hal9001 (>= 0.4.0),
+    hal9001 (>= 0.4.4),
     h2o,
     keras,
     kerasR,

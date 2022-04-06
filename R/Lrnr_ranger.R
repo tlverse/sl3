@@ -83,6 +83,9 @@ Lrnr_ranger <- R6Class(
       params <- args_to_list()
       super$initialize(params = params, ...)
     },
+    process_formula = function(task) {
+      return(task)
+    },
     importance = function(...) {
       if (self$fit_object$importance.mode == "none") {
         stop(

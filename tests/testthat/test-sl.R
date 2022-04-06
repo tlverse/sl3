@@ -174,3 +174,11 @@ test_that("Lrnr_sl cv_control folds respected when SL used w Lrnr_cv and task ha
   }))
   expect_equal(unique(inner_folds), 5)
 })
+
+test_that("Lrnr_sl cv_control warns when strata are not in task", {
+  eSL <- Lrnr_sl$new(
+    learners = list(glm_lrn, ranger_lrn, lasso_lrn),
+    cv_control = list(V = 5, strata = "kitty")
+  )
+  expect_warning(eSL$train(task))
+})

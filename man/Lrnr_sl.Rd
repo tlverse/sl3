@@ -31,7 +31,7 @@ metalearner based on the \code{outcome_type} of the training
 \item \code{cv_control = NULL}: Optional list of arguments that will be used
 to define a specific cross-validation fold structure for fitting the
 super learner. Intended for use in a nested cross-validation scheme,
-such as cross-validated super learner (\code{\link{CV_lrnr_sl}}) or
+such as cross-validated super learner (\code{\link{cv_sl}}) or
 when \code{Lrnr_sl} is considered in the list of candidate
 \code{learners} in another \code{Lrnr_sl}. Includes the arguments
 listed below, and any others to be passed to

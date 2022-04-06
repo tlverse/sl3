@@ -3,41 +3,72 @@
 \docType{class}
 \name{Lrnr_caret}
 \alias{Lrnr_caret}
-\title{Wrapping Learner for Package Caret}
+\title{Caret (Classification and Regression) Training}
 \format{
-\code{\link{R6Class}} object.
+An \code{\link[R6]{R6Class}} object inheriting from
+\code{\link{Lrnr_base}}.
 }
 \value{
-Learner object with methods for training and prediction. See
-\code{\link{Lrnr_base}} for documentation on learners.
+A learner object inheriting from \code{\link{Lrnr_base}} with
+methods for training and prediction. For a full list of learner
+functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 }
 \description{
-This learner wraps \code{\link[caret]{train}}, providing a procedure to fit
-the algorithms available in package \code{caret}.
+This learner uses the \pkg{caret} package's \code{\link[caret]{train}}
+function to automatically tune a predictive model. It does this by defining
+a grid of model-specific tuning parameters; fitting the model according to
+each tuning parameter specification, to establish a set of models fits;
+calculating a resampling-based performance measure each variation; and
+then selecting the model with the best performance.
 }
 \section{Parameters}{
 
-\describe{
-\item{\code{algorithm}}{The algorithm to use. This argument is passed as
-\code{method} to \code{\link[caret]{train}}. For a detailed description of the
-methods available in the package, please consult the documentation for
-\code{\link[caret]{train}}.}
-
-\item{\code{metric}}{An optional argument specifying the summary metric to
-be used to select the optimal model. If not specified, it will be inferred
-depending on the outcome type. For a detailed description, please consult
-the documentation for \code{\link[caret]{train}}.}
-
-\item{\code{trControl}}{An optional \code{\link[caret]{trainControl}}
-object controlling the computational nuances. If not specified, it will be
-initialized with \code{method = "cv"} instead of the default "boot". For a
-detailed description, please consult the documentation for
-\code{\link[caret]{train}}.}
-
-\item{\code{...}}{Other parameters passed to \code{\link[caret]{train}}.}
+\itemize{
+\item \code{method}: A string specifying which \pkg{caret} classification or
+regression model to use. Possible models can be found using
+\code{names(caret::getModelInfo())}. Information about a model,
+including the parameters that are tuned, can be found using
+\code{caret::modelLookup()}, e.g.,
+\code{caret::modelLookup("xgbLinear")}. Consult the \code{caret}
+package's documentation on \code{\link[caret]{train}} for more details.
+\item \code{metric = NULL}: An optional string specifying the summary metric to
+be used to select the optimal model. If not specified, it will be set
+to "RMSE" for continuous outcomes and "Accuracy" for categorical and
+binary outcomes. Other options include "MAE", "Kappa", "Rsquared" and
+"logLoss". Regression models are defined when \code{metric} is set as
+"RMSE", "logLoss", "Rsquared", or "MAE". Classification models are
+defined when \code{metric} is set as "Accuracy" or "Kappa". Custom
+performance metrics can also be used. Consult the \code{caret} package's
+\code{\link[caret]{train}} documentation for more details.
+\item \code{trControl = list(method = "cv", number = 10)}: A list for specifying
+the arguments for \code{\link[caret]{trainControl}} object. If not
+specified, it will consider "cv" with 10 folds as the resampling method,
+instead of \code{caret}'s default resampling method, "boot". For a
+detailed description, consult the \code{caret} package's documentation
+for \code{\link[caret]{train}} and \code{\link[caret]{trainControl}}.
+\item \code{factor_binary_outcome = TRUE}: Logical indicating whether a binary
+outcome should be defined as a factor instead of a numeric. This
+only needs to be modified to \code{FALSE} in the following uncommon
+instance: when \code{metric} is specified by the user, \code{metric}
+defines a regression model, and the task's outcome is binary. Note that
+\code{\link[caret]{train}} could throw warnings/errors when regression
+models are considered for binary outcomes; this argument should only
+be modified by advanced users in niche settings.
+\item \code{...}: Other parameters passed to \code{\link[caret]{train}} and
+additional arguments defined in \code{\link{Lrnr_base}}, such as
+\code{params} like \code{formula}.
 }
 }
 
+\examples{
+data(cpp_imputed)
+covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
+task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
+autotuned_RF_lrnr <- Lrnr_caret$new(method = "rf")
+set.seed(693)
+autotuned_RF_fit <- autotuned_RF_lrnr$train(task)
+autotuned_RF_predictions <- autotuned_RF_fit$predict()
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},

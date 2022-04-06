@@ -38,6 +38,17 @@ test_that("Lrnr_glm with formula works", {
   expect_equal(sl3_pred, glm_pred)
 })
 
+test_that("Lrnr_glm with formula .^2 works", {
+  lrnr_glm <- Lrnr_glm$new(formula = as.formula("~.^2"))
+  fit <- lrnr_glm$train(task)
+  sl3_pred <- fit$predict()
+  glm_fit <- glm("haz ~ .^2", data = task$data)
+  glm_pred <- as.numeric(
+    predict(glm_fit, newdata = task$data, type = "response")
+  )
+  expect_equal(sl3_pred, glm_pred)
+})
+
 test_that("Lrnr_glm with formula errors when regressors are not task covariates", {
   lrnr_glm <- Lrnr_glm$new(formula = as.formula("haz ~ X"))
   expect_error(fit <- lrnr_glm$train(task))
