@@ -193,6 +193,9 @@ Lrnr_glm_semiparametric <- R6Class(
                           ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
+    },
+    process_formula = function(task) {
+      return(task)
     }
   ),
   private = list(
