@@ -1262,6 +1262,56 @@ x
 </tr>
 <tr>
 <td style="text-align:left;">
+Lrnr_glm_semiparametric
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
 Lrnr_glmnet
 </td>
 <td style="text-align:left;">

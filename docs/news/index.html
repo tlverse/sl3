@@ -128,6 +128,17 @@ advanced use of <code>Lrnr_sl</code>.)</li>
 <li>Fixed learner parameter <code>formula</code> bug, which was causing
 formulas with “.” to return an empty task, and therefore learners with
 these formulas to fail.</li>
+<li>Fixed bug in <code>Lrnr_cv_selector</code> metalearner, which was
+using the wrong folds to calculate the cross-validated risk estimate.
+This impacted <code>Lrnr_cv_selector</code> when
+<code>eval_function</code> was not a loss function, e.g. AUC. By calling
+<code>task$folds</code> on the metalearner’s training task, we were
+deriving folds from the matrix of cross-validated predictions, and not
+using the folds for cross-validating the candidates. We now require the
+folds for cross- validating the candidates (i.e., the folds in task for
+training <code>Lrnr_sl</code>) to be supplied when
+<code>Lrnr_cv_selector</code>’s <code>eval_function</code> is not a loss
+function.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.4.4" id="sl3-144">sl3 1.4.4<a class="anchor" aria-label="anchor" href="#sl3-144"></a></h2>
