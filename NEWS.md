@@ -34,7 +34,15 @@
   `Lrnr_sl`.)
 * Fixed learner parameter `formula` bug, which was causing formulas with "." to 
   return an empty task, and therefore learners with these formulas to fail. 
-
+* Fixed bug in `Lrnr_cv_selector` metalearner, which was using the wrong folds 
+  to calculate the cross-validated risk estimate. This impacted
+  `Lrnr_cv_selector` when `eval_function` was not a loss function, e.g. AUC.
+  By calling `task$folds` on the metalearner's training task, we were deriving 
+  folds from the matrix of cross-validated predictions, and not using the folds 
+  for cross-validating the candidates. We now require the folds for cross-
+  validating the candidates (i.e., the folds in task for training `Lrnr_sl`) to 
+  be supplied when `Lrnr_cv_selector`'s `eval_function` is not a loss function. 
+  
 # sl3 1.4.4
 * Updates to `Lrnr_nnls` to support binary outcomes, including support for
   convexity of the resultant model fit and warnings on prediction quality.

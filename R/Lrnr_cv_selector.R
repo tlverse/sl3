@@ -1,7 +1,10 @@
 #' Cross-Validated Selector
 #'
-#' This meta-learner identifies the cross-validated selector (i.e., discrete
-#' super learner) for any loss function.
+#' This meta-learner identifies the cross-validated selector / discrete
+#' super learner (i.e., the learner with the best cross-validated predictive
+#' performance) for any performance metric. Intended for use with
+#' \code{\link{Lrnr_sl}}; specifically, with \code{Lrnr_cv_selector} being
+#' supplied as \code{metalearner} argument in \code{\link{Lrnr_sl}}.
 #'
 #' @docType class
 #'
@@ -21,10 +24,20 @@
 #' @family Learners
 #'
 #' @section Parameters:
-#'   - \code{eval_function}: A function that takes a vector of predictions as
-#'     it's first argument, and a vector of truths/observations as it's second
-#'     argument, and then returns a vector of losses or a numeric risk. See
-#'     \link{loss_functions} and \link{risk_functions} for options.
+#'   - \code{eval_function = loss_squared_error}: A function that takes as input
+#'       a vector of predictions (first argument) and a vector of
+#'       truths/observations (second argument), and then returns a
+#'       vector of losses or a numeric risk. See \link{loss_functions} and
+#'       \link{risk_functions} for options.
+#'   - \code{folds = NULL}: Optional \pkg{origami}-structured cross-validation
+#'       folds from the task for training \code{Lrnr_sl}, e.g.,
+#'       \code{task$folds}. This argument is only required when
+#'       \code{eval_function} is not a loss function, since the risk
+#'       has to be calculated on each validation set separately and then
+#'       averaged across them in order to estimate the cross-validated risk.
+#'       This only applies when the \code{eval_function} is not a loss
+#'       function; argument \code{folds} is ignored when the
+#'       \code{eval_function} is a loss function.
 #'
 #' @examples
 #' data(cpp_imputed)
@@ -50,7 +63,7 @@ Lrnr_cv_selector <- R6Class(
   classname = "Lrnr_cv_selector",
   inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(eval_function = loss_squared_error) {
+    initialize = function(eval_function = loss_squared_error, folds = NULL) {
       params <- args_to_list()
       super$initialize(params = params)
     }
@@ -68,6 +81,7 @@ Lrnr_cv_selector <- R6Class(
     ),
     .train = function(task) {
       eval_function <- self$params$eval_function
+      folds <- self$params$folds
 
       # specify data and weights
       outcome_type <- self$get_outcome_type(task)
@@ -75,31 +89,50 @@ Lrnr_cv_selector <- R6Class(
       Y <- outcome_type$format(task$Y)
       weights <- task$weights
 
-      # instantiate empty fit object
-      fit_object <- list()
-
-      # evaluation over validation set predictions
-      validation_sets <- lapply(task$folds, "[[", "validation_set")
-      cross_validated_risk <- function(preds) {
-        validation_risks <- lapply(validation_sets, function(v) {
-          eval_result <- eval_function(preds[v], Y[v])
-          if (!is.null(attr(eval_result, "loss")) && !attr(eval_result, "loss")) {
-            validation_risk <- eval_result
-          } else {
-            loss <- eval_result
-            validation_risk <- weighted.mean(loss, weights[v])
-          }
-          if (!is.null(attr(eval_result, "optimize")) &&
-            attr(eval_result, "optimize") == "maximize") {
-            validation_risk <- validation_risk * -1
-          }
-          return(validation_risk)
-        })
-        cv_risk <- mean(as.numeric(validation_risks))
-        return(cv_risk)
+      # is evaluation function a risk or loss function?
+      loss_function <- TRUE
+      eval_result_test <- eval_function(X[, 1], Y)
+      if (!is.null(attr(eval_result_test, "loss")) &&
+        !attr(eval_result_test, "loss")) {
+        loss_function <- FALSE
       }
 
-      fit_object$cv_risk <- apply(X, 2, cross_validated_risk)
+      # to calculate the CV risk, we need folds if evaluation function is risk
+      if (is.null(folds) & !loss_function) {
+        stop(
+          "For evaluation functions that are not loss functions, ",
+          "the folds from the task must be provided to Lrnr_cv_selector"
+        )
+      }
+
+      # function to calculate risk
+      risk_fun <- function(pred, obs) {
+        eval_result <- eval_function(pred, obs)
+        if (!is.null(attr(eval_result, "loss")) &&
+          !attr(eval_result, "loss")) {
+          risk <- eval_result
+        } else {
+          loss <- eval_result
+          risk <- weighted.mean(loss, weights)
+        }
+        return(risk)
+      }
+
+
+      # instantiate empty fit object
+      fit_object <- list()
+      if (!loss_function) {
+        validation_sets <- lapply(folds, "[[", "validation_set")
+        cv_risk_fun <- function(pred, obs) {
+          validation_risks <- lapply(validation_sets, function(v) {
+            risk_fun(pred[v], obs[v])
+          })
+          mean(as.numeric(validation_risks))
+        }
+      } else {
+        cv_risk_fun <- risk_fun
+      }
+      fit_object$cv_risk <- apply(X, 2, cv_risk_fun, Y)
 
       coefs <- rep(0L, length(fit_object$cv_risk))
       coefs[which.min(fit_object$cv_risk)] <- 1
