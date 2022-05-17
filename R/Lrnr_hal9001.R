@@ -83,7 +83,7 @@ Lrnr_hal9001 <- R6Class(
     }
   ),
   private = list(
-    .properties = c("continuous", "binomial", "weights", "ids"),
+    .properties = c("continuous", "binomial", "weights", "ids", "cv"),
     .train = function(task) {
       args <- self$params
 
