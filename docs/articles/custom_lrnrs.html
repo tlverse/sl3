@@ -100,7 +100,7 @@
                         <h4 data-toc-skip class="author">Jeremy Coyle,
 Nima Hejazi, Ivana Malenica, Oleg Sofrygin</h4>
             
-            <h4 data-toc-skip class="date">2022-04-19</h4>
+            <h4 data-toc-skip class="date">2022-05-22</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tlverse/sl3/blob/HEAD/vignettes/custom_lrnrs.Rmd" class="external-link"><code>vignettes/custom_lrnrs.Rmd</code></a></small>
       <div class="hidden name"><code>custom_lrnrs.Rmd</code></div>
@@ -154,41 +154,47 @@ new learners. You can make a copy of the template to work on by invoking
 <span class="co">##'</span>
 <span class="co">##' This is a template for defining a new learner.</span>
 <span class="co">##' This can be copied to a new file using \code{\link{write_learner_template}}.</span>
-<span class="co">##' The remainder of this documentation is an example of how you might write documentation for your new learner.</span>
-<span class="co">##' This learner uses \code{\link[my_package]{my_ml_fun}} from \code{my_package} to fit my favorite machine learning algorithm.</span>
+<span class="co">##' The remainder of this documentation is an example of how you might write </span>
+<span class="co">##' documentation for your new learner.</span>
+<span class="co">##' </span>
+<span class="co">##' This learner uses \code{\link[my_package]{my_ml_fun}} from \code{my_package} </span>
+<span class="co">##' to fit my favorite machine learning algorithm.</span>
 <span class="co">##'</span>
 <span class="co">##' @docType class</span>
+<span class="co">##'</span>
 <span class="co">##' @importFrom R6 R6Class</span>
+<span class="co">##'</span>
 <span class="co">##' @export</span>
+<span class="co">##'</span>
 <span class="co">##' @keywords data</span>
-<span class="co">##' @return Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.</span>
-<span class="co">##' @format \code{\link{R6Class}} object.</span>
+<span class="co">##'</span>
+<span class="co">##' @return A learner object inheriting from \code{\link{Lrnr_base}} with</span>
+<span class="co">##'  methods for training and prediction. For a full list of learner</span>
+<span class="co">##'  functionality, see the complete documentation of \code{\link{Lrnr_base}}.</span>
+<span class="co">##'</span>
+<span class="co">##' @format An \code{\link[R6]{R6Class}} object inheriting from</span>
+<span class="co">##'  \code{\link{Lrnr_base}}.</span>
+<span class="co">##'</span>
 <span class="co">##' @family Learners</span>
 <span class="co">##'</span>
 <span class="co">##' @section Parameters:</span>
-<span class="co">##' \describe{</span>
-<span class="co">##'   \item{\code{param_1="default_1"}}{ This parameter does something.</span>
-<span class="co">##'   }</span>
-<span class="co">##'   \item{\code{param_2="default_2"}}{ This parameter does something else.</span>
-<span class="co">##'   }</span>
-<span class="co">##'   \item{\code{...}}{ Other parameters passed directly to \code{\link[my_package]{my_ml_fun}}. See its documentation for details.</span>
-<span class="co">##'   }</span>
-<span class="co">##' }</span>
+<span class="co">##'   - \code{param_1="default_1"}: This parameter does something and is not </span>
+<span class="co">##'      already specified in the task. </span>
+<span class="co">##'   - \code{param_2="default_2"}: This parameter does something else and is </span>
+<span class="co">##'      not already specified in the task. </span>
+<span class="co">##'   - \code{...}: Other parameters passed directly to </span>
+<span class="co">##'      \code{\link[my_package]{my_ml_fun}}. See its documentation for details. </span>
+<span class="co">##'      Also, any additional parameters that can be considered by </span>
+<span class="co">##'      \code{\link{Lrnr_base}}.</span>
 <span class="co">##'</span>
-<span class="co">##' @section Methods:</span>
-<span class="co">##' \describe{</span>
-<span class="co">##' \item{\code{special_function(arg_1)}}{</span>
-<span class="co">##'   My learner is special so it has a special function.</span>
-<span class="co">##'</span>
-<span class="co">##'   \itemize{</span>
-<span class="co">##'     \item{\code{arg_1}: A very special argument.</span>
-<span class="co">##'    }</span>
-<span class="co">##'   }</span>
-<span class="co">##'   }</span>
-<span class="co">##' }</span>
+<span class="co">##' @examples </span>
+<span class="co">##' include an example here, e.g. see \code{\link{Lrnr_ranger}}'s example.</span>
+<span class="co">##' </span>
 <span class="va">Lrnr_template</span> <span class="op">&lt;-</span> <span class="kw">R6Class</span><span class="op">(</span>
-  classname <span class="op">=</span> <span class="st">"Lrnr_template"</span>, inherit <span class="op">=</span> <span class="va">Lrnr_base</span>,
-  portable <span class="op">=</span> <span class="cn">TRUE</span>, class <span class="op">=</span> <span class="cn">TRUE</span>,
+  classname <span class="op">=</span> <span class="st">"Lrnr_template"</span>, 
+  inherit <span class="op">=</span> <span class="va">Lrnr_base</span>,
+  portable <span class="op">=</span> <span class="cn">TRUE</span>, 
+  class <span class="op">=</span> <span class="cn">TRUE</span>,
   <span class="co"># Above, you should change Lrnr_template (in both the object name and the classname argument)</span>
   <span class="co"># to a name that indicates what your learner does</span>
   public <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
@@ -209,9 +215,6 @@ new learners. You can make a copy of the template to work on by invoking
     <span class="co"># list properties your learner supports here.</span>
     <span class="co"># Use sl3_list_properties() for a list of options</span>
     .properties <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">""</span><span class="op">)</span>,
-
-    <span class="co"># list any packages required for your learner here.</span>
-    .required_packages <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"my_package"</span><span class="op">)</span>,
 
     <span class="co"># .train takes task data and returns a fit object that can be used to generate predictions</span>
     .train <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">task</span><span class="op">)</span> <span class="op">{</span>
@@ -240,6 +243,10 @@ new learners. You can make a copy of the template to work on by invoking
       <span class="kw">if</span> <span class="op">(</span><span class="va">task</span><span class="op">$</span><span class="fu">has_node</span><span class="op">(</span><span class="st">"offset"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
         <span class="va">args</span><span class="op">$</span><span class="va">offset</span> <span class="op">&lt;-</span> <span class="va">task</span><span class="op">$</span><span class="va">offset</span>
       <span class="op">}</span>
+      
+      <span class="kw">if</span> <span class="op">(</span><span class="va">task</span><span class="op">$</span><span class="fu">has_node</span><span class="op">(</span><span class="st">"id"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+        <span class="va">args</span><span class="op">$</span><span class="va">id</span> <span class="op">&lt;-</span> <span class="va">task</span><span class="op">$</span><span class="va">id</span>
+      <span class="op">}</span>
 
       <span class="co"># call a function that fits your algorithm</span>
       <span class="co"># with the argument list you constructed</span>
@@ -259,7 +266,9 @@ new learners. You can make a copy of the template to work on by invoking
 
       <span class="va">predictions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">self</span><span class="op">$</span><span class="va">fit_object</span>, <span class="va">task</span><span class="op">$</span><span class="va">X</span><span class="op">)</span>
       <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">predictions</span><span class="op">)</span>
-    <span class="op">}</span>
+    <span class="op">}</span>,
+    <span class="co"># list any packages required for your learner here.</span>
+    .required_packages <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"my_package"</span><span class="op">)</span>
   <span class="op">)</span>
 <span class="op">)</span></code></pre></div>
 <p>The template has comments indicating where details specific to the

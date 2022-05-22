@@ -1,15 +1,16 @@
 #' Automatically Defined Metalearner
 #'
-#' A sensible metalearner based on \code{\link{Lrnr_solnp}} is chosen based on
-#' outcome type. This amounts to choosing an appropriate loss function and
-#' combination function.
+#' A sensible metalearner is chosen based on the outcome type.
 #'
 #' @details
+#'  For binary and continuous outcome types, the default metalearner is
+#'  non-negative least squares (NNLS) regression (\code{\link{Lrnr_nnls}}), and
+#'  for others the metalearner is \code{\link{Lrnr_solnp}} with an appropriate
+#'  loss and combination function, shown in the table below.
+#'
 #'  | Outcome Type | Combination Function | Loss Function |
 #'  |:-------------|:---------------------| :-------------|
-#'  | binomial | metalearner_logistic_binomial | loss_squared_error |
 #'  | categorical | metalearner_linear_multinomial | loss_loglik_multinomial |
-#'  | continuous | metalearner_linear | loss_squared_error |
 #'  | multivariate | metalearner_linear_multivariate | loss_squared_error_multivariate |
 #'
 #' @param outcome_type a Variable_Type object
