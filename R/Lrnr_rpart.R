@@ -88,7 +88,10 @@ Lrnr_rpart <- R6Class(
 
       # call a function that fits your algorithm
       # with the argument list you constructed
-      fit_object <- call_with_args(rpart::rpart, args)
+      fit_object <- call_with_args(
+        rpart::rpart, args,
+        other_valid = names(formals(rpart::rpart.control))
+      )
 
       # return the fit object, which will be stored
       # in a learner object and returned from the call
@@ -97,13 +100,10 @@ Lrnr_rpart <- R6Class(
     },
 
     # .predict takes a task and returns predictions from that task
-    .predict = function(task = NULL) {
-      self$training_task
-      self$training_outcome_type
-      self$fit_object
+    .predict = function(task) {
       predictions <- stats::predict(self$fit_object, newdata = task$X)
 
-      if (task$outcome_type$type == "categorical") {
+      if (private$.training_outcome_type$type == "categorical") {
         # pack predictions in a single column
         predictions <- pack_predictions(predictions)
       }
