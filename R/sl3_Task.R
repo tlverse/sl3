@@ -28,7 +28,7 @@ sl3_Task <- R6Class(
   portable = TRUE,
   class = TRUE,
   public = list(
-    initialize = function(data, covariates, outcome,
+    initialize = function(data, covariates, outcome = NULL,
                           outcome_type = NULL, outcome_levels = NULL,
                           id = NULL, weights = NULL, offset = NULL,
                           time = NULL, nodes = NULL, column_names = NULL,
@@ -41,6 +41,10 @@ sl3_Task <- R6Class(
           covariates = covariates, outcome = outcome, id = id,
           weights = weights, offset = offset, time = time
         )
+      }
+
+      if (is.null(outcome)) {
+        warning("Outcome not provided. This is okay for prediction.")
       }
 
       # generate column name mapping if not specified
