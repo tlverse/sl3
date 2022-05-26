@@ -137,7 +137,7 @@ Lrnr_ranger <- R6Class(
 
       predictions <- predictions[[1]]
 
-      if (task$outcome_type$type == "categorical") {
+      if (private$.training_outcome_type$type == "categorical") {
         # pack predictions in a single column
         predictions <- pack_predictions(predictions)
       }
