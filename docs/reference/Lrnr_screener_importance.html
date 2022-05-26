@@ -207,6 +207,8 @@ retain.</p></li>
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-in"><span class="va">ranger_screen_glm_pipe</span> <span class="op">&lt;-</span> <span class="va"><a href="Pipeline.html">Pipeline</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">ranger_importance_screener</span>, <span class="va">glm_lrnr</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">ranger_screen_glm_pipe_fit</span> <span class="op">&lt;-</span> <span class="va">ranger_screen_glm_pipe</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">mtcars_task</span><span class="op">)</span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Outcome not provided. This is okay for prediction.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Outcome not provided. This is okay for prediction.</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># screening based on \code{\link{Lrnr_randomForest}} variable importance</span></span>
 <span class="r-in"><span class="va">rf_lrnr</span> <span class="op">&lt;-</span> <span class="va"><a href="Lrnr_randomForest.html">Lrnr_randomForest</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
@@ -215,6 +217,8 @@ retain.</p></li>
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-in"><span class="va">rf_screen_glm_pipe</span> <span class="op">&lt;-</span> <span class="va"><a href="Pipeline.html">Pipeline</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">rf_importance_screener</span>, <span class="va">glm_lrnr</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">rf_screen_glm_pipe_fit</span> <span class="op">&lt;-</span> <span class="va">rf_screen_glm_pipe</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">mtcars_task</span><span class="op">)</span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Outcome not provided. This is okay for prediction.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Outcome not provided. This is okay for prediction.</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># screening based on \code{\link{Lrnr_randomForest}} variable importance</span></span>
 <span class="r-in"><span class="va">xgb_lrnr</span> <span class="op">&lt;-</span> <span class="va"><a href="Lrnr_xgboost.html">Lrnr_xgboost</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
@@ -223,6 +227,8 @@ retain.</p></li>
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-in"><span class="va">xgb_screen_glm_pipe</span> <span class="op">&lt;-</span> <span class="va"><a href="Pipeline.html">Pipeline</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">xgb_importance_screener</span>, <span class="va">glm_lrnr</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">xgb_screen_glm_pipe_fit</span> <span class="op">&lt;-</span> <span class="va">xgb_screen_glm_pipe</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">mtcars_task</span><span class="op">)</span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Outcome not provided. This is okay for prediction.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Outcome not provided. This is okay for prediction.</span>
 </code></pre></div>
     </div>
   </div>

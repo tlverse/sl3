@@ -225,6 +225,7 @@ and additional arguments defined in <code><a href="Lrnr_base.html">Lrnr_base</a>
 <span class="r-in"><span class="va">hal_lrnr</span> <span class="op">&lt;-</span> <span class="va">Lrnr_hal9001</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>max_degree <span class="op">=</span> <span class="fl">2</span>, num_knots <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">hal_fit</span> <span class="op">&lt;-</span> <span class="va">hal_lrnr</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">hal_preds</span> <span class="op">&lt;-</span> <span class="va">hal_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Outcome not provided. This is okay for prediction.</span>
 </code></pre></div>
     </div>
   </div>
