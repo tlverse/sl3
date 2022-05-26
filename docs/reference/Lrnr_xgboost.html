@@ -205,7 +205,6 @@ boosted trees from the LightGBM framework (via the <span class="pkg">lightgbm</s
 <span class="r-in"><span class="va">xgb_lrnr</span> <span class="op">&lt;-</span> <span class="va">Lrnr_xgboost</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">xgb_fit</span> <span class="op">&lt;-</span> <span class="va">xgb_lrnr</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">mtcars_task</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">xgb_preds</span> <span class="op">&lt;-</span> <span class="va">xgb_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Outcome not provided. This is okay for prediction.</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># get feature importance from fitted model</span></span>
 <span class="r-in"><span class="va">xgb_varimp</span> <span class="op">&lt;-</span> <span class="va">xgb_fit</span><span class="op">$</span><span class="fu">importance</span><span class="op">(</span><span class="op">)</span></span>

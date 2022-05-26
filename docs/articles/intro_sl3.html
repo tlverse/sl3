@@ -268,11 +268,8 @@ is true for fits but not for learners.</p>
 <code>predict</code> method:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># get learner predictions</span>
-<span class="va">preds</span> <span class="op">&lt;-</span> <span class="va">lrnr_glm_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">preds</span><span class="op">)</span></code></pre></div>
+<span class="va">preds</span> <span class="op">&lt;-</span> <span class="va">lrnr_glm_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">task</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">preds</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">## [1] 0.36298498 0.36298498 0.25993072 0.25993072 0.25993072 0.05680264</span></code></pre>
 <p>Here, we specified <code>task</code> as the task for which we wanted
 to generate predictions. If we had omitted this, we would have gotten
@@ -293,13 +290,13 @@ support. You can use <code>sl3_list_properties</code> to get a list of
 all properties supported by at least one learner. You can then use
 <code>sl3_list_learners</code> to find learners supporting any set of
 properties. For example:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/list_learners.html">sl3_list_properties</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">##  [1] "binomial"      "categorical"   "continuous"    "cv"           </span>
 <span class="co">##  [5] "density"       "h2o"           "ids"           "importance"   </span>
 <span class="co">##  [9] "offset"        "preprocessing" "sampling"      "screener"     </span>
 <span class="co">## [13] "timeseries"    "weights"       "wrapper"</span></code></pre>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/list_learners.html">sl3_list_learners</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"binomial"</span>, <span class="st">"offset"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">##  [1] "Lrnr_bayesglm" "Lrnr_ga"       "Lrnr_glm"      "Lrnr_glm_fast"</span>
 <span class="co">##  [5] "Lrnr_glmtree"  "Lrnr_h2o_glm"  "Lrnr_h2o_grid" "Lrnr_lightgbm"</span>
@@ -316,7 +313,7 @@ about <code>SuperLearner</code> wrappers, screeners, and methods,
 consult the documentation provided with that R package. Here’s an
 example of defining a <code>sl3</code> learner that uses the
 <code>SL.glmnet</code> wrapper from <code>SuperLearner</code>.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lrnr_sl_glmnet</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Lrnr_base.html">make_learner</a></span><span class="op">(</span><span class="va">Lrnr_pkg_SuperLearner</span>, <span class="st">"SL.glmnet"</span><span class="op">)</span></code></pre></div>
 <p>In most cases, using these wrappers will not be as efficient as their
 native <code>sl3</code> counterparts. If your favorite learner is
@@ -368,7 +365,7 @@ screening algorithms will be implemented soon.</p>
 <code>SuperLearner</code> function <code>screen.corP</code> and fit it
 to our task. Inspecting the fit, we see that it selected a subset of
 covariates:</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">screen_cor</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/SuperLearner_interface.html">Lrnr_pkg_SuperLearner_screener</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"screen.corP"</span><span class="op">)</span>
 <span class="va">screen_fit</span> <span class="op">&lt;-</span> <span class="va">screen_cor</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">screen_fit</span><span class="op">)</span></code></pre></div>
@@ -377,15 +374,9 @@ covariates:</p>
 <span class="co">## [1] "parity"   "gagebrth"</span></code></pre>
 <p>Now, <code>chain</code> may be called on this learner fit to define a
 downstream task:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">screened_task</span> <span class="op">&lt;-</span> <span class="va">screen_fit</span><span class="op">$</span><span class="fu">chain</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">screened_task</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">screened_task</span> <span class="op">&lt;-</span> <span class="va">screen_fit</span><span class="op">$</span><span class="fu">chain</span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">screened_task</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">## An sl3 Task with 1441 obs and these nodes:</span>
 <span class="co">## $covariates</span>
 <span class="co">## [1] "parity"   "gagebrth"</span>
@@ -409,13 +400,10 @@ downstream task:</p>
 task that was used for training. We can see that the chained task
 reduces the covariates to the subset selected by the screener. We can
 fit this new task using the <code>lrnr_glm</code> we defined above:</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">screened_glm_fit</span> <span class="op">&lt;-</span> <span class="va">lrnr_glm</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">screened_task</span><span class="op">)</span>
-<span class="va">screened_preds</span> <span class="op">&lt;-</span> <span class="va">screened_glm_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">screened_preds</span><span class="op">)</span></code></pre></div>
+<span class="va">screened_preds</span> <span class="op">&lt;-</span> <span class="va">screened_glm_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">screened_preds</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">## [1]  0.38084472  0.38084472  0.29887623  0.29887623  0.29887623 -0.00987784</span></code></pre>
 <p>The <code>Pipeline</code> class automates this process. It takes an
 arbitrary number of learners and fits them sequentially, training and
@@ -423,36 +411,18 @@ chaining each one in turn. Since <code>Pipeline</code> is a learner like
 any other, it shares the same interface. We can define a pipeline using
 <code>make_learner</code>, and use <code>train</code> and
 <code>predict</code> just as we did before:</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sg_pipeline</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Lrnr_base.html">make_learner</a></span><span class="op">(</span><span class="va">Pipeline</span>, <span class="va">screen_cor</span>, <span class="va">lrnr_glm</span><span class="op">)</span>
-<span class="va">sg_pipeline_fit</span> <span class="op">&lt;-</span> <span class="va">sg_pipeline</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">sg_pipeline_preds</span> <span class="op">&lt;-</span> <span class="va">sg_pipeline_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sg_pipeline_preds</span><span class="op">)</span></code></pre></div>
+<span class="va">sg_pipeline_fit</span> <span class="op">&lt;-</span> <span class="va">sg_pipeline</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span>
+<span class="va">sg_pipeline_preds</span> <span class="op">&lt;-</span> <span class="va">sg_pipeline_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sg_pipeline_preds</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">## [1]  0.38084472  0.38084472  0.29887623  0.29887623  0.29887623 -0.00987784</span></code></pre>
 <p>We see that the pipeline returns the same predictions as manually
 training <code>glm</code> on the chained task from the screening
 learner.</p>
 <p>We can visualize the pipeline we defined above:</p>
 <div id="htmlwidget-f612d16d56afdd02dbc6" style="width:100%;height:300px;" class="visNetwork html-widget"></div>
-<script type="application/json" data-for="htmlwidget-f612d16d56afdd02dbc6">{"x":{"nodes":{"id":["cad1be10-dd41-11ec-a9fd-f45c89b7dd47","cad1ad26-dd41-11ec-a9fd-f45c89b7dd47","cad104d4-dd41-11ec-a9fd-f45c89b7dd47","cad17a4a-dd41-11ec-a9fd-f45c89b7dd47","cad11ca8-dd41-11ec-a9fd-f45c89b7dd47"],"label":["Pipeline(Lrnr_pkg_SuperLearner_screener_screen.corP->Lrnr_glm_TRUE)","bundle","Lrnr_pkg_SuperLearner_screener_screen.corP","Lrnr_glm_TRUE","chain"],"level":[1,2,5,3,4],"sequential":[true,true,false,false,true],"state":["waiting","waiting","ready","waiting","waiting"],"group":["none","none","none","none","none"]},"edges":{"from":["cad104d4-dd41-11ec-a9fd-f45c89b7dd47","cad104d4-dd41-11ec-a9fd-f45c89b7dd47","cad11ca8-dd41-11ec-a9fd-f45c89b7dd47","cad17a4a-dd41-11ec-a9fd-f45c89b7dd47","cad1ad26-dd41-11ec-a9fd-f45c89b7dd47"],"to":["cad1ad26-dd41-11ec-a9fd-f45c89b7dd47","cad11ca8-dd41-11ec-a9fd-f45c89b7dd47","cad17a4a-dd41-11ec-a9fd-f45c89b7dd47","cad1ad26-dd41-11ec-a9fd-f45c89b7dd47","cad1be10-dd41-11ec-a9fd-f45c89b7dd47"],"label":["","","","",""]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot"},"manipulation":{"enabled":false},"edges":{"arrows":"to"},"layout":{"hierarchical":{"enabled":true,"levelSeparation":500,"nodeSpacing":200,"direction":"RL"}},"groups":{"useDefaultGroups":true,"none":{"color":{"border":"black","background":"white"}}}},"groups":["none"],"width":"100%","height":"300px","idselection":{"enabled":false},"byselection":{"enabled":false},"main":null,"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)"},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-f612d16d56afdd02dbc6">{"x":{"nodes":{"id":["fd9cea10-dd4e-11ec-a6f2-f45c89b7dd47","fd9cdc28-dd4e-11ec-a6f2-f45c89b7dd47","fd9c876e-dd4e-11ec-a6f2-f45c89b7dd47","fd9cc288-dd4e-11ec-a6f2-f45c89b7dd47","fd9c9416-dd4e-11ec-a6f2-f45c89b7dd47"],"label":["Pipeline(Lrnr_pkg_SuperLearner_screener_screen.corP->Lrnr_glm_TRUE)","bundle","Lrnr_pkg_SuperLearner_screener_screen.corP","Lrnr_glm_TRUE","chain"],"level":[1,2,5,3,4],"sequential":[true,true,false,false,true],"state":["waiting","waiting","ready","waiting","waiting"],"group":["none","none","none","none","none"]},"edges":{"from":["fd9c876e-dd4e-11ec-a6f2-f45c89b7dd47","fd9c876e-dd4e-11ec-a6f2-f45c89b7dd47","fd9c9416-dd4e-11ec-a6f2-f45c89b7dd47","fd9cc288-dd4e-11ec-a6f2-f45c89b7dd47","fd9cdc28-dd4e-11ec-a6f2-f45c89b7dd47"],"to":["fd9cdc28-dd4e-11ec-a6f2-f45c89b7dd47","fd9c9416-dd4e-11ec-a6f2-f45c89b7dd47","fd9cc288-dd4e-11ec-a6f2-f45c89b7dd47","fd9cdc28-dd4e-11ec-a6f2-f45c89b7dd47","fd9cea10-dd4e-11ec-a6f2-f45c89b7dd47"],"label":["","","","",""]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot"},"manipulation":{"enabled":false},"edges":{"arrows":"to"},"layout":{"hierarchical":{"enabled":true,"levelSeparation":500,"nodeSpacing":200,"direction":"RL"}},"groups":{"useDefaultGroups":true,"none":{"color":{"border":"black","background":"white"}}}},"groups":["none"],"width":"100%","height":"300px","idselection":{"enabled":false},"byselection":{"enabled":false},"main":null,"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)"},"evals":[],"jsHooks":[]}</script>
 </div>
 <div class="section level3">
 <h3 id="stacks">Stacks<a class="anchor" aria-label="anchor" href="#stacks"></a>
@@ -462,35 +432,11 @@ learners. <code>Stack</code>s train learners <em>simultaneously</em>, so
 that their predictions can be either combined or compared. Again,
 <code>Stack</code> is just a special learner and so has the same
 interface as all other learners:</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">stack</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Lrnr_base.html">make_learner</a></span><span class="op">(</span><span class="va">Stack</span>, <span class="va">lrnr_glm</span>, <span class="va">sg_pipeline</span><span class="op">)</span>
-<span class="va">stack_fit</span> <span class="op">&lt;-</span> <span class="va">stack</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">stack_preds</span> <span class="op">&lt;-</span> <span class="va">stack_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">stack_preds</span><span class="op">)</span></code></pre></div>
+<span class="va">stack_fit</span> <span class="op">&lt;-</span> <span class="va">stack</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span>
+<span class="va">stack_preds</span> <span class="op">&lt;-</span> <span class="va">stack_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">stack_preds</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">##    Lrnr_glm_TRUE</span>
 <span class="co">## 1:    0.36298498</span>
 <span class="co">## 2:    0.36298498</span>
@@ -514,7 +460,7 @@ method now returns a matrix, with a column for each learner included in
 the stack.</p>
 <p>We can visualize the stack:</p>
 <div id="htmlwidget-3491101b1ca353fe6ecc" style="width:100%;height:500px;" class="visNetwork html-widget"></div>
-<script type="application/json" data-for="htmlwidget-3491101b1ca353fe6ecc">{"x":{"nodes":{"id":["cb0b1674-dd41-11ec-a9fd-f45c89b7dd47","cb0ae65e-dd41-11ec-a9fd-f45c89b7dd47","cb08acf4-dd41-11ec-a9fd-f45c89b7dd47","cb0a5090-dd41-11ec-a9fd-f45c89b7dd47","cb09fc62-dd41-11ec-a9fd-f45c89b7dd47","cb09104a-dd41-11ec-a9fd-f45c89b7dd47","cb09d962-dd41-11ec-a9fd-f45c89b7dd47","cb093c8c-dd41-11ec-a9fd-f45c89b7dd47"],"label":["Stack","bundle","Lrnr_glm_TRUE","Pipeline(Lrnr_pkg_SuperLearner_screener_screen.corP->Lrnr_glm_TRUE)","bundle","Lrnr_pkg_SuperLearner_screener_screen.corP","Lrnr_glm_TRUE","chain"],"level":[1,2,3,3,4,7,5,6],"sequential":[true,true,false,true,true,false,false,true],"state":["waiting","waiting","ready","waiting","waiting","ready","waiting","waiting"],"group":["none","none","none","none","none","none","none","none"]},"edges":{"from":["cb08acf4-dd41-11ec-a9fd-f45c89b7dd47","cb09104a-dd41-11ec-a9fd-f45c89b7dd47","cb09104a-dd41-11ec-a9fd-f45c89b7dd47","cb093c8c-dd41-11ec-a9fd-f45c89b7dd47","cb09d962-dd41-11ec-a9fd-f45c89b7dd47","cb09fc62-dd41-11ec-a9fd-f45c89b7dd47","cb0a5090-dd41-11ec-a9fd-f45c89b7dd47","cb0ae65e-dd41-11ec-a9fd-f45c89b7dd47"],"to":["cb0ae65e-dd41-11ec-a9fd-f45c89b7dd47","cb09fc62-dd41-11ec-a9fd-f45c89b7dd47","cb093c8c-dd41-11ec-a9fd-f45c89b7dd47","cb09d962-dd41-11ec-a9fd-f45c89b7dd47","cb09fc62-dd41-11ec-a9fd-f45c89b7dd47","cb0a5090-dd41-11ec-a9fd-f45c89b7dd47","cb0ae65e-dd41-11ec-a9fd-f45c89b7dd47","cb0b1674-dd41-11ec-a9fd-f45c89b7dd47"],"label":["","","","","","","",""]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot"},"manipulation":{"enabled":false},"edges":{"arrows":"to"},"layout":{"hierarchical":{"enabled":true,"levelSeparation":500,"nodeSpacing":200,"direction":"RL"}},"groups":{"useDefaultGroups":true,"none":{"color":{"border":"black","background":"white"}}}},"groups":["none"],"width":"100%","height":"500px","idselection":{"enabled":false},"byselection":{"enabled":false},"main":null,"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)"},"evals":[],"jsHooks":[]}</script><p>We see one “branch” for each learner in the stack.</p>
+<script type="application/json" data-for="htmlwidget-3491101b1ca353fe6ecc">{"x":{"nodes":{"id":["fdc6b688-dd4e-11ec-a6f2-f45c89b7dd47","fdc6a94a-dd4e-11ec-a6f2-f45c89b7dd47","fdc62b82-dd4e-11ec-a6f2-f45c89b7dd47","fdc69aae-dd4e-11ec-a6f2-f45c89b7dd47","fdc68d7a-dd4e-11ec-a6f2-f45c89b7dd47","fdc63f32-dd4e-11ec-a6f2-f45c89b7dd47","fdc6745c-dd4e-11ec-a6f2-f45c89b7dd47","fdc64b9e-dd4e-11ec-a6f2-f45c89b7dd47"],"label":["Stack","bundle","Lrnr_glm_TRUE","Pipeline(Lrnr_pkg_SuperLearner_screener_screen.corP->Lrnr_glm_TRUE)","bundle","Lrnr_pkg_SuperLearner_screener_screen.corP","Lrnr_glm_TRUE","chain"],"level":[1,2,3,3,4,7,5,6],"sequential":[true,true,false,true,true,false,false,true],"state":["waiting","waiting","ready","waiting","waiting","ready","waiting","waiting"],"group":["none","none","none","none","none","none","none","none"]},"edges":{"from":["fdc62b82-dd4e-11ec-a6f2-f45c89b7dd47","fdc63f32-dd4e-11ec-a6f2-f45c89b7dd47","fdc63f32-dd4e-11ec-a6f2-f45c89b7dd47","fdc64b9e-dd4e-11ec-a6f2-f45c89b7dd47","fdc6745c-dd4e-11ec-a6f2-f45c89b7dd47","fdc68d7a-dd4e-11ec-a6f2-f45c89b7dd47","fdc69aae-dd4e-11ec-a6f2-f45c89b7dd47","fdc6a94a-dd4e-11ec-a6f2-f45c89b7dd47"],"to":["fdc6a94a-dd4e-11ec-a6f2-f45c89b7dd47","fdc68d7a-dd4e-11ec-a6f2-f45c89b7dd47","fdc64b9e-dd4e-11ec-a6f2-f45c89b7dd47","fdc6745c-dd4e-11ec-a6f2-f45c89b7dd47","fdc68d7a-dd4e-11ec-a6f2-f45c89b7dd47","fdc69aae-dd4e-11ec-a6f2-f45c89b7dd47","fdc6a94a-dd4e-11ec-a6f2-f45c89b7dd47","fdc6b688-dd4e-11ec-a6f2-f45c89b7dd47"],"label":["","","","","","","",""]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot"},"manipulation":{"enabled":false},"edges":{"arrows":"to"},"layout":{"hierarchical":{"enabled":true,"levelSeparation":500,"nodeSpacing":200,"direction":"RL"}},"groups":{"useDefaultGroups":true,"none":{"color":{"border":"black","background":"white"}}}},"groups":["none"],"width":"100%","height":"500px","idselection":{"enabled":false},"byselection":{"enabled":false},"main":null,"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)"},"evals":[],"jsHooks":[]}</script><p>We see one “branch” for each learner in the stack.</p>
 </div>
 <div class="section level3">
 <h3 id="cross-validation">Cross-validation<a class="anchor" aria-label="anchor" href="#cross-validation"></a>
@@ -528,489 +474,15 @@ training and validation splits as defined by
 <p>Below, we define a new <code>Lrnr_cv</code> object based on the
 previously defined <code>stack</code> and train it and generate
 predictions on the validation set:</p>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">cv_stack</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/Lrnr_cv.html">Lrnr_cv</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">stack</span><span class="op">)</span>
-<span class="va">cv_fit</span> <span class="op">&lt;-</span> <span class="va">cv_stack</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cv_preds</span> <span class="op">&lt;-</span> <span class="va">cv_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
+<span class="va">cv_fit</span> <span class="op">&lt;-</span> <span class="va">cv_stack</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span>
+<span class="va">cv_preds</span> <span class="op">&lt;-</span> <span class="va">cv_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>We can also use the special <code>Lrnr_cv</code> function
 <code>cv_risk</code> to estimate cross-validated risk values:</p>
-<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">risks</span> <span class="op">&lt;-</span> <span class="va">cv_fit</span><span class="op">$</span><span class="fu">cv_risk</span><span class="op">(</span><span class="va">loss_squared_error</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">risks</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">risks</span> <span class="op">&lt;-</span> <span class="va">cv_fit</span><span class="op">$</span><span class="fu">cv_risk</span><span class="op">(</span><span class="va">loss_squared_error</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">risks</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">##                                                                learner</span>
 <span class="co">## 1:                                                       Lrnr_glm_TRUE</span>
 <span class="co">## 2: Pipeline(Lrnr_pkg_SuperLearner_screener_screen.corP-&gt;Lrnr_glm_TRUE)</span>
@@ -1032,209 +504,10 @@ stacked learners. It does this while avoiding overfitting by training
 the meta-learner on validation-set predictions in a manner that is
 cross-validated. Using some of the objects we defined in the above
 examples, this becomes a very simple operation:</p>
-<div class="sourceCode" id="cb88"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">metalearner</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Lrnr_base.html">make_learner</a></span><span class="op">(</span><span class="va">Lrnr_nnls</span><span class="op">)</span>
-<span class="va">cv_task</span> <span class="op">&lt;-</span> <span class="va">cv_fit</span><span class="op">$</span><span class="fu">chain</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<div class="sourceCode" id="cb110"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ml_fit</span> <span class="op">&lt;-</span> <span class="va">metalearner</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">cv_task</span><span class="op">)</span></code></pre></div>
+<span class="va">cv_task</span> <span class="op">&lt;-</span> <span class="va">cv_fit</span><span class="op">$</span><span class="fu">chain</span><span class="op">(</span><span class="op">)</span>
+<span class="va">ml_fit</span> <span class="op">&lt;-</span> <span class="va">metalearner</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">cv_task</span><span class="op">)</span></code></pre></div>
 <p>Here, we used a special learner, <code>Lrnr_nnls</code>, for the
 meta-learning step. This fits a non-negative least squares meta-learner.
 It is important to note that any learner can be used as a
@@ -1245,371 +518,20 @@ the validation-set predictions. Below, we use a special behavior of
 pipelines: if all objects passed to a pipeline are learner fits (i.e.,
 <code>learner$is_trained</code> is <code>TRUE</code>), the result will
 also be a fit:</p>
-<div class="sourceCode" id="cb111"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sl_pipeline</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Lrnr_base.html">make_learner</a></span><span class="op">(</span><span class="va">Pipeline</span>, <span class="va">stack_fit</span>, <span class="va">ml_fit</span><span class="op">)</span>
-<span class="va">sl_preds</span> <span class="op">&lt;-</span> <span class="va">sl_pipeline</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<div class="sourceCode" id="cb113"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sl_preds</span><span class="op">)</span></code></pre></div>
+<span class="va">sl_preds</span> <span class="op">&lt;-</span> <span class="va">sl_pipeline</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sl_preds</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">## [1] 0.36977825 0.36977825 0.27474433 0.27474433 0.27474433 0.03143954</span></code></pre>
 <p>A Super Learner may be fit in a more streamlined manner using the
 <code>Lrnr_sl</code> learner. For simplicity, we will use the same set
 of learners and meta-learning algorithm as we did before:</p>
-<div class="sourceCode" id="cb115"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sl</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/Lrnr_sl.html">Lrnr_sl</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>learners <span class="op">=</span> <span class="va">stack</span>,
                   metalearner <span class="op">=</span> <span class="va">metalearner</span><span class="op">)</span>
-<span class="va">sl_fit</span> <span class="op">&lt;-</span> <span class="va">sl</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<div class="sourceCode" id="cb138"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">lrnr_sl_preds</span> <span class="op">&lt;-</span> <span class="va">sl_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(private$.shared_data, nodes = new_nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<div class="sourceCode" id="cb140"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">lrnr_sl_preds</span><span class="op">)</span></code></pre></div>
+<span class="va">sl_fit</span> <span class="op">&lt;-</span> <span class="va">sl</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span>
+<span class="va">lrnr_sl_preds</span> <span class="op">&lt;-</span> <span class="va">sl_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">lrnr_sl_preds</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">## [1] 0.36977825 0.36977825 0.27474433 0.27474433 0.27474433 0.03143954</span></code></pre>
 <p>We can see that this generates the same predictions as the more
 hands-on definition above.</p>
@@ -1626,48 +548,18 @@ alleviate this complication, we’ve developed a specialized
 parallelization framework <code>delayed</code> that parallelizes across
 these tasks in a way that takes into account their inter-dependent
 nature. Consider a Super Learner with three learners:</p>
-<div class="sourceCode" id="cb142"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lrnr_rf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Lrnr_base.html">make_learner</a></span><span class="op">(</span><span class="va">Lrnr_randomForest</span><span class="op">)</span>
 <span class="va">lrnr_glmnet</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Lrnr_base.html">make_learner</a></span><span class="op">(</span><span class="va">Lrnr_glmnet</span><span class="op">)</span>
 <span class="va">sl</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/Lrnr_sl.html">Lrnr_sl</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>learners <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">lrnr_glm</span>, <span class="va">lrnr_rf</span>, <span class="va">lrnr_glmnet</span><span class="op">)</span>,
                   metalearner <span class="op">=</span> <span class="va">metalearner</span><span class="op">)</span></code></pre></div>
 <p>We can plot the network of tasks required to train this Super
 Learner:</p>
-<div class="sourceCode" id="cb143"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">delayed_sl_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/learner_helpers.html">delayed_learner_train</a></span><span class="op">(</span><span class="va">sl</span>, <span class="va">task</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span>
-
-<span class="co">## Warning in new_task$initialize(new_shared_data, nodes = private$.nodes, :</span>
-<span class="co">## Outcome not provided. This is okay for prediction.</span></code></pre>
-<div class="sourceCode" id="cb145"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">delayed_sl_fit</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">delayed_sl_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/learner_helpers.html">delayed_learner_train</a></span><span class="op">(</span><span class="va">sl</span>, <span class="va">task</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">delayed_sl_fit</span><span class="op">)</span></code></pre></div>
 <div id="htmlwidget-b9d71806ac94e424789a" style="width:100%;height:500px;" class="visNetwork html-widget"></div>
-<script type="application/json" data-for="htmlwidget-b9d71806ac94e424789a">{"x":{"nodes":{"id":["cd8ac318-dd41-11ec-a9fd-f45c89b7dd47","cd8ab1c0-dd41-11ec-a9fd-f45c89b7dd47","cd8a3272-dd41-11ec-a9fd-f45c89b7dd47","cd8a211a-dd41-11ec-a9fd-f45c89b7dd47","cd7f8548-dd41-11ec-a9fd-f45c89b7dd47","cd7f76c0-dd41-11ec-a9fd-f45c89b7dd47","cd7f440c-dd41-11ec-a9fd-f45c89b7dd47","cd7f57ee-dd41-11ec-a9fd-f45c89b7dd47","cd7f693c-dd41-11ec-a9fd-f45c89b7dd47","cd8a0e6e-dd41-11ec-a9fd-f45c89b7dd47","cd805a04-dd41-11ec-a9fd-f45c89b7dd47","cd80487a-dd41-11ec-a9fd-f45c89b7dd47","cd8011ca-dd41-11ec-a9fd-f45c89b7dd47","cd802944-dd41-11ec-a9fd-f45c89b7dd47","cd803b78-dd41-11ec-a9fd-f45c89b7dd47","cd811b60-dd41-11ec-a9fd-f45c89b7dd47","cd810346-dd41-11ec-a9fd-f45c89b7dd47","cd80c142-dd41-11ec-a9fd-f45c89b7dd47","cd80d2f4-dd41-11ec-a9fd-f45c89b7dd47","cd80e85c-dd41-11ec-a9fd-f45c89b7dd47","cd81b4e4-dd41-11ec-a9fd-f45c89b7dd47","cd81a5ee-dd41-11ec-a9fd-f45c89b7dd47","cd8174de-dd41-11ec-a9fd-f45c89b7dd47","cd8186ea-dd41-11ec-a9fd-f45c89b7dd47","cd819888-dd41-11ec-a9fd-f45c89b7dd47","cd827438-dd41-11ec-a9fd-f45c89b7dd47","cd825dcc-dd41-11ec-a9fd-f45c89b7dd47","cd82093a-dd41-11ec-a9fd-f45c89b7dd47","cd821c40-dd41-11ec-a9fd-f45c89b7dd47","cd823cde-dd41-11ec-a9fd-f45c89b7dd47","cd8365f0-dd41-11ec-a9fd-f45c89b7dd47","cd83484a-dd41-11ec-a9fd-f45c89b7dd47","cd82e4ae-dd41-11ec-a9fd-f45c89b7dd47","cd8303a8-dd41-11ec-a9fd-f45c89b7dd47","cd832a68-dd41-11ec-a9fd-f45c89b7dd47","cd845fc8-dd41-11ec-a9fd-f45c89b7dd47","cd845104-dd41-11ec-a9fd-f45c89b7dd47","cd83f89e-dd41-11ec-a9fd-f45c89b7dd47","cd842710-dd41-11ec-a9fd-f45c89b7dd47","cd84433a-dd41-11ec-a9fd-f45c89b7dd47","cd85165c-dd41-11ec-a9fd-f45c89b7dd47","cd850464-dd41-11ec-a9fd-f45c89b7dd47","cd84d0f2-dd41-11ec-a9fd-f45c89b7dd47","cd84e420-dd41-11ec-a9fd-f45c89b7dd47","cd84f686-dd41-11ec-a9fd-f45c89b7dd47","cd86fddc-dd41-11ec-a9fd-f45c89b7dd47","cd86e3a6-dd41-11ec-a9fd-f45c89b7dd47","cd86358c-dd41-11ec-a9fd-f45c89b7dd47","cd869068-dd41-11ec-a9fd-f45c89b7dd47","cd86caec-dd41-11ec-a9fd-f45c89b7dd47","cd8818de-dd41-11ec-a9fd-f45c89b7dd47","cd87edc8-dd41-11ec-a9fd-f45c89b7dd47","cd878284-dd41-11ec-a9fd-f45c89b7dd47","cd879a4e-dd41-11ec-a9fd-f45c89b7dd47","cd87b8ee-dd41-11ec-a9fd-f45c89b7dd47","cd89fb86-dd41-11ec-a9fd-f45c89b7dd47","cd89e790-dd41-11ec-a9fd-f45c89b7dd47","cd8988e0-dd41-11ec-a9fd-f45c89b7dd47","cd89bc20-dd41-11ec-a9fd-f45c89b7dd47","cd89d7f0-dd41-11ec-a9fd-f45c89b7dd47","cd8a610c-dd41-11ec-a9fd-f45c89b7dd47","cd8aa2ca-dd41-11ec-a9fd-f45c89b7dd47"],"label":["CV_","bundle","CV_Stack","bundle","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","bundle","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","chain","Lrnr_nnls_TRUE"],"level":[1,2,5,6,7,8,9,9,9,7,8,9,10,10,10,8,9,10,10,10,8,9,10,10,10,8,9,10,10,10,8,9,10,10,10,8,9,10,10,10,8,9,10,10,10,8,9,10,10,10,8,9,10,10,10,8,9,10,10,10,4,3],"sequential":[true,true,true,true,true,true,false,false,false,true,true,true,false,false,false,true,true,false,false,false,true,true,false,false,false,true,true,false,false,false,true,true,false,false,false,true,true,false,false,false,true,true,false,false,false,true,true,false,false,false,true,true,false,false,false,true,true,false,false,false,true,false],"state":["waiting","waiting","waiting","waiting","waiting","waiting","ready","ready","ready","waiting","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting"],"group":["waiting","waiting","waiting","waiting","waiting","waiting","ready","ready","ready","waiting","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting"],"shape":["square","square","square","square","square","square","dot","dot","dot","square","square","square","dot","dot","dot","square","square","dot","dot","dot","square","square","dot","dot","dot","square","square","dot","dot","dot","square","square","dot","dot","dot","square","square","dot","dot","dot","square","square","dot","dot","dot","square","square","dot","dot","dot","square","square","dot","dot","dot","square","square","dot","dot","dot","square","dot"]},"edges":{"from":["cd7f440c-dd41-11ec-a9fd-f45c89b7dd47","cd7f57ee-dd41-11ec-a9fd-f45c89b7dd47","cd7f693c-dd41-11ec-a9fd-f45c89b7dd47","cd7f76c0-dd41-11ec-a9fd-f45c89b7dd47","cd7f8548-dd41-11ec-a9fd-f45c89b7dd47","cd8011ca-dd41-11ec-a9fd-f45c89b7dd47","cd802944-dd41-11ec-a9fd-f45c89b7dd47","cd803b78-dd41-11ec-a9fd-f45c89b7dd47","cd80487a-dd41-11ec-a9fd-f45c89b7dd47","cd805a04-dd41-11ec-a9fd-f45c89b7dd47","cd80c142-dd41-11ec-a9fd-f45c89b7dd47","cd80d2f4-dd41-11ec-a9fd-f45c89b7dd47","cd80e85c-dd41-11ec-a9fd-f45c89b7dd47","cd810346-dd41-11ec-a9fd-f45c89b7dd47","cd811b60-dd41-11ec-a9fd-f45c89b7dd47","cd8174de-dd41-11ec-a9fd-f45c89b7dd47","cd8186ea-dd41-11ec-a9fd-f45c89b7dd47","cd819888-dd41-11ec-a9fd-f45c89b7dd47","cd81a5ee-dd41-11ec-a9fd-f45c89b7dd47","cd81b4e4-dd41-11ec-a9fd-f45c89b7dd47","cd82093a-dd41-11ec-a9fd-f45c89b7dd47","cd821c40-dd41-11ec-a9fd-f45c89b7dd47","cd823cde-dd41-11ec-a9fd-f45c89b7dd47","cd825dcc-dd41-11ec-a9fd-f45c89b7dd47","cd827438-dd41-11ec-a9fd-f45c89b7dd47","cd82e4ae-dd41-11ec-a9fd-f45c89b7dd47","cd8303a8-dd41-11ec-a9fd-f45c89b7dd47","cd832a68-dd41-11ec-a9fd-f45c89b7dd47","cd83484a-dd41-11ec-a9fd-f45c89b7dd47","cd8365f0-dd41-11ec-a9fd-f45c89b7dd47","cd83f89e-dd41-11ec-a9fd-f45c89b7dd47","cd842710-dd41-11ec-a9fd-f45c89b7dd47","cd84433a-dd41-11ec-a9fd-f45c89b7dd47","cd845104-dd41-11ec-a9fd-f45c89b7dd47","cd845fc8-dd41-11ec-a9fd-f45c89b7dd47","cd84d0f2-dd41-11ec-a9fd-f45c89b7dd47","cd84e420-dd41-11ec-a9fd-f45c89b7dd47","cd84f686-dd41-11ec-a9fd-f45c89b7dd47","cd850464-dd41-11ec-a9fd-f45c89b7dd47","cd85165c-dd41-11ec-a9fd-f45c89b7dd47","cd86358c-dd41-11ec-a9fd-f45c89b7dd47","cd869068-dd41-11ec-a9fd-f45c89b7dd47","cd86caec-dd41-11ec-a9fd-f45c89b7dd47","cd86e3a6-dd41-11ec-a9fd-f45c89b7dd47","cd86fddc-dd41-11ec-a9fd-f45c89b7dd47","cd878284-dd41-11ec-a9fd-f45c89b7dd47","cd879a4e-dd41-11ec-a9fd-f45c89b7dd47","cd87b8ee-dd41-11ec-a9fd-f45c89b7dd47","cd87edc8-dd41-11ec-a9fd-f45c89b7dd47","cd8818de-dd41-11ec-a9fd-f45c89b7dd47","cd8988e0-dd41-11ec-a9fd-f45c89b7dd47","cd89bc20-dd41-11ec-a9fd-f45c89b7dd47","cd89d7f0-dd41-11ec-a9fd-f45c89b7dd47","cd89e790-dd41-11ec-a9fd-f45c89b7dd47","cd89fb86-dd41-11ec-a9fd-f45c89b7dd47","cd8a0e6e-dd41-11ec-a9fd-f45c89b7dd47","cd8a211a-dd41-11ec-a9fd-f45c89b7dd47","cd8a3272-dd41-11ec-a9fd-f45c89b7dd47","cd8a3272-dd41-11ec-a9fd-f45c89b7dd47","cd8a610c-dd41-11ec-a9fd-f45c89b7dd47","cd8a610c-dd41-11ec-a9fd-f45c89b7dd47","cd8aa2ca-dd41-11ec-a9fd-f45c89b7dd47","cd8ab1c0-dd41-11ec-a9fd-f45c89b7dd47"],"to":["cd7f76c0-dd41-11ec-a9fd-f45c89b7dd47","cd7f76c0-dd41-11ec-a9fd-f45c89b7dd47","cd7f76c0-dd41-11ec-a9fd-f45c89b7dd47","cd7f8548-dd41-11ec-a9fd-f45c89b7dd47","cd8a211a-dd41-11ec-a9fd-f45c89b7dd47","cd80487a-dd41-11ec-a9fd-f45c89b7dd47","cd80487a-dd41-11ec-a9fd-f45c89b7dd47","cd80487a-dd41-11ec-a9fd-f45c89b7dd47","cd805a04-dd41-11ec-a9fd-f45c89b7dd47","cd8a0e6e-dd41-11ec-a9fd-f45c89b7dd47","cd810346-dd41-11ec-a9fd-f45c89b7dd47","cd810346-dd41-11ec-a9fd-f45c89b7dd47","cd810346-dd41-11ec-a9fd-f45c89b7dd47","cd811b60-dd41-11ec-a9fd-f45c89b7dd47","cd8a0e6e-dd41-11ec-a9fd-f45c89b7dd47","cd81a5ee-dd41-11ec-a9fd-f45c89b7dd47","cd81a5ee-dd41-11ec-a9fd-f45c89b7dd47","cd81a5ee-dd41-11ec-a9fd-f45c89b7dd47","cd81b4e4-dd41-11ec-a9fd-f45c89b7dd47","cd8a0e6e-dd41-11ec-a9fd-f45c89b7dd47","cd825dcc-dd41-11ec-a9fd-f45c89b7dd47","cd825dcc-dd41-11ec-a9fd-f45c89b7dd47","cd825dcc-dd41-11ec-a9fd-f45c89b7dd47","cd827438-dd41-11ec-a9fd-f45c89b7dd47","cd8a0e6e-dd41-11ec-a9fd-f45c89b7dd47","cd83484a-dd41-11ec-a9fd-f45c89b7dd47","cd83484a-dd41-11ec-a9fd-f45c89b7dd47","cd83484a-dd41-11ec-a9fd-f45c89b7dd47","cd8365f0-dd41-11ec-a9fd-f45c89b7dd47","cd8a0e6e-dd41-11ec-a9fd-f45c89b7dd47","cd845104-dd41-11ec-a9fd-f45c89b7dd47","cd845104-dd41-11ec-a9fd-f45c89b7dd47","cd845104-dd41-11ec-a9fd-f45c89b7dd47","cd845fc8-dd41-11ec-a9fd-f45c89b7dd47","cd8a0e6e-dd41-11ec-a9fd-f45c89b7dd47","cd850464-dd41-11ec-a9fd-f45c89b7dd47","cd850464-dd41-11ec-a9fd-f45c89b7dd47","cd850464-dd41-11ec-a9fd-f45c89b7dd47","cd85165c-dd41-11ec-a9fd-f45c89b7dd47","cd8a0e6e-dd41-11ec-a9fd-f45c89b7dd47","cd86e3a6-dd41-11ec-a9fd-f45c89b7dd47","cd86e3a6-dd41-11ec-a9fd-f45c89b7dd47","cd86e3a6-dd41-11ec-a9fd-f45c89b7dd47","cd86fddc-dd41-11ec-a9fd-f45c89b7dd47","cd8a0e6e-dd41-11ec-a9fd-f45c89b7dd47","cd87edc8-dd41-11ec-a9fd-f45c89b7dd47","cd87edc8-dd41-11ec-a9fd-f45c89b7dd47","cd87edc8-dd41-11ec-a9fd-f45c89b7dd47","cd8818de-dd41-11ec-a9fd-f45c89b7dd47","cd8a0e6e-dd41-11ec-a9fd-f45c89b7dd47","cd89e790-dd41-11ec-a9fd-f45c89b7dd47","cd89e790-dd41-11ec-a9fd-f45c89b7dd47","cd89e790-dd41-11ec-a9fd-f45c89b7dd47","cd89fb86-dd41-11ec-a9fd-f45c89b7dd47","cd8a0e6e-dd41-11ec-a9fd-f45c89b7dd47","cd8a211a-dd41-11ec-a9fd-f45c89b7dd47","cd8a3272-dd41-11ec-a9fd-f45c89b7dd47","cd8ab1c0-dd41-11ec-a9fd-f45c89b7dd47","cd8a610c-dd41-11ec-a9fd-f45c89b7dd47","cd8ab1c0-dd41-11ec-a9fd-f45c89b7dd47","cd8aa2ca-dd41-11ec-a9fd-f45c89b7dd47","cd8ab1c0-dd41-11ec-a9fd-f45c89b7dd47","cd8ac318-dd41-11ec-a9fd-f45c89b7dd47"],"label":["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot"},"manipulation":{"enabled":false},"edges":{"arrows":"to"},"layout":{"hierarchical":{"enabled":true,"levelSeparation":500,"nodeSpacing":200,"direction":"RL"}},"groups":{"waiting":{"color":{"border":"black","background":"white"}},"ready":{"color":{"border":"black","background":"orange"}},"running":{"color":{"border":"black","background":"lightgreen"}},"resolved":{"color":{"border":"black","background":"black"}},"useDefaultGroups":true,"error":{"color":{"border":"black","background":"lightpink"}}}},"groups":["waiting","ready"],"width":"100%","height":"500px","idselection":{"enabled":false},"byselection":{"enabled":false},"main":null,"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","legend":{"width":0.2,"useGroups":false,"position":"left","ncol":1,"stepX":100,"stepY":100,"zoom":true,"nodes":{"label":["waiting","ready","running","resolved","error","sequential","parallel"],"color":[{"border":"black","background":"white"},{"border":"black","background":"orange"},{"border":"black","background":"lightgreen"},{"border":"black","background":"black"},{"border":"black","background":"lightpink"},{"border":"black","background":"white"},{"border":"black","background":"white"}],"shape":["dot","dot","dot","dot","dot","square","dot"]},"nodesToDataframe":true}},"evals":[],"jsHooks":[]}</script><p><code>delayed</code> then allows us to parallelize the procedure
+<script type="application/json" data-for="htmlwidget-b9d71806ac94e424789a">{"x":{"nodes":{"id":["ff6101c4-dd4e-11ec-a6f2-f45c89b7dd47","ff60f3f0-dd4e-11ec-a6f2-f45c89b7dd47","ff60af4e-dd4e-11ec-a6f2-f45c89b7dd47","ff60a198-dd4e-11ec-a6f2-f45c89b7dd47","ff5af86a-dd4e-11ec-a6f2-f45c89b7dd47","ff5aeabe-dd4e-11ec-a6f2-f45c89b7dd47","ff5abc60-dd4e-11ec-a6f2-f45c89b7dd47","ff5acd9a-dd4e-11ec-a6f2-f45c89b7dd47","ff5ade48-dd4e-11ec-a6f2-f45c89b7dd47","ff6092ca-dd4e-11ec-a6f2-f45c89b7dd47","ff5b8bcc-dd4e-11ec-a6f2-f45c89b7dd47","ff5b7be6-dd4e-11ec-a6f2-f45c89b7dd47","ff5b4590-dd4e-11ec-a6f2-f45c89b7dd47","ff5b56c0-dd4e-11ec-a6f2-f45c89b7dd47","ff5b678c-dd4e-11ec-a6f2-f45c89b7dd47","ff5c1fb0-dd4e-11ec-a6f2-f45c89b7dd47","ff5c10ec-dd4e-11ec-a6f2-f45c89b7dd47","ff5bde06-dd4e-11ec-a6f2-f45c89b7dd47","ff5bf12a-dd4e-11ec-a6f2-f45c89b7dd47","ff5c034a-dd4e-11ec-a6f2-f45c89b7dd47","ff5cb164-dd4e-11ec-a6f2-f45c89b7dd47","ff5c9af8-dd4e-11ec-a6f2-f45c89b7dd47","ff5c6bb4-dd4e-11ec-a6f2-f45c89b7dd47","ff5c7d66-dd4e-11ec-a6f2-f45c89b7dd47","ff5c8e50-dd4e-11ec-a6f2-f45c89b7dd47","ff5d4534-dd4e-11ec-a6f2-f45c89b7dd47","ff5d3666-dd4e-11ec-a6f2-f45c89b7dd47","ff5d039e-dd4e-11ec-a6f2-f45c89b7dd47","ff5d16a4-dd4e-11ec-a6f2-f45c89b7dd47","ff5d28b0-dd4e-11ec-a6f2-f45c89b7dd47","ff5dcf2c-dd4e-11ec-a6f2-f45c89b7dd47","ff5dc0d6-dd4e-11ec-a6f2-f45c89b7dd47","ff5d9110-dd4e-11ec-a6f2-f45c89b7dd47","ff5da2a4-dd4e-11ec-a6f2-f45c89b7dd47","ff5db3c0-dd4e-11ec-a6f2-f45c89b7dd47","ff5e5b40-dd4e-11ec-a6f2-f45c89b7dd47","ff5e4c86-dd4e-11ec-a6f2-f45c89b7dd47","ff5e1c52-dd4e-11ec-a6f2-f45c89b7dd47","ff5e2e22-dd4e-11ec-a6f2-f45c89b7dd47","ff5e3f70-dd4e-11ec-a6f2-f45c89b7dd47","ff5ee768-dd4e-11ec-a6f2-f45c89b7dd47","ff5ed930-dd4e-11ec-a6f2-f45c89b7dd47","ff5ea9ba-dd4e-11ec-a6f2-f45c89b7dd47","ff5ebb12-dd4e-11ec-a6f2-f45c89b7dd47","ff5ecc2e-dd4e-11ec-a6f2-f45c89b7dd47","ff5f7098-dd4e-11ec-a6f2-f45c89b7dd47","ff5f627e-dd4e-11ec-a6f2-f45c89b7dd47","ff5f336c-dd4e-11ec-a6f2-f45c89b7dd47","ff5f44a6-dd4e-11ec-a6f2-f45c89b7dd47","ff5f55a4-dd4e-11ec-a6f2-f45c89b7dd47","ff5ffb6c-dd4e-11ec-a6f2-f45c89b7dd47","ff5fed52-dd4e-11ec-a6f2-f45c89b7dd47","ff5fbe40-dd4e-11ec-a6f2-f45c89b7dd47","ff5fcfa2-dd4e-11ec-a6f2-f45c89b7dd47","ff5fe082-dd4e-11ec-a6f2-f45c89b7dd47","ff6084c4-dd4e-11ec-a6f2-f45c89b7dd47","ff6076dc-dd4e-11ec-a6f2-f45c89b7dd47","ff6047e8-dd4e-11ec-a6f2-f45c89b7dd47","ff605922-dd4e-11ec-a6f2-f45c89b7dd47","ff606a0c-dd4e-11ec-a6f2-f45c89b7dd47","ff60bd5e-dd4e-11ec-a6f2-f45c89b7dd47","ff60e69e-dd4e-11ec-a6f2-f45c89b7dd47"],"label":["CV_","bundle","CV_Stack","bundle","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","bundle","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","Stack","bundle","Lrnr_glm_TRUE","Lrnr_randomForest_500_TRUE_5","Lrnr_glmnet_NULL_deviance_10_1_100_TRUE","chain","Lrnr_nnls_TRUE"],"level":[1,2,5,6,7,8,9,9,9,7,8,9,10,10,10,8,9,10,10,10,8,9,10,10,10,8,9,10,10,10,8,9,10,10,10,8,9,10,10,10,8,9,10,10,10,8,9,10,10,10,8,9,10,10,10,8,9,10,10,10,4,3],"sequential":[true,true,true,true,true,true,false,false,false,true,true,true,false,false,false,true,true,false,false,false,true,true,false,false,false,true,true,false,false,false,true,true,false,false,false,true,true,false,false,false,true,true,false,false,false,true,true,false,false,false,true,true,false,false,false,true,true,false,false,false,true,false],"state":["waiting","waiting","waiting","waiting","waiting","waiting","ready","ready","ready","waiting","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting"],"group":["waiting","waiting","waiting","waiting","waiting","waiting","ready","ready","ready","waiting","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting","ready","ready","ready","waiting","waiting"],"shape":["square","square","square","square","square","square","dot","dot","dot","square","square","square","dot","dot","dot","square","square","dot","dot","dot","square","square","dot","dot","dot","square","square","dot","dot","dot","square","square","dot","dot","dot","square","square","dot","dot","dot","square","square","dot","dot","dot","square","square","dot","dot","dot","square","square","dot","dot","dot","square","square","dot","dot","dot","square","dot"]},"edges":{"from":["ff5abc60-dd4e-11ec-a6f2-f45c89b7dd47","ff5acd9a-dd4e-11ec-a6f2-f45c89b7dd47","ff5ade48-dd4e-11ec-a6f2-f45c89b7dd47","ff5aeabe-dd4e-11ec-a6f2-f45c89b7dd47","ff5af86a-dd4e-11ec-a6f2-f45c89b7dd47","ff5b4590-dd4e-11ec-a6f2-f45c89b7dd47","ff5b56c0-dd4e-11ec-a6f2-f45c89b7dd47","ff5b678c-dd4e-11ec-a6f2-f45c89b7dd47","ff5b7be6-dd4e-11ec-a6f2-f45c89b7dd47","ff5b8bcc-dd4e-11ec-a6f2-f45c89b7dd47","ff5bde06-dd4e-11ec-a6f2-f45c89b7dd47","ff5bf12a-dd4e-11ec-a6f2-f45c89b7dd47","ff5c034a-dd4e-11ec-a6f2-f45c89b7dd47","ff5c10ec-dd4e-11ec-a6f2-f45c89b7dd47","ff5c1fb0-dd4e-11ec-a6f2-f45c89b7dd47","ff5c6bb4-dd4e-11ec-a6f2-f45c89b7dd47","ff5c7d66-dd4e-11ec-a6f2-f45c89b7dd47","ff5c8e50-dd4e-11ec-a6f2-f45c89b7dd47","ff5c9af8-dd4e-11ec-a6f2-f45c89b7dd47","ff5cb164-dd4e-11ec-a6f2-f45c89b7dd47","ff5d039e-dd4e-11ec-a6f2-f45c89b7dd47","ff5d16a4-dd4e-11ec-a6f2-f45c89b7dd47","ff5d28b0-dd4e-11ec-a6f2-f45c89b7dd47","ff5d3666-dd4e-11ec-a6f2-f45c89b7dd47","ff5d4534-dd4e-11ec-a6f2-f45c89b7dd47","ff5d9110-dd4e-11ec-a6f2-f45c89b7dd47","ff5da2a4-dd4e-11ec-a6f2-f45c89b7dd47","ff5db3c0-dd4e-11ec-a6f2-f45c89b7dd47","ff5dc0d6-dd4e-11ec-a6f2-f45c89b7dd47","ff5dcf2c-dd4e-11ec-a6f2-f45c89b7dd47","ff5e1c52-dd4e-11ec-a6f2-f45c89b7dd47","ff5e2e22-dd4e-11ec-a6f2-f45c89b7dd47","ff5e3f70-dd4e-11ec-a6f2-f45c89b7dd47","ff5e4c86-dd4e-11ec-a6f2-f45c89b7dd47","ff5e5b40-dd4e-11ec-a6f2-f45c89b7dd47","ff5ea9ba-dd4e-11ec-a6f2-f45c89b7dd47","ff5ebb12-dd4e-11ec-a6f2-f45c89b7dd47","ff5ecc2e-dd4e-11ec-a6f2-f45c89b7dd47","ff5ed930-dd4e-11ec-a6f2-f45c89b7dd47","ff5ee768-dd4e-11ec-a6f2-f45c89b7dd47","ff5f336c-dd4e-11ec-a6f2-f45c89b7dd47","ff5f44a6-dd4e-11ec-a6f2-f45c89b7dd47","ff5f55a4-dd4e-11ec-a6f2-f45c89b7dd47","ff5f627e-dd4e-11ec-a6f2-f45c89b7dd47","ff5f7098-dd4e-11ec-a6f2-f45c89b7dd47","ff5fbe40-dd4e-11ec-a6f2-f45c89b7dd47","ff5fcfa2-dd4e-11ec-a6f2-f45c89b7dd47","ff5fe082-dd4e-11ec-a6f2-f45c89b7dd47","ff5fed52-dd4e-11ec-a6f2-f45c89b7dd47","ff5ffb6c-dd4e-11ec-a6f2-f45c89b7dd47","ff6047e8-dd4e-11ec-a6f2-f45c89b7dd47","ff605922-dd4e-11ec-a6f2-f45c89b7dd47","ff606a0c-dd4e-11ec-a6f2-f45c89b7dd47","ff6076dc-dd4e-11ec-a6f2-f45c89b7dd47","ff6084c4-dd4e-11ec-a6f2-f45c89b7dd47","ff6092ca-dd4e-11ec-a6f2-f45c89b7dd47","ff60a198-dd4e-11ec-a6f2-f45c89b7dd47","ff60af4e-dd4e-11ec-a6f2-f45c89b7dd47","ff60af4e-dd4e-11ec-a6f2-f45c89b7dd47","ff60bd5e-dd4e-11ec-a6f2-f45c89b7dd47","ff60bd5e-dd4e-11ec-a6f2-f45c89b7dd47","ff60e69e-dd4e-11ec-a6f2-f45c89b7dd47","ff60f3f0-dd4e-11ec-a6f2-f45c89b7dd47"],"to":["ff5aeabe-dd4e-11ec-a6f2-f45c89b7dd47","ff5aeabe-dd4e-11ec-a6f2-f45c89b7dd47","ff5aeabe-dd4e-11ec-a6f2-f45c89b7dd47","ff5af86a-dd4e-11ec-a6f2-f45c89b7dd47","ff60a198-dd4e-11ec-a6f2-f45c89b7dd47","ff5b7be6-dd4e-11ec-a6f2-f45c89b7dd47","ff5b7be6-dd4e-11ec-a6f2-f45c89b7dd47","ff5b7be6-dd4e-11ec-a6f2-f45c89b7dd47","ff5b8bcc-dd4e-11ec-a6f2-f45c89b7dd47","ff6092ca-dd4e-11ec-a6f2-f45c89b7dd47","ff5c10ec-dd4e-11ec-a6f2-f45c89b7dd47","ff5c10ec-dd4e-11ec-a6f2-f45c89b7dd47","ff5c10ec-dd4e-11ec-a6f2-f45c89b7dd47","ff5c1fb0-dd4e-11ec-a6f2-f45c89b7dd47","ff6092ca-dd4e-11ec-a6f2-f45c89b7dd47","ff5c9af8-dd4e-11ec-a6f2-f45c89b7dd47","ff5c9af8-dd4e-11ec-a6f2-f45c89b7dd47","ff5c9af8-dd4e-11ec-a6f2-f45c89b7dd47","ff5cb164-dd4e-11ec-a6f2-f45c89b7dd47","ff6092ca-dd4e-11ec-a6f2-f45c89b7dd47","ff5d3666-dd4e-11ec-a6f2-f45c89b7dd47","ff5d3666-dd4e-11ec-a6f2-f45c89b7dd47","ff5d3666-dd4e-11ec-a6f2-f45c89b7dd47","ff5d4534-dd4e-11ec-a6f2-f45c89b7dd47","ff6092ca-dd4e-11ec-a6f2-f45c89b7dd47","ff5dc0d6-dd4e-11ec-a6f2-f45c89b7dd47","ff5dc0d6-dd4e-11ec-a6f2-f45c89b7dd47","ff5dc0d6-dd4e-11ec-a6f2-f45c89b7dd47","ff5dcf2c-dd4e-11ec-a6f2-f45c89b7dd47","ff6092ca-dd4e-11ec-a6f2-f45c89b7dd47","ff5e4c86-dd4e-11ec-a6f2-f45c89b7dd47","ff5e4c86-dd4e-11ec-a6f2-f45c89b7dd47","ff5e4c86-dd4e-11ec-a6f2-f45c89b7dd47","ff5e5b40-dd4e-11ec-a6f2-f45c89b7dd47","ff6092ca-dd4e-11ec-a6f2-f45c89b7dd47","ff5ed930-dd4e-11ec-a6f2-f45c89b7dd47","ff5ed930-dd4e-11ec-a6f2-f45c89b7dd47","ff5ed930-dd4e-11ec-a6f2-f45c89b7dd47","ff5ee768-dd4e-11ec-a6f2-f45c89b7dd47","ff6092ca-dd4e-11ec-a6f2-f45c89b7dd47","ff5f627e-dd4e-11ec-a6f2-f45c89b7dd47","ff5f627e-dd4e-11ec-a6f2-f45c89b7dd47","ff5f627e-dd4e-11ec-a6f2-f45c89b7dd47","ff5f7098-dd4e-11ec-a6f2-f45c89b7dd47","ff6092ca-dd4e-11ec-a6f2-f45c89b7dd47","ff5fed52-dd4e-11ec-a6f2-f45c89b7dd47","ff5fed52-dd4e-11ec-a6f2-f45c89b7dd47","ff5fed52-dd4e-11ec-a6f2-f45c89b7dd47","ff5ffb6c-dd4e-11ec-a6f2-f45c89b7dd47","ff6092ca-dd4e-11ec-a6f2-f45c89b7dd47","ff6076dc-dd4e-11ec-a6f2-f45c89b7dd47","ff6076dc-dd4e-11ec-a6f2-f45c89b7dd47","ff6076dc-dd4e-11ec-a6f2-f45c89b7dd47","ff6084c4-dd4e-11ec-a6f2-f45c89b7dd47","ff6092ca-dd4e-11ec-a6f2-f45c89b7dd47","ff60a198-dd4e-11ec-a6f2-f45c89b7dd47","ff60af4e-dd4e-11ec-a6f2-f45c89b7dd47","ff60f3f0-dd4e-11ec-a6f2-f45c89b7dd47","ff60bd5e-dd4e-11ec-a6f2-f45c89b7dd47","ff60f3f0-dd4e-11ec-a6f2-f45c89b7dd47","ff60e69e-dd4e-11ec-a6f2-f45c89b7dd47","ff60f3f0-dd4e-11ec-a6f2-f45c89b7dd47","ff6101c4-dd4e-11ec-a6f2-f45c89b7dd47"],"label":["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot"},"manipulation":{"enabled":false},"edges":{"arrows":"to"},"layout":{"hierarchical":{"enabled":true,"levelSeparation":500,"nodeSpacing":200,"direction":"RL"}},"groups":{"waiting":{"color":{"border":"black","background":"white"}},"ready":{"color":{"border":"black","background":"orange"}},"running":{"color":{"border":"black","background":"lightgreen"}},"resolved":{"color":{"border":"black","background":"black"}},"useDefaultGroups":true,"error":{"color":{"border":"black","background":"lightpink"}}}},"groups":["waiting","ready"],"width":"100%","height":"500px","idselection":{"enabled":false},"byselection":{"enabled":false},"main":null,"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","legend":{"width":0.2,"useGroups":false,"position":"left","ncol":1,"stepX":100,"stepY":100,"zoom":true,"nodes":{"label":["waiting","ready","running","resolved","error","sequential","parallel"],"color":[{"border":"black","background":"white"},{"border":"black","background":"orange"},{"border":"black","background":"lightgreen"},{"border":"black","background":"black"},{"border":"black","background":"lightpink"},{"border":"black","background":"white"},{"border":"black","background":"white"}],"shape":["dot","dot","dot","dot","dot","square","dot"]},"nodesToDataframe":true}},"evals":[],"jsHooks":[]}</script><p><code>delayed</code> then allows us to parallelize the procedure
 across these tasks using the <a href="https://github.com/HenrikBengtsson/future" class="external-link"><code>future</code></a>
 package. For more information on specifying <code>future</code>
 <code>plan</code>s for parallelization, see the documentation of the <a href="https://github.com/HenrikBengtsson/future" class="external-link"><code>future</code></a>

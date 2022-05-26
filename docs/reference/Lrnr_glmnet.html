@@ -229,13 +229,11 @@ and <code><a href="https://glmnet.stanford.edu/reference/glmnet.html" class="ext
 <span class="r-in"><span class="va">lasso_lrnr</span> <span class="op">&lt;-</span> <span class="va">Lrnr_glmnet</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">lasso_fit</span> <span class="op">&lt;-</span> <span class="va">lasso_lrnr</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">mtcars_task</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">lasso_preds</span> <span class="op">&lt;-</span> <span class="va">lasso_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Outcome not provided. This is okay for prediction.</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># simple prediction with ridge penalty</span></span>
 <span class="r-in"><span class="va">ridge_lrnr</span> <span class="op">&lt;-</span> <span class="va">Lrnr_glmnet</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">ridge_fit</span> <span class="op">&lt;-</span> <span class="va">ridge_lrnr</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">mtcars_task</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">ridge_preds</span> <span class="op">&lt;-</span> <span class="va">ridge_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Outcome not provided. This is okay for prediction.</span>
 </code></pre></div>
     </div>
   </div>

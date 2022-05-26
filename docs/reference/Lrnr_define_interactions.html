@@ -187,8 +187,6 @@ is already a column with a name matching this given interaction term.</p></li>
 <span class="r-in"><span class="va">lrnr_glm</span> <span class="op">&lt;-</span> <span class="va"><a href="Lrnr_glm.html">Lrnr_glm</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">interaction_pipeline_glm</span> <span class="op">&lt;-</span> <span class="fu"><a href="Lrnr_base.html">make_learner</a></span><span class="op">(</span><span class="va">Pipeline</span>, <span class="va">lrnr_interact</span>, <span class="va">lrnr_glm</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">fit</span> <span class="op">&lt;-</span> <span class="va">interaction_pipeline_glm</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Outcome not provided. This is okay for prediction.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Outcome not provided. This is okay for prediction.</span>
 </code></pre></div>
     </div>
   </div>

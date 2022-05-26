@@ -183,7 +183,6 @@ functionality, see the complete documentation of <code><a href="Lrnr_base.html">
 <span class="r-in"><span class="va">lrnr_glm</span> <span class="op">&lt;-</span> <span class="fu"><a href="Lrnr_base.html">make_learner</a></span><span class="op">(</span><span class="va">Lrnr_glm</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">glm_fit</span> <span class="op">&lt;-</span> <span class="va">lrnr_glm</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">glm_preds</span> <span class="op">&lt;-</span> <span class="va">glm_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Outcome not provided. This is okay for prediction.</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># We can include interaction terms by 'piping' them into this learner.</span></span>
 <span class="r-in"><span class="co"># Note that both main terms and the specified interactions will be included</span></span>
@@ -192,8 +191,6 @@ functionality, see the complete documentation of <code><a href="Lrnr_base.html">
 <span class="r-in"><span class="va">lrnr_interaction</span> <span class="op">&lt;-</span> <span class="va"><a href="Lrnr_define_interactions.html">Lrnr_define_interactions</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>interactions <span class="op">=</span> <span class="va">interaction</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">lrnr_glm_w_interaction</span> <span class="op">&lt;-</span> <span class="fu"><a href="Lrnr_base.html">make_learner</a></span><span class="op">(</span><span class="va">Pipeline</span>, <span class="va">lrnr_interaction</span>, <span class="va">lrnr_glm</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">fit</span> <span class="op">&lt;-</span> <span class="va">lrnr_glm_w_interaction</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Outcome not provided. This is okay for prediction.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Outcome not provided. This is okay for prediction.</span>
 <span class="r-in"><span class="va">coefs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">learner_fits</span><span class="op">$</span><span class="va">Lrnr_glm_TRUE</span><span class="op">)</span></span>
 </code></pre></div>
     </div>

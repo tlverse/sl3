@@ -215,7 +215,6 @@ doi: <a href="https://doi.org/10.18637/jss.v077.i01" class="external-link">10.18
 <span class="r-in"><span class="va">ranger_lrnr</span> <span class="op">&lt;-</span> <span class="va">Lrnr_ranger</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">ranger_fit</span> <span class="op">&lt;-</span> <span class="va">ranger_lrnr</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">mtcars_task</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">ranger_preds</span> <span class="op">&lt;-</span> <span class="va">ranger_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Outcome not provided. This is okay for prediction.</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># variable importance</span></span>
 <span class="r-in"><span class="va">ranger_lrnr_importance</span> <span class="op">&lt;-</span> <span class="va">Lrnr_ranger</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>importance <span class="op">=</span> <span class="st">"impurity_corrected"</span><span class="op">)</span></span>
@@ -229,8 +228,6 @@ doi: <a href="https://doi.org/10.18637/jss.v077.i01" class="external-link">10.18
 <span class="r-in"><span class="va">glm_lrnr</span> <span class="op">&lt;-</span> <span class="fu"><a href="Lrnr_base.html">make_learner</a></span><span class="op">(</span><span class="va">Lrnr_glm</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">ranger_screen_glm_pipe</span> <span class="op">&lt;-</span> <span class="va"><a href="Pipeline.html">Pipeline</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">ranger_importance_screener</span>, <span class="va">glm_lrnr</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">ranger_screen_glm_pipe_fit</span> <span class="op">&lt;-</span> <span class="va">ranger_screen_glm_pipe</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">mtcars_task</span><span class="op">)</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Outcome not provided. This is okay for prediction.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Outcome not provided. This is okay for prediction.</span>
 </code></pre></div>
     </div>
   </div>
