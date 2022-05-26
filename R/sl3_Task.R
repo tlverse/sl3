@@ -43,10 +43,6 @@ sl3_Task <- R6Class(
         )
       }
 
-      if (is.null(outcome)) {
-        warning("Outcome not provided. This is okay for prediction.")
-      }
-
       # generate column name mapping if not specified
       all_nodes <- unlist(nodes)
 
