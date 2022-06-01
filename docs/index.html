@@ -57,7 +57,7 @@
   <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -102,34 +102,19 @@
 </h1></div>
 
 <blockquote>
-<p>A flexible implementation of the Super Learner ensemble machine
-learning system</p>
+<p>A flexible implementation of the Super Learner ensemble machine learning system</p>
 </blockquote>
 <p><strong>Authors:</strong> <a href="https://github.com/jeremyrcoyle" class="external-link">Jeremy Coyle</a>, <a href="https://nimahejazi.org" class="external-link">Nima Hejazi</a>, <a href="https://github.com/imalenica" class="external-link">Ivana Malenica</a>, <a href="https://github.com/rachaelvp" class="external-link">Rachael Phillips</a>, and <a href="https://github.com/osofr" class="external-link">Oleg Sofrygin</a></p>
 <hr>
 <div class="section level2">
 <h2 id="whats-sl3">What’s <code>sl3</code>?<a class="anchor" aria-label="anchor" href="#whats-sl3"></a>
 </h2>
-<p><code>sl3</code> is an implementation of the Super Learner ensemble
-machine learning algorithm of van der Laan, Polley, and Hubbard (2007).
-The Super Learner algorithm performs ensemble learning in one of two
-fashions:</p>
+<p><code>sl3</code> is an implementation of the Super Learner ensemble machine learning algorithm of van der Laan, Polley, and Hubbard (2007). The Super Learner algorithm performs ensemble learning in one of two fashions:</p>
 <ol style="list-style-type: decimal">
-<li>The <em>discrete</em> Super Learner can be used to select the best
-prediction algorithm from among a supplied library of machine learning
-algorithms (“learners” in the <code>sl3</code> nomenclature) – that is,
-the discrete Super Learner is the single learning algorithm that
-minimizes the cross-validated risk.</li>
-<li>The <em>ensemble</em> Super Learner can be used to assign weights to
-a set of specified learning algorithms (from a user-supplied library of
-such algorithms) so as to create a combination of these learners that
-minimizes the cross-validated risk. This notion of weighted combinations
-has also been referred to as <em>stacked regression</em> (Breiman 1996)
-and <em>stacked generalization</em> (Wolpert 1992).</li>
+<li>The <em>discrete</em> Super Learner can be used to select the best prediction algorithm from among a supplied library of machine learning algorithms (“learners” in the <code>sl3</code> nomenclature) – that is, the discrete Super Learner is the single learning algorithm that minimizes the cross-validated risk.</li>
+<li>The <em>ensemble</em> Super Learner can be used to assign weights to a set of specified learning algorithms (from a user-supplied library of such algorithms) so as to create a combination of these learners that minimizes the cross-validated risk. This notion of weighted combinations has also been referred to as <em>stacked regression</em> (Breiman 1996) and <em>stacked generalization</em> (Wolpert 1992).</li>
 </ol>
-<p>Looking for long-form documentation or a walkthrough of the
-<code>sl3</code> package? Don’t worry! Just browse <a href="https://tlverse.org/tlverse-handbook/sl3.html" class="external-link">the chapter in our
-book</a>.</p>
+<p>Looking for long-form documentation or a walkthrough of the <code>sl3</code> package? Don’t worry! Just browse <a href="https://tlverse.org/tlverse-handbook/sl3.html" class="external-link">the chapter in our book</a>.</p>
 <hr>
 </div>
 <div class="section level2">
@@ -144,35 +129,25 @@ For standard use, we recommend installing the package from
 install.packages("sl3")
 ```
 -->
-<p>Install the <em>most recent version</em> from the <code>master</code>
-branch on GitHub via <a href="https://CRAN.R-project.org/package=remotes" class="external-link"><code>remotes</code></a>:</p>
+<p>Install the <em>most recent version</em> from the <code>master</code> branch on GitHub via <a href="https://CRAN.R-project.org/package=remotes" class="external-link"><code>remotes</code></a>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"tlverse/sl3"</span><span class="op">)</span></code></pre></div>
-<p>Past stable releases may be located via the <a href="https://github.com/tlverse/sl3/releases" class="external-link">releases</a> page on
-GitHub and may be installed by including the appropriate major version
-tag. For example,</p>
+<p>Past stable releases may be located via the <a href="https://github.com/tlverse/sl3/releases" class="external-link">releases</a> page on GitHub and may be installed by including the appropriate major version tag. For example,</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"tlverse/sl3@v1.3.7"</span><span class="op">)</span></code></pre></div>
-<p>To contribute, check out the <code>devel</code> branch and consider
-submitting a pull request.</p>
+<p>To contribute, check out the <code>devel</code> branch and consider submitting a pull request.</p>
 <hr>
 </div>
 <div class="section level2">
 <h2 id="issues">Issues<a class="anchor" aria-label="anchor" href="#issues"></a>
 </h2>
-<p>If you encounter any bugs or have any specific feature requests,
-please <a href="https://github.com/tlverse/sl3/issues" class="external-link">file an
-issue</a>.</p>
+<p>If you encounter any bugs or have any specific feature requests, please <a href="https://github.com/tlverse/sl3/issues" class="external-link">file an issue</a>.</p>
 <hr>
 </div>
 <div class="section level2">
 <h2 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
 </h2>
-<p><code>sl3</code> makes the process of applying screening algorithms,
-learning algorithms, combining both types of algorithms into a stacked
-regression model, and cross-validating this whole process essentially
-trivial. The best way to understand this is to see the <code>sl3</code>
-package in action:</p>
+<p><code>sl3</code> makes the process of applying screening algorithms, learning algorithms, combining both types of algorithms into a stacked regression model, and cross-validating this whole process essentially trivial. The best way to understand this is to see the <code>sl3</code> package in action:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">49753</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span>
@@ -224,11 +199,7 @@ package in action:</p>
 <div class="section level3">
 <h3 id="parallelization-with-futures">Parallelization with <code>future</code>s<a class="anchor" aria-label="anchor" href="#parallelization-with-futures"></a>
 </h3>
-<p>While it’s straightforward to fit a stack of learners (as above),
-it’s easy to take advantage of <code>sl3</code>’s built-in
-parallelization support too. To do this, you can simply choose a
-<code><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan()</a></code> from the <a href="https://CRAN.R-project.org/package=future" class="external-link"><code>future</code>
-ecosystem</a>.</p>
+<p>While it’s straightforward to fit a stack of learners (as above), it’s easy to take advantage of <code>sl3</code>’s built-in parallelization support too. To do this, you can simply choose a <code><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan()</a></code> from the <a href="https://CRAN.R-project.org/package=future" class="external-link"><code>future</code> ecosystem</a>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># let's load the future package and set 4 cores for parallelization</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org" class="external-link">future</a></span><span class="op">)</span>
@@ -241,11 +212,7 @@ ecosystem</a>.</p>
 <div class="section level3">
 <h3 id="controlling-the-number-of-cv-folds">Controlling the number of CV folds<a class="anchor" aria-label="anchor" href="#controlling-the-number-of-cv-folds"></a>
 </h3>
-<p>In the above examples, we fit stacks of learners, but didn’t create a
-Super Learner ensemble, which uses cross-validation (CV) to build the
-ensemble model. For the sake of computational expedience, we may be
-interested in lowering the number of CV folds (from 10). Let’s take a
-look at how to do both below.</p>
+<p>In the above examples, we fit stacks of learners, but didn’t create a Super Learner ensemble, which uses cross-validation (CV) to build the ensemble model. For the sake of computational expedience, we may be interested in lowering the number of CV folds (from 10). Let’s take a look at how to do both below.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># first, let's instantiate some more learners and create a Super Learner</span>
 <span class="va">mean_learner</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/Lrnr_mean.html">Lrnr_mean</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>
@@ -264,20 +231,14 @@ look at how to do both below.</p>
 <span class="co"># now, let's fit the Super Learner with just 5-fold CV, then get predictions</span>
 <span class="va">sl_fit</span> <span class="op">&lt;-</span> <span class="va">sl</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span>
 <span class="va">sl_preds</span> <span class="op">&lt;-</span> <span class="va">sl_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p>The <code>folds</code> argument to <code>sl3_Task</code> supports
-both integers (for V-fold CV) and all of the CV schemes supported in the
-<a href="https://CRAN.R-project.org/package=origami" class="external-link"><code>origami</code>
-package</a>. To see the full list, query <code><a href="http://tlverse.org/origami/reference/fold_funs.html" class="external-link">?fold_funs</a></code> from
-within <code>R</code> or take a look at <a href="https://tlverse.org/origami/reference/" class="external-link"><code>origami</code>’s
-online documentation</a>.</p>
+<p>The <code>folds</code> argument to <code>sl3_Task</code> supports both integers (for V-fold CV) and all of the CV schemes supported in the <a href="https://CRAN.R-project.org/package=origami" class="external-link"><code>origami</code> package</a>. To see the full list, query <code><a href="http://tlverse.org/origami/reference/fold_funs.html" class="external-link">?fold_funs</a></code> from within <code>R</code> or take a look at <a href="https://tlverse.org/origami/reference/" class="external-link"><code>origami</code>’s online documentation</a>.</p>
 <hr>
 </div>
 </div>
 <div class="section level2">
 <h2 id="learner-properties">Learner Properties<a class="anchor" aria-label="anchor" href="#learner-properties"></a>
 </h2>
-<p>Properties supported by <code>sl3</code> learners are presented in
-the following table:</p>
+<p>Properties supported by <code>sl3</code> learners are presented in the following table:</p>
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:200px; overflow-x: scroll; width:100%; ">
 <table class="table table table-striped table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
 <thead><tr>
@@ -3588,16 +3549,13 @@ x
 <div class="section level2">
 <h2 id="contributions">Contributions<a class="anchor" aria-label="anchor" href="#contributions"></a>
 </h2>
-<p>Contributions are very welcome. Interested contributors should
-consult our <a href="https://github.com/tlverse/sl3/blob/master/CONTRIBUTING.md" class="external-link">contribution
-guidelines</a> prior to submitting a pull request.</p>
+<p>Contributions are very welcome. Interested contributors should consult our <a href="https://github.com/tlverse/sl3/blob/master/CONTRIBUTING.md" class="external-link">contribution guidelines</a> prior to submitting a pull request.</p>
 <hr>
 </div>
 <div class="section level2">
 <h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h2>
-<p>After using the <code>sl3</code> R package, please cite the
-following:</p>
+<p>After using the <code>sl3</code> R package, please cite the following:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>    <span class="sc">@</span>software{coyle2021sl3<span class="sc">-</span>rpkg,</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>      author <span class="ot">=</span> {Coyle, Jeremy R and Hejazi, Nima S and Malenica, Ivana and</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        Phillips, Rachael V and Sofrygin, Oleg},</span>
@@ -3614,10 +3572,8 @@ following:</p>
 <div class="section level2">
 <h2 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
 </h2>
-<p>© 2017-2021 <a href="https://github.com/jeremyrcoyle" class="external-link">Jeremy R.
-Coyle</a>, <a href="https://nimahejazi.org" class="external-link">Nima S. Hejazi</a>, <a href="https://github.com/podTockom" class="external-link">Ivana Malenica</a>, <a href="https://github.com/rachaelvp" class="external-link">Rachael V. Phillips</a>, <a href="https://github.com/osofr" class="external-link">Oleg Sofrygin</a></p>
-<p>The contents of this repository are distributed under the GPL-3
-license. See file <code>LICENSE</code> for details.</p>
+<p>© 2017-2021 <a href="https://github.com/jeremyrcoyle" class="external-link">Jeremy R. Coyle</a>, <a href="https://nimahejazi.org" class="external-link">Nima S. Hejazi</a>, <a href="https://github.com/podTockom" class="external-link">Ivana Malenica</a>, <a href="https://github.com/rachaelvp" class="external-link">Rachael V. Phillips</a>, <a href="https://github.com/osofr" class="external-link">Oleg Sofrygin</a></p>
+<p>The contents of this repository are distributed under the GPL-3 license. See file <code>LICENSE</code> for details.</p>
 <hr>
 </div>
 <div class="section level2">
@@ -3625,17 +3581,13 @@ license. See file <code>LICENSE</code> for details.</p>
 </h2>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-breiman1996stacked" class="csl-entry">
-Breiman, Leo. 1996. “Stacked Regressions.” <em>Machine Learning</em> 24
-(1): 49–64.
+Breiman, Leo. 1996. “Stacked Regressions.” <em>Machine Learning</em> 24 (1): 49–64.
 </div>
 <div id="ref-vdl2007super" class="csl-entry">
-van der Laan, Mark J, Eric C Polley, and Alan E Hubbard. 2007. “Super
-Learner.” <em>Statistical Applications in Genetics and Molecular
-Biology</em> 6 (1).
+van der Laan, Mark J, Eric C Polley, and Alan E Hubbard. 2007. “Super Learner.” <em>Statistical Applications in Genetics and Molecular Biology</em> 6 (1).
 </div>
 <div id="ref-wolpert1992stacked" class="csl-entry">
-Wolpert, David H. 1992. “Stacked Generalization.” <em>Neural
-Networks</em> 5 (2): 241–59.
+Wolpert, David H. 1992. “Stacked Generalization.” <em>Neural Networks</em> 5 (2): 241–59.
 </div>
 </div>
 </div>
@@ -3701,14 +3653,12 @@ Networks</em> 5 (2): 241–59.
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Jeremy Coyle, Nima Hejazi, Oleg Sofrygin, Ivana
-Malenica, Rachael Phillips.</p>
+<p>Developed by Jeremy Coyle, Nima Hejazi, Oleg Sofrygin, Ivana Malenica, Rachael Phillips.</p>
 </div>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer>
