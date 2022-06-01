@@ -41,7 +41,7 @@ test_learner <- function(learner, task, ...) {
   # test learner prediction
   train_preds <- fit_obj$predict()
   test_that("Learner can generate training set predictions", expect_equal(
-    sl3:::safe_dim(train_preds)[1],
+    length(train_preds[[1]]),
     nrow(task$X)
   ))
   holdout_preds <- fit_obj$predict(task2)
@@ -79,7 +79,6 @@ test_that("Lrnr_glm and Lrnr_h2o_glm learners give the same predictions", {
   glm_preds <- GLM_fit$predict()
   h2oGLM_fit <- h2o_glm$train(task)
   h2oGLM_preds <- h2oGLM_fit$predict()
-  expect_true(data.table::is.data.table(h2oGLM_preds))
   # print(sum(glm_preds-h2oGLM_preds))
   expect_true(all.equal(as.vector(glm_preds), as.vector(h2oGLM_preds[[1]])))
 })
@@ -91,11 +90,10 @@ test_that("Lrnr_h2o_glm trains based on a subset of covariates (predictors) and 
   )
   h2oGLM_fit <- h2o_glm$train(task)
   h2oGLM_preds_3 <- h2oGLM_fit$predict()
-  expect_true(data.table::is.data.table(h2oGLM_preds_3))
   glm.fit <- glm(haz ~ apgar1 + apgar5 + parity + apgar1:apgar5, data = cpp_imputed, family = stats::gaussian())
   # print(glm.fit)
   glm_preds_3 <- as.vector(predict(glm.fit))
-  expect_true(sum(h2oGLM_preds_3 - glm_preds_3) < 10^(-10))
+  expect_true(sum(h2oGLM_preds_3[[1]] - glm_preds_3[[1]]) < 10^(-10))
   expect_true(all.equal(as.vector(glm_preds_3), as.vector(h2oGLM_preds_3[[1]])))
 })
 
@@ -109,6 +107,7 @@ test_that("Lrnr_h2o_grid learner works with a grid of regularized GLMs, on a sub
   )
   h2o_glm_grid <- h2o_glm_grid$train(task)
   h2oGLM_preds <- h2o_glm_grid$predict()
+  expect_equal(dim(h2oGLM_preds), c(nrow(task$data), 3))
 })
 
 # test_that("Lrnr_h2o_glm works with screener", {
@@ -298,6 +297,7 @@ test_that("stack$predict plays nicely when Learner$predict() is a grid of predic
 
 test_that("check Lrnr_h2o_mutator returns matrices of mutated predictors", {
   h2o::h2o.no_progress()
+  h2o::h2o.init()
   ## regular GLM
   pca_lrnr <- Lrnr_h2o_mutator$new(
     algorithm = "pca", k = 4,
