@@ -39,7 +39,7 @@ test_that("Stack produces warning for learners that return errors", {
 test_that("Stack predicts on remaining good learners", {
   broken_fit <- suppressWarnings(broken_stack$train(task))
   predictions <- broken_fit$predict()
-  expect_equal(dim(predictions), c(nrow(cpp_imputed), 1))
+  expect_equal(length(predictions[[1]]), nrow(cpp_imputed))
   # expect_equal(names(predictions), "Lrnr_glm_TRUE")
 })
 
@@ -57,11 +57,12 @@ test_that("Lrnr_cv on stack drops all learners that error on any fold", {
   broken_cv <- Lrnr_cv$new(broken_stack)
   broken_cv_fit <- suppressWarnings(broken_cv$train(task))
   cv_preds <- broken_cv_fit$predict()
-  expect_equal(dim(cv_preds), c(nrow(cpp_imputed), 1))
+  expect_equal(length(cv_preds[[1]]), nrow(cpp_imputed))
   # expect_equal(names(cv_preds), "Lrnr_glm_TRUE")
 })
 
 test_that("Lrnr_sl propagates errors to full refit", {
+  broken_stack <- Stack$new(broken_learner, glm_learner, Lrnr_glmnet$new())
   broken_sl <- Lrnr_sl$new(broken_stack, glm_learner)
   broken_sl_fit <- suppressWarnings(broken_sl$train(task))
   sl_preds <- broken_sl_fit$predict()

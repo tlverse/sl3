@@ -3,35 +3,43 @@
 \docType{class}
 \name{Lrnr_rpart}
 \alias{Lrnr_rpart}
-\title{Learner for Recursive Partitioning and Regression Trees.}
+\title{Learner for Recursive Partitioning and Regression Trees}
 \format{
-\code{\link{R6Class}} object.
+An \code{\link[R6]{R6Class}} object inheriting from
+\code{\link{Lrnr_base}}.
 }
 \value{
-Learner object with methods for training and prediction. See
-\code{\link{Lrnr_base}} for documentation on learners.
+A learner object inheriting from \code{\link{Lrnr_base}} with
+methods for training and prediction. For a full list of learner
+functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 }
 \description{
-This learner uses \code{\link[rpart]{rpart}} from \code{rpart} to fit
-recursive partitioning and regression trees.
+This learner uses \code{\link[rpart]{rpart}} from the \pkg{rpart} package to
+fit recursive partitioning and regression trees.
 }
 \section{Parameters}{
 
-\describe{
-\item{\code{model}}{If logical: keep a copy of the model frame in the
-result?
-}
-\item{\code{x}}{Whether to keep a copy of the x matrix in the result.
-}
-\item{\code{y}}{Whether to keep a copy of the dependent variable in the
-result.
-}
-\item{\code{...}}{ Other parameters to be passed directly to
-\code{\link[rpart]{rpart}}. See its documentation for details.
-}
+\itemize{
+\item \code{factor_binary_outcome = TRUE}: Logical indicating whether a binary
+outcome should be defined as a factor instead of a numeric. This
+only needs to be modified to \code{FALSE} when the user has a binary
+outcome and they would like to use the mean squared error (MSE) as the
+splitting metric.
+\item \code{...}: Other parameters to be passed directly to
+\code{\link[rpart]{rpart}} (see its documentation for details), and
+additional arguments defined in \code{\link{Lrnr_base}}, such as
+\code{formula}.
 }
 }
 
+\examples{
+data(cpp_imputed)
+covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
+task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
+rpart_lrnr <- Lrnr_rpart$new()
+set.seed(693)
+rpart_fit <- rpart_lrnr$train(task)
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},

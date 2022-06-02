@@ -1324,7 +1324,7 @@ Lrnr_glmnet
 √
 </td>
 <td style="text-align:left;">
-x
+√
 </td>
 <td style="text-align:left;">
 x
@@ -1674,7 +1674,7 @@ x
 √
 </td>
 <td style="text-align:left;">
-x
+√
 </td>
 <td style="text-align:left;">
 x
