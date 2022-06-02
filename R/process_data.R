@@ -33,28 +33,29 @@
 #' \code{drop_missing_outcome = TRUE} then observations with missing outcomes
 #' will be dropped.
 #'
-#' @section Parameters:
-#'  - \code{data}: A \code{data.table} containing the analytic dataset. In
-#'      creating the \code{\link{sl3_Task}}, the \code{data} passed to the
-#'      task is supplied for this argument.
-#'  - \code{nodes}: A list of character vectors for \code{covariates},
-#'      \code{outcome}, \code{id}, \code{weights}, and \code{offset}, which
-#'      is generated when creating the \code{\link{sl3_Task}} if not already
-#'      specified as an argument to \code{make_sl3_Task}.
-#'  - \code{column_names}: A named list of column names in the data,, which
-#'      is generated when creating the \code{\link{sl3_Task}} if not already
-#'      specified as an argument to \code{make_sl3_Task}.
-#'  - \code{flag = TRUE}: Logical indicating whether to notify the user when
-#'      there are outcomes that are missing, which can be modified when creating
-#'      the \code{\link{sl3_Task}} by setting \code{flag = FALSE}.
-#'  - \code{drop_missing_outcome = FALSE}: Logical indicating whether to drop
-#'      observations with missing outcomes, which can be modified when creating
-#'      the \code{\link{sl3_Task}} by setting \code{drop_missing_outcome = TRUE}.
+#' @param data A \code{data.table} containing the analytic dataset. In
+#'  creating the \code{\link{sl3_Task}}, the \code{data} passed to the task is
+#'  supplied for this argument.
+#' @param nodes A list of character vectors for \code{covariates},
+#'  \code{outcome}, \code{id}, \code{weights}, and \code{offset}, which is
+#'  generated when creating the \code{\link{sl3_Task}} if not already specified
+#'  as an argument to \code{make_sl3_Task}.
+#' @param column_names A named list of column names in the data, which is
+#'  generated when creating the \code{\link{sl3_Task}} if not already specified
+#'  as an argument to \code{make_sl3_Task}.
+#' @param flag Logical (default \code{TRUE}) indicating whether to notify the
+#'  user when there are outcomes that are missing, which can be modified when
+#'  creating the \code{\link{sl3_Task}} by setting \code{flag = FALSE}.
+#' @param drop_missing_outcome Logical (default \code{FALSE}) indicating
+#'  whether to drop observations with missing outcomes, which can be modified
+#'  when creating the \code{\link{sl3_Task}} by setting
+#'  \code{drop_missing_outcome = TRUE}.
 #'
-#' @return A list of processed data, nodes and column_names
+#' @importFrom imputeMissings impute
+#'
+#' @return A list of processed data, nodes and column names
 #'
 #' @export
-#' @importFrom imputeMissings impute
 process_data <- function(data, nodes, column_names, flag = TRUE,
                          drop_missing_outcome = FALSE) {
 
