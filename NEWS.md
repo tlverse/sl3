@@ -17,7 +17,7 @@
   can be used to construct stratified cross-validation folds for `Lrnr_sl`.
 * `Lrnr_caret` now works for binary and categorical outcomes. Previous versions 
   state that these discrete outcome types are supported by `Lrnr_caret`, but 
-  the functionality would brake.
+  the functionality would brake. 
 * Added public function for `sl3_Task`, `get_folds`, which takes in 
   `origami::make_folds` arguments and returns the folds. This function is 
   now called by `task$folds` and it can be called in train as well, to obtain 
@@ -41,8 +41,40 @@
   folds from the matrix of cross-validated predictions, and not using the folds 
   for cross-validating the candidates. We now require the folds for cross-
   validating the candidates (i.e., the folds in task for training `Lrnr_sl`) to 
-  be supplied when `Lrnr_cv_selector`'s `eval_function` is not a loss function. 
-  
+  be supplied when `Lrnr_cv_selector`'s `eval_function` is not a loss function.
+* `Lrnr_caret` and `Lrnr_rpart` factor binary outcomes in their `train` methods,
+  thereby considering a classification prediction problem. To avoid this 
+  behavior and consider a regression prediction problem with a binary outcome 
+  (e.g., to minimize the squared error or negative log likelihood loss in a 
+  binary outcome prediction problem), users can set 
+  `factor_binary_outcome = FALSE` when they instantiate the learner. 
+* Tasks can be created without an outcome. This comes in handy when creating 
+  a task that is used only for prediction, not for training, and leads 
+  to the task's outcome type being set to "none" if it's not supplied. 
+* When the variable type of the outcome (i.e., `outcome_type`) is necessary for 
+  a learner's `predict` method (e.g., if categorical outcome predictions need to 
+  be "packed" together), the outcome type in the **training task** should be 
+  used. That is, `private$.training_outcome_type` should be used to obtain
+  the outcome type in a learner's `predict` method; the task supplied to 
+  `predict` should not be used. The following learners were referring to the
+  task supplied to `predict` in order to retain the outcome type, and they were 
+  modified to use the training task's outcome type instead: `Lrnr_svm`, 
+  `Lrnr_randomForest`, `Lrnr_ranger`, `Lrnr_rpart`, `Lrnr_polspline`. The 
+  issue with pulling the outcome type from the task supplied to `predict` is 
+  that the outcome type of that task might be "none", if the `outcome` argument 
+  is not supplied to it.
+* Updated the learner template (inst/templates/Lrnr_template.R) to reflect the 
+  new formatting guidelines for learner documentation.
+* Updated documentation for `sl3_Task` parameters (man-roxygen/sl3_Task_extra.R). 
+  Specifically, `drop_missing_outcome` and `flag` were added; `offset` 
+  description was fixed; description of `folds` was added, including how to 
+  modify it and the default; and description of how the default cross-validation 
+  structure considers `id` and discrete (binary and categorical) outcome types 
+  to construct clustered and stratified cross-validation schemes, respectively,
+  was added.
+* Added documentation for the function `process_data` (R/process_data.R), which
+  is called when instantiating a task, to process the covariates and identify 
+  missingness in the outcome.
 # sl3 1.4.4
 * Updates to `Lrnr_nnls` to support binary outcomes, including support for
   convexity of the resultant model fit and warnings on prediction quality.
