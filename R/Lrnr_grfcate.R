@@ -70,8 +70,8 @@
 #' @template common_parameters
 #
 
-Lrnr_grf <- R6Class(
-  classname = "Lrnr_grf",
+Lrnr_grfcate <- R6Class(
+  classname = "Lrnr_grfcate",
   inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
     initialize = function( #X=X,       # these are the inputs to the original function
@@ -84,7 +84,7 @@ Lrnr_grf <- R6Class(
                            clusters = NULL,
                            equalize.cluster.weights = FALSE,
                            sample.fraction = 0.5,
-                           mtry = NULL,
+                           mtry = NULL,    #
                            min.node.size = 5,
                            honesty = TRUE,
                            honesty.fraction = 0.5,
@@ -113,8 +113,8 @@ Lrnr_grf <- R6Class(
       outcome_type <- self$get_outcome_type(task)
       
       # specify data
-      args$X <- as.data.frame(task$X[-1])      ## NK: I am making A part of X as Ivana suggested
-      args$A <- as.data.frame(task$A[1])       ## NK: let's check with Jeremy whether it works this way
+      args$X <- as.data.frame(task$X[,-1])      ## NK: I am making A part of X as Ivana suggested
+      args$W <- task$X[[1]]       ## NK: let's check with Jeremy whether it works this way
       args$Y <- outcome_type$format(task$Y)
       
       if (task$has_node("weights")) {
@@ -131,17 +131,17 @@ Lrnr_grf <- R6Class(
       }
       
       # train via call_with_args and return fitted object
-      fit_object <- call_with_args(grf::caual_forest, args)
+      fit_object <- call_with_args(grf::causal_forest, args)
       return(fit_object)
     },
     .predict = function(task) {
       # quantiles for which to predict
-      quantiles_pred <- private$.params$quantiles_pred
+      #quantiles_pred <- private$.params$quantiles_pred
       
       # generate predictions and output
       predictions_list <- stats::predict(
         private$.fit_object,
-        new_data = data.frame(task$X),
+        new_data = data.frame(task$X[,-1]),
         #quantiles = quantiles_pred
       )
       predictions <- as.numeric(predictions_list$predictions)

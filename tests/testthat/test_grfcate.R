@@ -1,3 +1,4 @@
+#tmle_fit$initial_likelihood$factor_list[["A"]]$learner
 
 
 context("test grf: Generalized Random Forests")
@@ -43,13 +44,15 @@ test_that("Lrnr_grfcate predictions match those of grf::causal_forest", {
   set.seed(seed_int)
   # GRF learner class
   grfcate_learner <- Lrnr_grfcate$new(seed = seed_int)
+  # sl3_debug_mode()
+  # debug_train(grfcate_learner)
   grfcate_fit <- grfcate_learner$train(task)
   grfcate_pred <- grfcate_fit$predict(task)
   
   set.seed(seed_int)
   # GRF package                         # what arguments are passed?
   grfcate_pkg <- grf::causal_forest(
-    X = X, Y = Y, seed = seed_int,     # what to do about A here - we need it
+    X = X[,-1], W=X[,1], Y = Y, seed = seed_int,     # what to do about A here - we need it
     num.threads = 1L
   )
   grfcate_pkg_pred_out <- predict(
@@ -57,6 +60,17 @@ test_that("Lrnr_grfcate predictions match those of grf::causal_forest", {
     #quantiles = grf_fit$params$quantiles_pred
   )
   grfcate_pkg_pred <- as.numeric(grfcate_pkg_pred_out$predictions)
+  
+  
+  grfcate_pkg <- grf::causal_forest(
+    X = X[,-1], W=X[,1], Y = Y, seed = seed_int,     # what to do about A here - we need it
+    num.threads = 1L
+  )
+  grfcate_pkg_pred_out <- predict(
+    grfcate_pkg,
+    #quantiles = grf_fit$params$quantiles_pred
+  )
+  grfcate_pkg_pred2 <- as.numeric(grfcate_pkg_pred_out$predictions)
   
   # test equivalence
   expect_equal(grfcate_pred, grfcate_pkg_pred)
