@@ -3,9 +3,12 @@
 #' This learner implements the so-called "Causal Forests" estimator of the 
 #' conditonal average treatment effect, $\tau{x}$, using the \pkg{grf}
 #' package. This is a pluggable package for forest-based statistical estimation
-#' and inference. This learner taking A, Y, and X as inputs, estimates some nuisance 
-#' components $Pr(A=1|X)$ and $E[Y|X$]$ and fits a "causal forests" object
-#'  that can predict CATEs on new Xs. The learners sets parameters to default (detail these)
+#' and inference. This learner takes A, Y, and X as inputs. It is currently required that
+#' A is the first column on the X matrix.  It required the estimation of the nuisance 
+#' components $Pr(A=1|X)$ and $E[Y|X$]$, which as default are estimated using the regression 
+#' forest function of the package, without tuning hyperparameters. Itfits a "causal forests" object
+#'  that can predict CATEs on new Xs. The learner currently used tuning parameters set to default.
+#'  All arguments are listed in initialize(), except for the data input and the mtry argument that are set later. 
 #'
 #' @docType class
 #'
@@ -27,17 +30,38 @@
 #' @section Parameters:
 #' Update these accordingly
 #' \describe{
+#' 
+#'   \item{\code{X}}{The covariates used. Note: with current defaults,
+#'    the same set of covariates are used to estimate nuisance functions
+#'     and the CATE. It may be preferable to allow  for V < X,
+#'      in which case the nuisance functions need to be estimated in a separate step.}
+#'    
+#'    \item{\code{Y}}{The outcome (must be a numeric vector with no NAs). }
+#'      
+#'       '    
+#'    \item{\code{W}}{Treatment assignment (must be a binary or real numeric vector with no NAs). }
+#'         
+#'    \item{\code{Y.hat=NULL}}{Estimates of the expected responses E[Y|Xi], marginalizing over treatment.
+#'     If Y.hat = NULL, these are estimated using a separate regression forest.}
+#'      
+#'   
+#'    \item{\code{W.hat=NULL}}{E[W | Xi]. If W.hat = NULL, these are estimated using a separate regression forest.}
+#'         
+#' 
+
+
 #'   \item{\code{num.trees = 2000}}{Number of trees grown in the forest. NOTE:
 #'    Getting accurate confidence intervals generally requires more trees than
 #'    getting accurate predictions.}
-#'   \item{\code{quantiles = c(0.1, 0.5, 0.9)}}{Vector of quantiles used to
-#'    calibrate the forest.}
-#'   \item{\code{regression.splitting = FALSE}}{Whether to use regression splits
-#'    when growing trees instead of specialized splits based on the quantiles
-#'    (the default). Setting this flag to \code{TRUE} corresponds to the
-#'    approach to quantile forests from Meinshausen (2006).}
+#'
+#'
+#'   \item{\code{sample.weights	=NULL}}{Weights given to each sample in estimation. If NULL, each observation receives the same weight. Note: To avoid introducing confounding, weights should be independent of the potential outcomes given X. Default is NULL.}
+
+#'   
+
 #'   \item{\code{clusters = NULL}}{Vector of integers or factors specifying
 #'    which cluster each observation corresponds to.}
+#'    
 #'   \item{\code{equalize.cluster.weights = FALSE}}{If \code{FALSE}, each unit
 #'    is given the same weight (so that bigger clusters get more weight). If
 #'    \code{TRUE}, each cluster is given equal weight in the forest. In this
@@ -47,9 +71,11 @@
 #'    cluster to the tree-growing procedure. When estimating average treatment
 #'    effects, each observation is given weight 1/cluster size, so that the
 #'    total weight of each cluster is the same.}
+#'    
 #'   \item{\code{sample.fraction = 0.5}}{Fraction of the data used to build each
 #'    tree. NOTE: If \code{honesty = TRUE}, these subsamples will further be cut
 #'    by a factor of \code{honesty.fraction.}.}
+#'    
 #'   \item{\code{mtry = NULL}}{Number of variables tried for each split. By
 #'    default, this is set based on the dimensionality of the predictors.}
 #'   \item{\code{min.node.size = 5}}{A target for the minimum number of
@@ -57,14 +83,36 @@
 #'    \code{min.node.size} can occur, as in the \pkg{randomForest} package.}
 #'   \item{\code{honesty = TRUE}}{Whether or not honest splitting (i.e.,
 #'    sub-sample splitting) should be used.}
+#'  
+#'   \item{\code{honesty.fraction = 0.5}}{The fraction of data that will be used for determining splits if honesty = TRUE. Corresponds to set J1 in the notation of the paper. Default is 0.5 (i.e. half of the data is used for determining splits).}
+#'  
+#'   \item{\code{honesty.prune.leaves = TRUE}}{If TRUE, prunes the estimation sample tree such that no leaves are empty. If FALSE, keep the same tree as determined in the splits sample (if an empty leave is encountered, that tree is skipped and does not contribute to the estimate). Setting this to FALSE may improve performance on small/marginally powered data, but requires more trees (note: tuning does not adjust the number of trees). Only applies if honesty is enabled. Default is TRUE.}
+#'
+#'  
 #'   \item{\code{alpha = 0.05}}{A tuning parameter that controls the maximum
 #'    imbalance of a split.}
 #'   \item{\code{imbalance.penalty = 0}}{A tuning parameter that controls how
 #'    harshly imbalanced splits are penalized.}
-#'   \item{\code{num.threads = 1}}{Number of threads used in training. If set to
-#'    \code{NULL}, the software automatically selects an appropriate amount.}
-#'   \item{\code{quantiles_pred}}{Vector of quantiles used to predict. This can
-#'    be different than the vector of quantiles used for training.}
+#'    
+#'    \item{\code{stabilize.splits=TRUE}}{Whether or not the treatment should be taken into account when determining the imbalance of a split.}
+#'    
+#'    \item{\code{ci.group.size=2}}{The forest will grow ci.group.size trees on each subsample. In order to provide confidence intervals, ci.group.size must be at least 2.}
+#'       
+#'    \item{\code{tune.parameters="none"}}{A vector of parameter names to tune. If "all": all tunable parameters are tuned by cross-validation. The following parameters are tunable: ("sample.fraction", "mtry", "min.node.size", "honesty.fraction", "honesty.prune.leaves", "alpha", "imbalance.penalty"). If honesty is FALSE the honesty.* parameters are not tuned. Default is "none" (no parameters are tuned).}
+#'  
+#'    \item{\code{tune.num.trees=200}}{The number of trees in each 'mini forest' used to fit the tuning model.}
+#'  
+#'    \item{\code{tune.num.reps=50}}{The number of forests used to fit the tuning model.}
+#'  
+#'    \item{\code{tune.num.draws=1000}}{The number of random parameter values considered when using the model to select the optimal parameters. Default is 1000.}
+#'
+#'    \item{\code{compute.oob.predictions=TRUE}}{Whether OOB predictions on training set should be precomputed.}
+#'    
+#'   \item{\code{num.threads = NULL}}{Number of threads used in training. By default, the number of threads is set to the maximum hardware concurrency.}
+#'
+#'   \item{\code{seed=seed = runif(1, 0, .Machine$integer.max)}}{The seed of the C++ random number generator.}
+#'  
+#' 
 #' }
 #'
 #' @template common_parameters
@@ -74,11 +122,11 @@ Lrnr_grfcate <- R6Class(
   classname = "Lrnr_grfcate",
   inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
-    initialize = function( #X=X,       # these are the inputs to the original function
-                           #Y=Y,
-                           #W=A,   # stands for treatment
-                           Y.hat = NULL,  # this means that nuisance functions will be estimated 
-                           W.hat = NULL,  # via a regression forest
+    initialize = function( #X=X,          # covariates
+                           #Y=Y,          # outcomes
+                           #W=A,          # treatment
+                           Y.hat = NULL,  # nuisance functions will be estimated 
+                           W.hat = NULL,  # via  regression forests, using X
                            num.trees = 2000,
                            sample.weights = NULL,
                            clusters = NULL,
@@ -99,7 +147,7 @@ Lrnr_grfcate <- R6Class(
                            tune.num.draws = 1000,
                            compute.oob.predictions = TRUE,
                            num.threads = NULL,
-                          
+                           #seed = runif(1, 0, .Machine$integer.max)  # This is set later (is it?)
                           
                        
                           ...) {
@@ -113,8 +161,8 @@ Lrnr_grfcate <- R6Class(
       outcome_type <- self$get_outcome_type(task)
       
       # specify data
-      args$X <- as.data.frame(task$X[,-1])      ## NK: I am making A part of X as Ivana suggested
-      args$W <- task$X[[1]]       ## NK: let's check with Jeremy whether it works this way
+      args$X <- as.data.frame(task$X[,-1])      ##  Requires first column on X covariates to be A
+      args$W <- task$X[[1]]                     ##  A (here noted as W) specified
       args$Y <- outcome_type$format(task$Y)
       
       if (task$has_node("weights")) {
@@ -141,7 +189,7 @@ Lrnr_grfcate <- R6Class(
       # generate predictions and output
       predictions_list <- stats::predict(
         private$.fit_object,
-        new_data = data.frame(task$X[,-1]),
+        new_data = data.frame(task$X[,-1]),      # First column of X data frame was A hence removed it
         #quantiles = quantiles_pred
       )
       predictions <- as.numeric(predictions_list$predictions)

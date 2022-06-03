@@ -1,4 +1,3 @@
-#tmle_fit$initial_likelihood$factor_list[["A"]]$learner
 
 
 context("test grf: Generalized Random Forests")
@@ -23,55 +22,44 @@ set.seed(791)
 n <- 500
 p <- 10
 X <- matrix(rnorm(n * p), n, p)
-A <- rbinom(n,1,0.15)     # NK: added a randomised A
-X<- cbind(A,X)            # NK:  made A  part of X
+A <- rbinom(n,1,0.15)     #  added a randomised A
+X<- cbind(A,X)            #  made A the first column of X
 
-# NK: added A
 X.test <- matrix(0, 101, p)
 X.test[, 1] <- seq(-2, 2, length.out = 101)
-Y <- X[, 1] * rnorm(n) + 0.5*A               #NK: added a treatment effect
+Y <- X[, 1] * rnorm(n) + 0.5*A           # added a constant treatment effect
 data <- data.frame(list(Y = Y, X = X))  
-names(data)[2]<-"A"
+names(data)[2]<-"A"                      # this is probably not necessary
 # Make sl3 Task
-covars <- names(data)[2:ncol(data)]   # NK: note this now has A in it, but should be OK
-#treatment <- names(data)[2]           # NK: added location of treatment = not sure this is good/necessary
+covars <- names(data)[2:ncol(data)]     #  A is in covars
 outcome <- names(data)[1]
-task <- sl3_Task$new(data, covariates = covars, outcome = outcome)  # NK: but how to add A here?
-                                                                     # NK: i think Ivana said for now just make A part of X. OK!
-                                  # is this going to be a problem for the predictions, that A is part of X? or it will be just ignored (I think)
+task <- sl3_Task$new(data, covariates = covars, outcome = outcome)  
+                                                                     
+                                  
 test_that("Lrnr_grfcate predictions match those of grf::causal_forest", {
   seed_int <- 496L
   set.seed(seed_int)
   # GRF learner class
-  grfcate_learner <- Lrnr_grfcate$new(seed = seed_int)
+  grfcate_learner <- Lrnr_grfcate$new(seed = seed_int,num.threads = 1L)  # perhaps this num.threads argument caused the discrepancy
   # sl3_debug_mode()
   # debug_train(grfcate_learner)
   grfcate_fit <- grfcate_learner$train(task)
   grfcate_pred <- grfcate_fit$predict(task)
   
   set.seed(seed_int)
-  # GRF package                         # what arguments are passed?
+  # GRF package                         
   grfcate_pkg <- grf::causal_forest(
-    X = X[,-1], W=X[,1], Y = Y, seed = seed_int,     # what to do about A here - we need it
+    X = X[,-1], W=X[,1], Y = Y, seed = seed_int,     
     num.threads = 1L
   )
   grfcate_pkg_pred_out <- predict(
     grfcate_pkg,
-    #quantiles = grf_fit$params$quantiles_pred
+   
   )
   grfcate_pkg_pred <- as.numeric(grfcate_pkg_pred_out$predictions)
   
   
-  grfcate_pkg <- grf::causal_forest(
-    X = X[,-1], W=X[,1], Y = Y, seed = seed_int,     # what to do about A here - we need it
-    num.threads = 1L
-  )
-  grfcate_pkg_pred_out <- predict(
-    grfcate_pkg,
-    #quantiles = grf_fit$params$quantiles_pred
-  )
-  grfcate_pkg_pred2 <- as.numeric(grfcate_pkg_pred_out$predictions)
-  
+
   # test equivalence
   expect_equal(grfcate_pred, grfcate_pkg_pred)
 })
