@@ -1,8 +1,11 @@
-#' Generalized Random Forests Learner
+#' Generalized Random Forests Learner for CATEs
 #'
-#' This learner implements Generalized Random Forests, using the \pkg{grf}
+#' This learner implements the so-called "Causal Forests" estimator of the 
+#' conditonal average treatment effect, $\tau{x}$, using the \pkg{grf}
 #' package. This is a pluggable package for forest-based statistical estimation
-#' and inference. This learner estimates the CATE, taking A, Y, and X as inputs..
+#' and inference. This learner taking A, Y, and X as inputs, estimates some nuisance 
+#' components $Pr(A=1|X)$ and $E[Y|X$]$ and fits a "causal forests" object
+#'  that can predict CATEs on new Xs. The learners sets parameters to default (detail these)
 #'
 #' @docType class
 #'
@@ -22,6 +25,7 @@
 #' @family Learners
 #'
 #' @section Parameters:
+#' Update these accordingly
 #' \describe{
 #'   \item{\code{num.trees = 2000}}{Number of trees grown in the forest. NOTE:
 #'    Getting accurate confidence intervals generally requires more trees than
@@ -70,19 +74,34 @@ Lrnr_grf <- R6Class(
   classname = "Lrnr_grf",
   inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(num.trees = 2000,
-                          quantiles = c(0.1, 0.5, 0.9),
-                          regression.splitting = FALSE,
-                          clusters = NULL,
-                          equalize.cluster.weights = FALSE,
-                          sample.fraction = 0.5,
-                          mtry = NULL,
-                          min.node.size = 5,
-                          honesty = TRUE,
-                          alpha = 0.05,
-                          imbalance.penalty = 0,
-                          num.threads = 1L,
-                          quantiles_pred = 0.5,
+    initialize = function( #X=X,       # these are the inputs to the original function
+                           #Y=Y,
+                           #W=A,   # stands for treatment
+                           Y.hat = NULL,  # this means that nuisance functions will be estimated 
+                           W.hat = NULL,  # via a regression forest
+                           num.trees = 2000,
+                           sample.weights = NULL,
+                           clusters = NULL,
+                           equalize.cluster.weights = FALSE,
+                           sample.fraction = 0.5,
+                           mtry = NULL,
+                           min.node.size = 5,
+                           honesty = TRUE,
+                           honesty.fraction = 0.5,
+                           honesty.prune.leaves = TRUE,
+                           alpha = 0.05,
+                           imbalance.penalty = 0,
+                           stabilize.splits = TRUE,
+                           ci.group.size = 2,
+                           tune.parameters = "none",   # this could be set to "all" for parameters to be tuned via CV
+                           tune.num.trees = 200,
+                           tune.num.reps = 50,
+                           tune.num.draws = 1000,
+                           compute.oob.predictions = TRUE,
+                           num.threads = NULL,
+                          
+                          
+                       
                           ...) {
       super$initialize(params = args_to_list(), ...)
     }
@@ -94,7 +113,8 @@ Lrnr_grf <- R6Class(
       outcome_type <- self$get_outcome_type(task)
       
       # specify data
-      args$X <- as.data.frame(task$X)
+      args$X <- as.data.frame(task$X[-1])      ## NK: I am making A part of X as Ivana suggested
+      args$A <- as.data.frame(task$A[1])       ## NK: let's check with Jeremy whether it works this way
       args$Y <- outcome_type$format(task$Y)
       
       if (task$has_node("weights")) {
@@ -105,13 +125,13 @@ Lrnr_grf <- R6Class(
         args$offset <- task$offset
       }
       
-      # set mtry arg based on dimensionality of X to match grf::quantile_forest
+      # set mtry arg based on dimensionality of X to match grf::causal_forest
       if (is.null(args$mtry)) {
         args$mtry <- min(ceiling(sqrt(ncol(args$X)) + 20), ncol(args$X))
       }
       
       # train via call_with_args and return fitted object
-      fit_object <- call_with_args(grf::quantile_forest, args)
+      fit_object <- call_with_args(grf::caual_forest, args)
       return(fit_object)
     },
     .predict = function(task) {
@@ -122,7 +142,7 @@ Lrnr_grf <- R6Class(
       predictions_list <- stats::predict(
         private$.fit_object,
         new_data = data.frame(task$X),
-        quantiles = quantiles_pred
+        #quantiles = quantiles_pred
       )
       predictions <- as.numeric(predictions_list$predictions)
       return(predictions)
