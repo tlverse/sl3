@@ -152,4 +152,6 @@ if (Sys.info()["sysname"] == "Windows") {
 }
 
 # test all relevant learners
+learners <- learners[!(learners == "Lrnr_grfcate")]
 lapply(learners, test_loocv_learner, loocv_task)
+test_loocv_learner("Lrnr_grfcate", loocv_task, A = "apgar1")
