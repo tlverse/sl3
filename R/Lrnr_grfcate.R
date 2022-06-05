@@ -50,6 +50,9 @@ Lrnr_grfcate <- R6Class(
   public = list(
     initialize = function(A, ...) {
       super$initialize(params = args_to_list(), ...)
+    },
+    process_formula = function(task) {
+      return(task)
     }
   ),
   private = list(

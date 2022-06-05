@@ -73,6 +73,7 @@ learners <- learners[!(learners == "Lrnr_gam")]
 learners <- learners[!(learners == "Lrnr_glmtree")]
 learners <- learners[!(learners == "Lrnr_ranger")]
 learners <- learners[!(learners == "Lrnr_hal9001")]
+learners <- learners[!(learners == "Lrnr_grfcate")]
 
 # remove LightGBM on Windows
 if (Sys.info()["sysname"] == "Windows") {
