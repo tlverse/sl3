@@ -75,6 +75,11 @@
 * Added documentation for the function `process_data` (R/process_data.R), which
   is called when instantiating a task, to process the covariates and identify 
   missingness in the outcome.
+* Added `Lrnr_grfcate`, a prediction function estimator for conditional average 
+  treatment effect (CATE), which uses the `causal_forest` function in `grf` 
+  package. This learner is intended for use in the `tmle3mopttx` package, where 
+  CATE estimation and prediction is required.
+
 # sl3 1.4.4
 * Updates to `Lrnr_nnls` to support binary outcomes, including support for
   convexity of the resultant model fit and warnings on prediction quality.
