@@ -38,6 +38,24 @@ detailed description, please consult the documentation for
 }
 }
 
+\examples{
+# Load data
+data(mtcars)
+
+# Create sl3 Task
+task <- sl3_Task$new(
+  mtcars, 
+  covariates = c(
+    "cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "am", "gear", "carb"
+  ),
+  outcome = "mpg"
+)
+
+# Create learner, train, and get predictions
+caret_learner <- Lrnr_caret$new(algorithm = "rf")
+caret_fit <- caret_learner$train(task)
+caret_pred <- caret_fit$predict()
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},

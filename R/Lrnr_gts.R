@@ -58,7 +58,33 @@
 #'   \item{\code{num.cores}}{If \code{parallel = TRUE}, specify how many cores
 #'     are going to be used.}
 #' }
-#'
+#' 
+#' @examples 
+#' library(hts)
+#' library(data.table)
+#' 
+#' # Example adapted from hts package manual
+#' # The hierarchical structure looks like 2 child nodes associated with level 1,
+#' # which are followed by 3 and 2 sub-child nodes respectively at level 2.
+#' set.seed(3274)
+#' abc <- as.data.table(5 + matrix(sort(rnorm(200)), ncol = 4, nrow = 50))
+#' setnames(abc, paste("Series", 1:ncol(abc), sep = "_"))
+#' abc[, time := .I]
+#' grps <- rbind(c(1, 1, 2, 2), c(1, 2, 1, 2))
+#' horizon <- 12
+#' suppressWarnings(abc_long <- melt(abc, id = "time", variable.name = "series"))
+#' 
+#' # Create sl3 Task (no outcome for hierarchical/grouped series)
+#' node_list <- list(outcome = "value", time = "time", id = "series")
+#' train_task <- sl3_Task$new(data = abc_long, nodes = node_list)
+#' test_data <- expand.grid(time = 51:55, series = unique(abc_long$series))
+#' test_data <- as.data.table(test_data)[, value := 0]
+#' test_task <- sl3_Task$new(data = test_data, nodes = node_list)
+#' 
+#' # Create gts learner, train, and get predictions
+#' gts_learner <- Lrnr_gts$new()
+#' gts_fit <- gts_learner$train(train_task)
+#' gts_lrnr_pred <- gts_fit$predict(test_task)
 Lrnr_gts <- R6Class(
   classname = "Lrnr_gts",
   inherit = Lrnr_base,

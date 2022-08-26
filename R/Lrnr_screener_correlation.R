@@ -34,7 +34,37 @@
 #'   \item{\code{min_screen = 2}}{Minimum number of covariates to select. Used
 #'   in pvalue_threshold screening procedure.}
 #' }
-#
+#'
+#' @examples 
+#' library(data.table)
+#' 
+#' # Load data
+#' data(cpp_imputed)
+#' setDT(cpp_imputed)
+#' 
+#' # Create sl3 Task
+#' cpp_imputed[, parity_cat := factor(ifelse(parity < 4, parity, 4))]
+#' covars <- c(
+#'   "apgar1", "apgar5", "parity_cat", "gagebrth", "mage", "meducyrs",
+#'   "sexn"
+#' )
+#' outcome <- "haz"
+#' task <- sl3_Task$new(
+#'   data.table::copy(cpp_imputed),
+#'   covariates = covars,
+#'   outcome = outcome
+#' )
+#' 
+#' # Create learners
+#' glm_learner <- make_learner(Lrnr_glm)
+#' mean_learner <- make_learner(Lrnr_mean)
+#' stacked_learner <- make_learner(Stack, glm_learner, mean_learner)
+#' 
+#' # Create Correlation P-value Threshold Screener, train, and get predictions
+#' screen_corP <- make_learner(Lrnr_screener_correlation, type = "threshold")
+#' corP_pipeline <- make_learner(Pipeline, screen_corP, stacked_learner)
+#' corP_fit <- corP_pipeline$train(task)
+#' corP_pred <- corP_fit$predict()
 Lrnr_screener_correlation <- R6Class(
   classname = "Lrnr_screener_correlation",
   inherit = Lrnr_base, portable = TRUE, class = TRUE,

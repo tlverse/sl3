@@ -37,7 +37,6 @@
 #' }
 #'
 #' @template common_parameters
-#
 Lrnr_optim <- R6Class(
   classname = "Lrnr_optim",
   inherit = Lrnr_base, portable = TRUE,

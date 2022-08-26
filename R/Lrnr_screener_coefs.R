@@ -28,6 +28,35 @@
 #'     applicable when supplied \code{learner} is a \code{\link{Lrnr_glmnet}}.}
 #'   \item{\code{...}}{Other parameters passed to \code{learner}.}
 #' }
+#' 
+#' @examples 
+#' library(data.table)
+#' 
+#' # Load data
+#' data(cpp_imputed)
+#' setDT(cpp_imputed)
+#' 
+#' # Create sl3 Task
+#' cpp_imputed[, parity_cat := factor(ifelse(parity < 4, parity, 4))]
+#' covars <- c(
+#'   "apgar1", "apgar5", "parity_cat", "gagebrth", "mage", "meducyrs",
+#'   "sexn"
+#' )
+#' outcome <- "haz"
+#' task <- sl3_Task$new(
+#'   data.table::copy(cpp_imputed),
+#'   covariates = covars,
+#'   outcome = outcome
+#' )
+#' 
+#' # Creater learners, train, and get predictions
+#' glm_learner <- make_learner(Lrnr_glm)
+#' mean_learner <- make_learner(Lrnr_mean)
+#' stacked_learner <- make_learner(Stack, glm_learner, mean_learner)
+#' glm_screener <- make_learner(Lrnr_screener_coefs, glm_learner, max_screen = 2)
+#' glm_screener_pipeline <- make_learner(Pipeline, glm_screener, stacked_learner)
+#' glm_screener_pipeline_fit <- glm_screener_pipeline$train(task)
+#' glm_screener_pipeline_pred <- glm_screener_pipeline_fit$predict()
 Lrnr_screener_coefs <- R6Class(
   classname = "Lrnr_screener_coefs",
   inherit = Lrnr_base, portable = TRUE, class = TRUE,

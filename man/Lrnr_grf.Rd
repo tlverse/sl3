@@ -77,6 +77,31 @@ by all learners.
 }
 }
 
+\examples{
+set.seed(791)
+
+# Generate data
+n <- 50
+p <- 10
+X <- matrix(rnorm(n * p), n, p)
+X.test <- matrix(0, 101, p)
+X.test[, 1] <- seq(-2, 2, length.out = 101)
+Y <- X[, 1] * rnorm(n)
+data <- data.frame(list(Y = Y, X = X))
+
+# Create sl3 Task
+covars <- names(data)[2:ncol(data)]
+outcome <- names(data)[1]
+task <- sl3_Task$new(data, covariates = covars, outcome = outcome)
+
+seed_int <- 496L
+set.seed(seed_int)
+
+# Create learner, train, and get predictions
+grf_learner <- Lrnr_grf$new(seed = seed_int)
+grf_fit <- grf_learner$train(task)
+grf_pred <- grf_fit$predict()
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},

@@ -61,6 +61,27 @@ by all learners.
 }
 }
 
+\examples{
+library(h2o)
+h2o.init(nthread = 1)
+set.seed(1)
+
+# Load data
+data(cpp_imputed)
+
+# Create sl3 task
+covars <- c(
+  "apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn"
+)
+outcome <- "haz"
+cpp_imputed <- cpp_imputed[1:150, ]
+task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
+
+# Create learner, train, and get predictions
+h2o_glm_learner <- Lrnr_h2o_glm$new()
+h2o_glm_fit <- h2o_glm_learner$train(task)
+h2o_glm_pred <- h2o_glm_fit$predict()
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},

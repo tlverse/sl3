@@ -56,6 +56,70 @@ with respect to (1-rate)^lag.}
 }
 }
 
+\examples{
+library(data.table)
+
+# Load data
+data(bsds)
+bsds <- bsds[1:500, ]
+data <- as.data.table(bsds)
+data[, time := .I]
+
+# Create sl3 Task
+outcome <- "cnt"
+covars <- c("registered", "temp", "windspeed", "hum", "weekday")
+node_list <- list(outcome = outcome, time = "time", covariates = covars)
+folds <- make_folds(
+  data[1:400, ],
+  fold_fun = folds_rolling_window, 
+  window_size = 50,
+  validation_size = 50, 
+  gap = 0, 
+  batch = 50
+)
+training_task <- sl3_Task$new(data[1:400, ], nodes = node_list, folds = folds)
+folds <- make_folds(
+  data[401:500, ],
+  fold_fun = folds_rolling_window, 
+  window_size = 50,
+  validation_size = 50, 
+  gap = 0, 
+  batch = 50
+)
+forecast_task <- sl3_Task$new(data[401:500, ], nodes = node_list, folds = folds)
+
+# Create learners, train, and get predictions
+meta_learner <- Lrnr_solnp$new(metalearner_linear, loss_squared_error)
+window1_meta_learner <- Lrnr_ts_weights$new(meta_learner, window = 1)
+window40_meta_learner <- Lrnr_ts_weights$new(meta_learner, window = 40)
+decay_meta_learner <- Lrnr_ts_weights$new(meta_learner, rate = 0.05)
+delay_decay_meta_learner <- Lrnr_ts_weights$new(
+  meta_learner, 
+  rate = 0.05, 
+  delay_decay = 40
+)
+
+glm_learner <- Lrnr_glm$new()
+mean_learner <- Lrnr_mean$new()
+earth_learner <- Lrnr_earth$new()
+stacked_learners <- make_learner(Stack, glm_learner, mean_learner, earth_learner)
+window1_sl_learner <- Lrnr_sl$new(stacked_learners, window1_meta_learner)
+window40_sl_learner <- Lrnr_sl$new(stacked_learners, window40_meta_learner)
+decay_sl_learner <- Lrnr_sl$new(stacked_learners, decay_meta_learner)
+delay_decay_sl_learner <- Lrnr_sl$new(stacked_learners, delay_decay_meta_learner)
+
+window1_fit <- window1_sl_learner$train(training_task)
+window1_pred <- window1_fit$predict(forecast_task)
+
+window40_fit <- window40_sl_learner$train(training_task)
+window40_pred <- window40_fit$predict(forecast_task)
+
+decay_fit <- decay_sl_learner$train(training_task)
+decay_pred <- decay_fit$predict(forecast_task)
+
+delay_decay_fit <- delay_decay_sl_learner$train(training_task)
+delay_decay_pred <- delay_decay_fit$predict(forecast_task)
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},

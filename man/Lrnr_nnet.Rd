@@ -43,6 +43,22 @@ by all learners.
 }
 }
 
+\examples{
+set.seed(1)
+
+# Load data
+data(cpp_imputed)
+covars <- c("bmi", "parity", "mage", "sexn")
+outcome <- "haz"
+
+# Create sl3 Task
+task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
+
+# Create learner, train, and get predictions
+nnet_learner <- Lrnr_nnet$new(linout = TRUE, size = 10, maxit = 1000)
+nnet_fit <- nnet_learner$train(task)
+nnet_pred <- nnet_fit$predict()
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},

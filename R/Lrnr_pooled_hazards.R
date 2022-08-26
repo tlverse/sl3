@@ -25,7 +25,6 @@
 #' }
 #'
 #' @template common_parameters
-#
 Lrnr_pooled_hazards <- R6Class(
   classname = "Lrnr_pooled_hazards",
   inherit = Lrnr_base, portable = TRUE,

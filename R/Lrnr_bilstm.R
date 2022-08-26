@@ -26,7 +26,6 @@
 #' @importFrom assertthat assert_that is.count is.flag
 #'
 #' @family Learners
-#'
 Lrnr_bilstm <- R6Class(
   classname = "Lrnr_bilstm", inherit = Lrnr_base, portable = TRUE, class = TRUE,
   public = list(

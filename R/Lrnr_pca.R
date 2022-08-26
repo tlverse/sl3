@@ -39,7 +39,35 @@
 #' }
 #'
 #' @template common_parameters
-#
+#' 
+#' @examples 
+#' library(origami)
+#' library(dplyr)
+#' set.seed(37912)
+#' 
+#' # Load data
+#' ncomp <- 3
+#' data(cpp_imputed)
+#' covars <- c(
+#'   "apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
+#'   "sexn"
+#' )
+#' outcome <- "haz"
+#' 
+#' # Create sl3 Task
+#' task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
+#' 
+#' # Create learner
+#' glm_fast_learner <- Lrnr_glm_fast$new(intercept = FALSE)
+#' pca_sl3 <- Lrnr_pca$new(n_comp = ncomp, center = TRUE, scale. = TRUE)
+#' pcr_pipe_sl3 <- Pipeline$new(pca_sl3, glm_fast_learner)
+#' 
+#' # Create stacks, train and predict
+#' pcr_pipe_sl3_fit <- pcr_pipe_sl3$train(task)
+#' out_pcr_fit <- pcr_pipe_sl3_fit$predict()
+#' 
+#' # Extract prcomp object (PCA results) from Pipeline
+#' pca_from_pipe <- pcr_pipe_sl3_fit$fit_object$learner_fits[[1]]$fit_object
 Lrnr_pca <- R6Class(
   classname = "Lrnr_pca",
   inherit = Lrnr_base,

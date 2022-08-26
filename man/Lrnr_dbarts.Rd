@@ -108,6 +108,39 @@ by all learners.
 }
 }
 
+\examples{
+library(dbarts)
+generateProbitData <- function() {
+  n <- 800
+  beta <- c(0.12, -0.89, 0.3)
+  p <- 3
+  
+  set.seed(0)
+  X <- matrix(rnorm(p * n), n, p)
+  
+  mu <- pnorm(X \%*\% beta)
+  Z <- rbinom(n, 1, mu)
+  
+  return(list(X = X, Z = Z, p = mu))
+}
+
+# Generate example data
+testData <- generateProbitData()
+x <- data.frame(testData$X)
+names(x) <- paste("Covs", seq_along(1:ncol(x)), sep = "_")
+y <- data.frame(y = testData$Z)
+covars <- names(x)
+outcome <- names(y)
+data <- cbind.data.frame(y, x)
+
+# Create sl3 Task
+task <- sl3_Task$new(data, covariates = covars, outcome = outcome)
+
+# Create learner, train, and get predictions
+dbart_learner <- Lrnr_dbarts$new()
+dbart_fit <- dbart_learner$train(task)
+dbart_pred <- dbart_fit$predict()
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},

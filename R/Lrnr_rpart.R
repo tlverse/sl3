@@ -32,7 +32,27 @@
 #'     \code{\link[rpart]{rpart}}. See its documentation for details.
 #'   }
 #' }
-#
+#' 
+#' @examples 
+#' library(rpart)
+#' 
+#' # Load data
+#' data(mtcars)
+#' 
+#' # Create sl3 Task
+#' task <- sl3_Task$new(
+#'   mtcars, 
+#'   covariates = c(
+#'     "cyl", "disp", "hp", "drat", "wt", 
+#'     "qsec", "vs", "am", "gear", "carb"
+#'   ),
+#'   outcome = "mpg"
+#' )
+#' 
+#' # Create learner, train, and get predictions
+#' learner_rpart <- Lrnr_rpart$new()
+#' learner_rpart_fit <- learner_rpart$train(task)
+#' learner_rpart_pred <- learner_rpart_fit$predict()
 Lrnr_rpart <- R6Class(
   classname = "Lrnr_rpart", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,

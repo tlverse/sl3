@@ -46,6 +46,32 @@ by all learners.
 }
 }
 
+\examples{
+library(origami)
+library(SuperLearner)
+
+# Load data
+data(cpp_imputed)
+covars <- c(
+  "apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn"
+)
+outcome <- "haz"
+task <- sl3_Task$new(
+  data.table::copy(cpp_imputed),
+  covariates = covars, 
+  outcome = outcome
+)
+
+# Create sl3 Task, train, get predictions and risks
+glm_learner <- Lrnr_glm$new()
+glmnet_learner <- Lrnr_pkg_SuperLearner$new("SL.glmnet")
+subset_apgar <- Lrnr_subset_covariates$new(covariates = c("apgar1", "apgar5"))
+learners <- list(glm_learner, glmnet_learner, subset_apgar)
+sl_learner <- make_learner(Lrnr_sl, learners, glm_learner)
+sl_fit <- sl_learner$train(task)
+sl_pred <- sl_fit$predict()
+sl_risk <- sl_fit$cv_risk(loss_squared_error)
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},

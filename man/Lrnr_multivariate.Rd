@@ -35,6 +35,37 @@ by all learners.
 }
 }
 
+\examples{
+library(origami)
+library(data.table)
+library(SuperLearner)
+
+# Simulate data
+set.seed(123)
+n <- 1000
+p <- 5
+pY <- 3
+W <- matrix(rnorm(n * p), nrow = n)
+colnames(W) <- sprintf("W\%d", seq_len(p))
+Y <- matrix(rnorm(n * pY, 0, 0.2) + W[, 1], nrow = n)
+colnames(Y) <- sprintf("Y\%d", seq_len(pY))
+data <- data.table(W, Y)
+covariates <- grep("W", names(data), value = TRUE)
+outcomes <- grep("Y", names(data), value = TRUE)
+
+# Create sl3 Task
+task <- sl3_Task$new(
+  data.table::copy(data),
+  covariates = covariates,
+  outcome = outcomes
+)
+
+# Create learner, train, and get predictions
+mv_learner <- make_learner(Lrnr_multivariate, make_learner(Lrnr_glm_fast))
+mv_fit <- mv_learner$train(task)
+mv_pred <- mv_fit$predict(task)
+mv_pred <- unpack_predictions(mv_pred)
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},

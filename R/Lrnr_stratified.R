@@ -26,7 +26,34 @@
 #'    \code{learner$train}. See its documentation for details.
 #'   }
 #' }
-#
+#' 
+#' @examples 
+#' library(data.table)
+#' library(dplyr)
+#' library(origami)
+#' library(hal9001)
+#' 
+#' set.seed(49753)
+#' 
+#' # Load data
+#' data(cpp_imputed)
+#' 
+#' # Create sl3 Task
+#' covars <- c("apgar1", "apgar5", "sexn")
+#' task <- sl3_Task$new(
+#'   cpp_imputed, 
+#'   covariates = covars, 
+#'   outcome = "haz"
+#' )
+#' 
+#' # Create learner, train, and get predictions
+#' hal_learner <- Lrnr_hal9001$new(fit_control = list(n_folds = 3))
+#' stratified_hal_learner <- Lrnr_stratified$new(
+#'   learner = hal_learner,
+#'   variable_stratify = "sexn"
+#' )
+#' stratified_hal_fit <- stratified_hal_learner$train(task)
+#' stratified_hal_pred <- stratified_hal_fit$predict()
 Lrnr_stratified <- R6Class(
   classname = "Lrnr_stratified", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,

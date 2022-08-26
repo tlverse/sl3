@@ -26,7 +26,25 @@
 #' }
 #'
 #' @template common_parameters
-#
+#' 
+#' @examples 
+#' library(speedglm)
+#' library(dplyr)
+#' 
+#' # Load data
+#' data(cpp)
+#' 
+#' # Create sl3 Task
+#' cpp <- cpp %>%
+#'   select(c(bmi, agedays, feeding)) %>%
+#'   mutate(feeding = as.factor(feeding)) %>%
+#'   na.omit()
+#' task <- make_sl3_Task(cpp, covariates = c("agedays", "bmi"), outcome = "feeding")
+#' 
+#' # Create learner, train, and get predictions
+#' indbinomial_learner <- make_learner(Lrnr_independent_binomial)
+#' indbinomial_fit <- indbinomial_learner$train(task)
+#' indbinomial_pred <- indbinomial_fit$predict()
 Lrnr_independent_binomial <- R6Class(
   classname = "Lrnr_independent_binomial",
   inherit = Lrnr_base, portable = TRUE,

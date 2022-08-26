@@ -25,7 +25,24 @@
 #' }
 #'
 #' @template common_parameters
-#
+#' 
+#' @examples 
+#' # Load data
+#' data(cpp_imputed)
+#' 
+#' # Create sl3 Task
+#' covars <- c(
+#'   "apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn"
+#' )
+#' outcome <- "haz"
+#' task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
+#' 
+#' # Create learner, train, and get predictions
+#' density_hse_learner <- Lrnr_density_hse$new(
+#'   mean_learner = Lrnr_glm$new()
+#' )
+#' density_hse_fit <- density_hse_learner$train(task)
+#' density_hse_pred <- density_hse_fit$predict()
 Lrnr_density_hse <- R6Class(
   classname = "Lrnr_density_hse",
   inherit = Lrnr_base, portable = TRUE,

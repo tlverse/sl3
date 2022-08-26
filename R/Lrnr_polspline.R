@@ -33,7 +33,28 @@
 #'     See their documentation for details.
 #'   }
 #' }
-#
+#' 
+#' @examples 
+#' library(polspline)
+#' 
+#' # Load data
+#' data(cpp_imputed)
+#' 
+#' # Create sl3 Task
+#' task <- sl3_Task$new(
+#'   cpp_imputed,
+#'   covariates = c(
+#'     "apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn"
+#'   ),
+#'   outcome = "haz"
+#' )
+#' 
+#' set.seed(4738)
+#' 
+#' # Create learner, train, and get predictions
+#' polspline_learner <- make_learner(Lrnr_polspline)
+#' polspline_fit <- polspline_learner$train(task)
+#' polspline_pred <- polspline_fit$predict()
 Lrnr_polspline <- R6Class(
   classname = "Lrnr_polspline", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,

@@ -76,7 +76,21 @@ interpret_fold_number <- function(fold_number) {
 #'   This can then be accessed with predict_fold(task, fold_number="full")
 #'   }
 #' }
-#
+#' 
+#' @examples 
+#' # Load data
+#' data(cpp_imputed)
+#' 
+#' # Create sl3 Task
+#' covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")
+#' outcome <- "haz"
+#' task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
+#' 
+#' # Create learner, train, and get predictions
+#' glm_learner <- Lrnr_glm$new()
+#' cv_glm_learner <- Lrnr_cv$new(glm_learner, full_fit = TRUE)
+#' cv_glm_fit <- cv_glm_learner$train(task)
+#' cv_glm_pred <- cv_glm_fit$predict()
 Lrnr_cv <- R6Class(
   classname = "Lrnr_cv",
   inherit = Lrnr_base,

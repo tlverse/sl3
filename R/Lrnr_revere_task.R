@@ -23,7 +23,6 @@
 #' \describe{
 #'   \item{\code{revere_function}}{The revere generator function to wrap}
 #' }
-#
 Lrnr_revere_task <- R6Class(
   classname = "Lrnr_revere_task",
   inherit = Lrnr_base,

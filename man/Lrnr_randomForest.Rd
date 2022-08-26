@@ -31,6 +31,26 @@ nodes.}
 }
 }
 
+\examples{
+library(randomForest)
+
+# Load data
+data(cpp_imputed)
+
+# Create sl3 Task
+task <- sl3_Task$new(
+  cpp_imputed,
+  covariates = c(
+    "apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn"
+  ),
+  outcome = "haz"
+)
+
+# Create learner, train, and get predictions
+randomForest_learner <- Lrnr_randomForest$new(ntree = 400)
+randomForest_fit <- randomForest_learner$train(task)
+randomForest_pred <- randomForest_fit$predict()
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},
