@@ -21,37 +21,26 @@
 #' @family Learners
 #'
 #' @section Parameters:
-#' \describe{
-#'   \item{\code{ntree = 500}}{Number of trees to grow. This should not be set
-#'   to too small a number, to ensure that every input row gets predicted at
-#'   least a few times.}
-#'   \item{\code{keep.forest = TRUE}}{If \code{TRUE}, forest is stored, which is
-#'     required for prediction.}
-#'   \item{\code{nodesize = 5}}{Minimum number of observations in terminal
-#'   nodes.}
-#'   \item{\code{...}}{Other parameters passed to
-#'   \code{\link[randomForest]{randomForest}}.}
-#' }
-#' 
-#' @examples 
-#' library(randomForest)
-#' 
-#' # Load data
+#'   - \code{ntree = 500}: Number of trees to grow. This should not be set
+#'       to too small a number, to ensure that every input row gets predicted
+#'       at least a few times.
+#'   - \code{keep.forest = TRUE}: If \code{TRUE}, forest is stored, which is
+#'     required for prediction.
+#'   - \code{nodesize = 5}: Minimum number of observations in a terminal node.
+#'   - \code{...}: Other parameters passed to \code{\link[randomForest]{randomForest}}.
+#'
+#' @examples
 #' data(cpp_imputed)
-#' 
-#' # Create sl3 Task
-#' task <- sl3_Task$new(
-#'   cpp_imputed,
-#'   covariates = c(
-#'     "apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn"
-#'   ),
+#' # create task for prediction
+#' cpp_task <- sl3_Task$new(
+#'   data = cpp_imputed,
+#'   covariates = c("bmi", "parity", "mage", "sexn"),
 #'   outcome = "haz"
 #' )
-#' 
-#' # Create learner, train, and get predictions
-#' randomForest_learner <- Lrnr_randomForest$new(ntree = 400)
-#' randomForest_fit <- randomForest_learner$train(task)
-#' randomForest_pred <- randomForest_fit$predict()
+#' # initialization, training, and prediction with the defaults
+#' rf_lrnr <- Lrnr_randomForest$new()
+#' rf_fit <- rf_lrnr$train(cpp_task)
+#' rf_preds <- rf_fit$predict()
 Lrnr_randomForest <- R6Class(
   classname = "Lrnr_randomForest",
   inherit = Lrnr_base, portable = TRUE, class = TRUE,
@@ -91,7 +80,7 @@ Lrnr_randomForest <- R6Class(
     }
   ),
   private = list(
-    .properties = c("continuous", "binomial", "categorical", "importance"),
+    .properties = c("continuous", "binomial", "categorical", "importance", "weights"),
     .train = function(task) {
       args <- self$params
       outcome_type <- self$get_outcome_type(task)
@@ -104,6 +93,9 @@ Lrnr_randomForest <- R6Class(
       if (outcome_type$type == "binomial") {
         args$y <- factor(args$y, levels = c(0, 1))
       }
+      if (task$has_node("weights")) {
+        args$weights <- task$weights
+      }
       rf_fun <- utils::getS3method("randomForest", "default",
         envir = getNamespace("randomForest")
       )
@@ -111,19 +103,18 @@ Lrnr_randomForest <- R6Class(
       return(fit_object)
     },
     .predict = function(task) {
-      outcome_type <- private$.training_outcome_type
-      type <- ifelse(outcome_type$type %in% c("binomial", "categorical"),
-        "prob", "response"
+      outcome_type <- private$.training_outcome_type$type
+      type <- ifelse(
+        outcome_type %in% c("binomial", "categorical"), "prob", "response"
       )
       predictions <- stats::predict(
         private$.fit_object,
-        newdata = task$X,
-        type = type
+        newdata = task$X, type = type
       )
-      if (outcome_type$type == "binomial") {
+      if (outcome_type == "binomial") {
         # extract p(Y=1)
         predictions <- predictions[, 2]
-      } else if (outcome_type$type == "categorical") {
+      } else if (outcome_type == "categorical") {
         # pack predictions in a single column
         predictions <- pack_predictions(predictions)
       }

@@ -18,7 +18,7 @@ cpp_imputed$sexn <- as.character(cpp_imputed$sexn)
 
 expect_warning(
   task_character_to_factor <- make_sl3_Task(cpp_imputed, covars, outcome),
-  "Character covariates found: sexn;\nConverting these to factors"
+  "Character variables found: sexn;\nConverting these to factors"
 )
 
 expect_equal(class(task_character_to_factor$get_node("covariates")$sexn), "factor")

@@ -14,16 +14,36 @@ methods for training and prediction. For a full list of learner
 functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 }
 \description{
-This meta-learner identifies the cross-validated selector (i.e., discrete
-super learner) for any loss function.
+This learner is the cross-validated (CV) selector, and it is intended
+for use as the \code{metalearner} in \code{\link{Lrnr_sl}}.
+\code{Lrnr_cv_selector} selects the candidate with the best CV
+predictive performance (i.e., lowest CV risk). Specifically,
+it aims to optimize the CV risk, and it is defined by a constrained
+weighted combination: the weights can either be zero or one, and they
+must sum to one. \code{Lrnr_cv_selector} optimizes the CV
+predictive performance under these constraints by assigning the
+candidate with the best CV predictive performance a weight of one
+and all others a weight of zero. Thus, \code{Lrnr_cv_selector}
+and its predictions will be identical to the best-performing
+candidate learner and its predictions; this is why we say
+\code{Lrnr_cv_selector} "selects" the candidate with the best
+CV predictive performance.
 }
 \section{Parameters}{
 
 \itemize{
-\item \code{eval_function}: A function that takes a vector of predictions as
-it's first argument, and a vector of truths/observations as it's second
-argument, and then returns a vector of losses or a numeric risk. See
-\link{loss_functions} and \link{risk_functions} for options.
+\item \code{eval_function = loss_squared_error}: A function that takes as input
+a vector of predicted values as its first argument and a vector of
+observed outcome values as its second argument, and then returns a
+vector of losses or a numeric risk. See \link{loss_functions} and
+\link{risk_functions} for options.
+\item \code{folds = NULL}: Optional \pkg{origami}-structured cross-validation
+folds from the task for training \code{Lrnr_sl}, e.g.,
+\code{task$folds}. This argument is only required and utilized
+when \code{eval_function} is not a loss function, since the risk
+has to be calculated on each validation set separately and then
+averaged across them in order to estimate the cross-validated risk.
+This argument is ignored when \code{eval_function} is a loss.
 }
 }
 
@@ -70,8 +90,11 @@ Other Learners:
 \code{\link{Lrnr_ga}},
 \code{\link{Lrnr_gbm}},
 \code{\link{Lrnr_glm_fast}},
+\code{\link{Lrnr_glm_semiparametric}},
 \code{\link{Lrnr_glmnet}},
+\code{\link{Lrnr_glmtree}},
 \code{\link{Lrnr_glm}},
+\code{\link{Lrnr_grfcate}},
 \code{\link{Lrnr_grf}},
 \code{\link{Lrnr_gru_keras}},
 \code{\link{Lrnr_gts}},

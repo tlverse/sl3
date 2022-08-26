@@ -143,10 +143,15 @@ wrap <- sl3::sl3_list_learners("wrapper")
 h2o <- sl3::sl3_list_learners("h2o")
 learners <- cont_learners[-which(cont_learners %in% c(ts, screen, wrap, h2o))]
 
+# remove glm_semiparametric, as LOOCV is tested w it in test-glm-semiparametric
+learners <- learners[!(learners == "Lrnr_glm_semiparametric")]
+
 # remove LightGBM on Windows
 if (Sys.info()["sysname"] == "Windows") {
   learners <- learners[!(learners == "Lrnr_lightgbm")]
 }
 
 # test all relevant learners
+learners <- learners[!(learners == "Lrnr_grfcate")]
 lapply(learners, test_loocv_learner, loocv_task)
+test_loocv_learner("Lrnr_grfcate", loocv_task, A = "apgar1")

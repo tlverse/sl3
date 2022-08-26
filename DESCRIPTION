@@ -1,6 +1,6 @@
 Package: sl3
 Title: Pipelines for Machine Learning and Super Learning
-Version: 1.4.4
+Version: 1.4.5
 Authors@R: c(
     person("Jeremy", "Coyle", email = "jeremyrcoyle@gmail.com",
            role = c("aut", "cre", "cph"),
@@ -29,7 +29,7 @@ Maintainer: Jeremy Coyle <jeremyrcoyle@gmail.com>
 Description: A modern implementation of the Super Learner prediction algorithm,
     coupled with a general-purpose framework for composing arbitrary pipelines
     for machine learning tasks.
-Depends: R (>= 3.1.0)
+Depends: R (>= 4.2.0)
 Imports:
     data.table,
     assertthat,
@@ -69,7 +69,7 @@ Suggests:
     glmnet,
     grf,
     gbm,
-    hal9001 (>= 0.4.0),
+    hal9001 (>= 0.4.4),
     h2o,
     keras,
     kerasR,
@@ -90,7 +90,8 @@ Suggests:
     haldensify (>= 0.1.5),
     mgcv,
     hts,
-    GA
+    GA,
+    partykit
 Remotes:
     github::tlverse/origami,
     github::tlverse/hal9001@devel,
@@ -106,5 +107,5 @@ VignetteBuilder:
     knitr,
     R.rsp
 Roxygen: list(markdown = TRUE, old_usage = TRUE, r6 = FALSE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0
 RdMacros: Rdpack

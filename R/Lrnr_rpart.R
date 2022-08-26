@@ -1,7 +1,7 @@
-#' Learner for Recursive Partitioning and Regression Trees.
+#' Learner for Recursive Partitioning and Regression Trees
 #'
-#' This learner uses \code{\link[rpart]{rpart}} from \code{rpart} to fit
-#' recursive partitioning and regression trees.
+#' This learner uses \code{\link[rpart]{rpart}} from the \pkg{rpart} package to
+#' fit recursive partitioning and regression trees.
 #'
 #' @docType class
 #'
@@ -11,120 +11,77 @@
 #'
 #' @keywords data
 #'
-#' @return Learner object with methods for training and prediction. See
-#'  \code{\link{Lrnr_base}} for documentation on learners.
+#' @return A learner object inheriting from \code{\link{Lrnr_base}} with
+#'  methods for training and prediction. For a full list of learner
+#'  functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 #'
-#' @format \code{\link{R6Class}} object.
+#' @format An \code{\link[R6]{R6Class}} object inheriting from
+#'  \code{\link{Lrnr_base}}.
 #'
 #' @family Learners
 #'
 #' @section Parameters:
-#' \describe{
-#'   \item{\code{model}}{If logical: keep a copy of the model frame in the
-#'     result?
-#'   }
-#'   \item{\code{x}}{Whether to keep a copy of the x matrix in the result.
-#'   }
-#'   \item{\code{y}}{Whether to keep a copy of the dependent variable in the
-#'     result.
-#'   }
-#'   \item{\code{...}}{ Other parameters to be passed directly to
-#'     \code{\link[rpart]{rpart}}. See its documentation for details.
-#'   }
-#' }
-#' 
-#' @examples 
-#' library(rpart)
-#' 
-#' # Load data
-#' data(mtcars)
-#' 
-#' # Create sl3 Task
-#' task <- sl3_Task$new(
-#'   mtcars, 
-#'   covariates = c(
-#'     "cyl", "disp", "hp", "drat", "wt", 
-#'     "qsec", "vs", "am", "gear", "carb"
-#'   ),
-#'   outcome = "mpg"
-#' )
-#' 
-#' # Create learner, train, and get predictions
-#' learner_rpart <- Lrnr_rpart$new()
-#' learner_rpart_fit <- learner_rpart$train(task)
-#' learner_rpart_pred <- learner_rpart_fit$predict()
+#'  - \code{factor_binary_outcome = TRUE}: Logical indicating whether a binary
+#'      outcome should be defined as a factor instead of a numeric. This
+#'      only needs to be modified to \code{FALSE} when the user has a binary
+#'      outcome and they would like to use the mean squared error (MSE) as the
+#'      splitting metric.
+#'   - \code{...}: Other parameters to be passed directly to
+#'       \code{\link[rpart]{rpart}} (see its documentation for details), and
+#'       additional arguments defined in \code{\link{Lrnr_base}}, such as
+#'       \code{formula}.
+#'
+#' @examples
+#' data(cpp_imputed)
+#' covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
+#' task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
+#' rpart_lrnr <- Lrnr_rpart$new()
+#' set.seed(693)
+#' rpart_fit <- rpart_lrnr$train(task)
 Lrnr_rpart <- R6Class(
-  classname = "Lrnr_rpart", inherit = Lrnr_base,
-  portable = TRUE, class = TRUE,
+  classname = "Lrnr_rpart",
+  inherit = Lrnr_base,
+  portable = TRUE,
+  class = TRUE,
   public = list(
-    # you can define default parameter values here
-    # if possible, your learner should define defaults for all required parameters
-    initialize = function(model = FALSE,
-                          x = FALSE,
-                          y = FALSE,
+    initialize = function(factor_binary_outcome = TRUE,
                           ...) {
-      # this captures all parameters to initialize and saves them as self$params
       params <- args_to_list()
       super$initialize(params = params, ...)
     }
   ),
   private = list(
-    # list properties your learner supports here.
-    # Use sl3_list_properties() for a list of options
     .properties = c("continuous", "categorical", "binomial", "weights"),
-
-    # .train takes task data and returns a fit object that can be used to generate predictions
     .train = function(task) {
-      # generate an argument list from the parameters that were
-      # captured when your learner was initialized.
-      # this allows users to pass arguments directly to your ml function
       args <- self$params
 
-      # get outcome variable type
-      # preferring learner$params$outcome_type first, then task$outcome_type
       outcome_type <- self$get_outcome_type(task)
-      # should pass something on to your learner indicating outcome_type
-      # e.g. family or objective
-
-      # add task data to the argument list
-      # what these arguments are called depends on the learner you are wrapping
       x <- as.matrix(task$X)
       y <- outcome_type$format(task$Y)
-      if (outcome_type$type == "binomial") {
+
+      if (outcome_type$type == "binomial" && factor_binary_outcome) {
         y <- factor(y, levels = c(0, 1))
       }
 
       args$formula <- data.frame(y = y, x)
-      # only add arguments on weights and offset
-      # if those were specified when the task was generated
 
       if (task$has_node("weights")) {
         args$weights <- task$weights
       }
 
-      if (task$has_node("offset")) {
-        args$offset <- task$offset
-      }
-
       # call a function that fits your algorithm
       # with the argument list you constructed
-      fit_object <- call_with_args(rpart::rpart, args)
-
-      # return the fit object, which will be stored
-      # in a learner object and returned from the call
-      # to learner$predict
+      fit_object <- call_with_args(
+        rpart::rpart,
+        args,
+        other_valid = names(formals(rpart::rpart.control)),
+        ignore = "factor_binary_outcome"
+      )
       return(fit_object)
     },
-
-    # .predict takes a task and returns predictions from that task
-    .predict = function(task = NULL) {
-      self$training_task
-      self$training_outcome_type
-      self$fit_object
+    .predict = function(task) {
       predictions <- stats::predict(self$fit_object, newdata = task$X)
-
-      if (task$outcome_type$type == "categorical") {
-        # pack predictions in a single column
+      if (private$.training_outcome_type$type == "categorical") {
         predictions <- pack_predictions(predictions)
       }
       return(predictions)

@@ -100,10 +100,19 @@
     <loc>https://tlverse.org/sl3/reference/Lrnr_glm_fast.html</loc>
   </url>
   <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_glm_semiparametric.html</loc>
+  </url>
+  <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_glmnet.html</loc>
   </url>
   <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_glmtree.html</loc>
+  </url>
+  <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_grf.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/reference/Lrnr_grfcate.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/Lrnr_gru_keras.html</loc>
@@ -256,6 +265,9 @@
     <loc>https://tlverse.org/sl3/reference/cv_risk.html</loc>
   </url>
   <url>
+    <loc>https://tlverse.org/sl3/reference/cv_sl.html</loc>
+  </url>
+  <url>
     <loc>https://tlverse.org/sl3/reference/debug_helpers.html</loc>
   </url>
   <url>
@@ -311,6 +323,9 @@
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/prediction_plot.html</loc>
+  </url>
+  <url>
+    <loc>https://tlverse.org/sl3/reference/process_data.html</loc>
   </url>
   <url>
     <loc>https://tlverse.org/sl3/reference/reduce_fit_test.html</loc>

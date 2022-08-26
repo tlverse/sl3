@@ -18,38 +18,29 @@ function.
 }
 \section{Parameters}{
 
-\describe{
-\item{\code{ntree = 500}}{Number of trees to grow. This should not be set
-to too small a number, to ensure that every input row gets predicted at
-least a few times.}
-\item{\code{keep.forest = TRUE}}{If \code{TRUE}, forest is stored, which is
-required for prediction.}
-\item{\code{nodesize = 5}}{Minimum number of observations in terminal
-nodes.}
-\item{\code{...}}{Other parameters passed to
-\code{\link[randomForest]{randomForest}}.}
+\itemize{
+\item \code{ntree = 500}: Number of trees to grow. This should not be set
+to too small a number, to ensure that every input row gets predicted
+at least a few times.
+\item \code{keep.forest = TRUE}: If \code{TRUE}, forest is stored, which is
+required for prediction.
+\item \code{nodesize = 5}: Minimum number of observations in a terminal node.
+\item \code{...}: Other parameters passed to \code{\link[randomForest]{randomForest}}.
 }
 }
 
 \examples{
-library(randomForest)
-
-# Load data
 data(cpp_imputed)
-
-# Create sl3 Task
-task <- sl3_Task$new(
-  cpp_imputed,
-  covariates = c(
-    "apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn"
-  ),
+# create task for prediction
+cpp_task <- sl3_Task$new(
+  data = cpp_imputed,
+  covariates = c("bmi", "parity", "mage", "sexn"),
   outcome = "haz"
 )
-
-# Create learner, train, and get predictions
-randomForest_learner <- Lrnr_randomForest$new(ntree = 400)
-randomForest_fit <- randomForest_learner$train(task)
-randomForest_pred <- randomForest_fit$predict()
+# initialization, training, and prediction with the defaults
+rf_lrnr <- Lrnr_randomForest$new()
+rf_fit <- rf_lrnr$train(cpp_task)
+rf_preds <- rf_fit$predict()
 }
 \seealso{
 Other Learners: 
@@ -74,8 +65,11 @@ Other Learners:
 \code{\link{Lrnr_ga}},
 \code{\link{Lrnr_gbm}},
 \code{\link{Lrnr_glm_fast}},
+\code{\link{Lrnr_glm_semiparametric}},
 \code{\link{Lrnr_glmnet}},
+\code{\link{Lrnr_glmtree}},
 \code{\link{Lrnr_glm}},
+\code{\link{Lrnr_grfcate}},
 \code{\link{Lrnr_grf}},
 \code{\link{Lrnr_gru_keras}},
 \code{\link{Lrnr_gts}},

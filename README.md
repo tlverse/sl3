@@ -22,7 +22,7 @@ Malenica](https://github.com/imalenica), [Rachael
 Phillips](https://github.com/rachaelvp), and [Oleg
 Sofrygin](https://github.com/osofr)
 
------
+------------------------------------------------------------------------
 
 ## What’s `sl3`?
 
@@ -44,10 +44,10 @@ fashions:
     (Breiman 1996) and *stacked generalization* (Wolpert 1992).
 
 Looking for long-form documentation or a walkthrough of the `sl3`
-package? Don’t worry\! Just browse [the chapter in our
+package? Don’t worry! Just browse [the chapter in our
 book](https://tlverse.org/tlverse-handbook/sl3.html).
 
------
+------------------------------------------------------------------------
 
 ## Installation
 
@@ -80,14 +80,14 @@ remotes::install_github("tlverse/sl3@v1.3.7")
 To contribute, check out the `devel` branch and consider submitting a
 pull request.
 
------
+------------------------------------------------------------------------
 
 ## Issues
 
 If you encounter any bugs or have any specific feature requests, please
 [file an issue](https://github.com/tlverse/sl3/issues).
 
------
+------------------------------------------------------------------------
 
 ## Examples
 
@@ -131,12 +131,12 @@ stack_fit <- learner_stack$train(task)
 preds <- stack_fit$predict()
 head(preds)
 #>    Lrnr_pkg_SuperLearner_SL.glmnet Lrnr_glm_TRUE
-#> 1:                       0.3525946    0.36298498
-#> 2:                       0.3525946    0.36298498
-#> 3:                       0.2442593    0.25993072
-#> 4:                       0.2442593    0.25993072
-#> 5:                       0.2442593    0.25993072
-#> 6:                       0.0269504    0.05680264
+#> 1:                      0.35767321    0.36298498
+#> 2:                      0.35767321    0.36298498
+#> 3:                      0.25185377    0.25993072
+#> 4:                      0.25185377    0.25993072
+#> 5:                      0.25185377    0.25993072
+#> 6:                      0.04220823    0.05680264
 #>    Pipeline(Lrnr_pkg_SuperLearner_screener_screen.glmnet->Lrnr_glm_TRUE)
 #> 1:                                                            0.36228209
 #> 2:                                                            0.36228209
@@ -197,6328 +197,3325 @@ package](https://CRAN.R-project.org/package=origami). To see the full
 list, query `?fold_funs` from within `R` or take a look at [`origami`’s
 online documentation](https://tlverse.org/origami/reference/).
 
------
+------------------------------------------------------------------------
 
 ## Learner Properties
 
 Properties supported by `sl3` learners are presented in the following
 table:
 
-<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:200px; overflow-x: scroll; width:100%; ">
+<div
+style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:200px; overflow-x: scroll; width:100%; ">
 
 <table class="table table-striped table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
-
 <thead>
-
 <tr>
-
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-
 </th>
-
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-
 binomial
-
 </th>
-
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-
 categorical
-
 </th>
-
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-
 continuous
-
 </th>
-
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-
 cv
-
 </th>
-
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-
 density
-
 </th>
-
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-
 h2o
-
 </th>
-
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-
 ids
-
 </th>
-
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-
 importance
-
 </th>
-
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-
 offset
-
 </th>
-
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-
 preprocessing
-
 </th>
-
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-
 sampling
-
 </th>
-
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-
 screener
-
 </th>
-
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-
 timeseries
-
 </th>
-
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-
 weights
-
 </th>
-
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-
 wrapper
-
 </th>
-
 </tr>
-
 </thead>
-
 <tbody>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_arima
-
+Lrnr_arima
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_bartMachine
-
+Lrnr_bartMachine
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_bayesglm
-
+Lrnr_bayesglm
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_bilstm
-
+Lrnr_bilstm
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_bound
-
+Lrnr_bound
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_caret
-
+Lrnr_caret
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_cv
-
+Lrnr_cv
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_cv\_selector
-
+Lrnr_cv_selector
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_dbarts
-
+Lrnr_dbarts
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_define\_interactions
-
+Lrnr_define_interactions
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_density\_discretize
-
+Lrnr_density_discretize
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_density\_hse
-
+Lrnr_density_hse
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_density\_semiparametric
-
+Lrnr_density_semiparametric
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_earth
-
+Lrnr_earth
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_expSmooth
-
+Lrnr_expSmooth
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_gam
-
+Lrnr_ga
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
+√
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
+√
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
+√
 </td>
-
+<td style="text-align:left;">
+x
+</td>
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_gbm
-
+Lrnr_gam
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_glm
-
+Lrnr_gbm
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
 x
-
 </td>
-
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_glm\_fast
-
+Lrnr_glm
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_glmnet
-
+Lrnr_glm_fast
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
+x
+</td>
+<td style="text-align:left;">
 √
-
 </td>
-
 <td style="text-align:left;">
-
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
+x
+</td>
+<td style="text-align:left;">
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_grf
-
+Lrnr_glm_semiparametric
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
+x
+</td>
+<td style="text-align:left;">
 √
-
 </td>
-
 <td style="text-align:left;">
-
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_gru\_keras
-
+Lrnr_glmnet
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_gts
-
+Lrnr_glmtree
 </td>
-
 <td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_h2o\_glm
-
+Lrnr_grf
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_h2o\_grid
-
+Lrnr_gru_keras
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_hal9001
-
+Lrnr_gts
 </td>
-
 <td style="text-align:left;">
-
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_haldensify
-
+Lrnr_h2o_glm
 </td>
-
 <td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
+√
 </td>
-
 <td style="text-align:left;">
-
-x
-
+√
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
+√
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
+√
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_HarmonicReg
-
+Lrnr_h2o_grid
 </td>
-
 <td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
+√
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_hts
-
+Lrnr_hal9001
 </td>
-
 <td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
+√
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_independent\_binomial
-
+Lrnr_haldensify
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_lightgbm
-
+Lrnr_HarmonicReg
 </td>
-
 <td style="text-align:left;">
-
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
 √
-
 </td>
-
 <td style="text-align:left;">
-
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
 √
-
 </td>
-
 <td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_lstm\_keras
-
+Lrnr_hts
 </td>
-
 <td style="text-align:left;">
-
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
 √
-
 </td>
-
 <td style="text-align:left;">
-
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
 √
-
 </td>
-
 <td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_mean
-
+Lrnr_independent_binomial
 </td>
-
 <td style="text-align:left;">
-
+x
+</td>
+<td style="text-align:left;">
 √
-
 </td>
-
 <td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
 x
-
 </td>
-
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_multiple\_ts
-
+Lrnr_lightgbm
 </td>
-
 <td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
+√
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_multivariate
-
+Lrnr_lstm_keras
 </td>
-
 <td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
+√
 </td>
-
 <td style="text-align:left;">
-
-x
-
+√
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
+√
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
+<td style="text-align:left;">
+x
+</td>
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_nnet
-
+Lrnr_mean
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_nnls
-
+Lrnr_multiple_ts
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
+√
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_optim
-
+Lrnr_multivariate
 </td>
-
 <td style="text-align:left;">
-
+x
+</td>
+<td style="text-align:left;">
 √
-
 </td>
-
 <td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
 x
-
 </td>
-
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_pca
-
+Lrnr_nnet
 </td>
-
 <td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
+√
 </td>
-
 <td style="text-align:left;">
-
-x
-
+√
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_pkg\_SuperLearner
-
+Lrnr_nnls
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
-√
-
+x
 </td>
-
 <td style="text-align:left;">
-
-√
-
+x
 </td>
-
+<td style="text-align:left;">
+x
+</td>
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_pkg\_SuperLearner\_method
-
+Lrnr_optim
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
-√
-
+x
 </td>
-
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_pkg\_SuperLearner\_screener
-
+Lrnr_pca
 </td>
-
 <td style="text-align:left;">
-
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
 x
-
 </td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_polspline
-
+Lrnr_pkg_SuperLearner
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
+x
+</td>
+<td style="text-align:left;">
 √
-
 </td>
-
 <td style="text-align:left;">
-
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
+√
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_pooled\_hazards
-
+Lrnr_pkg_SuperLearner_method
 </td>
-
 <td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
+√
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
+√
 </td>
-
+<td style="text-align:left;">
+√
+</td>
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_randomForest
-
+Lrnr_pkg_SuperLearner_screener
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
+x
+</td>
+<td style="text-align:left;">
 √
-
 </td>
-
 <td style="text-align:left;">
-
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
 √
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
+√
 </td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_ranger
-
+Lrnr_polspline
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_revere\_task
-
+Lrnr_pooled_hazards
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
-√
-
+x
 </td>
-
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_rpart
-
+Lrnr_randomForest
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_rugarch
-
+Lrnr_ranger
 </td>
-
 <td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
+√
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_screener\_augment
-
+Lrnr_revere_task
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_screener\_coefs
-
+Lrnr_rpart
 </td>
-
 <td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
+√
 </td>
-
 <td style="text-align:left;">
-
-x
-
+√
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_screener\_correlation
-
+Lrnr_rugarch
 </td>
-
 <td style="text-align:left;">
-
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
 √
-
 </td>
-
 <td style="text-align:left;">
-
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
 √
-
 </td>
-
 <td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_screener\_importance
-
+Lrnr_screener_augment
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_sl
-
+Lrnr_screener_coefs
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_solnp
-
+Lrnr_screener_correlation
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_solnp\_density
-
+Lrnr_screener_importance
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_stratified
-
+Lrnr_sl
 </td>
-
 <td style="text-align:left;">
-
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
 √
-
 </td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_subset\_covariates
-
+Lrnr_solnp
 </td>
-
 <td style="text-align:left;">
-
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
+√
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
+√
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_svm
-
+Lrnr_solnp_density
 </td>
-
 <td style="text-align:left;">
-
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
 √
-
 </td>
-
 <td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_ts\_weights
-
+Lrnr_stratified
 </td>
-
 <td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
-x
-
-</td>
-
-<td style="text-align:left;">
-
 √
-
 </td>
-
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_tsDyn
-
+Lrnr_subset_covariates
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
-Lrnr\_xgboost
-
+Lrnr_svm
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 √
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
 x
-
 </td>
-
 <td style="text-align:left;">
-
-√
-
-</td>
-
-<td style="text-align:left;">
-
 x
-
 </td>
-
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
 </tr>
-
+<tr>
+<td style="text-align:left;">
+Lrnr_ts_weights
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_tsDyn
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_xgboost
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+</tr>
 </tbody>
-
 </table>
 
 </div>
 
------
+------------------------------------------------------------------------
 
 ## Contributions
 
@@ -6527,27 +3524,25 @@ our [contribution
 guidelines](https://github.com/tlverse/sl3/blob/master/CONTRIBUTING.md)
 prior to submitting a pull request.
 
------
+------------------------------------------------------------------------
 
 ## Citation
 
 After using the `sl3` R package, please cite the following:
 
-``` 
- @software{coyle2021sl3-rpkg,
-      author = {Coyle, Jeremy R and Hejazi, Nima S and Malenica, Ivana and
-        Phillips, Rachael V and Sofrygin, Oleg},
-      title = {{sl3}: Modern Pipelines for Machine Learning and {Super
-        Learning}},
-      year = {2021},
-      howpublished = {\url{https://github.com/tlverse/sl3}},
-      note = {{R} package version 1.4.2},
-      url = {https://doi.org/10.5281/zenodo.1342293},
-      doi = {10.5281/zenodo.1342293}
-    }
-```
+        @software{coyle2021sl3-rpkg,
+          author = {Coyle, Jeremy R and Hejazi, Nima S and Malenica, Ivana and
+            Phillips, Rachael V and Sofrygin, Oleg},
+          title = {{sl3}: Modern Pipelines for Machine Learning and {Super
+            Learning}},
+          year = {2021},
+          howpublished = {\url{https://github.com/tlverse/sl3}},
+          note = {{R} package version 1.4.2},
+          url = {https://doi.org/10.5281/zenodo.1342293},
+          doi = {10.5281/zenodo.1342293}
+        }
 
------
+------------------------------------------------------------------------
 
 ## License
 
@@ -6560,20 +3555,20 @@ Sofrygin](https://github.com/osofr)
 The contents of this repository are distributed under the GPL-3 license.
 See file `LICENSE` for details.
 
------
+------------------------------------------------------------------------
 
 ## References
 
-<div id="refs" class="references">
+<div id="refs" class="references csl-bib-body hanging-indent">
 
-<div id="ref-breiman1996stacked">
+<div id="ref-breiman1996stacked" class="csl-entry">
 
 Breiman, Leo. 1996. “Stacked Regressions.” *Machine Learning* 24 (1):
 49–64.
 
 </div>
 
-<div id="ref-vdl2007super">
+<div id="ref-vdl2007super" class="csl-entry">
 
 van der Laan, Mark J, Eric C Polley, and Alan E Hubbard. 2007. “Super
 Learner.” *Statistical Applications in Genetics and Molecular Biology* 6
@@ -6581,7 +3576,7 @@ Learner.” *Statistical Applications in Genetics and Molecular Biology* 6
 
 </div>
 
-<div id="ref-wolpert1992stacked">
+<div id="ref-wolpert1992stacked" class="csl-entry">
 
 Wolpert, David H. 1992. “Stacked Generalization.” *Neural Networks* 5
 (2): 241–59.

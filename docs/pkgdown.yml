@@ -1,10 +1,10 @@
-pandoc: '2.5'
-pkgdown: 2.0.1
+pandoc: 2.17.0.1
+pkgdown: 2.0.3
 pkgdown_sha: ~
 articles:
   custom_lrnrs: custom_lrnrs.html
   intro_sl3: intro_sl3.html
-last_built: 2021-12-23T06:38Z
+last_built: 2022-06-05T19:58Z
 urls:
   reference: https://tlverse.org/sl3/reference
   article: https://tlverse.org/sl3/articles

@@ -46,7 +46,6 @@ test_that("Lrnr_nnls with binary outcome with convex TRUE works", {
   )
   lrnr_nnls <- make_learner(Lrnr_nnls, convex = TRUE)
   fit <- lrnr_nnls$train(task)
-  nnls::nnls(as.matrix(task$X), task$Y)
   expect_equal(fit$coefficients, coef(fit), sum(coef(fit) == 1))
 })
 
@@ -57,11 +56,11 @@ test_that("Lrnr_nnls coefficients with binary outcome match nnls coefficients", 
     covariates = c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn"),
     outcome = "haz_binary"
   )
-  lrnr_nnls <- make_learner(Lrnr_nnls)
+  lrnr_nnls <- make_learner(Lrnr_nnls, convex = FALSE)
   sl3_fit <- lrnr_nnls$train(task)
   sl3_fit_coefs <- coef(sl3_fit)
   library(nnls)
   nnls_fit <- nnls::nnls(as.matrix(task$X), task$Y)
   nnls_fit_coefs <- coef(nnls_fit)
-  expect_equal(sl3_fit_coefs, nnls_fit_coefs)
+  expect_equal(as.numeric(sl3_fit_coefs), nnls_fit_coefs)
 })

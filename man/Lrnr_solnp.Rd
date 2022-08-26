@@ -41,6 +41,11 @@ to 1.
 \item \code{init_0 = FALSE}: If \code{TRUE}, alpha is initialized to all 0's,
 useful for TMLE. Otherwise, it is initialized to equal weights summing
 to 1, useful for Super Learner.
+\item \code{rho = 1}: This is used as a penalty weighting scaler for
+infeasibility in the augmented objective function. The higher its
+value the more the weighting to bring the solution into the feasible
+region (default 1). However, very high values might lead to numerical
+ill conditioning or significantly slow down convergence.
 \item \code{outer.iter = 400}: Maximum number of major (outer) iterations.
 \item \code{inner.iter = 800}: Maximum number of minor (inner) iterations.
 \item \code{delta = 1e-7}:Relative step size in forward difference evaluation.
@@ -66,7 +71,7 @@ lrnrs <- c(lasso_lrnr, glm_lrnr, ranger_lrnr)
 names(lrnrs) <- c("lasso", "glm", "ranger")
 lrnr_stack <- make_learner(Stack, lrnrs)
 
-# instantiate SL with GA metalearner
+# instantiate SL with solnp metalearner
 solnp_meta <- Lrnr_solnp$new()
 sl <- Lrnr_sl$new(lrnr_stack, solnp_meta)
 sl_fit <- sl$train(task)
@@ -94,8 +99,11 @@ Other Learners:
 \code{\link{Lrnr_ga}},
 \code{\link{Lrnr_gbm}},
 \code{\link{Lrnr_glm_fast}},
+\code{\link{Lrnr_glm_semiparametric}},
 \code{\link{Lrnr_glmnet}},
+\code{\link{Lrnr_glmtree}},
 \code{\link{Lrnr_glm}},
+\code{\link{Lrnr_grfcate}},
 \code{\link{Lrnr_grf}},
 \code{\link{Lrnr_gru_keras}},
 \code{\link{Lrnr_gts}},

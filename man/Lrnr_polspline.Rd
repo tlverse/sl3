@@ -6,53 +6,40 @@
 \title{Polyspline - multivariate adaptive polynomial spline regression (polymars)
 and polychotomous regression and multiple classification (polyclass)}
 \format{
-\code{\link{R6Class}} object.
+An \code{\link[R6]{R6Class}} object inheriting from
+\code{\link{Lrnr_base}}.
 }
 \value{
-Learner object with methods for training and prediction. See
-\code{\link{Lrnr_base}} for documentation on learners.
+A learner object inheriting from \code{\link{Lrnr_base}} with
+methods for training and prediction. For a full list of learner
+functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 }
 \description{
 This learner provides fitting procedures for an adaptive regression procedure
-using piecewise linear splines to model the response, using the function
-\code{\link[polspline]{polymars}} or \code{\link[polspline]{polyclass}} from
-the \code{polspline} package as appropriate.
+using piecewise linear splines to model the response, using the the
+\pkg{polspline} package' functions \code{\link[polspline]{polymars}} (for
+continuous outcome prediction) or \code{\link[polspline]{polyclass}} (for
+binary or categorical outcome prediction).
 }
 \section{Parameters}{
 
-\describe{
-\item{\code{cv}}{The number of cross-validation folds to be used in
-evaluating the sequence of fit models. This is only passed to
-\code{\link[polspline]{polyclass}} for binary/categorical outcomes.
-}
-\item{\code{...}}{Other parameters passed to either
-\code{\link[polspline]{polymars}} or \code{\link[polspline]{polyclass}}.
-See their documentation for details.
-}
+\itemize{
+\item \code{...}: Other parameters passed to
+\code{\link[polspline]{polymars}}, \code{\link[polspline]{polyclass}},
+or additional arguments defined in \code{\link{Lrnr_base}} (such as
+\code{params} like \code{formula}). See their documentation for
+details.
 }
 }
 
 \examples{
-library(polspline)
-
-# Load data
 data(cpp_imputed)
-
-# Create sl3 Task
-task <- sl3_Task$new(
-  cpp_imputed,
-  covariates = c(
-    "apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn"
-  ),
-  outcome = "haz"
-)
-
-set.seed(4738)
-
-# Create learner, train, and get predictions
-polspline_learner <- make_learner(Lrnr_polspline)
-polspline_fit <- polspline_learner$train(task)
-polspline_pred <- polspline_fit$predict()
+covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
+task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
+polspline_lrnr <- Lrnr_caret$new(method = "rf")
+set.seed(693)
+polspline_lrnr_fit <- polspline_lrnr$train(task)
+polspline_lrnr_predictions <- polspline_lrnr_fit$predict()
 }
 \seealso{
 Other Learners: 
@@ -77,8 +64,11 @@ Other Learners:
 \code{\link{Lrnr_ga}},
 \code{\link{Lrnr_gbm}},
 \code{\link{Lrnr_glm_fast}},
+\code{\link{Lrnr_glm_semiparametric}},
 \code{\link{Lrnr_glmnet}},
+\code{\link{Lrnr_glmtree}},
 \code{\link{Lrnr_glm}},
+\code{\link{Lrnr_grfcate}},
 \code{\link{Lrnr_grf}},
 \code{\link{Lrnr_gru_keras}},
 \code{\link{Lrnr_gts}},
