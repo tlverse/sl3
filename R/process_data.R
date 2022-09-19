@@ -97,6 +97,16 @@ process_data <- function(data, nodes, column_names, flag = TRUE,
     factorized <- TRUE
   }
 
+  # check for single level/value covariates
+  is_single_level <- which(data[, sapply(.SD, function(x) uniqueN(x) == 1L),
+                                .SDcols = c(covariates_columns, outcome_columns)])
+  
+  if (length(is_single_level) != 0) {
+    single_level_covs <- column_names[is_single_level]
+    stop(paste(c(paste(single_level_covs, collapse = ", "), 
+                 "must have more than one category or unique value\n"), collapse = " "))
+  }
+  
   # process missing
   has_missing <- data[, sapply(.SD, function(x) any(is.na(x))), .SDcols = node_columns]
   miss_cols <- node_columns[has_missing]
