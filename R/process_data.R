@@ -98,22 +98,15 @@ process_data <- function(data, nodes, column_names, flag = TRUE,
   }
 
   # check for single level/value covariates and outcome
-  single_level_covs <- names(which(data[, sapply(.SD, function(x) uniqueN(x) == 1L), .SDcols = covariates_columns]))
-  if (length(single_level_covs) > 0) {
-    warning(sprintf(
-        "Dropping the following covariates as they are constant, with only one unique category/value: %s.",
-        paste0(single_level_covs, collapse = ", ")
-    ))
-    # drop constant covariates from data, covariates, all_nodes, and node_columns
-    covariates_columns <- covariates_columns[-which(covariates_columns %in% single_level_covs)]
-    nodes$covariates <- covariates_columns
-    all_nodes <- unlist(nodes)
-    node_columns <- unlist(column_names[all_nodes])
-    data <- data[, -single_level_covs, with=FALSE]
-    if(!is.null(column_names) && any(single_level_covs %in% column_names)){
-      column_names <- column_names[-which(column_names %in% single_level_covs)]
+  if(!is.null(nodes$covariates)){
+    single_level_covs <- names(which(data[, sapply(.SD, function(x) uniqueN(x) == 1L), .SDcols = covariates_columns]))
+    if (length(single_level_covs) > 0) {
+      warning(sprintf(
+          "The following covariates are constant, with only one unique category/value: %s.",
+          paste0(single_level_covs, collapse = ", ")
+      ))
     }
-  }
+  }                                                
                                                  
   if(!is.null(nodes$outcome)){
     single_level_outcome <- names(which(data[, sapply(.SD, function(x) uniqueN(x) == 1L), .SDcols = outcome_columns]))
