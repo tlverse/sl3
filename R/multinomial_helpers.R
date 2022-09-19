@@ -45,11 +45,6 @@ normalize_rows <- function(x) {
 #' @export
 factor_to_indicators <- function(x, ind_ref_mat = NULL) {
   x_vals <- get_levels(x)
-  
-  if (length(x_vals) == 1L) {
-    stop("Categorical variables must have more than one levels")
-  }
-  
   if (is.null(ind_ref_mat)) {
     ind_ref_mat <- sapply(x_vals[-1], function(x_val) as.numeric(x_val == x_vals))
   }
