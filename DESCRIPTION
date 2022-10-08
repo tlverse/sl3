@@ -29,7 +29,7 @@ Maintainer: Jeremy Coyle <jeremyrcoyle@gmail.com>
 Description: A modern implementation of the Super Learner prediction algorithm,
     coupled with a general-purpose framework for composing arbitrary pipelines
     for machine learning tasks.
-Depends: R (>= 4.2.0)
+Depends: R (>= 4.0.0)
 Imports:
     data.table,
     assertthat,
