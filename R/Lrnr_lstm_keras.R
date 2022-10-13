@@ -184,7 +184,7 @@ Lrnr_lstm_keras <- R6Class(
         y = args$y,
         batch_size = args$batch_size,
         epochs = args$epochs,
-        callbacks = callbacks,
+        callbacks = args$callbacks,
         verbose = verbose,
         shuffle = FALSE
       )
