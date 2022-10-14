@@ -44,6 +44,7 @@
 #'   be applied at given stages of the training procedure. Default callback
 #'   function \code{callback_early_stopping} stops training if the validation
 #'   loss does not improve across \code{patience} number of epochs.
+#'   - \code{validation_split}: Fraction of the training data to be used as validation data. Default is 0 (no validation).
 #'   - \code{...}: Other parameters passed to \code{\link[keras]{keras}}.
 #'
 #' @examples
@@ -72,7 +73,7 @@
 #' valid_task <- validation(task, fold = task$folds[[1]])
 #'
 #' # instantiate learner, then fit and predict (simplifed example)
-#' lstm_lrnr <- Lrnr_lstm_keras$new(batch_size = 1, epochs = 200)
+#' lstm_lrnr <- Lrnr_lstm_keras$new(batch_size = 1, epochs = 200, validation_split=0.2)
 #' lstm_fit <- lstm_lrnr$train(train_task)
 #' lstm_preds <- lstm_fit$predict(valid_task)
 #' }
@@ -93,6 +94,7 @@ Lrnr_lstm_keras <- R6Class(
                           lr = 0.001,
                           layers = 1,
                           callbacks = list(keras::callback_early_stopping(patience = 10)),
+                          validation_split=0,
                           ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
@@ -185,6 +187,7 @@ Lrnr_lstm_keras <- R6Class(
         batch_size = args$batch_size,
         epochs = args$epochs,
         callbacks = args$callbacks,
+        validation_split= args$validation_split,
         verbose = verbose,
         shuffle = FALSE
       )
