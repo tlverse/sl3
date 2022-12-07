@@ -48,6 +48,7 @@ This argument is ignored when \code{eval_function} is a loss.
 }
 
 \examples{
+\dontrun{
 data(cpp_imputed)
 covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
 task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
@@ -66,7 +67,8 @@ discrete_sl <- Lrnr_sl$new(
   learners = lrnr_stack, metalearner = metalrnr_discrete_MSE
 )
 discrete_sl_fit <- discrete_sl$train(task)
-discrete_sl_fit$cv_risk
+discrete_sl_fit$cv_risk(loss_squared_error)
+}
 }
 \seealso{
 Other Learners: 
