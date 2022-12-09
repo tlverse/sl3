@@ -209,7 +209,8 @@ This argument is ignored when <code>eval_function</code> is a loss.</p></li>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cpp_imputed</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cpp_imputed</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">covs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"apgar1"</span>, <span class="st">"apgar5"</span>, <span class="st">"parity"</span>, <span class="st">"gagebrth"</span>, <span class="st">"mage"</span>, <span class="st">"meducyrs"</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">task</span> <span class="op">&lt;-</span> <span class="va"><a href="sl3_Task.html">sl3_Task</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">cpp_imputed</span>, covariates <span class="op">=</span> <span class="va">covs</span>, outcome <span class="op">=</span> <span class="st">"haz"</span><span class="op">)</span></span>
 <span class="r-in"></span>
@@ -227,32 +228,8 @@ This argument is ignored when <code>eval_function</code> is a loss.</p></li>
 <span class="r-in">  learners <span class="op">=</span> <span class="va">lrnr_stack</span>, metalearner <span class="op">=</span> <span class="va">metalrnr_discrete_MSE</span></span>
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-in"><span class="va">discrete_sl_fit</span> <span class="op">&lt;-</span> <span class="va">discrete_sl</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">discrete_sl_fit</span><span class="op">$</span><span class="va">cv_risk</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> function (eval_fun, get_sl_revere_risk = FALSE) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     cv_stack_fit &lt;- self$fit_object$cv_fit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     stack_risks &lt;- cv_stack_fit$cv_risk(eval_fun)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     coefs &lt;- self$coefficients</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     if (!is.null(coefs)) {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         ordered_coefs &lt;- coefs[match(stack_risks$learner, names(coefs))]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     else {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         ordered_coefs &lt;- rep(NA, length(stack_risks$learner))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     set(stack_risks, , "coefficients", ordered_coefs)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     data.table::setcolorder(stack_risks, c(names(stack_risks)[1], </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         "coefficients"))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     if (get_sl_revere_risk) {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         sl_risk &lt;- cv_risk(self, eval_fun)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         set(sl_risk, , "learner", "SuperLearner")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         risks &lt;- rbind(stack_risks, sl_risk)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         return(risks)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     else {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         return(stack_risks)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x7f80a1885648&gt;</span>
+<span class="r-in"><span class="va">discrete_sl_fit</span><span class="op">$</span><span class="fu">cv_risk</span><span class="op">(</span><span class="va">loss_squared_error</span><span class="op">)</span></span>
+<span class="r-in"><span class="op">}</span></span>
 </code></pre></div>
     </div>
   </div>
