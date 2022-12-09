@@ -82,9 +82,9 @@
 * Added flexibility and error handling to optional `sl3_Task` argument
   `outcome_type`. Either `"binomial"`, `"binary"` or `binomial()` can be 
   supplied for a binary outcome; `"continuous"`,`"gaussian"`, or `gaussian()` 
-  for a continuous outcome; `"categorical"` or `mutlinomial()"` for a 
-  categorical outcome. As before, when `outcome_type` is not supplied, we will 
-  try to detect it from the outcome values. If the supplied `outcome_type` 
+  for a continuous outcome; `"categorical"`, `"multinomial"`, or `mutlinomial()"` 
+  for a categorical outcome. As before, when `outcome_type` is not supplied, we 
+  will try to detect it from the outcome values. If the supplied `outcome_type` 
   differs from the detected one, a warning is now thrown. If `outcome_type` is 
   supplied but invalid, then an error is thrown upon `sl3_Task` instantiation, 
   opposed to learner training.
