@@ -114,16 +114,48 @@ sl3_Task <- R6Class(
       private$.column_names <- column_names
 
       # process outcome type
-      if (is.character(outcome_type)) {
-        outcome_type <- variable_type(
-          type = outcome_type,
-          levels = outcome_levels, x = self$Y
-        )
-      } else if (is.null(outcome_type)) {
+      if (is.null(outcome_type)) {
         if (!is.null(nodes$outcome)) {
           outcome_type <- variable_type(x = self$Y)
         } else {
           outcome_type <- variable_type("none")
+        }
+      } else {
+        if ("family" %in% class(outcome_type)) {
+          outcome_type <- outcome_type$family
+        }
+        if (is.character(outcome_type)) {
+          if (outcome_type == "binary") {
+            outcome_type <- "binomial"
+          }
+          if (outcome_type == "gaussian") {
+            outcome_type <- "continuous"
+          }
+          if (outcome_type == "multinomial") {
+            outcome_type <- "categorical"
+          }
+          allowed_types <- c(
+            "binomial", "categorical", "continuous", "multivariate", "none"
+          )
+          if ((!outcome_type %in% allowed_types) | length(outcome_type) > 1) {
+            if (length(outcome_type) > 1) {
+              outcome_type <- paste(c(outcome_type), collapse = ", ")
+            }
+            stop(cat(sprintf(
+              "The supplied outcome_type %s is not supported.\n", outcome_type
+            )))
+          }
+          outcome_type <- variable_type(
+            type = outcome_type, levels = outcome_levels, x = self$Y
+          )
+        }
+        if (!"Variable_Type" %in% class(outcome_type)) {
+          if (length(outcome_type) > 1) {
+            outcome_type <- paste(c(outcome_type), collapse = ", ")
+          }
+          stop(cat(sprintf(
+            "The supplied outcome_type %s is not supported.\n", outcome_type
+          )))
         }
       }
       private$.outcome_type <- outcome_type
