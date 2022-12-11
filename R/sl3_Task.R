@@ -135,7 +135,8 @@ sl3_Task <- R6Class(
             outcome_type <- "categorical"
           }
           allowed_types <- c(
-            "binomial", "categorical", "continuous", "multivariate", "none"
+            "binomial", "categorical", "continuous", "multivariate", "none",
+            "quasibinomial"
           )
           if ((!outcome_type %in% allowed_types) | length(outcome_type) > 1) {
             if (length(outcome_type) > 1) {
