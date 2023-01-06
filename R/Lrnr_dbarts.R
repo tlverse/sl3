@@ -99,8 +99,21 @@
 #' }
 #'
 #' @template common_parameters
-#
-
+#' 
+#' @examples 
+#' set.seed(123)
+#' 
+#' # load example data
+#' data(cpp_imputed)
+#' covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
+#' 
+#' # create sl3 task
+#' task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
+#' dbart_learner <- make_learner(Lrnr_dbarts, ndpost = 200)
+#' 
+#' # train dbart learner and make predictions
+#' dbart_fit <- dbart_learner$train(task)
+#' preds <- dbart_fit$predict()
 Lrnr_dbarts <- R6Class(
   classname = "Lrnr_dbarts",
   inherit = Lrnr_base, portable = TRUE, class = TRUE,

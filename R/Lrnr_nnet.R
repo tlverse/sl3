@@ -33,7 +33,22 @@
 #' }
 #'
 #' @template common_parameters
-#
+#' 
+#' @examples 
+#' set.seed(123)
+#' 
+#' # load example data
+#' data(cpp_imputed)
+#' covars <- c("bmi", "parity", "mage", "sexn")
+#' outcome <- "haz"
+#' 
+#' # create sl3 task
+#' task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
+#' 
+#' # train neural networks and make predictions
+#' lrnr_nnet <- Lrnr_nnet$new(linout = TRUE, size = 10, maxit = 1000)
+#' fit <- lrnr_nnet$train(task)
+#' preds <- fit$predict(task)
 Lrnr_nnet <- R6Class(
   classname = "Lrnr_nnet",
   inherit = Lrnr_base, portable = TRUE, class = TRUE,
