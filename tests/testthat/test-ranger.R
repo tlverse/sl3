@@ -59,14 +59,18 @@ test_learner(Lrnr_ranger, task2)
 
 test_that("Lrnr_ranger predictions match those from ranger", {
   ## instantiate Lrnr_ranger, train on task, and predict on task
-  set.seed(73964)
-  lrnr_ranger <- Lrnr_ranger$new()
+  lrnr_ranger <- Lrnr_ranger$new(seed = 123)
   fit_lrnr_ranger <- lrnr_ranger$train(task)
   prd_lrnr_ranger <- fit_lrnr_ranger$predict()
 
   ## fit ranger using the data from the task
-  set.seed(73964)
-  fit_ranger <- ranger(mpg ~ ., data = task$data)
+  fit_ranger <- ranger(mpg ~ ., 
+                       num.trees = lrnr_ranger$params$num.trees,
+                       write.forest = lrnr_ranger$params$write.forest,
+                       importance = lrnr_ranger$params$importance,
+                       num.threads = lrnr_ranger$params$num.threads,
+                       seed = 123,
+                       data = task$data)
   prd_ranger <- predict(fit_ranger, data = task$data)[[1]]
 
   ## test equivalence of prediction from Lrnr_ranger and ranger::ranger
@@ -83,8 +87,7 @@ test_that("Naive test of Lrnr_ranger weights", {
   )
 
   ## instantiate Lrnr_ranger, train on task, and predict on task
-  lrnr_ranger <- Lrnr_ranger$new()
-  set.seed(73964)
+  lrnr_ranger <- Lrnr_ranger$new(seed = 123)
   fit_lrnr_ranger <- lrnr_ranger$train(task)
   prd_lrnr_ranger <- fit_lrnr_ranger$predict()
 
@@ -92,9 +95,9 @@ test_that("Naive test of Lrnr_ranger weights", {
   data <- cbind(task$Y, task$X)
   colnames(data)[1] <- task$nodes$outcome
   dependent.variable.name <- task$nodes$outcome
-  set.seed(73964)
   fit_ranger <- ranger(
     data = data,
+    seed = 123,
     dependent.variable.name = dependent.variable.name,
     case.weights = task$weights
   )

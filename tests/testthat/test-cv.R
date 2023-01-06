@@ -79,8 +79,10 @@ preds <- fit$predict_fold(task, "validation")
 cv_risk_table <- fit$cv_risk(loss_squared_error)
 
 # GLM should be perfect here because outcome = covariate
-expect_equal(cv_risk_table$coefficients[[1]], 1)
-expect_equal(cv_risk_table$MSE[[1]], 0)
+test_that("GLM is perfect when outcome = covariate", {
+  expect_equal(cv_risk_table$coefficients[[1]], 1)
+  expect_equal(cv_risk_table$MSE[[1]], 0)
+})
 
 ################################# test LOOCV ###################################
 test_loocv_learner <- function(learner, loocv_task, ...) {
