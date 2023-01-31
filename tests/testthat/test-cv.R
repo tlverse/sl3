@@ -155,3 +155,26 @@ if (Sys.info()["sysname"] == "Windows") {
 learners <- learners[!(learners == "Lrnr_grfcate")]
 lapply(learners, test_loocv_learner, loocv_task)
 test_loocv_learner("Lrnr_grfcate", loocv_task, A = "apgar1")
+
+
+###################### test CV predictions with new tasks ######################
+data(mtcars)
+mtcars_task <- make_sl3_Task(
+  data = mtcars[1:10,], outcome = "mpg", 
+  covariates = c( "cyl", "disp", "hp", "drat", "wt"), folds = 3
+)
+mtcars_task2 <- make_sl3_Task(
+  data = mtcars[11:30,], outcome = "mpg", 
+  covariates = c( "cyl", "disp", "hp", "drat", "wt")
+)
+lrnr_cv_glm <- Lrnr_cv$new(Lrnr_glm$new(), full_fit = TRUE)
+cv_glm_fit <- lrnr_cv_glm$train(mtcars_task)
+expect_error(cv_glm_fit$predict(mtcars_task2))
+expect_error(cv_glm_fit$predict_fold(mtcars_task2, "validation"))
+
+mtcars_task3 <- make_sl3_Task(
+  data = mtcars[11:30,], outcome = "mpg", 
+  covariates = c( "cyl", "disp", "hp", "drat", "wt"), folds = 3
+)
+expect_equal(length(cv_glm_fit$predict(mtcars_task3)), 20)
+expect_equal(length(cv_glm_fit$predict_fold(mtcars_task2, "validation")), 20)
