@@ -102,47 +102,45 @@ Lrnr_cv <- R6Class(
     predict_fold = function(task, fold_number = "validation", pred_unique_ts = FALSE) {
       fold_number <- interpret_fold_number(fold_number)
       if (fold_number == "validation") {
-        # return cross validation predicitons (what Lrnr_cv$predict does, so use that)
+
+        # return cross validation predictions (what Lrnr_cv$predict does)
         preds <- self$predict(task)
 
         ### Time-series addition:
         # Each time point gets an unique final prediction
         if (pred_unique_ts) {
           folds <- task$folds
-          index_val <- unlist(lapply(folds, function(fold) {
-            fold$validation_set
-          }))
+          index_val <- unlist(lapply(folds, function(fold) fold$validation_set))
           preds_unique <- unique(index_val)
 
           if (length(unique(index_val)) != length(index_val)) {
             # Average over the same predictions:
             preds <- data.table(index_val, preds)
-
             preds <- preds %>%
               group_by(index_val) %>%
               summarise_all(mean) %>%
               select(-1)
           }
         }
-        return(preds)
-      } else if (fold_number == "full") {
-        # check if we did a fold fit, and use that fit if available
-        if (self$params$full_fit) {
-          fold_fit <- self$fit_object$full_fit
-        } else {
-          stop("full fit requested, but Lrnr_cv was constructed with full_fit=FALSE")
-        }
       } else {
-        # use the requested fold fit
-        fold_number <- as.numeric(fold_number)
-        if (is.na(fold_number) || !(fold_number > 0)) {
-          stop("fold_number must be 'full', 'validation', or a positive integer")
+        if (fold_number == "full") {
+          # check if we did a fold fit, and use that fit if available
+          if (self$params$full_fit) {
+            fold_fit <- self$fit_object$full_fit
+          } else {
+            stop("full fit requested, but Lrnr_cv was constructed with full_fit=FALSE")
+          }
+        } else {
+          # use the requested fold fit
+          fold_number <- as.numeric(fold_number)
+          if (is.na(fold_number) || !(fold_number > 0)) {
+            stop("fold_number must be 'full', 'validation', or a positive integer")
+          }
+          fold_fit <- self$fit_object$fold_fits[[as.numeric(fold_number)]]
         }
-        fold_fit <- self$fit_object$fold_fits[[as.numeric(fold_number)]]
+        revere_task <- task$revere_fold_task(fold_number)
+        preds <- fold_fit$predict(revere_task)
       }
-
-      revere_task <- task$revere_fold_task(fold_number)
-      preds <- fold_fit$predict(revere_task)
       return(preds)
     },
     chain_fold = function(task, fold_number = "validation") {
@@ -334,6 +332,10 @@ Lrnr_cv <- R6Class(
       return(fit_object)
     },
     .predict = function(task) {
+      if (length(self$training_task$folds) != length(task$folds)) {
+        stop("Training and prediction tasks have different numbers of folds")
+      }
+
       folds <- task$folds
       fold_fits <- private$.fit_object$fold_fits
 
@@ -376,7 +378,7 @@ Lrnr_cv <- R6Class(
 
       # don't convert to vector if learner is stack, as stack won't
       if ((ncol(predictions) == 1) && !inherits(self$params$learner, "Stack")) {
-        predictions <- unlist(predictions)
+        predictions <- as.numeric(unlist(predictions))
       }
       return(predictions)
     },
