@@ -79,6 +79,15 @@
   treatment effect (CATE), which uses the `causal_forest` function in `grf` 
   package. This learner is intended for use in the `tmle3mopttx` package, where 
   CATE estimation and prediction is required.
+* Added flexibility and error handling to optional `sl3_Task` argument
+  `outcome_type`. Either `"binomial"`, `"binary"` or `binomial()` can be 
+  supplied for a binary outcome; `"continuous"`,`"gaussian"`, or `gaussian()` 
+  for a continuous outcome; `"categorical"`, `"multinomial"`, or `mutlinomial()"` 
+  for a categorical outcome. As before, when `outcome_type` is not supplied, we 
+  will try to detect it from the outcome values. If the supplied `outcome_type` 
+  differs from the detected one, a warning is now thrown. If `outcome_type` is 
+  supplied but invalid, then an error is thrown upon `sl3_Task` instantiation, 
+  opposed to learner training.
 
 # sl3 1.4.4
 * Updates to `Lrnr_nnls` to support binary outcomes, including support for
