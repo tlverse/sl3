@@ -131,12 +131,12 @@ stack_fit <- learner_stack$train(task)
 preds <- stack_fit$predict()
 head(preds)
 #>    Lrnr_pkg_SuperLearner_SL.glmnet Lrnr_glm_TRUE
-#> 1:                      0.35767321    0.36298498
-#> 2:                      0.35767321    0.36298498
-#> 3:                      0.25185377    0.25993072
-#> 4:                      0.25185377    0.25993072
-#> 5:                      0.25185377    0.25993072
-#> 6:                      0.04220823    0.05680264
+#> 1:                       0.3525946    0.36298498
+#> 2:                       0.3525946    0.36298498
+#> 3:                       0.2442593    0.25993072
+#> 4:                       0.2442593    0.25993072
+#> 5:                       0.2442593    0.25993072
+#> 6:                       0.0269504    0.05680264
 #>    Pipeline(Lrnr_pkg_SuperLearner_screener_screen.glmnet->Lrnr_glm_TRUE)
 #> 1:                                                            0.36228209
 #> 2:                                                            0.36228209
@@ -1413,6 +1413,56 @@ x
 <tr>
 <td style="text-align:left;">
 Lrnr_grf
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+√
+</td>
+<td style="text-align:left;">
+x
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lrnr_grfcate
 </td>
 <td style="text-align:left;">
 √
