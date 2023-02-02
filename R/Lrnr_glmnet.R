@@ -104,10 +104,6 @@ Lrnr_glmnet <- R6Class(
         args$family <- outcome_type$glm_family()
       }
 
-      if (args$family %in% "quasibinomial") {
-        args$family <- stats::quasibinomial()
-      }
-
       # specify data
       args$x <- as.matrix(task$X)
       args$y <- outcome_type$format(task$Y)
