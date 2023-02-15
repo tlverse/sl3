@@ -231,7 +231,7 @@ install.packages("sl3")
 <span class="co"># now, let's fit the Super Learner with just 5-fold CV, then get predictions</span>
 <span class="va">sl_fit</span> <span class="op">&lt;-</span> <span class="va">sl</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span>
 <span class="va">sl_preds</span> <span class="op">&lt;-</span> <span class="va">sl_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p>The <code>folds</code> argument to <code>sl3_Task</code> supports both integers (for V-fold CV) and all of the CV schemes supported in the <a href="https://CRAN.R-project.org/package=origami" class="external-link"><code>origami</code> package</a>. To see the full list, query <code><a href="http://tlverse.org/origami/reference/fold_funs.html" class="external-link">?fold_funs</a></code> from within <code>R</code> or take a look at <a href="https://tlverse.org/origami/reference/" class="external-link"><code>origami</code>’s online documentation</a>.</p>
+<p>The <code>folds</code> argument to <code>sl3_Task</code> supports both integers (for V-fold CV) and all of the CV schemes supported in the <a href="https://CRAN.R-project.org/package=origami" class="external-link"><code>origami</code> package</a>. To see the full list, query <code><a href="https://rdrr.io/pkg/origami/man/fold_funs.html" class="external-link">?fold_funs</a></code> from within <code>R</code> or take a look at <a href="https://tlverse.org/origami/reference/" class="external-link"><code>origami</code>’s online documentation</a>.</p>
 <hr>
 </div>
 </div>
