@@ -52,8 +52,6 @@ test_learner <- function(learner, task, ...) {
 }
 
 ## test rpart learner:
-op <- options(sl3.verbose = TRUE)
-options(op)
 test_learner(Lrnr_rpart, task)
 test_learner(Lrnr_rpart, task2)
 

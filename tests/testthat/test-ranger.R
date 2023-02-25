@@ -52,8 +52,6 @@ test_learner <- function(learner, task, ...) {
 }
 
 ## test ranger learner:
-op <- options(sl3.verbose = TRUE)
-options(op)
 test_learner(Lrnr_ranger, task)
 test_learner(Lrnr_ranger, task2)
 
