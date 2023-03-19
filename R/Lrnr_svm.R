@@ -123,10 +123,10 @@ Lrnr_svm <- R6Class(
 
       if (outcome_type %in% c("binomial", "categorical")) {
         predictions <- attr(predictions, "probabilities")
-        if(outcome_type == "categorical"){
+        if (outcome_type == "categorical") {
           predictions <- pack_predictions(predictions)
-        } else if (outcome_type == "binomial"){
-          predictions <- as.numeric(predictions[,2]) # P(Y=1|X)
+        } else if (outcome_type == "binomial") {
+          predictions <- as.numeric(predictions[, 2]) # P(Y=1|X)
         }
       } else {
         predictions <- as.numeric(predictions)

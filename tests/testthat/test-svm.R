@@ -37,14 +37,14 @@ test_learner <- function(learner, task, binary_task = F, ...) {
     length(task$Y)
   ))
 
-  if(!binary_task){
+  if (!binary_task) {
     holdout_preds <- fit_obj$predict(task2)
     test_that("Learner can generate holdout set predictions", expect_equal(
       train_preds,
       holdout_preds
     ))
   }
- 
+
   # test learner chaining
   chained_task <- fit_obj$chain()
   test_that("Chaining returns a task", {

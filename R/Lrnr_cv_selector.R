@@ -106,7 +106,7 @@ Lrnr_cv_selector <- R6Class(
         !attr(eval_result_test, "loss")) {
         loss_function <- FALSE
         if (!is.null(attr(eval_result_test, "optimize")) &&
-            attr(eval_result_test, "optimize") == "maximize") {
+          attr(eval_result_test, "optimize") == "maximize") {
           optimizer_minimize <- FALSE
         }
       }
@@ -149,7 +149,7 @@ Lrnr_cv_selector <- R6Class(
       fit_object$cv_risk <- apply(X, 2, cv_risk_fun, Y)
 
       coefs <- rep(0L, length(fit_object$cv_risk))
-      if(optimizer_minimize){
+      if (optimizer_minimize) {
         coefs[which.min(fit_object$cv_risk)] <- 1
         fit_object$name <- names(fit_object$cv_risk)[which.min(fit_object$cv_risk)]
       } else {
