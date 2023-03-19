@@ -100,10 +100,15 @@ Lrnr_cv_selector <- R6Class(
 
       # is evaluation function a risk or loss function?
       loss_function <- TRUE
+      optimizer_minimize <- TRUE
       eval_result_test <- eval_function(X[, 1], Y)
       if (!is.null(attr(eval_result_test, "loss")) &&
         !attr(eval_result_test, "loss")) {
         loss_function <- FALSE
+        if (!is.null(attr(eval_result_test, "optimize")) &&
+            attr(eval_result_test, "optimize") == "maximize") {
+          optimizer_minimize <- FALSE
+        }
       }
 
       # to calculate the CV risk, we need folds if evaluation function is risk
@@ -144,11 +149,15 @@ Lrnr_cv_selector <- R6Class(
       fit_object$cv_risk <- apply(X, 2, cv_risk_fun, Y)
 
       coefs <- rep(0L, length(fit_object$cv_risk))
-      coefs[which.min(fit_object$cv_risk)] <- 1
+      if(optimizer_minimize){
+        coefs[which.min(fit_object$cv_risk)] <- 1
+        fit_object$name <- names(fit_object$cv_risk)[which.min(fit_object$cv_risk)]
+      } else {
+        coefs[which.max(fit_object$cv_risk)] <- 1
+        fit_object$name <- names(fit_object$cv_risk)[which.max(fit_object$cv_risk)]
+      }
       names(coefs) <- names(fit_object$cv_risk)
       fit_object$coefficients <- coefs
-
-      fit_object$name <- names(fit_object$cv_risk)[which.min(fit_object$cv_risk)]
 
       return(fit_object)
     },
