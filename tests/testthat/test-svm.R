@@ -16,8 +16,12 @@ task2 <- sl3_Task$new(mtcars, covariates = c(
   "vs", "am", "gear", "carb"
 ), outcome = "mpg")
 
+task_binaryY <- sl3_Task$new(mtcars, covariates = c(
+  "cyl", "disp", "hp", "drat", "wt", "qsec",
+  "mpg", "am", "gear", "carb"
+), outcome = "vs")
 
-test_learner <- function(learner, task, ...) {
+test_learner <- function(learner, task, binary_task = F, ...) {
   # test learner definition this requires that a learner can be instantiated
   # with only default arguments. Not sure if this is a reasonable requirement
   learner_obj <- learner$new(...)
@@ -33,11 +37,13 @@ test_learner <- function(learner, task, ...) {
     length(task$Y)
   ))
 
-  holdout_preds <- fit_obj$predict(task2)
-  test_that("Learner can generate holdout set predictions", expect_equal(
-    train_preds,
-    holdout_preds
-  ))
+  if (!binary_task) {
+    holdout_preds <- fit_obj$predict(task2)
+    test_that("Learner can generate holdout set predictions", expect_equal(
+      train_preds,
+      holdout_preds
+    ))
+  }
 
   # test learner chaining
   chained_task <- fit_obj$chain()
@@ -49,11 +55,13 @@ test_learner <- function(learner, task, ...) {
   })
 }
 
+
 ## test svm learner:
 op <- options(sl3.verbose = TRUE)
 options(op)
 test_learner(Lrnr_svm, task)
 test_learner(Lrnr_svm, task2)
+test_learner(Lrnr_svm, task_binaryY, binary_task = T)
 
 test_that("Lrnr_svm predictions match those from svm", {
   ## instantiate Lrnr_svm, train on task, and predict on task
@@ -71,11 +79,3 @@ test_that("Lrnr_svm predictions match those from svm", {
   ## test equivalence of prediction from Lrnr_svm and svm::svm
   expect_equal(prd_lrnr_svm, prd_svm)
 })
-
-
-task_binaryY <- sl3_Task$new(mtcars, covariates = c(
-  "cyl", "disp", "hp", "drat", "wt", "qsec",
-  "mpg", "am", "gear", "carb"
-), outcome = "vs")
-lrnr_svm <- Lrnr_svm$new()
-fit_lrnr_svm_binary_Y <- lrnr_svm$train(task_binaryY)

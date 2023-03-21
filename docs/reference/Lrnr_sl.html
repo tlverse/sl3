@@ -114,7 +114,7 @@ such as cross-validated super learner (<code><a href="cv_sl.html">cv_sl</a></cod
 when <code>Lrnr_sl</code> is considered in the list of candidate
 <code>learners</code> in another <code>Lrnr_sl</code>. Includes the arguments
 listed below, and any others to be passed to
-<code><a href="https://rdrr.io/pkg/origami/man/fold_funs.html" class="external-link">fold_funs</a></code>:</p><ul><li><p><code>strata = NULL</code>: Discrete covariate or outcome name to
+<code><a href="http://tlverse.org/origami/reference/fold_funs.html" class="external-link">fold_funs</a></code>:</p><ul><li><p><code>strata = NULL</code>: Discrete covariate or outcome name to
 define stratified cross-validation folds. If <code>NULL</code> and if
 <code>task$outcome_type$type</code> is binary or categorical, then the
 default behavior is to consider stratified cross-validation, where
@@ -134,15 +134,15 @@ consider clustered cross-validation when <code>task$nodes$id</code> is
 not <code>NULL</code>, set <code>cluster_by_id = FALSE</code>.</p></li>
 <li><p><code>fold_fun = NULL</code>: A function indicating the <span class="pkg">origami</span>
 cross-validation scheme to use, such as
-<code><a href="https://rdrr.io/pkg/origami/man/fold_funs.html" class="external-link">folds_vfold</a></code> for V-fold cross-validation.
-See <code><a href="https://rdrr.io/pkg/origami/man/fold_funs.html" class="external-link">fold_funs</a></code> for a list of possibilities.
+<code><a href="http://tlverse.org/origami/reference/fold_funs.html" class="external-link">folds_vfold</a></code> for V-fold cross-validation.
+See <code><a href="http://tlverse.org/origami/reference/fold_funs.html" class="external-link">fold_funs</a></code> for a list of possibilities.
 If <code>NULL</code> (default) and if other <code>cv_control</code> arguments
 are specified, e.g., <code>V</code>, <code>strata</code> or
 <code>cluster_by_id</code>, then the default behavior is to set
 <code>fold_fun = origami::folds_vfold</code>.</p></li>
 <li><p><code>...</code>: Other arguments to be passed to <code>fold_fun</code>, such as
 <code>V</code> for <code>fold_fun = folds_vfold</code>. See
-<code><a href="https://rdrr.io/pkg/origami/man/fold_funs.html" class="external-link">fold_funs</a></code> for a list fold-function-specific
+<code><a href="http://tlverse.org/origami/reference/fold_funs.html" class="external-link">fold_funs</a></code> for a list fold-function-specific
 possible arguments.</p></li>
 </ul></li>
 <li><p><code>keep_extra = TRUE</code>: Stores all sub-parts of the super learner
