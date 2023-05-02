@@ -38,11 +38,20 @@ Variable_Type <- R6Class(
       } else {
         detected_type <- detect_type(flag = FALSE)
         if (detected_type != type & detected_type != "none") {
-          warning(paste0(
-            "The supplied outcome_type (", type,
-            ") does not correspond to the detected type (", detected_type,
-            "). Ensure outcome_type is specified appropriately."
-          ))
+          if (type == "quasibinomial") {
+            if (min(x) < 0 | max(x) > 1) {
+              stop(paste0(
+                "Outcome values fall outside [0,1]! Supplied outcome_type (",
+                type, ") cannot support outcome values outside [0,1]."
+              ))
+            }
+          } else {
+            warning(paste0(
+              "The supplied outcome_type (", type,
+              ") does not correspond to the detected type (", detected_type,
+              "). Ensure outcome_type is specified appropriately."
+            ))
+          }
         }
       }
       private$.type <- type
