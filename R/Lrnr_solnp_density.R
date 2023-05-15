@@ -89,7 +89,7 @@ Lrnr_solnp_density <- R6Class(
         } else {
           stop("all SL model coefficients are NA.")
         }
-        setnames(predictions, "likelihood")
+        #setnames(predictions, "likelihood")
       }
       return(predictions)
     },
