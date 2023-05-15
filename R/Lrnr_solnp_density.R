@@ -75,22 +75,21 @@ Lrnr_solnp_density <- R6Class(
     },
     .predict = function(task = NULL) {
       verbose <- getOption("sl3.verbose")
-      X <- task$X
-      predictions <- rep.int(NA, nrow(X))
-      if (nrow(X) > 0) {
+      predictions <- rep.int(NA, task$nrow)
+      if (task$nrow > 0) {
         coef <- private$.fit_object$coef
         if (!all(is.na(coef))) {
-          predictions <- data.table::data.table(as.matrix(X
+          predictions <- as.numeric(as.matrix(task$X
           [,
             which(!is.na(coef)),
             drop = FALSE, with = FALSE
           ]) %*%
-            coef[!is.na(coef)])
+          coef[!is.na(coef)])
         } else {
           stop("all SL model coefficients are NA.")
         }
-        #setnames(predictions, "likelihood")
       }
+      browser()
       return(predictions)
     },
     .required_packages = c("Rsolnp")
