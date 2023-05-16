@@ -27,9 +27,9 @@ Authors@R: c(
   )
 Maintainer: Jeremy Coyle <jeremyrcoyle@gmail.com>
 Description: A modern implementation of the Super Learner prediction algorithm,
-    coupled with a general-purpose framework for composing arbitrary pipelines
+    coupled with a general purpose framework for composing arbitrary pipelines
     for machine learning tasks.
-Depends: R (>= 4.2.0)
+Depends: R (>= 3.6.0)
 Imports:
     data.table,
     assertthat,
@@ -87,7 +87,7 @@ Suggests:
     lightgbm,
     dbarts,
     gam (>= 1.15.0),
-    haldensify (>= 0.1.5),
+    haldensify (>= 0.2.3),
     mgcv,
     hts,
     GA,
