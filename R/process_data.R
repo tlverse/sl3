@@ -97,6 +97,27 @@ process_data <- function(data, nodes, column_names, flag = TRUE,
     factorized <- TRUE
   }
 
+  # check for single level/value covariates and outcome
+  if(!is.null(nodes$covariates)){
+    single_level_covs <- names(which(data[, sapply(.SD, function(x) uniqueN(x) == 1L), .SDcols = covariates_columns]))
+    if (length(single_level_covs) > 0) {
+      warning(sprintf(
+          "The following covariates are constant, with only one unique category/value: %s.",
+          paste0(single_level_covs, collapse = ", ")
+      ))
+    }
+  }                                                
+                                                 
+  if(!is.null(nodes$outcome)){
+    single_level_outcome <- names(which(data[, sapply(.SD, function(x) uniqueN(x) == 1L), .SDcols = outcome_columns]))
+    if (length(single_level_outcome) > 0) {                                                 
+      warning(sprintf(
+        "Outcome %s is constant, with only one unique category/value. This is okay for prediction, but might break training.",
+        paste0(single_level_outcome, collapse = ", ")
+      ))
+    }
+  }
+  
   # process missing
   has_missing <- data[, sapply(.SD, function(x) any(is.na(x))), .SDcols = node_columns]
   miss_cols <- node_columns[has_missing]
