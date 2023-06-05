@@ -2,7 +2,6 @@
 library(testthat)
 context("test-ROCR_risk.R -- Lrnr_sl functionality with ROCR risks")
 
-options(sl3.verbose = TRUE)
 library(sl3)
 library(origami)
 library(SuperLearner)

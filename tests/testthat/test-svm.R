@@ -57,8 +57,6 @@ test_learner <- function(learner, task, binary_task = F, ...) {
 
 
 ## test svm learner:
-op <- options(sl3.verbose = TRUE)
-options(op)
 test_learner(Lrnr_svm, task)
 test_learner(Lrnr_svm, task2)
 test_learner(Lrnr_svm, task_binaryY, binary_task = T)

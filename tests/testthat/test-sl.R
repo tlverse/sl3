@@ -1,7 +1,6 @@
 library(testthat)
 context("test_sl.R -- Basic Lrnr_sl functionality")
 
-options(sl3.verbose = TRUE)
 library(sl3)
 library(origami)
 library(SuperLearner)

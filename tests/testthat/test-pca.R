@@ -34,12 +34,14 @@ pcr_cpp <- glm(cpp_imputed$haz ~ -1 + cpp_pca_rotated)
 pcr_preds <- predict(pcr_cpp) %>%
   as.numeric()
 
+dimnames(cpp_pca$x) <- list(NULL, dimnames(cpp_pca$x)[[2]])
+
 test_that("PCA computed by Lrnr_pca matches stats::prcomp exactly.", {
-  all.equal(pca_from_pipe, cpp_pca)
+  expect_equal(pca_from_pipe, cpp_pca)
 })
 
 test_that("Regression on PCs matches between Pipeline and manual invocation.", {
-  all.equal(out_pcr_fit, pcr_preds)
+  expect_identical(out_pcr_fit, pcr_preds)
 })
 
 test_that("Arguments are passed to prcomp correctly by Lrnr_pca", {

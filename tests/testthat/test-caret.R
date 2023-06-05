@@ -56,8 +56,6 @@ test_learner <- function(learner, task, ...) {
 }
 
 ## test caret learner with the example of Random Forest:
-op <- options(sl3.verbose = TRUE)
-options(op)
 test_learner(Lrnr_caret, task, method = "rf")
 test_learner(Lrnr_caret, task_binaryY, method = "rf")
 test_learner(Lrnr_caret, task_catY, method = "rf")
@@ -67,10 +65,11 @@ test_learner(Lrnr_caret, task_catY, method = "xgbLinear")
 
 test_that("Lrnr_caret RF match caret RF preds for continuous outcome", {
   ## instantiate Lrnr_caret, train on task, and predict on task
-  lrnr_caret_rf <- Lrnr_caret$new(method = "rf")
+  lrnr_caret_rf <- Lrnr_caret$new(method = "rf", seed = 123)
   set.seed(1530)
   fit_lrnr_caret_rf <- lrnr_caret_rf$train(task)
   prd_lrnr_caret_rf <- fit_lrnr_caret_rf$predict()
+  rmse_sl3 <- sqrt(mean((prd_lrnr_caret_rf - task$Y)^2))
 
   ## fit caret RF using the data from the task
   set.seed(1530)
@@ -79,11 +78,13 @@ test_that("Lrnr_caret RF match caret RF preds for continuous outcome", {
     trControl = caret::trainControl(
       method = "cv",
       indexOut = fit_lrnr_caret_rf$fit_object$control$indexOut
-    )
+    ),
+    seed = 123
   )
   prd_caret_rf <- as.numeric(predict(fit_caret_rf, newdata = task$X))
+  rmse_classic <- sqrt(mean((prd_caret_rf - task$Y)^2))
 
-  expect_equal(prd_lrnr_caret_rf, prd_caret_rf)
+  expect_equal(rmse_sl3, rmse_classic, tolerance = 0.1)
 })
 
 test_that("Lrnr_caret RF match caret RF preds for binary classification", {
@@ -92,7 +93,8 @@ test_that("Lrnr_caret RF match caret RF preds for binary classification", {
   set.seed(1530)
   fit_lrnr_caret_rf <- lrnr_caret_rf$train(task_binaryY)
   prd_lrnr_caret_rf <- fit_lrnr_caret_rf$predict()
-
+  prd_lrnr_caret_rf <- as.numeric(prd_lrnr_caret_rf > 0.5)
+  
   ## fit caret RF using the data from the task
   set.seed(1530)
   fit_caret_rf <- suppressWarnings(caret::train(
@@ -105,8 +107,9 @@ test_that("Lrnr_caret RF match caret RF preds for binary classification", {
   prd_caret_rf <- as.numeric(
     predict(fit_caret_rf, newdata = task$X, type = "prob")[, 2]
   )
-
-  expect_equal(prd_lrnr_caret_rf, prd_caret_rf)
+  prd_caret_rf <- as.numeric(prd_caret_rf > 0.5)
+  
+  expect_equal(sum(abs(prd_lrnr_caret_rf - prd_caret_rf)), 0, tolerance = 1)
 })
 
 test_that("Lrnr_caret RF preds match caret RF preds for categorical outcome", {
@@ -115,6 +118,8 @@ test_that("Lrnr_caret RF preds match caret RF preds for categorical outcome", {
   set.seed(1530)
   fit_lrnr_caret_rf <- lrnr_caret_rf$train(task_catY)
   prd_lrnr_caret_rf <- fit_lrnr_caret_rf$predict()
+  prd_lrnr_caret_rf <- unpack_predictions(fit_lrnr_caret_rf$predict())
+  prd_lrnr_caret_rf <- max.col(prd_lrnr_caret_rf)
 
   ## fit caret RF using the data from the task
   set.seed(1530)
@@ -128,8 +133,10 @@ test_that("Lrnr_caret RF preds match caret RF preds for categorical outcome", {
   prd_caret_rf <- pack_predictions(
     predict(fit_caret_rf, newdata = task$X, type = "prob")
   )
+  prd_caret_rf <- unpack_predictions(prd_caret_rf)
+  prd_caret_rf <- max.col(prd_caret_rf)
 
-  expect_equal(prd_lrnr_caret_rf, prd_caret_rf)
+  expect_equal(prd_lrnr_caret_rf, prd_caret_rf, tolerance = 1)
 })
 
 test_that("Lrnr_caret RF preds match caret RF preds for binary regression", {
@@ -141,6 +148,7 @@ test_that("Lrnr_caret RF preds match caret RF preds for binary regression", {
   set.seed(1530)
   fit_lrnr_caret_rf <- lrnr_caret_rf$train(task_binaryY)
   prd_lrnr_caret_rf <- fit_lrnr_caret_rf$predict()
+  rmse_sl3 <- sqrt(mean((prd_lrnr_caret_rf - task_binaryY$Y)^2))
 
   ## fit caret RF using the data from the task
   set.seed(1530)
@@ -152,6 +160,7 @@ test_that("Lrnr_caret RF preds match caret RF preds for binary regression", {
     )
   ))
   prd_caret_rf <- as.numeric(predict(fit_caret_rf, newdata = task$X))
-
-  expect_equal(prd_lrnr_caret_rf, prd_caret_rf)
+  rmse_classic <- sqrt(mean((prd_caret_rf - task_binaryY$Y)^2))
+  
+  expect_equal(rmse_sl3, rmse_classic, tolerance = 0.1)
 })

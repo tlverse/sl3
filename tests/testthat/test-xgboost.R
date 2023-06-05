@@ -52,7 +52,6 @@ test_learner <- function(learner, task, ...) {
 }
 
 ## test xgboost learner:
-options(sl3.verbose = TRUE)
 test_learner(Lrnr_xgboost, task)
 test_learner(Lrnr_xgboost, task2)
 

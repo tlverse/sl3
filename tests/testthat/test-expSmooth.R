@@ -1,21 +1,8 @@
 context("test-expSmooth.R -- Lrnr_expSmooth")
 
-if (FALSE) {
-  setwd("..")
-  setwd("..")
-  getwd()
-  library("devtools")
-  document()
-  # load all R files in /R and datasets in /data. Ignores NAMESPACE:
-  load_all("./")
-  # devtools::check() # runs full check
-  setwd("..")
-  # INSTALL W/ devtools:
-  install("sl3", build_vignettes = FALSE, dependencies = FALSE)
-}
+library(origami)
 
 set.seed(1)
-
 data(bsds)
 covars <- c("temp", "windspeed")
 outcome <- "cnt"

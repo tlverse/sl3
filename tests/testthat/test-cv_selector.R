@@ -1,19 +1,5 @@
 context("test-cv-selector.R -- Lrnr_cv_selector for CV-selector metalearner")
 
-if (FALSE) {
-  setwd("..")
-  setwd("..")
-  getwd()
-  library("devtools")
-  document()
-  # load all R files in /R and datasets in /data. Ignores NAMESPACE:
-  load_all("./")
-  devtools::check() # runs full check
-  setwd("..")
-  # INSTALL W/ devtools:
-  install("sl3", build_vignettes = FALSE, dependencies = FALSE)
-}
-
 # set seed, load data, and make task
 set.seed(32798)
 library(data.table)

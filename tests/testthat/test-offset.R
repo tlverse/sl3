@@ -46,24 +46,26 @@ newoffset_task <- sl3_Task$new(
 )
 
 # specifically test lrnr_glm against base glm
-lrnr_glm <- make_learner(Lrnr_glm_fast)
-
-fit <- lrnr_glm$train(task)
-offset_fit <- lrnr_glm$train(offset_task)
-
-preds <- fit$predict()
-offset_preds <- offset_fit$predict()
-expect_false(isTRUE(all.equal(preds, offset_preds)))
-
-glm_fit <- glm(A ~ W1 + W2 + W3 + W4, data, family = binomial())
-expect_equivalent(coef(glm_fit), coef(fit))
-
-glm_offset_fit <- glm(
-  A ~ W1 + W2 + W3 + W4, data,
-  family = binomial(),
-  offset = qlogis(data$offset)
-)
-expect_equivalent(coef(glm_offset_fit), coef(offset_fit))
+test_that("Lrnr_glm_fast produces same results as base glm with offset", {
+  lrnr_glm <- make_learner(Lrnr_glm_fast)
+  
+  fit <- lrnr_glm$train(task)
+  offset_fit <- lrnr_glm$train(offset_task)
+  
+  preds <- fit$predict()
+  offset_preds <- offset_fit$predict()
+  expect_false(isTRUE(all.equal(preds, offset_preds)))
+  
+  glm_fit <- glm(A ~ W1 + W2 + W3 + W4, data, family = binomial())
+  expect_equivalent(coef(glm_fit), coef(fit))
+  
+  glm_offset_fit <- glm(
+    A ~ W1 + W2 + W3 + W4, data,
+    family = binomial(),
+    offset = qlogis(data$offset)
+  )
+  expect_equivalent(coef(glm_offset_fit), coef(offset_fit))
+})
 
 # test generally that offsets work for learners that should support them
 test_learner_offset_support <- function(learner,
@@ -99,16 +101,18 @@ test_learner_offset_support <- function(learner,
 # offset_learners <- c("Lrnr_glm", "Lrnr_glm_fast", "Lrnr_h2o_glm",
 # "Lrnr_h2o_grid", "Lrnr_optim", "Lrnr_solnp",
 # "Lrnr_xgboost")
-offset_learner_stack <- make_learner_stack(
-  "Lrnr_glm", "Lrnr_glm_fast",
-  "Lrnr_mean", "Lrnr_xgboost"
-)
-
-offset_learners <- offset_learner_stack$params$learners
-lapply(
-  offset_learners, test_learner_offset_support,
-  task = task,
-  offset_task = offset_task, newoffset_task = newoffset_task
-)
+test_that("Offset works for learners that support it", {
+  offset_learner_stack <- make_learner_stack(
+    "Lrnr_glm", "Lrnr_glm_fast",
+    "Lrnr_mean", "Lrnr_xgboost"
+  )
+  
+  offset_learners <- offset_learner_stack$params$learners
+  lapply(
+    offset_learners, test_learner_offset_support,
+    task = task,
+    offset_task = offset_task, newoffset_task = newoffset_task
+  )
+})
 
 # TODO: check that offsets don't apply to Lrnr_sl metalearners (by default)
