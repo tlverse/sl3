@@ -5,9 +5,10 @@ plan(sequential)
 
 data(cpp_imputed)
 task <- sl3_Task$new(
-  cpp_imputed, 
+  cpp_imputed,
   covariates = c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn"),
-  outcome = "haz")
+  outcome = "haz"
+)
 
 lrnr_rf <- Lrnr_randomForest$new()
 
@@ -17,7 +18,7 @@ test_that("FutureJob using delayed is reproducible", {
   sched <- Scheduler$new(test_delayed, FutureJob)
   fit_delayed <- sched$compute()
   preds_delayed <- fit_delayed$predict()
-  
+
   set.seed(123)
   options(sl3.enable.future = TRUE) # the default
   fit <- lrnr_rf$train(task)
@@ -31,7 +32,7 @@ test_that("SequentialJob is reproducible", {
   sched <- Scheduler$new(test_delayed, SequentialJob)
   fit_delayed <- sched$compute()
   preds_delayed <- fit_delayed$predict()
-  
+
   set.seed(123)
   options(sl3.enable.future = FALSE)
   fit <- lrnr_rf$train(task)

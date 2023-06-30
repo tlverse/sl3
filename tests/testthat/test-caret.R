@@ -94,7 +94,7 @@ test_that("Lrnr_caret RF match caret RF preds for binary classification", {
   fit_lrnr_caret_rf <- lrnr_caret_rf$train(task_binaryY)
   prd_lrnr_caret_rf <- fit_lrnr_caret_rf$predict()
   prd_lrnr_caret_rf <- as.numeric(prd_lrnr_caret_rf > 0.5)
-  
+
   ## fit caret RF using the data from the task
   set.seed(1530)
   fit_caret_rf <- suppressWarnings(caret::train(
@@ -108,7 +108,7 @@ test_that("Lrnr_caret RF match caret RF preds for binary classification", {
     predict(fit_caret_rf, newdata = task$X, type = "prob")[, 2]
   )
   prd_caret_rf <- as.numeric(prd_caret_rf > 0.5)
-  
+
   expect_equal(sum(abs(prd_lrnr_caret_rf - prd_caret_rf)), 0, tolerance = 1)
 })
 
@@ -161,6 +161,6 @@ test_that("Lrnr_caret RF preds match caret RF preds for binary regression", {
   ))
   prd_caret_rf <- as.numeric(predict(fit_caret_rf, newdata = task$X))
   rmse_classic <- sqrt(mean((prd_caret_rf - task_binaryY$Y)^2))
-  
+
   expect_equal(rmse_sl3, rmse_classic, tolerance = 0.1)
 })
