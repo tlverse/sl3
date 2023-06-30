@@ -92,7 +92,6 @@ Lrnr_hal9001 <- R6Class(
         verbose <- getOption("sl3.verbose")
       }
 
-
       args$X <- as.matrix(task$X)
 
       outcome_type <- self$get_outcome_type(task)
@@ -125,7 +124,11 @@ Lrnr_hal9001 <- R6Class(
       }
 
       if (task$has_node("weights")) {
-        args$weights <- task$weights
+        if (packageVersion("hal9001") >= "0.4.5") {
+          args$weights <- task$weights
+        } else {
+          args$fit_control$weights <- task$weights
+        }
       }
 
       if (task$has_node("offset")) {
