@@ -26,6 +26,35 @@ whether or not these covariates were selected by the screener.}
 }
 }
 
+\examples{
+library(data.table)
+
+# load example data
+data(cpp_imputed)
+setDT(cpp_imputed)
+cpp_imputed[, parity_cat := factor(ifelse(parity < 4, parity, 4))]
+covars <- c(
+  "apgar1", "apgar5", "parity_cat", "gagebrth", "mage", "meducyrs",
+  "sexn"
+)
+outcome <- "haz"
+
+# create sl3 task
+task <- sl3_Task$new(data.table::copy(cpp_imputed),
+                     covariates = covars,
+                     outcome = outcome
+)
+
+screener_cor <- make_learner(
+  Lrnr_screener_correlation,
+  type = "rank",
+  num_screen = 2
+)
+screener_augment <- Lrnr_screener_augment$new(screener_cor, covars)
+screener_fit <- screener_augment$train(task)
+selected <- screener_fit$fit_object$selected
+screener_selected <- screener_fit$fit_object$screener_selected
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},

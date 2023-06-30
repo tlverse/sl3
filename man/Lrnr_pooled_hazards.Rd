@@ -35,6 +35,35 @@ by all learners.
 }
 }
 
+\examples{
+library(data.table)
+set.seed(74294)
+
+n <- 500
+x <- rnorm(n)
+epsilon <- rnorm(n)
+y <- 3 * x + epsilon
+data <- data.table(x = x, y = y)
+task <- sl3_Task$new(data, covariates = c("x"), outcome = "y")
+
+# instantiate learners
+hal <- Lrnr_hal9001$new(
+  lambda = exp(seq(-1, -13, length = 100)),
+  max_degree = 6,
+  smoothness_orders = 0
+)
+hazard_learner <- Lrnr_pooled_hazards$new(hal)
+density_learner <- Lrnr_density_discretize$new(
+  hazard_learner,
+  type = "equal_range",
+  n_bins = 5
+)
+
+# fit discrete density model to pooled hazards data
+set.seed(74294)
+fit_density <- density_learner$train(task)
+pred_density <- fit_density$predict()
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},

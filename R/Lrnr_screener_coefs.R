@@ -28,10 +28,10 @@
 #'     applicable when supplied \code{learner} is a \code{\link{Lrnr_glmnet}}.}
 #'   \item{\code{...}}{Other parameters passed to \code{learner}.}
 #' }
-#' 
-#' @examples 
+#'
+#' @examples
 #' library(data.table)
-#' 
+#'
 #' # load example data
 #' data(cpp_imputed)
 #' setDT(cpp_imputed)
@@ -41,18 +41,18 @@
 #'   "sexn"
 #' )
 #' outcome <- "haz"
-#' 
+#'
 #' # create sl3 task
 #' task <- sl3_Task$new(data.table::copy(cpp_imputed),
-#'                      covariates = covars,
-#'                      outcome = outcome
+#'   covariates = covars,
+#'   outcome = outcome
 #' )
-#' 
+#'
 #' lrnr_glmnet <- make_learner(Lrnr_glmnet)
 #' lrnr_glm <- make_learner(Lrnr_glm)
 #' lrnr_mean <- make_learner(Lrnr_mean)
 #' lrnrs <- make_learner(Stack, lrnr_glm, lrnr_mean)
-#' 
+#'
 #' glm_screener <- make_learner(Lrnr_screener_coefs, lrnr_glm, max_screen = 2)
 #' glm_screener_pipeline <- make_learner(Pipeline, glm_screener, lrnrs)
 #' fit_glm_screener_pipeline <- glm_screener_pipeline$train(task)

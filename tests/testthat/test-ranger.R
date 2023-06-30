@@ -62,13 +62,14 @@ test_that("Lrnr_ranger predictions match those from ranger", {
   prd_lrnr_ranger <- fit_lrnr_ranger$predict()
 
   ## fit ranger using the data from the task
-  fit_ranger <- ranger(mpg ~ ., 
-                       num.trees = lrnr_ranger$params$num.trees,
-                       write.forest = lrnr_ranger$params$write.forest,
-                       importance = lrnr_ranger$params$importance,
-                       num.threads = lrnr_ranger$params$num.threads,
-                       seed = 123,
-                       data = task$data)
+  fit_ranger <- ranger(mpg ~ .,
+    num.trees = lrnr_ranger$params$num.trees,
+    write.forest = lrnr_ranger$params$write.forest,
+    importance = lrnr_ranger$params$importance,
+    num.threads = lrnr_ranger$params$num.threads,
+    seed = 123,
+    data = task$data
+  )
   prd_ranger <- predict(fit_ranger, data = task$data)[[1]]
 
   ## test equivalence of prediction from Lrnr_ranger and ranger::ranger

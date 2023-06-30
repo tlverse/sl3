@@ -68,6 +68,6 @@ test_that("Lrnr_sl binomial integration test", {
   coefs <- coef(sl_fit$fit_object$cv_meta_fit)
   preds <- sl_fit$predict()
   loss <- sl_fit$cv_risk(loss_loglik_binomial)
-  
+
   expect_equal(length(preds), nrow(task$data))
 })

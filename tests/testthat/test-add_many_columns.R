@@ -8,9 +8,9 @@ test_that("columns were added successful", {
   data(cpp_imputed)
   covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")
   outcome <- "haz"
-  
+
   task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
-  
+
   for (i in 1:1e4) {
     new_data <- data.table(A = rnorm(task$nrow))
     z <- task$add_columns(new_data)

@@ -35,6 +35,23 @@ by all learners.
 }
 }
 
+\examples{
+# load example data
+data(cpp_imputed)
+
+# create sl3 task
+task <- sl3_Task$new(
+  cpp_imputed, 
+  covariates = c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs"), 
+  outcome = "haz")
+
+# train density hse learner and make predictions
+lrnr_density_semi <- Lrnr_density_semiparametric$new(
+  mean_learner = Lrnr_glm$new()
+)
+lrnr_density_semi_fit <- lrnr_density_semi$train(task)
+lrnr_density_semi_pred <- lrnr_density_semi_fit$predict()
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},
