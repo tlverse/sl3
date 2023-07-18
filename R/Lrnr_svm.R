@@ -85,7 +85,7 @@ Lrnr_svm <- R6Class(
       # set SVM type based on detected outcome family
       outcome_type <- self$get_outcome_type(task)
       if (is.null(args$type)) {
-        if (outcome_type$type == "continuous") {
+        if (outcome_type$type %in% c("continuous", "quasibinomial")) {
           args$type <- "eps-regression"
         } else if (outcome_type$type %in% c("binomial", "categorical")) {
           args$type <- "C-classification"
@@ -126,7 +126,7 @@ Lrnr_svm <- R6Class(
         if (outcome_type == "categorical") {
           predictions <- pack_predictions(predictions)
         } else if (outcome_type == "binomial") {
-          predictions <- as.numeric(predictions[, 2]) # P(Y=1|X)
+          predictions <- as.numeric(predictions[, 2])
         }
       } else {
         predictions <- as.numeric(predictions)

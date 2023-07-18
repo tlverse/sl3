@@ -77,7 +77,7 @@ Lrnr_gam <- R6Class(
     }
   ),
   private = list(
-    .properties = c("continuous", "binomial"),
+    .properties = c("continuous", "binomial", "weights", "offset"),
     .train = function(task) {
       # load args
       args <- self$params
@@ -87,21 +87,27 @@ Lrnr_gam <- R6Class(
       Y <- data.frame(outcome_type$format(task$Y))
       colnames(Y) <- task$nodes$outcome
       args$data <- cbind(task$X, Y)
-      ## family
+
+
+      # family
       if (is.null(args$family)) {
-        if (outcome_type$type == "continuous") {
-          args$family <- stats::gaussian()
-        } else if (outcome_type$type == "binomial") {
-          args$family <- stats::binomial()
-        } else if (outcome_type$type == "categorical") {
-          # TODO: implement categorical?
-          # NOTE: must specify (#{categories}-1)+linear_predictors) in formula
-          stop("Categorical outcomes are unsupported by Lrnr_gam for now.")
-        } else {
-          stop("Specified outcome type is unsupported by Lrnr_gam.")
-        }
+        args$family <- outcome_type$glm_family(return_object = TRUE)
       }
-      ## formula
+      family_name <- args$family$family
+      linkinv_fun <- args$family$linkinv
+      link_fun <- args$family$linkfun
+
+      # weights
+      if (task$has_node("weights")) {
+        args$weights <- task$weights
+      }
+
+      # offset
+      if (task$has_node("offset")) {
+        args$offset <- task$offset_transformed(link_fun)
+      }
+
+      # formula
       if (is.null(args$formula)) {
         covars_type <- lapply(
           task$X,
@@ -111,9 +117,8 @@ Lrnr_gam <- R6Class(
         X_discrete <- task$X[, ..i_discrete]
         i_continuous <- covars_type == "continuous"
         X_continuous <- task$X[, ..i_continuous]
-        "y ~ s(x1) + s(x2) + x3"
         X_smooth <- sapply(colnames(X_continuous), function(x) {
-          unique_x <- unlist(unique(task$X[, x, with = F]))
+          unique_x <- unlist(unique(task$X[, x, with = FALSE]))
           if (length(unique_x) < 10) {
             paste0("s(", x, ", k=", length(unique_x), ")")
           } else {
@@ -151,7 +156,7 @@ Lrnr_gam <- R6Class(
           collapse = " ~ "
           ))
         } else {
-          stop("Specified covariates types are unsupported in Lrnr_gam.")
+          stop("Specified covariates types are unsupported in Lrnr_gam")
         }
       } else if (is.list(args$formula)) {
         args$formula <- lapply(args$formula, as.formula)
@@ -164,6 +169,15 @@ Lrnr_gam <- R6Class(
       return(fit_object)
     },
     .predict = function(task) {
+      # offset check
+      if (self$fit_object$training_offset) {
+        offset <- task$offset_transformed(
+          self$fit_object$link_fun,
+          for_prediction = TRUE
+        )
+        warning("Lrnr_gam: offset given in training is ignored in prediction")
+      }
+
       # get predictions
       predictions <- stats::predict(
         private$.fit_object,

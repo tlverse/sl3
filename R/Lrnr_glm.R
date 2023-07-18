@@ -73,7 +73,6 @@ Lrnr_glm <- R6Class(
       }
       args$y <- outcome_type$format(task$Y)
 
-
       if (task$has_node("weights")) {
         args$weights <- task$weights
       }
