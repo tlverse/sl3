@@ -43,6 +43,22 @@ by all learners.
 }
 }
 
+\examples{
+set.seed(123)
+
+# load example data
+data(cpp_imputed)
+covars <- c("bmi", "parity", "mage", "sexn")
+outcome <- "haz"
+
+# create sl3 task
+task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
+
+# train neural networks and make predictions
+lrnr_nnet <- Lrnr_nnet$new(linout = TRUE, size = 10, maxit = 1000)
+fit <- lrnr_nnet$train(task)
+preds <- fit$predict(task)
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},
@@ -51,7 +67,6 @@ Other Learners:
 \code{\link{Lrnr_bartMachine}},
 \code{\link{Lrnr_base}},
 \code{\link{Lrnr_bayesglm}},
-\code{\link{Lrnr_bilstm}},
 \code{\link{Lrnr_caret}},
 \code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_cv}},

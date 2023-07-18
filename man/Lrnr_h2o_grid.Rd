@@ -56,6 +56,29 @@ by all learners.
 }
 }
 
+\examples{
+library(h2o)
+suppressWarnings(h2o.init())
+set.seed(1)
+
+# load example data
+data(cpp_imputed)
+covars <- c(
+  "apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
+  "sexn"
+)
+outcome <- "haz"
+cpp_imputed <- cpp_imputed[1:150, ]
+
+# create sl3 task
+task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
+
+# h2o grid search hyperparameter alpha
+h2o_glm_grid <- Lrnr_h2o_grid$new(algorithm = "glm",
+                                  hyper_params = list(alpha = c(0, 0.5)))
+h2o_glm_grid_fit <- h2o_glm_grid$train(task)
+pred <- h2o_glm_grid_fit$predict()
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},
@@ -64,7 +87,6 @@ Other Learners:
 \code{\link{Lrnr_bartMachine}},
 \code{\link{Lrnr_base}},
 \code{\link{Lrnr_bayesglm}},
-\code{\link{Lrnr_bilstm}},
 \code{\link{Lrnr_caret}},
 \code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_cv}},

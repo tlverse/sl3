@@ -26,6 +26,25 @@ This can then be accessed with predict_fold(task, fold_number="full")
 }
 }
 
+\examples{
+library(origami)
+
+# load example data
+data(cpp_imputed)
+covars <- c(
+  "apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn"
+)
+outcome <- "haz"
+
+# create sl3 task
+task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
+glm_learner <- Lrnr_glm$new()
+cv_glm <- Lrnr_cv$new(glm_learner, folds = make_folds(cpp_imputed, V = 10))
+
+# train cv learner
+cv_glm_fit <- cv_glm$train(task)
+preds <- cv_glm_fit$predict()
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},
@@ -34,7 +53,6 @@ Other Learners:
 \code{\link{Lrnr_bartMachine}},
 \code{\link{Lrnr_base}},
 \code{\link{Lrnr_bayesglm}},
-\code{\link{Lrnr_bilstm}},
 \code{\link{Lrnr_caret}},
 \code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_dbarts}},
