@@ -59,8 +59,9 @@ are going to be used.}
 
 \examples{
 # Example adapted from hts package manual
-# The hierarchical structure looks like 2 child nodes associated with level 1,
+# Hierarchical structure looks like 2 child nodes associated with level 1,
 # which are followed by 3 and 2 sub-child nodes respectively at level 2.
+library(data.table)
 library(hts)
 
 set.seed(3274)
