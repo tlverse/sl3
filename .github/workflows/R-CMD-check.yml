@@ -50,7 +50,7 @@ jobs:
 
       - name: Install package dependencies
         run: |
-          install.packages(c("remotes", "rcmdcheck", "covr", "sessioninfo"))
+          install.packages(c("remotes", "devtools", "rcmdcheck", "covr", "sessioninfo"))
           remotes::install_deps(dependencies = TRUE)
         shell: Rscript {0}
 
