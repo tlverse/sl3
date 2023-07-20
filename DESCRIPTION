@@ -90,6 +90,7 @@ Suggests:
     mgcv,
     hts,
     GA,
+    SIS,
     partykit
 Remotes:
     github::tlverse/origami,
