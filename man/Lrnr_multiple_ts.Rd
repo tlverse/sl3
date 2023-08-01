@@ -50,14 +50,14 @@ data$W2 <- rbinom(200, 1, 0.2)
 data <- as.data.table(data)
 
 folds <- origami::make_folds(data,
-                             t = max(data$time),
-                             id = data$id,
-                             time = data$time,
-                             fold_fun = folds_rolling_window_pooled,
-                             window_size = 20,
-                             validation_size = 15,
-                             gap = 0,
-                             batch = 10
+  t = max(data$time),
+  id = data$id,
+  time = data$time,
+  fold_fun = folds_rolling_window_pooled,
+  window_size = 20,
+  validation_size = 15,
+  gap = 0,
+  batch = 10
 )
 
 task <- sl3_Task$new(

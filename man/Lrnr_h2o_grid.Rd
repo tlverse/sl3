@@ -74,8 +74,10 @@ cpp_imputed <- cpp_imputed[1:150, ]
 task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
 
 # h2o grid search hyperparameter alpha
-h2o_glm_grid <- Lrnr_h2o_grid$new(algorithm = "glm",
-                                  hyper_params = list(alpha = c(0, 0.5)))
+h2o_glm_grid <- Lrnr_h2o_grid$new(
+  algorithm = "glm",
+  hyper_params = list(alpha = c(0, 0.5))
+)
 h2o_glm_grid_fit <- h2o_glm_grid$train(task)
 pred <- h2o_glm_grid_fit$predict()
 }

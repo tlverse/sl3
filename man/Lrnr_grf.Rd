@@ -83,9 +83,10 @@ data(cpp_imputed)
 
 # create sl3 task
 task <- sl3_Task$new(
-  cpp_imputed, 
-  covariates = c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs"), 
-  outcome = "haz")
+  cpp_imputed,
+  covariates = c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs"),
+  outcome = "haz"
+)
 
 # train grf learner and make predictions
 lrnr_grf <- Lrnr_grf$new(seed = 123)

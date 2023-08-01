@@ -47,9 +47,10 @@ cpp <- cpp \%>\%
   na.omit()
 
 # create sl3 task
-task <- make_sl3_Task(cpp, 
-                      covariates = c("agedays", "bmi"), 
-                      outcome = "feeding")
+task <- make_sl3_Task(cpp,
+  covariates = c("agedays", "bmi"),
+  outcome = "feeding"
+)
 
 # train independent binomial learner and make predictions
 lrnr_indbinomial <- make_learner(Lrnr_independent_binomial)

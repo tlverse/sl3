@@ -41,8 +41,8 @@ outcome <- "haz"
 
 # create sl3 task
 task <- sl3_Task$new(data.table::copy(cpp_imputed),
-                     covariates = covars,
-                     outcome = outcome
+  covariates = covars,
+  outcome = outcome
 )
 
 screener_cor <- make_learner(

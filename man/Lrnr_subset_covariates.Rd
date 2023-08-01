@@ -43,9 +43,9 @@ outcome <- "haz"
 
 # create sl3 task
 task <- sl3_Task$new(data.table::copy(cpp_imputed),
-                     covariates = covars,
-                     outcome = outcome,
-                     folds = origami::make_folds(cpp_imputed, V = 3)
+  covariates = covars,
+  outcome = outcome,
+  folds = origami::make_folds(cpp_imputed, V = 3)
 )
 
 glm_learner <- Lrnr_glm$new()

@@ -40,9 +40,10 @@ data(cpp_imputed)
 
 # create sl3 task
 task <- sl3_Task$new(
-  cpp_imputed, 
-  covariates = c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs"), 
-  outcome = "haz")
+  cpp_imputed,
+  covariates = c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs"),
+  outcome = "haz"
+)
 
 # train density discretize learner and make predictions
 lrnr_discretize <- Lrnr_density_discretize$new(

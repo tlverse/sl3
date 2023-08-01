@@ -53,8 +53,9 @@ outcomes <- grep("Y", names(data), value = TRUE)
 
 # make sl3 task
 task <- sl3_Task$new(data.table::copy(data),
-                     covariates = covariates,
-                     outcome = outcomes)
+  covariates = covariates,
+  outcome = outcomes
+)
 
 # train multivariate learner and make predictions
 mv_learner <- make_learner(Lrnr_multivariate, make_learner(Lrnr_glm_fast))

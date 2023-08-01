@@ -49,8 +49,8 @@ outcome <- "haz"
 
 # create sl3 task
 task <- sl3_Task$new(data.table::copy(cpp_imputed),
-                     covariates = covars,
-                     outcome = outcome
+  covariates = covars,
+  outcome = outcome
 )
 
 lrnr_glmnet <- make_learner(Lrnr_glmnet)
