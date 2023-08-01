@@ -25,25 +25,25 @@
 #'
 #' @template common_parameters
 #'
-#' @examples 
+#' @examples
 #' # load example data
 #' data(cpp_imputed)
 #' covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")
 #' outcome <- "haz"
-#' 
+#'
 #' # create sl3 task
 #' task <- sl3_Task$new(data.table::copy(cpp_imputed),
-#'                      covariates = covars,
-#'                      outcome = outcome,
-#'                      folds = origami::make_folds(cpp_imputed, V = 3)
+#'   covariates = covars,
+#'   outcome = outcome,
+#'   folds = origami::make_folds(cpp_imputed, V = 3)
 #' )
-#' 
+#'
 #' glm_learner <- Lrnr_glm$new()
 #' glmnet_learner <- Lrnr_glmnet$new()
 #' subset_apgar <- Lrnr_subset_covariates$new(covariates = c("apgar1", "apgar5"))
 #' learners <- list(glm_learner, glmnet_learner, subset_apgar)
 #' sl <- make_learner(Lrnr_sl, learners, glm_learner)
-#' 
+#'
 #' sl_fit <- sl$train(task)
 #' sl_pred <- sl_fit$predict()
 Lrnr_subset_covariates <- R6Class(

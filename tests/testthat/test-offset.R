@@ -48,17 +48,17 @@ newoffset_task <- sl3_Task$new(
 # specifically test lrnr_glm against base glm
 test_that("Lrnr_glm_fast produces same results as base glm with offset", {
   lrnr_glm <- make_learner(Lrnr_glm_fast)
-  
+
   fit <- lrnr_glm$train(task)
   offset_fit <- lrnr_glm$train(offset_task)
-  
+
   preds <- fit$predict()
   offset_preds <- offset_fit$predict()
   expect_false(isTRUE(all.equal(preds, offset_preds)))
-  
+
   glm_fit <- glm(A ~ W1 + W2 + W3 + W4, data, family = binomial())
   expect_equivalent(coef(glm_fit), coef(fit))
-  
+
   glm_offset_fit <- glm(
     A ~ W1 + W2 + W3 + W4, data,
     family = binomial(),
@@ -106,7 +106,7 @@ test_that("Offset works for learners that support it", {
     "Lrnr_glm", "Lrnr_glm_fast",
     "Lrnr_mean", "Lrnr_xgboost"
   )
-  
+
   offset_learners <- offset_learner_stack$params$learners
   lapply(
     offset_learners, test_learner_offset_support,

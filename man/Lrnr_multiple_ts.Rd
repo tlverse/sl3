@@ -29,6 +29,53 @@ variables with discrete levels coded as \code{numeric}.
 }
 }
 
+\examples{
+library(origami)
+library(dplyr)
+
+set.seed(123)
+
+# Simulate simple AR(2) process
+data <- matrix(arima.sim(model = list(ar = c(.9, -.2)), n = 200))
+id <- c(rep("Series_1", 50), rep("Series_2", 50), rep("Series_3", 50), rep("Series_4", 50))
+data <- data.frame(data)
+data$id <- as.factor(id)
+data <- data \%>\%
+  group_by(id) \%>\%
+  dplyr::mutate(time = 1:n())
+
+data$W1 <- rbinom(200, 1, 0.6)
+data$W2 <- rbinom(200, 1, 0.2)
+
+data <- as.data.table(data)
+
+folds <- origami::make_folds(data,
+                             t = max(data$time),
+                             id = data$id,
+                             time = data$time,
+                             fold_fun = folds_rolling_window_pooled,
+                             window_size = 20,
+                             validation_size = 15,
+                             gap = 0,
+                             batch = 10
+)
+
+task <- sl3_Task$new(
+  data = data, outcome = "data",
+  time = "time", id = "id",
+  covariates = c("W1", "W2"),
+  folds = folds
+)
+
+train_task <- training(task, fold = task$folds[[1]])
+valid_task <- validation(task, fold = task$folds[[1]])
+
+lrnr_arima <- Lrnr_arima$new()
+multiple_ts_arima <- Lrnr_multiple_ts$new(learner = lrnr_arima)
+
+multiple_ts_arima_fit <- multiple_ts_arima$train(train_task)
+multiple_ts_arima_preds <- multiple_ts_arima_fit$predict(valid_task)
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},

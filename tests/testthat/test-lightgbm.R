@@ -122,7 +122,8 @@ test_that("Lrnr_lightgbm predictions match lightgbm's: categorical outcome", {
   set.seed(73964)
   lrnr_lightgbm <- Lrnr_lightgbm$new(
     num_leaves = 40L, verbose = -1,
-    num_class = as.integer(length(unique(task$Y))))
+    num_class = as.integer(length(unique(task$Y)))
+  )
   fit_lrnr_lightgbm <- lrnr_lightgbm$train(task)
   prd_lrnr_lightgbm <- unpack_predictions(fit_lrnr_lightgbm$predict())
 

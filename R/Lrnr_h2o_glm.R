@@ -69,19 +69,20 @@ define_h2o_X <- function(task, outcome_type = NULL) {
 #'
 #' @template common_parameters
 #'
-#' @examples 
+#' @examples
 #' library(h2o)
 #' suppressWarnings(h2o.init())
-#' 
+#'
 #' # load example data
 #' data(cpp_imputed)
-#' 
+#'
 #' # create sl3 task
 #' task <- sl3_Task$new(
-#'   cpp_imputed, 
-#'   covariates = c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs"), 
-#'   outcome = "haz")
-#' 
+#'   cpp_imputed,
+#'   covariates = c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs"),
+#'   outcome = "haz"
+#' )
+#'
 #' # train h2o glm learner and make predictions
 #' lrnr_h2o <- Lrnr_h2o_glm$new()
 #' lrnr_h2o_fit <- lrnr_h2o$train(task)

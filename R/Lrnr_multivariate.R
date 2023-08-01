@@ -25,10 +25,10 @@
 #' }
 #'
 #' @template common_parameters
-#' 
-#' @examples 
+#'
+#' @examples
 #' library(data.table)
-#' 
+#'
 #' # simulate data
 #' set.seed(123)
 #' n <- 1000
@@ -41,12 +41,13 @@
 #' data <- data.table(W, Y)
 #' covariates <- grep("W", names(data), value = TRUE)
 #' outcomes <- grep("Y", names(data), value = TRUE)
-#' 
+#'
 #' # make sl3 task
 #' task <- sl3_Task$new(data.table::copy(data),
-#'                      covariates = covariates,
-#'                      outcome = outcomes)
-#' 
+#'   covariates = covariates,
+#'   outcome = outcomes
+#' )
+#'
 #' # train multivariate learner and make predictions
 #' mv_learner <- make_learner(Lrnr_multivariate, make_learner(Lrnr_glm_fast))
 #' mv_fit <- mv_learner$train(task)
