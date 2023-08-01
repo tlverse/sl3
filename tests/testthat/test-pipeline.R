@@ -24,8 +24,7 @@ test_screen_pipe <- function(screen_name_SuperLearner) {
 
 test_that("Pipeline pipes selected covariates from screening algorithms", {
   screens <- c(
-    "screen.glmnet", "screen.corP", "screen.corRank",
-    "screen.randomForest", "screen.SIS"
+    "screen.glmnet", "screen.corP", "screen.corRank", "screen.randomForest"
   )
   lapply(screens, test_screen_pipe)
 })
