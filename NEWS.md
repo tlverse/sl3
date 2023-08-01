@@ -88,6 +88,8 @@
   differs from the detected one, a warning is now thrown. If `outcome_type` is 
   supplied but invalid, then an error is thrown upon `sl3_Task` instantiation, 
   opposed to learner training.
+* Cross-validated super learner (`cv_sl`) returns the cross-validated 
+  predictions for the super learner and its candidates. 
 
 # sl3 1.4.4
 * Updates to `Lrnr_nnls` to support binary outcomes, including support for
