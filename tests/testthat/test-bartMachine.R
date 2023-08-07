@@ -39,5 +39,5 @@ test_that("Lrnr_bartMachine does not fail when cross-validated", {
   fit_cv <- cv_lrnr_bartMachine$train(cpp_test_task)
   preds_cv <- fit_cv$predict(cpp_test_task)
 
-  expect_equal(length(preds_cv), task$nrow)
+  expect_equal(length(preds_cv), cpp_test_task$nrow)
 })
