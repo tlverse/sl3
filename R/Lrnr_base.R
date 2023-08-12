@@ -191,7 +191,7 @@ Lrnr_base <- R6Class(
 
       ncols <- ncol(predictions)
       if (!is.null(ncols) && (ncols == 1)) {
-        predictions <- as.vector(predictions)
+        predictions <- as.vector(unlist(predictions))
       }
       return(predictions)
     },
