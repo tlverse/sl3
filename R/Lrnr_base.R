@@ -189,15 +189,15 @@ Lrnr_base <- R6Class(
       
       predictions <- private$.predict(task)
       ncols <- ncol(predictions)
-      if(inherits(predictions, "packed_predictions")) {
+      if(inherits(predictions, "packed_predictions") & is.data.table(predictions)) {
         # if packed and data.table, as.vector(predictions) retains list structure.
-        if(is.data.table(predictions)) predictions <- as.vector(predictions)
-        return(predictions)
+        predictions <- as.vector(predictions)
       } else if(!is.null(ncols) && (ncols == 1)) {
         # otherwise return vector.
-        predictions <- as.vector(unlist(predictions)
+        predictions <- as.vector(unlist(predictions))
       }
       return(predictions)
+    },
     },
     base_chain = function(task = NULL) {
       self$assert_trained()
