@@ -198,7 +198,6 @@ Lrnr_base <- R6Class(
       }
       return(predictions)
     },
-    },
     base_chain = function(task = NULL) {
       self$assert_trained()
       if (is.null(task)) {
