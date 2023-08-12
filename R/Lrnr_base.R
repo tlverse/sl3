@@ -189,12 +189,15 @@ Lrnr_base <- R6Class(
       
       predictions <- private$.predict(task)
       ncols <- ncol(predictions)
-      if(inherits(predictions, "packed_predictions") & is.data.table(predictions)) {
-        # if packed and data.table, as.vector(predictions) retains list structure.
-        predictions <- as.vector(predictions)
-      } else if(!is.null(ncols) && (ncols == 1)) {
-        # otherwise return vector.
-        predictions <- as.vector(unlist(predictions))
+      if(!is.null(ncols) && (ncols == 1)) {
+        if(is.data.table(predictions)) {
+          # if a data.table of packed predictions, return a matrix.
+          predictions <- as.matrix(predictions)
+        }
+        # if not packed predictions, return vector
+        if(!inherits(predictions[[1]], "packed_predictions")) {
+          predictions <- unlist(predictions)
+        } 
       }
       return(predictions)
     },
