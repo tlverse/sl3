@@ -371,7 +371,7 @@ Lrnr_cv <- R6Class(
         list(
           index = index,
           fold_index = rep(fold_index(), length(index)),
-          predictions = data.table(predictions)
+          predictions = as.data.table(predictions)
         )
       }
 
