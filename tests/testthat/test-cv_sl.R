@@ -19,7 +19,7 @@ test_that("cross-validated super learner works", {
   learners <- list(glm_learner, glmnet_learner, earth_learner)
   sl <- make_learner(Lrnr_sl, learners, glm_learner)
   sl_fit <- sl$train(task)
-  cv_sl_fit <- cv_sl(sl_fit, task, loss_squared_error)
+  cv_sl_fit <- cv_sl(sl_fit, loss_squared_error)
 
   expect_false(any(is.na(cv_sl_fit)))
   expect_equal(nrow(cv_sl_fit$cv_preds), task$nrow)
