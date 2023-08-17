@@ -214,6 +214,32 @@ by all learners.</p>
 <code><a href="undocumented_learner.html">undocumented_learner</a></code></p></div>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">37912</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># load example data</span></span>
+<span class="r-in"><span class="va">ncomp</span> <span class="op">&lt;-</span> <span class="fl">3</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cpp_imputed</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">covars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span class="r-in">  <span class="st">"apgar1"</span>, <span class="st">"apgar5"</span>, <span class="st">"parity"</span>, <span class="st">"gagebrth"</span>, <span class="st">"mage"</span>, <span class="st">"meducyrs"</span>,</span>
+<span class="r-in">  <span class="st">"sexn"</span></span>
+<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span class="va">outcome</span> <span class="op">&lt;-</span> <span class="st">"haz"</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># create sl3 task</span></span>
+<span class="r-in"><span class="va">task</span> <span class="op">&lt;-</span> <span class="va"><a href="sl3_Task.html">sl3_Task</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">cpp_imputed</span>, covariates <span class="op">=</span> <span class="va">covars</span>, outcome <span class="op">=</span> <span class="va">outcome</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># define learners</span></span>
+<span class="r-in"><span class="va">glm_fast</span> <span class="op">&lt;-</span> <span class="va"><a href="Lrnr_glm_fast.html">Lrnr_glm_fast</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>intercept <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">pca_sl3</span> <span class="op">&lt;-</span> <span class="va">Lrnr_pca</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>n_comp <span class="op">=</span> <span class="va">ncomp</span>, center <span class="op">=</span> <span class="cn">TRUE</span>, scale. <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">pcr_pipe_sl3</span> <span class="op">&lt;-</span> <span class="va"><a href="Pipeline.html">Pipeline</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">pca_sl3</span>, <span class="va">glm_fast</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># create stacks + train and predict</span></span>
+<span class="r-in"><span class="va">pcr_pipe_sl3_fit</span> <span class="op">&lt;-</span> <span class="va">pcr_pipe_sl3</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">pcr_pred</span> <span class="op">&lt;-</span> <span class="va">pcr_pipe_sl3_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span></span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>
