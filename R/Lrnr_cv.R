@@ -174,6 +174,8 @@ Lrnr_cv <- R6Class(
 
 
       predictions <- self$predict_fold(revere_task, fold_number)
+      # This might not be a matrix
+      predictions <- as.data.table(predictions)
       # TODO: make same fixes made to chain here
       if (nrow(revere_task$data) != nrow(predictions)) {
         # Gather validation indexes:
