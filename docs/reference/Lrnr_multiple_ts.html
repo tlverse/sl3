@@ -180,6 +180,56 @@ variables with discrete levels coded as <code>numeric</code>.</p></dd>
 <code><a href="undocumented_learner.html">undocumented_learner</a></code></p></div>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tlverse.org/origami/" class="external-link">origami</a></span><span class="op">)</span></span>
+<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># Simulate simple AR(2) process</span></span>
+<span class="r-in"><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/arima.sim.html" class="external-link">arima.sim</a></span><span class="op">(</span>model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.9</span>, <span class="op">-</span><span class="fl">.2</span><span class="op">)</span><span class="op">)</span>, n <span class="op">=</span> <span class="fl">200</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Series_1"</span>, <span class="fl">50</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Series_2"</span>, <span class="fl">50</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Series_3"</span>, <span class="fl">50</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Series_4"</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">data</span><span class="op">$</span><span class="va">id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/h2o/man/as.factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span class="r-in">  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>time <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="va">data</span><span class="op">$</span><span class="va">W1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a></span><span class="op">(</span><span class="fl">200</span>, <span class="fl">1</span>, <span class="fl">0.6</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">data</span><span class="op">$</span><span class="va">W2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a></span><span class="op">(</span><span class="fl">200</span>, <span class="fl">1</span>, <span class="fl">0.2</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="va">folds</span> <span class="op">&lt;-</span> <span class="fu">origami</span><span class="fu">::</span><span class="fu"><a href="http://tlverse.org/origami/reference/make_folds.html" class="external-link">make_folds</a></span><span class="op">(</span><span class="va">data</span>,</span>
+<span class="r-in">  t <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">time</span><span class="op">)</span>,</span>
+<span class="r-in">  id <span class="op">=</span> <span class="va">data</span><span class="op">$</span><span class="va">id</span>,</span>
+<span class="r-in">  time <span class="op">=</span> <span class="va">data</span><span class="op">$</span><span class="va">time</span>,</span>
+<span class="r-in">  fold_fun <span class="op">=</span> <span class="va">folds_rolling_window_pooled</span>,</span>
+<span class="r-in">  window_size <span class="op">=</span> <span class="fl">20</span>,</span>
+<span class="r-in">  validation_size <span class="op">=</span> <span class="fl">15</span>,</span>
+<span class="r-in">  gap <span class="op">=</span> <span class="fl">0</span>,</span>
+<span class="r-in">  batch <span class="op">=</span> <span class="fl">10</span></span>
+<span class="r-in"><span class="op">)</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing 4 samples with 50 time points.</span>
+<span class="r-in"></span>
+<span class="r-in"><span class="va">task</span> <span class="op">&lt;-</span> <span class="va"><a href="sl3_Task.html">sl3_Task</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span class="r-in">  data <span class="op">=</span> <span class="va">data</span>, outcome <span class="op">=</span> <span class="st">"data"</span>,</span>
+<span class="r-in">  time <span class="op">=</span> <span class="st">"time"</span>, id <span class="op">=</span> <span class="st">"id"</span>,</span>
+<span class="r-in">  covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"W1"</span>, <span class="st">"W2"</span><span class="op">)</span>,</span>
+<span class="r-in">  folds <span class="op">=</span> <span class="va">folds</span></span>
+<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="va">train_task</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://tlverse.org/origami/reference/fold_helpers.html" class="external-link">training</a></span><span class="op">(</span><span class="va">task</span>, fold <span class="op">=</span> <span class="va">task</span><span class="op">$</span><span class="va">folds</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">valid_task</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://tlverse.org/origami/reference/fold_helpers.html" class="external-link">validation</a></span><span class="op">(</span><span class="va">task</span>, fold <span class="op">=</span> <span class="va">task</span><span class="op">$</span><span class="va">folds</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="va">lrnr_arima</span> <span class="op">&lt;-</span> <span class="va"><a href="Lrnr_arima.html">Lrnr_arima</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">multiple_ts_arima</span> <span class="op">&lt;-</span> <span class="va">Lrnr_multiple_ts</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>learner <span class="op">=</span> <span class="va">lrnr_arima</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="va">multiple_ts_arima_fit</span> <span class="op">&lt;-</span> <span class="va">multiple_ts_arima</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">train_task</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">multiple_ts_arima_preds</span> <span class="op">&lt;-</span> <span class="va">multiple_ts_arima_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">valid_task</span><span class="op">)</span></span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>

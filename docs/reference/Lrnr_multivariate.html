@@ -191,6 +191,36 @@ by all learners.</p>
 <code><a href="undocumented_learner.html">undocumented_learner</a></code></p></div>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># simulate data</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">1000</span></span>
+<span class="r-in"><span class="va">p</span> <span class="op">&lt;-</span> <span class="fl">5</span></span>
+<span class="r-in"><span class="va">pY</span> <span class="op">&lt;-</span> <span class="fl">3</span></span>
+<span class="r-in"><span class="va">W</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span> <span class="op">*</span> <span class="va">p</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="va">n</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/h2o/man/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">W</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"W%d"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">Y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span> <span class="op">*</span> <span class="va">pY</span>, <span class="fl">0</span>, <span class="fl">0.2</span><span class="op">)</span> <span class="op">+</span> <span class="va">W</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, nrow <span class="op">=</span> <span class="va">n</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/h2o/man/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Y%d"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="va">pY</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span><span class="va">W</span>, <span class="va">Y</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">covariates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grep</a></span><span class="op">(</span><span class="st">"W"</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>, value <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">outcomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grep</a></span><span class="op">(</span><span class="st">"Y"</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>, value <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># make sl3 task</span></span>
+<span class="r-in"><span class="va">task</span> <span class="op">&lt;-</span> <span class="va"><a href="sl3_Task.html">sl3_Task</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/copy.html" class="external-link">copy</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>,</span>
+<span class="r-in">  covariates <span class="op">=</span> <span class="va">covariates</span>,</span>
+<span class="r-in">  outcome <span class="op">=</span> <span class="va">outcomes</span></span>
+<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># train multivariate learner and make predictions</span></span>
+<span class="r-in"><span class="va">mv_learner</span> <span class="op">&lt;-</span> <span class="fu"><a href="Lrnr_base.html">make_learner</a></span><span class="op">(</span><span class="va">Lrnr_multivariate</span>, <span class="fu"><a href="Lrnr_base.html">make_learner</a></span><span class="op">(</span><span class="va">Lrnr_glm_fast</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">mv_fit</span> <span class="op">&lt;-</span> <span class="va">mv_learner</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">mv_pred</span> <span class="op">&lt;-</span> <span class="va">mv_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">mv_pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="pack_predictions.html">unpack_predictions</a></span><span class="op">(</span><span class="va">mv_pred</span><span class="op">)</span></span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>

@@ -195,6 +195,85 @@ in pvalue_threshold screening procedure.</p></dd>
 <code><a href="undocumented_learner.html">undocumented_learner</a></code></p></div>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># load example data</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cpp_imputed</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setDT.html" class="external-link">setDT</a></span><span class="op">(</span><span class="va">cpp_imputed</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">cpp_imputed</span><span class="op">[</span>, <span class="va">parity_cat</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">parity</span> <span class="op">&lt;</span> <span class="fl">4</span>, <span class="va">parity</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span><span class="op">]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       subjid agedays   wtkg htcm lencm      bmi        waz        haz   whz</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1:      1       1  4.621   55    55 15.27603  2.3800000  2.6100000  0.19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2:      1     366 14.500   79    79 23.23346  3.8400000  1.3500000  4.02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    3:      2       1  3.345   51    51 12.86044  0.0600000  0.5000000 -0.64</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    4:      2     366  8.400   73    73 15.76281 -1.2700000 -1.1700000 -0.96</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    5:      2    2558 19.100  114     0 14.69683 -1.3727316 -1.4664795  0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ---                                                                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1437:    500       1  3.629   52    52 13.42086  0.8900000  1.4400000 -0.49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1438:    500     366 10.900   77    77 18.38421  1.5700000  1.1500000  1.47</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1439:    500    2558 26.300  126     0 16.56589  0.9932827  0.9455342  0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1440:    501       1  3.232   46    46 15.27410 -0.1800000 -2.1400000  2.27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1441:    501     366  9.700   77    77 16.36026  0.0400000  0.5100000 -0.24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         baz siteid sexn    sex feedingn feeding gagebrth birthwt birthlen</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1:  1.35      5    1   Male       90 Unknown      287    4621       55</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2:  3.89      5    1   Male       90 Unknown      287    4621       55</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    3: -0.43      5    1   Male       90 Unknown      280    3345       51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    4: -0.80      5    1   Male       90 Unknown      280    3345       51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    5:  0.00      5    1   Male       90 Unknown      280    3345       51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ---                                                                    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1437:  0.08      5    2 Female       90 Unknown      287    3629       52</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1438:  1.30      5    2 Female       90 Unknown      287    3629       52</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1439:  0.00      5    2 Female       90 Unknown      287    3629       52</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1440:  1.35      5    1   Male       90 Unknown      287    3232       46</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1441: -0.33      5    1   Male       90 Unknown      287    3232       46</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       apgar1 apgar5 mage mracen mrace mmaritn  mmarit meducyrs sesn</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1:      8      9   21      5 White       1 Married       12   50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2:      8      9   21      5 White       1 Married       12   50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    3:      8      9   15      5 White       1 Married        0    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    4:      8      9   15      5 White       1 Married        0    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    5:      8      9   15      5 White       1 Married        0    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ---                                                              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1437:      6      9   20      5 White       1 Married       11   38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1438:      6      9   20      5 White       1 Married       11   38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1439:      6      9   20      5 White       1 Married       11   38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1440:      5      9   19      5 White       1 Married        9   50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1441:      5      9   19      5 White       1 Married        9   50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                ses parity gravida smoked mcignum comprisk parity_cat</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1:       Middle      1       1      0       0     none          1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2:       Middle      1       1      0       0     none          1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    3:            .      0       0      1      35     none          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    4:            .      0       0      1      35     none          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    5:            .      0       0      1      35     none          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ---                                                               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1437: Lower-middle      0       0      1      10     none          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1438: Lower-middle      0       0      1      10     none          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1439: Lower-middle      0       0      1      10     none          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1440:       Middle      1       1      0       0     none          1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1441:       Middle      1       1      0       0     none          1</span>
+<span class="r-in"><span class="va">covars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span class="r-in">  <span class="st">"apgar1"</span>, <span class="st">"apgar5"</span>, <span class="st">"parity_cat"</span>, <span class="st">"gagebrth"</span>, <span class="st">"mage"</span>, <span class="st">"meducyrs"</span>,</span>
+<span class="r-in">  <span class="st">"sexn"</span></span>
+<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span class="va">outcome</span> <span class="op">&lt;-</span> <span class="st">"haz"</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># create sl3 task</span></span>
+<span class="r-in"><span class="va">task</span> <span class="op">&lt;-</span> <span class="va"><a href="sl3_Task.html">sl3_Task</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/copy.html" class="external-link">copy</a></span><span class="op">(</span><span class="va">cpp_imputed</span><span class="op">)</span>,</span>
+<span class="r-in">  covariates <span class="op">=</span> <span class="va">covars</span>,</span>
+<span class="r-in">  outcome <span class="op">=</span> <span class="va">outcome</span></span>
+<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="va">lrnr_glmnet</span> <span class="op">&lt;-</span> <span class="fu"><a href="Lrnr_base.html">make_learner</a></span><span class="op">(</span><span class="va">Lrnr_glmnet</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">lrnr_glm</span> <span class="op">&lt;-</span> <span class="fu"><a href="Lrnr_base.html">make_learner</a></span><span class="op">(</span><span class="va">Lrnr_glm</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">lrnr_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="Lrnr_base.html">make_learner</a></span><span class="op">(</span><span class="va">Lrnr_mean</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">lrnrs</span> <span class="op">&lt;-</span> <span class="fu"><a href="Lrnr_base.html">make_learner</a></span><span class="op">(</span><span class="va">Stack</span>, <span class="va">lrnr_glm</span>, <span class="va">lrnr_mean</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="va">screen_corP</span> <span class="op">&lt;-</span> <span class="fu"><a href="Lrnr_base.html">make_learner</a></span><span class="op">(</span><span class="va">Lrnr_screener_correlation</span>, type <span class="op">=</span> <span class="st">"threshold"</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">corP_pipeline</span> <span class="op">&lt;-</span> <span class="fu"><a href="Lrnr_base.html">make_learner</a></span><span class="op">(</span><span class="va">Pipeline</span>, <span class="va">screen_corP</span>, <span class="va">lrnrs</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">fit_corP</span> <span class="op">&lt;-</span> <span class="va">corP_pipeline</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">preds_corP_screener</span> <span class="op">&lt;-</span> <span class="va">fit_corP</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span></span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>

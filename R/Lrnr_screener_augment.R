@@ -26,10 +26,10 @@
 #'   whether or not these covariates were selected by the screener.}
 #'   \item{\code{...}}{Other parameters passed to \code{screener}.}
 #' }
-#' 
-#' @examples 
+#'
+#' @examples
 #' library(data.table)
-#' 
+#'
 #' # load example data
 #' data(cpp_imputed)
 #' setDT(cpp_imputed)
@@ -39,13 +39,13 @@
 #'   "sexn"
 #' )
 #' outcome <- "haz"
-#' 
+#'
 #' # create sl3 task
 #' task <- sl3_Task$new(data.table::copy(cpp_imputed),
-#'                      covariates = covars,
-#'                      outcome = outcome
+#'   covariates = covars,
+#'   outcome = outcome
 #' )
-#' 
+#'
 #' screener_cor <- make_learner(
 #'   Lrnr_screener_correlation,
 #'   type = "rank",

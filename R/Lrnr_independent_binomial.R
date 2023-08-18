@@ -27,21 +27,22 @@
 #'
 #' @template common_parameters
 #'
-#' @examples 
+#' @examples
 #' library(dplyr)
-#' 
+#'
 #' # load example data
 #' data(cpp)
 #' cpp <- cpp %>%
 #'   select(c(bmi, agedays, feeding)) %>%
 #'   mutate(feeding = as.factor(feeding)) %>%
 #'   na.omit()
-#' 
+#'
 #' # create sl3 task
-#' task <- make_sl3_Task(cpp, 
-#'                       covariates = c("agedays", "bmi"), 
-#'                       outcome = "feeding")
-#' 
+#' task <- make_sl3_Task(cpp,
+#'   covariates = c("agedays", "bmi"),
+#'   outcome = "feeding"
+#' )
+#'
 #' # train independent binomial learner and make predictions
 #' lrnr_indbinomial <- make_learner(Lrnr_independent_binomial)
 #' fit <- lrnr_indbinomial$train(task)

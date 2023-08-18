@@ -72,7 +72,6 @@ Suggests:
     hal9001 (>= 0.4.4),
     h2o,
     keras,
-    kerasR,
     nloptr,
     nnls,
     randomForest,

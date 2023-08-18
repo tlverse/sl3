@@ -34,6 +34,24 @@ by all learners.
 }
 }
 
+\examples{
+# load example data
+data(cpp_imputed)
+
+# create sl3 task
+task <- sl3_Task$new(
+  cpp_imputed,
+  covariates = c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs"),
+  outcome = "haz"
+)
+
+# train density discretize learner and make predictions
+lrnr_discretize <- Lrnr_density_discretize$new(
+  categorical_learner = Lrnr_glmnet$new()
+)
+lrnr_discretize_fit <- lrnr_discretize$train(task)
+lrnr_discretize_pred <- lrnr_discretize_fit$predict()
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},

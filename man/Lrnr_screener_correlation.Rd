@@ -34,6 +34,35 @@ in pvalue_threshold screening procedure.}
 }
 }
 
+\examples{
+library(data.table)
+
+# load example data
+data(cpp_imputed)
+setDT(cpp_imputed)
+cpp_imputed[, parity_cat := factor(ifelse(parity < 4, parity, 4))]
+covars <- c(
+  "apgar1", "apgar5", "parity_cat", "gagebrth", "mage", "meducyrs",
+  "sexn"
+)
+outcome <- "haz"
+
+# create sl3 task
+task <- sl3_Task$new(data.table::copy(cpp_imputed),
+  covariates = covars,
+  outcome = outcome
+)
+
+lrnr_glmnet <- make_learner(Lrnr_glmnet)
+lrnr_glm <- make_learner(Lrnr_glm)
+lrnr_mean <- make_learner(Lrnr_mean)
+lrnrs <- make_learner(Stack, lrnr_glm, lrnr_mean)
+
+screen_corP <- make_learner(Lrnr_screener_correlation, type = "threshold")
+corP_pipeline <- make_learner(Pipeline, screen_corP, lrnrs)
+fit_corP <- corP_pipeline$train(task)
+preds_corP_screener <- fit_corP$predict()
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},

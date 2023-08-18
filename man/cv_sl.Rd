@@ -4,15 +4,13 @@
 \alias{cv_sl}
 \title{Cross-validated Super Learner}
 \usage{
-cv_sl(lrnr_sl, task, eval_fun)
+cv_sl(lrnr_sl, eval_fun)
 }
 \arguments{
 \item{lrnr_sl}{a \code{\link{Lrnr_sl}} object specifying the Super Learner.
 Note that the \code{cv_control} argument of \code{\link{Lrnr_sl}} can be
 specified to control the inner cross-validation of \code{lrnr_sl}, as shown
 in the example.}
-
-\item{task}{the task used for training and performance assessment.}
 
 \item{eval_fun}{the evaluation function, either a loss or risk function, for
 evaluating the Super Learner's predictions.}
@@ -43,7 +41,7 @@ sl <- Lrnr_sl$new(
   verbose = FALSE
 )
 cv_sl_object <- cv_sl(
-  lrnr_sl = sl, task = cpp_task, eval_fun = loss_squared_error
+  lrnr_sl = sl, eval_fun = loss_squared_error
 )
 }
 }

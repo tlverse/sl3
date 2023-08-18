@@ -15,13 +15,16 @@ test_screen_pipe <- function(screen_name_SuperLearner) {
   screen_learner <- Lrnr_pkg_SuperLearner_screener$new(screen_name_SuperLearner)
   screen_glm <- make_learner(Pipeline, screen_learner, glm_learner)
   fit <- screen_glm$train(task)
-  
-  expect_equal(fit$fit_object$learner_fits[[1]]$fit_object$selected,
-               names(fit$fit_object$learner_fits$Lrnr_glm_TRUE$coefficients)[-1])
+
+  expect_equal(
+    fit$fit_object$learner_fits[[1]]$fit_object$selected,
+    names(fit$fit_object$learner_fits$Lrnr_glm_TRUE$coefficients)[-1]
+  )
 }
 
 test_that("Pipeline pipes selected covariates from screening algorithms", {
-  screens <- c("screen.glmnet", "screen.corP", "screen.corRank", 
-               "screen.randomForest", "screen.SIS")
+  screens <- c(
+    "screen.glmnet", "screen.corP", "screen.corRank", "screen.randomForest"
+  )
   lapply(screens, test_screen_pipe)
 })

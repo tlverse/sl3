@@ -77,6 +77,22 @@ by all learners.
 }
 }
 
+\examples{
+# load example data
+data(cpp_imputed)
+
+# create sl3 task
+task <- sl3_Task$new(
+  cpp_imputed,
+  covariates = c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs"),
+  outcome = "haz"
+)
+
+# train grf learner and make predictions
+lrnr_grf <- Lrnr_grf$new(seed = 123)
+lrnr_grf_fit <- lrnr_grf$train(task)
+lrnr_grf_pred <- lrnr_grf_fit$predict()
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},
