@@ -143,7 +143,7 @@ test_that("Lrnr_sl cv_control folds respected when SL used w Lrnr_cv", {
   expect_equal(unique(inner_folds), 5)
 })
 # Lrnr_sl cv_control works when SL is used with Lrnr_cv
-cv_sl_using_fit <- cv_sl(eSL_fit, task, loss_squared_error)
+cv_sl_using_fit <- cv_sl(eSL_fit, loss_squared_error)
 # Lrnr_sl cv_control works when SL is inside another SL
 discrete_sl <- Lrnr_sl$new(
   learners = list(glm_lrn, ranger_lrn, lasso_lrn, eSL),
