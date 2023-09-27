@@ -59,8 +59,9 @@ are going to be used.}
 
 \examples{
 # Example adapted from hts package manual
-# The hierarchical structure looks like 2 child nodes associated with level 1,
+# Hierarchical structure looks like 2 child nodes associated with level 1,
 # which are followed by 3 and 2 sub-child nodes respectively at level 2.
+library(data.table)
 library(hts)
 
 set.seed(3274)
@@ -90,7 +91,6 @@ Other Learners:
 \code{\link{Lrnr_bartMachine}},
 \code{\link{Lrnr_base}},
 \code{\link{Lrnr_bayesglm}},
-\code{\link{Lrnr_bilstm}},
 \code{\link{Lrnr_caret}},
 \code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_cv}},

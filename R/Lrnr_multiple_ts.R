@@ -34,7 +34,7 @@
 #' set.seed(123)
 #'
 #' # Simulate simple AR(2) process
-#' data <- matrix(arima.sim(model = list(ar = c(.9, -.2)), n = 200))
+#' data <- matrix(arima.sim(model = list(ar = c(0.9, -0.2)), n = 200))
 #' id <- c(rep("Series_1", 50), rep("Series_2", 50), rep("Series_3", 50), rep("Series_4", 50))
 #' data <- data.frame(data)
 #' data$id <- as.factor(id)
@@ -44,8 +44,6 @@
 #'
 #' data$W1 <- rbinom(200, 1, 0.6)
 #' data$W2 <- rbinom(200, 1, 0.2)
-#'
-#' data <- as.data.table(data)
 #'
 #' folds <- origami::make_folds(data,
 #'   t = max(data$time),

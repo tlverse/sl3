@@ -42,7 +42,8 @@ covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn"
 outcome <- "haz"
 
 # create sl3 task
-task <- sl3_Task$new(data.table::copy(cpp_imputed),
+task <- sl3_Task$new(
+  data = data.table::copy(cpp_imputed),
   covariates = covars,
   outcome = outcome,
   folds = origami::make_folds(cpp_imputed, V = 3)
@@ -65,7 +66,6 @@ Other Learners:
 \code{\link{Lrnr_bartMachine}},
 \code{\link{Lrnr_base}},
 \code{\link{Lrnr_bayesglm}},
-\code{\link{Lrnr_bilstm}},
 \code{\link{Lrnr_caret}},
 \code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_cv}},
