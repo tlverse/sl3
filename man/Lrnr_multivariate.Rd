@@ -52,7 +52,8 @@ covariates <- grep("W", names(data), value = TRUE)
 outcomes <- grep("Y", names(data), value = TRUE)
 
 # make sl3 task
-task <- sl3_Task$new(data.table::copy(data),
+task <- sl3_Task$new(
+  data = data.table::copy(data),
   covariates = covariates,
   outcome = outcomes
 )
@@ -71,7 +72,6 @@ Other Learners:
 \code{\link{Lrnr_bartMachine}},
 \code{\link{Lrnr_base}},
 \code{\link{Lrnr_bayesglm}},
-\code{\link{Lrnr_bilstm}},
 \code{\link{Lrnr_caret}},
 \code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_cv}},

@@ -90,6 +90,7 @@ Suggests:
     mgcv,
     hts,
     GA,
+    SIS,
     partykit
 Remotes:
     github::tlverse/origami,
@@ -106,5 +107,5 @@ VignetteBuilder:
     knitr,
     R.rsp
 Roxygen: list(markdown = TRUE, old_usage = TRUE, r6 = FALSE)
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.3
 RdMacros: Rdpack
