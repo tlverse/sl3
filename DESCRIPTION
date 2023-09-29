@@ -44,7 +44,6 @@ Imports:
     ggplot2,
     digest,
     Rdpack,
-    imputeMissings,
     dplyr,
     caret,
     ROCR
@@ -107,5 +106,5 @@ VignetteBuilder:
     knitr,
     R.rsp
 Roxygen: list(markdown = TRUE, old_usage = TRUE, r6 = FALSE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.1
 RdMacros: Rdpack
