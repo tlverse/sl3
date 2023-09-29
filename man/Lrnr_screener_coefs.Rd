@@ -42,8 +42,7 @@ covars <- c(
 outcome <- "haz"
 
 # create sl3 task
-task <- sl3_Task$new(
-  data = data.table::copy(cpp_imputed),
+task <- sl3_Task$new(data.table::copy(cpp_imputed),
   covariates = covars,
   outcome = outcome
 )

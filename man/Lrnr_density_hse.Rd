@@ -45,6 +45,7 @@ task <- sl3_Task$new(
   covariates = c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs"),
   outcome = "haz"
 )
+
 # train density hse learner and make predictions
 lrnr_density_hse <- Lrnr_density_hse$new(mean_learner = Lrnr_glm$new())
 fit_density_hse <- lrnr_density_hse$train(task)

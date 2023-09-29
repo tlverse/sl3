@@ -42,8 +42,7 @@ covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn"
 outcome <- "haz"
 
 # create sl3 task
-task <- sl3_Task$new(
-  data = data.table::copy(cpp_imputed),
+task <- sl3_Task$new(data.table::copy(cpp_imputed),
   covariates = covars,
   outcome = outcome,
   folds = origami::make_folds(cpp_imputed, V = 3)
