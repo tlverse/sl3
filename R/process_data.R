@@ -134,7 +134,8 @@ process_data <- function(data, nodes, column_names, flag = TRUE,
       nodes$covariates <- c(nodes$covariates, missing_indicator_vars)
     }
     # impute covariates
-    imputed <- impute(data[, missing_covar_cols, with = FALSE])
+    data_missing_covars <- data[, missing_covar_cols, with = FALSE]
+    imputed <- impute(data.frame(data_missing_covars))
     
     # update data
     set(data, , missing_covar_cols, imputed)
