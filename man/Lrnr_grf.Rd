@@ -87,6 +87,7 @@ task <- sl3_Task$new(
   covariates = c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs"),
   outcome = "haz"
 )
+
 # train grf learner and make predictions
 lrnr_grf <- Lrnr_grf$new(seed = 123)
 lrnr_grf_fit <- lrnr_grf$train(task)

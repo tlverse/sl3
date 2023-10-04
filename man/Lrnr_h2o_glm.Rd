@@ -74,6 +74,7 @@ task <- sl3_Task$new(
   covariates = c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs"),
   outcome = "haz"
 )
+
 # train h2o glm learner and make predictions
 lrnr_h2o <- Lrnr_h2o_glm$new()
 lrnr_h2o_fit <- lrnr_h2o$train(task)

@@ -52,8 +52,7 @@ covariates <- grep("W", names(data), value = TRUE)
 outcomes <- grep("Y", names(data), value = TRUE)
 
 # make sl3 task
-task <- sl3_Task$new(
-  data = data.table::copy(data),
+task <- sl3_Task$new(data.table::copy(data),
   covariates = covariates,
   outcome = outcomes
 )
