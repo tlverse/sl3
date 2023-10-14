@@ -174,6 +174,8 @@ Lrnr_cv <- R6Class(
 
 
       predictions <- self$predict_fold(revere_task, fold_number)
+      # This might not be a matrix
+      predictions <- as.data.table(predictions)
       # TODO: make same fixes made to chain here
       if (nrow(revere_task$data) != nrow(predictions)) {
         # Gather validation indexes:
@@ -371,7 +373,7 @@ Lrnr_cv <- R6Class(
         list(
           index = index,
           fold_index = rep(fold_index(), length(index)),
-          predictions = data.table(predictions)
+          predictions = as.data.table(predictions)
         )
       }
 
@@ -392,9 +394,14 @@ Lrnr_cv <- R6Class(
 
       predictions <- aorder(preds, order(results$index, results$fold_index))
 
-      # don't convert to vector if learner is stack, as stack won't
+      
+       # don't convert to vector if learner is stack, as stack won't
       if ((ncol(predictions) == 1) && !inherits(self$params$learner, "Stack")) {
-        predictions <- unlist(predictions)
+        # if packed_predictions dont unlist
+        if(is.data.table(predictions)) predictions <- as.matrix(predictions)
+        if(!inherits(predictions[[1]], "packed_predictions")) {
+          predictions <- as.vector(predictions)
+        }
       }
       return(predictions)
     },

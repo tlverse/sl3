@@ -32,11 +32,16 @@ pooled_hazard_task <- function(task, trim = TRUE) {
   repeated_data <- underlying_data[index, ]
   new_folds <- origami::id_folds_to_folds(task$folds, index)
 
-  repeated_task <- task$next_in_chain(
-    column_names = column_names,
-    data = repeated_data, id = "id",
-    folds = new_folds
-  )
+  nodes <- task$nodes
+  nodes$id <- "id"
+  repeated_task <- sl3_Task$new(repeated_data, column_names = column_names, nodes = task$nodes, folds = new_folds, outcome_levels = outcome_levels, outcome_type = task$outcome_type$type)
+
+  # The below errors when used in CV due to the stored row index not being reset in next_in_chain.
+  #repeated_task <- task$next_in_chain(
+   # column_names = column_names,
+    #data = repeated_data, id = "id",
+    #folds = new_folds
+  #)
 
   # make bin indicators
   bin_number <- rep(level_index, each = task$nrow)

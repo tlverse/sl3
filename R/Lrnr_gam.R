@@ -77,7 +77,7 @@ Lrnr_gam <- R6Class(
     }
   ),
   private = list(
-    .properties = c("continuous", "binomial"),
+    .properties = c("continuous", "binomial", "weights"),
     .train = function(task) {
       # load args
       args <- self$params
@@ -87,6 +87,7 @@ Lrnr_gam <- R6Class(
       Y <- data.frame(outcome_type$format(task$Y))
       colnames(Y) <- task$nodes$outcome
       args$data <- cbind(task$X, Y)
+      args$weights <- task$weights
       ## family
       if (is.null(args$family)) {
         if (outcome_type$type == "continuous") {
