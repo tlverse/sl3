@@ -31,7 +31,7 @@ expect_equal(
   warnings,
   c(
     "Missing outcome data detected: dropping outcomes.",
-    "Missing covariate data detected: imputing covariates."
+    "Imputing missing values and adding missingness indicators for the following covariates with missing values: apgar1, apgar5, parity, meducyrs. See documentation of the process_data function for details."
   )
 )
 
@@ -50,7 +50,7 @@ warnings <- capture_warnings({
 expect_equal(
   warnings,
   c(
-    "Missing covariate data detected: imputing covariates.",
+    "Imputing missing values and adding missingness indicators for the following covariates with missing values: apgar1, apgar5, parity, meducyrs. See documentation of the process_data function for details.",
     "Missing outcome data detected. This is okay for prediction, but will likely break training. \n You can drop observations with missing outcomes by setting drop_missing_outcome=TRUE in make_sl3_Task."
   )
 )

@@ -83,6 +83,9 @@ Lrnr_ranger <- R6Class(
       params <- args_to_list()
       super$initialize(params = params, ...)
     },
+    process_formula = function(task) {
+      return(task)
+    },
     importance = function(...) {
       if (self$fit_object$importance.mode == "none") {
         stop(
@@ -134,7 +137,7 @@ Lrnr_ranger <- R6Class(
 
       predictions <- predictions[[1]]
 
-      if (task$outcome_type$type == "categorical") {
+      if (private$.training_outcome_type$type == "categorical") {
         # pack predictions in a single column
         predictions <- pack_predictions(predictions)
       }

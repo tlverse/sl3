@@ -8,22 +8,50 @@ Variable_Type <- R6Class(
   public = list(
     initialize = function(type = NULL, levels = NULL, bounds = NULL, x = NULL,
                           pcontinuous = getOption("sl3.pcontinuous")) {
-      if (is.null(type)) {
+      detect_type <- function(flag) {
         if (is.null(x)) {
-          stop("type not specified, and no x from which to infer it.")
-        }
-        nunique <- length(na.exclude(unique(x)))
-        if (!is.null(ncol(x))) {
-          type <- "multivariate"
-        } else if (nunique == 1) {
-          type <- "constant"
-        } else if (nunique == 2) {
-          type <- "binomial"
-        } else if ((is.factor(x)) || (((nunique / length(x)) < pcontinuous) &&
-          (nunique < 20))) {
-          type <- "categorical"
+          if (flag) {
+            stop("type not specified, and no x from which to infer it.")
+          } else {
+            type <- "none"
+          }
         } else {
-          type <- "continuous"
+          nunique <- length(na.exclude(unique(x)))
+          if (!is.null(ncol(x))) {
+            type <- "multivariate"
+          } else if (nunique == 1) {
+            type <- "constant"
+          } else if (nunique == 2) {
+            type <- "binomial"
+          } else if ((is.factor(x)) || (((nunique / length(x)) < pcontinuous) &&
+            (nunique < 20))) {
+            type <- "categorical"
+          } else {
+            type <- "continuous"
+          }
+        }
+        return(type)
+      }
+
+      if (is.null(type)) {
+        type <- detect_type(flag = TRUE)
+      } else {
+        detected_type <- detect_type(flag = FALSE)
+        if (detected_type != type & detected_type != "none") {
+          if (type == "quasibinomial") {
+            if (min(x) < 0 | max(x) > 1) {
+              stop(paste0(
+                "Outcome values fall outside [0,1]! Supplied outcome_type (",
+                type, ") cannot support outcome values outside [0,1]."
+              ))
+            }
+          } else {
+            warning(paste0(
+              "The supplied outcome_type (", type,
+              ") does not correspond to the detected type (", detected_type,
+              "). Ensure outcome_type is specified appropriately."
+            ))
+          }
         }
       }
       private$.type <- type
@@ -32,8 +60,7 @@ Variable_Type <- R6Class(
           levels <- get_levels(x)
         } else if (type == "binomial") {
           levels <- c(0, 1)
-        } else
-        if (is.null(levels)) {
+        } else if (is.null(levels)) {
           stop(sprintf("levels or x must be specified for %s", type))
         }
       }

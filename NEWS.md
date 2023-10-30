@@ -1,3 +1,96 @@
+# sl3 1.4.5
+* Changed `CV_lrnr_sl` to `cv_sl`
+* Added `Lrnr_glmtree`, which uses the `partykit` R package to fit recursive
+  partitioning and regression trees in a generalized linear model.
+* Added fold-specific SL coefficients to the output of `cv_sl`, and removed
+  the coefficients column from the returned `cv_risk` table.
+* Added `get_sl_revere_risk` argument  to `Lrnr_sl`'s `cv_risk` method to 
+  provide the option (with default of `FALSE`) to add a super learner's
+  revere-based risk (not a true cross-validated risk) to `cv_risk` output.
+* Changed default metalearner to `Lrnr_nnls` for binary and continuous outcomes.
+* Added `cv_control` argument to `Lrnr_sl`, which allows users to define 
+  specific cross-validation structures for fitting the super learner. This is
+  intended for use in a nested cross-validation scheme (such as cross-validated 
+  super learner, `cv_sl`, or when `Lrnr_sl` is considered in the list of 
+  candidate `learners` in another `Lrnr_sl`). In addition to constructing 
+  clustered cross-validation with respect to `id`, `cv_control` also 
+  can be used to construct stratified cross-validation folds for `Lrnr_sl`.
+* `Lrnr_caret` now works for binary and categorical outcomes. Previous versions 
+  state that these discrete outcome types are supported by `Lrnr_caret`, but 
+  the functionality would brake. 
+* Added public function for `sl3_Task`, `get_folds`, which takes in 
+  `origami::make_folds` arguments and returns the folds. This function is 
+  now called by `task$folds` and it can be called in train as well, to obtain 
+  folds from a task that have a non-default fold structure. 
+* Learners that use CV internally (i.e., as part of their procedure to select
+  tuning parameters), including `Lrnr_caret`, `Lrnr_glmnet`, `Lrnr_hal9001`, 
+  and `Lrnr_sl`, use `task$get_folds` to create folds. The learners' folds 
+  respect the default CV fold structure in `sl3` tasks (clustered CV when `id` 
+  is supplied in the task; and stratified CV when outcomes are categorical or 
+  binary, and when `id` are nested in strata if `id` supplied to task). However, 
+  `V` can be modified according to the learner-specific parameters. (`Lrnr_sl`
+  has a few extra CV tuning arguments, which are thoroughly documented in 
+  `cv_control` and modifications are only recommended for advanced use of 
+  `Lrnr_sl`.)
+* Fixed learner parameter `formula` bug, which was causing formulas with "." to 
+  return an empty task, and therefore learners with these formulas to fail. 
+* Fixed bug in `Lrnr_cv_selector` metalearner, which was using the wrong folds 
+  to calculate the cross-validated risk estimate. This impacted
+  `Lrnr_cv_selector` when `eval_function` was not a loss function, e.g. AUC.
+  By calling `task$folds` on the metalearner's training task, we were deriving 
+  folds from the matrix of cross-validated predictions, and not using the folds 
+  for cross-validating the candidates. We now require the folds for cross-
+  validating the candidates (i.e., the folds in task for training `Lrnr_sl`) to 
+  be supplied when `Lrnr_cv_selector`'s `eval_function` is not a loss function.
+* `Lrnr_caret` and `Lrnr_rpart` factor binary outcomes in their `train` methods,
+  thereby considering a classification prediction problem. To avoid this 
+  behavior and consider a regression prediction problem with a binary outcome 
+  (e.g., to minimize the squared error or negative log likelihood loss in a 
+  binary outcome prediction problem), users can set 
+  `factor_binary_outcome = FALSE` when they instantiate the learner. 
+* Tasks can be created without an outcome. This comes in handy when creating 
+  a task that is used only for prediction, not for training, and leads 
+  to the task's outcome type being set to "none" if it's not supplied. 
+* When the variable type of the outcome (i.e., `outcome_type`) is necessary for 
+  a learner's `predict` method (e.g., if categorical outcome predictions need to 
+  be "packed" together), the outcome type in the **training task** should be 
+  used. That is, `private$.training_outcome_type` should be used to obtain
+  the outcome type in a learner's `predict` method; the task supplied to 
+  `predict` should not be used. The following learners were referring to the
+  task supplied to `predict` in order to retain the outcome type, and they were 
+  modified to use the training task's outcome type instead: `Lrnr_svm`, 
+  `Lrnr_randomForest`, `Lrnr_ranger`, `Lrnr_rpart`, `Lrnr_polspline`. The 
+  issue with pulling the outcome type from the task supplied to `predict` is 
+  that the outcome type of that task might be "none", if the `outcome` argument 
+  is not supplied to it.
+* Updated the learner template (inst/templates/Lrnr_template.R) to reflect the 
+  new formatting guidelines for learner documentation.
+* Updated documentation for `sl3_Task` parameters (man-roxygen/sl3_Task_extra.R). 
+  Specifically, `drop_missing_outcome` and `flag` were added; `offset` 
+  description was fixed; description of `folds` was added, including how to 
+  modify it and the default; and description of how the default cross-validation 
+  structure considers `id` and discrete (binary and categorical) outcome types 
+  to construct clustered and stratified cross-validation schemes, respectively,
+  was added.
+* Added documentation for the function `process_data` (R/process_data.R), which
+  is called when instantiating a task, to process the covariates and identify 
+  missingness in the outcome.
+* Added `Lrnr_grfcate`, a prediction function estimator for conditional average 
+  treatment effect (CATE), which uses the `causal_forest` function in `grf` 
+  package. This learner is intended for use in the `tmle3mopttx` package, where 
+  CATE estimation and prediction is required.
+* Added flexibility and error handling to optional `sl3_Task` argument
+  `outcome_type`. Either `"binomial"`, `"binary"` or `binomial()` can be 
+  supplied for a binary outcome; `"continuous"`,`"gaussian"`, or `gaussian()` 
+  for a continuous outcome; `"categorical"`, `"multinomial"`, or `mutlinomial()"` 
+  for a categorical outcome. As before, when `outcome_type` is not supplied, we 
+  will try to detect it from the outcome values. If the supplied `outcome_type` 
+  differs from the detected one, a warning is now thrown. If `outcome_type` is 
+  supplied but invalid, then an error is thrown upon `sl3_Task` instantiation, 
+  opposed to learner training.
+* Cross-validated super learner (`cv_sl`) returns the cross-validated 
+  predictions for the super learner and its candidates. 
+
 # sl3 1.4.4
 * Updates to `Lrnr_nnls` to support binary outcomes, including support for
   convexity of the resultant model fit and warnings on prediction quality.

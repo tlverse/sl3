@@ -102,15 +102,23 @@ Lrnr_lightgbm <- R6Class(
         Y <- as.numeric(Y) - 1L
       }
 
+      # rename bad names
+      X <- task$X
+      names(X) <- gsub(".", "_", names(X), fixed = TRUE)
+      names(X) <- gsub(":", "_", names(X), fixed = TRUE)
+      names(X) <- gsub("(", "_", names(X), fixed = TRUE)
+      names(X) <- gsub(")", "_", names(X), fixed = TRUE)
+
       # set up training data in custom format
-      args$data <- try(lightgbm::lgb.Dataset(
-        data = as.matrix(task$X),
-        label = as.numeric(Y)
-      ), silent = TRUE)
+      args$data <- try(
+        lightgbm::lgb.Dataset(data = as.matrix(X), label = as.numeric(Y)),
+        silent = TRUE
+      )
 
       # add observation-level weights if detected
       if (task$has_node("weights")) {
-        try(lightgbm::setinfo(args$data, "weight", as.numeric(task$weights)),
+        try(
+          lightgbm::setinfo(args$data, "weight", as.numeric(task$weights)),
           silent = TRUE
         )
       }
@@ -129,22 +137,37 @@ Lrnr_lightgbm <- R6Class(
       }
 
       # specify objective if it's NULL for fitting lightgbm
-      if (is.null(args$objective)) {
+      if (is.null(args$obj)) {
         if (outcome_type$type == "continuous") {
           args$obj <- "regression"
         } else if (outcome_type$type == "binomial") {
           args$obj <- "binary"
-          args$eval <- "binary_logloss"
         } else if (outcome_type$type == "quasibinomial") {
           args$obj <- "regression"
         } else if (outcome_type$type == "categorical") {
           args$obj <- "multiclass"
-          args$eval <- "multi_error"
-          args$num_class <- as.integer(length(outcome_type$levels))
         }
       }
 
-      fit_object <- call_with_args(lightgbm::lgb.train, args, keep_all = TRUE)
+      # specify evaluation metric if it's NULL for fitting lightgbm
+      if (is.null(args$eval)) {
+        if (args$obj == "regression") {
+          args$eval <- "l2"
+        } else if (args$obj == "binary") {
+          args$eval <- "binary_logloss"
+        } else if (args$obj == "multiclass") {
+          args$eval <- "multi_error"
+        }
+      }
+
+      if (is.null(args$num_class) & outcome_type$type == "categorical") {
+        args$num_class <- as.integer(length(outcome_type$levels))
+      }
+
+      fit_object <- call_with_args(lightgbm::lgb.train, args,
+        keep_all = TRUE,
+        ignore = "formula"
+      )
       return(fit_object)
     },
     .predict = function(task = NULL) {

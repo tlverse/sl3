@@ -95,7 +95,6 @@ importance <- function(fit, eval_fun = NULL,
                        type = c("remove", "permute"),
                        importance_metric = c("difference", "ratio"),
                        covariate_groups = NULL) {
-
   # check fit is trained
   if (!fit$is_trained) {
     stop("Fit is not trained.")

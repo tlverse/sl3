@@ -2,41 +2,47 @@
 ##'
 ##' This is a template for defining a new learner.
 ##' This can be copied to a new file using \code{\link{write_learner_template}}.
-##' The remainder of this documentation is an example of how you might write documentation for your new learner.
-##' This learner uses \code{\link[my_package]{my_ml_fun}} from \code{my_package} to fit my favorite machine learning algorithm.
+##' The remainder of this documentation is an example of how you might write 
+##' documentation for your new learner.
+##' 
+##' This learner uses \code{\link[my_package]{my_ml_fun}} from \code{my_package} 
+##' to fit my favorite machine learning algorithm.
 ##'
 ##' @docType class
+##'
 ##' @importFrom R6 R6Class
+##'
 ##' @export
+##'
 ##' @keywords data
-##' @return Learner object with methods for training and prediction. See \code{\link{Lrnr_base}} for documentation on learners.
-##' @format \code{\link{R6Class}} object.
+##'
+##' @return A learner object inheriting from \code{\link{Lrnr_base}} with
+##'  methods for training and prediction. For a full list of learner
+##'  functionality, see the complete documentation of \code{\link{Lrnr_base}}.
+##'
+##' @format An \code{\link[R6]{R6Class}} object inheriting from
+##'  \code{\link{Lrnr_base}}.
+##'
 ##' @family Learners
 ##'
 ##' @section Parameters:
-##' \describe{
-##'   \item{\code{param_1="default_1"}}{ This parameter does something.
-##'   }
-##'   \item{\code{param_2="default_2"}}{ This parameter does something else.
-##'   }
-##'   \item{\code{...}}{ Other parameters passed directly to \code{\link[my_package]{my_ml_fun}}. See its documentation for details.
-##'   }
-##' }
+##'   - \code{param_1="default_1"}: This parameter does something and is not 
+##'      already specified in the task. 
+##'   - \code{param_2="default_2"}: This parameter does something else and is 
+##'      not already specified in the task. 
+##'   - \code{...}: Other parameters passed directly to 
+##'      \code{\link[my_package]{my_ml_fun}}. See its documentation for details. 
+##'      Also, any additional parameters that can be considered by 
+##'      \code{\link{Lrnr_base}}.
 ##'
-##' @section Methods:
-##' \describe{
-##' \item{\code{special_function(arg_1)}}{
-##'   My learner is special so it has a special function.
-##'
-##'   \itemize{
-##'     \item{\code{arg_1}: A very special argument.
-##'    }
-##'   }
-##'   }
-##' }
+##' @examples 
+##' include an example here, e.g. see \code{\link{Lrnr_ranger}}'s example.
+##' 
 Lrnr_template <- R6Class(
-  classname = "Lrnr_template", inherit = Lrnr_base,
-  portable = TRUE, class = TRUE,
+  classname = "Lrnr_template", 
+  inherit = Lrnr_base,
+  portable = TRUE, 
+  class = TRUE,
   # Above, you should change Lrnr_template (in both the object name and the classname argument)
   # to a name that indicates what your learner does
   public = list(
@@ -57,9 +63,6 @@ Lrnr_template <- R6Class(
     # list properties your learner supports here.
     # Use sl3_list_properties() for a list of options
     .properties = c(""),
-
-    # list any packages required for your learner here.
-    .required_packages = c("my_package"),
 
     # .train takes task data and returns a fit object that can be used to generate predictions
     .train = function(task) {
@@ -88,6 +91,10 @@ Lrnr_template <- R6Class(
       if (task$has_node("offset")) {
         args$offset <- task$offset
       }
+      
+      if (task$has_node("id")) {
+        args$id <- task$id
+      }
 
       # call a function that fits your algorithm
       # with the argument list you constructed
@@ -107,6 +114,8 @@ Lrnr_template <- R6Class(
 
       predictions <- predict(self$fit_object, task$X)
       return(predictions)
-    }
+    },
+    # list any packages required for your learner here.
+    .required_packages = c("my_package")
   )
 )

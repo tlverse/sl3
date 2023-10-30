@@ -27,7 +27,7 @@ h2o package."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/lib
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sl3</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.5</span>
       </span>
     </div>
 
@@ -42,7 +42,7 @@ h2o package."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/lib
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -183,8 +183,11 @@ by all learners.</p>
 <code><a href="Lrnr_ga.html">Lrnr_ga</a></code>,
 <code><a href="Lrnr_gbm.html">Lrnr_gbm</a></code>,
 <code><a href="Lrnr_glm_fast.html">Lrnr_glm_fast</a></code>,
+<code><a href="Lrnr_glm_semiparametric.html">Lrnr_glm_semiparametric</a></code>,
 <code><a href="Lrnr_glmnet.html">Lrnr_glmnet</a></code>,
+<code><a href="Lrnr_glmtree.html">Lrnr_glmtree</a></code>,
 <code><a href="Lrnr_glm.html">Lrnr_glm</a></code>,
+<code><a href="Lrnr_grfcate.html">Lrnr_grfcate</a></code>,
 <code><a href="Lrnr_grf.html">Lrnr_grf</a></code>,
 <code><a href="Lrnr_gru_keras.html">Lrnr_gru_keras</a></code>,
 <code><a href="Lrnr_gts.html">Lrnr_gts</a></code>,
@@ -228,6 +231,53 @@ by all learners.</p>
 <code><a href="undocumented_learner.html">undocumented_learner</a></code></p></div>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/h2oai/h2o-3" class="external-link">h2o</a></span><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/warning.html" class="external-link">suppressWarnings</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/h2o/man/h2o.init.html" class="external-link">h2o.init</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Connection successful!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> R is connected to the H2O cluster: </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     H2O cluster uptime:         7 seconds 520 milliseconds </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     H2O cluster timezone:       America/Los_Angeles </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     H2O data parsing timezone:  UTC </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     H2O cluster version:        3.36.1.2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     H2O cluster version age:    1 year, 2 months and 21 days !!! </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     H2O cluster name:           H2O_started_from_R_Rachael_jep458 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     H2O cluster total nodes:    1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     H2O cluster total memory:   2.00 GB </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     H2O cluster total cores:    4 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     H2O cluster allowed cores:  4 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     H2O cluster healthy:        TRUE </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     H2O Connection ip:          localhost </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     H2O Connection port:        54321 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     H2O Connection proxy:       NA </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     H2O Internal Security:      FALSE </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     R Version:                  R version 4.2.0 (2022-04-22) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># load example data</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cpp_imputed</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">covars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span class="r-in">  <span class="st">"apgar1"</span>, <span class="st">"apgar5"</span>, <span class="st">"parity"</span>, <span class="st">"gagebrth"</span>, <span class="st">"mage"</span>, <span class="st">"meducyrs"</span>,</span>
+<span class="r-in">  <span class="st">"sexn"</span></span>
+<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span class="va">outcome</span> <span class="op">&lt;-</span> <span class="st">"haz"</span></span>
+<span class="r-in"><span class="va">cpp_imputed</span> <span class="op">&lt;-</span> <span class="va">cpp_imputed</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">150</span>, <span class="op">]</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># create sl3 task</span></span>
+<span class="r-in"><span class="va">task</span> <span class="op">&lt;-</span> <span class="va"><a href="sl3_Task.html">sl3_Task</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">cpp_imputed</span>, covariates <span class="op">=</span> <span class="va">covars</span>, outcome <span class="op">=</span> <span class="va">outcome</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># h2o grid search hyperparameter alpha</span></span>
+<span class="r-in"><span class="va">h2o_glm_grid</span> <span class="op">&lt;-</span> <span class="va">Lrnr_h2o_grid</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span class="r-in">  algorithm <span class="op">=</span> <span class="st">"glm"</span>,</span>
+<span class="r-in">  hyper_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span class="va">h2o_glm_grid_fit</span> <span class="op">&lt;-</span> <span class="va">h2o_glm_grid</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">pred</span> <span class="op">&lt;-</span> <span class="va">h2o_glm_grid_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span></span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>
@@ -240,7 +290,7 @@ by all learners.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer></div>

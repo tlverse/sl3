@@ -39,7 +39,6 @@ data <- gen_data(1000)
 
 Wnodes <- grep("^W", names(data), value = TRUE)
 Anode <- "A"
-library(origami)
 folds <- make_folds(nrow(data), V = 10, fold_fun = folds_vfold)
 task <- sl3_Task$new(data, covariates = Wnodes, outcome = Anode)
 
@@ -81,9 +80,8 @@ mn_sl <- make_learner(Lrnr_sl, learners)
 # })
 test_that("Lrnr_sl multinomial integration test", {
   sl_fit <- mn_sl$train(task)
-  coef(sl_fit)
-  preds <- sl_fit$base_predict()
-  sl_fit$cv_risk(loss_loglik_multinomial)
+  preds <- unpack_predictions(sl_fit$base_predict())
+  expect_equal(dim(preds), c(length(task$Y), length(levels(task$Y))))
 })
 
 test_that("Lrnr_sl produces predictions with retained factor levels", {

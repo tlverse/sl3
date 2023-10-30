@@ -14,7 +14,7 @@ outcome <- "haz"
 task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
 
 # define learners
-glm_fast <- Lrnr_glm_fast$new(intercept = FALSE)
+glm_fast <- Lrnr_glm$new(intercept = FALSE)
 pca_sl3 <- Lrnr_pca$new(n_comp = ncomp, center = TRUE, scale. = TRUE)
 pcr_pipe_sl3 <- Pipeline$new(pca_sl3, glm_fast)
 
@@ -27,19 +27,20 @@ pca_from_pipe <- pcr_pipe_sl3_fit$fit_object$learner_fits[[1]]$fit_object
 
 # compute PCA with GLM manually
 cpp_pca <- cpp_imputed %>%
-  dplyr::select(covars) %>%
+  dplyr::select(all_of(covars)) %>%
   stats::prcomp(x = ., center = TRUE, scale. = TRUE)
 cpp_pca_rotated <- cpp_pca$x[, seq_len(ncomp)]
 pcr_cpp <- glm(cpp_imputed$haz ~ -1 + cpp_pca_rotated)
-pcr_preds <- predict(pcr_cpp) %>%
-  as.numeric()
+pcr_preds <- predict(pcr_cpp) %>% as.numeric()
 
-test_that("PCA computed by Lrnr_pca matches stats::prcomp exactly.", {
-  all.equal(pca_from_pipe, cpp_pca)
+
+test_that("PCA computed by Lrnr_pca matches stats::prcomp exactly", {
+  dimnames(cpp_pca$x) <- list(NULL, dimnames(cpp_pca$x)[[2]])
+  expect_equal(pca_from_pipe, cpp_pca)
 })
 
-test_that("Regression on PCs matches between Pipeline and manual invocation.", {
-  all.equal(out_pcr_fit, pcr_preds)
+test_that("Regression on PCs matches between Pipeline and manual run", {
+  expect_identical(out_pcr_fit, pcr_preds)
 })
 
 test_that("Arguments are passed to prcomp correctly by Lrnr_pca", {

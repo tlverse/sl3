@@ -9,7 +9,7 @@ task_contY <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
 task_binY <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "sexn")
 
 # Lrnr_glmnet with stratify_cv works
-lrnr_glmnet <- Lrnr_glmnet$new(stratify_cv = TRUE)
+lrnr_glmnet <- Lrnr_glmnet$new()
 # expect_warning(ff <- lrnr_glmnet$train(task_contY))
 fit <- lrnr_glmnet$train(task_binY)
 preds <- fit$predict(task_binY)

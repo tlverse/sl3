@@ -29,7 +29,7 @@ Friedman et al. (2010)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sl3</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.5</span>
       </span>
     </div>
 
@@ -44,7 +44,7 @@ Friedman et al. (2010)
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -111,7 +111,11 @@ functionality, see the complete documentation of <code><a href="Lrnr_base.html">
 <ul><li><p><code>lambda = NULL</code>: An optional vector of lambda values to compare.</p></li>
 <li><p><code>type.measure = "deviance"</code>: The loss to use when selecting
 lambda. Options documented in <code><a href="https://glmnet.stanford.edu/reference/cv.glmnet.html" class="external-link">cv.glmnet</a></code>.</p></li>
-<li><p><code>nfolds = 10</code>: Number of folds to use for internal cross-validation.</p></li>
+<li><p><code>nfolds = 10</code>: Number of k-fold/V-fold cross-validation folds for
+<code>cv.glmnet</code> to consider when selecting the optimal <code>lambda</code>
+with cross-validation. Smallest nfolds value allowed by <code>glmnet</code>
+is 3. For further details, consult the documentation of
+<code><a href="https://glmnet.stanford.edu/reference/cv.glmnet.html" class="external-link">cv.glmnet</a></code>.</p></li>
 <li><p><code>alpha = 1</code>: The elastic net parameter: <code>alpha = 0</code> is Ridge
 (L2-penalized) regression, while <code>alpha = 1</code> specifies Lasso
 (L1-penalized) regression. Values in the closed unit interval specify a
@@ -127,15 +131,11 @@ regularization parameter is used for prediction (i.e.,
 (i.e., <code>lambda = cv_fit$lambda.1se</code>). The distinction between the
 two variants is clarified in the documentation of
 <code><a href="https://glmnet.stanford.edu/reference/cv.glmnet.html" class="external-link">cv.glmnet</a></code>.</p></li>
-<li><p><code>stratify_cv = FALSE</code>: Stratify internal cross-validation folds, so
-that a binary outcome's prevalence for training is roughly the same in
-the training and validation sets of the internal cross-validation
-folds? This argument can only be used when the outcome type for
-training is binomial; and either the <code>id</code> node in the task is not
-specified, or <code><a href="https://glmnet.stanford.edu/reference/cv.glmnet.html" class="external-link">cv.glmnet</a></code>'s <code>foldid</code> argument
-is not specified upon initializing the learner.</p></li>
+<li><p><code>nfolds = 10</code>: Number of folds (default is 10). Smallest value
+allowable by <code>glmnet</code> is 3.</p></li>
 <li><p><code>...</code>: Other parameters passed to <code><a href="https://glmnet.stanford.edu/reference/cv.glmnet.html" class="external-link">cv.glmnet</a></code>
-and <code><a href="https://glmnet.stanford.edu/reference/glmnet.html" class="external-link">glmnet</a></code>.</p></li>
+and <code><a href="https://glmnet.stanford.edu/reference/glmnet.html" class="external-link">glmnet</a></code>, and additional arguments defined in
+<code><a href="Lrnr_base.html">Lrnr_base</a></code>, such as <code>params</code> like <code>formula</code>.</p></li>
 </ul></div>
     <div id="references">
     <h2>References</h2>
@@ -167,7 +167,10 @@ and <code><a href="https://glmnet.stanford.edu/reference/glmnet.html" class="ext
 <code><a href="Lrnr_ga.html">Lrnr_ga</a></code>,
 <code><a href="Lrnr_gbm.html">Lrnr_gbm</a></code>,
 <code><a href="Lrnr_glm_fast.html">Lrnr_glm_fast</a></code>,
+<code><a href="Lrnr_glm_semiparametric.html">Lrnr_glm_semiparametric</a></code>,
+<code><a href="Lrnr_glmtree.html">Lrnr_glmtree</a></code>,
 <code><a href="Lrnr_glm.html">Lrnr_glm</a></code>,
+<code><a href="Lrnr_grfcate.html">Lrnr_grfcate</a></code>,
 <code><a href="Lrnr_grf.html">Lrnr_grf</a></code>,
 <code><a href="Lrnr_gru_keras.html">Lrnr_gru_keras</a></code>,
 <code><a href="Lrnr_gts.html">Lrnr_gts</a></code>,
@@ -246,7 +249,7 @@ and <code><a href="https://glmnet.stanford.edu/reference/glmnet.html" class="ext
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer></div>

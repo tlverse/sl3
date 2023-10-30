@@ -30,7 +30,11 @@
 #'  - \code{lambda = NULL}: An optional vector of lambda values to compare.
 #'  - \code{type.measure = "deviance"}: The loss to use when selecting
 #'      lambda. Options documented in \code{\link[glmnet]{cv.glmnet}}.
-#'  - \code{nfolds = 10}: Number of folds to use for internal cross-validation.
+#'  - \code{nfolds = 10}: Number of k-fold/V-fold cross-validation folds for
+#'      \code{cv.glmnet} to consider when selecting the optimal \code{lambda}
+#'      with cross-validation. Smallest {nfolds} value allowed by \code{glmnet}
+#'      is 3. For further details, consult the documentation of
+#'      \code{\link[glmnet]{cv.glmnet}}.
 #'  - \code{alpha = 1}: The elastic net parameter: \code{alpha = 0} is Ridge
 #'      (L2-penalized) regression, while \code{alpha = 1} specifies Lasso
 #'      (L1-penalized) regression. Values in the closed unit interval specify a
@@ -46,15 +50,11 @@
 #'      (i.e., \code{lambda = cv_fit$lambda.1se}). The distinction between the
 #'      two variants is clarified in the documentation of
 #'      \code{\link[glmnet]{cv.glmnet}}.
-#'  - \code{stratify_cv = FALSE}: Stratify internal cross-validation folds, so
-#'      that a binary outcome's prevalence for training is roughly the same in
-#'      the training and validation sets of the internal cross-validation
-#'      folds? This argument can only be used when the outcome type for
-#'      training is binomial; and either the \code{id} node in the task is not
-#'      specified, or \code{\link[glmnet]{cv.glmnet}}'s \code{foldid} argument
-#'      is not specified upon initializing the learner.
+#'  - \code{nfolds = 10}: Number of folds (default is 10). Smallest value
+#'      allowable by \code{glmnet} is 3.
 #'  - \code{...}: Other parameters passed to \code{\link[glmnet]{cv.glmnet}}
-#'      and \code{\link[glmnet]{glmnet}}.
+#'      and \code{\link[glmnet]{glmnet}}, and additional arguments defined in
+#'      \code{\link{Lrnr_base}}, such as \code{params} like \code{formula}.
 #'
 #' @references
 #'  \insertAllCited{}
@@ -84,26 +84,24 @@ Lrnr_glmnet <- R6Class(
   public = list(
     initialize = function(lambda = NULL, type.measure = "deviance",
                           nfolds = 10, alpha = 1, nlambda = 100,
-                          use_min = TRUE, stratify_cv = FALSE, ...) {
+                          use_min = TRUE, ...) {
       super$initialize(params = args_to_list(), ...)
     }
   ),
   private = list(
-    .properties = c(
-      "continuous", "binomial", "categorical",
-      "weights", "ids"
-    ),
+    .properties = c("continuous", "binomial", "categorical", "weights", "ids", "cv"),
     .train = function(task) {
       args <- self$params
+
+      verbose <- args$verbose
+      if (is.null(verbose)) {
+        verbose <- getOption("sl3.verbose")
+      }
 
       outcome_type <- self$get_outcome_type(task)
 
       if (is.null(args$family)) {
         args$family <- outcome_type$glm_family()
-      }
-
-      if (args$family %in% "quasibinomial") {
-        args$family <- stats::quasibinomial()
       }
 
       # specify data
@@ -118,31 +116,22 @@ Lrnr_glmnet <- R6Class(
         args$offset <- task$offset
       }
 
-      if (task$has_node("id")) {
-        args$foldid <- origami::folds2foldvec(task$folds)
-      }
-
-      if (args$stratify_cv) {
-        if (outcome_type$type == "binomial" & is.null(args$foldid)) {
-          folds <- origami::make_folds(
-            n = length(args$y), strata_ids = args$y, fold_fun = folds_vfold,
-            V = as.integer(args$nfolds)
-          )
-          args$foldid <- origami::folds2foldvec(folds)
-        } else {
-          warning(
-            "stratify_cv is TRUE; but inner cross-validation folds cannot ",
-            "be stratified. Either the outcome is not binomial, or foldid ",
-            "has already been established (user specified foldid upon ",
-            "initializing the learner, or it was set according to task id's)."
-          )
+      # specify internal CV via foldid
+      if (is.null(args$foldid)) {
+        folds <- task$folds
+        # we need to create the folds when args$nfolds is provided and it is
+        # not equal to the number of folds in the task, otherwise we
+        # can just use "folds" (above) as the CV folds for fitting cv.glmnet
+        if (!is.null(args$nfolds) && length(folds) != args$nfolds) {
+          folds <- task$get_folds(V = args$nfolds)
         }
+        args$foldid <- origami::folds2foldvec(folds)
       }
 
       fit_object <- call_with_args(
         glmnet::cv.glmnet, args,
         other_valid = names(formals(glmnet::glmnet)),
-        ignore = c("use_min", "stratify_cv")
+        ignore = "use_min"
       )
       fit_object$glmnet.fit$call <- NULL
       return(fit_object)

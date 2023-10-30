@@ -37,7 +37,8 @@ test_that("Lrnr_hal9001 predictions match those from hal9001", {
   set.seed(67391)
   hal_fit <- hal9001::fit_hal(
     X = as.matrix(task$X), Y = task$Y,
-    fit_control = list(foldid = origami::folds2foldvec(task$folds))
+    fit_control = list(foldid = origami::folds2foldvec(task$folds)),
+    max_degree = 2, smoothness_orders = 1, num_knots = 5
   )
   hal_fit_preds <- predict(hal_fit, new_data = as.matrix(task$X))
 
@@ -62,7 +63,8 @@ test_that("Lrnr_hal9001 passes arguments correctly relative to hal9001", {
   set.seed(31298)
   hal_lrnr <- Lrnr_hal9001$new(
     max_degree = 2,
-    smoothness_orders = 0
+    smoothness_orders = 0,
+    num_knots = 5
   )
   hal_lrnr_fit <- hal_lrnr$train(mtcars_task)
   hal_lrnr_preds <- hal_lrnr_fit$predict()
@@ -74,8 +76,8 @@ test_that("Lrnr_hal9001 passes arguments correctly relative to hal9001", {
     Y = mtcars_task$Y,
     max_degree = 2,
     smoothness_orders = 0,
-    fit_control = list(foldid = origami::folds2foldvec(mtcars_task$folds)),
-    yolo = FALSE
+    num_knots = 5,
+    fit_control = list(foldid = origami::folds2foldvec(mtcars_task$folds))
   )
   hal_fit_preds <- predict(hal_fit, new_data = as.matrix(mtcars_task$X))
 

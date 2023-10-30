@@ -31,7 +31,7 @@ Rsolnp package."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sl3</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.5</span>
       </span>
     </div>
 
@@ -46,7 +46,7 @@ Rsolnp package."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -126,6 +126,11 @@ to 1.</p></li>
 <li><p><code>init_0 = FALSE</code>: If <code>TRUE</code>, alpha is initialized to all 0's,
 useful for TMLE. Otherwise, it is initialized to equal weights summing
 to 1, useful for Super Learner.</p></li>
+<li><p><code>rho = 1</code>: This is used as a penalty weighting scaler for
+infeasibility in the augmented objective function. The higher its
+value the more the weighting to bring the solution into the feasible
+region (default 1). However, very high values might lead to numerical
+ill conditioning or significantly slow down convergence.</p></li>
 <li><p><code>outer.iter = 400</code>: Maximum number of major (outer) iterations.</p></li>
 <li><p><code>inner.iter = 800</code>: Maximum number of minor (inner) iterations.</p></li>
 <li><p><code>delta = 1e-7</code>:Relative step size in forward difference evaluation.</p></li>
@@ -159,8 +164,11 @@ such as <code>params</code> (like <code>formula</code>) and <code>name</code>.</
 <code><a href="Lrnr_ga.html">Lrnr_ga</a></code>,
 <code><a href="Lrnr_gbm.html">Lrnr_gbm</a></code>,
 <code><a href="Lrnr_glm_fast.html">Lrnr_glm_fast</a></code>,
+<code><a href="Lrnr_glm_semiparametric.html">Lrnr_glm_semiparametric</a></code>,
 <code><a href="Lrnr_glmnet.html">Lrnr_glmnet</a></code>,
+<code><a href="Lrnr_glmtree.html">Lrnr_glmtree</a></code>,
 <code><a href="Lrnr_glm.html">Lrnr_glm</a></code>,
+<code><a href="Lrnr_grfcate.html">Lrnr_grfcate</a></code>,
 <code><a href="Lrnr_grf.html">Lrnr_grf</a></code>,
 <code><a href="Lrnr_gru_keras.html">Lrnr_gru_keras</a></code>,
 <code><a href="Lrnr_gts.html">Lrnr_gts</a></code>,
@@ -219,7 +227,7 @@ such as <code>params</code> (like <code>formula</code>) and <code>name</code>.</
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">lrnrs</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lasso"</span>, <span class="st">"glm"</span>, <span class="st">"ranger"</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">lrnr_stack</span> <span class="op">&lt;-</span> <span class="fu"><a href="Lrnr_base.html">make_learner</a></span><span class="op">(</span><span class="va">Stack</span>, <span class="va">lrnrs</span><span class="op">)</span></span>
 <span class="r-in"></span>
-<span class="r-in"><span class="co"># instantiate SL with GA metalearner</span></span>
+<span class="r-in"><span class="co"># instantiate SL with solnp metalearner</span></span>
 <span class="r-in"><span class="va">solnp_meta</span> <span class="op">&lt;-</span> <span class="va">Lrnr_solnp</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">sl</span> <span class="op">&lt;-</span> <span class="va"><a href="Lrnr_sl.html">Lrnr_sl</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">lrnr_stack</span>, <span class="va">solnp_meta</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">sl_fit</span> <span class="op">&lt;-</span> <span class="va">sl</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>
@@ -237,7 +245,7 @@ such as <code>params</code> (like <code>formula</code>) and <code>name</code>.</
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer></div>

@@ -29,6 +29,28 @@ variables with discrete levels coded as \code{numeric}.
 }
 }
 
+\examples{
+library(data.table)
+
+# load example data set
+data(cpp_imputed)
+setDT(cpp_imputed)
+
+# use covariates of intest and the outcome to build a task object
+covars <- c("apgar1", "apgar5", "sexn")
+task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = "haz")
+
+hal_lrnr <- Lrnr_hal9001$new(fit_control = list(n_folds = 3))
+stratified_hal <- Lrnr_stratified$new(
+  learner = hal_lrnr,
+  variable_stratify = "sexn"
+)
+
+# stratified learner
+set.seed(123)
+stratified_hal_fit <- stratified_hal$train(task)
+stratified_prediction <- stratified_hal_fit$predict(task = task)
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},
@@ -37,7 +59,6 @@ Other Learners:
 \code{\link{Lrnr_bartMachine}},
 \code{\link{Lrnr_base}},
 \code{\link{Lrnr_bayesglm}},
-\code{\link{Lrnr_bilstm}},
 \code{\link{Lrnr_caret}},
 \code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_cv}},
@@ -52,8 +73,11 @@ Other Learners:
 \code{\link{Lrnr_ga}},
 \code{\link{Lrnr_gbm}},
 \code{\link{Lrnr_glm_fast}},
+\code{\link{Lrnr_glm_semiparametric}},
 \code{\link{Lrnr_glmnet}},
+\code{\link{Lrnr_glmtree}},
 \code{\link{Lrnr_glm}},
+\code{\link{Lrnr_grfcate}},
 \code{\link{Lrnr_grf}},
 \code{\link{Lrnr_gru_keras}},
 \code{\link{Lrnr_gts}},

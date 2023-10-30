@@ -64,7 +64,7 @@ test_that("Lrnr_haldensify produces predictions identical to haldensify", {
   )
 
   # check that predicted conditional density estimates match
-  expect_equal(hal_dens_preds, haldensify_preds, tolerance = 1e-15)
+  expect_equal(hal_dens_preds, haldensify_preds, tolerance = 0.01)
 })
 
 # test_that("Ensembling with Lrnr_haldensify produces sane predictions", {

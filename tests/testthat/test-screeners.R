@@ -1,6 +1,5 @@
 context("test_screeners.R -- Screening Procedures")
 
-options(sl3.verbose = TRUE)
 library(data.table)
 data(cpp_imputed)
 setDT(cpp_imputed)

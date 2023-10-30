@@ -79,8 +79,10 @@ preds <- fit$predict_fold(task, "validation")
 cv_risk_table <- fit$cv_risk(loss_squared_error)
 
 # GLM should be perfect here because outcome = covariate
-expect_equal(cv_risk_table$coefficients[[1]], 1)
-expect_equal(cv_risk_table$MSE[[1]], 0)
+test_that("GLM is perfect when outcome = covariate", {
+  expect_equal(cv_risk_table$coefficients[[1]], 1)
+  expect_equal(cv_risk_table$MSE[[1]], 0)
+})
 
 ################################# test LOOCV ###################################
 test_loocv_learner <- function(learner, loocv_task, ...) {
@@ -143,10 +145,15 @@ wrap <- sl3::sl3_list_learners("wrapper")
 h2o <- sl3::sl3_list_learners("h2o")
 learners <- cont_learners[-which(cont_learners %in% c(ts, screen, wrap, h2o))]
 
+# remove glm_semiparametric, as LOOCV is tested w it in test-glm-semiparametric
+learners <- learners[!(learners == "Lrnr_glm_semiparametric")]
+
 # remove LightGBM on Windows
 if (Sys.info()["sysname"] == "Windows") {
   learners <- learners[!(learners == "Lrnr_lightgbm")]
 }
 
 # test all relevant learners
+learners <- learners[!(learners == "Lrnr_grfcate")]
 lapply(learners, test_loocv_learner, loocv_task)
+test_loocv_learner("Lrnr_grfcate", loocv_task, A = "apgar1")

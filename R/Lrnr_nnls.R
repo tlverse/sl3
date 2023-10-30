@@ -50,7 +50,7 @@ Lrnr_nnls <- R6Class(
   classname = "Lrnr_nnls", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(convex = FALSE, ...) {
+    initialize = function(convex = TRUE, ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     },
@@ -89,6 +89,7 @@ Lrnr_nnls <- R6Class(
         coef <- init_coef
       }
 
+      names(coef) <- names(x)
       fit_object$coefficients <- coef
       fit_object$x <- coef
       return(fit_object)

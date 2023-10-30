@@ -30,3 +30,4 @@ deploy.sh
 ^LICENSE$
 man-roxygen
 ^_pkgdown\.yml$
+^pkgdown$

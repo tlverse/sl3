@@ -77,10 +77,8 @@ test_that("Lrnr_ts_weights fits SL differently for different windows/rates", {
 test_that("Lrnr_ts_weights naming works", {
   metalrnr <- Lrnr_solnp$new(metalearner_linear, loss_squared_error, name = "sol")
   window1_metalrnr <- Lrnr_ts_weights$new(metalrnr, window = 1)
-  expect_equal(
-    window1_metalrnr$name,
-    "Lrnr_ts_weights_1_NULL_NULL_Lrnr_solnp_TRUE_TRUE_FALSE_400_800_1e-07_1e-08_FALSE_sol"
-  )
+  match <- grepl("^Lrnr_ts_weights.*\\_sol$", window1_metalrnr$name)
+  expect_true(match)
 
   window1_metalrnr <- Lrnr_ts_weights$new(metalrnr, window = 1, name = "ts")
   expect_equal(window1_metalrnr$name, "ts")

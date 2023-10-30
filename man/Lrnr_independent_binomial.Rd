@@ -36,6 +36,27 @@ by all learners.
 }
 }
 
+\examples{
+library(dplyr)
+
+# load example data
+data(cpp)
+cpp <- cpp \%>\%
+  select(c(bmi, agedays, feeding)) \%>\%
+  mutate(feeding = as.factor(feeding)) \%>\%
+  na.omit()
+
+# create sl3 task
+task <- make_sl3_Task(cpp,
+  covariates = c("agedays", "bmi"),
+  outcome = "feeding"
+)
+
+# train independent binomial learner and make predictions
+lrnr_indbinomial <- make_learner(Lrnr_independent_binomial)
+fit <- lrnr_indbinomial$train(task)
+preds <- fit$predict(task)
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},
@@ -44,7 +65,6 @@ Other Learners:
 \code{\link{Lrnr_bartMachine}},
 \code{\link{Lrnr_base}},
 \code{\link{Lrnr_bayesglm}},
-\code{\link{Lrnr_bilstm}},
 \code{\link{Lrnr_caret}},
 \code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_cv}},
@@ -59,8 +79,11 @@ Other Learners:
 \code{\link{Lrnr_ga}},
 \code{\link{Lrnr_gbm}},
 \code{\link{Lrnr_glm_fast}},
+\code{\link{Lrnr_glm_semiparametric}},
 \code{\link{Lrnr_glmnet}},
+\code{\link{Lrnr_glmtree}},
 \code{\link{Lrnr_glm}},
+\code{\link{Lrnr_grfcate}},
 \code{\link{Lrnr_grf}},
 \code{\link{Lrnr_gru_keras}},
 \code{\link{Lrnr_gts}},

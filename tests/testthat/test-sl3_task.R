@@ -63,13 +63,13 @@ test_that("task subsetting works", {
   expect_equal(subsetted3$nrow, sum(logical_subset))
 })
 
-empty_task <- sl3_Task$new(mtcars, covariates = NULL, outcome = NULL)
-
 test_that("task$X_intercept works for empty X (intercept-only)", {
+  empty_task <- sl3_Task$new(mtcars, covariates = NULL, outcome = NULL)
   expect_equal(nrow(empty_task$X_intercept), nrow(mtcars))
 })
 
 test_that("task errors for empty Y", {
+  empty_task <- sl3_Task$new(mtcars, covariates = NULL, outcome = NULL)
   expect_error(empty_task$Y)
 })
 
@@ -94,15 +94,63 @@ test_that("two chained tasks can have same column name without conflicts", {
   expect_true(all(chained2$X$test_col == 2))
 })
 
-# check that integers may be passed to folds argument
-intfolds <- 4
-task_intfolds <- sl3_Task$new(mtcars,
-  covariates = covariates,
-  outcome = outcome, folds = intfolds
-)
-test_that("task$folds returns object with correct number of integer folds", {
-  expect_equal(length(task_intfolds$folds), intfolds)
+test_that("integers can be passed as number of folds in V-fold CV", {
+  task_intfolds <- sl3_Task$new(mtcars, covariates, outcome, folds = 4)
+  expect_equal(length(task_intfolds$folds), 4)
 })
 
+test_that("task can be made from shared data", {
+  task_from_shared_data <- sl3_Task$new(
+    task$.__enclos_env__$private$.shared_data,
+    nodes = task$nodes
+  )
+  expect_equal(task_from_shared_data$data, task$data)
+})
 
-task_from_shared_data <- sl3_Task$new(data = task$.__enclos_env__$private$.shared_data, nodes = task$nodes)
+test_that("mismatch of supplied and detected outcome_type warns", {
+  expect_warning(
+    sl3_Task$new(mtcars, covariates, outcome, outcome_type = "binomial")
+  )
+})
+
+test_that("outcome_type gaussian/guassian() silently changed to continuous", {
+  task <- sl3_Task$new(mtcars, covariates, outcome, outcome_type = "gaussian")
+  task2 <- sl3_Task$new(mtcars, covariates, outcome, outcome_type = gaussian())
+  expect_equal(
+    c(task$outcome_type$type, task2$outcome_type$type),
+    c("continuous", "continuous")
+  )
+})
+
+test_that("outcome_type binary/binomial() silently changed to binomial", {
+  mtcars$binary_mpg <- ifelse(mtcars$mpg > mean(mtcars$mpg), 1, 0)
+  task <- sl3_Task$new(mtcars, covariates, "binary_mpg", outcome_type = "binary")
+  task2 <- sl3_Task$new(mtcars, covariates, "binary_mpg", outcome_type = binomial())
+  expect_equal(
+    c(task$outcome_type$type, task2$outcome_type$type),
+    c("binomial", "binomial")
+  )
+})
+
+test_that("outcome_type multinomial is silently changed to categorical", {
+  mtcars$categorical_mpg <- as.factor(
+    ifelse(mtcars$mpg < 15, "L", ifelse(mtcars$mpg > 25, "H", "M"))
+  )
+  task <- sl3_Task$new(
+    mtcars, covariates, "categorical_mpg",
+    outcome_type = "multinomial"
+  )
+  expect_equal(task$outcome_type$type, "categorical")
+})
+
+test_that("erroneous outcome_type errors", {
+  expect_error(
+    sl3_Task$new(mtcars, covariates, outcome, outcome_type = "kitty")
+  )
+})
+
+test_that("vector outcome_type errors", {
+  expect_error(
+    sl3_Task$new(mtcars, covariates, outcome, outcome_type = c("go", "bears"))
+  )
+})
