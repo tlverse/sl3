@@ -56,6 +56,13 @@ Lrnr_base <- R6Class(
         if (length(delta_idx) > 0) {
           delta_missing <- task_covs_missing[delta_idx]
           task_covs_missing <- task_covs_missing[-delta_idx]
+          
+          delta_missing_data <- matrix(0, nrow(task$data), length(delta_idx))
+          colnames(delta_missing_data) <- delta_missing
+          cols <- task$add_columns(data.table(delta_missing_data))
+          
+        } else{
+          cols <- task$column_names
         }
 
         # error when task is missing covariates
@@ -68,29 +75,10 @@ Lrnr_base <- R6Class(
           )
         }
 
-        # subset task covariates to only includes those in learner covariates
-        covs_subset <- intersect(task_covs, learner_covs)
-
-        # return updated task
-        if (length(delta_idx) == 0) {
-          # re-order the covariate subset to match order of learner covariates
-          ordered_covs_subset <- covs_subset[match(covs_subset, learner_covs)]
-          return(task$next_in_chain(covariates = ordered_covs_subset))
-        } else {
-          # incorporate missingness indicators in task covariates subset & sort
-          covs_subset_delta <- c(covs_subset, delta_missing)
-          ord_covs <- covs_subset_delta[match(covs_subset_delta, learner_covs)]
-
-          # incorporate missingness indicators in task data
-          delta_missing_data <- matrix(0, nrow(task$data), length(delta_idx))
-          colnames(delta_missing_data) <- delta_missing
-          cols <- task$add_columns(data.table(delta_missing_data))
-
-          return(task$next_in_chain(
-            covariates = ord_covs,
+        return(task$next_in_chain(
+            covariates = learner_covs,
             column_names = cols
-          ))
-        }
+        ))
       } else {
         return(task)
       }
