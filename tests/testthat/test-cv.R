@@ -1,4 +1,5 @@
 context("test-cv.R -- Cross-validation fold handling")
+skip_on_cran()
 
 library(origami)
 options(java.parameters = "-Xmx2500m")
@@ -147,6 +148,8 @@ learners <- cont_learners[-which(cont_learners %in% c(ts, screen, wrap, h2o))]
 if (Sys.info()["sysname"] == "Windows") {
   learners <- learners[!(learners == "Lrnr_lightgbm")]
 }
+
+test_loocv_learner("Lrnr_lightgbm", loocv_task)
 
 # test all relevant learners
 lapply(learners, test_loocv_learner, loocv_task)

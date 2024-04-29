@@ -142,6 +142,9 @@ Lrnr_lightgbm <- R6Class(
           args$eval <- "multi_error"
           args$num_class <- as.integer(length(outcome_type$levels))
         }
+        
+        args$params <- list(num_threads = args$num_threads)
+        args$num_threads <- NULL
       }
 
       fit_object <- call_with_args(lightgbm::lgb.train, args, keep_all = TRUE)
@@ -169,8 +172,7 @@ Lrnr_lightgbm <- R6Class(
 
       # will generally return vector, needs to be put into data.table column
       predictions <- stats::predict(
-        fit_object, Xmat_ord,
-        reshape = TRUE
+        fit_object, Xmat_ord
       )
 
       if (private$.training_outcome_type$type == "categorical") {
