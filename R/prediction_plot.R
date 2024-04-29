@@ -59,7 +59,7 @@ prediction_plot <- function(learner_fit) {
       coord_equal()
   } else if (outcome_type$type == "binomial") {
     pred_data <- data.table(pred = predictions, obs = observed)
-    pred_plot <- ggplot(pred_data, aes_(x = ~obs, y = ~pred, fill = ~obs)) +
+    pred_plot <- ggplot(pred_data, aes(x = ~obs, y = ~pred, fill = ~obs)) +
       geom_violin(trim = FALSE) +
       geom_boxplot(width = 0.1, fill = "white") +
       xlab("Observed") +
