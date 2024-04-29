@@ -63,7 +63,7 @@ Lrnr_lightgbm <- R6Class(
   classname = "Lrnr_lightgbm", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(num_threads = 1L, ...) {
+    initialize = function(num_threads = 1L, verbose  = -1L, ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     },

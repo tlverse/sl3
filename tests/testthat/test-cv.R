@@ -149,7 +149,5 @@ if (Sys.info()["sysname"] == "Windows") {
   learners <- learners[!(learners == "Lrnr_lightgbm")]
 }
 
-test_loocv_learner("Lrnr_lightgbm", loocv_task)
-
 # test all relevant learners
 lapply(learners, test_loocv_learner, loocv_task)
