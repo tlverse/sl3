@@ -86,10 +86,10 @@ Lrnr_arima <- R6Class(
 
         if (length(rm_idx) > 0) {
           params$xreg <- as.matrix(task$X[, -rm_idx, with = FALSE])
-          print(paste(c(
+          message(paste(c(
             "ARIMA requires matrix of external regressors to not be rank ",
             "deficient. The following covariates were removed to counter the ",
-            "linear combinations:", names(task$X)[rm_idx]
+            "linear combinations:", names(task$X)[rm_idx],"\n"
           ), collapse = " "))
         } else {
           params$xreg <- as.matrix(task$X)

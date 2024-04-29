@@ -163,7 +163,7 @@ test_that("Lrnr_arima with external regressors", {
   preds_newX <- fit$predict(valid_task_duplicate_covs)
 
   cv_arima_lrnr <- Lrnr_cv$new(arima_lrnr)
-  fit_cv <- cv_arima_lrnr$train(task)
+  suppressMessages({fit_cv <- cv_arima_lrnr$train(task)})
   preds_cv_newX <- fit_cv$predict(task_duplicate_covs)
 
   node_list <- list(outcome = outcome)
