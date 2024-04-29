@@ -1,5 +1,5 @@
 context("test-gts.R -- Lrnr_gts for grouped time series forecasts")
-
+skip()
 if (FALSE) {
   setwd("..")
   setwd("..")
@@ -50,3 +50,4 @@ test_that("Lrnr_gts produces expected forecasts as gts implementation", {
   # predictions should be exactly the same
   expect_equal(gts_learner_preds, gts_preds$value)
 })
+

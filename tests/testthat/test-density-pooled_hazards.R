@@ -37,7 +37,7 @@ pred_density <- fit_density$predict()
 
 # fit haldensify for comparison
 set.seed(74294)
-fit_haldensify <- haldensify$train(task)
+suppressWarnings({fit_haldensify <- haldensify$train(task)})
 pred_haldensify <- fit_haldensify$predict()
 
 # compare density estimates

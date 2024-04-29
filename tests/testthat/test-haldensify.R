@@ -43,10 +43,13 @@ hal_dens <- Lrnr_haldensify$new(
 
 test_that("Lrnr_haldensify produces predictions identical to haldensify", {
   set.seed(67391)
-  hal_dens_fit <- hal_dens$train(task)
+  suppressWarnings({
+    hal_dens_fit <- hal_dens$train(task)
+  })
   hal_dens_preds <- hal_dens_fit$predict()
 
   set.seed(67391)
+  suppressWarnings({
   haldensify_fit <- haldensify::haldensify(
     A = as.numeric(task$Y),
     W = as.matrix(task$X),
@@ -57,7 +60,7 @@ test_that("Lrnr_haldensify produces predictions identical to haldensify", {
     )),
     max_degree = 6,
     smoothness_orders = 0
-  )
+  )})
   haldensify_preds <- predict(haldensify_fit,
     new_A = as.numeric(task$Y),
     new_W = as.matrix(task$X)
