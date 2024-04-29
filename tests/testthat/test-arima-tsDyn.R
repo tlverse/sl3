@@ -77,11 +77,11 @@ test_that("Lrnr_tsDyn with multiple different models, univariate", {
   expect_true(sum(fit_1_preds[1] - fit_2_preds) < 10^-1)
 
   # Logistic Smooth Transition autoregressive model
-  tsDyn_learner <- Lrnr_tsDyn$new(learner = "lstar", m = 1)
+  tsDyn_learner <- Lrnr_tsDyn$new(learner = "lstar", m = 1, trace = FALSE)
   fit_1 <- tsDyn_learner$train(train_task)
   fit_1_preds <- fit_1$predict(valid_task)
 
-  fit_2 <- tsDyn::lstar(train_task$Y, m = 1)
+  fit_2 <- tsDyn::lstar(train_task$Y, m = 1, trace = FALSE)
   fit_2_preds <- predict(fit_2)
   fit_2_preds <- as.numeric(fit_2_preds)
   fit_2_preds <- structure(fit_2_preds)
@@ -157,7 +157,7 @@ test_that("Lrnr_arima with external regressors", {
   valid_task_duplicate_covs <- validation(task_duplicate_covs, task$folds[[1]])
 
   arima_lrnr <- Lrnr_arima$new()
-  fit <- arima_lrnr$train(train_task)
+  fit <- suppressMessages({arima_lrnr$train(train_task)})
   preds <- fit$predict(valid_task)
   
   preds_newX <- fit$predict(valid_task_duplicate_covs)
