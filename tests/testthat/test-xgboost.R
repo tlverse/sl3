@@ -52,14 +52,14 @@ test_learner <- function(learner, task, ...) {
 }
 
 ## test xgboost learner:
-options(sl3.verbose = TRUE)
-test_learner(Lrnr_xgboost, task)
-test_learner(Lrnr_xgboost, task2)
+options(sl3.verbose = FALSE)
+test_learner(Lrnr_xgboost, task, verbose = 0,  print_every_n = 0)
+test_learner(Lrnr_xgboost, task2, verbose = 0,  print_every_n = 0)
 
 test_that("Lrnr_xgboost predictions match xgboost's: continuous outcome", {
   ## instantiate Lrnr_xgboost, train on task, and predict on task
   set.seed(73964)
-  lrnr_xgboost <- Lrnr_xgboost$new()
+  lrnr_xgboost <- Lrnr_xgboost$new(verbose = 0,  print_every_n = 0)
   fit_lrnr_xgboost <- lrnr_xgboost$train(task)
   prd_lrnr_xgboost <- fit_lrnr_xgboost$predict()
 
@@ -68,7 +68,8 @@ test_that("Lrnr_xgboost predictions match xgboost's: continuous outcome", {
   fit_xgboost <- xgboost(
     data = as.matrix(task$X), label = task$Y,
     nrounds = lrnr_xgboost$params$nrounds,
-    nthread = lrnr_xgboost$params$nthread
+    nthread = lrnr_xgboost$params$nthread,
+    verbose = 0,  print_every_n = 0
   )
   prd_xgboost <- predict(fit_xgboost, as.matrix(task$X))
 
@@ -85,7 +86,7 @@ test_that("Lrnr_xgboost predictions match xgboost's: binary outcome", {
 
   ## instantiate Lrnr_xgboost, train on task, and predict on task
   set.seed(73964)
-  lrnr_xgboost <- Lrnr_xgboost$new()
+  lrnr_xgboost <- Lrnr_xgboost$new(verbose = 0,  print_every_n = 0)
   fit_lrnr_xgboost <- lrnr_xgboost$train(task)
   prd_lrnr_xgboost <- fit_lrnr_xgboost$predict()
 
@@ -96,7 +97,8 @@ test_that("Lrnr_xgboost predictions match xgboost's: binary outcome", {
     nrounds = lrnr_xgboost$params$nrounds,
     nthread = lrnr_xgboost$params$nthread,
     objective = "binary:logistic",
-    eval_metric = "logloss"
+    eval_metric = "logloss",
+    verbose = 0,  print_every_n = 0
   )
   prd_xgboost <- predict(fit_xgboost, as.matrix(task$X))
 
@@ -114,7 +116,7 @@ test_that("Naive test of Lrnr_xgboost weights", {
   )
 
   ## instantiate Lrnr_xgboost, train on task, and predict on task
-  lrnr_xgboost <- Lrnr_xgboost$new()
+  lrnr_xgboost <- Lrnr_xgboost$new(verbose = 0,  print_every_n = 0)
   set.seed(73964)
   fit_lrnr_xgboost <- lrnr_xgboost$train(task)
   prd_lrnr_xgboost <- fit_lrnr_xgboost$predict()
@@ -125,7 +127,8 @@ test_that("Naive test of Lrnr_xgboost weights", {
     data = as.matrix(task$X), label = task$Y,
     nrounds = lrnr_xgboost$params$nrounds,
     nthread = lrnr_xgboost$params$nthread,
-    weight = task$weights
+    weight = task$weights,
+    verbose = 0,  print_every_n = 0
   )
   prd_xgboost <- predict(fit_xgboost, as.matrix(task$X))
 

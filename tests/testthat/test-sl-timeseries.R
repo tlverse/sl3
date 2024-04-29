@@ -24,7 +24,7 @@ task <- make_sl3_Task(
 
 lrnr_glm <- make_learner(Lrnr_glm)
 lrnr_mean <- make_learner(Lrnr_mean)
-lrnr_glmnet <- make_learner(Lrnr_glmnet)
+lrnr_glmnet <- make_learner(Lrnr_glmnet, grouped = FALSE)
 
 stack <- make_learner(
   Stack,
