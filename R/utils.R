@@ -302,13 +302,6 @@ write_learner_template <- function(file) {
   file.copy(template_file, file)
 }
 
-################################################################################
-#' function from testthat to be used to selectively disable tests on CRAN to limit testing time
-on_cran <- function(){
-  return(!rlang::is_interactive() && !isTRUE(as.logical(Sys.getenv("NOT_CRAN", "false"))))
-}
-
-
 # Miscellaneous setting that was the sole contents of a file "Untitled.R" prior
 # to commit b8cc1e5. Preserved here.
 list_name <- list()
