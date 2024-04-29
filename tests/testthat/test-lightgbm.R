@@ -48,7 +48,7 @@ test_learner <- function(learner, task, ...) {
 }
 
 ## test lightgbm learner:
-options(sl3.verbose = TRUE)
+options(sl3.verbose = FALSE)
 test_learner(Lrnr_lightgbm, task)
 
 test_that("Lrnr_lightgbm predictions match lightgbm's: continuous outcome", {
@@ -117,7 +117,7 @@ test_that("Lrnr_lightgbm predictions match lightgbm's: categorical outcome", {
 
   ## instantiate Lrnr_lightgbm, train on task, and predict on task
   set.seed(73964)
-  lrnr_lightgbm <- Lrnr_lightgbm$new(num_leaves = 40L)
+  lrnr_lightgbm <- Lrnr_lightgbm$new()
   fit_lrnr_lightgbm <- lrnr_lightgbm$train(task)
   prd_lrnr_lightgbm <- unpack_predictions(fit_lrnr_lightgbm$predict())
 
@@ -128,13 +128,16 @@ test_that("Lrnr_lightgbm predictions match lightgbm's: categorical outcome", {
     label = as.numeric(task$Y) - 1L
   )
   fit_lightgbm <- lgb.train(
-    params = lrnr_lightgbm$params,
-    num_class = as.integer(length(unique(task$Y))),
+    params = list(
+      num_threads = 1,
+      verbose = -1,
+      num_class = as.integer(length(unique(task$Y)))
+      ),
     obj = "multiclass",
     eval = "multi_error",
     data = lgb_data
   )
-  prd_lightgbm <- predict(fit_lightgbm, as.matrix(task$X), reshape = TRUE)
+  prd_lightgbm <- predict(fit_lightgbm, as.matrix(task$X))
 
   ## test equivalence of prediction from Lrnr_lightgbm and lightgbm::lightgbm
   expect_equal(prd_lrnr_lightgbm, prd_lightgbm)

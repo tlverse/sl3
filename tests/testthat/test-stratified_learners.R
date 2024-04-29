@@ -14,7 +14,7 @@ covars <- c("apgar1", "apgar5", "sexn")
 task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = "haz")
 
 # TRY stratified lrnr
-hal_lrnr <- Lrnr_hal9001$new(fit_control = list(n_folds = 3))
+hal_lrnr <- Lrnr_hal9001$new(fit_control = list(nfolds = 3))
 stratified_hal <- Lrnr_stratified$new(
   learner = hal_lrnr,
   variable_stratify = "sexn"

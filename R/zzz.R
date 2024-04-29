@@ -29,8 +29,8 @@ sl3Options <- function(o, value) {
     if (o %in% names(res)) {
       return(res[[o]])
     }
-    print("Possible `sl3` options:")
-    print(names(res))
+    message("Possible `sl3` options:\n")
+    message(paste0(names(res),collapse="\n"))
     stop(paste0(o, ": this options does not exist"))
   } else {
     if (!o %in% names(res)) {

@@ -128,6 +128,9 @@ Lrnr_lightgbm <- R6Class(
         link_fun <- NULL
       }
 
+      args$params <- list(num_threads = args$num_threads)
+      args$num_threads <- NULL
+      
       # specify objective if it's NULL for fitting lightgbm
       if (is.null(args$objective)) {
         if (outcome_type$type == "continuous") {
@@ -140,11 +143,10 @@ Lrnr_lightgbm <- R6Class(
         } else if (outcome_type$type == "categorical") {
           args$obj <- "multiclass"
           args$eval <- "multi_error"
-          args$num_class <- as.integer(length(outcome_type$levels))
+          args$params$num_class <- as.integer(length(outcome_type$levels))
         }
         
-        args$params <- list(num_threads = args$num_threads)
-        args$num_threads <- NULL
+
       }
 
       fit_object <- call_with_args(lightgbm::lgb.train, args, keep_all = TRUE)

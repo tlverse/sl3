@@ -107,7 +107,7 @@ Lrnr_dbarts <- R6Class(
   public = list(
     initialize = function(ndpost = 500, nskip = 100,
                           ntree = 200L, verbose = FALSE, keeptrees = TRUE,
-                          serializeable = FALSE,
+                          serializeable = TRUE,
                           ...) {
       super$initialize(params = args_to_list(), ...)
     }
@@ -133,14 +133,17 @@ Lrnr_dbarts <- R6Class(
       if (task$has_node("offset")) {
         args$offset <- task$offset
       }
-
+  
+      args$serializeable <- NULL
+      
       fit_object <- call_with_args(
         dbarts::bart, args, names(formals(dbarts::dbartsControl))
       )
 
-      # if (self$params$serializeable) {
-      #  invisible(fit_object$fit$state)
-      # }
+      # see section on saving bart models
+      if (self$params$serializeable) {
+        invisible(fit_object$fit$state)
+      }
 
       return(fit_object)
     },

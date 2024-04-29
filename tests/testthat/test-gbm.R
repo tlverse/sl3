@@ -15,7 +15,7 @@ task <- sl3_Task$new(cpp_imputed,
 test_that("Lrnr_gbm produces results matching those of gbm::gbm.fit", {
   # get predictions from Lrnr_* wrapper
   set.seed(4738)
-  lrnr_gbm <- make_learner(Lrnr_gbm)
+  lrnr_gbm <- make_learner(Lrnr_gbm, verbose = FALSE)
   fit <- lrnr_gbm$train(task)
   preds <- fit$predict(task)
 

@@ -1,4 +1,4 @@
-context("test-sl3_task -- Basic sl3_Task functionality")
+context("test-subset_covariates -- Subset covariates correctly to match prediction and training")
 library(data.table)
 library(uuid)
 
@@ -47,8 +47,8 @@ task_missing_data <- suppressWarnings(
   sl3_Task$new(missing_data, covariates = covs, outcome = Y)
 )
 
-lrnr_glm <- make_learner(Lrnr_glm_fast, name = "test")
-glm_fit <- lrnr_glm$train(task_missing_data)
+lrnr_glm <- make_learner(Lrnr_glm_fast)
+suppressWarnings({glm_fit <- lrnr_glm$train(task_missing_data)})
 
 task_complete_data <- sl3_Task$new(mtcars, covariates = covs, outcome = Y)
 

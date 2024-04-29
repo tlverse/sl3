@@ -86,16 +86,28 @@ expect_equal(cv_risk_table$MSE[[1]], 0)
 ################################# test LOOCV ###################################
 test_loocv_learner <- function(learner, loocv_task, ...) {
   learner_obj <- make_learner(learner, ...)
-  print(sprintf("Testing LOOCV with Learner: %s", learner_obj$name))
+  print(sprintf("Learner %s", learner_obj$name))
+  
   cv_learner <- Lrnr_cv$new(learner_obj, full_fit = TRUE)
-
-  print("Testing training")
+  
+  # learner specific arguments to reduce output
+  if(inherits(learner_obj, "Lrnr_glmnet")){
+    learner_obj$.__enclos_env__$private$.params$grouped = FALSE
+  } else if(inherits(learner_obj, "Lrnr_ga")){
+    learner_obj$.__enclos_env__$private$.params$monitor = FALSE
+  } else if(inherits(learner_obj, "Lrnr_nnet")){
+    learner_obj$.__enclos_env__$private$.params$trace = FALSE
+  } else if(inherits(learner_obj, "Lrnr_xgboost")){
+    learner_obj$.__enclos_env__$private$.params$verbose = 0
+    learner_obj$.__enclos_env__$private$.params$print_every_n = 0
+  }
+  #print("Testing training")
   # test learner training
-  fit_obj <- cv_learner$train(loocv_task)
-  test_that("Learner can be trained on data", expect_true(fit_obj$is_trained))
+  fit_obj <- suppressMessages({cv_learner$train(loocv_task)})
+  test_that(sprintf("Learner %s can be trained on data", learner_obj$name), expect_true(fit_obj$is_trained))
 
   # test learner prediction
-  print("Testing predict")
+  # print("Testing predict")
   train_preds <- fit_obj$predict()
   test_that("Learner can generate training set predictions", expect_equal(
     sl3:::safe_dim(train_preds)[1],
