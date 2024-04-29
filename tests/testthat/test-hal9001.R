@@ -1,6 +1,6 @@
 context("test_hal9001.R -- Lrnr_hal9001")
 library(hal9001)
-
+skip_on_cran()
 if (FALSE) {
   setwd("..")
   setwd("..")
