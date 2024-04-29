@@ -18,11 +18,12 @@ task <- sl3_Task$new(
 )
 
 lrnr_glm <- make_learner(Lrnr_glm)
-lrnr_xgboost <- make_learner(Lrnr_xgboost)
+lrnr_xgboost <- make_learner(Lrnr_xgboost, verbose = 0, print_every_n = 0)
 
 risk_aucpr <- custom_ROCR_risk("aucpr")
 metalrnr_ga <- Lrnr_ga$new(
-  learner_function = metalearner_logistic_binomial, eval_function = risk_aucpr
+  learner_function = metalearner_logistic_binomial, eval_function = risk_aucpr, 
+  monitor = FALSE
 )
 
 sl <- Lrnr_sl$new(
