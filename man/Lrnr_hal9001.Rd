@@ -29,8 +29,26 @@ package. For details on HAL regression, consider consulting the following
 \section{Parameters}{
 
 \itemize{
-\item \code{...}: Arguments passed to \code{\link[hal9001]{fit_hal}}. See
-it's documentation for details.
+\item \code{max_degree = 2}: An integer specifying the highest order of
+interaction terms for which basis functions ought to be generated.
+\item \code{smoothness_orders = 1}: An integer specifying the smoothness of
+the basis functions. See details of \code{hal9001} package's
+\code{\link[hal9001]{fit_hal}} function for more information.
+\item \code{num_knots = 5}: An integer vector of length 1 or of length
+\code{max_degree}, specifying the maximum number of knot points
+(i.e., bins) for each covariate. If \code{num_knots} is a unit-length
+vector, then the same \code{num_knots} are used for each degree. See
+details of \code{hal9001} package's \code{\link[hal9001]{fit_hal}}
+function for more information.
+\item \code{fit_control}: List of arguments, including those specified in
+\code{\link[hal9001]{fit_hal}}'s  \code{fit_control} documentation, and
+any additional arguments to be passed to \code{\link[glmnet]{cv.glmnet}}
+or \code{\link[glmnet]{glmnet}}. See the \code{hal9001} package
+\code{\link[hal9001]{fit_hal}} function fdocumentation or more
+information.
+\item \code{...}: Other parameters passed to \code{\link[hal9001]{fit_hal}}
+and additional arguments defined in \code{\link{Lrnr_base}}, such as
+\code{params} like \code{formula}.
 }
 }
 
@@ -41,9 +59,7 @@ task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
 
 # instantiate with max 2-way interactions, 0-order splines, and binning
 # (i.e., num_knots) that decreases with increasing interaction degree
-hal_lrnr <- Lrnr_hal9001$new(
-  max_degree = 2, num_knots = c(20, 10), smoothness_orders = 0
-)
+hal_lrnr <- Lrnr_hal9001$new(max_degree = 2, num_knots = c(5, 3))
 hal_fit <- hal_lrnr$train(task)
 hal_preds <- hal_fit$predict()
 }
@@ -55,10 +71,9 @@ Other Learners:
 \code{\link{Lrnr_bartMachine}},
 \code{\link{Lrnr_base}},
 \code{\link{Lrnr_bayesglm}},
-\code{\link{Lrnr_bilstm}},
 \code{\link{Lrnr_caret}},
-\code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_cv}},
+\code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_dbarts}},
 \code{\link{Lrnr_define_interactions}},
 \code{\link{Lrnr_density_discretize}},
@@ -66,13 +81,16 @@ Other Learners:
 \code{\link{Lrnr_density_semiparametric}},
 \code{\link{Lrnr_earth}},
 \code{\link{Lrnr_expSmooth}},
-\code{\link{Lrnr_gam}},
 \code{\link{Lrnr_ga}},
+\code{\link{Lrnr_gam}},
 \code{\link{Lrnr_gbm}},
-\code{\link{Lrnr_glm_fast}},
-\code{\link{Lrnr_glmnet}},
 \code{\link{Lrnr_glm}},
+\code{\link{Lrnr_glm_fast}},
+\code{\link{Lrnr_glm_semiparametric}},
+\code{\link{Lrnr_glmnet}},
+\code{\link{Lrnr_glmtree}},
 \code{\link{Lrnr_grf}},
+\code{\link{Lrnr_grfcate}},
 \code{\link{Lrnr_gru_keras}},
 \code{\link{Lrnr_gts}},
 \code{\link{Lrnr_h2o_grid}},
@@ -101,8 +119,8 @@ Other Learners:
 \code{\link{Lrnr_screener_correlation}},
 \code{\link{Lrnr_screener_importance}},
 \code{\link{Lrnr_sl}},
-\code{\link{Lrnr_solnp_density}},
 \code{\link{Lrnr_solnp}},
+\code{\link{Lrnr_solnp_density}},
 \code{\link{Lrnr_stratified}},
 \code{\link{Lrnr_subset_covariates}},
 \code{\link{Lrnr_svm}},

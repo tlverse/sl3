@@ -2,7 +2,6 @@
 library(testthat)
 context("test-ROCR_risk.R -- Lrnr_sl functionality with ROCR risks")
 
-options(sl3.verbose = TRUE)
 library(sl3)
 library(origami)
 library(SuperLearner)
@@ -31,7 +30,7 @@ sl <- Lrnr_sl$new(
 )
 fit <- sl$train(task)
 tbl <- fit$cv_risk(risk_aucpr)
-cvSL <- CV_lrnr_sl(fit, task, risk_aucpr)
+cvSL <- cv_sl(fit, risk_aucpr)
 
 cpp_imputed$weights <- rep(1.5, nrow(cpp_imputed))
 cpp_imputed$id <- 1:nrow(cpp_imputed)

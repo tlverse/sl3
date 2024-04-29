@@ -34,30 +34,32 @@ glmnet_learner <- Lrnr_glmnet$new()
 broken_stack <- Stack$new(broken_learner, glm_learner, glm_learner)
 
 test_that("Stack produces warning for learners that return errors", {
-  expect_warning({
-    broken_fit <<- broken_stack$train(task)
-  })
+  expect_warning(broken_fit <- broken_stack$train(task))
 })
 
-predictions <- broken_fit$predict()
-
 test_that("Stack predicts on remaining good learners", {
-  expect_equal(dim(predictions), c(nrow(cpp_imputed), 2))
+  broken_fit <- suppressWarnings(broken_stack$train(task))
+  predictions <- broken_fit$predict()
+  expect_equal(length(predictions[[1]]), nrow(cpp_imputed))
   # expect_equal(names(predictions), "Lrnr_glm_TRUE")
 })
 
 test_that("Stack fails if all learners return errors", {
   all_broken_stack <- Stack$new(broken_learner, broken_learner)
-  expect_error(suppressWarnings({all_broken_stack$train(task)}))
+  expect_error(suppressWarnings(all_broken_stack$train(task)))
+})
+
+test_that("Lrnr_cv on stack warns when learners that error on any fold", {
+  broken_cv <- Lrnr_cv$new(broken_stack)
+  expect_warning(broken_cv$train(task))
 })
 
 test_that("Lrnr_cv on stack drops all learners that error on any fold", {
   broken_cv <- Lrnr_cv$new(broken_stack)
-  expect_warning({
-    broken_cv_fit <<- broken_cv$train(task)
-  })
-  suppressWarnings({cv_preds <- broken_cv_fit$predict()})
-  expect_equal(dim(cv_preds), c(nrow(cpp_imputed), 2))
+
+  broken_cv_fit <- suppressWarnings(broken_cv$train(task))
+  cv_preds <- broken_cv_fit$predict()
+  expect_equal(length(cv_preds[[1]]), nrow(cpp_imputed))
   # expect_equal(names(cv_preds), "Lrnr_glm_TRUE")
 })
 

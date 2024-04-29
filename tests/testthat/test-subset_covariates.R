@@ -31,6 +31,14 @@ full_preds <- glm_fit_pre_subset$predict(task)
 training_preds <- glm_fit_pre_subset$predict()
 test_that("extra covariates in prediction set get dropped correctly", expect_equal(full_preds, training_preds))
 
+
+shuffled_subset <- sample(covariate_subset)
+task_pre_subset_shuffled <- sl3_Task$new(mtcars, covariates = shuffled_subset, outcome = outcome)
+# debugonce(glm_fit_pre_subset$subset_covariates)
+shuffled_preds <- glm_fit_pre_subset$predict(task_pre_subset_shuffled)
+test_that("covariates out of order prediction set get shuffled correctly", expect_equal(full_preds, shuffled_preds))
+
+
 task_train <- sl3_Task$new(mtcars, covariates = covariates, outcome = outcome)
 task_predict <- sl3_Task$new(mtcars, covariates = covariate_subset, outcome = outcome)
 glm_fit <- lrnr_glm$train(task_train)
@@ -51,7 +59,6 @@ lrnr_glm <- make_learner(Lrnr_glm_fast)
 suppressWarnings({glm_fit <- lrnr_glm$train(task_missing_data)})
 
 task_complete_data <- sl3_Task$new(mtcars, covariates = covs, outcome = Y)
-
 test_that("missingness indicators in prediction task works", {
   expect_vector(glm_fit$predict(task_complete_data))
 })

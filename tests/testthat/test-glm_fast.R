@@ -30,6 +30,7 @@ test_that("Lrnr_glm_fast works with empty X (intercept-only)", {
   empty_task <- sl3_Task$new(cpp_imputed, covariates = NULL, outcome = outcome)
   fGLM_fit <- fglm_learner$base_train(empty_task)
   fglm_preds <- fGLM_fit$predict()
+  expect_equal(length(unique(fglm_preds)), 1)
 })
 
 test_that("Lrnr_glm and Lrnr_glm_fast works with empty X (intercept-only)", {
@@ -68,7 +69,7 @@ test_that("Lrnr_glm_fast works with screener", {
   screen_and_glm <- Pipeline$new(slscreener, fglm_learner)
   sg_fit <- screen_and_glm$train(task)
   preds <- sg_fit$predict()
-  # print(sg_fit)
+  expect_equal(length(preds), nrow(task$data))
 })
 
 test_that("Lrnr_glm_fast works with stacking", {
@@ -86,6 +87,8 @@ test_that("Lrnr_glm_fast works with stacking", {
   # print(stack_fit)
   preds <- stack_fit$predict()
   # print(head(preds))
+  expect_equal(nrow(preds), nrow(task$data))
+  expect_equal(ncol(preds), 4)
 })
 
 test_that("Lrnr_glm_fast works with quasibinomial and continuous outcomes in (0,1)", {
@@ -96,10 +99,16 @@ test_that("Lrnr_glm_fast works with quasibinomial and continuous outcomes in (0,
   fglm_learner <- Lrnr_glm_fast$new(family = quasibinomial())
   fGLM_fit <- fglm_learner$train(task_01range)
   # print(fGLM_fit)
+  fGLM_pred <- fGLM_fit$predict()
+  expect_equal(length(fGLM_pred), nrow(task_01range$data))
+  expect_true(all(min(fGLM_pred) >= 0.1, max(fGLM_pred) <= 0.9))
 
   fglm_learner <- Lrnr_glm_fast$new(family = binomial())
   fGLM_fit <- fglm_learner$train(task_01range)
   # print(fGLM_fit)
+  fGLM_pred <- fGLM_fit$predict()
+  expect_equal(length(fGLM_pred), nrow(task_01range$data))
+  expect_true(all(min(fGLM_pred) >= 0.1, max(fGLM_pred) <= 0.9))
 })
 
 test_that("Lrnr_glm_fast works with different families ('family = ...') and solvers ('method = ...')", {
@@ -110,26 +119,35 @@ test_that("Lrnr_glm_fast works with different families ('family = ...') and solv
   fglm_learner <- Lrnr_glm_fast$new(family = quasibinomial())
   fGLM_fit <- fglm_learner$train(task_bin)
   # print(fGLM_fit)
+  fGLM_pred <- fGLM_fit$predict()
+  expect_equal(length(fGLM_pred), nrow(task_bin$data))
 
   fglm_learner <- Lrnr_glm_fast$new(family = binomial())
   fGLM_fit <- fglm_learner$train(task_bin)
   # print(fGLM_fit)
+  fGLM_pred <- fGLM_fit$predict()
+  expect_equal(length(fGLM_pred), nrow(task_bin$data))
 
   fglm_learner <- Lrnr_glm_fast$new(family = binomial(), method = "eigen")
   fGLM_fit <- fglm_learner$train(task_bin)
   # print(fGLM_fit)
+  fGLM_pred <- fGLM_fit$predict()
+  expect_equal(length(fGLM_pred), nrow(task_bin$data))
 
   fglm_learner <- Lrnr_glm_fast$new(family = binomial(), method = "Cholesky")
   fGLM_fit <- fglm_learner$train(task_bin)
   # print(fGLM_fit)
+  fGLM_pred <- fGLM_fit$predict()
+  expect_equal(length(fGLM_pred), nrow(task_bin$data))
 
   fglm_learner <- Lrnr_glm_fast$new(family = binomial(), method = "qr")
   fGLM_fit <- fglm_learner$train(task_bin)
   # print(fGLM_fit)
+  fGLM_pred <- fGLM_fit$predict()
+  expect_equal(length(fGLM_pred), nrow(task_bin$data))
 })
 
 test_that("When speedglm fails (singlular X) the fallback glm works", {
-  op <- options(sl3.verbose = TRUE)
   ## make a singular X for testing:
   set.seed(123456)
   dat_test <- data.frame(Y = rep(0L, 100), X1 = rnorm(100), X2 = rnorm(100))
@@ -140,5 +158,4 @@ test_that("When speedglm fails (singlular X) the fallback glm works", {
   glm_preds <- glm_lrnr$predict()
   fglm_preds <- fglm_lrnr$predict()
   expect_true(all.equal(as.vector(glm_preds), as.vector(fglm_preds)))
-  options(op)
 })

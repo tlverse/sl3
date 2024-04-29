@@ -11,7 +11,7 @@ task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
 test_learner <- function(learner, task, ...) {
   # test learner definition: this requires that a learner can be instantiated
   # with only default arguments. Not sure if this is a reasonable requirement
-  learner_obj <- learner$new(...)
+  learner_obj <- learner$new(..., verbose = -1)
   print(sprintf("Testing Learner: %s", learner_obj$name))
 
   # test learner training
@@ -48,14 +48,17 @@ test_learner <- function(learner, task, ...) {
 }
 
 ## test lightgbm learner:
+<<<<<<< HEAD
 options(sl3.verbose = FALSE)
+=======
+>>>>>>> fdfe83fb7d4c7b4f10a95205b8c0c6aa1a3418d5
 test_learner(Lrnr_lightgbm, task)
 
 test_that("Lrnr_lightgbm predictions match lightgbm's: continuous outcome", {
   skip_on_os("windows")
   ## instantiate Lrnr_lightgbm, train on task, and predict on task
   set.seed(73964)
-  lrnr_lightgbm <- Lrnr_lightgbm$new()
+  lrnr_lightgbm <- Lrnr_lightgbm$new(verbose = -1)
   fit_lrnr_lightgbm <- lrnr_lightgbm$train(task)
   prd_lrnr_lightgbm <- fit_lrnr_lightgbm$predict()
 
@@ -63,12 +66,14 @@ test_that("Lrnr_lightgbm predictions match lightgbm's: continuous outcome", {
   set.seed(73964)
   lgb_data <- lgb.Dataset(
     data = as.matrix(task$X),
-    label = as.numeric(task$Y)
+    label = as.numeric(task$Y),
+    params = list(verbose = -1)
   )
   fit_lightgbm <- lgb.train(
     params = lrnr_lightgbm$params,
     obj = "regression",
-    data = lgb_data
+    data = lgb_data,
+    verbose = -1
   )
   prd_lightgbm <- predict(fit_lightgbm, as.matrix(task$X))
 
@@ -85,7 +90,11 @@ test_that("Lrnr_lightgbm predictions match lightgbm's: binary outcome", {
 
   ## instantiate Lrnr_lightgbm, train on task, and predict on task
   set.seed(73964)
+<<<<<<< HEAD
   lrnr_lightgbm <- Lrnr_lightgbm$new()
+=======
+  lrnr_lightgbm <- Lrnr_lightgbm$new(num_leaves = 30L, verbose = -1)
+>>>>>>> fdfe83fb7d4c7b4f10a95205b8c0c6aa1a3418d5
   fit_lrnr_lightgbm <- lrnr_lightgbm$train(task)
   prd_lrnr_lightgbm <- fit_lrnr_lightgbm$predict()
 
@@ -93,13 +102,15 @@ test_that("Lrnr_lightgbm predictions match lightgbm's: binary outcome", {
   set.seed(73964)
   lgb_data <- lgb.Dataset(
     data = as.matrix(task$X),
-    label = as.numeric(task$Y)
+    label = as.numeric(task$Y),
+    params = list(verbose = -1)
   )
   fit_lightgbm <- lgb.train(
     params = lrnr_lightgbm$params,
     obj = "binary",
     eval = "binary_logloss",
-    data = lgb_data
+    data = lgb_data,
+    verbose = -1
   )
   prd_lightgbm <- predict(fit_lightgbm, as.matrix(task$X))
 
@@ -118,6 +129,7 @@ test_that("Lrnr_lightgbm predictions match lightgbm's: categorical outcome", {
   ## instantiate Lrnr_lightgbm, train on task, and predict on task
   set.seed(73964)
   lrnr_lightgbm <- Lrnr_lightgbm$new()
+
   fit_lrnr_lightgbm <- lrnr_lightgbm$train(task)
   prd_lrnr_lightgbm <- unpack_predictions(fit_lrnr_lightgbm$predict())
 
@@ -125,7 +137,8 @@ test_that("Lrnr_lightgbm predictions match lightgbm's: categorical outcome", {
   set.seed(73964)
   lgb_data <- lgb.Dataset(
     data = as.matrix(task$X),
-    label = as.numeric(task$Y) - 1L
+    label = as.numeric(task$Y) - 1L,
+    params = list(verbose = -1)
   )
   fit_lightgbm <- lgb.train(
     params = list(
@@ -135,7 +148,8 @@ test_that("Lrnr_lightgbm predictions match lightgbm's: categorical outcome", {
       ),
     obj = "multiclass",
     eval = "multi_error",
-    data = lgb_data
+    data = lgb_data,
+    verbose = -1
   )
   prd_lightgbm <- predict(fit_lightgbm, as.matrix(task$X))
 
@@ -156,7 +170,7 @@ test_that("Cursory test of Lrnr_lightgbm with weights", {
 
   ## instantiate Lrnr_lightgbm, train on task, and predict on task
   set.seed(73964)
-  lrnr_lightgbm <- Lrnr_lightgbm$new()
+  lrnr_lightgbm <- Lrnr_lightgbm$new(verbose = -1)
   fit_lrnr_lightgbm <- lrnr_lightgbm$train(task)
   prd_lrnr_lightgbm <- fit_lrnr_lightgbm$predict()
 
@@ -165,12 +179,15 @@ test_that("Cursory test of Lrnr_lightgbm with weights", {
   lgb_data <- lgb.Dataset(
     data = as.matrix(task$X),
     label = as.numeric(task$Y),
-    weight = as.numeric(task$weights)
+    weight = as.numeric(task$weights),
+    params = list(verbose = -1)
   )
+
   fit_lightgbm <- lgb.train(
     params = lrnr_lightgbm$params,
     obj = "regression",
-    data = lgb_data
+    data = lgb_data,
+    verbose = -1
   )
   prd_lightgbm <- predict(fit_lightgbm, as.matrix(task$X))
 

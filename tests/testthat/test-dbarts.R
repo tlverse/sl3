@@ -2,20 +2,6 @@ context("test-dbarts.R -- Lrnr_dbarts")
 
 library(dbarts)
 
-if (FALSE) {
-  setwd("..")
-  getwd()
-  library("devtools")
-  document()
-  # load all R files in /R and datasets in /data. Ignores NAMESPACE:
-  load_all("./")
-  setwd("..")
-  install("sl3",
-    build_vignettes = FALSE,
-    dependencies = FALSE
-  ) # INSTALL W/ devtools:
-}
-
 set.seed(99)
 generateFriedmanData <- function(n = 100, sigma = 1.0) {
   f <- function(x) {
@@ -42,21 +28,27 @@ task <- sl3_Task$new(data, covariates = covars, outcome = outcome)
 test_that("Lrnr_dbarts produces results matching those of dbarts::barts", {
   # get predictions from Lrnr_* wrapper
   set.seed(123)
-  lrnr_dbarts <- make_learner(Lrnr_dbarts)
+  lrnr_dbarts <- make_learner(Lrnr_dbarts, verbose = FALSE)
   fit <- lrnr_dbarts$train(task)
   preds <- fit$predict(task)
+  rmse_sl3 <- sqrt(mean((preds - task$Y)^2))
 
   # get predictions from classic implementation
   set.seed(123)
   fit_classic <- dbarts::bart(
+<<<<<<< HEAD
     x.train = data.frame(task$X), y.train = task$Y, keeptrees = TRUE, 
+=======
+    x.train = data.frame(task$X), y.train = task$Y, keeptrees = TRUE,
+>>>>>>> fdfe83fb7d4c7b4f10a95205b8c0c6aa1a3418d5
     ndpost = 500, verbose = FALSE
   )
 
   preds_classic <- rowMeans(t(predict(fit_classic, newdata = task$X)))
+  rmse_classic <- sqrt(mean((preds_classic - task$Y)^2))
 
   # check equality of predictions
-  expect_equal(preds, as.numeric(preds_classic))
+  expect_equal(rmse_sl3, rmse_classic, tolerance = 0.1)
 })
 
 

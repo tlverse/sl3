@@ -39,7 +39,30 @@
 #' }
 #'
 #' @template common_parameters
-#
+#'
+#' @examples
+#' set.seed(37912)
+#'
+#' # load example data
+#' ncomp <- 3
+#' data(cpp_imputed)
+#' covars <- c(
+#'   "apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
+#'   "sexn"
+#' )
+#' outcome <- "haz"
+#'
+#' # create sl3 task
+#' task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
+#'
+#' # define learners
+#' glm_fast <- Lrnr_glm_fast$new(intercept = FALSE)
+#' pca_sl3 <- Lrnr_pca$new(n_comp = ncomp, center = TRUE, scale. = TRUE)
+#' pcr_pipe_sl3 <- Pipeline$new(pca_sl3, glm_fast)
+#'
+#' # create stacks + train and predict
+#' pcr_pipe_sl3_fit <- pcr_pipe_sl3$train(task)
+#' pcr_pred <- pcr_pipe_sl3_fit$predict()
 Lrnr_pca <- R6Class(
   classname = "Lrnr_pca",
   inherit = Lrnr_base,
@@ -71,12 +94,9 @@ Lrnr_pca <- R6Class(
       return(fit_object)
     },
     .predict = function(task = NULL) {
-      # note that n_comp is an argument not defined in stats::prcomp
+      # note that n_comp is not an argument of stats::prcomp
       dim_args <- self$params[names(self$params) == "n_comp"]
-      preds_rotations <-
-        private$.fit_object$rotation[, seq_len(unlist(dim_args))]
-      preds_pca <- as.matrix(task$X) %*% preds_rotations
-      predictions <- preds_pca
+      predictions <- private$.fit_object$x[, seq_len(unlist(dim_args))]
       return(predictions)
     },
     .required_packages = c("stats")

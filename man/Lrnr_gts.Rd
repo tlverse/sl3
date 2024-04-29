@@ -57,6 +57,32 @@ are going to be used.}
 }
 }
 
+\examples{
+# Example adapted from hts package manual
+# Hierarchical structure looks like 2 child nodes associated with level 1,
+# which are followed by 3 and 2 sub-child nodes respectively at level 2.
+library(data.table)
+library(hts)
+
+set.seed(3274)
+abc <- as.data.table(5 + matrix(sort(rnorm(200)), ncol = 4, nrow = 50))
+setnames(abc, paste("Series", 1:ncol(abc), sep = "_"))
+abc[, time := .I]
+grps <- rbind(c(1, 1, 2, 2), c(1, 2, 1, 2))
+horizon <- 12
+suppressWarnings(abc_long <- melt(abc, id = "time", variable.name = "series"))
+
+# create sl3 task (no outcome for hierarchical/grouped series)
+node_list <- list(outcome = "value", time = "time", id = "series")
+train_task <- sl3_Task$new(data = abc_long, nodes = node_list)
+test_data <- expand.grid(time = 51:55, series = unique(abc_long$series))
+test_data <- as.data.table(test_data)[, value := 0]
+test_task <- sl3_Task$new(data = test_data, nodes = node_list)
+
+gts_learner <- Lrnr_gts$new()
+gts_learner_fit <- gts_learner$train(train_task)
+gts_learner_preds <- gts_learner_fit$predict(test_task)
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},
@@ -65,10 +91,9 @@ Other Learners:
 \code{\link{Lrnr_bartMachine}},
 \code{\link{Lrnr_base}},
 \code{\link{Lrnr_bayesglm}},
-\code{\link{Lrnr_bilstm}},
 \code{\link{Lrnr_caret}},
-\code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_cv}},
+\code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_dbarts}},
 \code{\link{Lrnr_define_interactions}},
 \code{\link{Lrnr_density_discretize}},
@@ -76,13 +101,16 @@ Other Learners:
 \code{\link{Lrnr_density_semiparametric}},
 \code{\link{Lrnr_earth}},
 \code{\link{Lrnr_expSmooth}},
-\code{\link{Lrnr_gam}},
 \code{\link{Lrnr_ga}},
+\code{\link{Lrnr_gam}},
 \code{\link{Lrnr_gbm}},
-\code{\link{Lrnr_glm_fast}},
-\code{\link{Lrnr_glmnet}},
 \code{\link{Lrnr_glm}},
+\code{\link{Lrnr_glm_fast}},
+\code{\link{Lrnr_glm_semiparametric}},
+\code{\link{Lrnr_glmnet}},
+\code{\link{Lrnr_glmtree}},
 \code{\link{Lrnr_grf}},
+\code{\link{Lrnr_grfcate}},
 \code{\link{Lrnr_gru_keras}},
 \code{\link{Lrnr_h2o_grid}},
 \code{\link{Lrnr_hal9001}},
@@ -111,8 +139,8 @@ Other Learners:
 \code{\link{Lrnr_screener_correlation}},
 \code{\link{Lrnr_screener_importance}},
 \code{\link{Lrnr_sl}},
-\code{\link{Lrnr_solnp_density}},
 \code{\link{Lrnr_solnp}},
+\code{\link{Lrnr_solnp_density}},
 \code{\link{Lrnr_stratified}},
 \code{\link{Lrnr_subset_covariates}},
 \code{\link{Lrnr_svm}},

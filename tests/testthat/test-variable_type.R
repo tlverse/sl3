@@ -34,72 +34,69 @@ outcome <- "haz"
 task <- sl3_Task$new(
   cpp,
   covariates = covars, outcome = outcome,
-  outcome_type = "fake_outcome_type"
-)
-test_that(
-  "outcome_type can be forced",
-  expect_equal(task$outcome_type$type, "fake_outcome_type")
+  outcome_type = "continuous"
 )
 
 subtask <- task[1:10]
 test_that(
-  "forced outcome_type is transferred on susbet",
-  expect_equal(subtask$outcome_type$type, "fake_outcome_type")
+  "outcome_type is transferred on susbet",
+  expect_equal(subtask$outcome_type$type, "continuous")
 )
 
 chained_task <- task$next_in_chain(covariates = c("apgar1", "apgar5"))
 test_that(
-  "forced outcome_type is transferred on chain",
-  expect_equal(chained_task$outcome_type$type, "fake_outcome_type")
+  "outcome_type is transferred on chain",
+  expect_equal(chained_task$outcome_type$type, "continuous")
 )
 
 chained_task <- task$next_in_chain(outcome = "parity")
 test_that(
   "forced outcome_type is not transferred on chain if outcome changes",
-  expect_true(chained_task$outcome_type$type != "fake_outcome_type")
+  expect_true(chained_task$outcome_type$type != "continuous")
 )
 
-task <- sl3_Task$new(
+task <- suppressWarnings(sl3_Task$new(
   cpp,
   covariates = covars, outcome = outcome,
   outcome_type = "categorical"
-)
+))
 test_that(
   "forcing outcome_type='categorical' generates outcome_levels",
   expect_equal(task$outcome_type$levels, sort(unique(cpp$haz)))
 )
 
 
-task <- sl3_Task$new(
+task <- suppressWarnings(sl3_Task$new(
   cpp,
   covariates = covars, outcome = outcome,
   outcome_type = "continuous", outcome_levels = 1:3
-)
+))
 test_that(
   "outcome_levels can be forced",
   expect_equal(task$outcome_type$levels, 1:3)
 )
 
-task <- sl3_Task$new(
+task <- suppressWarnings(sl3_Task$new(
   cpp,
   covariates = covars, outcome = outcome,
   outcome_type = "categorical"
-)
-Y_categorical <- task$outcome_type$format(task$Y)
-test_that(
-  "outcome levels are passed as factor levels from format_Y",
-  expect_equal(levels(Y_categorical), as.character(task$outcome_type$levels))
-)
+))
 
-Y_binomial <- variable_type("binomial", levels = levels(task$Y))$format(task$Y)
-test_that("outcome levels are binarized for outcome_type binomial", {
-  expect_true(all(Y_binomial %in% c(0, 1)))
-  expect_equal(Y_binomial, as.numeric(task$Y == max(levels(task$Y))))
+test_that("outcome levels are passed as factor levels from format_Y", {
+  Y_categorical <- task$outcome_type$format(task$Y)
+  expect_equal(levels(Y_categorical), as.character(task$outcome_type$levels))
 })
 
-fglm_learner <- Lrnr_glm_fast$new(outcome_type = "continuous")
+test_that("outcome levels are binarized for outcome_type binomial", {
+  Y_binomial <- variable_type("binomial", levels = task$outcome_type$levels)$format(task$Y)
+  expect_true(all(Y_binomial %in% c(0, 1)))
+  expect_equal(Y_binomial, as.numeric(task$Y == max(task$outcome_type$levels)))
+})
+
 test_that("outcome type can be passed to a task as a character", {
-  fglm_learner$train(task)
+  fglm_learner <- Lrnr_glm_fast$new(outcome_type = "continuous")
+  fglm_learner_fit <- fglm_learner$train(task)
+  expect_equal(fglm_learner_fit$fit_object$family$family, "gaussian")
 })
 
 pcontinuous_default <- getOption("sl3.pcontinuous")

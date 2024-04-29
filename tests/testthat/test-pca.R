@@ -13,7 +13,7 @@ outcome <- "haz"
 task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
 
 # define learners
-glm_fast <- Lrnr_glm_fast$new(intercept = FALSE)
+glm_fast <- Lrnr_glm$new(intercept = FALSE)
 pca_sl3 <- Lrnr_pca$new(n_comp = ncomp, center = TRUE, scale. = TRUE)
 pcr_pipe_sl3 <- Pipeline$new(pca_sl3, glm_fast)
 
@@ -25,6 +25,7 @@ out_pcr_fit <- pcr_pipe_sl3_fit$predict()
 pca_from_pipe <- pcr_pipe_sl3_fit$fit_object$learner_fits[[1]]$fit_object
 
 # compute PCA with GLM manually
+
 cpp_pca <- stats::prcomp(x = task$X, center = TRUE, scale. = TRUE)
 cpp_pca_rotated <- as.matrix(task$X) %*% cpp_pca$rotation[, seq_len(ncomp)]
 pcr_cpp <- glm(cpp_imputed$haz ~ -1 + cpp_pca_rotated)
@@ -36,6 +37,7 @@ test_that("PCA computed by Lrnr_pca matches stats::prcomp exactly.", {
 
 test_that("Regression on PCs matches between Pipeline and manual invocation.", {
   expect_equal(out_pcr_fit, pcr_preds)
+
 })
 
 test_that("Arguments are passed to prcomp correctly by Lrnr_pca", {

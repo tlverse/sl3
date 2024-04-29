@@ -1,18 +1,8 @@
 context("test-arima-tsDyn.R -- ARIMA and tsDyn")
 
-if (FALSE) {
-  setwd("..")
-  setwd("..")
-  getwd()
-  library("devtools")
-  document()
-  load_all("./") # load all R files in /R and datasets in /data. Ignores NAMESPACE:
-  # devtools::check() # runs full check
-  setwd("..")
-  install("sl3", build_vignettes = FALSE, dependencies = FALSE) # INSTALL W/ devtools:
-}
-
 library(origami)
+library(data.table)
+library(testthat)
 
 set.seed(1)
 attach(list(lag = stats::lag), name = "stats_lag_test_kludge", warn.conflicts = FALSE)
@@ -141,8 +131,8 @@ test_that("Lrnr_arima with external regressors", {
   # Define new data:
   data <- bsds
   data$atemp2 <- data$atemp
-  covars <- c("atemp", "casual", "registered", "cnt")
-  covars_dups <- c("casual", "registered", "cnt", "atemp2", "atemp")
+  covars <- c("atemp", "casual", "registered")
+  covars_dups <- c("casual", "registered", "atemp2", "atemp")
   outcome <- c("temp")
   task <- sl3_Task$new(
     data,
@@ -159,8 +149,12 @@ test_that("Lrnr_arima with external regressors", {
   arima_lrnr <- Lrnr_arima$new()
   fit <- suppressMessages({arima_lrnr$train(train_task)})
   preds <- fit$predict(valid_task)
+<<<<<<< HEAD
   
   preds_newX <- fit$predict(valid_task_duplicate_covs)
+=======
+  expect_warning(preds_newX <- fit$predict(valid_task_duplicate_covs))
+>>>>>>> fdfe83fb7d4c7b4f10a95205b8c0c6aa1a3418d5
 
   cv_arima_lrnr <- Lrnr_cv$new(arima_lrnr)
   suppressMessages({fit_cv <- cv_arima_lrnr$train(task)})

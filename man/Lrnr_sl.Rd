@@ -5,11 +5,13 @@
 \alias{Lrnr_sl}
 \title{The Super Learner Algorithm}
 \format{
-\code{\link{R6Class}} object.
+An \code{\link[R6]{R6Class}} object inheriting from
+\code{\link{Lrnr_base}}.
 }
 \value{
-Learner object with methods for training and prediction. See
-\code{\link{Lrnr_base}} for documentation on learners.
+A learner object inheriting from \code{\link{Lrnr_base}} with
+methods for training and prediction. For a full list of learner
+functionality, see the complete documentation of \code{\link{Lrnr_base}}.
 }
 \description{
 Learner that encapsulates the Super Learner algorithm. Fits metalearner on
@@ -18,34 +20,98 @@ learners.
 }
 \section{Parameters}{
 
-\describe{
-\item{\code{learners}}{The "library" of learners to include}
-\item{\code{metalearner}}{The metalearner to be fit on predictions from
-the library.} If null, \code{\link{default_metalearner} is used to
-    construct a metalearner based on the outcome_type of the training task.}
-\item{\code{folds=NULL}}{An \code{origami} folds object. If \code{NULL},
-folds from the task are used.}
-\item{\code{keep_extra=TRUE}}{Stores all sub-parts of the SL computation.
-When set to \code{FALSE} the resultant object has a memory footprint
-that is significantly reduced through the discarding of intermediary
-data structures.}
-\item{\code{...}}{Not used.}
+\itemize{
+\item \code{learners}: The "library" of user-specified algorithms for the
+super learner to consider as candidates.
+\item \code{metalearner = "default"}: The metalearner to be fit on c
+cross-validated predictions from the candidates. If \code{"default"},
+the \code{\link{default_metalearner}} is used to construct a
+metalearner based on the \code{outcome_type} of the training
+\code{task}.
+\item \code{cv_control = NULL}: Optional list of arguments that will be used
+to define a specific cross-validation fold structure for fitting the
+super learner. Intended for use in a nested cross-validation scheme,
+such as cross-validated super learner (\code{\link{cv_sl}}) or
+when \code{Lrnr_sl} is considered in the list of candidate
+\code{learners} in another \code{Lrnr_sl}. Includes the arguments
+listed below, and any others to be passed to
+\code{\link[origami]{fold_funs}}:
+\itemize{
+\item \code{strata = NULL}: Discrete covariate or outcome name to
+define stratified cross-validation folds. If \code{NULL} and if
+\code{task$outcome_type$type} is binary or categorical, then the
+default behavior is to consider stratified cross-validation, where
+the strata are defined with respect to the outcome. To override
+the default behavior, i.e., to not consider stratified
+cross-validation when \code{strata = NULL} and
+\code{task$outcome_type$type} is binary or categorical is not
+\code{NULL}, set \code{strata = "none"}.
+\item \code{cluster_by_id = TRUE}: Logical to specify clustered
+cross-validation scheme according to \code{id} in \code{task}.
+Specifically, if \code{task$nodes$id} is not \code{NULL} and if
+\code{cluster_by_id = TRUE} (default) then \code{task$nodes$id}
+is used to define a clustered cross-validation scheme, so
+dependent units are placed together in the same training sets
+and validation set. To override the default behavior, i.e., to not
+consider clustered cross-validation when \code{task$nodes$id} is
+not \code{NULL}, set \code{cluster_by_id = FALSE}.
+\item \code{fold_fun = NULL}: A function indicating the \pkg{origami}
+cross-validation scheme to use, such as
+\code{\link[origami]{folds_vfold}} for V-fold cross-validation.
+See \code{\link[origami]{fold_funs}} for a list of possibilities.
+If \code{NULL} (default) and if other \code{cv_control} arguments
+are specified, e.g., \code{V}, \code{strata} or
+\code{cluster_by_id}, then the default behavior is to set
+\code{fold_fun = origami::folds_vfold}.
+\item \code{...}: Other arguments to be passed to \code{fold_fun}, such as
+\code{V} for \code{fold_fun = folds_vfold}. See
+\code{\link[origami]{fold_funs}} for a list fold-function-specific
+possible arguments.
+}
+\item \code{keep_extra = TRUE}: Stores all sub-parts of the super learner
+computation. When \code{FALSE}, the resulting object has a memory
+footprint that is significantly reduced through the discarding of
+intermediary data structures.
+\item \code{verbose = NULL}: Whether to print \code{cv_control}-related
+messages. Warnings and errors are always printed. When
+\code{verbose = NULL}, verbosity specified by option
+\code{sl3.verbose} will be used, and the default \code{sl3.verbose}
+option is \code{FALSE}. (Note: to turn on \code{sl3.verbose} option,
+set \code{options("sl3.verbose" = TRUE)}.)
+\item \code{...}: Any additional parameters that can be considered by
+\code{\link{Lrnr_base}}.
 }
 }
 
-\section{Common Parameters}{
-
-
-Individual learners have their own sets of parameters. Below is a list of shared parameters, implemented by \code{Lrnr_base}, and shared
-by all learners.
-
-\describe{
-\item{\code{covariates}}{A character vector of covariates. The learner will use this to subset the covariates for any specified task}
-\item{\code{outcome_type}}{A \code{\link{variable_type}} object used to control the outcome_type used by the learner. Overrides the task outcome_type if specified}
-\item{\code{...}}{All other parameters should be handled by the invidual learner classes. See the documentation for the learner class you're instantiating}
+\examples{
+\dontrun{
+data(cpp_imputed)
+covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
+task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
+# this is just for illustrative purposes, not intended for real applications
+# of the super learner!
+glm_lrn <- Lrnr_glm$new()
+ranger_lrn <- Lrnr_ranger$new()
+lasso_lrn <- Lrnr_glmnet$new()
+eSL <- Lrnr_sl$new(learners = list(glm_lrn, ranger_lrn, lasso_lrn))
+eSL_fit <- eSL$train(task)
+# example with cv_control, where Lrnr_sl included as a candidate
+eSL_nested5folds <- Lrnr_sl$new(
+  learners = list(glm_lrn, ranger_lrn, lasso_lrn),
+  cv_control = list(V = 5),
+  verbose = FALSE
+)
+dSL <- Lrnr_sl$new(
+  learners = list(glm_lrn, ranger_lrn, lasso_lrn, eSL_nested5folds),
+  metalearner = Lrnr_cv_selector$new(loss_squared_error)
+)
+dSL_fit <- dSL$train(task)
+# example with cv_control, where we use cross-validated super learner
+cvSL_fit <- cv_sl(
+  lrnr_sl = eSL_nested5folds, task = task, eval_fun = loss_squared_error
+)
 }
 }
-
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},
@@ -54,10 +120,9 @@ Other Learners:
 \code{\link{Lrnr_bartMachine}},
 \code{\link{Lrnr_base}},
 \code{\link{Lrnr_bayesglm}},
-\code{\link{Lrnr_bilstm}},
 \code{\link{Lrnr_caret}},
-\code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_cv}},
+\code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_dbarts}},
 \code{\link{Lrnr_define_interactions}},
 \code{\link{Lrnr_density_discretize}},
@@ -65,13 +130,16 @@ Other Learners:
 \code{\link{Lrnr_density_semiparametric}},
 \code{\link{Lrnr_earth}},
 \code{\link{Lrnr_expSmooth}},
-\code{\link{Lrnr_gam}},
 \code{\link{Lrnr_ga}},
+\code{\link{Lrnr_gam}},
 \code{\link{Lrnr_gbm}},
-\code{\link{Lrnr_glm_fast}},
-\code{\link{Lrnr_glmnet}},
 \code{\link{Lrnr_glm}},
+\code{\link{Lrnr_glm_fast}},
+\code{\link{Lrnr_glm_semiparametric}},
+\code{\link{Lrnr_glmnet}},
+\code{\link{Lrnr_glmtree}},
 \code{\link{Lrnr_grf}},
+\code{\link{Lrnr_grfcate}},
 \code{\link{Lrnr_gru_keras}},
 \code{\link{Lrnr_gts}},
 \code{\link{Lrnr_h2o_grid}},
@@ -100,8 +168,8 @@ Other Learners:
 \code{\link{Lrnr_screener_coefs}},
 \code{\link{Lrnr_screener_correlation}},
 \code{\link{Lrnr_screener_importance}},
-\code{\link{Lrnr_solnp_density}},
 \code{\link{Lrnr_solnp}},
+\code{\link{Lrnr_solnp_density}},
 \code{\link{Lrnr_stratified}},
 \code{\link{Lrnr_subset_covariates}},
 \code{\link{Lrnr_svm}},

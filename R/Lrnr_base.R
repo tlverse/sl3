@@ -56,6 +56,13 @@ Lrnr_base <- R6Class(
         if (length(delta_idx) > 0) {
           delta_missing <- task_covs_missing[delta_idx]
           task_covs_missing <- task_covs_missing[-delta_idx]
+          
+          delta_missing_data <- matrix(0, nrow(task$data), length(delta_idx))
+          colnames(delta_missing_data) <- delta_missing
+          cols <- task$add_columns(data.table(delta_missing_data))
+          
+        } else{
+          cols <- task$column_names
         }
 
         # error when task is missing covariates
@@ -68,29 +75,10 @@ Lrnr_base <- R6Class(
           )
         }
 
-        # subset task covariates to only includes those in learner covariates
-        covs_subset <- intersect(task_covs, learner_covs)
-
-        # return updated task
-        if (length(delta_idx) == 0) {
-          # re-order the covariate subset to match order of learner covariates
-          ordered_covs_subset <- covs_subset[match(covs_subset, learner_covs)]
-          return(task$next_in_chain(covariates = ordered_covs_subset))
-        } else {
-          # incorporate missingness indicators in task covariates subset & sort
-          covs_subset_delta <- c(covs_subset, delta_missing)
-          ord_covs <- covs_subset_delta[match(covs_subset_delta, learner_covs)]
-
-          # incorporate missingness indicators in task data
-          delta_missing_data <- matrix(0, nrow(task$data), length(delta_idx))
-          colnames(delta_missing_data) <- delta_missing
-          cols <- task$add_columns(data.table(delta_missing_data))
-
-          return(task$next_in_chain(
-            covariates = ord_covs,
+        return(task$next_in_chain(
+            covariates = learner_covs,
             column_names = cols
-          ))
-        }
+        ))
       } else {
         return(task)
       }
@@ -303,8 +291,8 @@ Lrnr_base <- R6Class(
         form <- self$params$formula
         if (!inherits(form,"formula")) form <- as.formula(form)
 
-        # check response variable corresponds to outcome in task, if provided
-        if (attr(terms(form), "response")) {
+        ### check response variable corresponds to outcome in task, if provided
+        if (attr(terms(form, data = task$data), "response")) {
           if (!all.vars(form)[1] == task$nodes$outcome) {
             stop(paste0(
               "Outcome variable in formula ", all.vars(form)[1],
@@ -315,23 +303,48 @@ Lrnr_base <- R6Class(
         } else {
           formula_covars <- all.vars(form)
         }
-        # check that regressors in the formula are contained in the task
-        if (!all(formula_covars %in% task$nodes$covariates)) {
+
+        ### check that regressors in the formula are contained in the task
+        if (!all(setdiff(formula_covars, ".") %in% task$nodes$covariates)) {
           stop("Regressors in the formula are not covariates in task")
         }
 
-        # get data corresponding to formula and add new columns to the task
-        data <- as.data.table(stats::model.matrix(form, data = task$data))
-        formula_cols <- names(data)
-        if (any(grepl("Intercept", formula_cols))) {
-          formula_cols <- formula_cols[!grepl("Intercept", formula_cols)]
+        ### get data corresponding to formula
+        if (attr(terms(form, data = task$data), "response")) {
+          # we have to include outcome here to avoid model.matrix error
+          cols <- c(task$nodes$outcome, task$nodes$covariates)
+        } else {
+          cols <- task$nodes$covariates
         }
-        new_cols <- setdiff(formula_cols, names(task$data))
-        data <- data[, new_cols, with = FALSE]
-        new_cols <- task$add_columns(data)
-        return(
-          task$next_in_chain(covariates = formula_cols, column_names = new_cols)
-        )
+        formula_data <- as.data.table(stats::model.matrix(
+          form,
+          data = task$data[, cols, with = F]
+        ))
+
+        ### identify formula_data covariates that are not already in the task
+        formula_cols <- names(formula_data)
+        if (any(grepl("Intercept", formula_cols))) {
+          formula_cols <- formula_cols[!(grepl("Intercept", formula_cols))]
+        }
+        if (task$nodes$outcome %in% formula_cols) {
+          formula_cols <- formula_cols[!(formula_cols == task$nodes$outcome)]
+        }
+        # now that formula_cols is only covariates, we can find out which ones
+        # are not already defined as covariates in the task
+        new_cols <- setdiff(formula_cols, task$nodes$covariates)
+
+        ### add formula_data covariates that are not already in the task
+        if (length(new_cols) == 0) {
+          # return task with original covariates, since no new ones defined
+          return(task)
+        } else {
+          formula_data <- formula_data[, new_cols, with = FALSE]
+          new_cols <- task$add_columns(formula_data, column_uuid = NULL)
+          # return task with original and new covariates
+          return(task$next_in_chain(
+            covariates = formula_cols, column_names = new_cols
+          ))
+        }
       } else {
         return(task)
       }

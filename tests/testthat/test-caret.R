@@ -51,10 +51,10 @@ test_learner(Lrnr_caret, task, algorithm = "rf")
 test_that("Lrnr_caret:RF predictions match those from RF", {
   ## instantiate Lrnr_caret, train on task, and predict on task
   lrnr_caret_rf <- Lrnr_caret$new(algorithm = "rf")
+
   set.seed(1530)
   fit_lrnr_caret_rf <- lrnr_caret_rf$train(task)
   prd_lrnr_caret_rf <- fit_lrnr_caret_rf$predict()
-  rnorm(1)
   ## fit RF using the data from the task
   set.seed(1530)
   fit_caret_rf <- caret::train(

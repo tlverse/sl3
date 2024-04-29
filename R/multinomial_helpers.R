@@ -26,10 +26,12 @@ unpack_predictions <- function(x) {
   do.call(rbind, lapply(x, `[[`, 1))
 }
 
+#' @export
 print.packed_predictions <- function(x) {
   print(unlist(x))
 }
 
+#' @export
 normalize_rows <- function(x) {
   sweep(x, 1, rowSums(x), "/")
 }

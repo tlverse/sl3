@@ -139,7 +139,10 @@ Lrnr_xgboost <- R6Class(
       }
 
       args$watchlist <- list(train = args$data)
-      fit_object <- call_with_args(xgboost::xgb.train, args, keep_all = TRUE)
+      fit_object <- call_with_args(xgboost::xgb.train, args,
+        keep_all = TRUE,
+        ignore = "formula"
+      )
       fit_object$training_offset <- task$has_node("offset")
       fit_object$link_fun <- link_fun
 

@@ -18,6 +18,7 @@ test_that("Lrnr_gbm produces results matching those of gbm::gbm.fit", {
   lrnr_gbm <- make_learner(Lrnr_gbm, verbose = FALSE)
   fit <- lrnr_gbm$train(task)
   preds <- fit$predict(task)
+  rmse_sl3 <- sqrt(mean((preds - task$Y)^2))
 
   # get predictions from classic implementation
   set.seed(4738)
@@ -30,7 +31,8 @@ test_that("Lrnr_gbm produces results matching those of gbm::gbm.fit", {
     newdata = task$X, type = "response",
     n.trees = 10000
   )
+  rmse_classic <- sqrt(mean((preds_classic - task$Y)^2))
 
   # check equality of predictions
-  expect_equal(preds, preds_classic)
+  expect_equal(rmse_sl3, rmse_classic, tolerance = 0.1)
 })

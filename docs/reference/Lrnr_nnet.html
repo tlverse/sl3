@@ -24,7 +24,7 @@ and for multinomial log-linear models."><!-- mathjax --><script src="https://cdn
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sl3</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.5</span>
       </span>
     </div>
 
@@ -39,7 +39,7 @@ and for multinomial log-linear models."><!-- mathjax --><script src="https://cdn
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -165,8 +165,11 @@ by all learners.</p>
 <code><a href="Lrnr_ga.html">Lrnr_ga</a></code>,
 <code><a href="Lrnr_gbm.html">Lrnr_gbm</a></code>,
 <code><a href="Lrnr_glm_fast.html">Lrnr_glm_fast</a></code>,
+<code><a href="Lrnr_glm_semiparametric.html">Lrnr_glm_semiparametric</a></code>,
 <code><a href="Lrnr_glmnet.html">Lrnr_glmnet</a></code>,
+<code><a href="Lrnr_glmtree.html">Lrnr_glmtree</a></code>,
 <code><a href="Lrnr_glm.html">Lrnr_glm</a></code>,
+<code><a href="Lrnr_grfcate.html">Lrnr_grfcate</a></code>,
 <code><a href="Lrnr_grf.html">Lrnr_grf</a></code>,
 <code><a href="Lrnr_gru_keras.html">Lrnr_gru_keras</a></code>,
 <code><a href="Lrnr_gts.html">Lrnr_gts</a></code>,
@@ -210,6 +213,61 @@ by all learners.</p>
 <code><a href="undocumented_learner.html">undocumented_learner</a></code></p></div>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># load example data</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cpp_imputed</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">covars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bmi"</span>, <span class="st">"parity"</span>, <span class="st">"mage"</span>, <span class="st">"sexn"</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">outcome</span> <span class="op">&lt;-</span> <span class="st">"haz"</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># create sl3 task</span></span>
+<span class="r-in"><span class="va">task</span> <span class="op">&lt;-</span> <span class="va"><a href="sl3_Task.html">sl3_Task</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">cpp_imputed</span>, covariates <span class="op">=</span> <span class="va">covars</span>, outcome <span class="op">=</span> <span class="va">outcome</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># train neural networks and make predictions</span></span>
+<span class="r-in"><span class="va">lrnr_nnet</span> <span class="op">&lt;-</span> <span class="va">Lrnr_nnet</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>linout <span class="op">=</span> <span class="cn">TRUE</span>, size <span class="op">=</span> <span class="fl">10</span>, maxit <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">fit</span> <span class="op">&lt;-</span> <span class="va">lrnr_nnet</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # weights:  61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> initial  value 3473.327147 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> iter  10 value 2332.708133</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> iter  20 value 2285.802094</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> iter  30 value 2259.282969</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> iter  40 value 2186.037648</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> iter  50 value 2163.163175</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> iter  60 value 2158.274072</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> iter  70 value 2157.252818</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> iter  80 value 2153.548324</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> iter  90 value 2147.689763</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> iter 100 value 2140.508801</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> iter 110 value 2136.151335</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> iter 120 value 2131.667979</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> iter 130 value 2127.812539</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> iter 140 value 2126.292145</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> iter 150 value 2121.169605</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> iter 160 value 2119.921691</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> iter 170 value 2117.912191</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> iter 180 value 2116.976429</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> iter 190 value 2110.064796</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> iter 200 value 2105.265439</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> iter 210 value 2090.487599</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> iter 220 value 2083.288260</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> iter 230 value 2078.431944</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> iter 240 value 2075.836591</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> iter 250 value 2072.891518</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> iter 260 value 2069.692797</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> iter 270 value 2067.111192</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> iter 280 value 2065.639707</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> iter 290 value 2064.105394</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> iter 300 value 2059.875667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> iter 310 value 2059.346266</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> iter 320 value 2059.315552</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> iter 330 value 2059.104485</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> final  value 2059.103001 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> converged</span>
+<span class="r-in"><span class="va">preds</span> <span class="op">&lt;-</span> <span class="va">fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>
@@ -222,7 +280,7 @@ by all learners.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer></div>

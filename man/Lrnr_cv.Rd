@@ -26,6 +26,25 @@ This can then be accessed with predict_fold(task, fold_number="full")
 }
 }
 
+\examples{
+library(origami)
+
+# load example data
+data(cpp_imputed)
+covars <- c(
+  "apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn"
+)
+outcome <- "haz"
+
+# create sl3 task
+task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
+glm_learner <- Lrnr_glm$new()
+cv_glm <- Lrnr_cv$new(glm_learner, folds = make_folds(cpp_imputed, V = 10))
+
+# train cv learner
+cv_glm_fit <- cv_glm$train(task)
+preds <- cv_glm_fit$predict()
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},
@@ -34,7 +53,6 @@ Other Learners:
 \code{\link{Lrnr_bartMachine}},
 \code{\link{Lrnr_base}},
 \code{\link{Lrnr_bayesglm}},
-\code{\link{Lrnr_bilstm}},
 \code{\link{Lrnr_caret}},
 \code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_dbarts}},
@@ -44,13 +62,16 @@ Other Learners:
 \code{\link{Lrnr_density_semiparametric}},
 \code{\link{Lrnr_earth}},
 \code{\link{Lrnr_expSmooth}},
-\code{\link{Lrnr_gam}},
 \code{\link{Lrnr_ga}},
+\code{\link{Lrnr_gam}},
 \code{\link{Lrnr_gbm}},
-\code{\link{Lrnr_glm_fast}},
-\code{\link{Lrnr_glmnet}},
 \code{\link{Lrnr_glm}},
+\code{\link{Lrnr_glm_fast}},
+\code{\link{Lrnr_glm_semiparametric}},
+\code{\link{Lrnr_glmnet}},
+\code{\link{Lrnr_glmtree}},
 \code{\link{Lrnr_grf}},
+\code{\link{Lrnr_grfcate}},
 \code{\link{Lrnr_gru_keras}},
 \code{\link{Lrnr_gts}},
 \code{\link{Lrnr_h2o_grid}},
@@ -80,8 +101,8 @@ Other Learners:
 \code{\link{Lrnr_screener_correlation}},
 \code{\link{Lrnr_screener_importance}},
 \code{\link{Lrnr_sl}},
-\code{\link{Lrnr_solnp_density}},
 \code{\link{Lrnr_solnp}},
+\code{\link{Lrnr_solnp_density}},
 \code{\link{Lrnr_stratified}},
 \code{\link{Lrnr_subset_covariates}},
 \code{\link{Lrnr_svm}},
