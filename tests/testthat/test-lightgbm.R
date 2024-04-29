@@ -48,10 +48,7 @@ test_learner <- function(learner, task, ...) {
 }
 
 ## test lightgbm learner:
-<<<<<<< HEAD
 options(sl3.verbose = FALSE)
-=======
->>>>>>> fdfe83fb7d4c7b4f10a95205b8c0c6aa1a3418d5
 test_learner(Lrnr_lightgbm, task)
 
 test_that("Lrnr_lightgbm predictions match lightgbm's: continuous outcome", {
