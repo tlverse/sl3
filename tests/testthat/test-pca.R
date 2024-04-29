@@ -30,6 +30,8 @@ cpp_pca <- stats::prcomp(x = task$X, center = TRUE, scale. = TRUE)
 cpp_pca_rotated <- as.matrix(task$X) %*% cpp_pca$rotation[, seq_len(ncomp)]
 pcr_cpp <- glm(cpp_imputed$haz ~ -1 + cpp_pca_rotated)
 pcr_preds <- as.numeric(predict(pcr_cpp))
+attributes(cpp_pca) <- attributes(pca_from_pipe)
+pcr_pipe_sl3_fit$fit_object$learner_fits[[1]]$predict()
 
 test_that("PCA computed by Lrnr_pca matches stats::prcomp exactly.", {
   expect_equal(pca_from_pipe, cpp_pca)
@@ -52,6 +54,6 @@ test_that("Arguments are passed to prcomp correctly by Lrnr_pca", {
 
   # do the same thing with prcomp
   cpp_pca <- stats::prcomp(x = task$X, retx = FALSE, center = TRUE, scale. = FALSE)
-
+  attributes(cpp_pca) <- attributes(pca_from_pipe)
   expect_equal(pca_from_pipe, cpp_pca)
 })

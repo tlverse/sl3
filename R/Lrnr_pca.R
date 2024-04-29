@@ -95,8 +95,8 @@ Lrnr_pca <- R6Class(
     },
     .predict = function(task = NULL) {
       # note that n_comp is not an argument of stats::prcomp
-      dim_args <- self$params[names(self$params) == "n_comp"]
-      predictions <- private$.fit_object$x[, seq_len(unlist(dim_args))]
+      dim_args <- self$params$n_comp
+      predictions <- as.matrix(task$X) %*% private$.fit_object$rotation[, seq_len(dim_args)]
       return(predictions)
     },
     .required_packages = c("stats")

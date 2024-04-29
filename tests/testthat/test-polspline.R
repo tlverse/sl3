@@ -45,8 +45,10 @@ test_that("Results of Lrnr_polspline match those of polspline::polyclass", {
 
   # get predictions from Lrnr_* wrapper
   set.seed(4738)
-  lrnr_polspline <- make_learner(Lrnr_polspline)
+  lrnr_polspline <- make_learner(Lrnr_polspline, silent = TRUE, cv = 5, seed = 4738)
+  output <- capture.output(
   fit <- lrnr_polspline$train(task)
+  )
   preds <- fit$predict(task)
 
   # get predictions from classic implementation
@@ -54,7 +56,10 @@ test_that("Results of Lrnr_polspline match those of polspline::polyclass", {
   #fit_classic <- polyclass(cov = task$X, data = task$Y, cv = 5)
   
   set.seed(4738)
-  fit_classic <- polyclass(cov = task$X, data = task$outcome_type$format(task$Y), cv = 5)
+  output <- capture.output(
+    fit_classic <- polyclass(cov = task$X, data = task$outcome_type$format(task$Y), 
+                           cv = 5, seed = 4738, silent = TRUE)
+  )
   preds_classic <- ppolyclass(fit = fit_classic, cov = task$X)[, 2]
 
   # check equality of predictions
@@ -70,12 +75,16 @@ test_that("Lrnr_polspline predictions match polspilne: categorial outcome", {
 
   lrnr <- Lrnr_polspline$new()
   set.seed(73964)
-  fit <- lrnr$train(task)
+  output <- capture.output(
+    fit <- lrnr$train(task)
+  )
   prd <- unpack_predictions(fit$predict())
 
   outcome_type <- lrnr$get_outcome_type(task)
   set.seed(73964)
-  fit2 <- polspline::polyclass(cov = task$X, data = outcome_type$format(task$Y))
+  output <- capture.output(
+    fit2 <- polspline::polyclass(cov = task$X, data = outcome_type$format(task$Y))
+  )
   preds <- polspline::ppolyclass(fit = fit2, cov = task$X)
 
   expect_equal(prd, preds)

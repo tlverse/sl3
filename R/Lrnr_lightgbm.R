@@ -165,10 +165,6 @@ Lrnr_lightgbm <- R6Class(
 
       }
 
-      if (is.null(args$num_class) & outcome_type$type == "categorical") {
-        args$num_class <- as.integer(length(outcome_type$levels))
-      }
-
       fit_object <- call_with_args(lightgbm::lgb.train, args,
         keep_all = TRUE,
         ignore = "formula"

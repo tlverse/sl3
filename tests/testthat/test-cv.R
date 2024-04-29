@@ -88,7 +88,7 @@ test_that("GLM is perfect when outcome = covariate", {
 ################################# test LOOCV ###################################
 test_loocv_learner <- function(learner, loocv_task, ...) {
   learner_obj <- make_learner(learner, ...)
-  print(sprintf("Learner %s", learner_obj$name))
+  # print(sprintf("Learner %s", learner_obj$name))
   
   cv_learner <- Lrnr_cv$new(learner_obj, full_fit = TRUE)
   

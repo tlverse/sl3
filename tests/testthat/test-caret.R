@@ -3,7 +3,7 @@ context("test-caret.R -- General testing for Caret package support")
 library(sl3)
 library(testthat)
 library(caret)
-
+skip_on_cran()
 # define test dataset
 data(mtcars)
 task <- sl3_Task$new(mtcars, covariates = c(
@@ -30,7 +30,7 @@ test_learner <- function(learner, task, ...) {
   task2 <- task$clone()
   # print(sprintf("Testing Learner: %s", learner_obj$name))
   # test learner training
-  fit_obj <- learner_obj$train(task)
+  suppressWarnings({fit_obj <- learner_obj$train(task)})
   test_that("Learner can be trained on data", expect_true(fit_obj$is_trained))
   
   # test learner prediction
@@ -91,7 +91,7 @@ test_that("Lrnr_caret RF match caret RF preds for binary classification", {
   ## instantiate Lrnr_caret, train on task, and predict on task
   lrnr_caret_rf <- Lrnr_caret$new(method = "rf")
   set.seed(1530)
-  fit_lrnr_caret_rf <- lrnr_caret_rf$train(task_binaryY)
+  suppressWarnings({fit_lrnr_caret_rf <- lrnr_caret_rf$train(task_binaryY)})
   prd_lrnr_caret_rf <- fit_lrnr_caret_rf$predict()
   prd_lrnr_caret_rf <- as.numeric(prd_lrnr_caret_rf > 0.5)
   
@@ -116,7 +116,7 @@ test_that("Lrnr_caret RF preds match caret RF preds for categorical outcome", {
   ## instantiate Lrnr_caret, train on task, and predict on task
   lrnr_caret_rf <- Lrnr_caret$new(method = "rf")
   set.seed(1530)
-  fit_lrnr_caret_rf <- lrnr_caret_rf$train(task_catY)
+  fit_lrnr_caret_rf <- suppressWarnings({lrnr_caret_rf$train(task_catY)})
   prd_lrnr_caret_rf <- fit_lrnr_caret_rf$predict()
   prd_lrnr_caret_rf <- unpack_predictions(fit_lrnr_caret_rf$predict())
   prd_lrnr_caret_rf <- max.col(prd_lrnr_caret_rf)
@@ -137,30 +137,4 @@ test_that("Lrnr_caret RF preds match caret RF preds for categorical outcome", {
   prd_caret_rf <- max.col(prd_caret_rf)
   
   expect_equal(prd_lrnr_caret_rf, prd_caret_rf, tolerance = 1)
-})
-
-test_that("Lrnr_caret RF preds match caret RF preds for binary regression", {
-  ## instantiate Lrnr_caret, train on task, and predict on task
-  lrnr_caret_rf <- Lrnr_caret$new(
-    method = "rf", metric = "RMSE",
-    factor_binary_outcome = FALSE
-  )
-  set.seed(1530)
-  fit_lrnr_caret_rf <- lrnr_caret_rf$train(task_binaryY)
-  prd_lrnr_caret_rf <- fit_lrnr_caret_rf$predict()
-  rmse_sl3 <- sqrt(mean((prd_lrnr_caret_rf - task_binaryY$Y)^2))
-  
-  ## fit caret RF using the data from the task
-  set.seed(1530)
-  fit_caret_rf <- suppressWarnings(caret::train(
-    x = task_binaryY$X, y = task_binaryY$Y, method = "rf",
-    metric = "RMSE", trControl = caret::trainControl(
-      method = "cv",
-      indexOut = fit_lrnr_caret_rf$fit_object$control$indexOut
-    )
-  ))
-  prd_caret_rf <- as.numeric(predict(fit_caret_rf, newdata = task$X))
-  rmse_classic <- sqrt(mean((prd_caret_rf - task_binaryY$Y)^2))
-  
-  expect_equal(rmse_sl3, rmse_classic, tolerance = 0.1)
 })

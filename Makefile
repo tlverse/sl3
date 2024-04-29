@@ -5,9 +5,14 @@ site:
 	Rscript -e "rmarkdown::render('README.Rmd', output_file = 'README.md')"
 	Rscript -e "pkgdown::build_site()"
 
+check: export NOT_CRAN = "TRUE"
 check:
 	Rscript -e "devtools::check()"
 
+check_cran: export NOT_CRAN = "FALSE"
+check_cran:
+	Rscript -e "devtools::check()"
+	
 checkfast:
 	Rscript -e "devtools::check(build_args = '--no-build-vignettes')"
 

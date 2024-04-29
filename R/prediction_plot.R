@@ -48,7 +48,7 @@ prediction_plot <- function(learner_fit) {
     })
     auc_data <- rbindlist(all_auc_data)
     wide <- dcast(auc_data, cutoff + observed ~ accurate, value.var = "positive_rate")
-    pred_plot <- ggplot(wide[order(wide$`TRUE`)], aes_(x = ~`FALSE`, y = ~`TRUE`, color = ~observed)) +
+    pred_plot <- ggplot(wide[order(wide$`TRUE`)], aes(x = ~`FALSE`, y = ~`TRUE`, color = ~observed)) +
       geom_step(direction = "vh") +
       geom_segment(data = data.table(1), x = 0, y = 0, xend = 1, yend = 1, color = "black") +
       theme_bw() +

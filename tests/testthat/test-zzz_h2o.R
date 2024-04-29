@@ -14,7 +14,9 @@ if (FALSE) {
 
 
 library(h2o)
-h2o.init(nthread = 1)
+suppressWarnings({
+  h2o.init(nthread = 1)
+})
 Sys.sleep(3)
 # library(data.table)
 # library(origami)
@@ -32,25 +34,38 @@ task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
 task2 <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
 task$nodes$covariates
 
+cpp_hazbin <- cpp
+cpp_hazbin[["haz_bin"]] <- rep_len(c(0L, 1L), nrow(cpp))
+task_bin <- sl3_Task$new(cpp_hazbin, covariates = covars, outcome = "haz_bin")
+
 test_learner <- function(learner, task, ...) {
   learner_obj <- learner$new(...)
-  print(sprintf("Testing Learner: %s", learner_obj$name))
+  # print(sprintf("Testing Learner: %s", learner_obj$name))
   # test learner training
   fit_obj <- learner_obj$train(task)
   test_that("Learner can be trained on data", expect_true(fit_obj$is_trained))
   # test learner prediction
-  train_preds <- fit_obj$predict()
+  suppressWarnings({
+    train_preds <- fit_obj$predict()
+  })
+  
   test_that("Learner can generate training set predictions", expect_equal(
     length(train_preds[[1]]),
     nrow(task$X)
   ))
-  holdout_preds <- fit_obj$predict(task2)
+  
+  suppressWarnings({
+    holdout_preds <- fit_obj$predict(task2)
+  })
+  
   test_that("Learner can generate holdout set predictions", expect_equal(
     train_preds,
     holdout_preds
   ))
   # test learner chaining
-  chained_task <- fit_obj$chain()
+  suppressWarnings({
+    chained_task <- fit_obj$chain()
+  })
   test_that("Chaining returns a task", expect_true(is(
     chained_task,
     "sl3_Task"
@@ -105,7 +120,9 @@ test_that("Lrnr_h2o_grid learner works with a grid of regularized GLMs, on a sub
     hyper_params = list(alpha = c(0, 0.5, 1)),
     lambda_search = TRUE
   )
-  h2o_glm_grid <- h2o_glm_grid$train(task)
+  suppressWarnings({
+    h2o_glm_grid <- h2o_glm_grid$train(task)
+  })
   h2oGLM_preds <- h2o_glm_grid$predict()
   expect_equal(dim(h2oGLM_preds), c(nrow(task$data), 3))
 })
@@ -215,8 +232,12 @@ test_that("Lrnr_h2o_glm works with regularized regression and internal CV for la
     family = "binomial", alpha = 0.5, lambda_search = TRUE,
     nlambdas = 20, nfolds = 5
   )
-  h2oGLM_fit <- h2o_glm$train(task_bin)
+  suppressWarnings({
+    h2oGLM_fit <- h2o_glm$train(task_bin)
+  })
   preds_1 <- h2oGLM_fit$predict()
+  
+  expect_equal(length(preds_1$p1), task_bin$nrow)
   # print(h2oGLM_fit)
 })
 
@@ -227,7 +248,7 @@ test_that("Lrnr_h2o_classifier works with naiveBays for categorical outcome", {
   task_bin <- sl3_Task$new(cpp_hazbin, covariates = covars, outcome = "haz_cat")
 
   bays_lrn <- Lrnr_h2o_classifier$new(algorithm = "naivebayes")$train(task_bin)
-  print(bays_lrn)
+  # print(bays_lrn)
   bays_lrn_preds <- bays_lrn$predict()
   expect_true(ncol(bays_lrn_preds) == 4)
 })
@@ -238,7 +259,7 @@ test_that("Lrnr_h2o_classifier works with naiveBays for non-factor outcomes", {
   cpp_hazbin[["haz_cat"]] <- rep_len(c(0L, 1L, 2L), nrow(cpp_imputed))
   task_bin <- sl3_Task$new(cpp_hazbin, covariates = covars, outcome = "haz_cat")
   bays_lrn <- Lrnr_h2o_classifier$new(algorithm = "naivebayes")$train(task_bin)
-  print(bays_lrn)
+  # print(bays_lrn)
   bays_lrn_preds <- bays_lrn$predict()
   expect_true(ncol(bays_lrn_preds) == 4)
 })
@@ -249,8 +270,11 @@ test_that("Lrnr_h2o_grid learner works with a grid of regularized GLMs", {
     0,
     0.5, 1
   )))
-  h2o_glm_grid <- h2o_glm_grid$train(task)
+  suppressWarnings({
+    h2o_glm_grid <- h2o_glm_grid$train(task)
+  })
   h2oGLM_preds <- h2o_glm_grid$predict()
+  expect_equal(dim(h2oGLM_preds), c(task_bin$nrow,3))
 })
 
 test_that("Lrnr_h2o_grid learner works with a grid of GBMs", {
@@ -264,6 +288,7 @@ test_that("Lrnr_h2o_grid learner works with a grid of GBMs", {
   )))
   h2o_gbm_grid <- h2o_gbm_grid$train(task)
   h2ogbm_preds <- h2o_gbm_grid$predict()
+  expect_equal(dim(h2ogbm_preds), c(task_bin$nrow,3))
 })
 
 test_that("stack$predict plays nicely when Learner$predict() is a grid of predictions from several models", {
@@ -288,7 +313,9 @@ test_that("stack$predict plays nicely when Learner$predict() is a grid of predic
     glm_learner, fglm_learner, screen_and_glm, h2o_gbm_grid,
     SL.glmnet_learner
   )
-  stack_fit <- learner_stack$train(task)
+  suppressWarnings({
+    stack_fit <- learner_stack$train(task)
+  })
   preds <- stack_fit$predict()
 
   expect_true(data.table::is.data.table(preds))
@@ -297,14 +324,21 @@ test_that("stack$predict plays nicely when Learner$predict() is a grid of predic
 
 test_that("check Lrnr_h2o_mutator returns matrices of mutated predictors", {
   h2o::h2o.no_progress()
-  h2o::h2o.init()
+  suppressWarnings({
+    h2o::h2o.init()
+  })
   ## regular GLM
   pca_lrnr <- Lrnr_h2o_mutator$new(
     algorithm = "pca", k = 4,
     impute_missing = TRUE
   )
+  
+  
   pca_fit <- pca_lrnr$train(task)
-  preds <- pca_fit$predict()
+  
+  suppressWarnings({
+    preds <- pca_fit$predict()
+  })
   expect_true(ncol(preds) == 4L)
 })
 

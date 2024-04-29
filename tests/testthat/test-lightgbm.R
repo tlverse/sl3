@@ -87,11 +87,7 @@ test_that("Lrnr_lightgbm predictions match lightgbm's: binary outcome", {
 
   ## instantiate Lrnr_lightgbm, train on task, and predict on task
   set.seed(73964)
-<<<<<<< HEAD
-  lrnr_lightgbm <- Lrnr_lightgbm$new()
-=======
-  lrnr_lightgbm <- Lrnr_lightgbm$new(num_leaves = 30L, verbose = -1)
->>>>>>> fdfe83fb7d4c7b4f10a95205b8c0c6aa1a3418d5
+  lrnr_lightgbm <- Lrnr_lightgbm$new(verbose = -1)
   fit_lrnr_lightgbm <- lrnr_lightgbm$train(task)
   prd_lrnr_lightgbm <- fit_lrnr_lightgbm$predict()
 

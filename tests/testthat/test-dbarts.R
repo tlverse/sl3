@@ -36,11 +36,7 @@ test_that("Lrnr_dbarts produces results matching those of dbarts::barts", {
   # get predictions from classic implementation
   set.seed(123)
   fit_classic <- dbarts::bart(
-<<<<<<< HEAD
     x.train = data.frame(task$X), y.train = task$Y, keeptrees = TRUE, 
-=======
-    x.train = data.frame(task$X), y.train = task$Y, keeptrees = TRUE,
->>>>>>> fdfe83fb7d4c7b4f10a95205b8c0c6aa1a3418d5
     ndpost = 500, verbose = FALSE
   )
 

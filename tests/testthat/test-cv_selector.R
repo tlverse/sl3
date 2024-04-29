@@ -45,7 +45,7 @@ test_that("For risk eval funs fit's cv_risk and calling cv_risk are same", {
   set.seed(458)
   risk_aucpr <- custom_ROCR_risk("aucpr")
   metalrnr <- Lrnr_ga$new(metalearner_logistic_binomial, risk_aucpr,
-    verbose = F
+    monitor = FALSE
   )
   eSL <- Lrnr_sl$new(list(lrnr_glm, lrnr_lasso), metalrnr)
   cv_selector_aucpr <- Lrnr_cv_selector$new(risk_aucpr, binary_task$folds)
@@ -69,3 +69,4 @@ test_that("Lrnr_cv_selector errors if folds missing for risk eval funs", {
   )
   expect_error(dSL$train(binary_task))
 })
+
