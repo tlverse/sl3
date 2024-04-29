@@ -36,7 +36,7 @@ Hejazi et al. (2020)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sl3</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.5</span>
       </span>
     </div>
 
@@ -51,7 +51,7 @@ Hejazi et al. (2020)
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -122,8 +122,26 @@ functionality, see the complete documentation of <code><a href="Lrnr_base.html">
     <h2>Parameters</h2>
     
 
-<ul><li><p><code>...</code>: Arguments passed to <code><a href="https://rdrr.io/pkg/hal9001/man/fit_hal.html" class="external-link">fit_hal</a></code>. See
-it's documentation for details.</p></li>
+<ul><li><p><code>max_degree = 2</code>: An integer specifying the highest order of
+interaction terms for which basis functions ought to be generated.</p></li>
+<li><p><code>smoothness_orders = 1</code>: An integer specifying the smoothness of
+the basis functions. See details of <code>hal9001</code> package's
+<code><a href="https://rdrr.io/pkg/hal9001/man/fit_hal.html" class="external-link">fit_hal</a></code> function for more information.</p></li>
+<li><p><code>num_knots = 5</code>: An integer vector of length 1 or of length
+<code>max_degree</code>, specifying the maximum number of knot points
+(i.e., bins) for each covariate. If <code>num_knots</code> is a unit-length
+vector, then the same <code>num_knots</code> are used for each degree. See
+details of <code>hal9001</code> package's <code><a href="https://rdrr.io/pkg/hal9001/man/fit_hal.html" class="external-link">fit_hal</a></code>
+function for more information.</p></li>
+<li><p><code>fit_control</code>: List of arguments, including those specified in
+<code><a href="https://rdrr.io/pkg/hal9001/man/fit_hal.html" class="external-link">fit_hal</a></code>'s  <code>fit_control</code> documentation, and
+any additional arguments to be passed to <code><a href="https://glmnet.stanford.edu/reference/cv.glmnet.html" class="external-link">cv.glmnet</a></code>
+or <code><a href="https://glmnet.stanford.edu/reference/glmnet.html" class="external-link">glmnet</a></code>. See the <code>hal9001</code> package
+<code><a href="https://rdrr.io/pkg/hal9001/man/fit_hal.html" class="external-link">fit_hal</a></code> function fdocumentation or more
+information.</p></li>
+<li><p><code>...</code>: Other parameters passed to <code><a href="https://rdrr.io/pkg/hal9001/man/fit_hal.html" class="external-link">fit_hal</a></code>
+and additional arguments defined in <code><a href="Lrnr_base.html">Lrnr_base</a></code>, such as
+<code>params</code> like <code>formula</code>.</p></li>
 </ul></div>
     <div id="see-also">
     <h2>See also</h2>
@@ -149,8 +167,11 @@ it's documentation for details.</p></li>
 <code><a href="Lrnr_ga.html">Lrnr_ga</a></code>,
 <code><a href="Lrnr_gbm.html">Lrnr_gbm</a></code>,
 <code><a href="Lrnr_glm_fast.html">Lrnr_glm_fast</a></code>,
+<code><a href="Lrnr_glm_semiparametric.html">Lrnr_glm_semiparametric</a></code>,
 <code><a href="Lrnr_glmnet.html">Lrnr_glmnet</a></code>,
+<code><a href="Lrnr_glmtree.html">Lrnr_glmtree</a></code>,
 <code><a href="Lrnr_glm.html">Lrnr_glm</a></code>,
+<code><a href="Lrnr_grfcate.html">Lrnr_grfcate</a></code>,
 <code><a href="Lrnr_grf.html">Lrnr_grf</a></code>,
 <code><a href="Lrnr_gru_keras.html">Lrnr_gru_keras</a></code>,
 <code><a href="Lrnr_gts.html">Lrnr_gts</a></code>,
@@ -202,9 +223,7 @@ it's documentation for details.</p></li>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># instantiate with max 2-way interactions, 0-order splines, and binning</span></span>
 <span class="r-in"><span class="co"># (i.e., num_knots) that decreases with increasing interaction degree</span></span>
-<span class="r-in"><span class="va">hal_lrnr</span> <span class="op">&lt;-</span> <span class="va">Lrnr_hal9001</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
-<span class="r-in">  max_degree <span class="op">=</span> <span class="fl">2</span>, num_knots <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">10</span><span class="op">)</span>, smoothness_orders <span class="op">=</span> <span class="fl">0</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span class="va">hal_lrnr</span> <span class="op">&lt;-</span> <span class="va">Lrnr_hal9001</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>max_degree <span class="op">=</span> <span class="fl">2</span>, num_knots <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">hal_fit</span> <span class="op">&lt;-</span> <span class="va">hal_lrnr</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">hal_preds</span> <span class="op">&lt;-</span> <span class="va">hal_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span></span>
 </code></pre></div>
@@ -221,7 +240,7 @@ it's documentation for details.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer></div>

@@ -26,7 +26,28 @@
 #'    \code{learner$train}. See its documentation for details.
 #'   }
 #' }
-#
+#'
+#' @examples
+#' library(data.table)
+#'
+#' # load example data set
+#' data(cpp_imputed)
+#' setDT(cpp_imputed)
+#'
+#' # use covariates of intest and the outcome to build a task object
+#' covars <- c("apgar1", "apgar5", "sexn")
+#' task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = "haz")
+#'
+#' hal_lrnr <- Lrnr_hal9001$new(fit_control = list(n_folds = 3))
+#' stratified_hal <- Lrnr_stratified$new(
+#'   learner = hal_lrnr,
+#'   variable_stratify = "sexn"
+#' )
+#'
+#' # stratified learner
+#' set.seed(123)
+#' stratified_hal_fit <- stratified_hal$train(task)
+#' stratified_prediction <- stratified_hal_fit$predict(task = task)
 Lrnr_stratified <- R6Class(
   classname = "Lrnr_stratified", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,

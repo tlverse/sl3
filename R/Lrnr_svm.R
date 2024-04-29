@@ -114,15 +114,20 @@ Lrnr_svm <- R6Class(
       return(fit_object)
     },
     .predict = function(task) {
+      outcome_type <- private$.training_outcome_type$type
       predictions <- stats::predict(
         private$.fit_object,
         newdata = task$X,
-        probability = task$outcome_type$type %in% c("binomial", "categorical")
+        probability = outcome_type %in% c("binomial", "categorical")
       )
 
-      if (task$outcome_type$type %in% c("binomial", "categorical")) {
+      if (outcome_type %in% c("binomial", "categorical")) {
         predictions <- attr(predictions, "probabilities")
-        predictions <- pack_predictions(predictions)
+        if (outcome_type == "categorical") {
+          predictions <- pack_predictions(predictions)
+        } else if (outcome_type == "binomial") {
+          predictions <- as.numeric(predictions[, 2]) # P(Y=1|X)
+        }
       } else {
         predictions <- as.numeric(predictions)
       }

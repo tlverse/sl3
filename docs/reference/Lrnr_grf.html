@@ -29,7 +29,7 @@ conditional distribution of (Y|X=x)."><!-- mathjax --><script src="https://cdnjs
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sl3</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.5</span>
       </span>
     </div>
 
@@ -44,7 +44,7 @@ conditional distribution of (Y|X=x)."><!-- mathjax --><script src="https://cdnjs
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -214,8 +214,11 @@ by all learners.</p>
 <code><a href="Lrnr_ga.html">Lrnr_ga</a></code>,
 <code><a href="Lrnr_gbm.html">Lrnr_gbm</a></code>,
 <code><a href="Lrnr_glm_fast.html">Lrnr_glm_fast</a></code>,
+<code><a href="Lrnr_glm_semiparametric.html">Lrnr_glm_semiparametric</a></code>,
 <code><a href="Lrnr_glmnet.html">Lrnr_glmnet</a></code>,
+<code><a href="Lrnr_glmtree.html">Lrnr_glmtree</a></code>,
 <code><a href="Lrnr_glm.html">Lrnr_glm</a></code>,
+<code><a href="Lrnr_grfcate.html">Lrnr_grfcate</a></code>,
 <code><a href="Lrnr_gru_keras.html">Lrnr_gru_keras</a></code>,
 <code><a href="Lrnr_gts.html">Lrnr_gts</a></code>,
 <code><a href="Lrnr_h2o_grid.html">Lrnr_h2o_grid</a></code>,
@@ -259,6 +262,24 @@ by all learners.</p>
 <code><a href="undocumented_learner.html">undocumented_learner</a></code></p></div>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># load example data</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cpp_imputed</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># create sl3 task</span></span>
+<span class="r-in"><span class="va">task</span> <span class="op">&lt;-</span> <span class="va"><a href="sl3_Task.html">sl3_Task</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span class="r-in">  <span class="va">cpp_imputed</span>,</span>
+<span class="r-in">  covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"apgar1"</span>, <span class="st">"apgar5"</span>, <span class="st">"parity"</span>, <span class="st">"gagebrth"</span>, <span class="st">"mage"</span>, <span class="st">"meducyrs"</span><span class="op">)</span>,</span>
+<span class="r-in">  outcome <span class="op">=</span> <span class="st">"haz"</span></span>
+<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># train grf learner and make predictions</span></span>
+<span class="r-in"><span class="va">lrnr_grf</span> <span class="op">&lt;-</span> <span class="va">Lrnr_grf</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>seed <span class="op">=</span> <span class="fl">123</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">lrnr_grf_fit</span> <span class="op">&lt;-</span> <span class="va">lrnr_grf</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">lrnr_grf_pred</span> <span class="op">&lt;-</span> <span class="va">lrnr_grf_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="op">)</span></span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>
@@ -271,7 +292,7 @@ by all learners.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer></div>

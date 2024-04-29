@@ -105,10 +105,12 @@ call_with_args <- function(fun, args, other_valid = list(), keep_all = FALSE,
     # subset arguments to pass
     args <- args[which(names(args) %in% all_valid)]
 
+    # don't warn on covariate param
+    invalid <- setdiff(invalid, "covariates")
     # return warnings when dropping arguments
     if (!silent & length(invalid) > 0) {
       message(sprintf(
-        "Learner called function %s with unknown args: %s. These will be dropped.\nCheck the params supported by this learner.",
+        "Learner called function %s with unknown args: %s. These will be dropped.\nCheck the params supported by this learner.\n",
         as.character(substitute(fun)), paste(invalid, collapse = ", ")
       ))
     }

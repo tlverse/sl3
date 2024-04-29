@@ -11,7 +11,7 @@ drop_offsets_chain(learner, task)
 }
 \description{
 Allows the dropping of offsets when calling the chain method. This is simply
-a modified version of the chain method found in \code{Lrnr_base}. INTERNAL
-USE ONLY.
+a modified version of the chain method found in \code{\link{Lrnr_base}}.
+INTERNAL USE ONLY.
 }
 \keyword{internal}

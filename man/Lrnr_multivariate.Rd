@@ -35,6 +35,34 @@ by all learners.
 }
 }
 
+\examples{
+library(data.table)
+
+# simulate data
+set.seed(123)
+n <- 1000
+p <- 5
+pY <- 3
+W <- matrix(rnorm(n * p), nrow = n)
+colnames(W) <- sprintf("W\%d", seq_len(p))
+Y <- matrix(rnorm(n * pY, 0, 0.2) + W[, 1], nrow = n)
+colnames(Y) <- sprintf("Y\%d", seq_len(pY))
+data <- data.table(W, Y)
+covariates <- grep("W", names(data), value = TRUE)
+outcomes <- grep("Y", names(data), value = TRUE)
+
+# make sl3 task
+task <- sl3_Task$new(data.table::copy(data),
+  covariates = covariates,
+  outcome = outcomes
+)
+
+# train multivariate learner and make predictions
+mv_learner <- make_learner(Lrnr_multivariate, make_learner(Lrnr_glm_fast))
+mv_fit <- mv_learner$train(task)
+mv_pred <- mv_fit$predict(task)
+mv_pred <- unpack_predictions(mv_pred)
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},
@@ -43,7 +71,6 @@ Other Learners:
 \code{\link{Lrnr_bartMachine}},
 \code{\link{Lrnr_base}},
 \code{\link{Lrnr_bayesglm}},
-\code{\link{Lrnr_bilstm}},
 \code{\link{Lrnr_caret}},
 \code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_cv}},
@@ -58,8 +85,11 @@ Other Learners:
 \code{\link{Lrnr_ga}},
 \code{\link{Lrnr_gbm}},
 \code{\link{Lrnr_glm_fast}},
+\code{\link{Lrnr_glm_semiparametric}},
 \code{\link{Lrnr_glmnet}},
+\code{\link{Lrnr_glmtree}},
 \code{\link{Lrnr_glm}},
+\code{\link{Lrnr_grfcate}},
 \code{\link{Lrnr_grf}},
 \code{\link{Lrnr_gru_keras}},
 \code{\link{Lrnr_gts}},

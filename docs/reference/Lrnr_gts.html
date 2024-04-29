@@ -25,7 +25,7 @@ performed via forecast.gts."><!-- mathjax --><script src="https://cdnjs.cloudfla
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sl3</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.5</span>
       </span>
     </div>
 
@@ -40,7 +40,7 @@ performed via forecast.gts."><!-- mathjax --><script src="https://cdnjs.cloudfla
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -183,8 +183,11 @@ are going to be used.</p></dd>
 <code><a href="Lrnr_ga.html">Lrnr_ga</a></code>,
 <code><a href="Lrnr_gbm.html">Lrnr_gbm</a></code>,
 <code><a href="Lrnr_glm_fast.html">Lrnr_glm_fast</a></code>,
+<code><a href="Lrnr_glm_semiparametric.html">Lrnr_glm_semiparametric</a></code>,
 <code><a href="Lrnr_glmnet.html">Lrnr_glmnet</a></code>,
+<code><a href="Lrnr_glmtree.html">Lrnr_glmtree</a></code>,
 <code><a href="Lrnr_glm.html">Lrnr_glm</a></code>,
+<code><a href="Lrnr_grfcate.html">Lrnr_grfcate</a></code>,
 <code><a href="Lrnr_grf.html">Lrnr_grf</a></code>,
 <code><a href="Lrnr_gru_keras.html">Lrnr_gru_keras</a></code>,
 <code><a href="Lrnr_h2o_grid.html">Lrnr_h2o_grid</a></code>,
@@ -228,6 +231,86 @@ are going to be used.</p></dd>
 <code><a href="undocumented_learner.html">undocumented_learner</a></code></p></div>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Example adapted from hts package manual</span></span>
+<span class="r-in"><span class="co"># The hierarchical structure looks like 2 child nodes associated with level 1,</span></span>
+<span class="r-in"><span class="co"># which are followed by 3 and 2 sub-child nodes respectively at level 2.</span></span>
+<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://pkg.earo.me/hts/" class="external-link">hts</a></span><span class="op">)</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: forecast</span>
+<span class="r-in"></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">3274</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">abc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="fl">5</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">200</span><span class="op">)</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">4</span>, nrow <span class="op">=</span> <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setattr.html" class="external-link">setnames</a></span><span class="op">(</span><span class="va">abc</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Series"</span>, <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">abc</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">abc</span><span class="op">[</span>, <span class="va">time</span> <span class="op">:=</span> <span class="va">.I</span><span class="op">]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Series_1 Series_2 Series_3 Series_4 time</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: 2.607712 4.453525 5.059647 5.674443    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2: 2.770780 4.468715 5.081054 5.686761    2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: 2.782223 4.482786 5.102684 5.707513    3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: 2.787655 4.483375 5.115142 5.739496    4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: 2.932073 4.489276 5.136250 5.748407    5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: 3.064115 4.527663 5.141674 5.789793    6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: 3.123294 4.549361 5.144565 5.794407    7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: 3.249828 4.549487 5.158862 5.799323    8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: 3.370915 4.558805 5.161763 5.799465    9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: 3.379109 4.560854 5.198417 5.838728   10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11: 3.383535 4.562303 5.199713 5.861504   11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12: 3.420078 4.562310 5.212496 5.865641   12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13: 3.425742 4.571433 5.215093 5.869555   13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14: 3.495619 4.589284 5.216852 5.909086   14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15: 3.497682 4.594580 5.217866 5.947755   15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16: 3.502086 4.617152 5.228778 5.963670   16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17: 3.507000 4.620320 5.240832 5.994254   17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18: 3.539549 4.629534 5.257752 6.012084   18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19: 3.558871 4.638255 5.304387 6.021723   19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20: 3.654411 4.656876 5.304651 6.073125   20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21: 3.691043 4.657565 5.306511 6.082792   21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22: 3.708930 4.662122 5.367066 6.118491   22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23: 3.710579 4.665984 5.381140 6.133808   23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24: 3.719483 4.696833 5.388976 6.144857   24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25: 3.734375 4.698856 5.390283 6.166144   25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26: 3.743854 4.704998 5.397072 6.198817   26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27: 3.881388 4.714980 5.458463 6.228678   27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28: 3.900640 4.735690 5.460558 6.248769   28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29: 3.908360 4.739398 5.464411 6.251769   29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30: 3.952202 4.808120 5.468979 6.289440   30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31: 3.970051 4.826650 5.496115 6.302676   31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32: 4.055186 4.831577 5.513275 6.379657   32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33: 4.096847 4.867235 5.519347 6.418440   33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34: 4.108913 4.870614 5.523854 6.418850   34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35: 4.109187 4.886651 5.525574 6.431287   35</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36: 4.138922 4.888021 5.546059 6.502432   36</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37: 4.145324 4.897311 5.548523 6.558697   37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38: 4.149141 4.898081 5.556770 6.559662   38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39: 4.179869 4.901912 5.563149 6.581637   39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40: 4.250431 4.905990 5.566242 6.612510   40</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41: 4.306163 4.920350 5.576517 6.632175   41</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42: 4.315984 4.931794 5.576623 6.674475   42</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43: 4.343608 4.935432 5.588910 6.728559   43</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44: 4.347261 4.945405 5.622140 6.796547   44</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45: 4.357179 4.965257 5.657682 6.822929   45</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46: 4.359392 4.982516 5.659091 6.955815   46</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47: 4.368390 4.990881 5.659724 7.041288   47</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48: 4.394952 5.026946 5.662659 7.406428   48</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49: 4.398161 5.031637 5.669859 7.551534   49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50: 4.412912 5.043044 5.671561 7.819792   50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Series_1 Series_2 Series_3 Series_4 time</span>
+<span class="r-in"><span class="va">grps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/rbindlist.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">horizon</span> <span class="op">&lt;-</span> <span class="fl">12</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/warning.html" class="external-link">suppressWarnings</a></span><span class="op">(</span><span class="va">abc_long</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/melt.data.table.html" class="external-link">melt</a></span><span class="op">(</span><span class="va">abc</span>, id <span class="op">=</span> <span class="st">"time"</span>, variable.name <span class="op">=</span> <span class="st">"series"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># create sl3 task (no outcome for hierarchical/grouped series)</span></span>
+<span class="r-in"><span class="va">node_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>outcome <span class="op">=</span> <span class="st">"value"</span>, time <span class="op">=</span> <span class="st">"time"</span>, id <span class="op">=</span> <span class="st">"series"</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">train_task</span> <span class="op">&lt;-</span> <span class="va"><a href="sl3_Task.html">sl3_Task</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>data <span class="op">=</span> <span class="va">abc_long</span>, nodes <span class="op">=</span> <span class="va">node_list</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span>time <span class="op">=</span> <span class="fl">51</span><span class="op">:</span><span class="fl">55</span>, series <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">abc_long</span><span class="op">$</span><span class="va">series</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">test_data</span><span class="op">)</span><span class="op">[</span>, <span class="va">value</span> <span class="op">:=</span> <span class="fl">0</span><span class="op">]</span></span>
+<span class="r-in"><span class="va">test_task</span> <span class="op">&lt;-</span> <span class="va"><a href="sl3_Task.html">sl3_Task</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>data <span class="op">=</span> <span class="va">test_data</span>, nodes <span class="op">=</span> <span class="va">node_list</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="va">gts_learner</span> <span class="op">&lt;-</span> <span class="va">Lrnr_gts</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">gts_learner_fit</span> <span class="op">&lt;-</span> <span class="va">gts_learner</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">train_task</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">gts_learner_preds</span> <span class="op">&lt;-</span> <span class="va">gts_learner_fit</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">test_task</span><span class="op">)</span></span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>
@@ -240,7 +323,7 @@ are going to be used.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer></div>

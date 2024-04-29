@@ -49,6 +49,30 @@ by all learners.
 }
 }
 
+\examples{
+set.seed(37912)
+
+# load example data
+ncomp <- 3
+data(cpp_imputed)
+covars <- c(
+  "apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
+  "sexn"
+)
+outcome <- "haz"
+
+# create sl3 task
+task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
+
+# define learners
+glm_fast <- Lrnr_glm_fast$new(intercept = FALSE)
+pca_sl3 <- Lrnr_pca$new(n_comp = ncomp, center = TRUE, scale. = TRUE)
+pcr_pipe_sl3 <- Pipeline$new(pca_sl3, glm_fast)
+
+# create stacks + train and predict
+pcr_pipe_sl3_fit <- pcr_pipe_sl3$train(task)
+pcr_pred <- pcr_pipe_sl3_fit$predict()
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},
@@ -57,7 +81,6 @@ Other Learners:
 \code{\link{Lrnr_bartMachine}},
 \code{\link{Lrnr_base}},
 \code{\link{Lrnr_bayesglm}},
-\code{\link{Lrnr_bilstm}},
 \code{\link{Lrnr_caret}},
 \code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_cv}},
@@ -72,8 +95,11 @@ Other Learners:
 \code{\link{Lrnr_ga}},
 \code{\link{Lrnr_gbm}},
 \code{\link{Lrnr_glm_fast}},
+\code{\link{Lrnr_glm_semiparametric}},
 \code{\link{Lrnr_glmnet}},
+\code{\link{Lrnr_glmtree}},
 \code{\link{Lrnr_glm}},
+\code{\link{Lrnr_grfcate}},
 \code{\link{Lrnr_grf}},
 \code{\link{Lrnr_gru_keras}},
 \code{\link{Lrnr_gts}},

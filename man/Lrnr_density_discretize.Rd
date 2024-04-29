@@ -34,6 +34,24 @@ by all learners.
 }
 }
 
+\examples{
+# load example data
+data(cpp_imputed)
+
+# create sl3 task
+task <- sl3_Task$new(
+  cpp_imputed,
+  covariates = c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs"),
+  outcome = "haz"
+)
+
+# train density discretize learner and make predictions
+lrnr_discretize <- Lrnr_density_discretize$new(
+  categorical_learner = Lrnr_glmnet$new()
+)
+lrnr_discretize_fit <- lrnr_discretize$train(task)
+lrnr_discretize_pred <- lrnr_discretize_fit$predict()
+}
 \seealso{
 Other Learners: 
 \code{\link{Custom_chain}},
@@ -42,7 +60,6 @@ Other Learners:
 \code{\link{Lrnr_bartMachine}},
 \code{\link{Lrnr_base}},
 \code{\link{Lrnr_bayesglm}},
-\code{\link{Lrnr_bilstm}},
 \code{\link{Lrnr_caret}},
 \code{\link{Lrnr_cv_selector}},
 \code{\link{Lrnr_cv}},
@@ -56,8 +73,11 @@ Other Learners:
 \code{\link{Lrnr_ga}},
 \code{\link{Lrnr_gbm}},
 \code{\link{Lrnr_glm_fast}},
+\code{\link{Lrnr_glm_semiparametric}},
 \code{\link{Lrnr_glmnet}},
+\code{\link{Lrnr_glmtree}},
 \code{\link{Lrnr_glm}},
+\code{\link{Lrnr_grfcate}},
 \code{\link{Lrnr_grf}},
 \code{\link{Lrnr_gru_keras}},
 \code{\link{Lrnr_gts}},
