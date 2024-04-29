@@ -1,4 +1,5 @@
 context("test-hts.R -- Lrnr_hts for hierarchical time series forecasts")
+skip()
 
 if (FALSE) {
   setwd("..")

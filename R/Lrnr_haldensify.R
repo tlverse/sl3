@@ -1,4 +1,4 @@
-Conditional Density Estimation with the Highly Adaptive LASSO
+#' Conditional Density Estimation with the Highly Adaptive LASSO
 #'
 #' @docType class
 #'
