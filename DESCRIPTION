@@ -72,7 +72,6 @@ Suggests:
     hal9001 (>= 0.4.0),
     h2o,
     keras,
-    kerasR,
     nloptr,
     nnls,
     randomForest,
@@ -106,5 +105,5 @@ VignetteBuilder:
     knitr,
     R.rsp
 Roxygen: list(markdown = TRUE, old_usage = TRUE, r6 = FALSE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 RdMacros: Rdpack

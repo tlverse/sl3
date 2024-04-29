@@ -44,6 +44,7 @@ test_learner <- function(learner, task, ...) {
 
 ## test caret learner with the example of Random Forest:
 op <- options(sl3.verbose = TRUE)
+options(sl3.store.args = TRUE)
 options(op)
 test_learner(Lrnr_caret, task, algorithm = "rf")
 
@@ -53,7 +54,7 @@ test_that("Lrnr_caret:RF predictions match those from RF", {
   set.seed(1530)
   fit_lrnr_caret_rf <- lrnr_caret_rf$train(task)
   prd_lrnr_caret_rf <- fit_lrnr_caret_rf$predict()
-
+  rnorm(1)
   ## fit RF using the data from the task
   set.seed(1530)
   fit_caret_rf <- caret::train(
@@ -61,7 +62,6 @@ test_that("Lrnr_caret:RF predictions match those from RF", {
     trControl = caret::trainControl(method = "cv")
   )
   prd_caret_rf <- as.numeric(predict(fit_caret_rf, newdata = task$X))
-
   ## test equivalence of prediction from Lrnr_svm and svm::svm
   expect_equal(prd_lrnr_caret_rf, prd_caret_rf)
 })

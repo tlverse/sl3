@@ -14,9 +14,14 @@ checkfast:
 revdep:
 	Rscript -e "revdepcheck::revdep_check()"
 
+test: export NOT_CRAN = "TRUE"
 test:
 	Rscript -e "devtools::test()"
 
+test_cran: export NOT_CRAN = "FALSE"
+test_cran:
+	Rscript -e "devtools::test()"
+	
 doc:
 	Rscript -e "devtools::document()"
 

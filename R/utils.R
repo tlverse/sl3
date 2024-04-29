@@ -113,7 +113,12 @@ call_with_args <- function(fun, args, other_valid = list(), keep_all = FALSE,
       ))
     }
   }
-  do.call(fun, args)
+  result = do.call(fun, args)
+  if(getOption("sl3.store.args")){
+    attr(result,"args") <- args
+  }
+  
+  return(result)
 }
 
 ################################################################################
@@ -298,6 +303,11 @@ write_learner_template <- function(file) {
 }
 
 ################################################################################
+#' function from testthat to be used to selectively disable tests on CRAN to limit testing time
+on_cran <- function(){
+  return(!rlang::is_interactive() && !isTRUE(as.logical(Sys.getenv("NOT_CRAN", "false"))))
+}
+
 
 # Miscellaneous setting that was the sole contents of a file "Untitled.R" prior
 # to commit b8cc1e5. Preserved here.

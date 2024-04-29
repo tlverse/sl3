@@ -8,7 +8,6 @@
 #'
 #' @docType class
 #' @importFrom R6 R6Class
-#' @export
 #' @keywords data
 #' @return \code{\link{Lrnr_base}} object with methods for training and prediction
 #' @format \code{\link{R6Class}} object.

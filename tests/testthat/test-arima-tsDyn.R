@@ -154,11 +154,12 @@ test_that("Lrnr_arima with external regressors", {
   )
   train_task <- training(task, fold = task$folds[[1]])
   valid_task <- validation(task, fold = task$folds[[1]])
-  valid_task_duplicate_covs <- validation(task_duplicate_covs, task$folds[[2]])
+  valid_task_duplicate_covs <- validation(task_duplicate_covs, task$folds[[1]])
 
   arima_lrnr <- Lrnr_arima$new()
   fit <- arima_lrnr$train(train_task)
   preds <- fit$predict(valid_task)
+  
   preds_newX <- fit$predict(valid_task_duplicate_covs)
 
   cv_arima_lrnr <- Lrnr_cv$new(arima_lrnr)

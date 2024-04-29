@@ -116,7 +116,7 @@ Lrnr_base <- R6Class(
         "Returning an approximated range."
       ))
       average <- try(apply(self$training_task$Y, 2, FUN = mean))
-      if (class(average) == "try-error") {
+      if (inherits(average, "try-error")) {
         average <- mean(self$training_task$Y)
         minimum <- min(self$training_task$Y)
         maximum <- max(self$training_task$Y)
@@ -301,7 +301,7 @@ Lrnr_base <- R6Class(
       if ("formula" %in% names(self$params) &&
         !is.null(self$params[["formula"]])) {
         form <- self$params$formula
-        if (class(form) != "formula") form <- as.formula(form)
+        if (!inherits(form,"formula")) form <- as.formula(form)
 
         # check response variable corresponds to outcome in task, if provided
         if (attr(terms(form), "response")) {
