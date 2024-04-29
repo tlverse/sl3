@@ -1,6 +1,5 @@
 context("test-pca.R -- Lrnr_pca for preprocessing with Pipelines")
 library(origami)
-library(dplyr)
 set.seed(37912)
 
 # data
@@ -26,20 +25,17 @@ out_pcr_fit <- pcr_pipe_sl3_fit$predict()
 pca_from_pipe <- pcr_pipe_sl3_fit$fit_object$learner_fits[[1]]$fit_object
 
 # compute PCA with GLM manually
-cpp_pca <- cpp_imputed %>%
-  dplyr::select(covars) %>%
-  stats::prcomp(x = ., center = TRUE, scale. = TRUE)
-cpp_pca_rotated <- cpp_pca$x[, seq_len(ncomp)]
+cpp_pca <- stats::prcomp(x = task$X, center = TRUE, scale. = TRUE)
+cpp_pca_rotated <- as.matrix(task$X) %*% cpp_pca$rotation[, seq_len(ncomp)]
 pcr_cpp <- glm(cpp_imputed$haz ~ -1 + cpp_pca_rotated)
-pcr_preds <- predict(pcr_cpp) %>%
-  as.numeric()
+pcr_preds <- as.numeric(predict(pcr_cpp))
 
 test_that("PCA computed by Lrnr_pca matches stats::prcomp exactly.", {
-  all.equal(pca_from_pipe, cpp_pca)
+  expect_equal(pca_from_pipe, cpp_pca)
 })
 
 test_that("Regression on PCs matches between Pipeline and manual invocation.", {
-  all.equal(out_pcr_fit, pcr_preds)
+  expect_equal(out_pcr_fit, pcr_preds)
 })
 
 test_that("Arguments are passed to prcomp correctly by Lrnr_pca", {
@@ -53,9 +49,7 @@ test_that("Arguments are passed to prcomp correctly by Lrnr_pca", {
   pca_from_pipe <- pcr_pipe_sl3_fit$fit_object$learner_fits[[1]]$fit_object
 
   # do the same thing with prcomp
-  cpp_pca <- cpp_imputed %>%
-    dplyr::select(covars) %>%
-    stats::prcomp(x = ., retx = FALSE, center = TRUE, scale. = FALSE)
+  cpp_pca <- stats::prcomp(x = task$X, retx = FALSE, center = TRUE, scale. = FALSE)
 
   expect_equal(pca_from_pipe, cpp_pca)
 })
