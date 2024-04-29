@@ -110,7 +110,7 @@ Lrnr_lightgbm <- R6Class(
 
       # add observation-level weights if detected
       if (task$has_node("weights")) {
-        try(lightgbm::setinfo(args$data, "weight", as.numeric(task$weights)),
+        try(args$data$set_field("weight", as.numeric(task$weights)),
           silent = TRUE
         )
       }
@@ -123,7 +123,7 @@ Lrnr_lightgbm <- R6Class(
         offset <- as.numeric(task$offset_transformed(link_fun))
 
         # append offset to data
-        try(lightgbm::setinfo(args$data, "init_score", offset), silent = TRUE)
+        try(args$data$set_field("init_score", offset), silent = TRUE)
       } else {
         link_fun <- NULL
       }
