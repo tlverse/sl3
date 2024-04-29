@@ -10,6 +10,8 @@
 ^\.travis\.yml$
 ^appveyor\.yml$
 ^codecov\.yml$
+testresults.txt
+
 # Files from building the Guide-to-SuperLearner.rmd vignette.
 ^SuperLearner.png$
 ^vignettes/[^/]*_cache
