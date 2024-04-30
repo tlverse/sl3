@@ -1,5 +1,7 @@
 context("test-Lrnr_bound.R -- bound predictions")
 library(origami)
+skip_on_cran()
+if (!identical(Sys.getenv("NOT_CRAN"), "true")) return()
 
 g0 <- function(W) {
   W1 <- W[, 1]

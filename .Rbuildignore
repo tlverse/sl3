@@ -11,6 +11,7 @@
 ^appveyor\.yml$
 ^codecov\.yml$
 testresults.txt
+check_log.sh
 
 # Files from building the Guide-to-SuperLearner.rmd vignette.
 ^SuperLearner.png$

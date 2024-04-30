@@ -1,4 +1,6 @@
 context("test-zzz_h2o.R -- h2o learners")
+skip_on_cran()
+if (!identical(Sys.getenv("NOT_CRAN"), "true")) return()
 
 if (FALSE) {
   setwd("..")
@@ -276,7 +278,7 @@ test_that("Lrnr_h2o_grid learner works with a grid of regularized GLMs", {
     h2o_glm_grid <- h2o_glm_grid$train(task)
   })
   h2oGLM_preds <- h2o_glm_grid$predict()
-  expect_equal(dim(h2oGLM_preds), c(task_bin$nrow,3))
+  expect_equal(dim(h2oGLM_preds), c(task$nrow,3))
 })
 
 test_that("Lrnr_h2o_grid learner works with a grid of GBMs", {
@@ -290,7 +292,7 @@ test_that("Lrnr_h2o_grid learner works with a grid of GBMs", {
   )))
   h2o_gbm_grid <- h2o_gbm_grid$train(task)
   h2ogbm_preds <- h2o_gbm_grid$predict()
-  expect_equal(dim(h2ogbm_preds), c(task_bin$nrow,3))
+  expect_equal(dim(h2ogbm_preds), c(task$nrow,3))
 })
 
 test_that("stack$predict plays nicely when Learner$predict() is a grid of predictions from several models", {
