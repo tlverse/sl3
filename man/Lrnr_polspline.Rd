@@ -33,6 +33,7 @@ details.
 }
 
 \examples{
+\dontrun{
 data(cpp_imputed)
 covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
 task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
@@ -40,6 +41,7 @@ polspline_lrnr <- Lrnr_caret$new(method = "rf")
 set.seed(693)
 polspline_lrnr_fit <- polspline_lrnr$train(task)
 polspline_lrnr_predictions <- polspline_lrnr_fit$predict()
+}
 }
 \seealso{
 Other Learners: 
@@ -70,11 +72,9 @@ Other Learners:
 \code{\link{Lrnr_grf}},
 \code{\link{Lrnr_grfcate}},
 \code{\link{Lrnr_gru_keras}},
-\code{\link{Lrnr_gts}},
 \code{\link{Lrnr_h2o_grid}},
 \code{\link{Lrnr_hal9001}},
 \code{\link{Lrnr_haldensify}},
-\code{\link{Lrnr_hts}},
 \code{\link{Lrnr_independent_binomial}},
 \code{\link{Lrnr_lightgbm}},
 \code{\link{Lrnr_lstm_keras}},

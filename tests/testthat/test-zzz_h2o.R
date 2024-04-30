@@ -36,7 +36,9 @@ task$nodes$covariates
 
 cpp_hazbin <- cpp
 cpp_hazbin[["haz_bin"]] <- rep_len(c(0L, 1L), nrow(cpp))
-task_bin <- sl3_Task$new(cpp_hazbin, covariates = covars, outcome = "haz_bin")
+suppressWarnings({
+  task_bin <- sl3_Task$new(cpp_hazbin, covariates = covars, outcome = "haz_bin")
+})
 
 test_learner <- function(learner, task, ...) {
   learner_obj <- learner$new(...)

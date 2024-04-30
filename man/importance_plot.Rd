@@ -21,6 +21,7 @@ A \code{\link[ggplot2]{ggplot}} of variable importance.
 Variable Importance Plot
 }
 \examples{
+\dontrun{
 # define ML task
 data(cpp_imputed)
 covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
@@ -39,6 +40,7 @@ sl <- Lrnr_sl$new(lrnr_stack)
 sl_fit <- sl$train(task)
 importance_result <- importance(sl_fit)
 importance_plot(importance_result)
+}
 }
 \keyword{importance}
 \keyword{variable}

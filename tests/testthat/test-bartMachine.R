@@ -1,5 +1,6 @@
 context("test-bartMachine.R -- Lrnr_bartMachine")
 skip_on_cran()
+if (!identical(Sys.getenv("NOT_CRAN"), "true")) return()
 
 library(bartMachine)
 data(cpp_imputed)

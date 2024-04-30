@@ -5,13 +5,13 @@ site:
 	Rscript -e "rmarkdown::render('README.Rmd', output_file = 'README.md')"
 	Rscript -e "pkgdown::build_site()"
 
-check: export NOT_CRAN = "TRUE"
+check: export NOT_CRAN = "true"
 check:
-	Rscript -e "devtools::check()"
+	Rscript -e "devtools::check(env_vars = c(NOT_CRAN = 'true'))"
 
-check_cran: export NOT_CRAN = "FALSE"
+check_cran: export NOT_CRAN = "false"
 check_cran:
-	Rscript -e "devtools::check()"
+	Rscript -e "devtools::check(env_vars = c(NOT_CRAN = 'false'))"
 	
 checkfast:
 	Rscript -e "devtools::check(build_args = '--no-build-vignettes')"
@@ -19,11 +19,11 @@ checkfast:
 revdep:
 	Rscript -e "revdepcheck::revdep_check()"
 
-test: export NOT_CRAN = "TRUE"
+test: export NOT_CRAN = "true"
 test:
 	Rscript -e "devtools::test()"
 
-test_cran: export NOT_CRAN = "FALSE"
+test_cran: export NOT_CRAN = "false"
 test_cran:
 	Rscript -e "devtools::test()"
 	

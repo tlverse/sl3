@@ -33,6 +33,7 @@
 #'        details.
 #'
 #' @examples
+#' \dontrun{
 #' data(cpp_imputed)
 #' covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
 #' task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
@@ -40,6 +41,7 @@
 #' set.seed(693)
 #' polspline_lrnr_fit <- polspline_lrnr$train(task)
 #' polspline_lrnr_predictions <- polspline_lrnr_fit$predict()
+#' }
 Lrnr_polspline <- R6Class(
   classname = "Lrnr_polspline", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,

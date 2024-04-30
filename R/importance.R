@@ -63,6 +63,7 @@ utils::globalVariables(c("score"))
 #'  will be added as additional single-covariate groups.
 #'
 #' @examples
+#' \dontrun{
 #' # define ML task
 #' data(cpp_imputed)
 #' covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
@@ -90,6 +91,7 @@ utils::globalVariables(c("score"))
 #' )
 #' importance_result_groups <- importance(sl_fit, covariate_groups = groups)
 #' importance_result_groups
+#' }
 importance <- function(fit, eval_fun = NULL,
                        fold_number = "validation",
                        type = c("remove", "permute"),
@@ -264,6 +266,7 @@ importance <- function(fit, eval_fun = NULL,
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # define ML task
 #' data(cpp_imputed)
 #' covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
@@ -282,6 +285,7 @@ importance <- function(fit, eval_fun = NULL,
 #' sl_fit <- sl$train(task)
 #' importance_result <- importance(sl_fit)
 #' importance_plot(importance_result)
+#' }
 importance_plot <- function(x, nvar = min(30, nrow(x))) {
   # get the importance metric
   xlab <- colnames(x)[2]

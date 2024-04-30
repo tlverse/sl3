@@ -61,6 +61,7 @@
 #'      \code{params} like \code{formula}.
 #'
 #' @examples
+#' \dontrun{
 #' data(cpp_imputed)
 #' covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
 #' task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
@@ -68,6 +69,7 @@
 #' set.seed(693)
 #' autotuned_RF_fit <- autotuned_RF_lrnr$train(task)
 #' autotuned_RF_predictions <- autotuned_RF_fit$predict()
+#' }
 Lrnr_caret <- R6Class(
   classname = "Lrnr_caret",
   inherit = Lrnr_base,

@@ -27,13 +27,9 @@
 #' covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
 #' task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
 #'
-#' hal_lrnr <- Lrnr_hal9001$new(
-#'   max_degree = 1, num_knots = c(20, 10), smoothness_orders = 0
-#' )
 #' lasso_lrnr <- Lrnr_glmnet$new()
 #' glm_lrnr <- Lrnr_glm$new()
-#' ranger_lrnr <- Lrnr_ranger$new()
-#' lrnr_stack <- make_learner(Stack, lasso_lrnr, glm_lrnr, ranger_lrnr)
+#' lrnr_stack <- make_learner(Stack, lasso_lrnr, glm_lrnr)
 #' lrnr_bound <- Lrnr_bound$new(c(-2, 2))
 #' stack_bounded_preds <- Pipeline$new(lrnr_stack, lrnr_bound)
 #' metalrnr_discrete_MSE <- Lrnr_cv_selector$new(loss_squared_error)

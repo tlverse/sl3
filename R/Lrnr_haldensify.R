@@ -51,6 +51,7 @@
 #'       details.
 #'
 #' @examples
+#' \dontrun{
 #' library(dplyr)
 #' data(cpp_imputed)
 #' covars <- c("parity", "sexn")
@@ -75,6 +76,7 @@
 #' # fit and predict densities
 #' hal_dens_fit <- hal_dens$train(task)
 #' hal_dens_preds <- hal_dens_fit$predict()
+#' }
 Lrnr_haldensify <- R6Class(
   classname = "Lrnr_haldensify", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,

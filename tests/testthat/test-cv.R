@@ -1,5 +1,6 @@
 context("test-cv.R -- Cross-validation fold handling")
 skip_on_cran()
+if (!identical(Sys.getenv("NOT_CRAN"), "true")) return()
 
 library(origami)
 options(java.parameters = "-Xmx2500m")

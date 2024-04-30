@@ -54,6 +54,7 @@ details.
 }
 
 \examples{
+\dontrun{
 library(dplyr)
 data(cpp_imputed)
 covars <- c("parity", "sexn")
@@ -78,6 +79,7 @@ hal_dens <- Lrnr_haldensify$new(
 # fit and predict densities
 hal_dens_fit <- hal_dens$train(task)
 hal_dens_preds <- hal_dens_fit$predict()
+}
 }
 \seealso{
 Other Learners: 
@@ -108,10 +110,8 @@ Other Learners:
 \code{\link{Lrnr_grf}},
 \code{\link{Lrnr_grfcate}},
 \code{\link{Lrnr_gru_keras}},
-\code{\link{Lrnr_gts}},
 \code{\link{Lrnr_h2o_grid}},
 \code{\link{Lrnr_hal9001}},
-\code{\link{Lrnr_hts}},
 \code{\link{Lrnr_independent_binomial}},
 \code{\link{Lrnr_lightgbm}},
 \code{\link{Lrnr_lstm_keras}},

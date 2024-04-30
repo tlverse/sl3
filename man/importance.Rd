@@ -76,6 +76,7 @@ returned \code{data.table} by calling companion function
 \code{\link{importance_plot}}.
 }
 \examples{
+\dontrun{
 # define ML task
 data(cpp_imputed)
 covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
@@ -103,6 +104,7 @@ groups <- list(
 )
 importance_result_groups <- importance(sl_fit, covariate_groups = groups)
 importance_result_groups
+}
 }
 \keyword{importance}
 \keyword{variable}

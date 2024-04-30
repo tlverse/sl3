@@ -4,6 +4,8 @@ library(sl3)
 library(testthat)
 library(caret)
 skip_on_cran()
+if (!identical(Sys.getenv("NOT_CRAN"), "true")) return()
+
 # define test dataset
 data(mtcars)
 task <- sl3_Task$new(mtcars, covariates = c(

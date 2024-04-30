@@ -30,6 +30,7 @@
 #'  \insertAllCited{}
 #'
 #' @examples
+#' \dontrun{
 #' # set up ML task
 #' data(cpp_imputed)
 #' covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
@@ -39,6 +40,7 @@
 #' bartMachine_learner <- make_learner(Lrnr_bartMachine)
 #' bartMachine_fit <- bartMachine_learner$train(task)
 #' preds <- bartMachine_fit$predict()
+#' }
 Lrnr_bartMachine <- R6Class(
   classname = "Lrnr_bartMachine",
   inherit = Lrnr_base, portable = TRUE, class = TRUE,

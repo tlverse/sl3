@@ -98,10 +98,13 @@ cv_sl <- function(lrnr_sl, eval_fun) {
   )
 
   # retain the CV predictions for output
+  index <- cv_obs_preds$index
+  learner <- NULL
   preds_cols <- colnames(cv_obs_preds)[6:ncol(cv_obs_preds)]
   cv_preds <- cv_obs_preds[order(index), preds_cols, with = F]
 
   # calculate CV risk
+
   data.table::setorderv(cv_obs_preds, c("index", "fold_index"))
   dt_long <- melt(
     cv_obs_preds,

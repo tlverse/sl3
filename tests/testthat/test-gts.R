@@ -1,5 +1,7 @@
 context("test-gts.R -- Lrnr_gts for grouped time series forecasts")
 skip()
+if (!identical(Sys.getenv("NOT_CRAN"), "true")) return()
+
 if (FALSE) {
   setwd("..")
   setwd("..")

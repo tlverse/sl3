@@ -61,6 +61,7 @@ additional arguments defined in \code{\link{Lrnr_base}}, such as
 }
 
 \examples{
+\dontrun{
 data(cpp_imputed)
 covs <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs")
 task <- sl3_Task$new(cpp_imputed, covariates = covs, outcome = "haz")
@@ -68,6 +69,7 @@ autotuned_RF_lrnr <- Lrnr_caret$new(method = "rf")
 set.seed(693)
 autotuned_RF_fit <- autotuned_RF_lrnr$train(task)
 autotuned_RF_predictions <- autotuned_RF_fit$predict()
+}
 }
 \seealso{
 Other Learners: 
@@ -97,11 +99,9 @@ Other Learners:
 \code{\link{Lrnr_grf}},
 \code{\link{Lrnr_grfcate}},
 \code{\link{Lrnr_gru_keras}},
-\code{\link{Lrnr_gts}},
 \code{\link{Lrnr_h2o_grid}},
 \code{\link{Lrnr_hal9001}},
 \code{\link{Lrnr_haldensify}},
-\code{\link{Lrnr_hts}},
 \code{\link{Lrnr_independent_binomial}},
 \code{\link{Lrnr_lightgbm}},
 \code{\link{Lrnr_lstm_keras}},

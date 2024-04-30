@@ -3,16 +3,24 @@
 \name{pack_predictions}
 \alias{pack_predictions}
 \alias{unpack_predictions}
+\alias{print.packed_predictions}
+\alias{normalize_rows}
 \title{Pack multidimensional predictions into a vector (and unpack again)}
 \usage{
 pack_predictions(pred_matrix)
 
 unpack_predictions(x)
+
+\method{print}{packed_predictions}(x, ...)
+
+normalize_rows(x)
 }
 \arguments{
 \item{pred_matrix}{a matrix of prediciton values}
 
 \item{x}{a packed prediction list}
+
+\item{...}{ignored}
 }
 \description{
 Pack multidimensional predictions into a vector (and unpack again)
