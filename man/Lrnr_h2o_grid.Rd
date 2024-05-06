@@ -24,7 +24,7 @@ procedures available and any limitations, consult the documentation of the
 
 \describe{
 \item{\code{algorithm}}{An h2o ML algorithm. For a list, please see
-\url{http://docs.h2o.ai/h2o/latest-stable/h2o-docs/data-science.html#}.}
+\url{https://docs.h2o.ai/h2o/latest-stable/h2o-docs/data-science.html#}.}
 \item{\code{seed=1}}{RNG see to use when fitting.}
 \item{\code{distribution=NULL}}{Specifies the loss function for GBM, Deep
 Learning, and XGBoost.}
@@ -38,7 +38,7 @@ SD = 1.}
 covariate columns}
 \item{\code{missing_values_handling="Skip"}}{How to handle missing values.}
 \item{\code{...}}{Other arguments passed to the h2o algorithm of choice.
-See \url{http://docs.h2o.ai/h2o/latest-stable/h2o-docs/parameters.html}
+See \url{https://docs.h2o.ai/h2o/latest-stable/h2o-docs/parameters.html}
 for a list.}
 }
 }
@@ -57,6 +57,7 @@ by all learners.
 }
 
 \examples{
+\dontrun{
 library(h2o)
 suppressWarnings(h2o.init())
 set.seed(1)
@@ -80,6 +81,7 @@ h2o_glm_grid <- Lrnr_h2o_grid$new(
 )
 h2o_glm_grid_fit <- h2o_glm_grid$train(task)
 pred <- h2o_glm_grid_fit$predict()
+}
 }
 \seealso{
 Other Learners: 

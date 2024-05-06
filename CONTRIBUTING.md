@@ -62,7 +62,7 @@ Each of these steps are described in more detail below. This might feel
 overwhelming the first time you get set up, but it gets easier with practice.
 
 If you're not familiar with git or GitHub, please start by reading
-<http://r-pkgs.had.co.nz/git.html>
+<https://r-pkgs.had.co.nz/git.html>
 
 Pull requests will be evaluated against the a checklist:
 
@@ -86,7 +86,7 @@ Pull requests will be evaluated against the a checklist:
     and don't submit any others until the first one has been processed.
 
 3.  __Use `sl3` coding style__. Please follow the
-    [official ggplot2 style](http://adv-r.had.co.nz/Style.html). Maintaing
+    [official ggplot2 style](https://adv-r.had.co.nz/Style.html). Maintaing
     a consistent style across the whole code base makes it much easier to
     jump into the code. If you're modifying existing ggplot2 code that
     doesn't follow the style guide, a separate pull request to fix the

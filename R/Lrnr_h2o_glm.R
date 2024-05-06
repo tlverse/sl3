@@ -70,6 +70,7 @@ define_h2o_X <- function(task, outcome_type = NULL) {
 #' @template common_parameters
 #'
 #' @examples
+#' \dontrun{
 #' library(h2o)
 #' suppressWarnings(h2o.init())
 #'
@@ -87,6 +88,7 @@ define_h2o_X <- function(task, outcome_type = NULL) {
 #' lrnr_h2o <- Lrnr_h2o_glm$new()
 #' lrnr_h2o_fit <- lrnr_h2o$train(task)
 #' lrnr_h2o_pred <- lrnr_h2o_fit$predict()
+#' }
 Lrnr_h2o_glm <- R6Class(
   classname = "Lrnr_h2o_glm", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,

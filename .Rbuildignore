@@ -34,3 +34,4 @@ deploy.sh
 man-roxygen
 ^_pkgdown\.yml$
 ^pkgdown$
+^CRAN-SUBMISSION$

@@ -62,6 +62,7 @@ by all learners.
 }
 
 \examples{
+\dontrun{
 library(h2o)
 suppressWarnings(h2o.init())
 
@@ -79,6 +80,7 @@ task <- sl3_Task$new(
 lrnr_h2o <- Lrnr_h2o_glm$new()
 lrnr_h2o_fit <- lrnr_h2o$train(task)
 lrnr_h2o_pred <- lrnr_h2o_fit$predict()
+}
 }
 \seealso{
 Other Learners: 

@@ -32,7 +32,7 @@
 #'      lambda. Options documented in \code{\link[glmnet]{cv.glmnet}}.
 #'  - \code{nfolds = 10}: Number of k-fold/V-fold cross-validation folds for
 #'      \code{cv.glmnet} to consider when selecting the optimal \code{lambda}
-#'      with cross-validation. Smallest {nfolds} value allowed by \code{glmnet}
+#'      with cross-validation. Smallest \code{nfolds} value allowed by \code{glmnet}
 #'      is 3. For further details, consult the documentation of
 #'      \code{\link[glmnet]{cv.glmnet}}.
 #'  - \code{alpha = 1}: The elastic net parameter: \code{alpha = 0} is Ridge
