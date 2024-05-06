@@ -36,7 +36,7 @@ test_that("Lrnr_screener_coefs selected at least min_screen no. covs", {
     min_screen = 2
   )
   glm_screener_fit <- glm_screener$train(task)
-  expect_gte(length(glm_screener_fit$fit_object$selected),2)
+  expect_gte(length(glm_screener_fit$fit_object$selected), 2)
 })
 
 

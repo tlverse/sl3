@@ -79,7 +79,6 @@ Lrnr_arima <- R6Class(
 
       # option to include external regressors
       if (length(task$X) > 0) {
-
         # determines if the matrix is full rank & then identifies the sets of
         # columns that are involved in the dependencies.
         rm_idx <- caret::findLinearCombos(task$X)$remove
@@ -89,7 +88,7 @@ Lrnr_arima <- R6Class(
           message(paste(c(
             "ARIMA requires matrix of external regressors to not be rank ",
             "deficient. The following covariates were removed to counter the ",
-            "linear combinations:", names(task$X)[rm_idx],"\n"
+            "linear combinations:", names(task$X)[rm_idx], "\n"
           ), collapse = " "))
         } else {
           params$xreg <- as.matrix(task$X)

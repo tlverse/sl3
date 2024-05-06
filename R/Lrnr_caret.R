@@ -100,7 +100,6 @@ Lrnr_caret <- R6Class(
   private = list(
     .properties = c("continuous", "binomial", "categorical", "wrapper"),
     .train = function(task) {
-
       # load args
       args <- self$params
 

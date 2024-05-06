@@ -112,7 +112,6 @@ Lrnr_ts_weights <- R6Class(
   private = list(
     .properties = c("wrapper", "cv"),
     .train = function(task) {
-
       # ensure task contains node for time
       if (!("time" %in% names(task$nodes))) {
         stop("Task must contain node for times.")

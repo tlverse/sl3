@@ -121,34 +121,38 @@ Lrnr_gam <- R6Class(
           }
         })
         if (length(X_continuous) > 0 & length(X_discrete) > 0) {
-          args$formula <- as.formula(paste(c(
-            colnames(Y),
-            paste(c(
-              X_smooth,
-              colnames(X_discrete)
+          args$formula <- as.formula(paste(
+            c(
+              colnames(Y),
+              paste(
+                c(
+                  X_smooth,
+                  colnames(X_discrete)
+                ),
+                collapse = " + "
+              )
             ),
-            collapse = " + "
-            )
-          ),
-          collapse = " ~ "
+            collapse = " ~ "
           ))
         } else if (length(X_continuous) > 0) {
-          args$formula <- as.formula(paste(c(
-            colnames(Y),
-            paste(X_smooth,
-              collapse = " + "
-            )
-          ),
-          collapse = " ~ "
+          args$formula <- as.formula(paste(
+            c(
+              colnames(Y),
+              paste(X_smooth,
+                collapse = " + "
+              )
+            ),
+            collapse = " ~ "
           ))
         } else if (length(X_discrete) > 0) {
-          args$formula <- as.formula(paste(c(
-            colnames(Y),
-            paste(colnames(X_discrete),
-              collapse = " + "
-            )
-          ),
-          collapse = " ~ "
+          args$formula <- as.formula(paste(
+            c(
+              colnames(Y),
+              paste(colnames(X_discrete),
+                collapse = " + "
+              )
+            ),
+            collapse = " ~ "
           ))
         } else {
           stop("Specified covariates types are unsupported in Lrnr_gam.")

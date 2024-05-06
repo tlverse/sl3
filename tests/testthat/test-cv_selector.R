@@ -69,4 +69,3 @@ test_that("Lrnr_cv_selector errors if folds missing for risk eval funs", {
   )
   expect_error(dSL$train(binary_task))
 })
-

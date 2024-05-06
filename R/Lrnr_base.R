@@ -56,12 +56,11 @@ Lrnr_base <- R6Class(
         if (length(delta_idx) > 0) {
           delta_missing <- task_covs_missing[delta_idx]
           task_covs_missing <- task_covs_missing[-delta_idx]
-          
+
           delta_missing_data <- matrix(0, nrow(task$data), length(delta_idx))
           colnames(delta_missing_data) <- delta_missing
           cols <- task$add_columns(data.table(delta_missing_data))
-          
-        } else{
+        } else {
           cols <- task$column_names
         }
 
@@ -76,8 +75,8 @@ Lrnr_base <- R6Class(
         }
 
         return(task$next_in_chain(
-            covariates = learner_covs,
-            column_names = cols
+          covariates = learner_covs,
+          column_names = cols
         ))
       } else {
         return(task)
@@ -123,7 +122,6 @@ Lrnr_base <- R6Class(
       return(range)
     },
     base_train = function(task, trained_sublearners = NULL) {
-
       # trains learner to data
       assert_that(is(task, "sl3_Task"))
 
@@ -257,7 +255,6 @@ Lrnr_base <- R6Class(
       return(new_self)
     },
     retrain = function(new_task, trained_sublearners = NULL) {
-
       # retrains fitted learner on a new task
       assert_that(is(new_task, "sl3_Task"))
       stopifnot(self$is_trained)
@@ -289,7 +286,7 @@ Lrnr_base <- R6Class(
       if ("formula" %in% names(self$params) &&
         !is.null(self$params[["formula"]])) {
         form <- self$params$formula
-        if (!inherits(form,"formula")) form <- as.formula(form)
+        if (!inherits(form, "formula")) form <- as.formula(form)
 
         ### check response variable corresponds to outcome in task, if provided
         if (attr(terms(form, data = task$data), "response")) {

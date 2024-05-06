@@ -1,6 +1,8 @@
 context("test-zzz_h2o.R -- h2o learners")
 skip_on_cran()
-if (!identical(Sys.getenv("NOT_CRAN"), "true")) return()
+if (!identical(Sys.getenv("NOT_CRAN"), "true")) {
+  return()
+}
 
 if (FALSE) {
   setwd("..")
@@ -52,16 +54,16 @@ test_learner <- function(learner, task, ...) {
   suppressWarnings({
     train_preds <- fit_obj$predict()
   })
-  
+
   test_that("Learner can generate training set predictions", expect_equal(
     length(train_preds[[1]]),
     nrow(task$X)
   ))
-  
+
   suppressWarnings({
     holdout_preds <- fit_obj$predict(task2)
   })
-  
+
   test_that("Learner can generate holdout set predictions", expect_equal(
     train_preds,
     holdout_preds
@@ -240,7 +242,7 @@ test_that("Lrnr_h2o_glm works with regularized regression and internal CV for la
     h2oGLM_fit <- h2o_glm$train(task_bin)
   })
   preds_1 <- h2oGLM_fit$predict()
-  
+
   expect_equal(length(preds_1$p1), task_bin$nrow)
   # print(h2oGLM_fit)
 })
@@ -278,7 +280,7 @@ test_that("Lrnr_h2o_grid learner works with a grid of regularized GLMs", {
     h2o_glm_grid <- h2o_glm_grid$train(task)
   })
   h2oGLM_preds <- h2o_glm_grid$predict()
-  expect_equal(dim(h2oGLM_preds), c(task$nrow,3))
+  expect_equal(dim(h2oGLM_preds), c(task$nrow, 3))
 })
 
 test_that("Lrnr_h2o_grid learner works with a grid of GBMs", {
@@ -292,7 +294,7 @@ test_that("Lrnr_h2o_grid learner works with a grid of GBMs", {
   )))
   h2o_gbm_grid <- h2o_gbm_grid$train(task)
   h2ogbm_preds <- h2o_gbm_grid$predict()
-  expect_equal(dim(h2ogbm_preds), c(task$nrow,3))
+  expect_equal(dim(h2ogbm_preds), c(task$nrow, 3))
 })
 
 test_that("stack$predict plays nicely when Learner$predict() is a grid of predictions from several models", {
@@ -336,10 +338,10 @@ test_that("check Lrnr_h2o_mutator returns matrices of mutated predictors", {
     algorithm = "pca", k = 4,
     impute_missing = TRUE
   )
-  
-  
+
+
   pca_fit <- pca_lrnr$train(task)
-  
+
   suppressWarnings({
     preds <- pca_fit$predict()
   })

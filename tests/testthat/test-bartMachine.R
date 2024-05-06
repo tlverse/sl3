@@ -1,6 +1,8 @@
 context("test-bartMachine.R -- Lrnr_bartMachine")
 skip_on_cran()
-if (!identical(Sys.getenv("NOT_CRAN"), "true")) return()
+if (!identical(Sys.getenv("NOT_CRAN"), "true")) {
+  return()
+}
 
 library(bartMachine)
 data(cpp_imputed)
@@ -42,4 +44,3 @@ test_that("Lrnr_bartMachine does not fail when cross-validated", {
 
   expect_equal(length(preds_cv), task$nrow)
 })
-

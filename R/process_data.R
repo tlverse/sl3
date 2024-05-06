@@ -57,28 +57,27 @@
 #' @export
 process_data <- function(data, nodes, column_names, flag = TRUE,
                          drop_missing_outcome = FALSE) {
-  
   # force a copy so we can mutate data in place w/o distrupting a user's data
   if (inherits(data, "data.table")) {
     data <- data.table::copy(data)
   } else {
     data <- as.data.table(data)
   }
-  
+
   all_nodes <- unlist(nodes)
-  
-  
+
+
   if (length(all_nodes) == 0) {
     return(list(data = data, nodes = nodes, column_names = column_names))
   }
   node_columns <- unlist(column_names[all_nodes])
   covariates_columns <- unlist(column_names[nodes$covariates])
   outcome_columns <- unlist(column_names[nodes$outcome])
-  
+
   factorized <- FALSE
   dropped <- FALSE
   imputed <- FALSE
-  
+
   # process characters
   is_character <- which(data[, sapply(.SD, is.character), .SDcols = node_columns])
   char_cols <- node_columns[is_character]
@@ -88,23 +87,23 @@ process_data <- function(data, nodes, column_names, flag = TRUE,
       "Character variables found: %s;\nConverting these to factors",
       paste0(char_vars, collapse = ", ")
     ))
-    
+
     # convert data
     for (char_col in char_cols) {
       set(data, , char_col, as.factor(unlist(data[, char_col, with = FALSE])))
     }
     factorized <- TRUE
   }
-  
+
   # process missing
   has_missing <- data[, sapply(.SD, function(x) any(is.na(x))), .SDcols = node_columns]
   miss_cols <- node_columns[has_missing]
   miss_vars <- all_nodes[has_missing]
-  
+
   missing_Y <- any(nodes$outcome %in% miss_vars)
   missing_covar_cols <- intersect(miss_cols, covariates_columns)
   missing_covar_vars <- intersect(miss_vars, nodes$covariates)
-  
+
   if (length(miss_cols) > 0) {
     if (missing_Y && drop_missing_outcome) {
       if (flag) {
@@ -113,7 +112,7 @@ process_data <- function(data, nodes, column_names, flag = TRUE,
       keep_rows <- stats::complete.cases(data[, outcome_columns, with = FALSE])
       data <- data[keep_rows, ]
     }
-    
+
     if (length(missing_covar_cols) > 0) {
       warning(sprintf(
         "Imputing missing values and adding missingness indicators for the following covariates with missing values: %s. See documentation of the process_data function for details.",
@@ -121,14 +120,14 @@ process_data <- function(data, nodes, column_names, flag = TRUE,
       ))
       # make indicators and add to data
       missing_indicators <- data[, lapply(.SD, function(x) as.numeric(!is.na(x))),
-                                 .SDcols = missing_covar_cols
+        .SDcols = missing_covar_cols
       ]
-      
+
       missing_indicator_cols <- sprintf("delta_%s", missing_covar_cols)
       missing_indicator_vars <- sprintf("delta_%s", missing_covar_vars)
       setnames(missing_indicators, missing_indicator_cols)
       set(data, , missing_indicator_cols, missing_indicators)
-      
+
       # add inidicators to column map and covariate list
       column_names[missing_indicator_vars] <- missing_indicator_cols
       nodes$covariates <- c(nodes$covariates, missing_indicator_vars)
@@ -136,11 +135,11 @@ process_data <- function(data, nodes, column_names, flag = TRUE,
     # impute covariates
     data_missing_covars <- data[, missing_covar_cols, with = FALSE]
     imputed <- impute(data.frame(data_missing_covars))
-    
+
     # update data
     set(data, , missing_covar_cols, imputed)
   }
-  
+
   na_Y <- (!is.null(nodes$outcome) && any(is.na(data[, outcome_columns, with = F])))
   if (na_Y && flag) {
     warning("Missing outcome data detected. This is okay for prediction, but will likely break training. \n You can drop observations with missing outcomes by setting drop_missing_outcome=TRUE in make_sl3_Task.")
@@ -148,40 +147,41 @@ process_data <- function(data, nodes, column_names, flag = TRUE,
   list(data = data, nodes = nodes, column_names = column_names)
 }
 
-#' Impute missing values with the median/mode 
+#' Impute missing values with the median/mode
 #' based on imputeMissings R package (removed from CRAN)
 #'
-#' Character vectors and factors are imputed with the mode. 
+#' Character vectors and factors are imputed with the mode.
 #' Numeric and integer vectors are imputed with median.
-#' 
+#'
 #' @param data A data frame with dummies or numeric variables.
-#' 
+#'
 #' @keywords internal
-impute <- function(data){
-  compute <- function (data){
+impute <- function(data) {
+  compute <- function(data) {
     Mode <- function(x) {
       xtab <- table(x)
       xmode <- names(which(xtab == max(xtab)))
       return(xmode[1])
     }
     values <- sapply(data, function(x) {
-      if (class(x) %in% c("character", "factor"))
+      if (class(x) %in% c("character", "factor")) {
         Mode(x)
-      else if (class(x) %in% c("numeric", "integer"))
+      } else if (class(x) %in% c("numeric", "integer")) {
         median(x, na.rm = TRUE)
+      }
     }, simplify = FALSE)
     values
   }
   object <- compute(data)
-  if (!identical(colnames(data), names(object))){
-    stop('Variable names and variable positions need to be identical in compute and impute')
+  if (!identical(colnames(data), names(object))) {
+    stop("Variable names and variable positions need to be identical in compute and impute")
   }
   data <- data.frame(sapply(1:ncol(data), function(i) {
-    fact <- is.factor(data[,i])
-    if (fact) data[,i] <- as.character(data[,i])
-    data[is.na(data[,i]),i] <- object[[i]]
-    if (fact) data[,i] <- as.factor(data[,i])
-    return(data[,i,drop=FALSE])
+    fact <- is.factor(data[, i])
+    if (fact) data[, i] <- as.character(data[, i])
+    data[is.na(data[, i]), i] <- object[[i]]
+    if (fact) data[, i] <- as.factor(data[, i])
+    return(data[, i, drop = FALSE])
   }, simplify = FALSE))
   data
 }

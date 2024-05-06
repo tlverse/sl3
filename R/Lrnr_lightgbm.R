@@ -63,7 +63,7 @@ Lrnr_lightgbm <- R6Class(
   classname = "Lrnr_lightgbm", inherit = Lrnr_base,
   portable = TRUE, class = TRUE,
   public = list(
-    initialize = function(num_threads = 1L, verbose  = -1L, ...) {
+    initialize = function(num_threads = 1L, verbose = -1L, ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     },
@@ -137,7 +137,7 @@ Lrnr_lightgbm <- R6Class(
 
       args$params <- list(num_threads = args$num_threads)
       args$num_threads <- NULL
-      
+
       # specify objective if it's NULL for fitting lightgbm
       if (is.null(args$obj)) {
         if (outcome_type$type == "continuous") {
@@ -161,8 +161,6 @@ Lrnr_lightgbm <- R6Class(
           args$eval <- "multi_error"
           args$params$num_class <- as.integer(length(outcome_type$levels))
         }
-        
-
       }
 
       fit_object <- call_with_args(lightgbm::lgb.train, args,

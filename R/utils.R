@@ -91,7 +91,6 @@ keep_only_fun_args <- function(Args, fun) {
 #' @keywords internal
 call_with_args <- function(fun, args, other_valid = list(), keep_all = FALSE,
                            silent = FALSE, ignore = c()) {
-
   # drop ignore args
   args <- args[!(names(args) %in% ignore)]
   if (!keep_all) {
@@ -115,11 +114,11 @@ call_with_args <- function(fun, args, other_valid = list(), keep_all = FALSE,
       ))
     }
   }
-  result = do.call(fun, args)
-  if(getOption("sl3.store.args")){
-    attr(result,"args") <- args
+  result <- do.call(fun, args)
+  if (getOption("sl3.store.args")) {
+    attr(result, "args") <- args
   }
-  
+
   return(result)
 }
 

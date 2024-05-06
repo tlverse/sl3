@@ -118,7 +118,6 @@ Lrnr_screener_correlation <- R6Class(
 )
 
 check_correlation_screener_args <- function(type, num, thresh, min) {
-
   # if type is specified
   if (length(type) == 1) {
     if (type == "rank" && is.null(num)) {

@@ -1,6 +1,8 @@
 context("test-cv.R -- Cross-validation fold handling")
 skip_on_cran()
-if (!identical(Sys.getenv("NOT_CRAN"), "true")) return()
+if (!identical(Sys.getenv("NOT_CRAN"), "true")) {
+  return()
+}
 
 library(origami)
 options(java.parameters = "-Xmx2500m")
@@ -90,23 +92,25 @@ test_that("GLM is perfect when outcome = covariate", {
 test_loocv_learner <- function(learner, loocv_task, ...) {
   learner_obj <- make_learner(learner, ...)
   # print(sprintf("Learner %s", learner_obj$name))
-  
+
   cv_learner <- Lrnr_cv$new(learner_obj, full_fit = TRUE)
-  
+
   # learner specific arguments to reduce output
-  if(inherits(learner_obj, "Lrnr_glmnet")){
-    learner_obj$.__enclos_env__$private$.params$grouped = FALSE
-  } else if(inherits(learner_obj, "Lrnr_ga")){
-    learner_obj$.__enclos_env__$private$.params$monitor = FALSE
-  } else if(inherits(learner_obj, "Lrnr_nnet")){
-    learner_obj$.__enclos_env__$private$.params$trace = FALSE
-  } else if(inherits(learner_obj, "Lrnr_xgboost")){
-    learner_obj$.__enclos_env__$private$.params$verbose = 0
-    learner_obj$.__enclos_env__$private$.params$print_every_n = 0
+  if (inherits(learner_obj, "Lrnr_glmnet")) {
+    learner_obj$.__enclos_env__$private$.params$grouped <- FALSE
+  } else if (inherits(learner_obj, "Lrnr_ga")) {
+    learner_obj$.__enclos_env__$private$.params$monitor <- FALSE
+  } else if (inherits(learner_obj, "Lrnr_nnet")) {
+    learner_obj$.__enclos_env__$private$.params$trace <- FALSE
+  } else if (inherits(learner_obj, "Lrnr_xgboost")) {
+    learner_obj$.__enclos_env__$private$.params$verbose <- 0
+    learner_obj$.__enclos_env__$private$.params$print_every_n <- 0
   }
-  #print("Testing training")
+  # print("Testing training")
   # test learner training
-  fit_obj <- suppressMessages({cv_learner$train(loocv_task)})
+  fit_obj <- suppressMessages({
+    cv_learner$train(loocv_task)
+  })
   test_that(sprintf("Learner %s can be trained on data", learner_obj$name), expect_true(fit_obj$is_trained))
 
   # test learner prediction
@@ -168,6 +172,6 @@ if (Sys.info()["sysname"] == "Windows") {
 }
 
 # test all relevant learners
-learners <- learners[!(learners %in% c("Lrnr_bartMachine","Lrnr_grfcate"))]
+learners <- learners[!(learners %in% c("Lrnr_bartMachine", "Lrnr_grfcate"))]
 lapply(learners, test_loocv_learner, loocv_task)
 test_loocv_learner("Lrnr_grfcate", loocv_task, A = "apgar1")

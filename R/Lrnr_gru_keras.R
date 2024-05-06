@@ -103,7 +103,6 @@ Lrnr_gru_keras <- R6Class(
   private = list(
     .properties = c("timeseries", "continuous", "binomial", "categorical"),
     .train = function(task) {
-
       # set verbosity
       verbose <- getOption("keras.fit_verbose")
       if (is.null(verbose)) {

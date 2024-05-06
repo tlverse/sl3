@@ -4,8 +4,10 @@ library(SuperLearner)
 library(data.table)
 
 data(cpp_imputed)
-covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
-            "sexn")
+covars <- c(
+  "apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
+  "sexn"
+)
 outcome <- "haz"
 task <- sl3_Task$new(cpp_imputed, covariates = covars, outcome = outcome)
 

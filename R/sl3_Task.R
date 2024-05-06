@@ -34,7 +34,6 @@ sl3_Task <- R6Class(
                           time = NULL, nodes = NULL, column_names = NULL,
                           row_index = NULL, folds = NULL, flag = TRUE,
                           drop_missing_outcome = FALSE) {
-
       # generate node list from other arguments if not explicitly specified
       if (is.null(nodes)) {
         nodes <- list(

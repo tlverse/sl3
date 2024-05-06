@@ -50,17 +50,18 @@ test_that("Lrnr_haldensify produces predictions identical to haldensify", {
 
   set.seed(67391)
   suppressWarnings({
-  haldensify_fit <- haldensify::haldensify(
-    A = as.numeric(task$Y),
-    W = as.matrix(task$X),
-    grid_type = "equal_range",
-    n_bins = c(3, 5),
-    lambda_seq = exp(seq(-1, -13,
-      length = 100
-    )),
-    max_degree = 6,
-    smoothness_orders = 0
-  )})
+    haldensify_fit <- haldensify::haldensify(
+      A = as.numeric(task$Y),
+      W = as.matrix(task$X),
+      grid_type = "equal_range",
+      n_bins = c(3, 5),
+      lambda_seq = exp(seq(-1, -13,
+        length = 100
+      )),
+      max_degree = 6,
+      smoothness_orders = 0
+    )
+  })
   haldensify_preds <- predict(haldensify_fit,
     new_A = as.numeric(task$Y),
     new_W = as.matrix(task$X)

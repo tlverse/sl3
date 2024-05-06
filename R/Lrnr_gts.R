@@ -122,11 +122,11 @@
 #'       args <- self$params
 #'       # get horizon based on training and testing tasks
 #'       args$h <- ts_get_pred_horizon(self$training_task, task)
-#' 
+#'
 #'       # get predictions for each time series
 #'       args$object <- private$.fit_object
 #'       gts_forecasts <- call_with_args(forecast.gts, args, silent = TRUE)$bts
-#' 
+#'
 #'       # reformat predictions to match input task
 #'       times <- max(self$training_task$time) + seq_len(args$h)
 #'       gts_dt <-

@@ -49,8 +49,10 @@ library(sl3)
 data(cpp_imputed)
 
 # here are the covariates we are interested in and, of course, the outcome
-covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
-            "sexn")
+covars <- c(
+  "apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
+  "sexn"
+)
 outcome <- "haz"
 ```
 
@@ -90,8 +92,10 @@ machine learning problem. We can see an example of that here, using the `cpp`
 dataset described above:
 
 ```{r sl3-task-create}
-task <- make_sl3_Task(data = cpp_imputed, covariates = covars,
-                      outcome = outcome, outcome_type="continuous")
+task <- make_sl3_Task(
+  data = cpp_imputed, covariates = covars,
+  outcome = outcome, outcome_type = "continuous"
+)
 ```
 
 We use the `make_sl3_Task` method to create a new `sl3_Task`, called `task`.
@@ -281,7 +285,7 @@ We can visualize the pipeline we defined above:
 
 ```{r sl3-viz-pipeline, echo=FALSE}
 dt <- delayed_learner_train(sg_pipeline, task)
-plot(dt, color=FALSE, height="300px")
+plot(dt, color = FALSE, height = "300px")
 ```
 
 ### Stacks
@@ -309,7 +313,7 @@ We can visualize the stack:
 
 ```{r sl3-viz-stack, echo=FALSE}
 dt <- delayed_learner_train(stack, task)
-plot(dt, color=FALSE, height="500px")
+plot(dt, color = FALSE, height = "500px")
 ```
 
 We see one "branch" for each learner in the stack.
@@ -380,8 +384,10 @@ learner. For simplicity, we will use the same set of learners and meta-learning
 algorithm as we did before:
 
 ```{r sl3-Lrnr_sl}
-sl <- Lrnr_sl$new(learners = stack,
-                  metalearner = metalearner)
+sl <- Lrnr_sl$new(
+  learners = stack,
+  metalearner = metalearner
+)
 sl_fit <- sl$train(task)
 lrnr_sl_preds <- sl_fit$predict()
 head(lrnr_sl_preds)
@@ -403,8 +409,10 @@ inter-dependent nature. Consider a Super Learner with three learners:
 ```{r sl3-delayed-sl}
 lrnr_rf <- make_learner(Lrnr_randomForest)
 lrnr_glmnet <- make_learner(Lrnr_glmnet)
-sl <- Lrnr_sl$new(learners = list(lrnr_glm, lrnr_rf, lrnr_glmnet),
-                  metalearner = metalearner)
+sl <- Lrnr_sl$new(
+  learners = list(lrnr_glm, lrnr_rf, lrnr_glmnet),
+  metalearner = metalearner
+)
 ```
 
 We can plot the network of tasks required to train this Super Learner:

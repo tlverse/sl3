@@ -39,7 +39,6 @@ test_that("PCA computed by Lrnr_pca matches stats::prcomp exactly.", {
 
 test_that("Regression on PCs matches between Pipeline and manual invocation.", {
   expect_equal(out_pcr_fit, pcr_preds)
-
 })
 
 test_that("Arguments are passed to prcomp correctly by Lrnr_pca", {

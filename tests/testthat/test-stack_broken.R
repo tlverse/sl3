@@ -64,10 +64,14 @@ test_that("Lrnr_cv on stack drops all learners that error on any fold", {
 })
 
 test_that("Lrnr_sl propagates errors to full refit", {
-  broken_sl <- Lrnr_sl$new(broken_stack,
-                           glm_learner)
-  suppressWarnings({broken_sl_fit <- broken_sl$train(task)})
-  expect_equal(sum(!is.na(coef(broken_sl_fit))),2)
+  broken_sl <- Lrnr_sl$new(
+    broken_stack,
+    glm_learner
+  )
+  suppressWarnings({
+    broken_sl_fit <- broken_sl$train(task)
+  })
+  expect_equal(sum(!is.na(coef(broken_sl_fit))), 2)
 })
 
 test_that("Lrnr_sl works even when a library learner breaks only sometimes", {
@@ -77,6 +81,8 @@ test_that("Lrnr_sl works even when a library learner breaks only sometimes", {
     list(prob_broken_learner, glm_learner, glm_learner),
     glm_learner
   )
-  suppressWarnings({prob_broken_sl_fit <- prob_broken_sl$train(task)})
-  expect_equal(sum(!is.na(coef(prob_broken_sl_fit))),2)
+  suppressWarnings({
+    prob_broken_sl_fit <- prob_broken_sl$train(task)
+  })
+  expect_equal(sum(!is.na(coef(prob_broken_sl_fit))), 2)
 })

@@ -56,7 +56,9 @@ task_missing_data <- suppressWarnings(
 )
 
 lrnr_glm <- make_learner(Lrnr_glm_fast)
-suppressWarnings({glm_fit <- lrnr_glm$train(task_missing_data)})
+suppressWarnings({
+  glm_fit <- lrnr_glm$train(task_missing_data)
+})
 
 task_complete_data <- sl3_Task$new(mtcars, covariates = covs, outcome = Y)
 test_that("missingness indicators in prediction task works", {

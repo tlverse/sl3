@@ -14,18 +14,18 @@ test_learner_with_formula <- function(lrnr, task, ...) {
       lrnr,
       formula = as.formula("haz ~ apgar1:apgar5 + I(apgar1^2)"), ...
     )
-    
-    if(inherits(learner_obj, "Lrnr_glmnet")){
-      learner_obj$.__enclos_env__$private$.params$grouped = FALSE
-    } else if(inherits(learner_obj, "Lrnr_ga")){
-      learner_obj$.__enclos_env__$private$.params$monitor = FALSE
-    } else if(inherits(learner_obj, "Lrnr_nnet")){
-      learner_obj$.__enclos_env__$private$.params$trace = FALSE
-    } else if(inherits(learner_obj, "Lrnr_xgboost")){
-      learner_obj$.__enclos_env__$private$.params$verbose = 0
-      learner_obj$.__enclos_env__$private$.params$print_every_n = 0
+
+    if (inherits(learner_obj, "Lrnr_glmnet")) {
+      learner_obj$.__enclos_env__$private$.params$grouped <- FALSE
+    } else if (inherits(learner_obj, "Lrnr_ga")) {
+      learner_obj$.__enclos_env__$private$.params$monitor <- FALSE
+    } else if (inherits(learner_obj, "Lrnr_nnet")) {
+      learner_obj$.__enclos_env__$private$.params$trace <- FALSE
+    } else if (inherits(learner_obj, "Lrnr_xgboost")) {
+      learner_obj$.__enclos_env__$private$.params$verbose <- 0
+      learner_obj$.__enclos_env__$private$.params$print_every_n <- 0
     }
-    
+
     fit <- learner_obj$train(task)
     formula_cols <- c("I(apgar1^2)", "apgar1:apgar5")
     expect_true(
@@ -38,16 +38,16 @@ test_learner_with_formula <- function(lrnr, task, ...) {
       lrnr,
       formula = as.formula("~.^2"), ...
     )
-    
-    if(inherits(learner_obj, "Lrnr_glmnet")){
-      learner_obj$.__enclos_env__$private$.params$grouped = FALSE
-    } else if(inherits(learner_obj, "Lrnr_ga")){
-      learner_obj$.__enclos_env__$private$.params$monitor = FALSE
-    } else if(inherits(learner_obj, "Lrnr_nnet")){
-      learner_obj$.__enclos_env__$private$.params$trace = FALSE
-    } else if(inherits(learner_obj, "Lrnr_xgboost")){
-      learner_obj$.__enclos_env__$private$.params$verbose = 0
-      learner_obj$.__enclos_env__$private$.params$print_every_n = 0
+
+    if (inherits(learner_obj, "Lrnr_glmnet")) {
+      learner_obj$.__enclos_env__$private$.params$grouped <- FALSE
+    } else if (inherits(learner_obj, "Lrnr_ga")) {
+      learner_obj$.__enclos_env__$private$.params$monitor <- FALSE
+    } else if (inherits(learner_obj, "Lrnr_nnet")) {
+      learner_obj$.__enclos_env__$private$.params$trace <- FALSE
+    } else if (inherits(learner_obj, "Lrnr_xgboost")) {
+      learner_obj$.__enclos_env__$private$.params$verbose <- 0
+      learner_obj$.__enclos_env__$private$.params$print_every_n <- 0
     }
     fit <- learner_obj$train(task)
     formula_cols <- c(

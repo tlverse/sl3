@@ -47,18 +47,20 @@ test_that("Results of Lrnr_polspline match those of polspline::polyclass", {
   set.seed(4738)
   lrnr_polspline <- make_learner(Lrnr_polspline, silent = TRUE, cv = 5, seed = 4738)
   output <- capture.output(
-  fit <- lrnr_polspline$train(task)
+    fit <- lrnr_polspline$train(task)
   )
   preds <- fit$predict(task)
 
   # get predictions from classic implementation
-  #set.seed(4738)
-  #fit_classic <- polyclass(cov = task$X, data = task$Y, cv = 5)
-  
+  # set.seed(4738)
+  # fit_classic <- polyclass(cov = task$X, data = task$Y, cv = 5)
+
   set.seed(4738)
   output <- capture.output(
-    fit_classic <- polyclass(cov = task$X, data = task$outcome_type$format(task$Y), 
-                           cv = 5, seed = 4738, silent = TRUE)
+    fit_classic <- polyclass(
+      cov = task$X, data = task$outcome_type$format(task$Y),
+      cv = 5, seed = 4738, silent = TRUE
+    )
   )
   preds_classic <- ppolyclass(fit = fit_classic, cov = task$X)[, 2]
 

@@ -6,8 +6,12 @@ test_that("sl3 options work as expected", {
 
   sl3Options()
   sl3Options("sl3.verbose")
-  suppressMessages({expect_error(sl3Options("blahblah"))})
-  suppressMessages({expect_error(sl3Options("blahblah", 5))})
+  suppressMessages({
+    expect_error(sl3Options("blahblah"))
+  })
+  suppressMessages({
+    expect_error(sl3Options("blahblah", 5))
+  })
 
   sl3Options("sl3.verbose", TRUE)
   sl3Options("sl3.verbose")

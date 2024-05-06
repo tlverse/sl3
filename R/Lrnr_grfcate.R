@@ -84,7 +84,6 @@ Lrnr_grfcate <- R6Class(
       return(fit_object)
     },
     .predict = function(task) {
-
       # remove A from prediction data if it's present
       if (self$params$A %in% task$nodes$covariates) {
         newX <- task$X[, -self$params$A, with = FALSE]

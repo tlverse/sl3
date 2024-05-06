@@ -75,7 +75,7 @@ Lrnr_glmtree <- R6Class(
       # check formula corresponds to task, if it's specified
       if (!is.null(args$formula)) {
         form <- args$formula
-        if (!inherits(form,"formula")) form <- as.formula(form)
+        if (!inherits(form, "formula")) form <- as.formula(form)
 
         if (task$has_node("offset") && is.null(attr(terms(form), "offset"))) {
           stop("Task has an offset; this needs to be specified as another term in the user-supplied formula")

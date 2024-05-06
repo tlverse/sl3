@@ -138,7 +138,6 @@ risk <- function(pred, observed, loss = loss_squared_error, weights = NULL) {
 custom_ROCR_risk <- function(measure, cutoff = 0.5, name = NULL, ...) {
   # NOTE: arguments to factory-produced function goes undocumented
   function(pred, observed) {
-
     # remove NA, NaN, Inf values
     if (any(is.na(pred)) | any(is.nan(pred)) | any(is.infinite(pred))) {
       to_rm <- unique(which(is.na(pred) | is.nan(pred) | is.infinite(pred)))

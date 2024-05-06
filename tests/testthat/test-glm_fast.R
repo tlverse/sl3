@@ -154,7 +154,9 @@ test_that("When speedglm fails (singlular X) the fallback glm works", {
   dat_test <- cbind(dat_test, X3 = dat_test[["X1"]] + dat_test[["X2"]])
   task_all <- sl3_Task$new(dat_test, covariates = c("X1", "X2", "X3"), outcome = "Y")
   glm_lrnr <- Lrnr_glm$new()$train(task_all)
-  suppressWarnings({fglm_lrnr <- Lrnr_glm_fast$new(method = "Cholesky")$train(task_all)})
+  suppressWarnings({
+    fglm_lrnr <- Lrnr_glm_fast$new(method = "Cholesky")$train(task_all)
+  })
   glm_preds <- glm_lrnr$predict()
   fglm_preds <- fglm_lrnr$predict()
   expect_true(all.equal(as.vector(glm_preds), as.vector(fglm_preds)))

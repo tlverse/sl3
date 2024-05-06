@@ -138,7 +138,7 @@ test_that("Lrnr_lightgbm predictions match lightgbm's: categorical outcome", {
       num_threads = 1,
       verbose = -1,
       num_class = as.integer(length(unique(task$Y)))
-      ),
+    ),
     obj = "multiclass",
     eval = "multi_error",
     data = lgb_data,

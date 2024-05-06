@@ -38,7 +38,9 @@ test_that("Negative log likelihood for pooled_hazards and haldensify match", {
 
   # fit haldensify for comparison
   set.seed(74294)
-  suppressWarnings({fit_haldensify <- haldensify$train(task)})
+  suppressWarnings({
+    fit_haldensify <- haldensify$train(task)
+  })
   pred_haldensify <- fit_haldensify$predict()
 
   # compare density estimates

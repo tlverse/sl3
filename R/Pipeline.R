@@ -67,7 +67,6 @@ Pipeline <- R6Class(
       }
     },
     predict_fold = function(task, fold_number) {
-
       # prediction is just chaining until you get to the last fit, and then
       # calling predict
       learner_fits <- private$.fit_object$learner_fits

@@ -85,7 +85,7 @@ Lrnr_haldensify <- R6Class(
                           n_bins = c(3, 5),
                           lambda_seq = exp(seq(-1, -13, length = 1000L)),
                           trim_dens = NULL,
-                           ...) {
+                          ...) {
       params <- args_to_list()
       super$initialize(params = params, ...)
     }

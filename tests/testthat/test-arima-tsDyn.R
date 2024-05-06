@@ -53,7 +53,6 @@ test_that("Lrnr_arima gives expected values with arima order set", {
 })
 
 test_that("Lrnr_tsDyn with multiple different models, univariate", {
-
   # AR(m) model
   tsDyn_learner <- Lrnr_tsDyn$new(learner = "linear", m = 1)
   fit_1 <- tsDyn_learner$train(train_task)
@@ -80,7 +79,6 @@ test_that("Lrnr_tsDyn with multiple different models, univariate", {
 })
 
 test_that("Lrnr_tsDyn with multiple different models, multivariate", {
-
   # Estimate multivariate threshold VAR
 
   # Define new data:
@@ -127,7 +125,6 @@ test_that("Lrnr_tsDyn with multiple different models, multivariate", {
 })
 
 test_that("Lrnr_arima with external regressors", {
-
   # Define new data:
   data <- bsds
   data$atemp2 <- data$atemp
@@ -147,11 +144,15 @@ test_that("Lrnr_arima with external regressors", {
   valid_task_duplicate_covs <- validation(task_duplicate_covs, task$folds[[1]])
 
   arima_lrnr <- Lrnr_arima$new()
-  fit <- suppressMessages({arima_lrnr$train(train_task)})
+  fit <- suppressMessages({
+    arima_lrnr$train(train_task)
+  })
   preds <- fit$predict(valid_task)
 
   cv_arima_lrnr <- Lrnr_cv$new(arima_lrnr)
-  suppressMessages({fit_cv <- cv_arima_lrnr$train(task)})
+  suppressMessages({
+    fit_cv <- cv_arima_lrnr$train(task)
+  })
   preds_cv_newX <- fit_cv$predict(task_duplicate_covs)
 
   node_list <- list(outcome = outcome)

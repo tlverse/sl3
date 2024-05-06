@@ -116,7 +116,6 @@ Lrnr_sl <- R6Class(
   public = list(
     initialize = function(learners, metalearner = "default", cv_control = NULL,
                           keep_extra = TRUE, verbose = NULL, ...) {
-
       # kludge to deal with stack as learners
       if (inherits(learners, "Stack")) {
         learners <- learners$params$learners
@@ -144,7 +143,6 @@ Lrnr_sl <- R6Class(
       } else {
         fit_object <- private$.fit_object
         if (self$params$keep_extra) {
-
           # print cv_meta_fit only when coefficients are not shown in cv_risk
           if (is.null(names(self$coefficients))) {
             print(fit_object$cv_meta_fit)

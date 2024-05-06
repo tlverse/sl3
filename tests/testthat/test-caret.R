@@ -4,7 +4,9 @@ library(sl3)
 library(testthat)
 library(caret)
 skip_on_cran()
-if (!identical(Sys.getenv("NOT_CRAN"), "true")) return()
+if (!identical(Sys.getenv("NOT_CRAN"), "true")) {
+  return()
+}
 
 # define test dataset
 data(mtcars)
@@ -32,22 +34,24 @@ test_learner <- function(learner, task, ...) {
   task2 <- task$clone()
   # print(sprintf("Testing Learner: %s", learner_obj$name))
   # test learner training
-  suppressWarnings({fit_obj <- learner_obj$train(task)})
+  suppressWarnings({
+    fit_obj <- learner_obj$train(task)
+  })
   test_that("Learner can be trained on data", expect_true(fit_obj$is_trained))
-  
+
   # test learner prediction
   train_preds <- fit_obj$predict()
   test_that("Learner can generate training set predictions", expect_equal(
     sl3:::safe_dim(train_preds)[1],
     length(task$Y)
   ))
-  
+
   holdout_preds <- fit_obj$predict(task2)
   test_that("Learner can generate holdout set predictions", expect_equal(
     train_preds,
     holdout_preds
   ))
-  
+
   # test learner chaining
   chained_task <- fit_obj$chain()
   test_that("Chaining returns a task", expect_true(is(chained_task, "sl3_Task")))
@@ -72,7 +76,7 @@ test_that("Lrnr_caret RF match caret RF preds for continuous outcome", {
   fit_lrnr_caret_rf <- lrnr_caret_rf$train(task)
   prd_lrnr_caret_rf <- fit_lrnr_caret_rf$predict()
   rmse_sl3 <- sqrt(mean((prd_lrnr_caret_rf - task$Y)^2))
-  
+
   ## fit caret RF using the data from the task
   set.seed(1530)
   fit_caret_rf <- caret::train(
@@ -85,7 +89,7 @@ test_that("Lrnr_caret RF match caret RF preds for continuous outcome", {
   )
   prd_caret_rf <- as.numeric(predict(fit_caret_rf, newdata = task$X))
   rmse_classic <- sqrt(mean((prd_caret_rf - task$Y)^2))
-  
+
   expect_equal(rmse_sl3, rmse_classic, tolerance = 0.1)
 })
 
@@ -93,10 +97,12 @@ test_that("Lrnr_caret RF match caret RF preds for binary classification", {
   ## instantiate Lrnr_caret, train on task, and predict on task
   lrnr_caret_rf <- Lrnr_caret$new(method = "rf")
   set.seed(1530)
-  suppressWarnings({fit_lrnr_caret_rf <- lrnr_caret_rf$train(task_binaryY)})
+  suppressWarnings({
+    fit_lrnr_caret_rf <- lrnr_caret_rf$train(task_binaryY)
+  })
   prd_lrnr_caret_rf <- fit_lrnr_caret_rf$predict()
   prd_lrnr_caret_rf <- as.numeric(prd_lrnr_caret_rf > 0.5)
-  
+
   ## fit caret RF using the data from the task
   set.seed(1530)
   fit_caret_rf <- suppressWarnings(caret::train(
@@ -110,7 +116,7 @@ test_that("Lrnr_caret RF match caret RF preds for binary classification", {
     predict(fit_caret_rf, newdata = task$X, type = "prob")[, 2]
   )
   prd_caret_rf <- as.numeric(prd_caret_rf > 0.5)
-  
+
   expect_equal(sum(abs(prd_lrnr_caret_rf - prd_caret_rf)), 0, tolerance = 1)
 })
 
@@ -118,11 +124,13 @@ test_that("Lrnr_caret RF preds match caret RF preds for categorical outcome", {
   ## instantiate Lrnr_caret, train on task, and predict on task
   lrnr_caret_rf <- Lrnr_caret$new(method = "rf")
   set.seed(1530)
-  fit_lrnr_caret_rf <- suppressWarnings({lrnr_caret_rf$train(task_catY)})
+  fit_lrnr_caret_rf <- suppressWarnings({
+    lrnr_caret_rf$train(task_catY)
+  })
   prd_lrnr_caret_rf <- fit_lrnr_caret_rf$predict()
   prd_lrnr_caret_rf <- unpack_predictions(fit_lrnr_caret_rf$predict())
   prd_lrnr_caret_rf <- max.col(prd_lrnr_caret_rf)
-  
+
   ## fit caret RF using the data from the task
   set.seed(1530)
   fit_caret_rf <- suppressWarnings(caret::train(
@@ -137,6 +145,6 @@ test_that("Lrnr_caret RF preds match caret RF preds for categorical outcome", {
   )
   prd_caret_rf <- unpack_predictions(prd_caret_rf)
   prd_caret_rf <- max.col(prd_caret_rf)
-  
+
   expect_equal(prd_lrnr_caret_rf, prd_caret_rf, tolerance = 1)
 })

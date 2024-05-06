@@ -1,6 +1,8 @@
 context("test-hts.R -- Lrnr_hts for hierarchical time series forecasts")
 skip()
-if (!identical(Sys.getenv("NOT_CRAN"), "true")) return()
+if (!identical(Sys.getenv("NOT_CRAN"), "true")) {
+  return()
+}
 
 if (FALSE) {
   setwd("..")

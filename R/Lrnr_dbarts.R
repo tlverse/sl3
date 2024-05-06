@@ -146,9 +146,9 @@ Lrnr_dbarts <- R6Class(
       if (task$has_node("offset")) {
         args$offset <- task$offset
       }
-  
+
       args$serializeable <- NULL
-      
+
       fit_object <- call_with_args(
         dbarts::bart, args, names(formals(dbarts::dbartsControl))
       )
