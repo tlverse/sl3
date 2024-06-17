@@ -139,7 +139,7 @@ Lrnr_grf <- R6Class(
       # generate predictions and output
       predictions_list <- stats::predict(
         private$.fit_object,
-        new_data = data.frame(task$X),
+        newdata = data.frame(task$X),
         quantiles = quantiles_pred
       )
       predictions <- as.numeric(predictions_list$predictions)
