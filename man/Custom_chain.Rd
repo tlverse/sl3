@@ -6,7 +6,7 @@
 \alias{customize_chain}
 \title{Customize chaining for a learner}
 \format{
-\code{\link{R6Class}} object.
+\code{\link[R6]{R6Class}} object.
 }
 \usage{
 customize_chain(learner, chain_fun)
@@ -18,7 +18,7 @@ customize_chain(learner, chain_fun)
 that defines the new chain behavior.}
 }
 \value{
-\code{\link{Lrnr_base}} object with methods for training and
+\code{\link[sl3]{Lrnr_base}} object with methods for training and
 prediction
 }
 \description{
@@ -36,7 +36,7 @@ This function wraps a learner in such a way that the behavior of
 
 \describe{
 \item{\code{new(...)}}{This method is used to create a pipeline of
-learners. Arguments should be indiviual \code{Learner}s, in the order they
+learners. Arguments should be individual \code{Learner}s, in the order they
 should be applied.}
 }
 }

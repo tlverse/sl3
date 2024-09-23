@@ -21,7 +21,7 @@ includes the Super Learner algorithm [@vdl2007super], a method for performing
 stacked regressions [@breiman1996stacked], combined with covariate screening and
 cross-validation. `sl3` uses an Object Oriented Programming (OOP) approach and
 leverages
-[`R6`](https://cran.r-project.org/web/packages/R6/vignettes/Introduction.html)
+[`R6`](https://cran.r-project.org/package=R6)
 classes to define both _Tasks_ (machine learning problems) and _Learners_
 (machine learning algorithms that attempt to solve those problems) in a way that
 is both flexible and extensible. The design of `sl3` owes a lot to the
@@ -60,7 +60,7 @@ outcome <- "haz"
 ### Basics of Object Oriented Programming
 
 As mentioned above, `sl3` is designed using basic OOP principles and the
-[`R6`](https://cran.r-project.org/web/packages/R6/vignettes/Introduction.html)
+[`R6`](https://cran.r-project.org/package=R6)
 OOP framework. While we've tried to make it easy to use `sl3` without worrying
 much about OOP, it is helpful to have some intuition about how `sl3` is
 structured. In this section, we briefly outline some key concepts from OOP.
@@ -77,7 +77,7 @@ same, can share some parts of their definitions.
 Many different implementations of OOP exist, with variations in how these
 concepts are implemented and used. R has several different implementations,
 including S3, S4, reference classes, and R6. `sl3` uses the
-[`R6`](https://cran.r-project.org/web/packages/R6/vignettes/Introduction.html)
+[`R6`](https://cran.r-project.org/package=R6)
 implementation. In R6, methods and fields of a class object are accessed using
 the `$` operator. The next section explains how these concepts are used in `sl3`
 to model machine learning problems and algorithms.
@@ -113,7 +113,7 @@ range of options in order to facilitate the proper articulation of more advanced
 specifics potentially informative of the machine learning problem of interest.
 For example, we can specify the `id`, `weights`, and `offset` nodes listed
 above. These additional features are documented in the help for
-[`sl3_Task`](https://sl3.tlverse.org/reference/sl3_Task.html).
+[`sl3_Task`](https://tlverse.org/sl3/reference/sl3_Task.html).
 
 ## Learners
 
@@ -168,7 +168,7 @@ we want to generate predictions.
 The final important learner method, `chain`, will be discussed below, in the
 section on __learner composition__. As with `sl3_Task`, learners have a variety
 of fields and methods we haven't discussed here. More information on these is
-available in the help for [`Lrnr_base`](https://sl3.tlverse.org/reference/Lrnr_base.html).
+available in the help for [`Lrnr_base`](https://tlverse.org/sl3/reference/Lrnr_base.html).
 
 ### Finding Learners
 
@@ -426,10 +426,7 @@ plot(delayed_sl_fit)
 the [`future`](https://github.com/HenrikBengtsson/future) package. For more
 information on specifying `future` `plan`s for parallelization, see the
 documentation of the [`future`](https://github.com/HenrikBengtsson/future)
-package. Performance comparisons can be found in the ["SuperLearner
-Benchmarks"](https://sl3.tlverse.org/articles/SuperLearner_benchmarks.html) vignette that accompanies this
-package. This feature is currently experimental and hasn't yet been throughly
-tested on a range of parallel backends.
+package. 
 
 ---
 

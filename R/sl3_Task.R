@@ -20,7 +20,7 @@
 #'
 #' @return \code{sl3_Task} object
 #'
-#' @format \code{\link{R6Class}} object.
+#' @format \code{\link[R6]{R6Class}} object.
 #'
 #' @template sl3_Task_extra
 sl3_Task <- R6Class(

@@ -15,10 +15,10 @@ NULL
 #'
 #' @keywords data
 #'
-#' @return \code{\link{Lrnr_base}} object with methods for training and
+#' @return \code{\link[sl3]{Lrnr_base}} object with methods for training and
 #'  prediction.
 #'
-#' @format \code{\link{R6Class}} object.
+#' @format \code{\link[R6]{R6Class}} object.
 #'
 #' @field params A list of parameters needed to fully specify the learner. This
 #'  includes things like model hyperparameters.

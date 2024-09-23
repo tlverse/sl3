@@ -1,6 +1,9 @@
 library(testthat)
 context("test_sl.R -- Basic Lrnr_sl functionality")
-
+skip_on_cran()
+if (!identical(Sys.getenv("NOT_CRAN"), "true")) {
+  return()
+}
 library(sl3)
 library(origami)
 library(SuperLearner)

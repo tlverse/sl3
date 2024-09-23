@@ -5,11 +5,11 @@
 \alias{Lrnr_optim}
 \title{Optimize Metalearner according to Loss Function using optim}
 \format{
-\code{\link{R6Class}} object.
+\code{\link[R6]{R6Class}} object.
 }
 \value{
-Learner object with methods for training and prediction. See
-\code{\link{Lrnr_base}} for documentation on learners.
+\code{\link[sl3]{Lrnr_base}} object with methods for training and
+prediction
 }
 \description{
 This meta-learner provides fitting procedures for any pairing of loss

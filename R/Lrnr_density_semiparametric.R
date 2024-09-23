@@ -12,10 +12,9 @@
 #'
 #' @keywords data
 #'
-#' @return Learner object with methods for training and prediction. See
-#'  \code{\link{Lrnr_base}} for documentation on learners.
-#'
-#' @format \code{\link{R6Class}} object.
+#' @return \code{\link[sl3]{Lrnr_base}} object with methods for training and
+#'  prediction
+#' @format \code{\link[R6]{R6Class}} object.
 #'
 #' @family Learners
 #'

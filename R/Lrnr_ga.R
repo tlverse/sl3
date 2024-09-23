@@ -54,13 +54,12 @@
 #' # build relatively fast learner library (not recommended for real analysis)
 #' lasso_lrnr <- Lrnr_glmnet$new()
 #' glm_lrnr <- Lrnr_glm$new()
-#' ranger_lrnr <- Lrnr_ranger$new()
-#' lrnrs <- c(lasso_lrnr, glm_lrnr, ranger_lrnr)
-#' names(lrnrs) <- c("lasso", "glm", "ranger")
+#' lrnrs <- c(lasso_lrnr, glm_lrnr)
+#' names(lrnrs) <- c("lasso", "glm")
 #' lrnr_stack <- make_learner(Stack, lrnrs)
 #'
 #' # instantiate SL with GA metalearner
-#' ga <- Lrnr_ga$new()
+#' ga <- Lrnr_ga$new(maxiter=10)
 #' sl <- Lrnr_sl$new(lrnr_stack, ga)
 #' sl_fit <- sl$train(task)
 Lrnr_ga <- R6Class(

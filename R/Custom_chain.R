@@ -11,14 +11,14 @@
 #'
 #' @keywords data
 #'
-#' @return \code{\link{Lrnr_base}} object with methods for training and
+#' @return \code{\link[sl3]{Lrnr_base}} object with methods for training and
 #'  prediction
-#' @format \code{\link{R6Class}} object.
+#' @format \code{\link[R6]{R6Class}} object.
 #' @field params A list of learners to chain.
 #' @section Methods:
 #' \describe{
 #'   \item{\code{new(...)}}{This method is used to create a pipeline of
-#'    learners. Arguments should be indiviual \code{Learner}s, in the order they
+#'    learners. Arguments should be individual \code{Learner}s, in the order they
 #'    should be applied.}
 #' }
 #

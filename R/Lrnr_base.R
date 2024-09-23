@@ -16,7 +16,7 @@
 #'
 #' @return Learner object with methods for training and prediction
 #'
-#' @format \code{\link{R6Class}} object.
+#' @format \code{\link[R6]{R6Class}} object.
 #'
 #' @template common_parameters
 #' @template Lrnr_base_extra

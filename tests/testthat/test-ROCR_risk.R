@@ -1,6 +1,10 @@
 # test SLs with ROCR risk
 library(testthat)
 context("test-ROCR_risk.R -- Lrnr_sl functionality with ROCR risks")
+skip_on_cran()
+if (!identical(Sys.getenv("NOT_CRAN"), "true")) {
+  return()
+}
 
 library(sl3)
 library(origami)

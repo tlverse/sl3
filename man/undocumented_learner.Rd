@@ -5,10 +5,10 @@
 \alias{undocumented_learner}
 \title{Undocumented Learner}
 \format{
-\code{\link{R6Class}} object.
+\code{\link[R6]{R6Class}} object.
 }
 \value{
-\code{\link{Lrnr_base}} object with methods for training and
+\code{\link[sl3]{Lrnr_base}} object with methods for training and
 prediction.
 }
 \description{

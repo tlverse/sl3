@@ -6,7 +6,7 @@
 \alias{Lrnr_h2o_glm}
 \title{h2o Model Definition}
 \format{
-\code{\link{R6Class}} object.
+\code{\link[R6]{R6Class}} object.
 }
 \usage{
 define_h2o_X(task, outcome_type = NULL)
@@ -19,7 +19,7 @@ formatting the outcome}
 }
 \value{
 Learner object with methods for training and prediction. See
-\code{\link{Lrnr_base}} for documentation on learners.
+\code{\link[sl3]{Lrnr_base}} for documentation on learners.
 }
 \description{
 Definition of \code{h2o} type models. This function is for internal use only.

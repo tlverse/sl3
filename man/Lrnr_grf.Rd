@@ -5,11 +5,11 @@
 \alias{Lrnr_grf}
 \title{Generalized Random Forests Learner}
 \format{
-\code{\link{R6Class}} object.
+\code{\link[R6]{R6Class}} object.
 }
 \value{
 Learner object with methods for training and prediction. See
-\code{\link{Lrnr_base}} for documentation on learners.
+\code{\link[sl3]{Lrnr_base}} for documentation on learners.
 }
 \description{
 This learner implements Generalized Random Forests, using the \pkg{grf}

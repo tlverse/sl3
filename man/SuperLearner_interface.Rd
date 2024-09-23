@@ -8,11 +8,11 @@
 \alias{Lrnr_pkg_SuperLearner_screener}
 \title{Use SuperLearner Wrappers, Screeners, and Methods, in sl3}
 \format{
-\code{\link{R6Class}} object.
+\code{\link[R6]{R6Class}} object.
 }
 \value{
-Learner object with methods for training and prediction. See
-\code{\link{Lrnr_base}} for documentation on learners.
+\code{\link[sl3]{Lrnr_base}} object with methods for training and
+prediction
 }
 \description{
 These learners provide an interface to the wrapper functions,

@@ -1,4 +1,8 @@
 context("test-formula.R -- Handling of learner param formula")
+skip_on_cran()
+if (!identical(Sys.getenv("NOT_CRAN"), "true")) {
+  return()
+}
 
 options(java.parameters = "-Xmx2500m")
 data(cpp_imputed)

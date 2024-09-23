@@ -7,11 +7,11 @@
 \alias{Lrnr_h2o_mutator}
 \title{Grid Search Models with h2o}
 \format{
-\code{\link{R6Class}} object.
+\code{\link[R6]{R6Class}} object.
 }
 \value{
-Learner object with methods for training and prediction. See
-\code{\link{Lrnr_base}} for documentation on learners.
+\code{\link[sl3]{Lrnr_base}} object with methods for training and
+prediction
 }
 \description{
 \code{Lrnr_h2o_grid} - This learner provides facilities for fitting various

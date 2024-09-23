@@ -5,11 +5,11 @@
 \alias{Lrnr_density_hse}
 \title{Density Estimation With Mean Model and Homoscedastic Errors}
 \format{
-\code{\link{R6Class}} object.
+\code{\link[R6]{R6Class}} object.
 }
 \value{
-Learner object with methods for training and prediction. See
-\code{\link{Lrnr_base}} for documentation on learners.
+\code{\link[sl3]{Lrnr_base}} object with methods for training and
+prediction
 }
 \description{
 This learner assumes a mean model with homoscedastic errors: Y ~ E(Y|W) + epsilon. E(Y|W) is fit using any mean learner,

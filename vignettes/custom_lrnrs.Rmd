@@ -24,14 +24,14 @@ Before diving into defining a new learner, it will likely be helpful to read
 some background material. If you haven't already read it, the ["Modern Machine
 Learning in R"](intro_sl3.html) vignette is a good introduction to the `sl3`
 package and it's underlying architecture. The
-[`R6`](https://cran.r-project.org/web/packages/R6/vignettes/Introduction.html)
+[`R6`](https://cran.r-project.org/package=R6)
 documentation will help you understand how `R6` classes are defined. In
 addition, the help files for
-[`sl3_Task`](https://www.tlverse.org/sl3/reference/sl3_Task.html) and
-[`Lrnr_base`](https://www.tlverse.org/sl3/reference/Lrnr_base.html) are good
+[`sl3_Task`](https://tlverse.org/sl3/reference/sl3_Task.html) and
+[`Lrnr_base`](https://tlverse.org/sl3/reference/Lrnr_base.html) are good
 resources for how those objects can be used. If you're interested in defining
 learners that fit sub-learners, reading the documentation of the
-[`delayed`](https://www.tlverse.org/delayed/articles/delayed.html) package will be
+[`delayed`](https://tlverse.org/delayed/articles/delayed.html) package will be
 helpful.
 
 In the following sections, we introduce and review a template for a new `sl3`
@@ -238,12 +238,12 @@ should use `delayed_learner_fit_predict` and `delayed_learner_fit_chain`.
 
 If you want other people to be able to use your learner, you will need to
 document and provide unit tests for it. The above template has example
-documentation, written in the [roxygen](https://r-pkgs.had.co.nz/man.html)
+documentation, written in the [roxygen](https://roxygen2.r-lib.org/)
 format. Most importantly, you should describe what your learner does, reference
 any external code it uses, and document any parameters and public methods
 defined by it.
 
-It's also important to [test](https://r-pkgs.had.co.nz/tests.html) your learner.
+It's also important to [test](https://testthat.r-lib.org/) your learner.
 You should write unit tests to verify that your learner can train and predict on
 new data, and, if applicable, generate a chained task. It might also be a good
 idea to use the `risk` function in `sl3` to verify your learner's performance on

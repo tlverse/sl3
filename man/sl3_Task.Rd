@@ -6,7 +6,7 @@
 \alias{make_sl3_Task}
 \title{Define a Machine Learning Task}
 \format{
-\code{\link{R6Class}} object.
+\code{\link[R6]{R6Class}} object.
 }
 \usage{
 make_sl3_Task(...)

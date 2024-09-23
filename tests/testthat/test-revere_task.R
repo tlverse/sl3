@@ -1,5 +1,8 @@
 context("test-Lrnr_revere_task.R -- Lrnr that generates revere task")
-
+skip_on_cran()
+if (!identical(Sys.getenv("NOT_CRAN"), "true")) {
+  return()
+}
 
 data(cpp_imputed)
 covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs", "sexn")

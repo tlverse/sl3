@@ -1,4 +1,9 @@
 context("test-multinomial_learners.R -- multinomial learners in Super Learner")
+skip_on_cran()
+if (!identical(Sys.getenv("NOT_CRAN"), "true")) {
+  return()
+}
+
 library(origami)
 options(sl3.verbose = FALSE)
 

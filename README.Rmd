@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 # R/`sl3`: Super Machine Learning with Pipelines
 
 [![R-CMD-check](https://github.com/tlverse/sl3/workflows/R-CMD-check/badge.svg)](https://github.com/tlverse/sl3/actions)
-[![Coverage Status](https://codecov.io/gh/tlverse/sl3/branch/master/graph/badge.svg)](https://codecov.io/gh/tlverse/sl3)
+[![Coverage Status](https://app.codecov.io/gh/tlverse/sl3/branch/master/graph/badge.svg)](https://app.codecov.io/gh/tlverse/sl3)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1342293.svg)](https://doi.org/10.5281/zenodo.1342293)
@@ -285,7 +285,7 @@ After using the `sl3` R package, please cite the following:
 
 &copy; 2017-2021 [Jeremy R. Coyle](https://github.com/jeremyrcoyle), [Nima S.
 Hejazi](https://nimahejazi.org), [Ivana
-Malenica](https://github.com/podTockom), [Rachael V.
+Malenica](https://github.com/imalenica), [Rachael V.
 Phillips](https://github.com/rachaelvp), [Oleg
 Sofrygin](https://github.com/osofr)
 

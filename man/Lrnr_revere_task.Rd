@@ -5,11 +5,11 @@
 \alias{Lrnr_revere_task}
 \title{Learner that chains into a revere task}
 \format{
-\code{\link{R6Class}} object.
+\code{\link[R6]{R6Class}} object.
 }
 \value{
-Learner object with methods for training and prediction. See
-\code{\link{Lrnr_base}} for documentation on learners.
+\code{\link[sl3]{Lrnr_base}} object with methods for training and
+prediction
 }
 \description{
 A wrapper around a revere generator that produces a revere task on chain

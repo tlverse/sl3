@@ -5,7 +5,7 @@
 
 [![R-CMD-check](https://github.com/tlverse/sl3/workflows/R-CMD-check/badge.svg)](https://github.com/tlverse/sl3/actions)
 [![Coverage
-Status](https://codecov.io/gh/tlverse/sl3/branch/master/graph/badge.svg)](https://codecov.io/gh/tlverse/sl3)
+Status](https://app.codecov.io/gh/tlverse/sl3/branch/master/graph/badge.svg)](https://app.codecov.io/gh/tlverse/sl3)
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
@@ -54,9 +54,8 @@ book](https://tlverse.org/tlverse-handbook/sl3.html).
 <!--
 For standard use, we recommend installing the package from
 [CRAN](https://cran.r-project.org/) via
-
-
-```r
+&#10;
+``` r
 install.packages("sl3")
 ```
 -->
@@ -111,8 +110,10 @@ cpp <- cpp %>%
   mutate_all(~ replace(., is.na(.), 0))
 
 # use covariates of intest and the outcome to build a task object
-covars <- c("apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
-            "sexn")
+covars <- c(
+  "apgar1", "apgar5", "parity", "gagebrth", "mage", "meducyrs",
+  "sexn"
+)
 task <- sl3_Task$new(
   data = cpp,
   covariates = covars,
@@ -131,13 +132,15 @@ stack_fit <- learner_stack$train(task)
 preds <- stack_fit$predict()
 head(preds)
 #>    Lrnr_pkg_SuperLearner_SL.glmnet Lrnr_glm_TRUE
-#> 1:                       0.3525946    0.36298498
-#> 2:                       0.3525946    0.36298498
-#> 3:                       0.2442593    0.25993072
-#> 4:                       0.2442593    0.25993072
-#> 5:                       0.2442593    0.25993072
-#> 6:                       0.0269504    0.05680264
+#>                              <num>         <num>
+#> 1:                      0.35618966    0.36298498
+#> 2:                      0.35618966    0.36298498
+#> 3:                      0.24964615    0.25993072
+#> 4:                      0.24964615    0.25993072
+#> 5:                      0.24964615    0.25993072
+#> 6:                      0.03776486    0.05680264
 #>    Pipeline(Lrnr_pkg_SuperLearner_screener_screen.glmnet->Lrnr_glm_TRUE)
+#>                                                                    <num>
 #> 1:                                                            0.36228209
 #> 2:                                                            0.36228209
 #> 3:                                                            0.25870995
@@ -204,10 +207,9 @@ online documentation](https://tlverse.org/origami/reference/).
 Properties supported by `sl3` learners are presented in the following
 table:
 
-<div
-style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:200px; overflow-x: scroll; width:100%; ">
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:200px; overflow-x: scroll; width:100%; ">
 
-<table class="table table-striped table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
+<table class="table table-striped table-hover table-condensed table-responsive" style="color: black; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
@@ -405,56 +407,6 @@ x
 </td>
 <td style="text-align:left;">
 √
-</td>
-<td style="text-align:left;">
-x
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Lrnr_bilstm
-</td>
-<td style="text-align:left;">
-x
-</td>
-<td style="text-align:left;">
-x
-</td>
-<td style="text-align:left;">
-√
-</td>
-<td style="text-align:left;">
-x
-</td>
-<td style="text-align:left;">
-x
-</td>
-<td style="text-align:left;">
-x
-</td>
-<td style="text-align:left;">
-x
-</td>
-<td style="text-align:left;">
-x
-</td>
-<td style="text-align:left;">
-x
-</td>
-<td style="text-align:left;">
-x
-</td>
-<td style="text-align:left;">
-x
-</td>
-<td style="text-align:left;">
-x
-</td>
-<td style="text-align:left;">
-√
-</td>
-<td style="text-align:left;">
-x
 </td>
 <td style="text-align:left;">
 x
@@ -3598,7 +3550,7 @@ After using the `sl3` R package, please cite the following:
 
 © 2017-2021 [Jeremy R. Coyle](https://github.com/jeremyrcoyle), [Nima S.
 Hejazi](https://nimahejazi.org), [Ivana
-Malenica](https://github.com/podTockom), [Rachael V.
+Malenica](https://github.com/imalenica), [Rachael V.
 Phillips](https://github.com/rachaelvp), [Oleg
 Sofrygin](https://github.com/osofr)
 
@@ -3609,7 +3561,8 @@ See file `LICENSE` for details.
 
 ## References
 
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent"
+entry-spacing="0">
 
 <div id="ref-breiman1996stacked" class="csl-entry">
 

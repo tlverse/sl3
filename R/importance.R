@@ -73,8 +73,9 @@ utils::globalVariables(c("score"))
 #' lasso_lrnr <- Lrnr_glmnet$new()
 #' glm_lrnr <- Lrnr_glm$new()
 #' ranger_lrnr <- Lrnr_ranger$new()
-#' lrnrs <- c(lasso_lrnr, glm_lrnr, ranger_lrnr)
-#' names(lrnrs) <- c("lasso", "glm", "ranger")
+#' lrnrs <- c(lasso_lrnr, glm_lrnr)
+#' names(lrnrs) <- c("lasso", "glm")
+
 #' lrnr_stack <- make_learner(Stack, lrnrs)
 #'
 #' # instantiate SL with default metalearner
@@ -276,8 +277,9 @@ importance <- function(fit, eval_fun = NULL,
 #' lasso_lrnr <- Lrnr_glmnet$new()
 #' glm_lrnr <- Lrnr_glm$new()
 #' ranger_lrnr <- Lrnr_ranger$new()
-#' lrnrs <- c(lasso_lrnr, glm_lrnr, ranger_lrnr)
-#' names(lrnrs) <- c("lasso", "glm", "ranger")
+#' lrnrs <- c(lasso_lrnr, glm_lrnr)
+#' names(lrnrs) <- c("lasso", "glm")
+
 #' lrnr_stack <- make_learner(Stack, lrnrs)
 #'
 #' # instantiate SL with default metalearner
