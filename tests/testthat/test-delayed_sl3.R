@@ -1,4 +1,9 @@
 context("test-delayed_sl3.R -- manually delay learner fit")
+skip_on_cran()
+if (!identical(Sys.getenv("NOT_CRAN"), "true")) {
+  return()
+}
+
 library(future)
 library(testthat)
 plan(sequential)

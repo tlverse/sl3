@@ -1,4 +1,8 @@
 context("test_multivariate.R -- Basic Multivariate functionality")
+skip_on_cran()
+if (!identical(Sys.getenv("NOT_CRAN"), "true")) {
+  return()
+}
 
 options(sl3.verbose = FALSE)
 library(origami)

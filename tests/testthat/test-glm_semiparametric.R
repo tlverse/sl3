@@ -1,5 +1,9 @@
 context("test_glm_semiparametric.R -- Lrnr_glm_semiparametric")
 library(glmnet)
+skip_on_cran()
+if (!identical(Sys.getenv("NOT_CRAN"), "true")) {
+  return()
+}
 
 set.seed(459)
 n <- 200

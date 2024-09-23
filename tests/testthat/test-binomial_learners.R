@@ -1,4 +1,9 @@
 context("test-binomial_learners.R -- binomial learners in a Super Learner")
+skip_on_cran()
+if (!identical(Sys.getenv("NOT_CRAN"), "true")) {
+  return()
+}
+
 library(origami)
 options(sl3.verbose = FALSE)
 

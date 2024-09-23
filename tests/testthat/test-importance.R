@@ -1,4 +1,9 @@
 library(testthat)
+skip_on_cran()
+if (!identical(Sys.getenv("NOT_CRAN"), "true")) {
+  return()
+}
+
 context("test_importance.R -- Variable Importance")
 
 library(sl3)

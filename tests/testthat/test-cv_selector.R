@@ -1,4 +1,8 @@
 context("test-cv-selector.R -- Lrnr_cv_selector for CV-selector metalearner")
+skip_on_cran()
+if (!identical(Sys.getenv("NOT_CRAN"), "true")) {
+  return()
+}
 
 # set seed, load data, and make task
 set.seed(32798)

@@ -1,4 +1,8 @@
 context("test-ts_weights.R -- Lrnr_ts_weights")
+skip_on_cran()
+if (!identical(Sys.getenv("NOT_CRAN"), "true")) {
+  return()
+}
 
 library(origami)
 library(data.table)
