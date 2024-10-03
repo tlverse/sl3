@@ -132,13 +132,15 @@ process_data <- function(data, nodes, column_names, flag = TRUE,
       # add inidicators to column map and covariate list
       column_names[missing_indicator_vars] <- missing_indicator_cols
       nodes$covariates <- c(nodes$covariates, missing_indicator_vars)
+      
+      # impute covariates
+      data_missing_covars <- data[, missing_covar_cols, with = FALSE]
+      imputed <- impute(data.frame(data_missing_covars))
+      
+      # update data
+      set(data, , missing_covar_cols, imputed)
+      
     }
-    # impute covariates
-    data_missing_covars <- data[, missing_covar_cols, with = FALSE]
-    imputed <- impute(data.frame(data_missing_covars))
-    
-    # update data
-    set(data, , missing_covar_cols, imputed)
   }
   
   na_Y <- (!is.null(nodes$outcome) && any(is.na(data[, outcome_columns, with = F])))
