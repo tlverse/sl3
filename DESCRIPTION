@@ -33,7 +33,7 @@ Depends: R (>= 3.6.0)
 Imports:
     data.table,
     assertthat,
-    origami (>= 1.0.3),
+    origami (>= 1.0.7),
     R6,
     uuid,
     BBmisc,
@@ -68,7 +68,7 @@ Suggests:
     glmnet,
     grf,
     gbm,
-    hal9001 (>= 0.4.4),
+    hal9001 (>= 0.4.6),
     h2o,
     keras,
     nloptr,
@@ -84,16 +84,14 @@ Suggests:
     xgboost,
     lightgbm,
     dbarts,
-    gam (>= 1.15.0),
-    haldensify (>= 0.2.3),
+    gam,
+    haldensify (>= 0.2.7),
     mgcv,
     hts,
     GA,
     SIS,
     partykit
 Remotes:
-    github::tlverse/origami,
-    github::tlverse/hal9001@devel,
     github::nhejazi/haldensify
 License: GPL-3
 Language: en-US

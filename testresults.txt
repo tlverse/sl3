@@ -1,0 +1,111 @@
+[2024-04-29 20:20:53] ══ Documenting ═════════════════════════════════════════════════════════════════
+[2024-04-29 20:20:53] ℹ Updating sl3 documentation
+[2024-04-29 20:20:54] ℹ Loading sl3
+[2024-04-29 20:20:57] 
+[2024-04-29 20:20:57] ══ Building ════════════════════════════════════════════════════════════════════
+[2024-04-29 20:20:57] Setting env vars:
+[2024-04-29 20:20:57] • CFLAGS    : -Wall -pedantic
+[2024-04-29 20:20:57] • CXXFLAGS  : -Wall -pedantic
+[2024-04-29 20:20:57] • CXX11FLAGS: -Wall -pedantic
+[2024-04-29 20:20:57] • CXX14FLAGS: -Wall -pedantic
+[2024-04-29 20:20:57] • CXX17FLAGS: -Wall -pedantic
+[2024-04-29 20:20:57] • CXX20FLAGS: -Wall -pedantic
+[2024-04-29 20:20:57] ── R CMD build ─────────────────────────────────────────────────────────────────
+[2024-04-29 20:20:57] * checking for file ‘/home/jrcoyle/Dropbox/tlverse/sl3/DESCRIPTION’ ... OK
+[2024-04-29 20:20:57] * preparing ‘sl3’:
+[2024-04-29 20:20:57] * checking DESCRIPTION meta-information ... OK
+[2024-04-29 20:20:57] * installing the package to process help pages
+[2024-04-29 20:21:14] Loading required namespace: sl3
+[2024-04-29 20:21:15] * saving partial Rd database
+[2024-04-29 20:21:19] * creating vignettes ... OK
+[2024-04-29 20:21:19] * checking for LF line-endings in source and make files and shell scripts
+[2024-04-29 20:21:19] * checking for empty or unneeded directories
+[2024-04-29 20:21:19] Removed empty directory ‘sl3/tests/testthat/_snaps’
+[2024-04-29 20:21:19] * building ‘sl3_1.4.5.tar.gz’
+[2024-04-29 20:21:19] 
+[2024-04-29 20:21:19] ══ Checking ════════════════════════════════════════════════════════════════════
+[2024-04-29 20:21:19] Setting env vars:
+[2024-04-29 20:21:19] • _R_CHECK_CRAN_INCOMING_USE_ASPELL_           : TRUE
+[2024-04-29 20:21:19] • _R_CHECK_CRAN_INCOMING_REMOTE_               : FALSE
+[2024-04-29 20:21:19] • _R_CHECK_CRAN_INCOMING_                      : FALSE
+[2024-04-29 20:21:19] • _R_CHECK_FORCE_SUGGESTS_                     : FALSE
+[2024-04-29 20:21:19] • _R_CHECK_PACKAGES_USED_IGNORE_UNUSED_IMPORTS_: FALSE
+[2024-04-29 20:21:19] • NOT_CRAN                                     : false
+[2024-04-29 20:21:19] ── R CMD check ─────────────────────────────────────────────────────────────────
+[2024-04-29 20:21:19] * using log directory ‘/tmp/RtmpZW35EK/file1237e20c4dd84/sl3.Rcheck’
+[2024-04-29 20:21:19] * using R version 4.3.3 (2024-02-29)
+[2024-04-29 20:21:19] * using platform: x86_64-pc-linux-gnu (64-bit)
+[2024-04-29 20:21:19] * R was compiled by
+[2024-04-29 20:21:19]     gcc (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0
+[2024-04-29 20:21:19]     GNU Fortran (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0
+[2024-04-29 20:21:19] * running under: Pop!_OS 20.04 LTS
+[2024-04-29 20:21:19] * using session charset: UTF-8
+[2024-04-29 20:21:20] * using options ‘--no-manual --as-cran’
+[2024-04-29 20:21:20] * checking for file ‘sl3/DESCRIPTION’ ... OK
+[2024-04-29 20:21:20] * this is package ‘sl3’ version ‘1.4.5’
+[2024-04-29 20:21:20] * package encoding: UTF-8
+[2024-04-29 20:21:20] * checking package namespace information ... OK
+[2024-04-29 20:21:20] * checking package dependencies ... OK
+[2024-04-29 20:21:20] * checking if this is a source package ... OK
+[2024-04-29 20:21:20] * checking if there is a namespace ... OK
+[2024-04-29 20:21:21] * checking for executable files ... OK
+[2024-04-29 20:21:21] * checking for hidden files and directories ... OK
+[2024-04-29 20:21:21] * checking for portable file names ... OK
+[2024-04-29 20:21:21] * checking for sufficient/correct file permissions ... OK
+[2024-04-29 20:21:37] * checking whether package ‘sl3’ can be installed ... [16s/16s] OK
+[2024-04-29 20:21:37] * checking installed package size ... OK
+[2024-04-29 20:21:37] * checking package directory ... OK
+[2024-04-29 20:21:37] * checking for future file timestamps ... OK
+[2024-04-29 20:21:37] * checking ‘build’ directory ... OK
+[2024-04-29 20:21:37] * checking DESCRIPTION meta-information ... OK
+[2024-04-29 20:21:37] * checking top-level files ... OK
+[2024-04-29 20:21:37] * checking for left-over files ... OK
+[2024-04-29 20:21:37] * checking index information ... OK
+[2024-04-29 20:21:38] * checking package subdirectories ... OK
+[2024-04-29 20:21:38] * checking R files for non-ASCII characters ... OK
+[2024-04-29 20:21:38] * checking R files for syntax errors ... OK
+[2024-04-29 20:21:39] * checking whether the package can be loaded ... OK
+[2024-04-29 20:21:40] * checking whether the package can be loaded with stated dependencies ... OK
+[2024-04-29 20:21:41] * checking whether the package can be unloaded cleanly ... OK
+[2024-04-29 20:21:42] * checking whether the namespace can be loaded with stated dependencies ... OK
+[2024-04-29 20:21:44] * checking whether the namespace can be unloaded cleanly ... OK
+[2024-04-29 20:21:45] * checking loading without being on the library search path ... OK
+[2024-04-29 20:21:48] * checking startup messages can be suppressed ... OK
+[2024-04-29 20:21:49] * checking dependencies in R code ... OK
+[2024-04-29 20:21:50] * checking S3 generic/method consistency ... OK
+[2024-04-29 20:21:52] * checking replacement functions ... OK
+[2024-04-29 20:21:53] * checking foreign function calls ... OK
+[2024-04-29 20:22:00] * checking R code for possible problems ... OK
+[2024-04-29 20:22:02] * checking Rd files ... OK
+[2024-04-29 20:22:02] * checking Rd metadata ... OK
+[2024-04-29 20:22:02] * checking Rd line widths ... OK
+[2024-04-29 20:22:03] * checking Rd cross-references ... OK
+[2024-04-29 20:22:04] * checking for missing documentation entries ... OK
+[2024-04-29 20:22:08] * checking for code/documentation mismatches ... OK
+[2024-04-29 20:22:09] * checking Rd \usage sections ... OK
+[2024-04-29 20:22:09] * checking Rd contents ... OK
+[2024-04-29 20:22:10] * checking for unstated dependencies in examples ... OK
+[2024-04-29 20:22:10] * checking contents of ‘data’ directory ... OK
+[2024-04-29 20:22:10] * checking data for non-ASCII characters ... OK
+[2024-04-29 20:22:10] * checking LazyData ... OK
+[2024-04-29 20:22:10] * checking data for ASCII and uncompressed saves ... OK
+[2024-04-29 20:22:10] * checking installed files from ‘inst/doc’ ... OK
+[2024-04-29 20:22:10] * checking files in ‘vignettes’ ... OK
+[2024-04-29 20:22:41] * checking examples ... [30s/31s] OK
+[2024-04-29 20:22:44] * checking for unstated dependencies in ‘tests’ ... OK
+[2024-04-29 20:22:44] * checking tests ...
+[2024-04-29 20:28:05]   Running ‘testthat.R’ [401s/321s]
+[2024-04-29 20:28:05]  [401s/321s] OK
+[2024-04-29 20:28:05] * checking for unstated dependencies in vignettes ... OK
+[2024-04-29 20:28:05] * checking package vignettes in ‘inst/doc’ ... OK
+[2024-04-29 20:28:10] * checking re-building of vignette outputs ... OK
+[2024-04-29 20:28:10] * checking for non-standard things in the check directory ... OK
+[2024-04-29 20:28:10] * checking for detritus in the temp directory ... OK
+[2024-04-29 20:28:10] * DONE
+[2024-04-29 20:28:10] 
+[2024-04-29 20:28:10] Status: OK
+[2024-04-29 20:28:10] 
+[2024-04-29 20:28:11] ── R CMD check results ────────────────────────────────────────── sl3 1.4.5 ────
+[2024-04-29 20:28:11] Duration: 6m 51.5s
+[2024-04-29 20:28:11] 
+[2024-04-29 20:28:11] 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
