@@ -93,6 +93,8 @@ Suggests:
     partykit
 Remotes:
     github::nhejazi/haldensify
+Additional_repositories:
+  https://tlverse.r-universe.dev
 License: GPL-3
 Language: en-US
 URL: https://tlverse.org/sl3
