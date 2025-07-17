@@ -124,8 +124,18 @@ Lrnr_density_semiparametric <- R6Class(
         min_obs_error <- 2 * min(se_task$Y)
         var_fit <- var_learner$train(se_task)
         var_preds <- var_fit$predict()
-        var_preds[var_preds < 0] <- min_obs_error
-        sd_preds <- sqrt(var_preds)
+        
+        # calculate a practical floor for error variance, called squared tolerance
+        errors_sd <- sd(errors)
+        tol2   <- (0.1 * errors_sd)^2  
+        
+        # replace any NA or too-small var_pred with tol2
+        var_preds_clean <- ifelse(
+          is.na(var_preds) | var_preds < 0,
+          tol2,
+          var_preds
+        )
+        sd_preds <- sqrt(var_preds_clean)
         errors <- errors / sd_preds
       } else {
         var_fit <- NULL
