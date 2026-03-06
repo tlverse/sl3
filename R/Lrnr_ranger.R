@@ -124,7 +124,10 @@ Lrnr_ranger <- R6Class(
       colnames(data_in)[1] <- task$nodes$outcome
       args$data <- data_in
       args$dependent.variable.name <- task$nodes$outcome
-      args$probability <- task$outcome_type$type == "categorical"
+      # For binomial and categorical tasks, downstream sl3 expects probabilities.
+      if (is.null(args$probability)) {
+        args$probability <- task$outcome_type$type %in% c("binomial", "categorical")
+      }
       fit_object <- call_with_args(ranger::ranger, args)
       return(fit_object)
     },
@@ -134,18 +137,47 @@ Lrnr_ranger <- R6Class(
       Xdf <- task$get_data(columns = task$nodes$covariates, expand_factors = FALSE)
       
       # extract numeric predictions from custom class ranger.prediction
-      predictions <- stats::predict(
+      pred_obj <- stats::predict(
         private$.fit_object,
         data = Xdf,
         type = "response",
         num.threads = self$params$num.threads
       )
+      pred_raw <- pred_obj$predictions
 
-      predictions <- predictions[[1]]
+      outcome_type <- private$.training_outcome_type$type
+      if (outcome_type == "categorical") {
+        # pack K-class probabilities in a single column
+        predictions <- pack_predictions(pred_raw)
+      } else if (outcome_type == "binomial") {
+        # Return P(Y = max level), consistent with Variable_Type$format
+        # and other binomial learners in sl3.
+        if (is.matrix(pred_raw)) {
+          levs <- private$.training_outcome_type$levels
+          target <- if (!is.null(levs) && length(levs) > 0) {
+            as.character(levs[[length(levs)]])
+          } else {
+            colnames(pred_raw)[ncol(pred_raw)]
+          }
 
-      if (private$.training_outcome_type$type == "categorical") {
-        # pack predictions in a single column
-        predictions <- pack_predictions(predictions)
+          if (!is.null(colnames(pred_raw)) && target %in% colnames(pred_raw)) {
+            predictions <- as.numeric(pred_raw[, target])
+          } else {
+            predictions <- as.numeric(pred_raw[, ncol(pred_raw)])
+          }
+        } else if (is.factor(pred_raw) || is.character(pred_raw)) {
+          levs <- private$.training_outcome_type$levels
+          target <- if (!is.null(levs) && length(levs) > 0) {
+            as.character(levs[[length(levs)]])
+          } else {
+            as.character(sort(unique(pred_raw))[length(unique(pred_raw))])
+          }
+          predictions <- as.numeric(as.character(pred_raw) == target)
+        } else {
+          predictions <- as.numeric(pred_raw)
+        }
+      } else {
+        predictions <- as.numeric(pred_raw)
       }
       return(predictions)
     },
