@@ -95,16 +95,13 @@ Lrnr_ranger <- R6Class(
       }
       self$assert_trained()
 
-      # initiate argument list for ranger::importance
       args <- list(...)
       args$x <- self$fit_object
 
-      # calculate importance metrics
       importance_result <- call_with_args(ranger::importance, args,
         keep_all = TRUE
       )
 
-      # sort according to decreasing importance
       return(importance_result[order(importance_result, decreasing = TRUE)])
     }
   ),
@@ -118,28 +115,66 @@ Lrnr_ranger <- R6Class(
       if (task$has_node("weights")) {
         args$case.weights <- task$weights
       }
-      data_in <- cbind(task$Y, task$X)
+
+      Xdf <- task$get_data(columns = task$nodes$covariates, expand_factors = FALSE)
+      data_in <- cbind(task$Y, Xdf)
       colnames(data_in)[1] <- task$nodes$outcome
       args$data <- data_in
       args$dependent.variable.name <- task$nodes$outcome
-      args$probability <- task$outcome_type$type == "categorical"
+
+      if (is.null(args$probability)) {
+        args$probability <- task$outcome_type$type %in% c("binomial", "categorical")
+      }
+
       fit_object <- call_with_args(ranger::ranger, args)
       return(fit_object)
     },
     .predict = function(task) {
-      # extract numeric predictions from custom class ranger.prediction
-      predictions <- stats::predict(
+      Xdf <- task$get_data(columns = task$nodes$covariates, expand_factors = FALSE)
+
+      pred_obj <- stats::predict(
         private$.fit_object,
-        data = task$X,
+        data = Xdf,
         type = "response",
         num.threads = self$params$num.threads
       )
+      pred_raw <- pred_obj$predictions
 
-      predictions <- predictions[[1]]
+      outcome_type <- private$.training_outcome_type$type
+      if (outcome_type == "categorical") {
+        predictions <- pack_predictions(pred_raw)
+      } else if (outcome_type == "binomial") {
+        levs <- private$.training_outcome_type$levels
+        target <- if (!is.null(levs) && length(levs) > 0L) {
+          as.character(max(levs))
+        } else {
+          NULL
+        }
 
-      if (private$.training_outcome_type$type == "categorical") {
-        # pack predictions in a single column
-        predictions <- pack_predictions(predictions)
+        if (is.matrix(pred_raw)) {
+          if (!is.null(colnames(pred_raw)) && !is.null(target) && target %in% colnames(pred_raw)) {
+            predictions <- as.numeric(pred_raw[, target])
+          } else if (!is.null(target) && !is.null(levs)) {
+            target_idx <- match(target, as.character(levs))
+            if (is.na(target_idx) || target_idx > ncol(pred_raw)) {
+              stop("Could not align ranger binomial prediction matrix to the sl3 event level.")
+            }
+            predictions <- as.numeric(pred_raw[, target_idx])
+          } else if (ncol(pred_raw) == 1L) {
+            predictions <- as.numeric(pred_raw[, 1])
+          } else {
+            stop("Could not identify the binomial probability column from ranger predictions.")
+          }
+        } else if (is.factor(pred_raw) || is.character(pred_raw)) {
+          if (is.null(target)) {
+            stop("Could not identify the sl3 event level for ranger binomial predictions.")
+          }
+          predictions <- as.numeric(as.character(pred_raw) == target)
+        } else {
+          predictions <- as.numeric(pred_raw)
+        }
+      } else {
+        predictions <- as.numeric(pred_raw)
       }
       return(predictions)
     },

@@ -205,8 +205,23 @@ sl3_Task <- R6Class(
         } else {
           # match interaction terms to X
           Xmatch <- lapply(int, function(i) {
-            grep(i, colnames(self$X), value = TRUE)
-          })
+            cols <- colnames(self$X)
+          
+            # detect if 'i' is represented by factor dummies in the design
+            has_factor_dummies <- any(startsWith(cols, paste0(i, ".")))
+          
+            if (has_factor_dummies) {
+              # prefix match for factor dummy columns, anchored
+              grep(paste0("^", i, "\\."), colnames(self$X), value = TRUE)
+            } else if (i %in% cols) {
+              # exact match for a single numeric (or already-numeric) column
+              i
+            } else {
+              # nothing found; better to fail loud than silently drop an interaction
+              warning("No matching columns in design matrix for interaction term '", i, "'.")
+              character(0)
+            }
+          })    
           Xint <- as.list(data.table::as.data.table(t(expand.grid(Xmatch))))
 
           d_Xint <- lapply(Xint, function(Xint) {
