@@ -82,7 +82,7 @@ cv_sl <- function(lrnr_sl, eval_fun) {
       colnames(cand_pred_i) <- names(cv_sl_fit$fit_object$fold_fits[[i]]$learner_fits)
 
       # SL predictions for fold i validation task (NOT SEEN BY SL)
-      sl_pred_i <- cv_sl_fit$fit_object$fold_fits[[1]]$predict(valid_task_i)
+      sl_pred_i <- cv_sl_fit$fit_object$fold_fits[[i]]$predict(valid_task_i)
 
       # compile CV predictions & observed data for fold i's validation task
       data.table::as.data.table(cbind(
